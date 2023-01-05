@@ -14,7 +14,7 @@ public class OwnhomeController {
 
 	@Autowired
 	OwnhomeMapper empMapper;
-	 //수정테스트
+	 //수정테스트(hjj)
 	 //통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 	@RequestMapping(value = "/empList", method = RequestMethod.GET)
 	public String empList(Model model) {
