@@ -19,7 +19,7 @@ public class OwnhomeController {
 	@RequestMapping(value = "/empList", method = RequestMethod.GET)
 	public String empList(Model model) {
 		model.addAttribute("empList", empMapper.getEmpList(null));
-		return "empList"; 
+		return "content/empList"; 
 	}
 	
 }
