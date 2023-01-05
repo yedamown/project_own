@@ -13,3 +13,5 @@ public class EmpVO {
 	String comm;
 	String deptno;
 }
+
+//미현 수정해봅니다

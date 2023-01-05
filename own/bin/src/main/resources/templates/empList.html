@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+		<thead>
+			<tr>
+				<th>사원번호</th>
+				<th>이름</th>
+				<th>성</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="emp : ${empList}">
+				<td th:text=${emp.employeeId}></td>		
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
