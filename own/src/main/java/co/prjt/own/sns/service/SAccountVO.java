@@ -1,6 +1,9 @@
 package co.prjt.own.sns.service;
 
-public class SnsVO {
+import lombok.Data;
+
+@Data
+public class SAccountVO {
 	String snsNickname;
 	String snsProfile;
 	String snsBoardNo;
