@@ -1,5 +1,5 @@
 package co.prjt.own.chall.mapper;
 
-public class ChallMapper {
+public interface CAmountMapper {
 
 }

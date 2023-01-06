@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 
 @Data
-public class ChallVO {
+public class ChallengeVO {
 	String challNo;
 	String challCategory;
 	String challTag;

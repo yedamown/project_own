@@ -1,8 +1,10 @@
-package co.prjt.own.chall.service;
+package co.prjt.own.chall.mapper;
 
 import java.util.List;
 
-public interface CReportService {
+import co.prjt.own.chall.service.CReportVO;
+
+public interface CReportMapper {
 	//신고신청
 	CReportVO insertCreport(CReportVO vo);
 	
