@@ -22,7 +22,7 @@
                     #{bandGenderOption},
                     #{bandMembershipOption},
                     #{bandLocation}
-                  );
+                  )
 	</insert>
 	<update id="updateBand">
 		UPDATE band
@@ -52,7 +52,8 @@
 			        BAND_CATEGORY,
 			        BAND_GENDER_OPTION,
 			        BAND_MEMBERSHIP_OPTION,
-			        BAND_LOCATION,
+			        BAND_LOCATION
+			FROM BAND
 	       WHERE 	BAND_NO = #{bandNo}
 	</select>
 	<sql id="condition">
@@ -83,7 +84,7 @@
 		        BAND_CATEGORY,
 		        BAND_GENDER_OPTION,
 		        BAND_MEMBERSHIP_OPTION,
-		        BAND_LOCATION,
+		        BAND_LOCATION
 	       FROM ( SELECT ROWNUM RN, A.* FROM (
 				SELECT * FROM BAND
 		 <include refid="condition" />

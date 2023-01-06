@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import co.prjt.own.band.mapper.BandMapper;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
+import co.prjt.own.common.Paging;
 
 @Service
 public class BandServiceImpl implements BandService{
@@ -26,7 +27,10 @@ public class BandServiceImpl implements BandService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getBandAll(BandVO vo) {
+	public List<Map<String, Object>> getBandAll(BandVO vo, Paging paging) {
+		paging.setTotalRecord(bandMapper.count(vo));
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
 		return bandMapper.getBandAll(vo);
 	}
 
