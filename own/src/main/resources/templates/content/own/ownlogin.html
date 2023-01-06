@@ -4,60 +4,44 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
 <head>
-    <meta charset="UTF-8" />
-    <title>thymeleaf layout</title>
-    <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
-    <!-- content script -->
-    <!-- Style CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
-<div th:fragment="headerFragment"></div>
 <div layout:fragment="content">
-<h2>Weekly Coding Challenge #1: Sign in/up Form</h2>
-<div class="container" id="container">
-  <div class="form-container sign-up-container">
-    <form action="#">
-      <h1>Create Account</h1>
-      <div class="social-container">
-        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-      <span>or use your email for registration</span>
-      <input type="text" placeholder="Name" />
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
-      <button>Sign Up</button>
-    </form>
-  </div>
-  <div class="form-container sign-in-container">
-    <form action="#">
-      <h1>Sign in</h1>
-      <div class="social-container">
-        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-      <span>or use your account</span>
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
-      <a href="#">Forgot your password?</a>
-      <button>Sign In</button>
-    </form>
-  </div>
-  <div class="overlay-container">
-    <div class="overlay">
-      <div class="overlay-panel overlay-left">
-        <h1>Welcome Back!</h1>
-        <p>To keep connected with us please login with your personal info</p>
-        <button class="ghost" id="signIn">Sign In</button>
-      </div>
-      <div class="overlay-panel overlay-right">
-        <h1>Hello, Friend!</h1>
-        <p>Enter your personal details and start journey with us</p>
-        <button class="ghost" id="signUp">Sign Up</button>
-      </div>
-    </div>
-  </div>
-</div>
+<body>
+        <h1>회원가입 홈페이지</h1>
+        <div id = "container">
+            <fieldset>
+            <legend>회원가입</legend>
+            <ul>
+                <li><label>아이디</label>
+                    <input id="u_id" type="text" placeholder="여백없이 입력"></li>
+                <li><label>비밀번호</label>
+                    <input id="u_pw" type="password" placeholder="연락가능한 번호"></li>
+                <li><label>이름</label>
+                    <input id="u_name" type="text" placeholder="여백없이 입력"></li>
+                <li><label>이메일</label>
+                    <input id="u_email" type="email" placeholder="이메일"></li>
+                <li><label>전화번호</label>
+                    <input id="u_tel" type="tel" placeholder="-없이 입력"></li>
+                <li><label>생년월일</label>
+                    <input id="u_birth" type="text" placeholder="날짜형식"></li>
+                <li><label>성별</label>
+                	<input type="radio" name="chk_info" value="GD01" checked="checked">남
+					<input type="radio" name="chk_info" value="GD02">여
+             </ul>
+        </fieldset>
+            <br>
+        </div>
+        <button type="button" id="btnlogin">로그인</button></td>
+        <button type="button" id="btnlogout">로그아웃</button></td>
+        <script>
+        $("#btnlogin").on("click", function(){
+        	  console.log($('input[name=chk_info]').val())
+        	  alert("문장이 클릭되었습니다.");
+        	});
+        </script>
+</body>
 </div>
 </html>
