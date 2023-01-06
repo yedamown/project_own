@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class SStroyVO {
+public class SStoryVO {
 	String snsStroyNo;
 	String snsNickname;
 	Date snsStoryDate;
