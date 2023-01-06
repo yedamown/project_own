@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 
 @Data
-public class CAmountListVO {
+public class CAmountVO {
 	String userId;
 	String amtType;
 	String challNo;

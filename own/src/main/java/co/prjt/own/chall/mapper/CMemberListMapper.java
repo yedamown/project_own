@@ -1,8 +1,10 @@
-package co.prjt.own.chall.service;
+package co.prjt.own.chall.mapper;
 
 import java.util.List;
 
-public interface CMemberListService {
+import co.prjt.own.chall.service.CMemberListVO;
+
+public interface CMemberListMapper {
 	//도전신청(회원 도전신청 시 입력)
 	CMemberListVO insertMemList(CMemberListVO vo);
 
