@@ -1,5 +1,5 @@
 package co.prjt.own.chall.service;
 
-public class ReportVO {
+public class CMemberListVO {
 
 }
