@@ -87,10 +87,7 @@
          <groupId>com.oracle.database.security</groupId>
          <artifactId>osdt_cert</artifactId>
       </dependency>
-
    </dependencies>
-   
-
    <build>
       <plugins>
          <plugin>
