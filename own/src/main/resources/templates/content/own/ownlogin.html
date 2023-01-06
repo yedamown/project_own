@@ -26,21 +26,49 @@
                 <li><label>전화번호</label>
                     <input id="u_tel" type="tel" placeholder="-없이 입력"></li>
                 <li><label>생년월일</label>
-                    <input id="u_birth" type="text" placeholder="날짜형식"></li>
+                    <input id="u_birth" type="date" placeholder="날짜형식"></li>
                 <li><label>성별</label>
-                	<input type="radio" name="chk_info" value="GD01" checked="checked">남
-					<input type="radio" name="chk_info" value="GD02">여
+                	<input type="radio" name="u_gen" value="GD01" checked="checked">남
+					<input type="radio" name="u_gen" value="GD02">여
              </ul>
         </fieldset>
             <br>
         </div>
-        <button type="button" id="btnlogin">로그인</button></td>
+        <button type="button" id="btnsignin">로그인</button></td>
         <button type="button" id="btnlogout">로그아웃</button></td>
         <script>
-        $("#btnlogin").on("click", function(){
-        	  console.log($('input[name=chk_info]').val())
-        	  alert("문장이 클릭되었습니다.");
-        	});
+    		$('#btnsignin').on("click",function(){
+    			let id = $('#u_id').val();
+                let passwd = $('#u_pw').val();
+                let name = $('#u_name').val();
+                let email = $('#u_email').val();
+                let tel = $('#u_tel').val();
+                let birthday = $('#u_birth').val();
+                let gender = $('#u_gen').val();
+                console.log(birthday);
+                $.ajax({
+    				url : '/own/userInfo',
+    				method : 'post',
+    				// json형태면 JSON.stringify ((무조건)) 넣기..
+    				data :  JSON.stringify({userId:id,
+    									   userPasswd:passwd,
+    									   userName:name,
+    									   userEmail:email,
+    									   userPhone:tel,
+    									   userBirthday:birthday,
+    									   userGender:gender}),
+    				//dataType : 'object' ,//응답결과랑 타입이 같아야함
+    				contentType : "application/json" //json으로 보낼때 타입이 이렇다..
+    			}).then(res=>{
+    				if(res){
+    					alert('회원가입 완료')
+    				}else{
+    					alert('회원가입 실패')
+    				}
+    			})
+    		})
+    	
+        
         </script>
 </body>
 </div>

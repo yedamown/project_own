@@ -19,6 +19,6 @@ values (
 		#{userPhone},
 		#{userBirthday},
 		#{userGender},
-		'일반회원');
+		'일반회원')
 </insert>
 </mapper>

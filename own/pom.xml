@@ -87,8 +87,14 @@
          <groupId>com.oracle.database.security</groupId>
          <artifactId>osdt_cert</artifactId>
       </dependency>
+		<!--세션 디페넏ㄴ시-->
+		
+		<dependency>
+		<groupId>org.springframework.session</groupId>
+		<artifactId>spring-session-core</artifactId>
+		</dependency>
 
-   </dependencies>
+ </dependencies>
    
 
    <build>
