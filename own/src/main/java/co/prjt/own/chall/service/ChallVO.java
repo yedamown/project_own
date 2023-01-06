@@ -2,6 +2,8 @@ package co.prjt.own.chall.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -12,7 +14,10 @@ public class ChallVO {
 	String challTitle;
 	int challDuration;
 	int challFreq;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date challStartdate;
+	
 	int nowMember;
 	int maxMember;
 	String challIntro;
