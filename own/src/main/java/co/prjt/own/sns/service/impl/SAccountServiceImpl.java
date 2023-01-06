@@ -12,31 +12,31 @@ import co.prjt.own.sns.service.SAccountVO;
 @Service
 public class SAccountServiceImpl implements SAccountService {
 
-	@Autowired SAccountMapper sAccountMppaer;
+	@Autowired SAccountMapper sAccountMapper;
 	
 	@Override
 	public List<SAccountVO> getSnsUserList(SAccountVO SAccountVO) {
-		return sAccountMppaer.getSnsUserList(SAccountVO);
+		return sAccountMapper.getSnsUserList(SAccountVO);
 	}
 
 	@Override
 	public SAccountVO getSnsUser(String snsNickname) {
-		return sAccountMppaer.getSnsUser(snsNickname);
+		return sAccountMapper.getSnsUser(snsNickname);
 	}
 
 	@Override
 	public int insertSnsUser(SAccountVO SAccountVO) {
-		return sAccountMppaer.insertSnsUser(SAccountVO);
+		return sAccountMapper.insertSnsUser(SAccountVO);
 	}
 
 	@Override
 	public int updateSnsUser(SAccountVO SAccountVO) {
-		return sAccountMppaer.updateSnsUser(SAccountVO);
+		return sAccountMapper.updateSnsUser(SAccountVO);
 	}
 
 	@Override
 	public int deleteSnsUser(String snsNickname) {
-		return sAccountMppaer.deleteSnsUser(snsNickname);
+		return sAccountMapper.deleteSnsUser(snsNickname);
 	}
 
 }

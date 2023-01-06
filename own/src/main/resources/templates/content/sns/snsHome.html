@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
 <head>
     <!-- ========== Meta Tags ========== -->
     <meta charset="UTF-8">
@@ -13,20 +16,21 @@
     <!--<link rel="icon" href="fav.ico">-->
     <!-- ========== STYLESHEETS ========== -->
     <!-- Bootstrap CSS -->
-    <link href="sns/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/sns/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts Icon CSS -->
-    <link href="sns/css/font-awesome.min.css" rel="stylesheet">
-    <link href="sns/css/et-line.css" rel="stylesheet">
-    <link href="sns/css/ionicons.min.css" rel="stylesheet">
+    <link href="/sns/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/sns/css/et-line.css" rel="stylesheet">
+    <link href="/sns/css/ionicons.min.css" rel="stylesheet">
     <!-- Carousel CSS -->
-    <link href="sns/css/slick.css" rel="stylesheet">
+    <link href="/sns/css/slick.css" rel="stylesheet">
     <!-- Magnific-popup -->
-    <link rel="stylesheet" href="sns/css/magnific-popup.css">
+    <link rel="stylesheet" href="/sns/css/magnific-popup.css">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="sns/css/animate.min.css">
+    <link rel="stylesheet" href="/sns/css/animate.min.css">
     <!-- Custom styles for this template -->
-    <link href="sns/css/main.css" rel="stylesheet">
+    <link href="/sns/css/main.css" rel="stylesheet">
 </head>
+<div layout:fragment="content">
 <body>
 <div class="loader">
     <div class="loader-outter"></div>
@@ -156,12 +160,12 @@
                                     Instagram
                                 </h4>
                                 <ul>
-                                    <li><a href="#"><img src="sns/img/blog/instagram/inst5.png" alt="instagram"></a></li>
-                                    <li><a href="#"><img src="sns/img/blog/instagram/inst2.png" alt="instagram"></a></li>
-                                    <li><a href="#"><img src="sns/img/blog/instagram/inst3.png" alt="instagram"></a></li>
-                                    <li><a href="#"><img src="sns/img/blog/instagram/inst4.png" alt="instagram"></a></li>
-                                    <li><a href="#"><img src="sns/img/blog/instagram/inst5.png" alt="instagram"></a></li>
-                                    <li><a href="#"><img src="sns/img/blog/instagram/inst6.png" alt="instagram"></a></li>
+                                    <li><a href="#"><img src="/sns/img/blog/instagram/inst5.png" alt="instagram"></a></li>
+                                    <li><a href="#"><img src="/sns/img/blog/instagram/inst2.png" alt="instagram"></a></li>
+                                    <li><a href="#"><img src="/sns/img/blog/instagram/inst3.png" alt="instagram"></a></li>
+                                    <li><a href="#"><img src="/sns/img/blog/instagram/inst4.png" alt="instagram"></a></li>
+                                    <li><a href="#"><img src="/sns/img/blog/instagram/inst5.png" alt="instagram"></a></li>
+                                    <li><a href="#"><img src="/sns/img/blog/instagram/inst6.png" alt="instagram"></a></li>
                                 </ul>
                             </div>
                             <div class="widget widget_tags">
@@ -183,7 +187,7 @@
                     <div class="col-lg-8 col-md-12 col-12">
                         <article class="blog_card">
                             <div class="blog_card_top">
-                                <img src="sns/img/blog/blog1.png" alt="blog title " />
+                                <img src="/sns/img/blog/blog1.png" alt="blog title " />
                                 <div class="blog_date">
                                     31
                                     <span>
@@ -209,7 +213,7 @@
                         </article>
                         <article class="blog_card">
                             <div class="blog_card_top">
-                                <img src="sns/img/blog/blog2.png" alt="blog title " />
+                                <img src="/sns/img/blog/blog2.png" alt="blog title " />
                                 <div class="blog_date">
                                     31
                                     <span>
@@ -235,7 +239,7 @@
                         </article>
                         <article class="blog_card">
                             <div class="blog_card_top">
-                                <img src="sns/img/blog/blog3.png" alt="blog title " />
+                                <img src="/sns/img/blog/blog3.png" alt="blog title " />
                                 <div class="blog_date">
                                     31
                                     <span>
@@ -269,23 +273,24 @@
 
 
 <!-- jquery -->
-<script src="sns/js/jquery.min.js"></script>
+<script src="/sns/js/jquery.min.js"></script>
 <!-- bootstrap -->
-<script src="sns/js/popper.js"></script>
-<script src="sns/js/bootstrap.min.js"></script>
-<script src="sns/js/waypoints.min.js"></script>
+<script src="/sns/js/popper.js"></script>
+<script src="/sns/js/bootstrap.min.js"></script>
+<script src="/sns/js/waypoints.min.js"></script>
 <!--slick carousel -->
-<script src="sns/js/slick.min.js"></script>
+<script src="/sns/js/slick.min.js"></script>
 <!--Portfolio Filter-->
-<script src="sns/js/imgloaded.js"></script>
-<script src="sns/js/isotope.js"></script>
+<script src="/sns/js/imgloaded.js"></script>
+<script src="/sns/js/isotope.js"></script>
 <!-- Magnific-popup -->
-<script src="sns/js/jquery.magnific-popup.min.js"></script>
+<script src="/sns/js/jquery.magnific-popup.min.js"></script>
 <!--Counter-->
-<script src="sns/js/jquery.counterup.min.js"></script>
+<script src="/sns/js/jquery.counterup.min.js"></script>
 <!-- WOW JS -->
-<script src="sns/js/wow.min.js"></script>
+<script src="/sns/js/wow.min.js"></script>
 <!-- Custom js -->
-<script src="sns/js/main.js"></script>
+<script src="/sns/js/main.js"></script>
 </body>
+</div>
 </html>

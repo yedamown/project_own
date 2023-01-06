@@ -2,39 +2,39 @@ package co.prjt.own.sns.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import co.prjt.own.sns.mapper.SBoardMapper;
 import co.prjt.own.sns.service.SBoardService;
 import co.prjt.own.sns.service.SBoardVO;
 
 public class SBoardServiceImpl implements SBoardService {
+	
+	@Autowired SBoardMapper sBoardMapper;
 
 	@Override
 	public List<SBoardVO> getSnsBoardList(SBoardVO SBaordVO) {
-		// TODO Auto-generated method stub
-		return null;
+		return sBoardMapper.getSnsBoardList(SBaordVO);
 	}
 
 	@Override
 	public SBoardVO getSnsBoard(String snsBoardNo) {
-		// TODO Auto-generated method stub
-		return null;
+		return sBoardMapper.getSnsBoard(snsBoardNo);
 	}
 
 	@Override
 	public int insertSnsBoard(SBoardVO SBoardVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sBoardMapper.insertSnsBoard(SBoardVO);
 	}
 
 	@Override
 	public int updateSnsBoard(SBoardVO SBoardVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sBoardMapper.updateSnsBoard(SBoardVO);
 	}
 
 	@Override
 	public int deleteSnsBoard(String snsBoardNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sBoardMapper.deleteSnsBoard(snsBoardNo);
 	}
 
 }
