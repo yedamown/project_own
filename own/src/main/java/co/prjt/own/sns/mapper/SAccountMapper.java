@@ -5,6 +5,7 @@ import java.util.List;
 import co.prjt.own.sns.service.SAccountVO;
 
 public interface SAccountMapper {
+	
 	//SNS가입 계정 전체 조회
 	public List<SAccountVO> getSnsUserList(SAccountVO SAccountVO);
 	
