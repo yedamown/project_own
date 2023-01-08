@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>add_chall</title>
+</head>
+<div layout:fragment="content">
+	<body>
+		<legend>회원가입</legend>
+		<form action="/insertChall" method="post">
+			<ul>
+				<li>도전제목:<input name="challTitle">
+				<li>카테고리:<input name="challCategory">
+				<li>태그<input name="challTag">
+				<li>도전 시작일<input type="date" name="challStartdate">
+				<!-- 참조키 : select, radio, checkbox로 하기 
+				<li>jobId:<select name="jobId">
+						<c:forEach items="${jobs }" var="job">
+							<option value="${job.jobId }">${job.jobTitle }</option>
+						</c:forEach>
+				</select>-->
+				<li>도전기간<input name="challDuration">
+				<li>도전빈도<input name="challFreq">
+				<li>도전기간<input name="departmentId">
+				<li>도전가능인원<input type="number" name="maxMember">
+				<li>도전금액<input type="number" name="challPrice">
+				<li>도전소개<input name="challIntro">
+				<li>인증방법<input name="vldMethod">
+				<li>도전리더<input name="challLeader">
+				<br/>
+				<button>도전등록</button>
+			</ul>
+	</body>
+</div>
+</html>

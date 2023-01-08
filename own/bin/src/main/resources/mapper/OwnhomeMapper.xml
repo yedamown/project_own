@@ -8,4 +8,17 @@
 select * from employees
 </select>
 
+<insert id="insertUser">
+insert into own_users
+(user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_perm)
+values (
+		#{userId},
+		#{userPasswd},
+		#{userName},
+		#{userEmail},
+		#{userPhone},
+		#{userBirthday},
+		#{userGender},
+		'일반회원')
+</insert>
 </mapper>

@@ -1,6 +1,7 @@
 package co.prjt.own.chall.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,6 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	@Override
 	public int insertChall(ChallengeVO vo) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -41,8 +41,13 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	public List<ChallengeVO> getChallAll(ChallengeVO vo) {
 		// TODO Auto-generated method stub
-		return null;
+		return mapper.getChallAll(null);
 	}
-	
+
+	@Override
+	public List<Map<String, Object>> getCate() {
+		return mapper.getCate();
+	}
+
 
 }
