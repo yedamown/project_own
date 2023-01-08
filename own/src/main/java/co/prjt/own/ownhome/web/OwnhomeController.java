@@ -38,8 +38,6 @@ public class OwnhomeController {
 		model.addAttribute("memList", ownMapper.getUserList(null));
 		return "content/own/ownMemberList";
 	}
-
-	
 	
 	//로그인폼으로 이동
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
