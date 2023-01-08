@@ -3,6 +3,10 @@ package co.prjt.own.ownhome.service;
 import java.util.List;
 
 public interface OwnhomeService {
-	public List<EmpVO> getEmpList(EmpVO empVO);
+	//모든회원정보
+	public List<OwnUserVO> getUserList(OwnUserVO vo);
+	//회원가입
 	public int insertUser(OwnUserVO UserVO);
+	//로그인
+	public int login(String id);
 }
