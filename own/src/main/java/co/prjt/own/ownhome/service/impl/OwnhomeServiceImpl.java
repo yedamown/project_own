@@ -15,15 +15,21 @@ public class OwnhomeServiceImpl implements OwnhomeService {
 	OwnhomeMapper ownhomeMapper;
 	
 	@Override
-	public List<EmpVO> getEmpList(EmpVO empVO) {
-		// TODO Auto-generated method stub
-		return ownhomeMapper.getEmpList(empVO);
-	}
-
-	@Override
 	public int insertUser(OwnUserVO UserVO) {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.insertUser(UserVO);
+	}
+
+	@Override
+	public int login(String id) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.login(id);
+	}
+
+	@Override
+	public List<OwnUserVO> getUserList(OwnUserVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.getUserList(vo);
 	}
 	
 }

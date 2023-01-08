@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
+      
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,26 +11,16 @@
 </head>
 <div layout:fragment="content">
 <body>
-        <h1>회원가입 홈페이지</h1>
+        <h1>로그인 페이지</h1>
         <div id = "container">
             <fieldset>
-            <legend>회원가입</legend>
+            <legend>로그인입력</legend>
             <ul>
                 <li><label>아이디</label>
                     <input id="u_id" type="text" placeholder="여백없이 입력"></li>
                 <li><label>비밀번호</label>
                     <input id="u_pw" type="password" placeholder="연락가능한 번호"></li>
-                <li><label>이름</label>
-                    <input id="u_name" type="text" placeholder="여백없이 입력"></li>
-                <li><label>이메일</label>
-                    <input id="u_email" type="email" placeholder="이메일"></li>
-                <li><label>전화번호</label>
-                    <input id="u_tel" type="tel" placeholder="-없이 입력"></li>
-                <li><label>생년월일</label>
-                    <input id="u_birth" type="date" placeholder="날짜형식"></li>
-                <li><label>성별</label>
-                	<input type="radio" name="u_gen" value="GD01" checked="checked">남
-					<input type="radio" name="u_gen" value="GD02">여
+                
              </ul>
         </fieldset>
             <br>
@@ -40,35 +31,10 @@
     		$('#btnsignin').on("click",function(){
     			let id = $('#u_id').val();
                 let passwd = $('#u_pw').val();
-                let name = $('#u_name').val();
-                let email = $('#u_email').val();
-                let tel = $('#u_tel').val();
-                let birthday = $('#u_birth').val();
-                let gender = $('#u_gen').val();
-                console.log(birthday);
-                $.ajax({
-    				url : '/own/userInfo',
-    				method : 'post',
-    				// json형태면 JSON.stringify ((무조건)) 넣기..
-    				data :  JSON.stringify({userId:id,
-    									   userPasswd:passwd,
-    									   userName:name,
-    									   userEmail:email,
-    									   userPhone:tel,
-    									   userBirthday:birthday,
-    									   userGender:gender}),
-    				//dataType : 'object' ,//응답결과랑 타입이 같아야함
-    				contentType : "application/json" //json으로 보낼때 타입이 이렇다..
-    			}).then(res=>{
-    				if(res){
-    					alert('회원가입 완료')
-    				}else{
-    					alert('회원가입 실패')
-    				}
-    			})
-    		})
-    	
-        
+                
+                console.log(id);
+                
+    		})        
         </script>
 </body>
 </div>
