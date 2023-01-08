@@ -30,7 +30,8 @@
                 <li><label>성별</label>
                 	<input type="radio" name="u_gen" value="GD01" checked="checked">남
 					<input type="radio" name="u_gen" value="GD02">여
-				<select>
+				<select id="exersub">
+				<option value="none"></option>
 				</select>
              </ul>
         </fieldset>
@@ -45,9 +46,18 @@
 			//dataType : 'object' ,//응답결과랑 타입이 같아야함
 			contentType : "application/json" //json으로 보낼때 타입이 이렇다..
 		}).then(res=>{
-			console.log(res)
+			for(sub of res){
+				$("#exersub").append(makeSub(sub));
+			}
 		})
         
+		
+		function makeSub(sub){
+        let tag = `<option value="\${sub.exersubNo}">${sub.exersubNo}${sub.exersubName}</option>`
+	
+		return tag;
+	}
+		
         	
     		$('#btnsignin').on("click",function(){
     			let id = $('#u_id').val();
