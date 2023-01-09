@@ -3,11 +3,13 @@ package co.prjt.own.sns.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import co.prjt.own.sns.mapper.SStoryMapper;
 import co.prjt.own.sns.service.SStoryService;
 import co.prjt.own.sns.service.SStoryVO;
 
+@Service
 public class SStoryServiceImpl implements SStoryService {
 
 	@Autowired SStoryMapper sStoryMapper;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import co.prjt.own.common.mapper.CommonMapper;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ExersubVO;
+import co.prjt.own.common.service.MultimediaVO;
 
 @Service
 public class CommonServiceImpl implements CommonService {
@@ -19,6 +20,12 @@ public class CommonServiceImpl implements CommonService {
 	public List<ExersubVO> getListExersub() {
 		// TODO Auto-generated method stub
 		return commonMapper.getListExersub();
+	}
+
+	@Override
+	public List<MultimediaVO> fileUpload() {
+		// TODO Auto-generated method stub
+		return commonMapper.fileUpload();
 	}
 
 }

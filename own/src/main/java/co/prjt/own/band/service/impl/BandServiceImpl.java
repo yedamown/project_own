@@ -67,7 +67,7 @@ public class BandServiceImpl implements BandService{
 		BandMemberDetailVO detail = new BandMemberDetailVO();
 		detail.setUserId("hjj");
 		//전체 페이지계산
-		paging.setTotalRecord(bandMapper.count2(detail));
+		paging.setTotalRecord(bandMapper.count2(detail.getUserId(), band.getBandName()));
 		band.setFirst(paging.getFirst());
 		band.setLast(paging.getLast());
 		//
@@ -75,8 +75,8 @@ public class BandServiceImpl implements BandService{
 	}
 
 	@Override
-	public int count2(BandMemberDetailVO vo) {
-		return bandMapper.count2(vo);
+	public int count2(BandMemberDetailVO vo, BandVO vo2) {
+		return bandMapper.count2(vo.getUserId(), vo2.getBandName());
 	}
 
 	@Override

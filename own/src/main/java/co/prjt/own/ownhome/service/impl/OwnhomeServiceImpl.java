@@ -21,7 +21,7 @@ public class OwnhomeServiceImpl implements OwnhomeService {
 	}
 
 	@Override
-	public int login(String id) {
+	public OwnUserVO login(String id) {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.login(id);
 	}

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Title -->
+    
     <title>Original - Lifestyle Blog Template</title>
     <!-- Favicon -->
     <link rel="icon" href="/own/img/core-img/favicon.ico">
@@ -41,7 +42,11 @@
 
     <!-- ##### Header Area Start ##### -->
     <header class="header-area">
-
+<h1>안녕하세요</h1>
+<div th:if="${session.loginUser}">
+안녕하세요세션확인 <span th:text="${session.loginUser}"> USER_ID </span>
+<span th:text="${session.loginUser}"> SNS_ACCOUNT_NO </span>
+</div>
         <!-- Top Header Area -->
         <div class="top-header">
             <div class="container h-100">
@@ -124,7 +129,7 @@
                                         </ul>
                                     </li>
                                      <li><a href="#">오운완</a>
-                                    <li><a href="#">SNS</a>
+                                    <li><a href="/own/sns">SNS</a>
                                         <ul class="dropdown">
                                             <li><a href="#">Catagory 1</a></li>
                                             <li><a href="#">Catagory 1</a></li>
@@ -149,7 +154,7 @@
                                             <li><a href="#">Catagory 1</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="/band/bandhome">밴드</a></li>
+                                    <li><a href="own/band/bandhome">밴드</a></li>
                                     
                                     <li><a href="contact.html">도전</a></li>
                                      <li><a href="/own/login">로그인</a></li>
