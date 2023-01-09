@@ -61,13 +61,9 @@ public class CommonController {
 				list.add(dto);
 				File newFileName = new File(dto.getUuid()+"_"+dto.getFileName());
 				file.transferTo(newFileName);
+			}	
 			}
-		}
-		
-		
-		
-		
-		model.addAttribute("files",list);
+			model.addAttribute("files",list);
 		return "content/own/result";
 	}
 	
@@ -87,62 +83,5 @@ public class CommonController {
 		
 		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
-	
 }
-
-
-
-   
-   @Autowired
-   CommonService commonService;
-
-   @Value("${spring.servlet.multipart.location}")
-   String filePath;
-   
-   // 운동종류 가져오기
-   @GetMapping("/common/exersub")
-   @ResponseBody//데이터를 반환할때는 무조건 리스폰스바디 넣기
-   public List<ExersubVO> getListexersub(ExersubVO vo){
-      return commonService.getListExersub();
-   }
-   
-   @PostMapping("/upload")
-   public String upload(@RequestParam MultipartFile[] uploadfile, Model model) throws IllegalStateException, IOException{
-      
-      List<FileDto> list = new ArrayList<>();
-      for(MultipartFile file : uploadfile) {
-         if(!file.isEmpty()) {
-            FileDto dto = new FileDto(UUID.randomUUID().toString(),
-                                 file.getOriginalFilename(),
-                                 file.getContentType());
-            list.add(dto);
-            
-            File newFileName = new File(dto.getUuid()+"_"+dto.getFileName());
-
-            file.transferTo(newFileName);
-         }
-      }
-      model.addAttribute("files",list);
-      return "content/own/result";
-   }
-   
-   @GetMapping("/download")
-   public ResponseEntity<Resource> download(@ModelAttribute FileDto dto) throws IOException{
-      Path path = Paths.get(filePath + "/" + dto.getUuid() + "_" + dto.getFileName());
-      
-      String contentType = Files.probeContentType(path);
-      
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentDisposition(ContentDisposition.builder("attachment")
-            .filename(dto.getFileName(),
-                  StandardCharsets.UTF_8).build());
-      headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-      
-      Resource resource = new InputStreamResource(Files.newInputStream(path)); 
-      
-      return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-   }
-   
-}
-
 
