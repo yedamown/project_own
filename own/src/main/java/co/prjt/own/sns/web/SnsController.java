@@ -42,8 +42,6 @@ public class SnsController {
 		model.addAttribute("snsFeed2", boardMapper.getSnsBoardList(null));
 		return "content/sns/snsFeed2"; 
 	}
-	
-	
 	//3. 파일 업로드
 	
 	

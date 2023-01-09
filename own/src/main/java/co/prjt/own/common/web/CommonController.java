@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ExersubVO;
+import co.prjt.own.common.service.MultimediaVO;
 
 
 @Controller
@@ -49,8 +51,9 @@ public class CommonController {
 		return commonService.getListExersub();
 	}
 	
+	//이거 서비스에 넣기
 	@PostMapping("/upload")
-	public String upload(@RequestParam MultipartFile[] uploadfile, Model model) throws IllegalStateException, IOException{
+	public String upload(@RequestParam MultipartFile[] uploadfile, String IndenfityId, String category) throws IllegalStateException, IOException{
 		
 		List<FileDto> list = new ArrayList<>();
 		for(MultipartFile file : uploadfile) {
@@ -63,7 +66,15 @@ public class CommonController {
 				file.transferTo(newFileName);
 			}	
 			}
-			model.addAttribute("files",list);
+		
+			
+		for(int i=0; i<list.size(); i++) {
+	         MultimediaVO vo= new MultimediaVO();
+	         vo.setMediaRealFile(list.get(i).getFileName());
+	         vo.setMediaServerFile(list.get(i).getUuid()+"_"+list.get(i).getFileName());
+	         vo.setMediaFilePath(filePath); //test용, 게시글 번호
+	         // commonService.인서트
+		}
 		return "content/own/result";
 	}
 	
@@ -83,5 +94,7 @@ public class CommonController {
 		
 		return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 	}
+	
+	
 }
 
