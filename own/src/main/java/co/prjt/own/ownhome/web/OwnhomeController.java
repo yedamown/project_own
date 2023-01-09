@@ -1,13 +1,16 @@
 package co.prjt.own.ownhome.web;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
@@ -30,11 +33,12 @@ public class OwnhomeController {
 	// 수정테스트
 	// 통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 
-	//모든멤버리스트
-	@RequestMapping(value = "/own/memberList", method = RequestMethod.GET)
+	
+	
+	//홈으로 이동
+	@RequestMapping(value = "/own/home", method = RequestMethod.GET)
 	public String ownHome(Model model) { // 오운홈으로 가는 페이지이동
-		model.addAttribute("memList", ownMapper.getUserList(null));
-		return "content/own/ownMemberList";
+		return "content/own/ownhome";
 	}
 	
 	//로그인폼으로 이동
@@ -42,23 +46,24 @@ public class OwnhomeController {
 	public String ownLogin(Model model) { // 오운로그인으로..
 		return "content/own/ownlogin";
 	}
-
 	//로그인 하기
-	
 	@PostMapping("/login")
-	public String loginPost(String id, Model model,HttpServletRequest request, RedirectAttributes rttr) {
-		ownMapper.login(id);
-		return null;
+	@ResponseBody //ajax는 무조건
+	public int loginPost(@RequestBody OwnUserVO vo, Model model,HttpServletRequest request, RedirectAttributes rttr) {
+		OwnUserVO chk = ownMapper.login(vo.getUserId());
+		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
+		HttpSession session = request.getSession();
+		session.setAttribute("loginUser", vo.getUserId());
+		return 1;
+		}
+		else
+		return 0;
 	}
-	//테스트
-//	@RequestMapping(value = "/test", method = RequestMethod.GET)
-//	public String test(Model model) { //오운홈으로 가는 페이지이동
-//		return "fragments/header"; 
-//	}
 	
+	//테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) { // 오운홈으로 가는 페이지이동
-		return "fragments/header";
+		return "content/own/test";
 	}
 
 	//회원가입 폼으로 이동
@@ -68,8 +73,10 @@ public class OwnhomeController {
 	}
 	
 	// 등록
-	@PostMapping("/own/userInto")
-	public OwnUserVO insert(OwnUserVO vo) {
+	@PostMapping("/own/userInfo")
+	@ResponseBody //데이터리턴할때 넣어줘야함. 리턴값을 json 변환
+	public OwnUserVO insert(@RequestBody OwnUserVO vo) {
+		System.out.println("========================"+vo);
 		ownMapper.insertUser(vo);
 		return vo;
 	}

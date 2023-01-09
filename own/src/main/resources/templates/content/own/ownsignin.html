@@ -40,6 +40,8 @@
         <button type="button" id="btnsignin">로그인</button></td>
         <button type="button" id="btnlogout">로그아웃</button></td>
         <script>
+        
+        
         $.ajax({
 			url : '/common/exersub',
 			method : 'get',
@@ -53,10 +55,10 @@
         
 		
 		function makeSub(sub){
-        let tag = `<option value="\${sub.exersubNo}">${sub.exersubNo}${sub.exersubName}</option>`
-	
+        let tag = `<option value="${sub.exersubNo}">${sub.exersubNo}${sub.exersubName}</option>`
+
 		return tag;
-	}
+		}
 		
         	
     		$('#btnsignin').on("click",function(){
@@ -66,8 +68,8 @@
                 let email = $('#u_email').val();
                 let tel = $('#u_tel').val();
                 let birthday = $('#u_birth').val();
-                let gender = $('#u_gen').val();
-                console.log(birthday);
+                let gender = $('[name=u_gen]:checked').val();
+                console.log(gender);
                 $.ajax({
     				url : '/own/userInfo',
     				method : 'post',
@@ -84,6 +86,7 @@
     			}).then(res=>{
     				if(res){
     					alert('회원가입 완료')
+    					location.href="/own/home"
     				}else{
     					alert('회원가입 실패')
     				}
