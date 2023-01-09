@@ -14,6 +14,7 @@ public class ChallengeVO {
 	String challTitle;
 	int challDuration;
 	int challFreq;
+	int challPrice;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date challStartdate;

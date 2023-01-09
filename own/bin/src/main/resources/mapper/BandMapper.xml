@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.prjt.own.band.mapper.BandMapper">
+	<insert id="insertBand">
+		<selectKey keyProperty="bandNo" resultType="string" order="BEFORE">
+			SELECT BAND_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BAND
+			VALUES(
+					#{bandNo},
+					#{bandLeaderid},
+					#{bandName},
+                    #{bandIntro},
+                    #{bandKeyword},
+                    #{bandOpenOption},
+                    #{bandLocOption},
+                    #{bandAgeBeforoption},
+                    #{bandAgeAfteroption},
+                    #{bandCategory},
+                    #{bandGenderOption},
+                    #{bandMembershipOption},
+                    #{bandLocation}
+                  )
+	</insert>
+	<update id="updateBand">
+		UPDATE band
+				    SET
+				        band_name = #{bandName},
+				        band_intro = #{bandIntro},
+				        band_keyword = #{bandKeyword},
+				        band_open_option = #{bandOpenOption},
+				        band_loc_option = #{bandLocOption},
+				        band_age_beforoption = #{bandAgeBeforoption},
+				        band_age_afteroption = #{bandAgeAfteroption},
+				        band_category = #{bandCategory},
+				        band_gender_option = #{bandGenderOption},
+				        band_membership_option = #{bandMembershipOption},
+				        band_location = #{bandLocation}
+			       where band_no = #{bandNo}
+	</update>
+	<select id="getBand" resultType="BandVO">
+		SELECT
+					BAND_NAME,
+			        BAND_INTRO,
+			        BAND_KEYWORD,
+			        BAND_OPEN_OPTION,
+			        BAND_LOC_OPTION,
+			        BAND_AGE_BEFOROPTION,
+			        BAND_AGE_AFTEROPTION,
+			        BAND_CATEGORY,
+			        BAND_GENDER_OPTION,
+			        BAND_MEMBERSHIP_OPTION,
+			        BAND_LOCATION
+			FROM BAND
+	       WHERE 	BAND_NO = #{bandNo}
+	</select>
+	<sql id="condition">
+		<where>
+			<if test="bandKeyword != null and bandKeyword !=''">
+				band_keyword LIKE '%' || #{bandKeyword} || '%'
+			</if>
+			<if test="bandOpenOption != null and bandOpenOption !=''">
+				AND band_open_option = #{bandOpenOption}
+			</if>
+			<if test="bandCategory != null and bandCategory !=''">
+				AND band_open_option = #{bandCategory}
+			</if>
+			<if test="bandLocation != null and bandLocation !=''">
+				AND band_location = #{bandLocation}
+			</if>
+		</where>
+	</sql>
+	<select id="getBandAll" resultType="map">
+		SELECT	BAND_NO
+				BAND_NAME,
+		        BAND_INTRO,
+		        BAND_KEYWORD,
+		        BAND_OPEN_OPTION,
+		        BAND_LOC_OPTION,
+		        BAND_AGE_BEFOROPTION,
+		        BAND_AGE_AFTEROPTION,
+		        BAND_CATEGORY,
+		        BAND_GENDER_OPTION,
+		        BAND_MEMBERSHIP_OPTION,
+		        BAND_LOCATION
+	       FROM ( SELECT ROWNUM RN, A.* FROM (
+				SELECT * FROM BAND
+		 <include refid="condition" />
+		<![CDATA[		
+				) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
+		]]>
+	</select>
+	<select id="count">
+	</select>
+</mapper>

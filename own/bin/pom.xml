@@ -88,8 +88,16 @@
          <artifactId>osdt_cert</artifactId>
       </dependency>
 
-   </dependencies>
+		<!--세션 디페넏ㄴ시-->
+		
+		<dependency>
+		<groupId>org.springframework.session</groupId>
+		<artifactId>spring-session-core</artifactId>
+		</dependency>
+
+ </dependencies>
    
+
 
    <build>
       <plugins>

@@ -27,8 +27,8 @@
 					#{challStartdate},
 					#{maxMember},
 					#{challIntro},
+					#{challPrice},
 					#{vldMethod}',
-					#{vldMethod},
 					#{challLeader}
 				)
 	</insert>

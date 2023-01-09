@@ -67,7 +67,6 @@ public class OwnhomeController {
 		return "content/own/ownsignin";
 	}
 	
-	
 	// 등록
 	@PostMapping("/own/userInto")
 	public OwnUserVO insert(OwnUserVO vo) {
