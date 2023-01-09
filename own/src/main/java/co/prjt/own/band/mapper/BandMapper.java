@@ -3,6 +3,8 @@ package co.prjt.own.band.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandVO;
@@ -29,7 +31,8 @@ public interface BandMapper {
 	//가입한 밴드 중 최신글순대로 나열 페이지처리
 	public List<Map<String, Object>> getMyBandAll(BandVO vo);
 	//가입한 밴드 개수
-	public int count2(BandMemberDetailVO vo);
+	//여기서 끊어서 vo가 아니라 스트링객체를 받아감
+	public int count2(@Param(value = "userId") String userId, @Param(value = "bandName") String bandName);
 	
 	//밴드세개씩 불러와서 댓글 세개씩 조회
 	public List<Map<String, Object>> threeBand(BandVO vo);
