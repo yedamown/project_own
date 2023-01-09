@@ -2,6 +2,9 @@ package co.prjt.own.chall.web;
 
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import co.prjt.own.chall.service.CMemberListVO;
 import co.prjt.own.chall.service.ChallengeService;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.service.CommonService;
+import co.prjt.own.ownhome.service.OwnUserVO;
 
 @Controller
 @RequestMapping("/own/chall")
@@ -28,7 +32,10 @@ public class ChallController {
 	
 	//홈페이지, 도전리스트
 	@GetMapping("/home")
-	public String challHome(Model model) {
+	public String challHome(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OwnUserVO user =(OwnUserVO) session.getAttribute("loginUser");
+		System.out.println(user);
 		model.addAttribute("challenges", challenge.getChallAll(null)); 
 		return "content/chall/challHome";
 	}
@@ -53,14 +60,13 @@ public class ChallController {
 	//해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
 	@GetMapping("/detailChall")
 	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, Model model){
-		System.out.println(no);
 		vo.setChallNo("CHA_" + no);
 		model.addAttribute("detailChall", challenge.getChall(vo)); 
 		return "content/chall/challDetail";
 	}
 	
 	//도전 신청페이지로 이동
-	@GetMapping("/applyFormChall") //등록 폼으로 이동
+	@GetMapping("/applyForm") //등록 폼으로 이동
 	public String applyFormChall(@RequestParam("challNo") String no, ChallengeVO vo,Model model) {
 		System.out.println(no);
 		vo.setChallNo(no);
@@ -73,6 +79,8 @@ public class ChallController {
 	public String addMemList(CMemberListVO vo, Model model) {
 		//도전 멤버 대기 리스트에 추가 + 정보 모달 후, 
 		// 다시 -> 상세페이지 + 대기중일경우 버튼 비활성화
+		memberList.insertMemList(vo);
+		System.out.println(vo);
 		model.addAttribute("applyMem", memberList.insertMemList(vo));
 		return "content/chall/challDatil";
 	}

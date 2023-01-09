@@ -35,13 +35,14 @@ public class OwnhomeController {
 	// 수정테스트
 	// 통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 
-	
-	
 	//홈으로 이동
 	@RequestMapping(value = "/own/home", method = RequestMethod.GET)
-	public String ownHome(Model model) { // 오운홈으로 가는 페이지이동
-		return "content/own/ownhome";
-	}
+	public String ownHome(OwnUserVO vo ,HttpServletRequest request) { // 오운홈으로 가는 페이지이동
+	      HttpSession session = request.getSession();
+	      vo = (OwnUserVO) session.getAttribute("loginUser");
+	      System.out.println(vo);
+	      return "content/own/ownhome";
+	   }
 	
 	//로그인폼으로 이동
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
