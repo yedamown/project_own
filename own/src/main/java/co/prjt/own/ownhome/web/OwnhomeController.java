@@ -89,12 +89,12 @@ public class OwnhomeController {
 		return "content/own/ownRecordForm";
 	}
 	
-	// 오운완(나의운동기록) 등록
-	@PostMapping("/own/exerciseRecord")
-	@ResponseBody //데이터리턴할때 넣어줘야함. 리턴값을 json 변환
-	public OwnUserVO exerciseRecord(@RequestBody ExerRecordVO vo) {
-		exerMapper.insertExerRecord(vo);
-		//return vo;
-	}
+//	// 오운완(나의운동기록) 등록
+//	@PostMapping("/own/exerciseRecord")
+//	@ResponseBody //데이터리턴할때 넣어줘야함. 리턴값을 json 변환
+//	public OwnUserVO exerciseRecord(@RequestBody ExerRecordVO vo) {
+//		exerMapper.insertExerRecord(vo);
+//		//return vo;
+//	}
 
 }
