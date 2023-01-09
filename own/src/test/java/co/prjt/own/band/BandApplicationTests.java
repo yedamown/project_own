@@ -1,7 +1,5 @@
 package co.prjt.own.band;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import co.prjt.own.band.mapper.BandMapper;
-import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandVO;
-import co.prjt.own.common.Paging;
 
 @SpringBootTest
 class BandApplicationTests {

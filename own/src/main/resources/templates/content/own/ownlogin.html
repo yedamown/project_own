@@ -31,10 +31,26 @@
     		$('#btnsignin').on("click",function(){
     			let id = $('#u_id').val();
                 let passwd = $('#u_pw').val();
-                
-                console.log(id);
-                
+                console.log('아이디 ' + id)
+                console.log('비밀번호 ' + passwd);
+                $.ajax({
+        			url : '/login',
+        			method : 'post',
+        			data :  JSON.stringify({userId:id,
+        									userPasswd:passwd}),
+					//dataType : 'object' ,//응답결과랑 타입이 같아야함
+					contentType : "application/json" //json으로 보낼때 타입이 이렇다..
+        		}).then(res=>{
+        			if(res=1){
+        				alert('로그인됨')
+        				location.href = "/own/home";
+        			}
+        			else{
+        				alert('로그인 실패')
+        			}
+        		})                
     		})        
+    		
         </script>
 </body>
 </div>

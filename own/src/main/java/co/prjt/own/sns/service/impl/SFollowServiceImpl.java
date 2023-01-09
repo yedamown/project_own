@@ -3,11 +3,13 @@ package co.prjt.own.sns.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import co.prjt.own.sns.mapper.SFollowMapper;
 import co.prjt.own.sns.service.SFollowService;
 import co.prjt.own.sns.service.SFollowVO;
 
+@Service
 public class SFollowServiceImpl implements SFollowService {
 
 	@Autowired SFollowMapper sFollowMapper;
