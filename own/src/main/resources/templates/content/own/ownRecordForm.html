@@ -93,25 +93,25 @@ td {
 		<div id="current_date"></div>
 		<div id="user_name">홍길동 회원님의 운동 기록하기</div>
 		<div id="recordForm">
-			<form class="exerciseRecordForm">
+			<form name="exerciseRecordForm">
 				<div class="slidecontainer">
-					<label for="weight">체중 </label> <input type="range" min="30"
-						max="120" value="1" class="slider" name="weight" id="myRange">
+					<label for="exerecWeight">체중 </label> <input type="range" min="30"
+						max="120" value="1" class="slider" name="exerecWeight" id="myRange">
 					<p>
 						<span id="value"></span> Kg
 					</p>
 				</div>
 				<div class="moodcontainer">
-					<input type="radio" name="condition" value="1"> 
-						<label for="condition" id="badImg" onclick="checkedFnc(this)"></label> 
-					<input type="radio" name="condition" value="2"> 
-						<label for="condition" id="sadImg" onclick="checkedFnc(this)"></label> 
-					<input type="radio" name="condition" value="3"> 
-						<label for="condition" id="sosoImg" onclick="checkedFnc(this)"></label>
-					<input type="radio" name="condition" value="4"> 
-						<label for="condition" id="smileImg" onclick="checkedFnc(this)"></label> 
-					<input type="radio" name="condition" value="5"> 
-						<label for="condition" id="happyImg" onclick="checkedFnc(this)"></label>
+					<input type="radio" name="exerecCondition" value="1"> 
+						<label for="exerecCondition" id="badImg" onclick="checkedFnc(this)"></label> 
+					<input type="radio" name="exerecCondition" value="2"> 
+						<label for="exerecCondition" id="sadImg" onclick="checkedFnc(this)"></label> 
+					<input type="radio" name="exerecCondition" value="3"> 
+						<label for="exerecCondition" id="sosoImg" onclick="checkedFnc(this)"></label>
+					<input type="radio" name="exerecCondition" value="4"> 
+						<label for="exerecCondition" id="smileImg" onclick="checkedFnc(this)"></label> 
+					<input type="radio" name="exerecCondition" value="5"> 
+						<label for="exerecCondition" id="happyImg" onclick="checkedFnc(this)"></label>
 				</div>
 				<div>
 						<input type="text" id="exerInput" onkeyup="myFunction()"
@@ -121,16 +121,18 @@ td {
 						</table>
 					</div>
 					<div id="recordDiv" style="display: none;">
-						<label for="time">시간 :</label> 
+						<input name="exersubNo" hidden>
+						<label for="exerecTime">시간 :</label> 
 							<input type="text" name="hour" id="hour"> : <input type="text" name="minute" id="minute">
+							<input name="exerecTime" hidden>
 						<div id="meterDiv" style="display: none;">
-							<label for="meter">거리 :</label> 
-							<input type="number" name="meter" id="meter">Km
+							<label for="exerecMeter">거리 :</label> 
+							<input type="number" name="exerecMeter" id="meter">Km
 						</div>	
-						<label for="routin">루틴 :</label>
-							<textarea name="routin" id="routin"></textarea>
-						<label for="feedback">피드백 :</label>
-							<textarea name="feedback" id="feedback"></textarea>
+						<label for="exerecRoution">루틴 :</label>
+							<textarea name="exerecRoution" id="routin"></textarea>
+						<label for="exerecFeedback">피드백 :</label>
+							<textarea name="exerecFeedback" id="feedback"></textarea>
 					</div>
 				</div>
 				<button type="button" id="insertBtn">기록하기</button>
@@ -156,10 +158,13 @@ td {
 			output.innerHTML = this.value;
 		}
 
+		// 운동시간 분으로 계산
+		
+		
 		// 컨디션 라디오 박스 
 		function checkedFnc(img){
 			img.previousElementSibling.checked = true; 
-			if(document.querySelector('[name="condition"]:checked')){
+			if(document.querySelector('[name="exerecCondition"]:checked')){
 				img.style.outline = '5px solid indigo';
 			} else {
 				img.style.outline = '';
@@ -213,16 +218,32 @@ td {
 			if (name == "EXS_1" || name == "EXS_5" || name == "EXS_11" || name == "EXS_12" || name == "EXS_14" || name == "EXS_18" || name == "EXS_29") {
 				document.getElementById("recordDiv").style.display="block";
 				document.getElementById("meterDiv").style.display="block";
+				$('[name="exersubNo"]').attr('value', name);
 			} else  {
 				document.getElementById("recordDiv").style.display="block"
-					document.getElementById("meterDiv").style.display="none";
+				document.getElementById("meterDiv").style.display="none";
+				$('[name="exersubNo"]').attr('value', name);
 			}
 		}
 		
 		// 기록 등록
 		$('#insertBtn').on("click",function(){
 			let record = $('.exerciseRecordForm').serialize();
-			console.log(record)
+			let time = $('[name="exerecTime"]').attr('value', Number($('#hour').val())*60 + Number($('#minute').val()));
+			
+			$.ajax({
+	               url: '/own/exerciseRecord',
+	               method: 'post',
+	               contentType: 'application/x-www-form-urlencoded',
+	               data: $('form[name="exerciseRecordForm"]').serialize(),
+	               success: function (result) {
+	                  console.log(result);
+	               },
+	               error: function (error) {
+	                  console.log(error);
+	               }
+	            })
+			
 		})
 	</script>
 </div>

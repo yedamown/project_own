@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
+import co.prjt.own.exercise.service.ExerRecordVO;
 import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 
@@ -22,13 +23,14 @@ public class OwnhomeController {
 
 	@Autowired
 	OwnhomeMapper ownMapper;
+	ExerRecordMapper exerMapper;
 
 	 //수정테스트
 	 //통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 	
 	//홈페이지 채우기
 
-	ExerRecordMapper exerMapper;
+	
 
 	// 수정테스트
 	// 통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
@@ -85,6 +87,14 @@ public class OwnhomeController {
 	@RequestMapping(value = "/own/ownRecordForm", method = RequestMethod.GET)
 	public String ownRecordForm(Model model) {
 		return "content/own/ownRecordForm";
+	}
+	
+	// 오운완(나의운동기록) 등록
+	@PostMapping("/own/exerciseRecord")
+	@ResponseBody //데이터리턴할때 넣어줘야함. 리턴값을 json 변환
+	public OwnUserVO exerciseRecord(@RequestBody ExerRecordVO vo) {
+		exerMapper.insertExerRecord(vo);
+		//return vo;
 	}
 
 }
