@@ -1,298 +1,481 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+<html lang="en">
 <head>
-  <title>Photosen &mdash; Colorlib Website Template</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="UTF-8">
+    <meta name="description" content="Cocoon -Portfolio">
+    <meta name="keywords" content="Cocoon , Portfolio">
+    <meta name="author" content="Pharaohlab">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ========== Title ========== -->
+    <title> Cocoon -Portfolio</title>
+    <!-- ========== Favicon Ico ========== -->
+    <!--<link rel="icon" href="fav.ico">-->
+    <!-- ========== STYLESHEETS ========== -->
+    <!-- Bootstrap CSS -->
+    <link href="/sns/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts Icon CSS -->
+    <link href="/sns/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/sns/css/et-line.css" rel="stylesheet">
+    <link href="/sns/css/ionicons.min.css" rel="stylesheet">
+    <!-- Carousel CSS -->
+    <link href="/sns/css/slick.css" rel="stylesheet">
+    <!-- Magnific-popup -->
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <!-- Custom styles for this template -->
+    <link href="/sns/css/main.css" rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <style>
+        #my_modal {
+            display: none;
+            width: 700px;
+            height: 600px;
+            padding: 20px 60px;
+            background-color: #fefefe;
+            border: 1px solid #888;
+            border-radius: 3px;
+            font-size: 16px;
+        }
 
-  <link rel="stylesheet" href="/sns/css2/bootstrap.min.css">
-  <link rel="stylesheet" href="/sns/css2/magnific-popup.css">
-  <link rel="stylesheet" href="/sns/css2/jquery-ui.css">
-  <link rel="stylesheet" href="/sns/css2/owl.carousel.min.css">
-  <link rel="stylesheet" href="/sns/css2/owl.theme.default.min.css">
-
-  <link rel="stylesheet" href="/sns/css2/lightgallery.min.css">    
-
-  <link rel="stylesheet" href="/sns/css2/bootstrap-datepicker.css">
-
-  <link rel="stylesheet" href="/sns/fonts2/flaticon/font/flaticon.css">
-
-  <link rel="stylesheet" href="/sns/css2/swiper.css">
-
-  <link rel="stylesheet" href="/sns/css2/aos.css">
-
-  <link rel="stylesheet" href="/sns/css2/style.css">
+        #my_modal .modal_close_btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
 
 </head>
-<div layout:fragment="content">
 <body>
-
-  <div class="site-wrap">
-
-    <div class="site-mobile-menu">
-      <div class="site-mobile-menu-header">
-        <div class="site-mobile-menu-close mt-3">
-          <span class="icon-close2 js-menu-toggle"></span>
-        </div>
-      </div>
-      <div class="site-mobile-menu-body"></div>
-    </div>
-    
-
-
-
-    <header class="site-navbar py-3" role="banner">
-
-      <div class="container-fluid">
-        <div class="row align-items-center">
-
-          <div class="col-6 col-xl-2" data-aos="fade-down">
-            <h1 class="mb-0"><a href="index.html" class="text-white h2 mb-0">Photosen</a></h1>
-          </div>
-          <div class="col-10 col-md-8 d-none d-xl-block" data-aos="fade-down">
-            <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
-
-              <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
-                <li><a href="index.html">하이라이트 넣을곳</a></li>
-                <li class="has-children active">
-                  <a href="single.html">하이라이트 넣을곳</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Nature</a></li>
-                    <li><a href="#">Portrait</a></li>
-                    <li><a href="#">People</a></li>
-                    <li><a href="#">Architecture</a></li>
-                    <li><a href="#">Animals</a></li>
-                    <li><a href="#">Sports</a></li>
-                    <li><a href="#">Travel</a></li>
-                    <li class="has-children">
-                      <a href="#">Sub Menu</a>
-                      <ul class="dropdown">
-                        <li><a href="#">Menu One</a></li>
-                        <li><a href="#">Menu Two</a></li>
-                        <li><a href="#">Menu Three</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li><a href="services.html">하이라이트 넣을곳</a></li>
-                <li><a href="about.html">하이라이트 넣을곳</a></li>
-                <li><a href="contact.html">하이라이트 넣을곳</a></li>
-              </ul>
-            </nav>
-          </div>
-
-          <div class="col-6 col-xl-2 text-right" data-aos="fade-down">
-            <div class="d-none d-xl-inline-block">
-              <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0" data-class="social">
-                <li>
-                  <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
-                </li>
-                <li>
-                  <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
-                </li>
-                <li>
-                  <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
-                </li>
-                <li>
-                  <a href="#" class="pl-3 pr-3"><span class="icon-youtube-play"></span></a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
-
-          </div>
-
-        </div>
-      </div>
-      
-    </header>
-
-
-
-    <div class="site-section"  data-aos="fade">
-      <div class="container-fluid">
-
-        <div class="row justify-content-center">
-
-          <div class="col-md-7">
-            <div class="row mb-5">
-              <div class="col-12 ">
-                <h2 class="site-section-heading text-center">Portrait Gallery</h2>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="row" id="lightgallery">
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_1.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor doloremque hic excepturi fugit, sunt impedit fuga tempora, ad amet aliquid?</p>">
-            <a href="#"><img src="/sns/images2/nature_small_1.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_2.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam omnis quaerat molestiae, praesentium. Ipsam, reiciendis. Aut molestiae animi earum laudantium.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_2.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_3.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem reiciendis, dolorum illo temporibus culpa eaque dolore rerum quod voluptate doloribus.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_3.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_4.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim perferendis quae iusto omnis praesentium labore tempore eligendi quo corporis sapiente.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_4.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_5.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, voluptatum voluptate tempore aliquam, dolorem distinctio. In quas maiores tenetur sequi.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_5.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_6.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum cum culpa blanditiis illum, voluptatum iusto quisquam mollitia debitis quaerat maiores?</p>">
-            <a href="#"><img src="/sns/images2/nature_small_6.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_7.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores similique impedit possimus, laboriosam enim at placeat nihil voluptatibus voluptate hic!</p>">
-            <a href="#"><img src="/sns/images2/nature_small_7.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_8.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam vitae sed cum mollitia itaque soluta laboriosam eaque sit ratione, aliquid.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_8.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_9.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem reiciendis debitis beatae facilis quos, enim quis nobis magnam architecto earum!</p>">
-            <a href="#"><img src="/sns/images2/nature_small_9.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_9.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque officiis magnam, facilis nam eos perspiciatis eligendi pariatur numquam debitis quos!</p>">
-            <a href="#"><img src="/sns/images2/nature_small_9.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_8.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis consequatur quam et, delectus, cum iste ipsa animi eligendi obcaecati nemo.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_8.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_7.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci quia illo voluptatibus numquam inventore, ab asperiores molestiae distinctio atque nihil.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_7.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_6.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt unde placeat obcaecati sapiente illum, fuga nostrum necessitatibus delectus maiores magnam.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_6.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_5.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas dignissimos non consectetur. Facilis totam, explicabo nam iure! Veniam modi, molestiae.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_5.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_4.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias minus voluptatibus inventore odio. Iure amet nesciunt a, officia quo ex.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_4.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_3.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium illum consectetur dolorum consequuntur sint doloribus eveniet deleniti! Illo, quibusdam, earum.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_3.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_2.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto ad iure, inventore asperiores, cupiditate optio dignissimos labore quidem totam. Dignissimos.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_2.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_1.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam temporibus totam similique provident delectus quos fugiat officia earum nisi voluptatibus?</p>">
-            <a href="#"><img src="/sns/images2/nature_small_1.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-
-
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_1.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe beatae qui aliquid nostrum unde ut officiis omnis delectus sequi deleniti!</p>">
-            <a href="#"><img src="/sns/images2/nature_small_1.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_2.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi iusto vero, soluta porro dicta quaerat tempore magni perferendis aspernatur cupiditate.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_2.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_3.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, minus officiis modi ducimus reprehenderit at ea voluptatum consequuntur enim nulla.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_3.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_4.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis eligendi hic sed, quidem illum ipsa, cum tempora quo reiciendis accusantium.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_4.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_5.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex blanditiis quaerat numquam repellendus pariatur commodi neque animi voluptatum illum dolore?</p>">
-            <a href="#"><img src="/sns/images2/nature_small_5.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_6.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio praesentium maiores, veritatis illum voluptas alias aut unde esse aliquam itaque.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_6.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_7.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt fugit, non facilis dignissimos minima nostrum nesciunt adipisci, quibusdam cum reprehenderit.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_7.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_8.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos iure delectus obcaecati atque fugit enim quaerat suscipit tenetur in ratione?</p>">
-            <a href="#"><img src="/sns/images2/nature_small_8.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_9.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa neque, eos quae eaque officia, repellendus dolore tempore cumque quibusdam? Maxime?</p>">
-            <a href="#"><img src="/sns/images2/nature_small_9.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_9.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam, unde quis minus ex impedit necessitatibus nostrum, neque veniam repellat officiis!</p>">
-            <a href="#"><img src="/sns/images2/nature_small_9.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_8.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel eveniet sequi assumenda deserunt ab, tempora commodi autem debitis iusto sed.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_8.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_7.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore, quasi, pariatur. Minima provident repellat cum, impedit, nemo exercitationem distinctio consequuntur.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_7.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_6.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus nostrum expedita consequatur rerum laboriosam tempore nisi autem animi eveniet perspiciatis.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_6.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_5.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque consectetur error deserunt facilis facere, consequatur at officia quae culpa voluptatibus!</p>">
-            <a href="#"><img src="/sns/images2/nature_small_5.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_4.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti minima porro, hic dolores. Ab, doloremque facilis numquam, ipsa repellendus voluptas.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_4.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_3.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, dolor alias. Dignissimos hic voluptatibus dolorum expedita recusandae, consequatur distinctio est.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_3.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_2.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum similique, dolore esse quaerat incidunt ullam sit neque laboriosam velit quas.</p>">
-            <a href="#"><img src="/sns/images2/nature_small_2.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 item" data-aos="fade" data-src="images/big-images/nature_big_1.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem tempora deleniti, consectetur quisquam labore vitae quod quae debitis hic ab!</p>">
-            <a href="#"><img src="/sns/images2/nature_small_1.jpg" alt="IMage" class="img-fluid"></a>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="footer py-4">
-      <div class="container-fluid text-center">
-        <p>
-          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-          Copyright &copy;<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
-          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-        </p>
-      </div>
-    </div>
-
-    
-
-    
-    
-  </div>
-
-  <script src="/sns/js2/jquery-3.3.1.min.js"></script>
-  <script src="/sns/js2/jquery-migrate-3.0.1.min.js"></script>
-  <script src="/sns/js2/jquery-ui.js"></script>
-  <script src="/sns/js2/popper.min.js"></script>
-  <script src="/sns/js2/bootstrap.min.js"></script>
-  <script src="/sns/js2/owl.carousel.min.js"></script>
-  <script src="/sns/js2/jquery.stellar.min.js"></script>
-  <script src="/sns/js2/jquery.countdown.min.js"></script>
-  <script src="/sns/js2/jquery.magnific-popup.min.js"></script>
-  <script src="/sns/js2/bootstrap-datepicker.min.js"></script>
-  <script src="/sns/js2/swiper.min.js"></script>
-  <script src="/sns/js2/aos.js"></script>
-
-  <script src="/sns/js2/picturefill.min.js"></script>
-  <script src="/sns/js2/lightgallery-all.min.js"></script>
-  <script src="/sns/js2/jquery.mousewheel.min.js"></script>
-
-  <script src="/sns/js2/main.js"></script>
-  
-  <script>
-    $(document).ready(function(){
-      $('#lightgallery').lightGallery();
-    });
-  </script>
-
-</body>
+<div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
 </div>
+
+<div class="body-container container-fluid">
+    <a class="menu-btn" href="javascript:void(0)">
+        <i class="ion ion-grid"></i>
+    </a>
+    <div class="row justify-content-center">
+        <!--=================== side menu ====================-->
+        <div class="col-lg-2 col-md-3 col-12 menu_block">
+
+            <!--logo -->
+            <div class="logo_box">
+                <a href="#">
+                    <img src="/sns/img/logo.png" alt="cocoon">
+                </a>
+            </div>
+            <!--logo end-->
+
+            <!--main menu -->
+            <div class="side_menu_section">
+                <ul class="menu_nav">
+                    <li>
+                        <a href="index.html">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="about.html">
+                            About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="services.html">
+                            Services
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="portfolio.html">
+                            Portfolio
+                        </a>
+                    </li>
+                    <li>
+                        <a href="blog.html">
+                            Blog
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contact.html">
+                            Contact
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--main menu end -->
+
+            <!--filter menu -->
+            <div class="side_menu_section">
+                <h4 class="side_title">filter by:</h4>
+                <ul  id="filtr-container"  class="filter_nav">
+                    <li  data-filter="*" class="active"><a href="javascript:void(0)" >all</a></li>
+                    <li data-filter=".branding"> <a href="javascript:void(0)">branding</a></li>
+                    <li data-filter=".design"><a href="javascript:void(0)">design</a></li>
+                    <li data-filter=".photography"><a href="javascript:void(0)">photography</a></li>
+                    <li data-filter=".architecture"><a href="javascript:void(0)">architecture</a></li>
+                </ul>
+            </div>
+            <!--filter menu end -->
+
+
+            <!--social and copyright -->
+            <div class="side_menu_bottom">
+                <div class="side_menu_bottom_inner">
+                    <ul class="social_menu">
+                        <li>
+                            <a href="#"> <i class="ion ion-social-pinterest"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-facebook"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-twitter"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-dribbble"></i> </a>
+                        </li>
+                    </ul>
+                    <div class="copy_right">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p class="copyright">Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+            <!--social and copyright end -->
+
+        </div>
+        <!--=================== side menu end====================-->
+
+        <!--=================== content body ====================-->
+        <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
+            <!--=================== filter portfolio start====================-->
+            <div id="snsprofilebox" style="border: 1px solid black; text-align: center;">
+            <br>
+            <div class="testimonial_box">
+                <div class="testimonial_author">
+                    <img src="assets/img/user.png" alt="author"> 작성자 ID &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
+                    <h5>게시글 갯수 / 팔로우 수 / 팔로워 수 </h5>
+                    <p>소개글을 입력하세요 .... <span>company</span></p>
+                </div>
+
+                <p>
+                   프로필 소개글
+                   웹사이트
+                </p>
+                <br>
+            </div>
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  <br> <br>
+           </div>
+           
+            <p></p>
+            <hr>
+            <h5 style="text-align: right; font-size: 12px;" id="popup_open_btn">📝글 작성</h5>
+            <br>
+
+            <!-- ===================모달==================== -->
+            <div id="my_modal">
+                글작성 폼 띄우기
+                <form action="" class="snsWriteFrm">
+                    <label for="inputContent">내용</label>
+                    <textarea type="text" name="content" id="inputContent"></textarea>
+                    <label for="inputFile">첨부파일</label>
+                    <input name="file" type="file" id="customFile"/>
+                    <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
+                    <input type="submit" role="button" value="글쓰기"/>
+                </form>
+            <a class="modal_close_btn">닫기</a>
+            </div>
+    
+
+            <div class="portfolio gutters grid img-container">
+                <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
+                <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
+                    <a href="assets/img/portfolio/port1.png" title="project name 1">
+                        <div class="project_box_one">
+                            <img src="assets/img/portfolio/port1.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  branding architecture  col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port2.png" title="project name 2">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port2.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  design col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port3.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port3.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  photography design col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port4.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port4.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  branding photography  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port5.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port5.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item   architecture design col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port6.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port6.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  photography architecture col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port7.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port7.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  branding design  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port8.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port8.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item architecture  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port9.png" title="project name 4">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port9.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  photography architecture col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port10.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port10.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  branding design  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port11.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port11.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item architecture  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port4.png" title="project name 4">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port4.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--=================== filter portfolio end====================-->
+        </div>
+        <!--=================== content body end ====================-->
+    </div>
+</div>
+
+<script language="javascript">
+    let fBtn = document.getElementById("followBtn");
+    fBtn.addEventListener("click", function(){
+        if(this.value = 'white'){
+        console.log('팔로우버튼 클릭');
+        this.style.backgroundColor = "skyblue";
+        this.style.color="white";
+        this.value = 'blue';
+        this.textContent = "팔로우✔";
+        }else if (this.value='blue'){
+            this.style.backgroundColor = "";
+            this.style.color="";
+            this.value="white";
+        }
+    })
+
+</script>
+
+<script>
+    function modal(id) {
+        var zIndex = 9999;
+        var modal = document.getElementById(id);
+
+        // 모달 div 뒤에 희끄무레한 레이어
+        var bg = document.createElement('div');
+        bg.setStyle({
+            position: 'fixed',
+            zIndex: zIndex,
+            left: '0px',
+            top: '0px',
+            width: '100%',
+            height: '100%',
+            overflow: 'auto',
+            // 레이어 색갈은 여기서 바꾸면 됨
+            backgroundColor: 'rgba(0,0,0,0.4)'
+        });
+        document.body.append(bg);
+
+        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+        modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+            bg.remove();
+            modal.style.display = 'none';
+        });
+
+        modal.setStyle({
+            position: 'fixed',
+            display: 'block',
+            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+            // 시꺼먼 레이어 보다 한칸 위에 보이기
+            zIndex: zIndex + 1,
+
+            // div center 정렬
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            msTransform: 'translate(-50%, -50%)',
+            webkitTransform: 'translate(-50%, -50%)'
+        });
+    }
+
+    // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
+    Element.prototype.setStyle = function(styles) {
+        for (var k in styles) this.style[k] = styles[k];
+        return this;
+    };
+
+    document.getElementById('popup_open_btn').addEventListener('click', function() {
+        // 모달창 띄우기
+        modal('my_modal');
+    });
+</script>
+
+<!-- jquery -->
+<script src="/sns/js/jquery.min.js"></script>
+<!-- bootstrap -->
+<script src="/sns/js/popper.js"></script>
+<script src="/sns/js/bootstrap.min.js"></script>
+<script src="/sns/js/waypoints.min.js"></script>
+<!--slick carousel -->
+<script src="/sns/js/slick.min.js"></script>
+<!--Portfolio Filter-->
+<script src="/sns/js/imgloaded.js"></script>
+<script src="/sns/js/isotope.js"></script>
+<!-- Magnific-popup -->
+<script src="/sns/js/jquery.magnific-popup.min.js"></script>
+<!--Counter-->
+<script src="/sns/js/jquery.counterup.min.js"></script>
+<!-- WOW JS -->
+<script src="/sns/js/wow.min.js"></script>
+<!-- Custom js -->
+<script src="/sns/js/main.js"></script>
+</body>
 </html>
