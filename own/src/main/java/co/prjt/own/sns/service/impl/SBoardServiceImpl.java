@@ -3,11 +3,13 @@ package co.prjt.own.sns.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import co.prjt.own.sns.mapper.SBoardMapper;
 import co.prjt.own.sns.service.SBoardService;
 import co.prjt.own.sns.service.SBoardVO;
 
+@Service
 public class SBoardServiceImpl implements SBoardService {
 	
 	@Autowired SBoardMapper sBoardMapper;

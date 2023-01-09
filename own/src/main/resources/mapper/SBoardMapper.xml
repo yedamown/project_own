@@ -22,10 +22,12 @@
 								   SNS_BOARD_DATE,
 								   SNS_NICKNAME,
 								   SNS_ACCOUNT_NO)
-			VALUES ( #{snsBoardNo}, 
+			VALUES ( 'SBN_'||#{snsBoardNo}, 
 					 #{snsBoardContent}, 
 					 sysdate, 
-					 #{snsNickname}, 
+					 (SELECT SNS_NICKNAME FROM SNS_ACCOUNT S, OWN_USERS O
+						WHERE S.SNS_ACCOUNT_NO = O.SNS_ACCOUNT_NO
+						AND O.USER_ID = 'kjk'), 
 					 #{snsAccountNo})
 	</insert>
 	

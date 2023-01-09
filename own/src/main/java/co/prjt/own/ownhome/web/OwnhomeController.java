@@ -55,7 +55,7 @@ public class OwnhomeController {
 		OwnUserVO chk = ownMapper.login(vo.getUserId());
 		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", vo.getUserId());
+		session.setAttribute("loginUser", vo);
 		return 1;
 		}
 		else

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- ========== Meta Tags ========== -->
@@ -22,9 +24,9 @@
     <!-- Carousel CSS -->
     <link href="/sns/css/slick.css" rel="stylesheet">
     <!-- Magnific-popup -->
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/sns/css/magnific-popup.css">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="/sns/css/animate.min.css">
     <!-- Custom styles for this template -->
     <link href="/sns/css/main.css" rel="stylesheet">
 
@@ -48,6 +50,7 @@
     </style>
 
 </head>
+<div layout:fragment="content">
 <body>
 <div class="loader">
     <div class="loader-outter"></div>
@@ -74,7 +77,7 @@
             <div class="side_menu_section">
                 <ul class="menu_nav">
                     <li>
-                        <a href="index.html">
+                        <a href="/own/home">
                             Home
                         </a>
                     </li>
@@ -89,13 +92,13 @@
                         </a>
                     </li>
                     <li class="active">
-                        <a href="portfolio.html">
-                            Portfolio
+                        <a href="/own/snsFeed">
+                            개인피드
                         </a>
                     </li>
                     <li>
-                        <a href="blog.html">
-                            Blog
+                        <a href="/own/sns">
+                            sns메인
                         </a>
                     </li>
                     <li>
@@ -157,7 +160,7 @@
             <br>
             <div class="testimonial_box">
                 <div class="testimonial_author">
-                    <img src="assets/img/user.png" alt="author"> 작성자 ID &nbsp;&nbsp;&nbsp;&nbsp;
+                    <img src="/sns/img/user.png" alt="author"> <span th:text="${session.loginUser}"> USER_ID </span> &nbsp;&nbsp;&nbsp;&nbsp;
                     <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
                     <h5>게시글 갯수 / 팔로우 수 / 팔로워 수 </h5>
                     <p>소개글을 입력하세요 .... <span>company</span></p>
@@ -184,7 +187,7 @@
             <!-- ===================모달==================== -->
             <div id="my_modal">
                 글작성 폼 띄우기
-                <form action="" class="snsWriteFrm">
+                <form action="/snsWriteFeed" method="post" class="snsWriteFrm">
                     <label for="inputContent">내용</label>
                     <textarea type="text" name="content" id="inputContent"></textarea>
                     <label for="inputFile">첨부파일</label>
@@ -194,14 +197,34 @@
                 </form>
             <a class="modal_close_btn">닫기</a>
             </div>
-    
-
+    		<!-- ================== 모달 end ====================== -->
+			
+				<table border="1px">
+					<thead>
+						<tr>
+							<th>게시글 번호</th>
+							<th>글 내용</th>
+							<th>작성일자</th>
+							<th>작성자</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="sns :  ${snsFeed}">
+							<td th:text="${sns.snsBoardNo}"></td>
+							<td th:text="${sns.snsBoardContent}"></td>
+							<td th:text="${sns.snsBoardDate}"></td>
+							<td th:text="${sns.snsNickname}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<br>
+				
             <div class="portfolio gutters grid img-container">
                 <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
                 <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
-                    <a href="assets/img/portfolio/port1.png" title="project name 1">
+                    <a href="/sns/img/portfolio/port1.png" title="project name 1">
                         <div class="project_box_one">
-                            <img src="assets/img/portfolio/port1.png" alt="pro1" />
+                            <img src="/sns/img/portfolio/port1.png" alt="pro1" />
                             <div class="product_info">
                                 <div class="product_info_text">
                                     <div class="product_info_text_inner">
@@ -478,4 +501,5 @@
 <!-- Custom js -->
 <script src="/sns/js/main.js"></script>
 </body>
+</div>
 </html>
