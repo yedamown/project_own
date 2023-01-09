@@ -29,7 +29,7 @@ public interface BandService {
 		//검색시에도 사용하기위에 
 		public List<Map<String, Object>> getMyBandAll(BandVO vo, Paging paging);
 		//가입한 밴드 개수
-		public int count2(BandMemberDetailVO vo);
+		public int count2(BandMemberDetailVO vo, BandVO vo2);
 		
 		//밴드세개씩 불러와서 댓글 세개씩 조회
 		public List<Map<String, Object>> threeBand(String threeBand);
