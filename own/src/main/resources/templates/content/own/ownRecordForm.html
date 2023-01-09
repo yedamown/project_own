@@ -1,38 +1,35 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<style>
-		input {
-			vertical-align: middle;
-		}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+.sosadImg {
+	content: url(back.jpg);
+	height: 100px;
+	width: 70px;
+}
 
-		input.img-button {
-			background: url("") no-repeat;
-			border: none;
-			width: 32px;
-			height: 32px;
-			cursor: pointer;
-		}
+[type=radio] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
 
-		input::-ms-clear,
-		input::-ms-reveal {
-			display: none;
-			width: 0;
-			height: 0;
-		}
+[type=radio]+div {
+	cursor: pointer;
+}
 
-		input::-webkit-search-decoration,
-		input::-webkit-search-cancel-button,
-		input::-webkit-search-results-button,
-		input::-webkit-search-results-decoration {
-			display: none;
-		}
-	</style>
+[type=radio]:checked+div {
+	outline: 5px solid indigo;
+}
+</style>
 </head>
 <div layout:fragment="content">
 
@@ -43,31 +40,36 @@
 		<div id="recordForm">
 			<form>
 				<div class="slidecontainer">
-					<label for="weight">체중 </label>
-					<input type="range" min="30" max="120" value="1" name="weight" id="weight">
+					<label for="weight">체중 </label> <input type="range" min="30"
+						max="120" value="1" name="weight" id="weight">
 				</div>
 				<div class="slidecontainer">
-					<label for="mood">컨디션 </label>
-					<button type="button" class="btn_image" id="img_sosad" value="1"></button>
-					<button type="button" class="btn_image" id="img_sad" value="2"></button>
-					<button type="button" class="btn_image" id="img_soso" value="3"></button>
-					<button type="button" class="btn_image" id="img_smile" value="4"></button>
-					<button type="button" class="btn_image" id="img_happy" value="5"></button>
+					<input type="radio" name="mood" value="1">
+					<div class="sosadImg"></div>
+					</input> <input type="radio" name="mood" value="2">
+					<div class="sadImg"></div>
+					</input> <input type="radio" name="mood" value="3">
+					<div class="sosoImg"></div>
+					</input> <input type="radio" name="mood" value="4">
+					<div class="smileImg"></div>
+					</input> <input type="radio" name="mood" value="5">
+					<div class="happyImg"></div>
+					</input>
 				</div>
 				<div>
 					<div>
-						<label for="exerciseSearch">운동 검색</label>
-						<input type="search" name="exerciseSearch" id="">
+						<label for="exerciseSearch">운동 검색</label> <input type="search"
+							name="exerciseSearch" id="">
 					</div>
 					<div hidden>
-						<label for="time">시간 :</label>
-						<input type="text" name="time" id="hour"> : <input type="text" name="time" id="minute">
+						<label for="time">시간 :</label> <input type="text" name="time"
+							id="hour"> : <input type="text" name="time" id="minute">
 						<label for="password">루틴 :</label>
 						<textarea name="password" id="password"></textarea>
 					</div>
 					<div>
-						<label for="time">시간 :</label>
-						<input type="text" name="time" id="hour"> : <input type="text" name="time" id="minute">
+						<label for="time">시간 :</label> <input type="text" name="time"
+							id="hour"> : <input type="text" name="time" id="minute">
 						<label for="password">루틴 :</label>
 						<textarea name="password" id="password"></textarea>
 					</div>
@@ -82,7 +84,8 @@
 		year = date.getFullYear();
 		month = date.getMonth() + 1;
 		day = date.getDate();
-		document.getElementById("current_date").innerHTML = year + "년" + month + "월" + day + "일";
+		document.getElementById("current_date").innerHTML = year + "년" + month
+				+ "월" + day + "일";
 	</script>
 </div>
 
