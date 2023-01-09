@@ -34,4 +34,15 @@ public class SFollowServiceImpl implements SFollowService {
 		return sFollowMapper.deleteFollow(snsFollowId, snsFollowerId);
 	}
 
+	@Override
+	public int followCount(String id) {
+		return sFollowMapper.followCount(id);
+	}
+
+	@Override
+	public int followerCount(String id) {
+		return sFollowMapper.followerCount(id);
+	}
+
+
 }
