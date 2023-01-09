@@ -12,6 +12,4 @@ public interface ChallengeMapper {
 	int deleteChall(ChallengeVO vo);
 	ChallengeVO getChall(ChallengeVO vo);
 	List<ChallengeVO> getChallAll(ChallengeVO vo);
-	
-	List<Map<String, Object>> getCate();
 }

@@ -10,9 +10,6 @@ public interface ChallengeService {
 	int updateChall(ChallengeVO vo);
 	int deleteChall(ChallengeVO vo);
 	
-	//도전카테고리
-	List<Map<String, Object>> getCate();
-	
 	//도전단건 조회
 	ChallengeVO getChall(ChallengeVO vo);
 	
