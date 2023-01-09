@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
+      
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,37 +11,30 @@
 </head>
 <div layout:fragment="content">
 <body>
-        <h1>회원가입 홈페이지</h1>
+        <h1>로그인 페이지</h1>
         <div id = "container">
             <fieldset>
-            <legend>회원가입</legend>
+            <legend>로그인입력</legend>
             <ul>
                 <li><label>아이디</label>
                     <input id="u_id" type="text" placeholder="여백없이 입력"></li>
                 <li><label>비밀번호</label>
                     <input id="u_pw" type="password" placeholder="연락가능한 번호"></li>
-                <li><label>이름</label>
-                    <input id="u_name" type="text" placeholder="여백없이 입력"></li>
-                <li><label>이메일</label>
-                    <input id="u_email" type="email" placeholder="이메일"></li>
-                <li><label>전화번호</label>
-                    <input id="u_tel" type="tel" placeholder="-없이 입력"></li>
-                <li><label>생년월일</label>
-                    <input id="u_birth" type="text" placeholder="날짜형식"></li>
-                <li><label>성별</label>
-                	<input type="radio" name="chk_info" value="GD01" checked="checked">남
-					<input type="radio" name="chk_info" value="GD02">여
+                
              </ul>
         </fieldset>
             <br>
         </div>
-        <button type="button" id="btnlogin">로그인</button></td>
+        <button type="button" id="btnsignin">로그인</button></td>
         <button type="button" id="btnlogout">로그아웃</button></td>
         <script>
-        $("#btnlogin").on("click", function(){
-        	  console.log($('input[name=chk_info]').val())
-        	  alert("문장이 클릭되었습니다.");
-        	});
+    		$('#btnsignin').on("click",function(){
+    			let id = $('#u_id').val();
+                let passwd = $('#u_pw').val();
+                
+                console.log(id);
+                
+    		})        
         </script>
 </body>
 </div>

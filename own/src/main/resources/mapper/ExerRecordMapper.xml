@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.ExerRecordMapper">
+	<!-- 등록 -->
+	<insert id="insertExerRecord"
+		parameterType="ExerRecordVO">
+		<selectKey keyProperty="eno" resultType="string"
+			order="BEFORE">
+			SELECT EXER_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO EXER_RECORD (USER_ID, EXEREC_DATE, EXEREC_WEIGHT,
+		EXEREC_CONDITION, EXEREC_TIME, EXEREC_METER, EXEREC_ROUTIN,
+		EXEREC_FEEDBACK, EXEREC_NO, EXERSUB_NO )
+		VALUES (#{userID}, #{exerecDate}, #{exerecWeight}, #{exerecCondition}, #{exerecTime}, 
+		#{exerecMeter}, #{exerecRoution}, #{exerecFeedback}, 'EXR_'||#{eno}, #{exersubNo})
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateExerRecord" parameterType="ExerRecordVO">
+		UPDATE EXER_RECORD
+		SET
+			EXERSUB_NO = #{exerecTime},
+			EXEREC_WEIGHT = #{exerecWeight},
+			EXEREC_CONDITION = #{exerecCondition},
+			EXEREC_TIME = #{exerecTime},
+			EXEREC_METER = #{exerecMeter},
+			EXEREC_ROUTIN = #{exerecRoution},
+			EXEREC_FEEDBACK = #{exerecFeedback}
+		WHERE EXEREC_NO = #{exerecNo}
+	</update>
+	
+	<!-- 조회 -->
+	<select id="ExerRecordList" resultType="ExerRecordVO" parameterType="string">
+		SELECT *
+		FROM EXER_RECORD
+		WHERE USER_ID = #{userID}
+	</select>
+	
+</mapper>

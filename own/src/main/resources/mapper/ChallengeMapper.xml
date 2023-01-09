@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.prjt.own.chall.mapper.ChallengeMapper">
+	<insert id="insertChall">
+		<selectKey keyProperty="challNo" resultType="string" order="BEFORE">
+			SELECT CHA_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+			INSERT INTO CHALLENGES(	CHALL_NO,
+									CHALL_CATEGORY,
+									CHALL_TAG,
+									CHALL_TITLE,
+									CHALL_DURATION,
+									CHALL_FREQ,
+									CHALL_STARTDATE,
+									MAX_MEM,
+									CHALL_INTRO,
+									CHALL_PRICE,
+									VLD_METHOD,
+									CHALL_LEADER )
+			values(
+					#{challNo},
+					#{challCategory},
+					#{challTag},
+					#{challTitle},
+					#{challDuration},
+					#{challFreq},
+					#{challStartdate},
+					#{maxMember},
+					#{challIntro},
+					#{challPrice},
+					#{vldMethod}',
+					#{challLeader}
+				)
+	</insert>
+	
+	<select id="getChallAll" resultType="co.prjt.own.chall.service.ChallengeVO">
+		SELECT * FROM CHALLENGES
+	</select>
+</mapper>

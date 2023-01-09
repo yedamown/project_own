@@ -3,7 +3,10 @@ package co.prjt.own.band.mapper;
 import java.util.List;
 import java.util.Map;
 
+import co.prjt.own.band.service.BandMemberDefaultVO;
+import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandVO;
+import co.prjt.own.common.Paging;
 
 public interface BandMapper {
 	//밴드 생성
@@ -17,4 +20,17 @@ public interface BandMapper {
 	//밴드 단건조회
 	public BandVO getBand(BandVO vo);
 	//삭제필요없을듯
+	
+	//조인 세션아이디가 들어가있는 밴드 검색
+	public List<BandVO> getMemberBandAll(BandMemberDetailVO vo);
+	
+	//가입한 밴드 중 최신글순대로 나열
+	public List<Map<String, Object>> getBandRecentAll(BandMemberDetailVO vo);
+	//가입한 밴드 중 최신글순대로 나열 페이지처리
+	public List<Map<String, Object>> getMyBandAll(BandVO vo);
+	//가입한 밴드 개수
+	public int count2(BandMemberDetailVO vo);
+	
+	//밴드세개씩 불러와서 댓글 세개씩 조회
+	public List<Map<String, Object>> threeBand(BandVO vo);
 }

@@ -8,6 +8,7 @@
 select * from employees
 </select>
 
+<!-- 회원가입 -->
 <insert id="insertUser">
 insert into own_users
 (user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_perm)
@@ -19,6 +20,17 @@ values (
 		#{userPhone},
 		#{userBirthday},
 		#{userGender},
-		'일반회원');
+		'일반회원')
 </insert>
+
+<!-- 로그인 -->
+<select id="login" resultType="int">
+select user_passwd from own_users where user_id=#{userId}
+
+<!-- 모든회원정보 -->
+</select>
+<select id="getUserList" resultType="OwnUserVO">
+select * from own_users
+</select>
+
 </mapper>

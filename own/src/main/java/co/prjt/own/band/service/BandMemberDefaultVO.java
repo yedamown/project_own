@@ -16,4 +16,8 @@ public class BandMemberDefaultVO {
 	String bandLocation;
 	String bandInterest;
 	Date bandBirth;
+	
+
+	Integer first = 1;
+	Integer last = 10;
 }
