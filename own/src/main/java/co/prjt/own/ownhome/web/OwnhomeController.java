@@ -39,9 +39,13 @@ public class OwnhomeController {
 	
 	//홈으로 이동
 	@RequestMapping(value = "/own/home", method = RequestMethod.GET)
-	public String ownHome(Model model) { // 오운홈으로 가는 페이지이동
-		return "content/own/ownhome";
-	}
+	public String ownHome(OwnUserVO vo ,HttpServletRequest request) { // 오운홈으로 가는 페이지이동
+	      HttpSession session = request.getSession();
+	      vo = (OwnUserVO) session.getAttribute("loginUser");
+	      
+	      System.out.println(vo);
+	      return "content/own/ownhome";
+	   }
 	
 	//로그인폼으로 이동
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
@@ -55,7 +59,7 @@ public class OwnhomeController {
 		OwnUserVO chk = ownMapper.login(vo.getUserId());
 		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", vo);
+		session.setAttribute("loginUser", chk);
 		return 1;
 		}
 		else
