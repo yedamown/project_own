@@ -11,7 +11,7 @@
 		INSERT INTO EXER_RECORD (USER_ID, EXEREC_DATE, EXEREC_WEIGHT,
 		EXEREC_CONDITION, EXEREC_TIME, EXEREC_METER, EXEREC_ROUTIN,
 		EXEREC_FEEDBACK, EXEREC_NO, EXERSUB_NO )
-		VALUES (#{userID}, #{exerecDate}, #{exerecWeight}, #{exerecCondition}, #{exerecTime}, 
+		VALUES (#{userID}, SYSDATE, #{exerecWeight}, #{exerecCondition}, #{exerecTime}, 
 		#{exerecMeter}, #{exerecRoution}, #{exerecFeedback}, 'EXR_'||#{eno}, #{exersubNo})
 	</insert>
 	
