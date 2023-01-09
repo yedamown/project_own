@@ -33,4 +33,11 @@ public interface BandService {
 		
 		//밴드세개씩 불러와서 댓글 세개씩 조회
 		public List<Map<String, Object>> threeBand(String threeBand);
+		
+		//추천밴드를 위한 지역셀렉트박스
+		public List<Map<String, String>> allLocation();
+		//추천밴드를 위한 관심종목셀렉트박스
+		public List<Map<String, String>> allExcersie();
+
+		
 }

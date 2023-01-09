@@ -9,25 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import co.prjt.own.band.mapper.BandMapper;
+import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandVO;
 
 @SpringBootTest
 class BandApplicationTests {
 	@Autowired
 	BandMapper bandMapper;
-	
+	@Autowired
+	BandMemberDefaultService bandMemberDefaultService;
 	@Test
 	void contextLoads() {
-		BandVO vo = new BandVO();
-		List<String> bandNos = new ArrayList<String>();
-		bandNos.add("BDU_1");
-		bandNos.add("BDU_2");
-		bandNos.add("BDU_3");
-		vo.setBandNos(bandNos);
-		List<Map<String, Object>> list = bandMapper.threeBand(vo);
-		for(int i=0; i<list.size(); i++) {
-			System.out.println(list.get(i));
-		}
+//		System.out.println(bandMapper.allExcersie());
+//		System.out.println(bandMapper.allLocation());
+		System.out.println(bandMemberDefaultService.getBandMemberDefault("hjj"));
+//		BandVO vo = new BandVO();
+//		List<String> bandNos = new ArrayList<String>();
+//		bandNos.add("BDU_1");
+//		bandNos.add("BDU_2");
+//		bandNos.add("BDU_3");
+//		vo.setBandNos(bandNos);
+//		List<Map<String, Object>> list = bandMapper.threeBand(vo);
+//		for(int i=0; i<list.size(); i++) {
+//			System.out.println(list.get(i));
+//		}
 //		vo.setBandLeaderid("hjj");
 //		vo.setBandNo("BDU_1");
 //		System.out.println(vo.toString());

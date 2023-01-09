@@ -63,6 +63,9 @@
         <!--================배너 끝=================-->
         
         <!--================ 내 가치 Area  =================-->
+        <!--================================= 유저아이디 히든  ==================================-->
+        <input type="hidden" class="hiddenUser" th:value="${user.userId}">
+
         <section class="accomodation_area section_gap">
             <div class="container">
                 <div class="section_title text-center">
@@ -88,14 +91,15 @@
                                 <img src="/band/image/room2.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
                             </div>
-                            <a href="#"><h4 class="sec_h4" th:text="${band.BAND_NAME}"></h4></a>
-                            <h5><small>멤버 [[${band.MEMCOUNT}]]</small></h5>
+                            <a href="#"><h4 class="sec_h4" th:text="${band.bandName}"></h4></a>
+                            <h5><small>멤버 [[${band.memcount}]]</small></h5>
                         </div>
                     </div>
         <!--================ 가입중인 가치 중 최신글 있는 가치 3개 끝=================-->
                 </div>
                 <div style="float: right; display: block; margin-top: 30px;">
-                    <a href="/own/band/myBand"><h4>My 가치 전부 보기>></h4></a>
+                    <a th:if="${!#lists.isEmpty(bandList)} " href="/own/band/myBand"><h4>My 가치 전부 보기>></h4></a>
+                    <h4 th:if="${#lists.isEmpty(bandList)}">지금 당장 시작하세요</h4>
                 </div>
             </div>
         </section>
@@ -113,21 +117,23 @@
                 <div class="container">
                     <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.3);">
                         <div class="col-md-3" style="visibility: hidden;">
-                            <h2>위치 추천 설정</h2>
-                        </div>
-                        <div class="col-md-3" style="visibility: hidden;">
-                            <h2>위치 추천 설정</h2>
+                            <h2>운동 종목</h2>
                         </div>
                         <div class="col-md-9" >
                             <div class="boking_table">
                                 <div class="row">
+                                	<div class="col-md-4">
+                                        <div class="input-group">
+                                            <select class="recom_exercise" th:value="*{exercise}">
+                                                <option value="">관심운동..전체</option>
+                                                <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <select class="wide">
-                                                <option value="1">대구광역시</option>
-                                                <option value="2">제주특별자치도</option>
-                                                <option value="3">서울특별시</option>
-                                                <option value="4">경기도</option>
+                                            <select class="recom_location" th:value="*{location}">
+                                                <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${loc.locCode} ==${user.bandLocation }"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -269,7 +275,32 @@
         </section>
         <!--================ 오늘의 인기글 끝 Area  =================-->
         <script>
-        	
+            //밴드추천붙이기
+            //운동추천붙이기
+            //지역설정붙이기
+            //추천더보기
+            $('.recom_location').on('change', function(){
+                console.log($('.recom_location').val());
+            })
+            $('.recom_exercise').on('change', function(){
+                console.log($('.recom_exercise').val());
+            })
+            //우선 첫화면이니까 아이디만 보내서 추천할거 받아오기..
+            //이걸 함수로 만들어서 셀렉박스변경시에도 사용되게..
+            //셀렉박스에서 값 받아오기(운동과 지역)
+            let exe = $('.recom_exercise').val();
+            let loc = $('.recom_location').val()+'-';
+            let id = $('.hiddenUser').val()+'-';
+            console.log(id+loc+exe);
+            let userId = id+loc+exe;
+            $.ajax({
+                url:'/own/band/'+userId,
+                dataType: 'json',
+                method: 'get',
+                contentType : "application/text; charset=utf-8;"
+            }).then(result => {
+                    console.log(result);
+                });
         </script>
     </body>
    </div>
