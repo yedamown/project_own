@@ -44,7 +44,7 @@
     <header class="header-area">
 <h1>안녕하세요</h1>
 <div th:if="${session.loginUser}">
-안녕하세요세션확인 <h1 th:text ="${session.loginUser}"></h1>
+안녕하세요세션확인 <span th:text="${session.loginUser}"> USER_ID </span>
 </div>
         <!-- Top Header Area -->
         <div class="top-header">
