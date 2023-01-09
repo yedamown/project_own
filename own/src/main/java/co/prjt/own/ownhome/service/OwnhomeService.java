@@ -8,5 +8,5 @@ public interface OwnhomeService {
 	//회원가입
 	public int insertUser(OwnUserVO UserVO);
 	//로그인
-	public int login(String id);
+	public OwnUserVO login(String id);
 }
