@@ -77,9 +77,13 @@ public class ChallController {
 		return "content/chall/challDatil";
 	}
 	
-	
 	//마이페이지 - 프로필
-	
+	@GetMapping("/mypage")
+	public String challMypage(Model model) {
+		//
+		return "content/chall/insertChall";
+	}
+
 	//마이페이지 - 내 예치금
 	
 	//

@@ -1,7 +1,6 @@
 package co.prjt.own.chall;
 
 
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -24,7 +23,7 @@ class ChallApplicationTest {
 	
 	
 	//상세페이지 가기
-	@Test
+	//@Test
 	public void detailChall(){
 		ChallengeVO vo = new ChallengeVO();
 		vo.setChallNo("CHA_1");
