@@ -24,7 +24,9 @@ public class BandVO {
 	String bandMembershipOption;
 	String bandLocation;
 	
-	List<String> bnos;
+	//bandNo의 집합
+	List<String> bandNos;
+	
 	Integer first = 1;
 	Integer last = 10;
 }
