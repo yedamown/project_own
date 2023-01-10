@@ -5,10 +5,30 @@
 		<selectKey keyProperty="memListNo" resultType="string" order="BEFORE">
 			SELECT CML_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-			INSERT INTO CHALL_MEM_LIST
-			VALUES( #{memListNo},
+			INSERT INTO CHALL_MEM_LIST (MEM_LIST_NO, USER_ID, CHALL_NO)
+			VALUES( 'CML_'|| #{memListNo},
 					#{userId},
-					#{challNo},
-					#{memStatus})
+					#{challNo})
 	</insert>
+	
+	<sql id="condition">
+		<where>
+			<if test="userId !=null">
+				USER_ID = #{userId}
+			</if> 
+			<if test="challNo !=null">
+				chall_no = #{challNo}
+			</if>
+			<if test="challNo !=null and memStatus !=null">
+				chall_no = #{challNo}
+				MEM_STATUS = #{memStatus}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="getMemList" resultType="co.prjt.own.chall.service.CMemberListVO">
+		SELECT * 
+		FROM CHALL_MEM_LIST
+		<include refid="condition" />
+	</select>
 </mapper>

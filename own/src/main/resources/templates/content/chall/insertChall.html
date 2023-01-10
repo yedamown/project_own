@@ -39,6 +39,10 @@ $(function(){
 						</th:block>
 				</select>
 				<li>태그<input id="challTag">
+	                   <label for="inputFile">첨부파일</label>
+                    <input type="file" name = "uploadfile" multiple="multiple"></input>
+                    <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
+	
 				<li>도전 시작일<input type="date" id="challStartdate">
 				<li>도전기간<select name="challDuration" id="challDuration">
 							<option th:each=" i: ${#numbers.sequence(1, 4)}" th:value="${i}" th:text="${i}" />
