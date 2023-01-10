@@ -5,4 +5,20 @@
 <select id="getListExersub" resultType="co.prjt.own.common.service.ExersubVO">
 select * from exer_sub
 </select>
+
+<!-- 이미지 삽입 -->
+<insert id="upload">
+<selectKey keyProperty="mediaNo" resultType="string" order="BEFORE">
+			SELECT media_seq.NEXTVAL-1 FROM DUAL
+</selectKey>
+INSERT INTO MULTIMEDIA VALUES(
+	#{mediaNo},
+	#{mediaRealFile},
+	#{mediaServerFile},
+	#{mediaFilePath},
+	#{ino} || #{identifyId},
+	#{mediaCategory},
+	'1'
+)
+</insert>
 </mapper>
