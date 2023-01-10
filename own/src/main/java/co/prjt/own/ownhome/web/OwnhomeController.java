@@ -81,7 +81,7 @@ public class OwnhomeController {
 	public String test(Model model) { // 오운홈으로 가는 페이지이동
 		return "content/own/test";
 	}
-
+	//머지되게해주세요
 	// 회원가입 폼으로 이동
 	@RequestMapping(value = "/own/SigninForm", method = RequestMethod.GET)
 	public String ownSignin(Model model) { // 오운로그인으로..
