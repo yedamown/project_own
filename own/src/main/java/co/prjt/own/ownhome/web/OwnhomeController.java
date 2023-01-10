@@ -41,13 +41,11 @@ public class OwnhomeController {
 	// 홈으로 이동
 	// 홈으로 이동
 	@RequestMapping(value = "/own/home", method = RequestMethod.GET)
-	public String ownHome(OwnUserVO vo, HttpServletRequest request) { // 오운홈으로 가는 페이지이동
-		HttpSession session = request.getSession();
-		vo = (OwnUserVO) session.getAttribute("loginUser");
-
-		System.out.println(vo);
-		return "content/own/ownhome";
-	}
+	public String ownHome(OwnUserVO vo ,HttpServletRequest request) { // 오운홈으로 가는 페이지이동
+	      HttpSession session = request.getSession();
+	      vo = (OwnUserVO) session.getAttribute("loginUser");
+	      return "content/own/ownhome";
+	   }
 
 	// 로그인폼으로 이동
 
@@ -60,22 +58,33 @@ public class OwnhomeController {
 	@PostMapping("/login")
 	@ResponseBody // ajax는 무조건
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
+	
 		OwnUserVO chk = ownMapper.login(vo.getUserId());
 
-		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
-			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", chk);
-			return 1;
-		} else
-			return 0;
+		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
+		HttpSession session = request.getSession();
+		session.setAttribute("loginUser", chk);
+		session.setAttribute("snsNickname",ownMapper.snsLogin(vo.getUserId()));
+		return 1;
+		}
+		else
+		return 0;
 	}
 
+	@GetMapping("/own/logout")
+	public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/own/home";
+    }
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) { // 오운홈으로 가는 페이지이동
 		return "content/own/test";
 	}
-
+	//머지되게해주세요
 	// 회원가입 폼으로 이동
 	@RequestMapping(value = "/own/SigninForm", method = RequestMethod.GET)
 	public String ownSignin(Model model) { // 오운로그인으로..

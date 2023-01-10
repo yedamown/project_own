@@ -39,23 +39,22 @@
 	<script>
 		$('#applyBtn').on("click", function(){
 			let userId = $('#userId').val();
-			let cNo =  $('#challNo').val();	
+			let challNo =  $('#challNo').val();	
 			let check1 = $('input:checkbox[id="check1"]').is(":checked")
 			let check2 = $('input:checkbox[id="check2"]').is(":checked")
 			console.log(check1)
-			console.log(cNo, userId);
+			console.log(challNo, userId);
 			if(check1 == true && check2 == true){
 				alert('굿 둘다 동의완')
 				$.ajax({
-					url: '',
+					url: '/own/chall/applyChall',
 					method: 'post',
-					data : JSON.stringify({ userId: userId, 
-											challNo: cNo}),
- 				contentType: "application/json"
+					data : JSON.stringify({userId: userId, 
+										   challNo: challNo}),
+ 					contentType: "application/json"
 				}).then(res => {
 					console.log(res)
 				})
-				
 			}else{
 				alert('모든 안내사항을 확인하고, 동의란에 체크 해 주세요.')
 			}
