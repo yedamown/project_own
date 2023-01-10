@@ -17,20 +17,27 @@ public class OwnhomeServiceImpl implements OwnhomeService {
 	
 	@Override
 	public int insertUser(OwnUserVO UserVO) {
-		// TODO Auto-generated method stub
 		return ownhomeMapper.insertUser(UserVO);
 	}
 
 	@Override
 	public OwnUserVO login(String id) {
-		// TODO Auto-generated method stub
 		return ownhomeMapper.login(id);
 	}
 
 	@Override
 	public List<OwnUserVO> getUserList(OwnUserVO vo) {
-		// TODO Auto-generated method stub
 		return ownhomeMapper.getUserList(vo);
+	}
+
+	@Override
+	public String snsLogin(String id) {
+		return ownhomeMapper.snsLogin(id);
+	}
+
+	@Override
+	public int updateSnsUser(String id) {
+		return ownhomeMapper.updateSnsUser(id);
 	}
 	
 }
