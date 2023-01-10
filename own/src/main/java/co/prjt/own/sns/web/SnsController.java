@@ -41,7 +41,7 @@ public class SnsController {
 	OwnhomeService ownService;
 	
 	 //통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
-	
+
 	//1. sns홈으로 이동
 	@RequestMapping(value = "/sns", method = RequestMethod.GET)
 	public String getSnsUserList(Model model) {
@@ -83,6 +83,7 @@ public class SnsController {
 	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
+
 	public String insertSnsBoard(@RequestParam MultipartFile[] uploadfile,SBoardVO vo) {
 		boardService.insertSnsBoard(vo);
 		commonService.upload(uploadfile, vo.getSnsBoardNo(), "SBN_","SNS");

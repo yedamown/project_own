@@ -163,10 +163,10 @@
             AND B.USER_ID = #{userId}
             AND B.BAND_MEMBER_STATUS = 'BA02'
             AND B.BAND_KICK_STATUS = 'BB01'
-            AND A.BAND_NO = C.BAND_NO
-            AND C.BAND_BOARD_OPTION_NO= D.BAND_BOARD_OPTION_NO
-            AND A.BAND_NO = E.BAND_NO
-            ORDER BY D.RECENTDAY DESC
+            AND A.BAND_NO = C.BAND_NO(+)
+            AND C.BAND_BOARD_OPTION_NO= D.BAND_BOARD_OPTION_NO(+)
+            AND A.BAND_NO = E.BAND_NO(+)
+            ORDER BY D.RECENTDAY DESC  NULLS LAST
 	</select>
 	<!-- 내가 가입한 모든 밴드 3개씩 페이징 -->
 	<select id="getMyBandAll" resultType="map">
@@ -326,22 +326,13 @@
 		FROM EXER_SUB
 	</select>
 	<!-- 밴드 추천 용 1)가입되어있지않은 2)로케이션이 맞는 3)흥미가 맞는(널ㅇ) 4)성별제한이 있다면 성별 5)생일제한이 있다면 생일 6)공개로-->
-	<sql id="recomCondition">
-		<where>
-			<if test="bandKeyword != null and bandKeyword !=''">
-				AND BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
-			</if>
-			<if test="bandLocation != null and bandLocation !=''">
-				AND BAND_LOCATION = #{bandLocation}
-			</if>
-		</where>
-	</sql>
+	
 	<select id="recomBand" resultType="BandVO">
 		SELECT  BAND_NO,
 				BAND_LEADERID,
 				BAND_NAME,
 		        BAND_INTRO,
-		        BAND_KEYWORD,
+		        EXERSUB_NAME "band_keyword",
 		        BAND_OPEN_OPTION,
 		        BAND_AGE_OPTION,
 		        BAND_AGE_BEFOROPTION,
@@ -349,69 +340,87 @@
 		        BAND_CATEGORY,
 		        BAND_GENDER_OPTION,
 		        BAND_MEMBERSHIP_OPTION,
-		        BAND_LOCATION,
+		        LOC_CITY "band_location",
 		        BAND_GENDER
 		 FROM ( SELECT ROWNUM RN, A.* FROM (
                     SELECT * FROM
                     <!-- 통 문장 -->
                                   (  
-                                    SELECT	*
-                                            FROM(
-                                            <!-- 1유니온 -->
-                                                SELECT *
-                                                    FROM BAND
-                                                    WHERE BAND_NO NOT IN
-                                                    <!-- HJJ가 가입되어있는 밴드목록 -->
-                                                        (SELECT BAND_NO 
-                                                            FROM BAND_MEMBER_DETAIL
-                                                            WHERE BAND_MEMBER_STATUS = 'BA02'
-                                                            AND USER_ID=#{bandLeaderid})
-                                                    <!-- 추가조건오픈 -->
-                                                    AND BAND_OPEN_OPTION = 'BC01'
-                                                    <!--성별제한없음 -->
-                                                    AND BAND_GENDER_OPTION = 'BE02'
-                                                    <!-- 나이제한없음 -->
-                                                    AND BAND_AGE_OPTION = 'BD02'
-                                                UNION
-                                               <!--  2유니온 -->
-                                                <!-- 가입되어있지 않으면서 성별제한이 있음 -->
-                                                SELECT *
-                                                    FROM BAND
-                                                    WHERE BAND_NO NOT IN
-                                                    <!-- HJJ가 가입되어있는 밴드목록 -->
-                                                        (SELECT BAND_NO 
-                                                            FROM BAND_MEMBER_DETAIL
-                                                            WHERE BAND_MEMBER_STATUS = 'BA02'
-                                                            AND USER_ID=#{bandLeaderid})
-                                                    <!-- 추가조건오픈 -->
-                                                    AND BAND_OPEN_OPTION = 'BC01'
-                                                    <!-- 나이제한없음 -->
-                                                    AND BAND_AGE_OPTION = 'BD02'
-                                                    <!-- 성별제한있음(남) -->
-                                                    AND BAND_GENDER_OPTION = 'BE01'
-                                                    AND BAND_GENDER = #{bandGender}
-                                                UNION
-                                                <!-- 3유니온 -->
-                                                <!-- 가입되어있지 않으면서 나이제한  -->
-                                                SELECT *
-                                                    FROM BAND
-                                                    WHERE BAND_NO NOT IN 
-                                                    <!-- HJJ가 가입되어있는 밴드목록 -->
-                                                        (SELECT BAND_NO 
-                                                            FROM BAND_MEMBER_DETAIL
-                                                            WHERE BAND_MEMBER_STATUS = 'BA02'
-                                                            AND USER_ID=#{bandLeaderid})
-                                                    <!-- 추가조건오픈 -->
-                                                    AND BAND_OPEN_OPTION = 'BC01'
-                                                    <!-- 나이제한있음 -->
-                                                    AND BAND_AGE_OPTION = 'BD01'
-                                                    <!-- 성별제한없음 -->
-                                                    AND BAND_GENDER_OPTION = 'BE02'
-                                                    AND #{bandAgeAfteroption} BETWEEN BAND_AGE_BEFOROPTION AND BAND_AGE_AFTEROPTION
-                                            )
+                                    SELECT  BAND_NO,
+									        BAND_LEADERID,
+									        BAND_NAME,
+									        BAND_INTRO,
+									        EXERSUB_NAME,
+									        BAND_OPEN_OPTION,
+									        BAND_AGE_OPTION,
+									        BAND_AGE_BEFOROPTION,
+									        BAND_AGE_AFTEROPTION,
+									        BAND_CATEGORY,
+									        BAND_GENDER_OPTION,
+									        BAND_MEMBERSHIP_OPTION,
+									        LOC_CITY,
+									        BAND_GENDER
+									FROM(
+									    SELECT *
+									        FROM BAND
+									        WHERE BAND_NO NOT IN
+									        <!-- HJJ가 가입되어있는 밴드목록 -->
+									            (SELECT BAND_NO 
+									                FROM BAND_MEMBER_DETAIL
+									                WHERE BAND_MEMBER_STATUS = 'BA02'
+									                AND USER_ID=#{bandLeaderid})
+									        <!-- 추가조건오픈 -->
+									        AND BAND_OPEN_OPTION = 'BC01'
+									        <!-- 성별제한없음 -->
+									        AND BAND_GENDER_OPTION = 'BE02'
+									        <!-- 나이제한없음 -->
+									        AND BAND_AGE_OPTION = 'BD02'
+									    UNION    
+									    <!-- 가입되어있지 않으면서 성별제한이 남자 -->
+									    SELECT *
+									        FROM BAND
+									        WHERE BAND_NO NOT IN
+									        <!-- hjj가 가입되어있는 밴드목록 -->
+									            (SELECT BAND_NO 
+									                FROM BAND_MEMBER_DETAIL
+									                WHERE BAND_MEMBER_STATUS = 'BA02'
+									                AND USER_ID=#{bandLeaderid})
+									        <!-- 추가조건오픈 -->
+									        AND BAND_OPEN_OPTION = 'BC01'
+									        <!-- 나이제한없음 -->
+									        AND BAND_AGE_OPTION = 'BD02'
+									        <!-- 성별제한있음(남) -->
+									        AND BAND_GENDER_OPTION = 'BE01'
+									        AND BAND_GENDER = #{bandGender}
+									    UNION    
+									    <!-- 가입되어있지 않으면서 나이제한  -->
+									    SELECT *
+									        FROM BAND
+									        WHERE BAND_NO NOT IN
+									        <!-- HJJ가 가입되어있는 밴드목록 -->
+									            (SELECT BAND_NO 
+									                FROM BAND_MEMBER_DETAIL
+									                WHERE BAND_MEMBER_STATUS = 'BA02'
+									                AND USER_ID=#{bandLeaderid})
+									        <!-- 추가조건오픈 -->
+									        AND BAND_OPEN_OPTION = 'BC01'
+									        <!-- 나이제한있음 -->
+									        AND BAND_AGE_OPTION = 'BD01'
+									        <!-- 성별제한없음 -->
+									        AND BAND_GENDER_OPTION = 'BE02'
+									        AND #{bandAgeAfteroption} BETWEEN BAND_AGE_BEFOROPTION AND BAND_AGE_AFTEROPTION
+									        ) A, EXER_SUB B, OWN_LOCATION C
+									        WHERE A.BAND_KEYWORD = B.EXERSUB_NO
+									        AND A.BAND_LOCATION=C.LOC_CODE
+											<if test="bandKeyword != null and bandKeyword !=''">
+												AND BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
+											</if>
+											<if test="bandLocation != null and bandLocation !=''">
+												AND BAND_LOCATION = #{bandLocation}
+											</if>
                                    ) 
                     <!-- 통 문장 끝 -->
-        <include refid="recomCondition" />
+        
 		<![CDATA[		
 				) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 		]]>

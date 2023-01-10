@@ -15,7 +15,7 @@ public class CMemberListServiceImpl implements CMemberListService{
 	@Autowired CMemberListMapper mapper;
 	
 	@Override
-	public CMemberListVO insertMemList(CMemberListVO vo) {
+	public int insertMemList(CMemberListVO vo) {
 		return mapper.insertMemList(vo);
 	}
 

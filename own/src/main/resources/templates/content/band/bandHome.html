@@ -149,12 +149,11 @@
                 </div>
             </div>
                 </div>
-                <div class="row mb_30">
-                    <div class="col-lg-3 col-sm-6">
+                <div class="row mb_30" id="recom">
+                    <!-- <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
                                 <img src="/band/image/room1.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
                             </div>
                             <div class="tags" >
                                 <a href="#" class="button_hover tag_btn" style="color: wheat;">축구</a>
@@ -162,51 +161,8 @@
                             </div>
                             <a href="#"><h4 class="sec_h4" style="color: white;">소소필라테스</h4></a>
                             <h5><small></small></h5>
-                        </div>
+                        </div> -->
                     </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room2.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: wheat;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: wheat;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: white;">암벽등반회</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room3.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: wheat;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: wheat;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: white;">다함께 차차차</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room4.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: wheat;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: wheat;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: white;">역도씨름대회</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
-                </div>
                 <div style="float: right; margin-top: 30px;color: white;">
                     <a href="#"><h4 style="color: white;">추천 더보기>></h4></h4></a>
                 </div>
@@ -279,12 +235,6 @@
             //운동추천붙이기
             //지역설정붙이기
             //추천더보기
-            $('.recom_location').on('change', function(){
-                console.log($('.recom_location').val());
-            })
-            $('.recom_exercise').on('change', function(){
-                console.log($('.recom_exercise').val());
-            })
             //우선 첫화면이니까 아이디만 보내서 추천할거 받아오기..
             //이걸 함수로 만들어서 셀렉박스변경시에도 사용되게..
             //셀렉박스에서 값 받아오기(운동과 지역)
@@ -293,14 +243,54 @@
             let id = $('.hiddenUser').val()+'-';
             console.log(id+loc+exe);
             let userId = id+loc+exe;
-            $.ajax({
-                url:'/own/band/'+userId,
-                dataType: 'json',
-                method: 'get',
-                contentType : "application/text; charset=utf-8;"
-            }).then(result => {
-                    console.log(result);
-                });
+            let recommFnc = function(userId){
+                $.ajax({
+                    url:'/own/band/'+userId,
+                    dataType: 'json',
+                    method: 'get',
+                    contentType : "application/text; charset=utf-8;"
+                }).then(result => {
+                        console.log(result);
+                        let div = $('#recom');
+                        //하위 요소 전부 지우기
+                        $(div).empty();
+                        result.forEach(element => {
+                            let tag = `<div class="col-lg-3 col-sm-6">
+                                <div class="accomodation_item text-center">
+                                    <div class="hotel_img">
+                                        <img src="/band/image/room1.jpg" alt="">
+                                    </div>
+                                    <div class="tags" >
+                                        <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandKeyword}</a>
+                                        <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandLocation}</a>
+                                    </div>
+                                    <a href="#"><h4 class="sec_h4" style="color: white;">${element.bandName}</h4></a>
+                                    <h5><small></small></h5>
+                                </div>
+                            </div>`
+                            $(div).append(tag);
+                        });
+                    });
+            }
+            recommFnc(userId);
+            $('.recom_location').on('change', function(){
+                console.log($('.recom_location').val());
+                let exe = $('.recom_exercise').val();
+                let loc = $('.recom_location').val()+'-';
+                let id = $('.hiddenUser').val()+'-';
+                console.log(id+loc+exe);
+                let userId = id+loc+exe;
+                recommFnc(userId);
+            })
+            $('.recom_exercise').on('change', function(){
+                console.log($('.recom_exercise').val());
+                let exe = $('.recom_exercise').val();
+                let loc = $('.recom_location').val()+'-';
+                let id = $('.hiddenUser').val()+'-';
+                console.log(id+loc+exe);
+                let userId = id+loc+exe;
+                recommFnc(userId);
+            })
         </script>
     </body>
    </div>
