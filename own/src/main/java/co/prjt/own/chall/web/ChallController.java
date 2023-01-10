@@ -123,6 +123,11 @@ public class ChallController {
 	//마이페이지 - 내 도전
 	@GetMapping("/myChall")
 	public String myChall(CMemberListVO vo, Model model, HttpServletRequest request) {
+		//세션 아이디로 도전들 검색 ->동적쿼리로 구분하기
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		String id = user.getUserId();
+		memberList.getMemList(vo);
 		/* model.addAllAttributes("myChall", ) */
 		return "content/chall/myChall";
 	}
