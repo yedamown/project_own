@@ -11,4 +11,5 @@ public class MultimediaVO {
 	String identifyId;
 	String mediaCategory;
 	String mediaTurn;
+	String ino;
 }

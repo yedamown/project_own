@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<head>
+<head xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
 <meta name="description" content="">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -125,6 +125,55 @@
 							<span class="navbarToggler"><span></span><span></span><span></span></span>
 						</div>
 
+<<<<<<< HEAD
+                            <!-- Nav Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="#">마이페이지</a>
+                                        <ul class="dropdown">
+                                            <li><a href="index.html">Home</a></li>
+                                            <li><a href="about-us.html">About Us</a></li>
+                                            <li><a href="single-post.html">Single Post</a></li>
+                                            <li><a href="contact.html">Contact</a></li>
+                                            <li><a href="coming-soon.html">Coming Soon</a></li>
+                                        </ul>
+                                    </li>
+                                     <li><a href="#">오운완</a>
+                                    <li><a href="/own/sns">SNS</a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">Catagory 1</a></li>
+                                            <li><a href="#">Catagory 1</a></li>
+                                            <li><a href="#">Catagory 1</a>
+                                                <ul class="dropdown">
+                                                    <li><a href="#">Catagory 2</a></li>
+                                                    <li><a href="#">Catagory 2</a></li>
+                                                    <li><a href="#">Catagory 2</a>
+                                                        <ul class="dropdown">
+                                                            <li><a href="#">Catagory 3</a></li>
+                                                            <li><a href="#">Catagory 3</a></li>
+                                                            <li><a href="#">Catagory 3</a></li>
+                                                            <li><a href="#">Catagory 3</a></li>
+                                                            <li><a href="#">Catagory 3</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><a href="#">Catagory 2</a></li>
+                                                    <li><a href="#">Catagory 2</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Catagory 1</a></li>
+                                            <li><a href="#">Catagory 1</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="/own/band/">밴드</a></li>
+                                    
+                                    <li><a href="contact.html">도전</a></li>
+                                    
+                                    <span th:if="${session.loginUser}"><li><a href="/own/logout">로그아웃</a></li></span>
+                                    <span th:unless="${session.loginUser}"><li><a href="/own/login">로그인</a></li></span>
+                                     <li><a href="#">회원가입</a></li>
+                                </ul>
+=======
 						<!-- Menu -->
 						<div class="classy-menu" id="originalNav">
 							<!-- close btn -->
@@ -133,6 +182,7 @@
 									<span class="top"></span><span class="bottom"></span>
 								</div>
 							</div>
+>>>>>>> branch 'master' of https://github.com/yedamown/project_own.git
 
 							<!-- Nav Start -->
 							<div class="classynav">
