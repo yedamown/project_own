@@ -20,9 +20,7 @@ import co.prjt.own.sns.service.SBoardService;
 import co.prjt.own.sns.service.SBoardVO;
 import co.prjt.own.sns.service.SFollowService;
 import co.prjt.own.sns.service.SFollowVO;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Controller
 @RequestMapping("/own")
 public class SnsController {
@@ -85,7 +83,6 @@ public class SnsController {
 	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
-	public String insertSnsBoard(Model model,SBoardVO vo) {
 	public String insertSnsBoard(@RequestParam MultipartFile[] uploadfile,SBoardVO vo) {
 		boardService.insertSnsBoard(vo);
 		commonService.upload(uploadfile, vo.getSnsBoardNo(), "SBN_","SNS");

@@ -60,6 +60,7 @@ public class OwnhomeController {
 		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", chk);
+		session.setAttribute("snsNickname", ownMapper.snsLogin(vo.getUserId()));
 		return 1;
 		}
 		else
@@ -95,7 +96,7 @@ public class OwnhomeController {
 		ownMapper.insertUser(vo);
 		return vo;
 	}
-
+ 
 	// 오운완(나의운동기록하기) 페이지 이동
 	@RequestMapping(value = "/own/ownRecordForm", method = RequestMethod.GET)
 	public String ownRecordForm() {
