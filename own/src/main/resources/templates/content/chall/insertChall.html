@@ -11,8 +11,10 @@
 <div layout:fragment="content">
 	<body>
 		<legend>도전을 등록 페이지</legend>
+		<h3 th:text="${session.loginUser.userId}"></h3>
 		<form id="insertChall">
-			<ul>
+		<input id ="challLeader" type="hidden" th:value="${session.loginUser.userId}">
+			<ul></ul>
 				<li>도전제목:<input id="challTitle">
 				<li>카테고리:<select name="challCategory" id="challCategory" >
 						<th:block th:each="exer:${exersub}">
@@ -36,11 +38,10 @@
 				<li>* 최소 도전금액은 1000원입니다. 금액 단위는 1000원입니다.
 				<li>도전소개<input type="content" id="challIntro">
 				<li>인증방법<input id="vldMethod">
-				<li>도전리더<input id="challLeader"> <br />
+<!-- 				<li>도전리더<input id="challLeader"> <br /> -->
 					<button type="button" id="addBtn">도전등록</button>
-		</form>
-		<!--  -->
 		</ul>
+		</form>
 		<script>
 			$('#addBtn').on("click", function(){
 				let challTitle = $('#challTitle').val();
