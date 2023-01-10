@@ -12,4 +12,5 @@ public interface OwnhomeMapper {
 	
 	//sns 유저 회원가입
 	public int updateSnsUser(String id);
+	
 }
