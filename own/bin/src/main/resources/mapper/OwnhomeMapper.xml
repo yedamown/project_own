@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.prjt.own.ownhome.mapper.OwnhomeMapper">
+
+<select id="getEmpList" resultType="EmpVO">
+select * from employees
+</select>
+
+<!-- 회원가입 -->
+<insert id="insertUser">
+insert into own_users
+(user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_perm)
+values (
+		#{userId},
+		#{userPasswd},
+		#{userName},
+		#{userEmail},
+		#{userPhone},
+		#{userBirthday},
+		#{userGender},
+		'일반회원')
+</insert>
+
+<!-- 로그인 비밀번호 확인-->
+<select id="login" resultType="co.prjt.own.ownhome.service.OwnUserVO">
+select * from own_users where user_id= #{userId}
+<!-- 모든회원정보 -->
+</select>
+<select id="getUserList" resultType="OwnUserVO">
+select * from own_users
+</select>
+
+</mapper>

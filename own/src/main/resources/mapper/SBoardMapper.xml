@@ -15,7 +15,7 @@
 	<!-- 게시글 입력 -->
 	<insert id="insertSnsBoard" parameterType="SBoardVO">
 		<selectKey keyProperty="snsBoardNo" resultType="string" order="BEFORE">
-			SELECT sns_board_no.NEXTVAL FROM DAUL
+			SELECT sns_board_no.NEXTVAL FROM DUAL
 		</selectKey>
 			INSERT INTO SNS_BOARD (SNS_BOARD_NO,
 								   SNS_BOARD_CONTENT,
