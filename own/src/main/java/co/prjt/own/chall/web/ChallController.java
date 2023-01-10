@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.chall.service.CAmountService;
 import co.prjt.own.chall.service.CAmountVO;
@@ -57,9 +58,10 @@ public class ChallController {
 	//도전등록 처리
 	@PostMapping("/insertChall")
 	@ResponseBody//데이터를 반환할때는 무조건 리스폰스바디 넣기
-	public String insertProc(@RequestBody ChallengeVO vo) {
+	public String insertProc(@RequestParam MultipartFile[] uploadfile, @RequestBody ChallengeVO vo) {
 		challenge.insertChall(vo);
 		String cNo = vo.getChallNo(); 
+		common.upload(uploadfile, cNo, "CHA_", "Challenge");
 		return cNo;
 	}
 	
@@ -81,14 +83,16 @@ public class ChallController {
 	}
 	
 	//도전신청처리 -> 멤버리스트에 대기로 등록
-	@PostMapping("/addMemList")
-	public String addMemList(CMemberListVO vo, Model model) {
+	@PostMapping("/applyChall")
+	@ResponseBody
+	public String addMemList(@RequestBody CMemberListVO vo, Model model) {
 		//도전 멤버 대기 리스트에 추가 + 정보 모달 후, 
 		// 다시 -> 상세페이지 + 대기중일경우 버튼 비활성화
-		memberList.insertMemList(vo);
+		int rs = memberList.insertMemList(vo);
 		System.out.println(vo);
-		model.addAttribute("applyMem", memberList.insertMemList(vo));
-		return "content/chall/detailChall";
+		String memListNo = vo.getMemListNo(); 
+		//우선 멤버대기리스트 식별번호 넘어가게해줌.
+		return memListNo;
 	}
 	
 	//마이페이지 - 프로필
@@ -121,14 +125,15 @@ public class ChallController {
 		return "content/chall/myAmount";
 	}
 	//마이페이지 - 내 도전
-	@GetMapping("/myChall")
+	@GetMapping("/myChall") //처리와 검색을 동시에
 	public String myChall(CMemberListVO vo, Model model, HttpServletRequest request) {
 		//세션 아이디로 도전들 검색 ->동적쿼리로 구분하기
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
-		memberList.getMemList(vo);
-		/* model.addAllAttributes("myChall", ) */
+		vo.setUserId(id);
+		System.out.println(memberList.getMemList(vo));
+		model.addAttribute("myChall", memberList.getMemList(vo));
 		return "content/chall/myChall";
 	}
 }
