@@ -1,5 +1,7 @@
 package co.prjt.own.ownhome.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.exercise.service.ExerRecordVO;
 import co.prjt.own.ownhome.mapper.OwnhomeMapper;
@@ -57,6 +60,7 @@ public class OwnhomeController {
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
 	
 		OwnUserVO chk = ownMapper.login(vo.getUserId());
+
 		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", chk);
@@ -75,7 +79,6 @@ public class OwnhomeController {
         }
         return "redirect:/own/home";
     }
-	
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) { // 오운홈으로 가는 페이지이동
@@ -117,8 +120,18 @@ public class OwnhomeController {
 	}
 
 	// 오운완(나의운동기록보기) 페이지 이동
-		@RequestMapping(value = "/own/ownRecordList", method = RequestMethod.GET)
-		public String ownRecordList() {
-			return "content/own/ownRecordList";
-		}
+	@RequestMapping(value = "/own/ownRecordList", method = RequestMethod.GET)
+	public String ownRecordList() {
+		return "content/own/ownRecordList";
+	}
+
+	// 회원 운동 기록 가져오기
+	@GetMapping("/own/getExerRecord")
+	@ResponseBody // 데이터를 반환할때는 무조건 리스폰스바디 넣기
+	public List<ExerRecordVO> getExerRecord(String userId, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		String id = user.getUserId();
+		return exerMapper.ExerRecordList(id);
+	}
 }
