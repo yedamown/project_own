@@ -16,4 +16,5 @@ public class ExerRecordVO {
 	String exerecFeedback;
 	String exerecNo;
 	String exersubNo;
+	String eno;
 }

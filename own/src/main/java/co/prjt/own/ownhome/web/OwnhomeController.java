@@ -23,6 +23,7 @@ public class OwnhomeController {
 
 	@Autowired
 	OwnhomeMapper ownMapper;
+	@Autowired
 	ExerRecordMapper exerMapper;
 
 	// 수정테스트
@@ -33,18 +34,18 @@ public class OwnhomeController {
 	// 수정테스트
 	// 통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 
-	//홈으로 이동
+	// 홈으로 이동
 	// 홈으로 이동
 	@RequestMapping(value = "/own/home", method = RequestMethod.GET)
-	public String ownHome(OwnUserVO vo ,HttpServletRequest request) { // 오운홈으로 가는 페이지이동
-	      HttpSession session = request.getSession();
-	      vo = (OwnUserVO) session.getAttribute("loginUser");
+	public String ownHome(OwnUserVO vo, HttpServletRequest request) { // 오운홈으로 가는 페이지이동
+		HttpSession session = request.getSession();
+		vo = (OwnUserVO) session.getAttribute("loginUser");
 
-	      System.out.println(vo);
-	      return "content/own/ownhome";
-	   }
-	
-	//로그인폼으로 이동
+		System.out.println(vo);
+		return "content/own/ownhome";
+	}
+
+	// 로그인폼으로 이동
 
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
 	public String ownLogin(Model model) { // 오운로그인으로..
@@ -57,13 +58,13 @@ public class OwnhomeController {
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
 		OwnUserVO chk = ownMapper.login(vo.getUserId());
 
-		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
-		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", chk);
-		return 1;
-		}
-		else
-		return 0;
+		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
+			HttpSession session = request.getSession();
+			session.setAttribute("loginUser", chk);
+			return 1;
+		} else
+			return 0;
+	}
 
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -86,22 +87,28 @@ public class OwnhomeController {
 		return vo;
 	}
 
-	// 오운완(나의운동기록) 페이지 이동
+	// 오운완(나의운동기록하기) 페이지 이동
 	@RequestMapping(value = "/own/ownRecordForm", method = RequestMethod.GET)
-	public String ownRecordForm(Model model) {
+	public String ownRecordForm() {
 		return "content/own/ownRecordForm";
 	}
 
 	// 오운완(나의운동기록) 등록
 	@PostMapping("/own/exerciseRecord")
-	@ResponseBody 
+	@ResponseBody
 	public ExerRecordVO exerciseRecord(ExerRecordVO vo, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
 		vo.setUserId(id);
+		System.out.println(vo);
 		exerMapper.insertExerRecord(vo);
 		return vo;
 	}
 
+	// 오운완(나의운동기록보기) 페이지 이동
+		@RequestMapping(value = "/own/ownRecordList", method = RequestMethod.GET)
+		public String ownRecordList() {
+			return "content/own/ownRecordList";
+		}
 }
