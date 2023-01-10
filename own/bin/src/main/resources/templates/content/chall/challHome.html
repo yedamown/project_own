@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	>
+<head>
+<meta charset="UTF-8">
+<title>오운_도전</title>
+
+ <meta charset="utf-8" />
+    <title>KidKinder - Kindergarten Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Free HTML Templates" name="keywords" />
+    <meta content="Free HTML Templates" name="description" />
+
+    <!-- Favicon -->
+    <link href="/chall/img/favicon.ico" rel="icon" />
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap"
+      rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet" />
+
+    <!-- Flaticon Font -->
+    <link href="/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+
+    <!-- Libraries Stylesheet -->
+    <link href="/chall/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/chall/css/style.css" rel="stylesheet" />
+    
+<div layout:fragment="content">
+	<body>
+	<a  href="/own/chall/insertFormChall">도전 등록으로 이동</a>
+		<h3>오운 홈</h3>
+		<table border="solid 1">
+			<thead>
+				<tr>
+					<th>도전카테고리</th>
+					<th>제목</th>
+					<th>도전기간</th>
+					<th>도전시작</th>
+					<th>도전횟수</th>
+					<th>도전금액</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cha: ${challenges}">
+					<td th:text="${cha.challCategory}" ></td>
+					<td th:text="${cha.challTitle}" />
+					<td th:text="${cha.challDuration}"></td>
+					<td th:text="${cha.challStartdate}"></td>
+					<td th:text="${cha.challFreq}"></td>
+					<td th:text="${cha.challPrice}"></td>
+					<input type="hidden" th:value="${cha.challNo}" />
+				</tr>
+			</tbody>
+		</table>
+		 
+	<script>
+	</script>
+			
+	</body>
+</div>
+</html>

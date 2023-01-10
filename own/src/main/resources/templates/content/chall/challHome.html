@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	>
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>오운_도전</title>
-<a  href="/own/chall/insertFormChall">도전 등록으로 이동</a>
+
  <meta charset="utf-8" />
     <title>KidKinder - Kindergarten Website Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -36,6 +35,8 @@
     
 <div layout:fragment="content">
 	<body>
+	<h3 th:text="${session.loginUser.userId}"></h3>
+	<a  href="/own/chall/insertFormChall">도전 등록으로 이동</a>
 		<h3>오운 홈</h3>
 		<table border="solid 1">
 			<thead>
@@ -50,162 +51,19 @@
 			</thead>
 			<tbody>
 				<tr th:each="cha: ${challenges}">
-					<td th:text="${cha.challCategory}"></td>
-					<td th:text="${cha.challTitle}"></td>
+					<td th:text="${cha.challCategory}" ></td>
+					<td th:text="${cha.challTitle}" />
 					<td th:text="${cha.challDuration}"></td>
 					<td th:text="${cha.challStartdate}"></td>
 					<td th:text="${cha.challFreq}"></td>
 					<td th:text="${cha.challPrice}"></td>
+					<input type="hidden" th:value="${cha.challNo}" />
 				</tr>
 			</tbody>
 		</table>
 		 
-    <!-- Class Start -->
-    <div class="container-fluid pt-5">
-      <div class="container">
-        <div class="text-center pb-2">
-          <p class="section-title px-5">
-       <!--      <SPAN CLASS="PX-2">POPULAR CHALLENGE</SPAN> -->
-          </p>
-          <h1 class="mb-4">POPULAR CHALLENGE</h1>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 mb-5">
-            <div class="card border-0 bg-light shadow-sm pb-2">
-              <img class="card-img-top mb-2" src="img/class-1.jpg" alt="" />
-              <div class="card-body text-center">
-                <h4 class="card-title">Drawing Class</h4>
-                <p class="card-text">
-                  Justo ea diam stet diam ipsum no sit, ipsum vero et et diam
-                  ipsum duo et no et, ipsum ipsum erat duo amet clita duo
-                </p>
-              </div>
-              <div class="card-footer bg-transparent py-4 px-5">
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Age of Kids</strong>
-                  </div>
-                  <div class="col-6 py-1">3 - 6 Years</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Total Seats</strong>
-                  </div>
-                  <div class="col-6 py-1">40 Seats</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Class Time</strong>
-                  </div>
-                  <div class="col-6 py-1">08:00 - 10:00</div>
-                </div>
-                <div class="row">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Tution Fee</strong>
-                  </div>
-                  <div class="col-6 py-1">$290 / Month</div>
-                </div>
-              </div>
-              <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-5">
-            <div class="card border-0 bg-light shadow-sm pb-2">
-              <img class="card-img-top mb-2" src="img/class-2.jpg" alt="" />
-              <div class="card-body text-center">
-                <h4 class="card-title">Language Learning</h4>
-                <p class="card-text">
-                  Justo ea diam stet diam ipsum no sit, ipsum vero et et diam
-                  ipsum duo et no et, ipsum ipsum erat duo amet clita duo
-                </p>
-              </div>
-              <div class="card-footer bg-transparent py-4 px-5">
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Age of Kids</strong>
-                  </div>
-                  <div class="col-6 py-1">3 - 6 Years</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Total Seats</strong>
-                  </div>
-                  <div class="col-6 py-1">40 Seats</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Class Time</strong>
-                  </div>
-                  <div class="col-6 py-1">08:00 - 10:00</div>
-                </div>
-                <div class="row">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Tution Fee</strong>
-                  </div>
-                  <div class="col-6 py-1">$290 / Month</div>
-                </div>
-              </div>
-              <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-5">
-            <div class="card border-0 bg-light shadow-sm pb-2">
-              <img class="card-img-top mb-2" src="img/class-3.jpg" alt="" />
-              <div class="card-body text-center">
-                <h4 class="card-title">Basic Science</h4>
-                <p class="card-text">
-                  Justo ea diam stet diam ipsum no sit, ipsum vero et et diam
-                  ipsum duo et no et, ipsum ipsum erat duo amet clita duo
-                </p>
-              </div>
-              <div class="card-footer bg-transparent py-4 px-5">
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Age of Kids</strong>
-                  </div>
-                  <div class="col-6 py-1">3 - 6 Years</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Total Seats</strong>
-                  </div>
-                  <div class="col-6 py-1">40 Seats</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Class Time</strong>
-                  </div>
-                  <div class="col-6 py-1">08:00 - 10:00</div>
-                </div>
-                <div class="row">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Tution Fee</strong>
-                  </div>
-                  <div class="col-6 py-1">$290 / Month</div>
-                </div>
-              </div>
-              <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Class End -->
-		
-		
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="/chall/lib/easing/easing.min.js"></script>
-    <script src="/chall/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="/chall/lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="/chall/lib/lightbox/js/lightbox.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="/chall/mail/jqBootstrapValidation.min.js"></script>
-    <script src="/chall/mail/contact.js"></script>
-    
-    <!-- Template Javascript -->
-    <script src="/chall/js/main.js"></script>	
+	<script>
+	</script>
 			
 	</body>
 </div>

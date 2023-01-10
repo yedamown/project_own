@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>도전_신청 페이지</title>
+</head>
+<div layout:fragment="content">
+	<body>
+	<li>도전제목: <span th:text="${detailChall.challTitle}"></span>
+	<li>도전카테고리: <span th:text="${detailChall.challCategory}"></span>
+	<input id ="challNo" type="hidden" th:value="${detailChall.challNo}" />
+    <input id ="userId" type="hidden" th:value="${session.loginUser.userId}">
+	<h3>도전 신청 페이지</h3>
+	<!-- 상세보기 설명 살짝 -->
+	<ul>
+		<li>나의 도전다짐:</li>
+		<li><textarea placeholder="나의 도전 다짐을 적어주세요." id="myIntro"></textarea></li>
+		<li>나의 보유 예치금</li>
+		<li>상금 및 환급 규정: </li>
+		<li> <textarea readonly="readonly">100% 달성: 100% 환급 + 상금 / 85% 달성: 100% 환급 / 그 이하 달성 %에 따라 예치금 환급
+			존나구구절절한 환급규정.어쩌고저쩌고~~~~ </textarea>
+			<br /></li>
+		<li><label><input type="checkbox" id="check1" name="agree" value="agree">동의 하시면 체크를 눌러주세요.</label>
+		<li>환불 규칙: </li>
+		<li><textarea readonly="readonly"> 3일전 환불 100% 시작 후 환불불가능</textarea></li>
+		<li><label><input type="checkbox" id="check2"  name="agree" value="agree">동의 하시면 체크를 눌러주세요.</label>
+	</ul>
+		<button type="button" id="applyBtn">도전 신청하기</button>
+	<script>
+		$('#applyBtn').on("click", function(){
+			let userId = $('#userId').val();
+			let cNo =  $('#challNo').val();	
+			let check1 = $('input:checkbox[id="check1"]').is(":checked")
+			let check2 = $('input:checkbox[id="check2"]').is(":checked")
+			console.log(check1)
+			console.log(cNo, userId);
+			if(check1 == true && check2 == true){
+				alert('굿 둘다 동의완')
+				$.ajax({
+					url: '',
+					method: 'post',
+					data : JSON.stringify({ userId: userId, 
+											challNo: cNo}),
+ 				contentType: "application/json"
+				}).then(res => {
+					console.log(res)
+				})
+				
+			}else{
+				alert('모든 안내사항을 확인하고, 동의란에 체크 해 주세요.')
+			}
+		})
+	</script>
+</body>
+</html>

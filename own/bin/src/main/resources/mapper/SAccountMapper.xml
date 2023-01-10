@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.prjt.own.sns.mapper.SAccountMapper">
+	
+	<!-- SNS 회원 목록 전체 조회 -->
+	<select id="getSnsUserList" resultType="SAccountVO">
+	select * from sns_account
+	</select>
+	
+	<!-- SNS 회원 가입 -->
+	<insert id="insertSnsUser">
+		<selectKey keyProperty="snsAccountNo" resultType="string" order="BEFORE">
+			SELECT sns_account_no.NEXTVAL FROM DUAL
+		</selectKey>
+			INSERT INTO SNS_ACCOUNT (SNS_NICKNAME,
+									SNS_PROFILE,
+									SNS_BOARD_NO,
+									SNS_WEBSITE,
+									SNS_ACCOUNT_NO)
+			VALUES( #{snsNickname},
+					#{snsProfile},
+					#{snsBoardNo},
+					#{snsWebsite},
+					#{snsAccountNo})									
+	</insert>
+	
+	
+
+</mapper>

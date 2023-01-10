@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Exercise Record Form</title>
+<style>
+#badImg {
+	content: url(common_img/bad.png);
+	height: 70px;
+	width: 70px;
+}
+
+#sadImg {
+	content: url(common_img/sad.png);
+	height: 70px;
+	width: 70px;
+}
+
+#sosoImg {
+	content: url(common_img/soso.png);
+	height: 70px;
+	width: 70px;
+}
+
+#smileImg {
+	content: url(common_img/smile.png);
+	height: 70px;
+	width: 70px;
+}
+
+#happyImg {
+	content: url(common_img/happy.png);
+	height: 70px;
+	width: 70px;
+}
+
+[type=radio] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+[type=radio], .moodImg {
+	cursor: pointer;
+}
+
+.slider {
+	-webkit-appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+	width: 10%; /* 슬라이더 길이 */
+	height: 15px; /* 슬라이더 두께 */
+	border-radius: 5px; /* 슬라이더 모서리를 약간 둥글게 */
+	background: #ccc; /* 슬라이더 색상 */
+	outline: none; /* 슬라이더 테두리 없이 */
+}
+
+/* 슬라이더 핸들(클릭해서 드래그하는 부분) 커스텀 
+(Chrome, Opera, Safari, Edge 브라우저를 위해서는 -webkit-을,
+Firefox 브라우저를 위해서는 -moz- 를 사용하세요 */
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+	appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+	width: 25px; /* 슬라이더 핸들 길이 */
+	height: 25px; /* 슬라이더 핸들 높이 */
+	border-radius: 50%; /* 핸들 모양을 원모양으로 만들기 위함 */
+	background: #00f; /* 슬라이더 핸들 색상 */
+	cursor: pointer; /* 슬라이더 핸들에 마우스를 갖다대면 포인터로 변경 */
+}
+
+.slider::-moz-range-thumb {
+	width: 25px; /* 슬라이더 핸들 길이 */
+	height: 25px; /* 슬라이더 핸들 높이 */
+	border-radius: 50%; /* 핸들 모양을 원모양으로 만들기 위함 */
+	background: #00f; /* 슬라이더 핸들 색상 */
+	cursor: pointer; /* 슬라이더 핸들에 마우스를 갖다대면 포인터로 변경 */
+}
+
+td {
+	cursor: pointer;
+}
+
+
+</style>
+</head>
+<div layout:fragment="content">
+	<body>
+		<h1>운동 기록</h1>
+		<div id="current_date"></div>
+		<div id="user_name">홍길동 회원님의 운동 기록하기</div>
+		<div id="recordForm">
+			<form name="exerciseRecordForm">
+				<div class="slidecontainer">
+					<label for="exerecWeight">체중 </label> <input type="range" min="30"
+						max="120" value="1" class="slider" name="exerecWeight" id="myRange">
+					<p>
+						<span id="value"></span> Kg
+					</p>
+				</div>
+				<div class="moodcontainer">
+					<input type="radio" name="exerecCondition" value="1"> 
+						<label for="exerecCondition" id="badImg" onclick="checkedFnc(this)"></label> 
+					<input type="radio" name="exerecCondition" value="2"> 
+						<label for="exerecCondition" id="sadImg" onclick="checkedFnc(this)"></label> 
+					<input type="radio" name="exerecCondition" value="3"> 
+						<label for="exerecCondition" id="sosoImg" onclick="checkedFnc(this)"></label>
+					<input type="radio" name="exerecCondition" value="4"> 
+						<label for="exerecCondition" id="smileImg" onclick="checkedFnc(this)"></label> 
+					<input type="radio" name="exerecCondition" value="5"> 
+						<label for="exerecCondition" id="happyImg" onclick="checkedFnc(this)"></label>
+				</div>
+				<div>
+						<input type="text" id="exerInput" onkeyup="myFunction()"
+							placeholder="운동명 검색" title="Type in a name">
+					<div class="exerciseSearch" style="width:100%; height:200px; overflow:auto"> 
+						<table id="exerTable">
+						</table>
+					</div>
+					<div id="recordDiv" style="display: none;">
+						<input name="exersubNo" hidden>
+						<label for="exerecTime">시간 :</label> 
+							<input type="text" name="hour" id="hour"> : <input type="text" name="minute" id="minute">
+							<input name="exerecTime" hidden>
+						<div id="meterDiv" style="display: none;">
+							<label for="exerecMeter">거리 :</label> 
+							<input type="number" name="exerecMeter" id="meter">Km
+						</div>	
+						<label for="exerecRoution">루틴 :</label>
+							<textarea name="exerecRoution" id="routin"></textarea>
+						<label for="exerecFeedback">피드백 :</label>
+							<textarea name="exerecFeedback" id="feedback"></textarea>
+					</div>
+				</div>
+				<button type="button" id="insertBtn">기록하기</button>
+			</form>
+		</div>
+	</body>
+
+	<script>
+		// 오늘 날짜 띄우기
+		date = new Date();
+		year = date.getFullYear();
+		month = date.getMonth() + 1;
+		day = date.getDate();
+		document.getElementById("current_date").innerHTML = year + "년" + month
+				+ "월" + day + "일";
+
+		// 체중 슬라이더 설정
+		var slider = document.getElementById("myRange");
+		var output = document.getElementById("value");
+		output.innerHTML = slider.value;
+
+		slider.oninput = function() {
+			output.innerHTML = this.value;
+		}
+
+		// 운동시간 분으로 계산
+		
+		
+		// 컨디션 라디오 박스 
+		function checkedFnc(img){
+			img.previousElementSibling.checked = true; 
+			if(document.querySelector('[name="exerecCondition"]:checked')){
+				img.style.outline = '5px solid indigo';
+			} else {
+				img.style.outline = '';
+			}
+			
+		}
+		
+		//운동 이름 가져오기
+		  $.ajax({
+				url : '/common/exersub',
+				method : 'get',
+				//dataType : 'object' ,//응답결과랑 타입이 같아야함
+				contentType : "application/json" //json으로 보낼때 타입이 이렇다..
+			}).then(res=>{
+				for(sub of res){
+					$("#exerTable").append(makeTr(sub));
+				}
+			})
+	        
+			
+			function makeTr(sub){
+	        
+			let tr = `<tr><td data-sub="${sub.exersubNo}" onClick="showForm(this)">${sub.exersubName}</td></tr>`
+
+			return tr;
+		}
+		
+		// 운동 검색
+			function myFunction() {
+				var input, filter, table, tr, td, i, txtValue;
+				input = document.getElementById("exerInput");
+				filter = input.value.toUpperCase();
+				table = document.getElementById("exerTable");
+				tr = table.getElementsByTagName("tr");
+				for (i = 0; i < tr.length; i++) {
+					td = tr[i].getElementsByTagName("td")[0];
+					if (td) {
+						txtValue = td.textContent || td.innerText;
+						if (txtValue.toUpperCase().indexOf(filter) > -1) {
+							tr[i].style.display = "";
+						} else {
+							tr[i].style.display = "none";
+						}
+					}
+				}
+			}
+		
+		// 운동 클릭시 폼 생성
+		function showForm(td){
+			let name = td.getAttribute("data-sub");
+			if (name == "EXS_1" || name == "EXS_5" || name == "EXS_11" || name == "EXS_12" || name == "EXS_14" || name == "EXS_18" || name == "EXS_29") {
+				document.getElementById("recordDiv").style.display="block";
+				document.getElementById("meterDiv").style.display="block";
+				$('[name="exersubNo"]').attr('value', name);
+			} else  {
+				document.getElementById("recordDiv").style.display="block"
+				document.getElementById("meterDiv").style.display="none";
+				$('[name="exersubNo"]').attr('value', name);
+			}
+		}
+		
+		// 기록 등록
+		$('#insertBtn').on("click",function(){
+			let record = $('.exerciseRecordForm').serialize();
+			let time = $('[name="exerecTime"]').attr('value', Number($('#hour').val())*60 + Number($('#minute').val()));
+			
+			$.ajax({
+	               url: '/own/exerciseRecord',
+	               method: 'post',
+	               contentType: 'application/x-www-form-urlencoded',
+	               data: $('form[name="exerciseRecordForm"]').serialize(),
+	               success: function (result) {
+	                  console.log(result);
+	               },
+	               error: function (error) {
+	                  console.log(error);
+	               }
+	            })
+			
+		})
+	</script>
+</div>
+
+</html>
