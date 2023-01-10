@@ -51,32 +51,6 @@ public class CommonController {
 		return commonService.getListExersub();
 	}
 	
-	//이거 서비스에 넣기
-	@PostMapping("/upload")
-	public String upload(@RequestParam MultipartFile[] uploadfile, String IndenfityId, String category) throws IllegalStateException, IOException{
-		
-		List<FileDto> list = new ArrayList<>();
-		for(MultipartFile file : uploadfile) {
-			if(!file.isEmpty()) {
-				FileDto dto = new FileDto(UUID.randomUUID().toString(),
-											file.getOriginalFilename(),
-											file.getContentType());
-				list.add(dto);
-				File newFileName = new File(dto.getUuid()+"_"+dto.getFileName());
-				file.transferTo(newFileName);
-			}	
-			}
-		
-			
-		for(int i=0; i<list.size(); i++) {
-	         MultimediaVO vo= new MultimediaVO();
-	         vo.setMediaRealFile(list.get(i).getFileName());
-	         vo.setMediaServerFile(list.get(i).getUuid()+"_"+list.get(i).getFileName());
-	         vo.setMediaFilePath(filePath); //test용, 게시글 번호
-	         // commonService.인서트
-		}
-		return "content/own/result";
-	}
 	
 	@GetMapping("/download")
 	public ResponseEntity<Resource> download(@ModelAttribute FileDto dto) throws IOException{

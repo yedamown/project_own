@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import co.prjt.own.common.service.CommonService;
 import co.prjt.own.sns.service.SAccountService;
 import co.prjt.own.sns.service.SBoardService;
 import co.prjt.own.sns.service.SBoardVO;
@@ -29,6 +30,9 @@ public class SnsController {
 	@Autowired
 	SFollowService followService;
 	
+	@Autowired
+	CommonService commonService;
+	
 	 //통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 	
 	//1. sns홈으로 이동
@@ -42,7 +46,7 @@ public class SnsController {
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
 	public String getSnsUser(Model model, SFollowVO vo) {
 		model.addAttribute("snsFeed", boardService.getSnsBoardList(null));
-		model.addAttribute("snsFollower", followService.followerCount(vo.getSnsFollowId()));
+		//model.addAttribute("snsFollower", followService.followerCount(vo.getSnsFollowId()));
 		return "content/sns/snsFeed"; 
 	}
 	
@@ -52,7 +56,7 @@ public class SnsController {
 		return "content/sns/snsFeed2"; 
 	}
 	//3. 파일 업로드
-
+	
 	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")

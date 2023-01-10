@@ -46,10 +46,6 @@ public class OwnhomeController {
 	
 	//로그인폼으로 이동
 
-	      
-	      System.out.println(vo);
-	      return "content/own/ownhome";
-	   }
 
 
 
@@ -70,13 +66,7 @@ public class OwnhomeController {
 		return 1;
 		}
 		else
-		return 0
-		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
-			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", chk);
-			return 1;
-		} else
-			return 0;
+		return 0;
 	}
 
 	// 테스트페이지
