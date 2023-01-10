@@ -178,11 +178,22 @@
             <div class="testimonial_box">
                 <div class="testimonial_author">
 
+<<<<<<< HEAD
+                    <img src="assets/img/user.png" alt="author"> &nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <img src="/sns/img/user.png" alt="author">&nbsp;&nbsp;&nbsp;&nbsp;
+
+=======
                    
                     <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
 					
+>>>>>>> branch 'master' of https://github.com/yedamown/project_own.git
                     <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
+<<<<<<< HEAD
+                    <h5>게시글 갯수 / 팔로우 수 /</h5>
+=======
                     <h5>게시글 갯수 / 팔로우 수 /</h5> <h5 id="popup_open_btn2"> 팔로워 수 <span th:text="${snsFollow}"></span> </h5>
+>>>>>>> branch 'master' of https://github.com/yedamown/project_own.git
                     <p>소개글을 입력하세요 .... <span>company</span></p>
                 </div>
 
@@ -207,13 +218,13 @@
             <!-- ===================모달==================== -->
             <div id="my_modal">
                 글작성 폼 띄우기
-                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm">
+                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm" enctype="multipart/form-data">
                     <label for="inputContent">내용</label>
                     <textarea type="text" name="snsBoardContent" id="inputContent"></textarea>
                     <label for="inputAccNo">계정번호</label>
                     <input name="snsAccountNo"></input>
-                   <!--  <label for="inputFile">첨부파일</label>
-                    <input name="file" type="file" id="customFile"/> -->
+                    <label for="inputFile">첨부파일</label>
+                    <input type="file" name = "uploadfile" multiple="multiple"></input>
                     <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
                     <input type="submit" role="button" value="글쓰기"/>
                 </form>
@@ -464,6 +475,7 @@
 
 </script>
 
+<!-- 글작성 모달 -->
 <script>
     function modal(id) {
         var zIndex = 9999;
@@ -519,8 +531,10 @@
     });
 </script>
 
+
+<!-- 팔로워 모달 -->
 <script>
-    function modal(id) {
+    function modal2(id) {
         var zIndex = 9999;
         var modal = document.getElementById(id);
 

@@ -2,6 +2,8 @@ package co.prjt.own.common.mapper;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.common.service.MultimediaVO;
 
@@ -10,4 +12,6 @@ public interface CommonMapper {
 	public List<ExersubVO> getListExersub();
 	//이미지넣기
 	public List<MultimediaVO> fileUpload();
+	public int upload(MultimediaVO vo);
+
 }
