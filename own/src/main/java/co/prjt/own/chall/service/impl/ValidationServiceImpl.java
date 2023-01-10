@@ -3,11 +3,13 @@ package co.prjt.own.chall.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import co.prjt.own.chall.mapper.ValidationMapper;
 import co.prjt.own.chall.service.ValidationService;
 import co.prjt.own.chall.service.ValidationVO;
 
+@Component
 public class ValidationServiceImpl implements ValidationService{
 
 	@Autowired ValidationMapper mapper;

@@ -13,6 +13,12 @@
 	<li>도전제목: <span th:text="${detailChall.challTitle}"></span>
 	<li>도전카테고리: <span th:text="${detailChall.challCategory}"></span>
 	<input id ="challNo" type="hidden" th:value="${detailChall.challNo}" />
+
+		<div th:if="${session.loginUser}">
+	안녕하세요 세션확인 
+	<span th:text="${session.loginUser}"> ${session.loginUser} </span>
+	<h1 th:text="${session.loginUser.userId}"></h1>
+</div>
     <input id ="userId" type="hidden" th:value="${session.loginUser.userId}">
 	<h3>도전 신청 페이지</h3>
 	<!-- 상세보기 설명 살짝 -->

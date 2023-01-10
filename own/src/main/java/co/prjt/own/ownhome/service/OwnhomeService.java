@@ -9,4 +9,9 @@ public interface OwnhomeService {
 	public int insertUser(OwnUserVO UserVO);
 	//로그인
 	public OwnUserVO login(String id);
+	
+	public String snsLogin(String id);
+	
+	//sns 유저 회원가입
+	public int updateSnsUser(String id);
 }

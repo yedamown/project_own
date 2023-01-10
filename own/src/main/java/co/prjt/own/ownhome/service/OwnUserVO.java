@@ -20,4 +20,5 @@ public class OwnUserVO {
 	public String userStatus;
 	public String userHobby;
 	public String snsAccountNo;
+	public String snsNickname;
 }

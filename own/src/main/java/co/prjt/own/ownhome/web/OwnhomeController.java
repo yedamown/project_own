@@ -58,14 +58,14 @@ public class OwnhomeController {
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
 		OwnUserVO chk = ownMapper.login(vo.getUserId());
 
-		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
+  if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", chk);
 			return 1;
 		} else
 			return 0;
 	}
-
+		
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) { // 오운홈으로 가는 페이지이동
