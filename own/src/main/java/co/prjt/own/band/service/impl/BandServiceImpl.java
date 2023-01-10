@@ -96,4 +96,14 @@ public class BandServiceImpl implements BandService{
 		
 		return bandMapper.threeBand(band);
 	}
+
+	@Override
+	public List<Map<String, String>> allLocation() {
+		return bandMapper.allLocation();
+	}
+
+	@Override
+	public List<Map<String, String>> allExcersie() {
+		return bandMapper.allExcersie();
+	}
 }

@@ -18,7 +18,10 @@ public interface SFollowMapper {
 	//삭제
 	int deleteFollow(String snsFollowId, String snsFollowerId);
 	
+	//팔로우 카운트
+	int followCount(String id);
 	
-	
+	//팔로워 카운트
+	int followerCount(String id);
 	
 }

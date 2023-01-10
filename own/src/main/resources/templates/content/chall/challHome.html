@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	>
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>오운_도전</title>
@@ -36,6 +35,7 @@
     
 <div layout:fragment="content">
 	<body>
+	<h3 th:text="${session.loginUser.userId}"></h3>
 	<a  href="/own/chall/insertFormChall">도전 등록으로 이동</a>
 		<h3>오운 홈</h3>
 		<table border="solid 1">
