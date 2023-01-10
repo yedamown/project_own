@@ -125,12 +125,10 @@ public class OwnhomeController {
 	}
 
 	// 회원 운동 기록 가져오기
-	@GetMapping("/own/getExerRecord")
-	@ResponseBody // 데이터를 반환할때는 무조건 리스폰스바디 넣기
-	public List<ExerRecordVO> getExerRecord(String userId, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		String id = user.getUserId();
+	@PostMapping("/own/getExerRecord")
+	@ResponseBody 
+	public List<ExerRecordVO> getExerRecord(@RequestBody ExerRecordVO vo) {
+		String id = vo.getUserId();
 		return exerMapper.ExerRecordList(id);
 	}
 }
