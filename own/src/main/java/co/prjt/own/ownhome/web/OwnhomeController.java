@@ -44,6 +44,8 @@ public class OwnhomeController {
 	      return "content/own/ownhome";
 	   }
 	
+	//로그인폼으로 이동
+
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
 	public String ownLogin(Model model) { // 오운로그인으로..
 		return "content/own/ownlogin";
@@ -62,7 +64,6 @@ public class OwnhomeController {
 		}
 		else
 		return 0;
-		}
 
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
