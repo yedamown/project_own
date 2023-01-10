@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class ExerRecordVO {
-	String userID;
+	String userId;
 	Date exerecDate;
 	int exerecWeight;
 	String exerecCondition;
