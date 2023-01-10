@@ -65,7 +65,7 @@ public class OwnhomeController {
 		}
 		else
 		return 0;
-	    }
+    }
 
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)

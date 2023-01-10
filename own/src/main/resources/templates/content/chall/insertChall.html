@@ -10,10 +10,27 @@
 </head>
 <div layout:fragment="content">
 	<body>
+<script th:inline="javascript">
+$(function(){
+	//근데이거 좀따가 생각해서 홈페이지로 이동해야할듯
+	/*<![CDATA[*/
+	let sessionId = /*[[${session.loginUser}]]*/
+	console.log(sessionId);
+	if(sessionId == null){
+		alert('아이디없음')
+		return location.href = '/own/chall/home';
+	}
+    /*]]>*/
+})
+</script>
 		<legend>도전을 등록 페이지</legend>
-		<h3 th:text="${session.loginUser.userId}"></h3>
-		<form id="insertChall">
+		
+		<div th:if="${session.loginUser}">
+			오운_도전 홈
+			<h1 th:text="${session.loginUser.userId}"></h1>
 		<input id ="challLeader" type="hidden" th:value="${session.loginUser.userId}">
+		</div>
+		<form id="insertChall">
 			<ul></ul>
 				<li>도전제목:<input id="challTitle">
 				<li>카테고리:<select name="challCategory" id="challCategory" >
