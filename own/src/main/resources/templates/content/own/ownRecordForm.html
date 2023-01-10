@@ -91,7 +91,7 @@ td {
 	<body>
 		<h1>운동 기록</h1>
 		<div id="current_date"></div>
-		<div id="user_name">홍길동 회원님의 운동 기록하기</div>
+		<h2 th:text="${session.loginUser.userName}"></h2><h4>회원님의 운동 기록하기</h4>
 		<div id="recordForm">
 			<form name="exerciseRecordForm">
 				<div class="slidecontainer">
@@ -123,11 +123,12 @@ td {
 					<div id="recordDiv" style="display: none;">
 						<input name="exersubNo" hidden>
 						<label for="exerecTime">시간 :</label> 
-							<input type="text" name="hour" id="hour"> : <input type="text" name="minute" id="minute">
+							<input type="number" name="hour" id="hour"> : <input type="number" name="minute" id="minute">
 							<input name="exerecTime" hidden>
 						<div id="meterDiv" style="display: none;">
 							<label for="exerecMeter">거리 :</label> 
-							<input type="number" name="exerecMeter" id="meter">Km
+							<input type="number" name="meter" id="meter">Km
+							<input name="exerecMeter" hidden>
 						</div>	
 						<label for="exerecRoution">루틴 :</label>
 							<textarea name="exerecRoution" id="routin"></textarea>
@@ -228,22 +229,20 @@ td {
 		
 		// 기록 등록
 		$('#insertBtn').on("click",function(){
-			let record = $('.exerciseRecordForm').serialize();
 			let time = $('[name="exerecTime"]').attr('value', Number($('#hour').val())*60 + Number($('#minute').val()));
-			
+			let meter = $('[name="exerecMeter"]').attr('value', Number($('#meter').val())*1000);
 			$.ajax({
 	               url: '/own/exerciseRecord',
 	               method: 'post',
 	               contentType: 'application/x-www-form-urlencoded',
 	               data: $('form[name="exerciseRecordForm"]').serialize(),
 	               success: function (result) {
-	                  console.log(result);
+	                  console.log("result: "+ result);
 	               },
 	               error: function (error) {
-	                  console.log(error);
+	                  console.log("error: "+error);
 	               }
 	            })
-			
 		})
 	</script>
 </div>
