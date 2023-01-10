@@ -46,12 +46,6 @@ public class OwnhomeController {
 	
 	//로그인폼으로 이동
 
-	      
-	      System.out.println(vo);
-	      return "content/own/ownhome";
-	   }
-
-
 
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
 	public String ownLogin(Model model) { // 오운로그인으로..
@@ -70,13 +64,7 @@ public class OwnhomeController {
 		return 1;
 		}
 		else
-		return 0
-		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
-			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", chk);
-			return 1;
-		} else
-			return 0;
+		return 0;
 	}
 
 	// 테스트페이지
