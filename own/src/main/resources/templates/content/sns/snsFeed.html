@@ -180,7 +180,7 @@
 
                    
                     <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
-					
+               
                     <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
                     <h5>게시글 갯수 / 팔로우 수 /</h5> <h5 id="popup_open_btn2"> 팔로워 수 <span th:text="${snsFollow}"></span> </h5>
                     <p>소개글을 입력하세요 .... <span>company</span></p>
@@ -205,6 +205,7 @@
             <br>
 
             <!-- ===================모달==================== -->
+         
             <div id="my_modal">
                 글작성 폼 띄우기
                 <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm">
@@ -219,44 +220,44 @@
                 </form>
             <a class="modal_close_btn">닫기</a>
             </div>
-
+ 
             <div id="my_modal2">
                 나를 팔로우 한 사람
                 <table border="1px">
-					<thead>
-						<tr>
-							<th>팔로우 목록</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="snsf : ${snsFList}">
-							<td th:text="${snsf.snsFollowerId}"></td>
-					</tbody>
-				</table>
+               <thead>
+                  <tr>
+                     <th>팔로우 목록</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr th:each="snsf : ${snsFList}">
+                     <td th:text="${snsf.snsFollowerId}"></td>
+               </tbody>
+            </table>
             <a class="modal_close_btn2">닫기</a>
             </div>
-    		<!-- ================== 모달 end ====================== -->
-			
-				<table border="1px">
-					<thead>
-						<tr>
-							<th>게시글 번호</th>
-							<th>글 내용</th>
-							<th>작성일자</th>
-							<th>작성자</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="sns :  ${snsFeed}">
-							<td th:text="${sns.snsBoardNo}"></td>
-							<td th:text="${sns.snsBoardContent}"></td>
-							<td th:text="${sns.snsBoardDate}"></td>
-							<td th:text="${sns.snsNickname}"></td>
-						</tr>
-					</tbody>
-				</table>
-				<br>
-				
+          <!-- ================== 모달 end ====================== -->
+         
+            <table border="1px">
+               <thead>
+                  <tr>
+                     <th>게시글 번호</th>
+                     <th>글 내용</th>
+                     <th>작성일자</th>
+                     <th>작성자</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr th:each="sns :  ${snsFeed}">
+                     <td th:text="${sns.snsBoardNo}"></td>
+                     <td th:text="${sns.snsBoardContent}"></td>
+                     <td th:text="${sns.snsBoardDate}"></td>
+                     <td th:text="${sns.snsNickname}"></td>
+                  </tr>
+               </tbody>
+            </table>
+            <br>
+            
             <div class="portfolio gutters grid img-container">
                 <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
                 <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
@@ -464,6 +465,7 @@
 
 </script>
 
+<!-- 글작성 모달 -->
 <script>
     function modal(id) {
         var zIndex = 9999;
@@ -517,9 +519,8 @@
         // 모달창 띄우기
         modal('my_modal');
     });
-</script>
-
-<script>
+    
+// 팔로워 모달
     function modal(id) {
         var zIndex = 9999;
         var modal = document.getElementById(id);

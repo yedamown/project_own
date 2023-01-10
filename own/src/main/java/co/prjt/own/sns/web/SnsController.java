@@ -37,11 +37,13 @@ public class SnsController {
 	SFollowService followService;
 	
 	@Autowired
+	CommonService commonService;
+	
+	@Autowired
 	OwnhomeService ownService;
 	
 	 //통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
-	@Autowired
-	CommonService commonService;
+
 	//1. sns홈으로 이동
 	@RequestMapping(value = "/sns", method = RequestMethod.GET)
 	public String getSnsUserList(Model model) {
@@ -61,12 +63,16 @@ public class SnsController {
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
 	public String getSnsUser(Model model, SFollowVO vo) {
 		model.addAttribute("snsFeed", boardService.getSnsBoardList(null));
+
+		//model.addAttribute("snsFollower", followService.followerCount(vo.getSnsFollowId()));
+
 		model.addAttribute("snsFollow", followService.followerCount(null));
 		model.addAttribute("snsFList", followService.getFollowList(vo));
 		List<SFollowVO> b = followService.getFollowList(null);
 		int a = followService.followerCount(null);
 		System.out.println(a);
 		System.out.println(b);
+
 		return "content/sns/snsFeed"; 
 	}
 	
@@ -76,7 +82,6 @@ public class SnsController {
 		return "content/sns/snsFeed2"; 
 	}
 	//3. 파일 업로드
-
 	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
@@ -87,4 +92,5 @@ public class SnsController {
 	   }
 
 	
+
 }

@@ -340,17 +340,17 @@
 		        BAND_CATEGORY,
 		        BAND_GENDER_OPTION,
 		        BAND_MEMBERSHIP_OPTION,
-		        loc_city "band_location",
+		        LOC_CITY "band_location",
 		        BAND_GENDER
 		 FROM ( SELECT ROWNUM RN, A.* FROM (
                     SELECT * FROM
                     <!-- 통 문장 -->
                                   (  
-                                    select  BAND_NO,
+                                    SELECT  BAND_NO,
 									        BAND_LEADERID,
 									        BAND_NAME,
 									        BAND_INTRO,
-									        Exersub_name,
+									        EXERSUB_NAME,
 									        BAND_OPEN_OPTION,
 									        BAND_AGE_OPTION,
 									        BAND_AGE_BEFOROPTION,
@@ -358,60 +358,60 @@
 									        BAND_CATEGORY,
 									        BAND_GENDER_OPTION,
 									        BAND_MEMBERSHIP_OPTION,
-									        loc_city,
+									        LOC_CITY,
 									        BAND_GENDER
-									from(
-									    select *
-									        from band
-									        where band_no not in
-									        <!-- hjj가 가입되어있는 밴드목록 -->
-									            (select band_no 
-									                from band_member_detail
-									                where band_member_status = 'BA02'
-									                and user_id=#{bandLeaderid})
+									FROM(
+									    SELECT *
+									        FROM BAND
+									        WHERE BAND_NO NOT IN
+									        <!-- HJJ가 가입되어있는 밴드목록 -->
+									            (SELECT BAND_NO 
+									                FROM BAND_MEMBER_DETAIL
+									                WHERE BAND_MEMBER_STATUS = 'BA02'
+									                AND USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
-									        and band_open_option = 'BC01'
+									        AND BAND_OPEN_OPTION = 'BC01'
 									        <!-- 성별제한없음 -->
-									        and band_gender_option = 'BE02'
+									        AND BAND_GENDER_OPTION = 'BE02'
 									        <!-- 나이제한없음 -->
-									        and band_age_option = 'BD02'
-									    union    
+									        AND BAND_AGE_OPTION = 'BD02'
+									    UNION    
 									    <!-- 가입되어있지 않으면서 성별제한이 남자 -->
-									    select *
-									        from band
-									        where band_no not in
+									    SELECT *
+									        FROM BAND
+									        WHERE BAND_NO NOT IN
 									        <!-- hjj가 가입되어있는 밴드목록 -->
-									            (select band_no 
-									                from band_member_detail
-									                where band_member_status = 'BA02'
-									                and user_id=#{bandLeaderid})
+									            (SELECT BAND_NO 
+									                FROM BAND_MEMBER_DETAIL
+									                WHERE BAND_MEMBER_STATUS = 'BA02'
+									                AND USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
-									        and band_open_option = 'BC01'
+									        AND BAND_OPEN_OPTION = 'BC01'
 									        <!-- 나이제한없음 -->
-									        and band_age_option = 'BD02'
+									        AND BAND_AGE_OPTION = 'BD02'
 									        <!-- 성별제한있음(남) -->
-									        and band_gender_option = 'BE01'
-									        and band_gender = #{bandGender}
-									    union    
+									        AND BAND_GENDER_OPTION = 'BE01'
+									        AND BAND_GENDER = #{bandGender}
+									    UNION    
 									    <!-- 가입되어있지 않으면서 나이제한  -->
-									    select *
-									        from band
-									        where band_no not in
-									        <!-- hjj가 가입되어있는 밴드목록 -->
-									            (select band_no 
-									                from band_member_detail
-									                where band_member_status = 'BA02'
-									                and user_id=#{bandLeaderid})
+									    SELECT *
+									        FROM BAND
+									        WHERE BAND_NO NOT IN
+									        <!-- HJJ가 가입되어있는 밴드목록 -->
+									            (SELECT BAND_NO 
+									                FROM BAND_MEMBER_DETAIL
+									                WHERE BAND_MEMBER_STATUS = 'BA02'
+									                AND USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
-									        and band_open_option = 'BC01'
+									        AND BAND_OPEN_OPTION = 'BC01'
 									        <!-- 나이제한있음 -->
-									        and band_age_option = 'BD01'
+									        AND BAND_AGE_OPTION = 'BD01'
 									        <!-- 성별제한없음 -->
-									        and band_gender_option = 'BE02'
-									        and #{bandAgeAfteroption} between band_age_beforoption and band_age_afteroption
-									        ) A, EXER_SUB B, own_location C
-									        where A.band_keyword = B.Exersub_no
-									        and A.BAND_LOCATION=C.loc_code
+									        AND BAND_GENDER_OPTION = 'BE02'
+									        AND #{bandAgeAfteroption} BETWEEN BAND_AGE_BEFOROPTION AND BAND_AGE_AFTEROPTION
+									        ) A, EXER_SUB B, OWN_LOCATION C
+									        WHERE A.BAND_KEYWORD = B.EXERSUB_NO
+									        AND A.BAND_LOCATION=C.LOC_CODE
 											<if test="bandKeyword != null and bandKeyword !=''">
 												AND BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
 											</if>

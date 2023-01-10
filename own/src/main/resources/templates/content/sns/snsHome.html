@@ -309,14 +309,14 @@
                     <div class="col-sm-12">
                         <h2>SNS 간편가입이 필요한 페이지입니다. 회원 가입을 하시겠습니까?</h2>
                         <form action="/own/snsAccount" method="post">
-                        	<label>ID정보</label>
-                        	<div th:text="${session.loginUser.userId}"></div>
-                        	<br>
-                        	<label>Email정보</label>
-                        	<div th:text="${session.loginUser.userEmail}"></div>
-                        	<label>SNS 닉네임</label>
-                        	<input type="text" name="snsNickname" placeholder="SNS에서 사용할 닉네임 입력">
-                        	<input type="submit" role="button" value="SNS 가입"/>
+                           <label>ID정보</label>
+                           <div th:text="${session.loginUser.userId}"></div>
+                           <br>
+                           <label>Email정보</label>
+                           <div th:text="${session.loginUser.userEmail}"></div>
+                           <label>SNS 닉네임</label>
+                           <input type="text" name="snsNickname" placeholder="SNS에서 사용할 닉네임 입력">
+                           <input type="submit" role="button" value="SNS 가입"/>
                         </form>
                     </div>
                 </div>
@@ -333,9 +333,9 @@
 <!-- ========== 모달 end ===========  -->
 
 <script>
-	jQuery(document).ready(function () {
+   jQuery(document).ready(function () {
          $("#modal").show();
-	});
+   });
     function closeModal() {
         $('.searchModal').hide();
     };
