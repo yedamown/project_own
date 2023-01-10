@@ -40,15 +40,26 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public String upload(MultipartFile[] uploadfile, String IndenfityId, String category){
+	public String upload(MultipartFile[] uploadfile, String IndenfityId,  String INO ,String category){
 		List<FileDto> list = new ArrayList<>();
+		
 		for(MultipartFile file : uploadfile) {
+			MultimediaVO vo = new MultimediaVO();
+			
+			vo.setMediaFilePath(filePath);
+			
+			
+			vo.setIdentifyId(IndenfityId);
+			vo.setMediaCategory(category);
+			
 			if(!file.isEmpty()) {
 				FileDto dto = new FileDto(UUID.randomUUID().toString(),
 											file.getOriginalFilename(),
 											file.getContentType());
 				list.add(dto);
 				File newFileName = new File(dto.getUuid()+"_"+dto.getFileName());
+			vo.setMediaRealFile(dto.getFileName());	
+			vo.setMediaServerFile(dto.getUuid()+"_"+dto.getFileName());
 				try {
 					file.transferTo(newFileName);
 				} catch (IllegalStateException e) {
@@ -58,18 +69,15 @@ public class CommonServiceImpl implements CommonService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}	
+			}
+			vo.setIno(INO);
+			commonMapper.upload(vo);
 			}
 		
 			
-		for(int i=0; i<list.size(); i++) {
-	         MultimediaVO vo= new MultimediaVO();
-	         vo.setMediaRealFile(list.get(i).getFileName());
-	         vo.setMediaServerFile(list.get(i).getUuid()+"_"+list.get(i).getFileName());
-	         vo.setMediaFilePath(filePath); //test용, 게시글 번호
-	         // commonService.인서트
-		}
+		
 		return null;
 	}
+
 
 }

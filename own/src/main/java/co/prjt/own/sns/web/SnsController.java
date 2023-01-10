@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.sns.service.SAccountService;
@@ -57,16 +59,11 @@ public class SnsController {
 	}
 	//3. 파일 업로드
 	
-	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
-	public String insertSnsBoard(SBoardVO vo) {
+	public String insertSnsBoard(@RequestParam MultipartFile[] uploadfile,SBoardVO vo) {
 		boardService.insertSnsBoard(vo);
-		//mvo.set(vo.pk값)
-		//mvo.구분값('string값')
-		//첨부파일 처리
+		commonService.upload(uploadfile, vo.getSnsBoardNo(), "SBN_","SNS");
 		return "content/sns/snsFeed";
 	}
-
-	
 }

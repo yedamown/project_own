@@ -41,6 +41,7 @@ public class OwnhomeController {
 	      vo = (OwnUserVO) session.getAttribute("loginUser");
 
 	      System.out.println(vo);
+	      System.out.println("===로그인아이디==="+vo.getUserId());
 	      return "content/own/ownhome";
 	   }
 	

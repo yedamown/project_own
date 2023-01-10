@@ -10,9 +10,7 @@ public interface CommonService {
 	public List<ExersubVO> getListExersub();
 	//이미지넣기
 	public List<MultimediaVO> fileUpload();
-	
-	public String upload(MultipartFile[] uploadfile, String IndenfityId, String category);
-	
-	
-	
+	// 멀티미디어 테이블에 넣기
+	public String upload(MultipartFile[] uploadfile,String IndenfityId, String INO, String category);
+
 }

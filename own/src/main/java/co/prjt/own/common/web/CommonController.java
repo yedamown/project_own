@@ -51,6 +51,8 @@ public class CommonController {
 		return commonService.getListExersub();
 	}
 	
+	//이거 서비스에 넣기
+	
 	
 	@GetMapping("/download")
 	public ResponseEntity<Resource> download(@ModelAttribute FileDto dto) throws IOException{
