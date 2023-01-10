@@ -10,7 +10,7 @@
 		</select>
 		
 		<select id="followerCount" resultType="int">
-			SELECT COUNT(*) FROM SNS_FOLLOW WHERE SNS_FOLLOW_ID = 'kmhmh1011'
+			SELECT COUNT(*) as count FROM SNS_FOLLOW WHERE SNS_FOLLOW_ID = 'kmhmh1011'
 		</select>
 		
 	</mapper>

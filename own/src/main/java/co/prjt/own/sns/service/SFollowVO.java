@@ -7,4 +7,5 @@ public class SFollowVO {
 	String followNo;
 	String snsFollowId;
 	String snsFollowerId;
+	int count;
 }

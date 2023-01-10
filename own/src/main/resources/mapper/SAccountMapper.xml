@@ -13,14 +13,8 @@
 			SELECT sns_account_no.NEXTVAL FROM DUAL
 		</selectKey>
 			INSERT INTO SNS_ACCOUNT (SNS_NICKNAME,
-									SNS_PROFILE,
-									SNS_BOARD_NO,
-									SNS_WEBSITE,
 									SNS_ACCOUNT_NO)
 			VALUES( #{snsNickname},
-					#{snsProfile},
-					#{snsBoardNo},
-					#{snsWebsite},
 					#{snsAccountNo})									
 	</insert>
 	

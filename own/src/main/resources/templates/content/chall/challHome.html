@@ -1,42 +1,28 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
 <head>
 <meta charset="UTF-8">
 <title>오운_도전</title>
-
- <meta charset="utf-8" />
-    <title>KidKinder - Kindergarten Website Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="Free HTML Templates" name="keywords" />
-    <meta content="Free HTML Templates" name="description" />
-
-    <!-- Favicon -->
-    <link href="/chall/img/favicon.ico" rel="icon" />
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap"
-      rel="stylesheet" />
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-      rel="stylesheet" />
-
-    <!-- Flaticon Font -->
-    <link href="/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
-
-    <!-- Libraries Stylesheet -->
-    <link href="/chall/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
-    <link href="/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/chall/css/style.css" rel="stylesheet" />
-    
+</head>
 <div layout:fragment="content">
-	<body>
-	<h3 th:text="${session.loginUser.userId}"></h3>
-	<a  href="/own/chall/insertFormChall">도전 등록으로 이동</a>
+<body>
+
+<div th:if="${session.loginUser}">
+		도전 홈 _ 로그인 중
+			<h1 th:text="${session.loginUser.userId}"></h1>
+			<input id ="userId" type="hidden" th:value="${session.loginUser.userId}">
+		</div>
+	<div th:if="${session.loginUser} == null">
+		로그인 안한 상태
+	</div>
+		
+
+		<button type="button" id="addChallBtn">도전등록으로 이동</button>
+		<a href="/own/chall/mypage">마이페이지</a>
+		<a href="/own/chall/insertFormChall"></a>
 		<h3>오운 홈</h3>
 		<table border="solid 1">
 			<thead>
@@ -50,21 +36,33 @@
 				</tr>
 			</thead>
 			<tbody>
+			
 				<tr th:each="cha: ${challenges}">
-					<td th:text="${cha.challCategory}" ></td>
+					<td th:text="${cha.challCategory}"></td>
 					<td th:text="${cha.challTitle}" />
 					<td th:text="${cha.challDuration}"></td>
-					<td th:text="${cha.challStartdate}"></td>
+					<td th:text="${#dates.format(cha.challStartdate, 'MM월 dd일')}"></td>
 					<td th:text="${cha.challFreq}"></td>
 					<td th:text="${cha.challPrice}"></td>
 					<input type="hidden" th:value="${cha.challNo}" />
 				</tr>
 			</tbody>
 		</table>
-		 
-	<script>
-	</script>
-			
+
+		<script >
+			$('#addChallBtn').on('click', function() {
+				console.log('도전 등록이동버튼');
+				let userId = $('#userId').val();
+				console.log(userId);
+				if(userId !=null){
+					location.href = '/own/chall/insertFormChall';
+				} else {
+					alert('로그인을 먼저 해 주세요.')
+					location.href = '/own/login';
+				}
+			});
+		</script>
+
 	</body>
 </div>
 </html>

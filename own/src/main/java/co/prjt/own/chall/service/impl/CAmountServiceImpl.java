@@ -3,28 +3,30 @@ package co.prjt.own.chall.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import co.prjt.own.chall.mapper.CAmountMapper;
 import co.prjt.own.chall.service.CAmountService;
 import co.prjt.own.chall.service.CAmountVO;
 
+@Component
 public class CAmountServiceImpl implements CAmountService{
 
 	@Autowired CAmountMapper mapper;
 	
 	@Override
 	public int insertAmount(CAmountVO vo) {
-		return 0;
+		return mapper.insertAmount(vo);
 	}
 
 	@Override
 	public List<CAmountVO> getAmountListAll() {
-		return null;
+		return mapper.getAmountListAll();
 	}
 
 	@Override
-	public List<CAmountVO> getAmountList() {
-		return null;
+	public List<CAmountVO> getAmountList(CAmountVO vo) {
+		return mapper.getAmountList(vo);
 	}
 
 }
