@@ -42,7 +42,8 @@ public class SnsController {
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
 	public String getSnsUser(Model model, SFollowVO vo) {
 		model.addAttribute("snsFeed", boardService.getSnsBoardList(null));
-		model.addAttribute("snsFollower", followService.followerCount(vo.getSnsFollowId()));
+		model.addAttribute("snsFollow", followService.getFollowList(vo));
+		System.out.println(vo);
 		return "content/sns/snsFeed"; 
 	}
 	
