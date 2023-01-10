@@ -3,6 +3,14 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.prjt.own.band.mapper.BandMapper">
+	<sql id="recom">
+		<if test="bandKeyword != null and bandKeyword !=''">
+			AND BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
+		</if>
+		<if test="bandLocation != null and bandLocation !=''">
+			AND BAND_LOCATION = #{bandLocation}
+		</if>
+	</sql>
 	<!-- 인서트업데이트 추후 수정...이상함 -->
 	<insert id="insertBand">
 		<selectKey keyProperty="bandNo" resultType="string" order="BEFORE">
@@ -412,12 +420,7 @@
 									        ) A, EXER_SUB B, OWN_LOCATION C
 									        WHERE A.BAND_KEYWORD = B.EXERSUB_NO
 									        AND A.BAND_LOCATION=C.LOC_CODE
-											<if test="bandKeyword != null and bandKeyword !=''">
-												AND BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
-											</if>
-											<if test="bandLocation != null and bandLocation !=''">
-												AND BAND_LOCATION = #{bandLocation}
-											</if>
+									        <include refid="recom"></include>
                                    ) 
                     <!-- 통 문장 끝 -->
         

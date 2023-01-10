@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.band.mapper.BandMemberDefaultMapper">
+	
+	<sql id="condition">
+		<if test="bandNickname != null and bandNickname !=''">
+			BAND_NICKNAME = #{bandNickname}
+		</if>
+		<if test="bandLocation != null and bandLocation !=''">
+			BAND_LOCATION = #{bandLocation}
+		</if>
+		<if test="bandInterest != null and bandInterest !=''">
+			BAND_INTEREST = #{bandInterest}
+		</if>
+	</sql>
+	
 	<select id="getBandMemberDefault" resultType="BandMemberDefaultVO">
 		SELECT 	USER_ID,
 				BAND_NICKNAME,
@@ -11,4 +24,11 @@
 		 FROM BAND_MEMBER_DEFAULT
 		  WHERE USER_ID = #{userId}
 	</select>
+	
+	<update id="updateMemberDf">
+		update BAND_MEMBER_DEFAULT
+		    set
+		        <include refid="condition" />
+		    where user_id = #{userId}
+	</update>
 </mapper>

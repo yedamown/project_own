@@ -41,5 +41,5 @@ public interface BandService {
 		public List<Map<String, String>> allExcersie();
 		
 		//추천밴드
-		public List<BandVO> recomBand(String userId);
+		public List<BandVO> recomBand(String userId, Paging paging);
 }

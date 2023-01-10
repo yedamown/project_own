@@ -111,7 +111,7 @@ public class BandServiceImpl implements BandService{
 	}
 
 	@Override
-	public List<BandVO> recomBand(String userId) {
+	public List<BandVO> recomBand(String userId, Paging paging) {
 		//매퍼를 돌릴 vo
 		BandVO band = new BandVO();
 		
@@ -124,13 +124,16 @@ public class BandServiceImpl implements BandService{
 		System.out.println("######"+member.toString());
 		band.setBandLocation(member.getBandLocation());
 		band.setBandKeyword(member.getBandInterest());
-
 		//설정값으로 바꿔줌
-		if(arr.length==2) {//지역설정값있으면...
-			band.setBandLocation(arr[1]);
+		if(arr[1].equals("sample")) {//지역설정값all이 들어옴
+			band.setBandLocation(null);
+		} else {
+			band.setBandLocation(arr[1]);//지역설정값
 		}
-		if(arr.length==3) {//운동설정값있으면...
-			band.setBandKeyword(arr[2]);
+		if(arr[2].equals("sample")) {//운동설정값있으면...
+			band.setBandKeyword(null);
+		} else {
+			band.setBandKeyword(arr[2]);//운동설정값
 		}
 		//밴드멤버의 설정을 밴드에 담아서 추천을가져옴..
 		//가입된 밴드는 제외하기위에 유저명담음
@@ -143,16 +146,31 @@ public class BandServiceImpl implements BandService{
 		System.out.println(band.toString());
 		//설정으로 추천리스트받아옴
 		List<BandVO> list = bandMapper.recomBand(band);
-		
+//폐기
 		//만약 추천이 3개이하면... where지역조건 설정없는 select문으로...추천 받아오기
-		if(list.size()<4) {
-			band.setBandLocation("");
-			List<BandVO> list2 = bandMapper.recomBand(band);
-			for(int i=0; i<4; i++) {
-				list.add(list2.get(i));
-			}
-		//추천용 4개 받아오기
-			
+//		if(list.size()<4) {
+//			band.setBandLocation("");
+//			List<BandVO> list2 = bandMapper.recomBand(band);
+//			while(list.size()<4) {
+//				int i = 0;
+//				list.add(list2.get(i));
+//				i++;
+//			}
+//		}
+		//4개만 남기고 자르기
+		//만약 3보다 길이가 길면 페이지 이동용으로 쓰임
+		if(list.size()>5&&arr.length==3) {
+			list = list.subList(0, 4);
+		} else {
+			//페이지 8개로 임시..
+			paging.setPageUnit(8);
+			//임시 5..
+			paging.setPageSize(5);
+			//전체 페이지계산
+			paging.setTotalRecord(list.size());
+			band.setFirst(paging.getFirst());
+			band.setLast(paging.getLast());
+			//
 		}
 		return list;
 	}

@@ -16,5 +16,10 @@ public class BandMemberDefaultServiceImpl implements BandMemberDefaultService{
 	public BandMemberDefaultVO getBandMemberDefault(String userId) {
 		return bandMemberDefaultMapper.getBandMemberDefault(userId);
 	}
+
+	@Override
+	public int updateMemberDf(BandMemberDefaultVO vo) {
+		return bandMemberDefaultMapper.updateMemberDf(vo);
+	}
 	
 }
