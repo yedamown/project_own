@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+      
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<div layout:fragment="content">
+<body>
+<h1>안녕하세요</h1>
+	<tr th:each="product : ${memList}">
+		<td th:text="${product.userId}"></td>
+		<td th:text="${product.userGender}"></td>
+	</tr>
+</body>
+</div>
+</html>
