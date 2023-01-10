@@ -76,7 +76,7 @@ public class SnsController {
 	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
-	public String insertSnsBoard(SBoardVO vo) {
+	public String insertSnsBoard(Model model,SBoardVO vo) {
 		boardService.insertSnsBoard(vo);
 		//mvo.set(vo.pk값)
 		//mvo.구분값('string값')
