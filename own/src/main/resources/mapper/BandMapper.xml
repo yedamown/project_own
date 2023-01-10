@@ -115,20 +115,20 @@
 	</select>
 	<select id="getBandRecentAll" resultType="map">
 		SELECT
-            A.BAND_NO,
-            A.BAND_NAME,
-            A.BAND_INTRO,
-            A.BAND_KEYWORD,
-            A.BAND_OPEN_OPTION,
-            A.BAND_LOC_OPTION,
-            A.BAND_AGE_BEFOROPTION,
-            A.BAND_AGE_AFTEROPTION,
-            A.BAND_CATEGORY,
-            A.BAND_GENDER_OPTION,
-            A.BAND_MEMBERSHIP_OPTION,
-            A.BAND_LOCATION,
-            D.RECENTDAY,
-            E.MEMCOUNT
+            A.BAND_NO "bandNo",
+            A.BAND_NAME "bandName",
+            A.BAND_INTRO "bandIntro",
+            A.BAND_KEYWORD "bandKeyword",
+            A.BAND_OPEN_OPTION "bandOpenOption",
+            A.BAND_LOC_OPTION "bandLocOption",
+            A.BAND_AGE_BEFOROPTION "bandAgeBeforoption",
+            A.BAND_AGE_AFTEROPTION "bandAgeAfteroption",
+            A.BAND_CATEGORY "bandCategory",
+            A.BAND_GENDER_OPTION "bandGenderOption",
+            A.BAND_MEMBERSHIP_OPTION "bandMembershipOption",
+            A.BAND_LOCATION "bandLocation",
+            D.RECENTDAY "recentday",
+            E.MEMCOUNT "memcount"
         FROM BAND A, BAND_MEMBER_DETAIL B, BAND_BOARD_OPTION C, 
                 (SELECT 
                         MAX(BAND_BOARD_DATE) "RECENTDAY",
@@ -291,5 +291,18 @@
                                     GROUP BY BAND_BOARD_DETAIL_NO) B
     WHERE A.BAND_BOARD_DETAIL_NO=B.BAND_BOARD_DETAIL_NO(+)
     ORDER BY BAND_BOARD_DATE DESC
+	</select>
+	
+	<select id="allLocation" resultType="map">
+		SELECT
+			LOC_CODE "locCode",
+			LOC_CITY "locCity"
+		FROM OWN_LOCATION
+	</select>
+	<select id="allExcersie" resultType="map">
+		SELECT
+			EXERSUB_NO "exersubNo",
+			EXERSUB_NAME "exersubName"
+		FROM EXER_SUB
 	</select>
 </mapper>
