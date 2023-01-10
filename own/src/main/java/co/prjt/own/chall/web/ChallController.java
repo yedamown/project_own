@@ -62,7 +62,7 @@ public class ChallController {
 	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, Model model){
 		vo.setChallNo("CHA_" + no);
 		model.addAttribute("detailChall", challenge.getChall(vo)); 
-		return "content/chall/challDetail";
+		return "content/chall/detailChall";
 	}
 	
 	//도전 신청페이지로 이동
@@ -82,7 +82,7 @@ public class ChallController {
 		memberList.insertMemList(vo);
 		System.out.println(vo);
 		model.addAttribute("applyMem", memberList.insertMemList(vo));
-		return "content/chall/challDatil";
+		return "content/chall/detailChall";
 	}
 	
 	//마이페이지 - 프로필
