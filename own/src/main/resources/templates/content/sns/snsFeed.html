@@ -178,22 +178,11 @@
             <div class="testimonial_box">
                 <div class="testimonial_author">
 
-<<<<<<< HEAD
-                    <img src="assets/img/user.png" alt="author"> &nbsp;&nbsp;&nbsp;&nbsp;
-
-                    <img src="/sns/img/user.png" alt="author">&nbsp;&nbsp;&nbsp;&nbsp;
-
-=======
                    
                     <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
-					
->>>>>>> branch 'master' of https://github.com/yedamown/project_own.git
+               
                     <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
-<<<<<<< HEAD
-                    <h5>게시글 갯수 / 팔로우 수 /</h5>
-=======
                     <h5>게시글 갯수 / 팔로우 수 /</h5> <h5 id="popup_open_btn2"> 팔로워 수 <span th:text="${snsFollow}"></span> </h5>
->>>>>>> branch 'master' of https://github.com/yedamown/project_own.git
                     <p>소개글을 입력하세요 .... <span>company</span></p>
                 </div>
 
@@ -216,58 +205,59 @@
             <br>
 
             <!-- ===================모달==================== -->
+         
             <div id="my_modal">
                 글작성 폼 띄우기
-                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm" enctype="multipart/form-data">
+                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm">
                     <label for="inputContent">내용</label>
                     <textarea type="text" name="snsBoardContent" id="inputContent"></textarea>
                     <label for="inputAccNo">계정번호</label>
                     <input name="snsAccountNo"></input>
-                    <label for="inputFile">첨부파일</label>
-                    <input type="file" name = "uploadfile" multiple="multiple"></input>
+                   <!--  <label for="inputFile">첨부파일</label>
+                    <input name="file" type="file" id="customFile"/> -->
                     <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
                     <input type="submit" role="button" value="글쓰기"/>
                 </form>
             <a class="modal_close_btn">닫기</a>
             </div>
-
+ 
             <div id="my_modal2">
                 나를 팔로우 한 사람
                 <table border="1px">
-					<thead>
-						<tr>
-							<th>팔로우 목록</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="snsf : ${snsFList}">
-							<td th:text="${snsf.snsFollowerId}"></td>
-					</tbody>
-				</table>
+               <thead>
+                  <tr>
+                     <th>팔로우 목록</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr th:each="snsf : ${snsFList}">
+                     <td th:text="${snsf.snsFollowerId}"></td>
+               </tbody>
+            </table>
             <a class="modal_close_btn2">닫기</a>
             </div>
-    		<!-- ================== 모달 end ====================== -->
-			
-				<table border="1px">
-					<thead>
-						<tr>
-							<th>게시글 번호</th>
-							<th>글 내용</th>
-							<th>작성일자</th>
-							<th>작성자</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="sns :  ${snsFeed}">
-							<td th:text="${sns.snsBoardNo}"></td>
-							<td th:text="${sns.snsBoardContent}"></td>
-							<td th:text="${sns.snsBoardDate}"></td>
-							<td th:text="${sns.snsNickname}"></td>
-						</tr>
-					</tbody>
-				</table>
-				<br>
-				
+          <!-- ================== 모달 end ====================== -->
+         
+            <table border="1px">
+               <thead>
+                  <tr>
+                     <th>게시글 번호</th>
+                     <th>글 내용</th>
+                     <th>작성일자</th>
+                     <th>작성자</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr th:each="sns :  ${snsFeed}">
+                     <td th:text="${sns.snsBoardNo}"></td>
+                     <td th:text="${sns.snsBoardContent}"></td>
+                     <td th:text="${sns.snsBoardDate}"></td>
+                     <td th:text="${sns.snsNickname}"></td>
+                  </tr>
+               </tbody>
+            </table>
+            <br>
+            
             <div class="portfolio gutters grid img-container">
                 <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
                 <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
@@ -529,12 +519,9 @@
         // 모달창 띄우기
         modal('my_modal');
     });
-</script>
-
-
-<!-- 팔로워 모달 -->
-<script>
-    function modal2(id) {
+    
+// 팔로워 모달
+    function modal(id) {
         var zIndex = 9999;
         var modal = document.getElementById(id);
 
