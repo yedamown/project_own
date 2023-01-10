@@ -3,6 +3,10 @@ package co.prjt.own.band.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +19,19 @@ public class BandVO {
 	String bandName;
 	String bandIntro;
 	String bandKeyword;
+	String bandAgeOption;
 	String bandOpenOption;
-	String bandLocOption;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
 	Date bandAgeBeforoption;
-	String  bandAgeAfteroption;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+	Date  bandAgeAfteroption;
 	String bandCategory;
 	String bandGenderOption;
 	String bandMembershipOption;
 	String bandLocation;
+	String bandGender;
 	
 	//bandNo의 집합
 	List<String> bandNos;

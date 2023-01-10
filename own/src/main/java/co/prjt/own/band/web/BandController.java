@@ -39,7 +39,7 @@ public class BandController {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 	      
 	    System.out.println(user);
-	  //세션널..임시
+	    //세션널..임시
 	  		if(user==null) {
 	  			return "content/own/ownlogin";
 	  		}
@@ -50,6 +50,7 @@ public class BandController {
 		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.userId));
 		//가입한..최신글올라온 밴드 불러오기
 		model.addAttribute("bandList", bandService.getBandRecentAll(vo));
+		
 		//운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());
 		model.addAttribute("exercise", bandService.allExcersie());
@@ -59,13 +60,22 @@ public class BandController {
 	//내 가치 전부보기(페이징 임시로 3개...밴드VO에 개인의 아이디를 리더아이디로 담음..검색시사용)
 	//페이징처리(서비스랑 서비스임플까지..후로매퍼검색)
 	@RequestMapping("/myBand")
-	public String myBand(Model model, OwnUserVO vo, Paging paging, BandVO band) {
+	public String myBand(Model model, OwnUserVO vo, Paging paging, BandVO band, HttpServletRequest request) {
 		//유저아이디를 가져와 밴드에 담음
-		band.setBandLeaderid("hjj");
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		if(user==null) {
+  			return "content/own/ownlogin";
+  		}
+	    System.out.println(user.userId);
+	  //세션널..임시
+  		
+		band.setBandLeaderid(user.userId);
 		//밴드 검색...페이지 정보는 ajax로 받아오기
 		model.addAttribute("bandName", band.getBandName());
 		model.addAttribute("myBand", bandService.getMyBandAll(band, paging));
 		return "content/band/myBand";
+		
 	}
 	//RestController..댓글세개씩보내기
 	@GetMapping("/myBand/{threeBand}")
@@ -77,19 +87,8 @@ public class BandController {
 	//추천밴드 가져오기(관심운동과 지역에 맞춰서)
 	@GetMapping("/{userId}")
 	@ResponseBody
-	public void recomBand(@PathVariable String userId){
-		String[] arr = userId.split("-");
-		System.out.println("변수명"+userId+"도달함");
-		System.out.println(arr[0]);//아이디
-		System.out.println(arr[1]);//지역
-		//System.out.println(arr[2]);//운동
-		BandMemberDefaultVO vo = new BandMemberDefaultVO();
-		vo.setUserId(arr[0]);
-		if(arr[1]!=null) {
-			vo.setBandLocation(arr[1]);
-		}
-		if(arr[2]!=null) {
-			vo.setBandInterest(arr[2]);
-		}
+	public List<BandVO> recomBand(@PathVariable String userId){
+		//유저 아이디지만 스트링으로 여러가지 값이 담김
+		return bandService.recomBand(userId);
 	}
 }

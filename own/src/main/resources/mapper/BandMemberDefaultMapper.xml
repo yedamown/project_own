@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.band.mapper.BandMemberDefaultMapper">
 	<select id="getBandMemberDefault" resultType="BandMemberDefaultVO">
-		select 	user_id,
-				band_nickname,
-				band_gender,
-				band_location,
-				band_interest,
-				band_birth
-		 from band_member_default
-		  where user_id = #{userId}
+		SELECT 	USER_ID,
+				BAND_NICKNAME,
+				BAND_GENDER,
+				BAND_LOCATION,
+				BAND_INTEREST,
+				BAND_BIRTH
+		 FROM BAND_MEMBER_DEFAULT
+		  WHERE USER_ID = #{userId}
 	</select>
 </mapper>

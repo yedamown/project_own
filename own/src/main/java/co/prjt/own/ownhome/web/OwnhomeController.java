@@ -64,7 +64,7 @@ public class OwnhomeController {
 		}
 		else
 		return 0;
-
+	}
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) { // 오운홈으로 가는 페이지이동
