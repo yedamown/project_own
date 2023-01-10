@@ -45,6 +45,7 @@
 <h1>안녕하세요</h1>
 <div th:if="${session.loginUser}">
 안녕하세요세션확인 <span th:text="${session.loginUser}"> USER_ID </span>
+<span th:text="${session.loginUser}"> SNS_ACCOUNT_NO </span>
 </div>
         <!-- Top Header Area -->
         <div class="top-header">
@@ -153,7 +154,7 @@
                                             <li><a href="#">Catagory 1</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="/band/bandhome">밴드</a></li>
+                                    <li><a href="own/band/bandhome">밴드</a></li>
                                     
                                     <li><a href="contact.html">도전</a></li>
                                      <li><a href="/own/login">로그인</a></li>

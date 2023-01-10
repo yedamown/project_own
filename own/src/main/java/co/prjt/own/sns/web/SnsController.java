@@ -51,7 +51,8 @@ public class SnsController {
 		model.addAttribute("snsFeed2", boardService.getSnsBoardList(null));
 		return "content/sns/snsFeed2"; 
 	}
-	
+	//3. 파일 업로드
+
 	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")

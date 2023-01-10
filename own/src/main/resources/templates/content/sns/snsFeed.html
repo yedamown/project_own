@@ -160,7 +160,11 @@
             <br>
             <div class="testimonial_box">
                 <div class="testimonial_author">
+
+                    <img src="assets/img/user.png" alt="author"> <span th:text="${session.loginUser}"> sns_account_no </span> &nbsp;&nbsp;&nbsp;&nbsp;
+
                     <img src="/sns/img/user.png" alt="author"> <span th:text="${session.loginUser}"> USER_ID </span> &nbsp;&nbsp;&nbsp;&nbsp;
+
                     <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
                     <h5>게시글 갯수 / 팔로우 수 / <span th:text="${snsFollower.followerCount}"></span> </h5>
                     <p>소개글을 입력하세요 .... <span>company</span></p>

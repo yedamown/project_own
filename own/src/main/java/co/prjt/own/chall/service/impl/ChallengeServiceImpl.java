@@ -17,36 +17,28 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	@Override
 	public int insertChall(ChallengeVO vo) {
-		return 0;
+		return mapper.insertChall(vo);
 	}
 
 	@Override
 	public int updateChall(ChallengeVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return mapper.updateChall(vo);
 	}
 
 	@Override
 	public int deleteChall(ChallengeVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return mapper.deleteChall(vo);
 	}
 
 	@Override
 	public ChallengeVO getChall(ChallengeVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.getChall(vo);
 	}
 
 	@Override
 	public List<ChallengeVO> getChallAll(ChallengeVO vo) {
 		// TODO Auto-generated method stub
 		return mapper.getChallAll(null);
-	}
-
-	@Override
-	public List<Map<String, Object>> getCate() {
-		return mapper.getCate();
 	}
 
 

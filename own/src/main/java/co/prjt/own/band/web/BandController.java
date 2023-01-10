@@ -19,12 +19,12 @@ import co.prjt.own.ownhome.service.OwnUserVO;
 
 
 @Controller
-@RequestMapping("/band")
+@RequestMapping("/own/band")
 public class BandController {
 	@Autowired
 	BandService bandService;
 	//밴드 홈으로 가기
-	@RequestMapping("/bandhome")
+	@RequestMapping("")
 	public String bandHome(Model model) {
 		//원래는 사용자의 각 기호..세션아이디 에 맞춰서 추천 ...........밴드 검색어 넣어야 함
 		//1.세션아이디 불러와서 최신글이 있고 가입상태인 밴드목록을 불러옴
@@ -36,11 +36,11 @@ public class BandController {
 	//내 가치 전부보기(페이징 임시로 3개...밴드VO에 개인의 아이디를 리더아이디로 담음..검색시사용)
 	//페이징처리(서비스랑 서비스임플까지..후로매퍼검색)
 	@RequestMapping("/myBand")
-	public String myBand(Model model, OwnUserVO vo, Paging paging) {
+	public String myBand(Model model, OwnUserVO vo, Paging paging, BandVO band) {
 		//유저아이디를 가져와 밴드에 담음
-		BandVO band = new BandVO();
 		band.setBandLeaderid("hjj");
 		//밴드 검색...페이지 정보는 ajax로 받아오기
+		model.addAttribute("bandName", band.getBandName());
 		model.addAttribute("myBand", bandService.getMyBandAll(band, paging));
 		return "content/band/myBand";
 	}

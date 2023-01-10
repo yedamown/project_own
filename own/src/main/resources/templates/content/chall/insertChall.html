@@ -10,30 +10,77 @@
 </head>
 <div layout:fragment="content">
 	<body>
-		<legend>회원가입</legend>
-		<form action="/insertChall" method="post">
+		<legend>도전을 등록 페이지</legend>
+		<form id="insertChall">
 			<ul>
-				<li>도전제목:<input name="challTitle">
-				<li>카테고리:<input name="challCategory">
-				<li>태그<input name="challTag">
-				<li>도전 시작일<input type="date" name="challStartdate">
-				<!-- 참조키 : select, radio, checkbox로 하기 
-				<li>jobId:<select name="jobId">
-						<c:forEach items="${jobs }" var="job">
-							<option value="${job.jobId }">${job.jobTitle }</option>
-						</c:forEach>
-				</select>-->
-				<li>도전기간<input name="challDuration">
-				<li>도전빈도<input name="challFreq">
-				<li>도전기간<input name="departmentId">
-				<li>도전가능인원<input type="number" name="maxMember">
-				<li>도전금액<input type="number" name="challPrice">
-				<li>도전소개<input name="challIntro">
-				<li>인증방법<input name="vldMethod">
-				<li>도전리더<input name="challLeader">
-				<br/>
-				<button>도전등록</button>
-			</ul>
+				<li>도전제목:<input id="challTitle">
+				<li>카테고리:<select name="challCategory" id="challCategory" >
+						<th:block th:each="exer:${exersub}">
+							<option th:value="${exer.exersubName}" th:text=${exer.exersubName} />
+						</th:block>
+				</select>
+				<li>태그<input id="challTag">
+				<li>도전 시작일<input type="date" id="challStartdate">
+				<li>도전기간<select name="challDuration" id="challDuration">
+							<option th:each=" i: ${#numbers.sequence(1, 4)}" th:value="${i}" th:text="${i}" />
+				</select>
+				<li>도전빈도<select name="challFreq" id="challFreq" >
+						<th:block th:each=" i: ${#numbers.sequence(1, 7)}">
+							주 <option th:value="${i}" th:text="${i}">회</option>
+						</th:block>
+				</select>
+				<li>도전가능인원<input type="number" id="maxMember"
+					placeholder="1~20사이로 입력" min:1 max:20>
+				<li>도전금액<input type="number" placeholder="1000원 단위로 입력"
+					id="challPrice" min:1000>
+				<li>* 최소 도전금액은 1000원입니다. 금액 단위는 1000원입니다.
+				<li>도전소개<input type="content" id="challIntro">
+				<li>인증방법<input id="vldMethod">
+				<li>도전리더<input id="challLeader"> <br />
+					<button type="button" id="addBtn">도전등록</button>
+		</form>
+		<!--  -->
+		</ul>
+		<script>
+			$('#addBtn').on("click", function(){
+				let challTitle = $('#challTitle').val();
+				let challCategory = $('#challCategory').val();
+				let challTag = $('#challTag').val();
+				let challDuration = $('#challDuration').val();
+				let challFreq = $('#challFreq').val();
+				let maxMember = $('#maxMember').val();
+				let challPrice = $('#challPrice').val();
+				let challIntro = $('#challIntro').val();
+				let vldMethod = $('#vldMethod').val();
+				let challLeader = $('#challLeader').val();
+				let startDate = $('#challStartdate').val();
+				console.log(challTitle, challCategory, challFreq, challDuration, startDate)
+			 $.ajax({
+			 url: '/own/chall/insertChall',
+			 method: 'post',
+			 data : JSON.stringify({challTitle: challTitle, 
+				 					challCategory: challCategory, 
+				 					challTag: challTag,
+				 					challDuration: challDuration,
+				 					challFreq: challFreq,
+				 					maxMember: maxMember,
+				 					challPrice: challPrice,
+				 					challIntro: challIntro,
+				 					vldMethod: vldMethod,
+				 					challStartdate: startDate,
+				 					challLeader: challLeader}),
+			 contentType: "application/json"
+			 }).then(res => {
+				 if(res != 0 ){
+					 alert('도전 등록 완료. 도전리더가 도전을 신청해야 도전이 시작됩니다.')
+					 console.log(res)
+					 location.href = '/own/chall/detailChall?challNo='+ res
+				 }else{
+					 alert('도전 등록 실패')
+				 }
+			 })
+			 }) 
+		</script>
 	</body>
 </div>
 </html>
