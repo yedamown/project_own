@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,17 +40,10 @@ public class OwnhomeController {
 	public String ownHome(OwnUserVO vo ,HttpServletRequest request) { // 오운홈으로 가는 페이지이동
 	      HttpSession session = request.getSession();
 	      vo = (OwnUserVO) session.getAttribute("loginUser");
-
-	      System.out.println(vo);
-	      System.out.println("===로그인아이디==="+vo.getUserId());
 	      return "content/own/ownhome";
 	   }
 	
 	//로그인폼으로 이동
-
-
-
-
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
 	public String ownLogin(Model model) { // 오운로그인으로..
 		return "content/own/ownlogin";
@@ -59,8 +53,8 @@ public class OwnhomeController {
 	@PostMapping("/login")
 	@ResponseBody // ajax는 무조건
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
+	
 		OwnUserVO chk = ownMapper.login(vo.getUserId());
-
 		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", chk);
@@ -70,6 +64,15 @@ public class OwnhomeController {
 		return 0;
 	}
 
+	@GetMapping("/own/logout")
+	public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/own/home";
+    }
+	
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) { // 오운홈으로 가는 페이지이동

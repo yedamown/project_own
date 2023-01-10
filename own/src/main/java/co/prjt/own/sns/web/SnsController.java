@@ -24,7 +24,6 @@ public class SnsController {
 	
 	@Autowired
 	SAccountService snsService;
-
 	
 	@Autowired
 	SBoardService boardService;

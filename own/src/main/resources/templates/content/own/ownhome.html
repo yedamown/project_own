@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<head>
+<head xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
 <meta name="description" content="">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -159,8 +159,9 @@
                                     <li><a href="/own/band/">밴드</a></li>
                                     
                                     <li><a href="contact.html">도전</a></li>
-                                     <li><a href="/own/login">로그인</a></li>
-                                     <li><a href="#">로그아웃</a></li>
+                                    
+                                    <span th:if="${session.loginUser}"><li><a href="/own/logout">로그아웃</a></li></span>
+                                    <span th:unless="${session.loginUser}"><li><a href="/own/login">로그인</a></li></span>
                                      <li><a href="#">회원가입</a></li>
                                 </ul>
 

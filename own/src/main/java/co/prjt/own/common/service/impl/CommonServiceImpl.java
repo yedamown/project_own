@@ -74,8 +74,6 @@ public class CommonServiceImpl implements CommonService {
 			commonMapper.upload(vo);
 			}
 		
-			
-		
 		return null;
 	}
 
