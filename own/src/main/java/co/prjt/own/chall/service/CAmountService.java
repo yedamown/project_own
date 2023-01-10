@@ -10,6 +10,6 @@ public interface CAmountService {
 	List<CAmountVO> getAmountListAll();
 	
 	//멤버로 출력
-	List<CAmountVO> getAmountList();
+	List<CAmountVO> getAmountList(CAmountVO vo);
 	
 }

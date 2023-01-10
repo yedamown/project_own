@@ -1,5 +1,7 @@
 package co.prjt.own.sns.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
+import co.prjt.own.ownhome.service.OwnUserVO;
+import co.prjt.own.ownhome.service.OwnhomeService;
 import co.prjt.own.sns.service.SAccountService;
+import co.prjt.own.sns.service.SAccountVO;
 import co.prjt.own.sns.service.SBoardService;
 import co.prjt.own.sns.service.SBoardVO;
 import co.prjt.own.sns.service.SFollowService;
@@ -24,7 +29,7 @@ public class SnsController {
 	
 	@Autowired
 	SAccountService snsService;
-	
+
 	@Autowired
 	SBoardService boardService;
 	
@@ -33,6 +38,9 @@ public class SnsController {
 	
 	@Autowired
 	CommonService commonService;
+	
+	@Autowired
+	OwnhomeService ownService;
 	
 	 //통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 	
@@ -43,11 +51,28 @@ public class SnsController {
 		return "content/sns/snsHome"; 
 	}
 	
+	//1-1. sns 간편 회원 가입
+	@PostMapping("/snsAccount")
+	public String insertSnsUser(SAccountVO svo, OwnUserVO ovo) {
+		ownService.updateSnsUser(ovo.getUserId());
+		snsService.insertSnsUser(svo);
+		return "content/sns/snsHome";
+	}
+	
 	//2. 개인피드	
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
 	public String getSnsUser(Model model, SFollowVO vo) {
 		model.addAttribute("snsFeed", boardService.getSnsBoardList(null));
+
 		//model.addAttribute("snsFollower", followService.followerCount(vo.getSnsFollowId()));
+
+		model.addAttribute("snsFollow", followService.followerCount(null));
+		model.addAttribute("snsFList", followService.getFollowList(vo));
+		List<SFollowVO> b = followService.getFollowList(null);
+		int a = followService.followerCount(null);
+		System.out.println(a);
+		System.out.println(b);
+
 		return "content/sns/snsFeed"; 
 	}
 	

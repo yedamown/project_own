@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.prjt.own.chall.service.CAmountService;
+import co.prjt.own.chall.service.CAmountVO;
 import co.prjt.own.chall.service.CMemberListService;
 import co.prjt.own.chall.service.CMemberListVO;
+import co.prjt.own.chall.service.CMemberService;
+import co.prjt.own.chall.service.CMemberVO;
 import co.prjt.own.chall.service.ChallengeService;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.service.CommonService;
@@ -29,6 +33,8 @@ public class ChallController {
 	@Autowired ChallengeService challenge;
 	@Autowired CMemberListService memberList;
 	@Autowired CommonService common;
+	@Autowired CMemberService member;
+	@Autowired CAmountService amount;
 	
 	//홈페이지, 도전리스트
 	@GetMapping("/home")
@@ -62,7 +68,7 @@ public class ChallController {
 	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, Model model){
 		vo.setChallNo("CHA_" + no);
 		model.addAttribute("detailChall", challenge.getChall(vo)); 
-		return "content/chall/challDetail";
+		return "content/chall/detailChall";
 	}
 	
 	//도전 신청페이지로 이동
@@ -82,17 +88,42 @@ public class ChallController {
 		memberList.insertMemList(vo);
 		System.out.println(vo);
 		model.addAttribute("applyMem", memberList.insertMemList(vo));
-		return "content/chall/challDatil";
+		return "content/chall/detailChall";
 	}
 	
 	//마이페이지 - 프로필
 	@GetMapping("/mypage")
-	public String challMypage(Model model) {
-		//
-		return "content/chall/insertChall";
+	public String challMypage(CMemberVO vo, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		String id = user.getUserId();
+		System.out.println(id);
+		vo.setUserId(id);
+		System.out.println(member.getCMem(vo));
+		model.addAttribute("memInfo", member.getCMem(vo));
+		return "content/chall/mypageChall";
 	}
 
 	//마이페이지 - 내 예치금
-	
-	//
+	@GetMapping("/myAmount")
+	public String challMyAmt(CMemberVO vo1,CAmountVO vo2, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		String id = user.getUserId();
+		System.out.println(id);
+		vo1.setUserId(id);
+		vo2.setUserId(id);
+		System.out.println(id);
+		System.out.println(amount.getAmountList(vo2));
+		//하나에 같이 담을 수 없는게.. 하나는 리스트고 하나는 내역? VO이라서..ㅠㅠ
+		model.addAttribute("memInfo", member.getCMem(vo1));
+		model.addAttribute("memAmount", amount.getAmountList(vo2));
+		return "content/chall/myAmount";
+	}
+	//마이페이지 - 내 도전
+	@GetMapping("/myChall")
+	public String myChall(CMemberListVO vo, Model model, HttpServletRequest request) {
+		/* model.addAllAttributes("myChall", ) */
+		return "content/chall/myChall";
+	}
 }

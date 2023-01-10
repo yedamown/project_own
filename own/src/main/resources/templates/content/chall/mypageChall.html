@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>도전_마이페이지(default 내 프로필)</title>
+</head>
+<div layout:fragment="content">
+<body>
+
+	<div th:if="${session.loginUser}">
+			오운_마이페이지
+			<h1 th:text="${session.loginUser.userId}"></h1>
+		</div>
+	<a href="/own/chall/myAmount">내 예치금</a>
+	<a href=#>내 인증내역들</a>
+	<a href=#>내 도전들</a>
+	
+	<h3>마이 프로필</h3>
+	<ul>
+		<li>내 프로필 :
+		<li>내 닉네임:<span th:text="${memInfo.memNickname}"></span>
+		<li>내 소개: </li>
+		<li>
+		<textarea rows="10" cols="10"  th:text="${memInfo.memIntro}">내용을 입력해주세요.</textarea></li>
+		<button type="button">등록/수정</button>
+	</ul>
+</body>
+</html>

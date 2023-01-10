@@ -24,6 +24,7 @@ public class OwnhomeController {
 
 	@Autowired
 	OwnhomeMapper ownMapper;
+	@Autowired
 	ExerRecordMapper exerMapper;
 
 	// 수정테스트
@@ -34,7 +35,7 @@ public class OwnhomeController {
 	// 수정테스트
 	// 통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 
-	//홈으로 이동
+	// 홈으로 이동
 	// 홈으로 이동
 	@RequestMapping(value = "/own/home", method = RequestMethod.GET)
 	public String ownHome(OwnUserVO vo ,HttpServletRequest request) { // 오운홈으로 가는 페이지이동
@@ -42,8 +43,9 @@ public class OwnhomeController {
 	      vo = (OwnUserVO) session.getAttribute("loginUser");
 	      return "content/own/ownhome";
 	   }
-	
-	//로그인폼으로 이동
+
+	// 로그인폼으로 이동
+
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
 	public String ownLogin(Model model) { // 오운로그인으로..
 		return "content/own/ownlogin";
@@ -94,22 +96,28 @@ public class OwnhomeController {
 		return vo;
 	}
 
-	// 오운완(나의운동기록) 페이지 이동
+	// 오운완(나의운동기록하기) 페이지 이동
 	@RequestMapping(value = "/own/ownRecordForm", method = RequestMethod.GET)
-	public String ownRecordForm(Model model) {
+	public String ownRecordForm() {
 		return "content/own/ownRecordForm";
 	}
 
 	// 오운완(나의운동기록) 등록
 	@PostMapping("/own/exerciseRecord")
-	@ResponseBody 
+	@ResponseBody
 	public ExerRecordVO exerciseRecord(ExerRecordVO vo, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
 		vo.setUserId(id);
+		System.out.println(vo);
 		exerMapper.insertExerRecord(vo);
 		return vo;
 	}
 
+	// 오운완(나의운동기록보기) 페이지 이동
+		@RequestMapping(value = "/own/ownRecordList", method = RequestMethod.GET)
+		public String ownRecordList() {
+			return "content/own/ownRecordList";
+		}
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.prjt.own.band.mapper.BandMapper;
+import co.prjt.own.band.mapper.BandMemberDefaultMapper;
 import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
@@ -18,6 +19,7 @@ import co.prjt.own.common.Paging;
 public class BandServiceImpl implements BandService{
 	
 	@Autowired BandMapper bandMapper;
+	@Autowired BandMemberDefaultMapper bandMemberDefaultMapper;
 	
 	@Override
 	public int insertBand(BandVO vo) {
@@ -65,7 +67,7 @@ public class BandServiceImpl implements BandService{
 		paging.setPageSize(5);
 		//페이징용 개인의 가입밴드 수
 		BandMemberDetailVO detail = new BandMemberDetailVO();
-		detail.setUserId("hjj");
+		detail.setUserId(band.getBandLeaderid());
 		//전체 페이지계산
 		paging.setTotalRecord(bandMapper.count2(detail.getUserId(), band.getBandName()));
 		band.setFirst(paging.getFirst());
@@ -105,5 +107,39 @@ public class BandServiceImpl implements BandService{
 	@Override
 	public List<Map<String, String>> allExcersie() {
 		return bandMapper.allExcersie();
+	}
+
+	@Override
+	public List<BandVO> recomBand(String userId) {
+		//매퍼를 돌릴 vo
+		BandVO band = new BandVO();
+		
+		String[] arr = userId.split("-");
+		System.out.println("변수명"+userId+"도달함");
+		System.out.println(arr[0]);//아이디
+		//유저디폴트에서 정보값가져와야 함(기본적으로 깔아놓음)
+		BandMemberDefaultVO member = bandMemberDefaultMapper.getBandMemberDefault(arr[0]);
+		//디폴트설정
+		System.out.println("######"+member.toString());
+		band.setBandLocation(member.getBandLocation());
+		band.setBandKeyword(member.getBandInterest());
+
+		//설정값으로 바꿔줌
+		if(arr.length==2) {//지역설정값있으면...
+			band.setBandLocation(arr[1]);
+		}
+		if(arr.length==3) {//운동설정값있으면...
+			band.setBandKeyword(arr[2]);
+		}
+		//밴드멤버의 설정을 밴드에 담아서 추천을가져옴..
+		//가입된 밴드는 제외하기위에 유저명담음
+		band.setBandLeaderid(arr[0]);
+		//생일을 담음
+		
+		band.setBandAgeAfteroption(member.getBandBirth());
+		//성별
+		band.setBandGender(member.getBandGender());
+		System.out.println(band.toString());
+		return bandMapper.recomBand(band);
 	}
 }
