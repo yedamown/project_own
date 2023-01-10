@@ -41,4 +41,7 @@ public interface BandMapper {
 	public List<Map<String, String>> allLocation();
 	//추천밴드를 위한 관심종목셀렉트박스
 	public List<Map<String, String>> allExcersie();
+	
+	//추천밴드
+	public List<BandVO> recomBand(BandVO vo);
 }

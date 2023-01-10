@@ -1,7 +1,14 @@
 package co.prjt.own.band;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -19,7 +26,7 @@ class BandApplicationTests {
 	@Autowired
 	BandMemberDefaultService bandMemberDefaultService;
 	@Test
-	void contextLoads() {
+	void contextLoads() throws ParseException {
 //		System.out.println(bandMapper.allExcersie());
 //		System.out.println(bandMapper.allLocation());
 		System.out.println(bandMemberDefaultService.getBandMemberDefault("hjj"));
@@ -66,6 +73,23 @@ class BandApplicationTests {
 //			System.out.println(list.get(i));
 //		}
 		//한문장으로 된 번호를 보냄..ex)BDU_17BDU_15BDU_14 
-		
+		BandVO vo = new BandVO();
+		vo.setBandLeaderid("hjj");
+		//관심종목
+		vo.setBandKeyword("EXS_6");
+		//관심지역
+		vo.setBandLocation("LC06");
+		//생일을 담음
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = "1993-03-04";
+        Date date = new Date(sdf.parse(strDate).getTime());
+        System.out.println(date);
+		vo.setBandAgeAfteroption(date);
+		//성별
+		vo.setBandGenderOption("GD01");
+		List<BandVO> list = bandMapper.recomBand(vo);
+		for(int i=0; i<list.size(); i++) {
+			System.out.println(list.get(i));
+		}
 	}
 }
