@@ -73,6 +73,7 @@ public class BandServiceImpl implements BandService{
 		band.setFirst(paging.getFirst());
 		band.setLast(paging.getLast());
 		//
+		
 		return bandMapper.getMyBandAll(band);
 	}
 
@@ -140,6 +141,19 @@ public class BandServiceImpl implements BandService{
 		//성별
 		band.setBandGender(member.getBandGender());
 		System.out.println(band.toString());
-		return bandMapper.recomBand(band);
+		//설정으로 추천리스트받아옴
+		List<BandVO> list = bandMapper.recomBand(band);
+		
+		//만약 추천이 3개이하면... where지역조건 설정없는 select문으로...추천 받아오기
+		if(list.size()<4) {
+			band.setBandLocation("");
+			List<BandVO> list2 = bandMapper.recomBand(band);
+			for(int i=0; i<4; i++) {
+				list.add(list2.get(i));
+			}
+		//추천용 4개 받아오기
+			
+		}
+		return list;
 	}
 }
