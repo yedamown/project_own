@@ -4,11 +4,14 @@
 
 <mapper namespace="co.prjt.own.band.mapper.BandMapper">
 	<sql id="recom">
-		<if test="bandKeyword != null and bandKeyword !=''">
-			AND BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
+		<if test="bandCategory != null and bandCategory !=''">
+			AND BAND_CATEGORY LIKE '%' || #{bandCategory} || '%'
 		</if>
 		<if test="bandLocation != null and bandLocation !=''">
 			AND BAND_LOCATION = #{bandLocation}
+		</if>
+		<if test="bandName != null and bandName !=''">
+			AND BAND_NAME LIKE '%' || #{bandName} || '%'
 		</if>
 	</sql>
 	<!-- 인서트업데이트 추후 수정...이상함 -->
@@ -35,7 +38,7 @@
 					#{bandLeaderid},
 					#{bandName},
                     #{bandIntro},
-                    #{bandKeyword},
+                    #{bandCategory},
                     #{bandOpenOption},
                     #{bandLocOption},
                     #{bandAgeBeforoption},
@@ -83,8 +86,8 @@
 	</select>
 	<sql id="condition">
 		<where>
-			<if test="bandKeyword != null and bandKeyword !=''">
-				BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
+			<if test="bandCategory != null and bandCategory !=''">
+				BAND_CATEGORY LIKE '%' || #{bandKeyword} || '%'
 			</if>
 			<if test="bandOpenOption != null and bandOpenOption !=''">
 				AND band_open_option = #{bandOpenOption}
@@ -292,7 +295,7 @@
 				                    BAND_BOARD_TITLE,
 				                    BAND_BOARD_WRITER,
 				                    ROW_NUMBER() OVER(PARTITION BY Z.BAND_NO
-				                                ORDER BY Z.BAND_NO, Z.BAND_BOARD_DATE) RANK
+				                                ORDER BY Z.BAND_NO, Z.BAND_BOARD_DATE DESC) RANK
 				                    FROM
 				                    (SELECT	A.BAND_NO,
 				                    		A.Band_NAME,
@@ -340,12 +343,12 @@
 				BAND_LEADERID,
 				BAND_NAME,
 		        BAND_INTRO,
-		        EXERSUB_NAME "band_keyword",
+		        EXERSUB_NAME "band_category",
 		        BAND_OPEN_OPTION,
 		        BAND_AGE_OPTION,
 		        BAND_AGE_BEFOROPTION,
 		        BAND_AGE_AFTEROPTION,
-		        BAND_CATEGORY,
+		        BAND_KEYWORD,
 		        BAND_GENDER_OPTION,
 		        BAND_MEMBERSHIP_OPTION,
 		        LOC_CITY "band_location",
@@ -364,6 +367,7 @@
 									        BAND_AGE_BEFOROPTION,
 									        BAND_AGE_AFTEROPTION,
 									        BAND_CATEGORY,
+									        BAND_KEYWORD,
 									        BAND_GENDER_OPTION,
 									        BAND_MEMBERSHIP_OPTION,
 									        LOC_CITY,
@@ -418,7 +422,7 @@
 									        AND BAND_GENDER_OPTION = 'BE02'
 									        AND #{bandAgeAfteroption} BETWEEN BAND_AGE_BEFOROPTION AND BAND_AGE_AFTEROPTION
 									        ) A, EXER_SUB B, OWN_LOCATION C
-									        WHERE A.BAND_KEYWORD = B.EXERSUB_NO
+									        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
 									        AND A.BAND_LOCATION=C.LOC_CODE
 									        <include refid="recom"></include>
                                    ) 

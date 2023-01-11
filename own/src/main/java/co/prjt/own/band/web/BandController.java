@@ -94,24 +94,21 @@ public class BandController {
 		//유저 아이디지만 스트링으로 여러가지 값이 담김
 		//페이지이동용으로도 같이쓰게..여기선 paging안쓰지만 
 		Paging paging = new Paging();
-		return bandService.recomBand(userId, paging);
+		return bandService.recomBand(userId);
 	}
-	//밴드추천보기..추천밴드와 매퍼를 같이 쓰고 싶음
-	@RequestMapping("/bandSearch")
-	public String bandSearch(Model model, Paging paging, HttpServletRequest request) {
+	//밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용
+	@RequestMapping("/bandRec")
+	public String bandRec(Model model, Paging paging, HttpServletRequest request, BandVO band) {
 		//유저아이디 가져오기
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		BandMemberDetailVO vo = new BandMemberDetailVO();
 		//운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());
 		model.addAttribute("exercise", bandService.allExcersie());
-		//여러밴드싣기
-		//유저 아이디지만 스트링으로 여러가지 값이 담김
-		//-단위로 잘라서 sample이 두개 들어간 경우 all all조건으로 select 함
-		//마지막에-search를 줘서 impl 에서 구분할 수 있게..(페이지넘어가는 용도인거)
-		String userId = user.userId+"-sample-sample-search";
-		model.addAttribute("bandList", bandService.recomBand(userId, paging));
+		
+		band.setBandLeaderid(user.getUserId());
+		
+		model.addAttribute("bandList", bandService.recomBandPage(band, paging));
 		return "content/band/bandSearch";
 	}
 }

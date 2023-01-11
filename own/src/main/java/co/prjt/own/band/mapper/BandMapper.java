@@ -44,4 +44,6 @@ public interface BandMapper {
 	
 	//추천밴드
 	public List<BandVO> recomBand(BandVO vo);
+	//추천밴드 페이징용
+	public List<BandVO> recomBandPage(BandVO vo, Paging paging);
 }
