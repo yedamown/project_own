@@ -8,11 +8,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>상세보기 페이지</title>
 </head>
+<body>
 <div layout:fragment="content">
-	<body>
 		<h3>도전상세보기</h3>
-		<ul>
 		<input id ="challNo" type="hidden" th:value="${detailChall.challNo}" />
+		<ul>
 		<li>도전제목: <span th:text="${detailChall.challTitle}"></span></li>
 		<li>도전대표 이미지 <img th:src="|/imgView/${challImg[0].mediaServerFile}|" alt="" />
 		<li>인증성공 이미지 <span th:text="${challImg[1].mediaRealFile}"></span></li> 
@@ -29,6 +29,9 @@
 		<li>도전리더: <span th:text="${detailChall.challLeader}"></span></li>
 		<li th:text="${challImg[0].mediaRealFile}"></li>
 		<button type="button" id="applyBtn">도전 신청하기</button>
+<!-- 		<th:block th:each="cImgs: ${challImg}">
+			<li th:text="${cImgs.mediaRealFile}"></li>
+		</th:block> -->
 		</ul>
 	
 		<script>
@@ -38,6 +41,6 @@
 				location.href = '/own/chall/applyForm?challNo='+ cNo
 			})
 		</script>
-	</body>
 </div>
+</body>
 </html>
