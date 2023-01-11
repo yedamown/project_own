@@ -32,7 +32,23 @@ select * from own_users where user_id= #{userId}
 select * from own_users
 </select>
 
-
+<!--================= SNS ==================-->
+	<!-- 로그인 정보에서 sns 닉네임 가져오기 -->
+	<select id="snsLogin" resultType="String">
+		SELECT s.sns_nickname sns_nickname
+		FROM sns_account s, own_users o
+		WHERE o.user_id = #{userId}
+		AND s.sns_account_no = o.sns_account_no
+	</select>
+	
+	<!-- sns 간편 가입 시 own_users 테이블 업데이트 -->
+	<update id="updateSnsUser" parameterType="OwnUserVO">
+		UPDATE OWN_USERS 
+		SET SNS_ACCOUNT_NO = 'SAU_'||((sns_account_no.nextval) - 1)
+		WHERE USER_ID = #{userId}
+	</update>
+	<!--================= SNS End ==================-->
+	
 
 <update id="updateSnsUser" parameterType="String">
   BEGIN
