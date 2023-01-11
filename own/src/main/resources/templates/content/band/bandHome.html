@@ -125,16 +125,16 @@
                                 <div class="row">
                                 	<div class="col-md-4">
                                         <div class="input-group">
-                                            <select class="recom_exercise" th:value="*{exercise}">
-                                                <option value="sample">관심운동..전체</option>
+                                            <select class="recom_exercise form-select" th:value="*{exercise}">
+                                                <option value="all">관심운동..전체</option>
                                                 <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}"></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <select class="recom_location" th:value="*{location}">
-                                            	<option value="sample">관심지역..전체</option>
+                                            <select class="recom_location form-select" th:value="*{location}">
+                                            	<option value="all">관심지역..전체</option>
                                                 <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${loc.locCode} ==${user.bandLocation }"></option>
                                             </select>
                                         </div>
@@ -166,7 +166,7 @@
                         </div> -->
                     </div>
                 <div style="float: right; margin-top: 30px;color: white;">
-                    <a href="/own/band/bandSearch"><h4 style="color: white;">추천 더보기>></h4></h4></a>
+                    <a href="/own/band/bandRec"><h4 style="color: white;">추천 더보기>></h4></h4></a>
                 </div>
             </div>
         </section>
@@ -262,7 +262,7 @@
                         });
                         //만약 결과값이 없으면...
                         if(result.length==0){
-                            let element = {bandKeyword:'',bandLocation:'',bandName:'검색되는 값이없어요..<br>가치만들기>></br>'};
+                            let element = {bandCategory:'',bandLocation:'',bandName:'검색되는 값이없어요..<br>가치만들기>></br>'};
                             $(div).append(maketag(element));
                             //태그지우기
                             $('.recomTag').remove();
@@ -277,7 +277,7 @@
                                         <img src="/band/image/room1.jpg" alt="">
                                     </div>
                                     <div class="tags recomTag" >
-                                        <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandKeyword}</a>
+                                        <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandCategory}</a>
                                         <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandLocation}</a>
                                     </div>
                                     <a href="#"><h4 class="sec_h4" style="color: white;">${element.bandName}</h4></a>
@@ -309,9 +309,20 @@
                     contentType: "application/json;"
                 }).then( res => {
                     console.log(res);
+                    alert('지역설정변경')
                 })
             })
         </script>
+        <script src="/band/js/popper.js"></script>
+        <script src="/band/js/bootstrap.min.js"></script>
+        <script src="/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+        <script src="/band/js/jquery.ajaxchimp.min.js"></script>
+        <script src="/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+        <script src="/band/js/mail-script.js"></script>
+        <script src="/band/js/stellar.js"></script>
+        <script src="/band/vendors/lightbox/simpleLightbox.min.js"></script>
+        <script src="/band/js/custom.js"></script>
     </div>
     </body>
 </html>

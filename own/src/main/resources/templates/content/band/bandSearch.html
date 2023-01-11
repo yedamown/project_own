@@ -42,13 +42,13 @@
             </div>
             
         <!--================ input-group ================-->
-            <form name="searchFrm">
+            <form name="recomFrm" class="recomFrm">
                 <div class="hotel_booking_area position" >
                     <div class="container">
                         <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.3);">
                             <div class="input-group">
                                 
-                                    <input type="text" class="form-control" placeholder="오운 가치이름 검색"style="text-align: center;" name="bandName">
+                                    <input type="text" class="form-control" placeholder="오운 가치이름 검색"style="text-align: center;" name="bandName"  th:value="${bandVO.bandName}">
                                     <input type="hidden" name="page" value="1">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default"><i class="lnr lnr-magnifier"></i></button>
@@ -57,147 +57,81 @@
                         </div>
                     </div>
                 </div>
+                <!--================ 셀렉트박스  =================-->
+	        	<div class="col-md-9">
+	                <div class="boking_table">
+	                    <div class="row">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <select class="exercise  form-select" th:value="*{exercise}" name="bandCategory">
+                                        <option value="">관심운동..전체</option>
+                                        <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}" th:selected="${#strings.equals(exe.exersubNo, bandVO.bandCategory)}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <select class="location  form-select" th:value="*{location}" name="bandLocation">
+                                        <option value="">관심지역..전체</option>
+                                        <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${#strings.equals(loc.locCode, bandVO.bandLocation)}"></option>
+                                    </select>
+                                </div>
+                            </div>
+	                    </div>
+	                </div>
+	            </div>
+        <!--================ 셀렉트박스  =================-->
             </form>
         <!--================ input-group ================-->
         </section>
         <!--================MY 가치 중 검색 Area 끝=================-->
-        
-        <!--================ 셀렉트박스  =================-->
-        <section class="accomodation_area section_gap">
-        	<div class="col-md-9" >
-                <div class="boking_table">
-                    <div class="row">
-                    	<div class="col-md-4">
-                            <div class="input-group">
-                                <!-- <select class="recom_exercise" th:value="*{exercise}">
-                                    <option value="sample">관심운동..전체</option>
-                                    <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}"></option>
-                                </select> -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <!-- <select class="recom_location" th:value="*{location}">
-                                	<option value="sample">관심지역..전체</option>
-                                    <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${loc.locCode} ==${user.bandLocation }"></option>
-                                </select> -->
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="book_tabel_item">
-                                <button type="button" class="book_now_btn button_hover">추천 위치 설정</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
         <!-- 서치 -->
         <section class="accomodation_area section_gap" style="padding-top: 0px;">
             <div class="container">
                 <div class="row mb_30">
-                    <div class="col-lg-3 col-sm-6">
+                    <!--================ 추천가치 시작  =================-->    
+                    <div class="col-lg-3 col-sm-6" th:each="band, bandStat : ${bandList}">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
                                 <img src="/band/image/room1.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
                             </div>
                             <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">대구광역시</a>
+                                <a href="#" class="button_hover tag_btn" style="color: orange;" th:text="${band.bandCategory}">축구</a>
+                                <a href="#" class="button_hover tag_btn" style="color: orange;" th:text="${band.bandLocation}">대구광역시</a>
                             </div>
-                            <a href="#" class="sec_h4" style="color: blorangeack;"><h4 class="sec_h4" style="color: blorangeack;">소소필라테스</h4></a>
+                            <a href="#" class="sec_h4" style="color: blorangeack;"><h4 class="sec_h4" style="color: blorangeack;"th:text="${band.bandName}">소소필라테스</h4></a>
                             <h5><small></small></h5>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room2.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: black;">암벽등반회</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room3.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: black;">다함께 차차차</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room4.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: black;">역도씨름대회</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room4.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: black;">역도씨름대회</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room2.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: black;">암벽등반회</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="/band/image/room3.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
-                            </div>
-                            <div class="tags" >
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">축구</a>
-                                <a href="#" class="button_hover tag_btn" style="color: orange;">대구광역시</a>
-                            </div>
-                            <a href="#"><h4 class="sec_h4" style="color: black;">다함께 차차차</h4></a>
-                            <h5><small></small></h5>
-                        </div>
-                    </div>
+                    <!--================ 추천가치 끝  =================-->   
                 </div>
              </div>
         </section>
-        <!--================ 내 가치 끝 Area  =================-->
+         <!--================ 페이지 Area  =================-->
+        <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
+        <!--================ 페이지 Area 끝  =================-->
+        <!--================ 내 가치 끝 Area  =================-->    
+    <script>
+		  //페이징+검색처리
+		    function gopage(i) {
+		    	recomFrm.page.value = i;
+		    	recomFrm.submit();
+		    }
+        $(".recomFrm").on('change',function(){
+            $('.recomFrm').submit();
+           })
+    </script>
+    <script src="/band/js/popper.js"></script>
+    <script src="/band/js/bootstrap.min.js"></script>
+    <script src="/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="/band/js/jquery.ajaxchimp.min.js"></script>
+    <script src="/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+    <script src="/band/js/mail-script.js"></script>
+    <script src="/band/js/stellar.js"></script>
+    <script src="/band/vendors/lightbox/simpleLightbox.min.js"></script>
+    <script src="/band/js/custom.js"></script>
     </div>
     </body>
 </html>
