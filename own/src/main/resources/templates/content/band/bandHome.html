@@ -24,8 +24,9 @@
         <link rel="stylesheet" href="/band/css/style.css">
         <link rel="stylesheet" href="/band/css/responsive.css">
     </head>
-   <div layout:fragment="content">
+   
     <body>
+   	<div layout:fragment="content">
         <!--================ 배너=================-->
         <section class="banner_area"> 
             <div class="booking_table d_flex align-items-center" style="min-height: 500px;">
@@ -125,7 +126,7 @@
                                 	<div class="col-md-4">
                                         <div class="input-group">
                                             <select class="recom_exercise" th:value="*{exercise}">
-                                                <option value="">관심운동..전체</option>
+                                                <option value="sample">관심운동..전체</option>
                                                 <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}"></option>
                                             </select>
                                         </div>
@@ -133,13 +134,14 @@
                                     <div class="col-md-4">
                                         <div class="input-group">
                                             <select class="recom_location" th:value="*{location}">
+                                            	<option value="sample">관심지역..전체</option>
                                                 <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${loc.locCode} ==${user.bandLocation }"></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="book_tabel_item">
-                                            <a class="book_now_btn button_hover" href="#">추천 위치 설정</a>
+                                            <button type="button" class="book_now_btn button_hover">추천 위치 설정</button>
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +157,7 @@
                             <div class="hotel_img">
                                 <img src="/band/image/room1.jpg" alt="">
                             </div>
-                            <div class="tags" >
+                            <div class="tags recomTag" >
                                 <a href="#" class="button_hover tag_btn" style="color: wheat;">축구</a>
                                 <a href="#" class="button_hover tag_btn" style="color: wheat;">대구광역시</a>
                             </div>
@@ -164,17 +166,17 @@
                         </div> -->
                     </div>
                 <div style="float: right; margin-top: 30px;color: white;">
-                    <a href="#"><h4 style="color: white;">추천 더보기>></h4></h4></a>
+                    <a href="/own/band/bandSearch"><h4 style="color: white;">추천 더보기>></h4></h4></a>
                 </div>
             </div>
         </section>
         <!--================ 가치 추천 끝 Area  =================-->
         
-        <!--================ 오늘의 인기글 Area  =================-->
+        <!--================ 최신 인기글 Area  =================-->
         <section class="latest_blog_area section_gap">
             <div class="container">
                 <div class="section_title text-center">
-                    <h2 class="title_color">오늘의 인기 글</h2>
+                    <h2 class="title_color">최신 인기 글</h2>
                     <p style="visibility: hidden;">The French Revolution constituted for the conscience of the dominant aristocratic class a fall from </p>
                 </div>
                 <div class="row mb_30">
@@ -238,14 +240,15 @@
             //우선 첫화면이니까 아이디만 보내서 추천할거 받아오기..
             //이걸 함수로 만들어서 셀렉박스변경시에도 사용되게..
             //셀렉박스에서 값 받아오기(운동과 지역)
-            let exe = $('.recom_exercise').val();
-            let loc = $('.recom_location').val()+'-';
-            let id = $('.hiddenUser').val()+'-';
-            console.log(id+loc+exe);
-            let userId = id+loc+exe;
-            let recommFnc = function(userId){
+            
+            let recommFnc = function(){
+            	let exe = $('.recom_exercise').val();
+                let loc = $('.recom_location').val()+'-';
+                let id = $('.hiddenUser').val()+'-';
+                userId = id+loc+exe;
+                console.log(id+loc+exe);
                 $.ajax({
-                    url:'/own/band/'+userId,
+                    url:'/own/band/recom/'+userId,
                     dataType: 'json',
                     method: 'get',
                     contentType : "application/text; charset=utf-8;"
@@ -255,12 +258,25 @@
                         //하위 요소 전부 지우기
                         $(div).empty();
                         result.forEach(element => {
-                            let tag = `<div class="col-lg-3 col-sm-6">
+                            $(div).append(maketag(element));
+                        });
+                        //만약 결과값이 없으면...
+                        if(result.length==0){
+                            let element = {bandKeyword:'',bandLocation:'',bandName:'검색되는 값이없어요..<br>가치만들기>></br>'};
+                            $(div).append(maketag(element));
+                            //태그지우기
+                            $('.recomTag').remove();
+                        }
+                    });
+            }
+            //추천 만들기
+            function maketag(element){
+                let tag = `<div class="col-lg-3 col-sm-6">
                                 <div class="accomodation_item text-center">
                                     <div class="hotel_img">
                                         <img src="/band/image/room1.jpg" alt="">
                                     </div>
-                                    <div class="tags" >
+                                    <div class="tags recomTag" >
                                         <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandKeyword}</a>
                                         <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandLocation}</a>
                                     </div>
@@ -268,30 +284,34 @@
                                     <h5><small></small></h5>
                                 </div>
                             </div>`
-                            $(div).append(tag);
-                        });
-                    });
+                return tag;
             }
-            recommFnc(userId);
+            //페이지로드시 추천밴드
+            recommFnc();
+            //추천밴드 중 지역
             $('.recom_location').on('change', function(){
-                console.log($('.recom_location').val());
-                let exe = $('.recom_exercise').val();
-                let loc = $('.recom_location').val()+'-';
-                let id = $('.hiddenUser').val()+'-';
-                console.log(id+loc+exe);
-                let userId = id+loc+exe;
-                recommFnc(userId);
+                recommFnc();
             })
+            //추천밴드 중 종목
             $('.recom_exercise').on('change', function(){
-                console.log($('.recom_exercise').val());
-                let exe = $('.recom_exercise').val();
-                let loc = $('.recom_location').val()+'-';
-                let id = $('.hiddenUser').val()+'-';
-                console.log(id+loc+exe);
-                let userId = id+loc+exe;
-                recommFnc(userId);
+                recommFnc();
+            })
+            //추천위치설정하기
+            $('.book_now_btn').on('click', function(){
+                let bandLocation = $('.recom_location').val();
+                let userId = $('.hiddenUser').val();
+                console.log(bandLocation);
+                //리퀘스트바디가 있으니 아래를 json.stringify..
+                $.ajax({
+                    url:'/own/band/up',
+                    method: 'put',
+                    data: JSON.stringify({bandLocation, userId}),
+                    contentType: "application/json;"
+                }).then( res => {
+                    console.log(res);
+                })
             })
         </script>
+    </div>
     </body>
-   </div>
 </html>
