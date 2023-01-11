@@ -2,6 +2,8 @@ package co.prjt.own.sns.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import co.prjt.own.sns.service.SAccountVO;
 
 public interface SAccountMapper {
@@ -13,7 +15,7 @@ public interface SAccountMapper {
 	SAccountVO getSnsUser(String snsNickname);
 	
 	//SNS 계정가입
-	int insertSnsUser(SAccountVO SAccountVO);
+	int insertSnsUser(@Param ("userId") String id, @Param ("snsNickname") String snsNickname);
 	
 	//프로필 수정
 	int updateSnsUser(SAccountVO SAccountVO);

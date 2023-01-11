@@ -31,38 +31,41 @@
     <link href="/sns/css/main.css" rel="stylesheet">
 
     <style>
-        #my_modal {
-            display: none;
-            width: 700px;
-            height: 600px;
-            padding: 20px 60px;
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        /* Modal Content/Box */
+        .modal-content {
             background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
             border: 1px solid #888;
-            border-radius: 3px;
-            font-size: 16px;
+            width: 50%; /* Could be more or less, depending on screen size */
         }
-
-        #my_modal .modal_close_btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
         }
-
-        #my_modal2 {
-            display: none;
-            width: 700px;
-            height: 600px;
-            padding: 20px 60px;
-            background-color: #fefefe;
-            border: 1px solid #888;
-            border-radius: 3px;
-            font-size: 16px;
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
-
-        #my_modal2 .modal_close_btn2 {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        .modalBtn{
+            font-size: 13px;
         }
     </style>
 
@@ -166,7 +169,6 @@
                 </div>
             </div>
             <!--social and copyright end -->
-
         </div>
         <!--=================== side menu end====================-->
 
@@ -176,19 +178,35 @@
             <div id="snsprofilebox" style="border: 1px solid black; text-align: center;">
             <br>
             <div class="testimonial_box">
-                <div class="testimonial_author">
-
-                    <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
-					
-
-                    <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
-
-                   
+                <div class="testimonial_author">  
                     <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
                
                     <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
 
-                    <h5>게시글 갯수 / 팔로우 수 /</h5> <h5 id="popup_open_btn2"> 팔로워 수 <span th:text="${snsFollow}"></span> </h5>
+                    <h5>게시글 갯수 / 팔로우 수 /</h5> 
+                    <h1 class="modalBtn">팔로워 수<span th:text="${snsFollower}"></span></h1>
+ 
+                    <!-- 첫 번째 Modal -->
+                    <div class="modal">
+                
+                    <!-- 첫 번째 Modal의 내용 -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>                         
+                        나를 팔로우 한 사람
+                        <table border="1px">
+                            <thead>
+                                <tr>
+                                    <th>팔로우 목록</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="snsf : ${snsFList}">
+                                    <td th:text="${snsf.snsNickname}"></td>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+
                     <p>소개글을 입력하세요 .... <span>company</span></p>
                 </div>
 
@@ -205,15 +223,17 @@
             <img src="/sns/img/user.png" alt="author"> 하이라이트  <br> <br>
            </div>
            
-            <p></p>
             <hr>
-            <h5 style="text-align: right; font-size: 12px;" id="popup_open_btn">📝글 작성</h5>
-            <br>
 
-            <!-- ===================모달==================== -->
-         
-            <div id="my_modal">
-                글작성 폼 띄우기
+            <!-- 두 번째 Modal을 여는 클래스 -->
+            <h1 class="modalBtn" style="text-align: right;">📝글 작성</h1>
+        
+            <!-- 두 번째 Modal -->
+            <div class="modal">
+        
+            <!-- 두 번째 Modal의 내용 -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
                 <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm">
                     <label for="inputContent">내용</label>
                     <textarea type="text" name="snsBoardContent" id="inputContent"></textarea>
@@ -224,26 +244,27 @@
                     <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
                     <input type="submit" role="button" value="글쓰기"/>
                 </form>
-            <a class="modal_close_btn">닫기</a>
             </div>
+            </div>
+
+           <!-- 첫 번째 Modal을 여는 클래스 -->
+    
+    <hr>
  
-            <div id="my_modal2">
-                나를 팔로우 한 사람
-                <table border="1px">
-               <thead>
-                  <tr>
-                     <th>팔로우 목록</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr th:each="snsf : ${snsFList}">
-                     <td th:text="${snsf.snsFollowerId}"></td>
-               </tbody>
-            </table>
-            <a class="modal_close_btn2">닫기</a>
-            </div>
-          <!-- ================== 모달 end ====================== -->
-         
+ 
+    <hr>
+    <!-- 세 번째 Modal을 여는 클래스 -->
+    <h1 class="modalBtn">MODAL_3</h1>
+ 
+    <!-- 세 번째 Modal -->
+    <div class="modal">
+ 
+      <!-- 세 번째 Modal의 내용 -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>세 번째 Modal</p>
+      </div>
+    </div>
             <table border="1px">
                <thead>
                   <tr>
@@ -471,115 +492,107 @@
 
 </script>
 
-<!-- 글작성 모달 -->
-<script>
-    function modal(id) {
-        var zIndex = 9999;
-        var modal = document.getElementById(id);
-
-        // 모달 div 뒤에 희끄무레한 레이어
-        var bg = document.createElement('div');
-        bg.setStyle({
-            position: 'fixed',
-            zIndex: zIndex,
-            left: '0px',
-            top: '0px',
-            width: '100%',
-            height: '100%',
-            overflow: 'auto',
-            // 레이어 색갈은 여기서 바꾸면 됨
-            backgroundColor: 'rgba(0,0,0,0.4)'
-        });
-        document.body.append(bg);
-
-        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
-        modal.querySelector('.modal_close_btn').addEventListener('click', function() {
-            bg.remove();
-            modal.style.display = 'none';
-        });
-
-        modal.setStyle({
-            position: 'fixed',
-            display: 'block',
-            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-
-            // 시꺼먼 레이어 보다 한칸 위에 보이기
-            zIndex: zIndex + 1,
-
-            // div center 정렬
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            msTransform: 'translate(-50%, -50%)',
-            webkitTransform: 'translate(-50%, -50%)'
-        });
-    }
-
-    // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
-    Element.prototype.setStyle = function(styles) {
-        for (var k in styles) this.style[k] = styles[k];
-        return this;
-    };
-
-    document.getElementById('popup_open_btn').addEventListener('click', function() {
-        // 모달창 띄우기
-        modal('my_modal');
-    });
     
-// 팔로워 모달
-    function modal(id) {
-        var zIndex = 9999;
-        var modal = document.getElementById(id);
+    <script>
+        // Modal을 가져옵니다.
+        var modals = document.getElementsByClassName("modal");
+        // Modal을 띄우는 클래스 이름을 가져옵니다.
+        var btns = document.getElementsByClassName("modalBtn");
+        // Modal을 닫는 close 클래스를 가져옵니다.
+        var spanes = document.getElementsByClassName("close");
+        var funcs = [];
+        
+        // Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
+        function Modal(num) {
+        return function() {
+            // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
+            btns[num].onclick =  function() {
+                modals[num].style.display = "block";
+                console.log(num);
+            };
+        
+            // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
+            spanes[num].onclick = function() {
+                modals[num].style.display = "none";
+            };
+        };
+        }
+            
+        // 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
+        for(var i = 0; i < btns.length; i++) {
+        funcs[i] = Modal(i);
+        }
+        
+        // 원하는 Modal 수만큼 funcs 함수를 호출합니다.
+        for(var j = 0; j < btns.length; j++) {
+        funcs[j]();
+        }
+        
+        // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
+        window.onclick = function(event) {
+        if (event.target.className == "modal") {
+            event.target.style.display = "none";
+        }
+        };
 
-        // 모달 div 뒤에 희끄무레한 레이어
-        var bg = document.createElement('div');
-        bg.setStyle({
-            position: 'fixed',
-            zIndex: zIndex,
-            left: '0px',
-            top: '0px',
-            width: '100%',
-            height: '100%',
-            overflow: 'auto',
-            // 레이어 색갈은 여기서 바꾸면 됨
-            backgroundColor: 'rgba(0,0,0,0.4)'
-        });
-        document.body.append(bg);
 
-        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
-        modal.querySelector('.modal_close_btn2').addEventListener('click', function() {
-            bg.remove();
-            modal.style.display = 'none';
-        });
+    </script>
 
-        modal.setStyle({
-            position: 'fixed',
-            display: 'block',
-            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
 
-            // 시꺼먼 레이어 보다 한칸 위에 보이기
-            zIndex: zIndex + 1,
 
-            // div center 정렬
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            msTransform: 'translate(-50%, -50%)',
-            webkitTransform: 'translate(-50%, -50%)'
-        });
-    }
+<script>
+		//날짜 함수
+		function elapsedText(date) {
+		    console.log(date);
+		    date = new Date(date);
+		    // 초 (밀리초)
+		    const seconds = 1;
+		    // 분
+		    const minute = seconds * 60;
+		    // 시
+		    const hour = minute * 60;
+		    // 일
+		    const day = hour * 24;
+		    
+		    var today = new Date();
+		    var elapsedTime = Math.trunc((today.getTime() - date.getTime()) / 1000);
+		    
+		    var elapsedText = "";
+		    if (elapsedTime < seconds) {
+		        elapsedText = "방금 전";
+		    } else if (elapsedTime < minute) {
+		        elapsedText = elapsedTime + "초 전";
+		    } else if (elapsedTime < hour) {
+		        elapsedText = Math.trunc(elapsedTime / minute) + "분 전";
+		    } else if (elapsedTime < day) {
+		        elapsedText = Math.trunc(elapsedTime / hour) + "시간 전";
+		    } else if (elapsedTime < (day * 3)) {
+		        elapsedText = Math.trunc(elapsedTime / day) + "일 전";
+		    } else {
+		        elapsedText = SimpleDateTimeFormat(date, "yyyy-MM-dd");
+		    }
+		    
+		    return elapsedText;
+		}
+		//날짜고치기
+		function SimpleDateTimeFormat(date) {
+		        let month = date.getMonth() + 1;
+		        let day = date.getDate();
+		        let hour = date.getHours();
+		        let minute = date.getMinutes();
+		        let second = date.getSeconds();
+		
+		        month = month >= 10 ? month : '0' + month;
+		        day = day >= 10 ? day : '0' + day;
+		        hour = hour >= 10 ? hour : '0' + hour;
+		        minute = minute >= 10 ? minute : '0' + minute;
+		        second = second >= 10 ? second : '0' + second;
+		
+		        return date.getFullYear() + '-' + month + '-' + day;
+		}
 
-    // Element 에 style 한번에 오브젝트로 설정하는 함수 추가
-    Element.prototype.setStyle = function(styles) {
-        for (var k in styles) this.style[k] = styles[k];
-        return this;
-    };
-
-    document.getElementById('popup_open_btn2').addEventListener('click', function() {
-        // 모달창 띄우기
-        modal('my_modal2');
-    });
 </script>
+
 
 <!-- jquery -->
 <script src="/sns/js/jquery.min.js"></script>

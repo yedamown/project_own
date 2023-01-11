@@ -2,6 +2,9 @@ package co.prjt.own.sns.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
@@ -24,7 +28,6 @@ import co.prjt.own.sns.service.SFollowVO;
 @Controller
 @RequestMapping("/own")
 public class SnsController {
-	
 	@Autowired
 	SAccountService snsService;
 
@@ -51,26 +54,24 @@ public class SnsController {
 	
 	//1-1. sns 간편 회원 가입
 	@PostMapping("/snsAccount")
-	public String insertSnsUser(SAccountVO svo, OwnUserVO ovo) {
-		ownService.updateSnsUser(ovo.getUserId());
-		snsService.insertSnsUser(svo);
-		return "content/sns/snsHome";
+	@ResponseBody
+	public String insertSnsUser(HttpServletRequest request, OwnUserVO ovo, @RequestParam("snsNickname")String nickname) {
+		HttpSession session = request.getSession();
+		ovo = (OwnUserVO) session.getAttribute("loginUser");
+		System.out.println(ovo.getUserId() + nickname);
+		snsService.insertSnsUser(ovo.getUserId(), nickname);
+		return "redirect:/own/snsHome";
 	}
 	
 	//2. 개인피드	
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
-	public String getSnsUser(Model model, SFollowVO vo) {
-		model.addAttribute("snsFeed", boardService.getSnsBoardList(null));
-
-		//model.addAttribute("snsFollower", followService.followerCount(vo.getSnsFollowId()));
-
-		model.addAttribute("snsFollow", followService.followerCount(null));
-		model.addAttribute("snsFList", followService.getFollowList(vo));
-		List<SFollowVO> b = followService.getFollowList(null);
-		int a = followService.followerCount(null);
-		System.out.println(a);
-		System.out.println(b);
-
+	public String getSnsUser(HttpServletRequest request, Model model, SFollowVO svo, OwnUserVO ovo) {
+		HttpSession session = request.getSession();
+		ovo = (OwnUserVO) session.getAttribute("loginUser");
+		System.out.println(ovo);
+		model.addAttribute("snsFeed", boardService.getSnsBoardList(ovo.getUserId())); // sns 개인 피드 게시글 (sns계정식별번호로 조회)
+		model.addAttribute("snsFList", followService.getFollowerList(ovo.getSnsAccountNo())); //sns 팔로워 리스트
+		model.addAttribute("snsFollower", followService.followerCount(ovo.getSnsAccountNo())); //sns 팔로워 수
 		return "content/sns/snsFeed"; 
 	}
 	
@@ -83,8 +84,8 @@ public class SnsController {
 	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
-
 	public String insertSnsBoard(@RequestParam MultipartFile[] uploadfile,SBoardVO vo) {
+
 		boardService.insertSnsBoard(vo);
 		commonService.upload(uploadfile, vo.getSnsBoardNo(), "SBN_","SNS");
 		return "content/sns/snsFeed";

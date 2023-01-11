@@ -33,12 +33,6 @@ public class OwnhomeController {
 	// 수정테스트
 	// 통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 
-	// 홈페이지 채우기
-
-	// 수정테스트
-	// 통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
-
-	// 홈으로 이동
 	// 홈으로 이동
 	@RequestMapping(value = "/own/home", method = RequestMethod.GET)
 	public String ownHome(OwnUserVO vo, HttpServletRequest request) { // 오운홈으로 가는 페이지이동
@@ -48,11 +42,11 @@ public class OwnhomeController {
 	}
 
 	// 로그인폼으로 이동
-
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
 	public String ownLogin(Model model) { // 오운로그인으로..
 		return "content/own/ownlogin";
 	}
+	
 
 	// 로그인 하기
 	@PostMapping("/login")
@@ -90,7 +84,16 @@ public class OwnhomeController {
 	public String ownSignin(Model model) { // 오운로그인으로..
 		return "content/own/ownsignin";
 	}
-
+	
+	//아이디 중복체크
+	@PostMapping("/own/idcheck")
+	@ResponseBody
+	public int idcheck(String id) {
+		System.out.println("-===아이디입니다==="+id);
+		int r = ownMapper.idcheck(id);
+		return r;
+	}
+	
 	// 등록
 	@PostMapping("/own/userInfo")
 	@ResponseBody // 데이터리턴할때 넣어줘야함. 리턴값을 json 변환

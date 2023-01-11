@@ -5,7 +5,7 @@ import java.util.List;
 public interface SBoardService {
 	
     //SNS 게시글 전체 조회
-	 public List<SBoardVO> getSnsBoardList(SBoardVO SBaordVO);
+	 public List<SBoardVO> getSnsBoardList(String id);
 	 
 	 //sns 게시글 한건 조회
 	 SBoardVO getSnsBoard(String snsBoardNo);

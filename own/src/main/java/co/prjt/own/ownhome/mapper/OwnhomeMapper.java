@@ -9,7 +9,8 @@ public interface OwnhomeMapper {
 	public OwnUserVO login(String id);
 	public List<OwnUserVO> getUserList(OwnUserVO vo);
 	public String snsLogin(String id);
-	
+
+	public int idcheck(String id);	
 	//sns 유저 회원가입
 	public int updateSnsUser(String id);
 	
