@@ -34,6 +34,9 @@ public class BandServiceImpl implements BandService{
 	@Override
 	public List<Map<String, Object>> getBandAll(BandVO vo, Paging paging) {
 		paging.setTotalRecord(bandMapper.count(vo));
+		paging.setPageUnit(8);
+		//임시 5..
+		paging.setPageSize(5);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		return bandMapper.getBandAll(vo);
@@ -137,7 +140,9 @@ public class BandServiceImpl implements BandService{
 		//설정으로 추천리스트받아옴
 		List<BandVO> list = bandMapper.recomBand(band);
 		//4개만 남기고 자르기
-		list = list.subList(0, 4);
+		if(list.size()>5) {
+			list = list.subList(0, 4);
+		}
 		return list;
 	}
 

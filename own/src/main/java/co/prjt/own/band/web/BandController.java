@@ -111,4 +111,16 @@ public class BandController {
 		model.addAttribute("bandList", bandService.recomBandPage(band, paging));
 		return "content/band/bandSearch";
 	}
+	//홈에서 밴드검색
+	@RequestMapping("/bandSearch")
+	public String bandSearch(Model model, Paging paging, BandVO band) {
+
+		//운동종류+관심지역 셀렉트박스
+		model.addAttribute("location", bandService.allLocation());
+		model.addAttribute("exercise", bandService.allExcersie());
+
+		
+		model.addAttribute("bandList", bandService.getBandAll(band, paging));
+		return "content/band/bandSearch";
+	}
 }
