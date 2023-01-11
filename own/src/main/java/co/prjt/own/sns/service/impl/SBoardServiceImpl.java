@@ -15,8 +15,8 @@ public class SBoardServiceImpl implements SBoardService {
 	@Autowired SBoardMapper sBoardMapper;
 
 	@Override
-	public List<SBoardVO> getSnsBoardList(SBoardVO SBaordVO) {
-		return sBoardMapper.getSnsBoardList(SBaordVO);
+	public List<SBoardVO> getSnsBoardList(String id) {
+		return sBoardMapper.getSnsBoardList(id);
 	}
 
 	@Override

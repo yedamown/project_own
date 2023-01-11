@@ -46,7 +46,7 @@ select * from own_users
       UPDATE OWN_USERS 
       SET SNS_ACCOUNT_NO = 'SAU_'||((sns_account_no.nextval) - 1)
       WHERE USER_ID = #{userId}
-   </update>-->
+   </update>
    
    <update id="updateSnsUser" parameterType="String">
   BEGIN
@@ -63,7 +63,7 @@ select * from own_users
          VALUES( #{snsNickname},
                'SAU_'||#{snsAccountNo});
    END;
-   </update>
+   </update>-->
    <!--================= SNS End ==================-->
    
 </mapper>

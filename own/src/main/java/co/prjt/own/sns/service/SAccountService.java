@@ -2,6 +2,8 @@ package co.prjt.own.sns.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface SAccountService {
 	//SNS가입 계정 전체 조회
 	public List<SAccountVO> getSnsUserList(SAccountVO SAccountVO);
@@ -10,7 +12,7 @@ public interface SAccountService {
 	SAccountVO getSnsUser(String snsNickname);
 	
 	//SNS 계정가입
-	int insertSnsUser(SAccountVO SAccountVO);
+	int insertSnsUser(@Param ("userId") String id, @Param ("snsNickname") String snsNickname);
 	
 	//프로필 수정
 	int updateSnsUser(SAccountVO SAccountVO);
