@@ -11,11 +11,12 @@ public interface OwnhomeService {
 	public int idcheck(String id);	
 	//로그인
 	public OwnUserVO login(String id);
-	
-	
-	
+	//아이디찾기
+	public void searchId(String email);
+		
 	public String snsLogin(String id);
 	
 	//sns 유저 회원가입
 	public int updateSnsUser(String id);
+	
 }
