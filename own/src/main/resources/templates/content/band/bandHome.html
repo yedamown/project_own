@@ -46,9 +46,9 @@
 			                        <div class="blog_right_sidebar" style="border: hidden;width: 200%;margin-left: 100px;">
 			                            <aside class="single_sidebar_widget search_widget">
 			                                <div class="input-group">
-			                                    <input type="text" class="form-control" placeholder="오운 가치 검색"style="text-align: center;">
+			                                    <input type="text" class="form-control" name="bandName" placeholder="오운 가치 검색"style="text-align: center;">
 			                                    <span class="input-group-btn">
-			                                        <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+			                                        <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
 			                                    </span>
 			                                </div>
 			                            </aside>
@@ -311,6 +311,11 @@
                     console.log(res);
                     alert('지역설정변경')
                 })
+            })
+            
+            //검색버튼
+            $('.searchBtn').on('click', function(){
+            	window.location = '/own/band/bandSearch?bandName='+$('input[name="bandName"]').val();
             })
         </script>
         <script src="/band/js/popper.js"></script>

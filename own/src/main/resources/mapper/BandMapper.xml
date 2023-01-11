@@ -5,13 +5,16 @@
 <mapper namespace="co.prjt.own.band.mapper.BandMapper">
 	<sql id="recom">
 		<if test="bandCategory != null and bandCategory !=''">
-			AND BAND_CATEGORY LIKE '%' || #{bandCategory} || '%'
+			AND BAND_CATEGORY = #{bandCategory}
 		</if>
 		<if test="bandLocation != null and bandLocation !=''">
 			AND BAND_LOCATION = #{bandLocation}
 		</if>
 		<if test="bandName != null and bandName !=''">
 			AND BAND_NAME LIKE '%' || #{bandName} || '%'
+		</if>
+		<if test="bandTag != null and bandTag !=''">
+			AND BAND_TAG LIKE '%' || #{bandTag} || '%'
 		</if>
 	</sql>
 	<!-- 인서트업데이트 추후 수정...이상함 -->
@@ -87,7 +90,7 @@
 	<sql id="condition">
 		<where>
 			<if test="bandCategory != null and bandCategory !=''">
-				BAND_CATEGORY LIKE '%' || #{bandKeyword} || '%'
+				AND BAND_CATEGORY LIKE = #{bandCategory} 
 			</if>
 			<if test="bandOpenOption != null and bandOpenOption !=''">
 				AND band_open_option = #{bandOpenOption}

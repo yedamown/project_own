@@ -1,0 +1,137 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}"
+      lang="ko">
+    <head>
+    	<!-- jquery -->
+    	<script type="text/javascript" src="/band/js/jquery-3.2.1.js"></script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="/band/image/favicon.png" type="image/png">
+        <title>Royal Hotel</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/band/css/bootstrap.css">
+        <link rel="stylesheet" href="/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/band/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/band/css/style.css">
+        <link rel="stylesheet" href="/band/css/responsive.css">
+    </head>
+    <body>
+    <div layout:fragment="content">
+        
+        <!--================MY 가치 중 검색 Area =================-->
+        <section class="banner_area">
+            <div class="booking_table d_flex align-items-center"  style="min-height: 300px;">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+				<div class="container">
+					<div class="banner_content text-center">
+						<!-- <h6>Today's Exercise together</h6> -->
+						<h2>가치 검색</h2>
+						<!-- <p>Exercise to stimulate, not to annihilate. The world wasn't formed in a day, and neither were we. Set small goals and build upon them</p> -->
+						<!-- <a href="#" class="btn theme_btn button_hover">Get Started</a> -->
+					</div>
+				</div>
+            </div>
+            
+        <!--================ input-group ================-->
+            <form name="recomFrm" class="recomFrm">
+                <div class="hotel_booking_area position" >
+                    <div class="container">
+                        <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.3);">
+                            <div class="input-group">
+                                
+                                    <input type="text" class="form-control" placeholder="오운 가치이름 검색"style="text-align: center;" name="bandName"  th:value="${bandVO.bandName}">
+                                    <input type="hidden" name="page" value="1">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default"><i class="lnr lnr-magnifier"></i></button>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--================ 셀렉트박스  =================-->
+	        	<div class="col-md-9">
+	                <div class="boking_table">
+	                    <div class="row">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <select class="exercise  form-select" th:value="*{exercise}" name="bandCategory">
+                                        <option value="">관심운동..전체</option>
+                                        <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}" th:selected="${#strings.equals(exe.exersubNo, bandVO.bandCategory)}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <select class="location  form-select" th:value="*{location}" name="bandLocation">
+                                        <option value="">관심지역..전체</option>
+                                        <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${#strings.equals(loc.locCode, bandVO.bandLocation)}"></option>
+                                    </select>
+                                </div>
+                            </div>
+	                    </div>
+	                </div>
+	            </div>
+        <!--================ 셀렉트박스  =================-->
+            </form>
+        <!--================ input-group ================-->
+        </section>
+        <!--================MY 가치 중 검색 Area 끝=================-->
+        <!-- 서치 -->
+        <section class="accomodation_area section_gap" style="padding-top: 0px;">
+            <div class="container">
+                <div class="row mb_30">
+                    <!--================ 추천가치 시작  =================-->    
+                    <div class="col-lg-3 col-sm-6" th:each="band, bandStat : ${bandList}">
+                        <div class="accomodation_item text-center">
+                            <div class="hotel_img">
+                                <img src="/band/image/room1.jpg" alt="">
+                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
+                            </div>
+                            <div class="tags" >
+                                <a href="#" class="button_hover tag_btn" style="color: orange;" th:text="${band.bandCategory}">축구</a>
+                                <a href="#" class="button_hover tag_btn" style="color: orange;" th:text="${band.bandLocation}">대구광역시</a>
+                            </div>
+                            <a href="#" class="sec_h4" style="color: blorangeack;"><h4 class="sec_h4" style="color: blorangeack;"th:text="${band.bandName}">소소필라테스</h4></a>
+                            <h5><small></small></h5>
+                        </div>
+                    </div>
+                    <!--================ 추천가치 끝  =================-->   
+                </div>
+             </div>
+        </section>
+         <!--================ 페이지 Area  =================-->
+        <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
+        <!--================ 페이지 Area 끝  =================-->
+        <!--================ 내 가치 끝 Area  =================-->    
+    <script>
+		  //페이징+검색처리
+		    function gopage(i) {
+		    	recomFrm.page.value = i;
+		    	recomFrm.submit();
+		    }
+        $(".recomFrm").on('change',function(){
+            $('.recomFrm').submit();
+           })
+    </script>
+    <script src="/band/js/popper.js"></script>
+    <script src="/band/js/bootstrap.min.js"></script>
+    <script src="/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="/band/js/jquery.ajaxchimp.min.js"></script>
+    <script src="/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+    <script src="/band/js/mail-script.js"></script>
+    <script src="/band/js/stellar.js"></script>
+    <script src="/band/vendors/lightbox/simpleLightbox.min.js"></script>
+    <script src="/band/js/custom.js"></script>
+    </div>
+    </body>
+</html>

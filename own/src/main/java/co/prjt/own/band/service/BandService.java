@@ -10,8 +10,8 @@ public interface BandService {
 		public int insertBand(BandVO vo);
 		//밴드 수정
 		public int updateBand(BandVO vo);
-		//밴드 리스트 전체 + 검색
-		//밴드 관심지역+좋아하는 운동있으면 그걸로 검색하기... 없으면 그냥
+		//밴드 리스트 전체 + 검색 
+		//밴드 없으면 그냥?
 		public List<Map<String, Object>> getBandAll(BandVO vo, Paging paging);
 		//밴드 리스트 전체 + 검색 카운트..위와세트
 		public int count(BandVO vo);
