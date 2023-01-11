@@ -85,6 +85,7 @@ public class SnsController {
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
 	public String insertSnsBoard(@RequestParam MultipartFile[] uploadfile,SBoardVO vo) {
+
 		boardService.insertSnsBoard(vo);
 		commonService.upload(uploadfile, vo.getSnsBoardNo(), "SBN_","SNS");
 		return "content/sns/snsFeed";

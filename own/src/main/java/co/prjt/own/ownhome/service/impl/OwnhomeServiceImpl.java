@@ -39,5 +39,11 @@ public class OwnhomeServiceImpl implements OwnhomeService {
 	public int updateSnsUser(String id) {
 		return ownhomeMapper.updateSnsUser(id);
 	}
+
+	@Override
+	public int idcheck(String id) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.idcheck(id);
+	}
 	
 }
