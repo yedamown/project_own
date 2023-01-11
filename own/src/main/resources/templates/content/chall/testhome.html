@@ -34,48 +34,11 @@
 	    <!-- Template Javascript -->
 	    <script src="/chall/js/main.js"></script>
 			<meta charset="utf-8">
-			<title> OWN _ 도전 </title>
+			<title>Insert title here</title>
 	</head>
-<body>
-<div th:if="${session.loginUser}">
-		도전 홈 _ 로그인 중
-			<h1 th:text="${session.loginUser.userId}"></h1>
-			<input id ="userId" type="hidden" th:value="${session.loginUser.userId}">
-		</div>
-	<div th:if="${session.loginUser} == null">
-		로그인 안한 상태
-	</div>
-
-		<button type="button" id="addChallBtn">도전등록으로 이동</button>
-		<a href="/own/chall/mypage">마이페이지</a>
-		<a href="/own/chall/insertFormChall"></a>
-		<h3>오운 홈</h3>
-		<table border="solid 1">
-			<thead>
-				<tr>
-					<th>도전카테고리</th>
-					<th>제목</th>
-					<th>도전기간</th>
-					<th>도전시작</th>
-					<th>도전횟수</th>
-					<th>도전금액</th>
-				</tr>
-			</thead>
-			<tbody>
-			
-				<tr th:each="cha: ${challenges}">
-					<td th:text="${cha.challCategory}"></td>
-					<td th:text="${cha.challTitle}" />
-					<td th:text="${cha.challDuration}"></td>
-					<td th:text="${#dates.format(cha.challStartdate, 'MM월 dd일')}"></td>
-					<td th:text="${cha.challFreq}"></td>
-					<td th:text="${cha.challPrice}"></td>
-					<input type="hidden" th:value="${cha.challNo}" />
-				</tr>
-			</tbody>
-		</table>
-
-<!-- Class Start -->
+	
+	<body>
+	<!-- Class Start -->
     <div class="container-fluid pt-5">
       <div class="container">
         <div class="text-center pb-2">
@@ -206,23 +169,10 @@
       </div>
     </div>
     <!-- Class End -->
+    
+    <script>
+    </script>
+	
 
-
-
-  </body>
-		<script>
-			$('#addChallBtn').on('click', function() {
-				console.log('도전 등록이동버튼');
-				let userId = $('#userId').val();
-				console.log(userId);
-				if(userId !=null){
-					location.href = '/own/chall/insertFormChall';
-				} else {
-					alert('로그인을 먼저 해 주세요.')
-					location.href = '/own/login';
-				}
-			});
-		</script>
-
-	</body>
+</body>
 </html>

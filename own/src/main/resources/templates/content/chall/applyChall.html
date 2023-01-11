@@ -11,6 +11,7 @@
 <div layout:fragment="content">
 	<body>
 	<li>도전제목: <span th:text="${detailChall.challTitle}"></span>
+	<li>도전대표 이미지 <img th:src="|/imgView/${challImg[0].mediaServerFile}|" alt="" />
 	<li>도전카테고리: <span th:text="${detailChall.challCategory}"></span>
 	<input id ="challNo" type="hidden" th:value="${detailChall.challNo}" />
 
