@@ -92,8 +92,6 @@ public class BandController {
 	@ResponseBody
 	public List<BandVO> recomBand(@PathVariable String userId){
 		//유저 아이디지만 스트링으로 여러가지 값이 담김
-		//페이지이동용으로도 같이쓰게..여기선 paging안쓰지만 
-		Paging paging = new Paging();
 		return bandService.recomBand(userId);
 	}
 	//밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용
