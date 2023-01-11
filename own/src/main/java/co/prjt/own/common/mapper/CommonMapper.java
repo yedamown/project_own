@@ -8,10 +8,17 @@ import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.common.service.MultimediaVO;
 
 public interface CommonMapper {
-	// 운동목록 가져오기
+	//운동분류를 가져오는것.
 	public List<ExersubVO> getListExersub();
+	
 	//이미지넣기
 	public List<MultimediaVO> fileUpload();
-	public int upload(MultimediaVO vo);
+	
+	// 멀티미디어 테이블에 넣기
+	public String upload(MultipartFile[] uploadfile,String IndenfityId, String INO, String category);
+	
+	//멀티미디어 검색하기
+	public List<MultimediaVO> selectImgAll(String no);
 
+	public void upload(MultimediaVO vo);
 }

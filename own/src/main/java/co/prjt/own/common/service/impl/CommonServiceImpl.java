@@ -77,5 +77,11 @@ public class CommonServiceImpl implements CommonService {
 		return null;
 	}
 
+	//멀티미디어에서 각 식별번호로 멀티미디어 파일 검색
+	@Override
+	public List<MultimediaVO> selectImgAll(String no) {
+		return commonMapper.selectImgAll(no);
+	}
+
 
 }

@@ -2,23 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.common.mapper.CommonMapper">
 
-<select id="getListExersub" resultType="co.prjt.own.common.service.ExersubVO">
-select * from exer_sub
-</select>
+	<select id="getListExersub"
+		resultType="co.prjt.own.common.service.ExersubVO">
+		select * from exer_sub
+	</select>
 
-<!-- 이미지 삽입 -->
-<insert id="upload">
-<selectKey keyProperty="mediaNo" resultType="string" order="BEFORE">
+	<!-- 이미지 삽입 -->
+	<insert id="upload">
+		<selectKey keyProperty="mediaNo" resultType="string"
+			order="BEFORE">
 			SELECT media_seq.NEXTVAL-1 FROM DUAL
-</selectKey>
-INSERT INTO MULTIMEDIA VALUES(
-	#{mediaNo},
-	#{mediaRealFile},
-	#{mediaServerFile},
-	#{mediaFilePath},
-	#{ino} || #{identifyId},
-	#{mediaCategory},
-	'1'
-)
-</insert>
+		</selectKey>
+		INSERT INTO MULTIMEDIA VALUES(
+		#{mediaNo},
+		#{mediaRealFile},
+		#{mediaServerFile},
+		#{mediaFilePath},
+		#{ino} || #{identifyId},
+		#{mediaCategory},
+		'1'
+		)
+	</insert>
+
+	<select id="selectImgAll" resultType="co.prjt.own.common.service.MultimediaVO">
+		SELECT * FROM MULTIMEDIA
+		WHERE IDENTIFY_ID = #{value} 
+	</select>
 </mapper>

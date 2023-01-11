@@ -14,6 +14,8 @@
 		<ul>
 		<input id ="challNo" type="hidden" th:value="${detailChall.challNo}" />
 		<li>도전제목: <span th:text="${detailChall.challTitle}"></span></li>
+		<li>도전대표 이미지 <img th:src="|/imgView/${challImg[0].mediaServerFile}|" alt="" />
+		<li>인증성공 이미지 <span th:text="${challImg[1].mediaRealFile}"></span></li> 
 		<li>도전카테고리: <span th:text="${detailChall.challCategory}"></span></li>
 		<li>도전태그: <span th:text="${detailChall.challTag}"></span></li>
 		<li>도전기간: <span th:text="${detailChall.challDuration}"></span></li>
@@ -21,10 +23,14 @@
 		<li>참여가능 인원:<span th:text="${detailChall.challFreq}"></span></li>
 		<li>도전금액:<span th:text="${detailChall.challPrice}"></span></li>
 		<li>인증방법: <span th:text="${detailChall.vldMethod}"></span></li>
+		<li>인증성공 예시 <img th:src="|/imgView/${challImg[1].mediaServerFile}|" alt="" width="400px"/>
+		<li>인증실패 예시 <img th:src="|/imgView/${challImg[2].mediaServerFile}|" alt="" width="400px" />
 		<li>도전 시작날짜: <span th:text="${detailChall.challStartdate}"></span></li>
 		<li>도전리더: <span th:text="${detailChall.challLeader}"></span></li>
+		<li th:text="${challImg[0].mediaRealFile}"></li>
 		<button type="button" id="applyBtn">도전 신청하기</button>
 		</ul>
+	
 		<script>
 			$('#applyBtn').on("click", function(){
 				let cNo =  $('#challNo').val();
