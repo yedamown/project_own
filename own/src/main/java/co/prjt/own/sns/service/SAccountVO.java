@@ -6,7 +6,6 @@ import lombok.Data;
 public class SAccountVO {
 	String snsNickname;
 	String snsProfile;
-	String snsBoardNo;
 	String snsWebsite;
 	String snsAccountNo;
 

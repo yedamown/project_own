@@ -59,7 +59,7 @@ public class OwnhomeController {
 		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", chk);
-//		session.setAttribute("snsNickname",ownMapper.snsLogin(vo.getUserId()));
+		session.setAttribute("snsNickname",ownMapper.snsLogin(vo.getUserId()));
 		return 1;
 		}
 		else

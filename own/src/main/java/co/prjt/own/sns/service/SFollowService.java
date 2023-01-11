@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface SFollowService {
 	//팔로잉 조회
-	public List<SFollowVO> getFollowList(SFollowVO vo);	
+	public List<SFollowVO> getFollowList(String id);	
 	
 	//팔로워 조회
-	public List<SFollowVO> getFollowerList(SFollowVO vo);
+	public List<SFollowVO> getFollowerList(String id);
 	
 	//팔로잉
 	int insertFollow(SFollowVO SFollowVO);

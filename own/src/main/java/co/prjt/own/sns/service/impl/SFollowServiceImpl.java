@@ -15,13 +15,13 @@ public class SFollowServiceImpl implements SFollowService {
 	@Autowired SFollowMapper sFollowMapper;
 	
 	@Override
-	public List<SFollowVO> getFollowList(SFollowVO vo) {
-		return sFollowMapper.getFollowList(vo);
+	public List<SFollowVO> getFollowList(String id) {
+		return sFollowMapper.getFollowList(id);
 	}
 
 	@Override
-	public List<SFollowVO> getFollowerList(SFollowVO vo) {
-		return sFollowMapper.getFollowerList(vo);
+	public List<SFollowVO> getFollowerList(String id) {
+		return sFollowMapper.getFollowerList(id);
 	}
 
 	@Override

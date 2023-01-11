@@ -2,9 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.sns.mapper.SBoardMapper">
 
-	<!-- 게시글 전체 조회 -->
+	<!-- 내 게시글 전체 조회 -->
 	<select id="getSnsBoardList" resultType="SBoardVO">
-		SELECT * FROM SNS_BOARD
+	SELECT * FROM SNS_BOARD 
+		WHERE SNS_ACCOUNT_NO = (SELECT s.sns_account_no
+		                        FROM sns_account s, own_users o
+		                        WHERE o.user_id = #{userId}
+		                        AND s.sns_account_no = o.sns_account_no)
+		ORDER BY SNS_BOARD_NO	
 	</select>
 	
 	<!-- 게시글 한건 조회 -->

@@ -9,13 +9,18 @@
 	
 	<!-- SNS 회원 가입 -->
 	<insert id="insertSnsUser">
-		<selectKey keyProperty="snsAccountNo" resultType="string" order="BEFORE">
-			SELECT sns_account_no.NEXTVAL FROM DUAL
-		</selectKey>
-			INSERT INTO SNS_ACCOUNT (SNS_NICKNAME,
-									SNS_ACCOUNT_NO)
-			VALUES( #{snsNickname},
-					#{snsAccountNo})									
+	BEGIN
+	      INSERT INTO SNS_ACCOUNT (SNS_NICKNAME,
+	                           SNS_ACCOUNT_NO)
+	         VALUES( #{snsNickname},
+	               'SAU_'||'2223');
+	      UPDATE 
+	         OWN_USERS
+	      SET
+	         SNS_ACCOUNT_NO = 'SAU_'||'2223'
+	         WHERE USER_ID = #{userId};     
+	END;
+									
 	</insert>
 	
 	
