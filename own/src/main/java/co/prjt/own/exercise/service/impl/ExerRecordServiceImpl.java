@@ -30,4 +30,10 @@ public class ExerRecordServiceImpl implements ExerRecordService{
 		return mapper.ExerRecordList(userId);
 	}
 
+	@Override
+	public List<ExerRecordVO> LatestExerRecord(String userId) {
+		// 오운 유저의 운동 기록 중 가장 최신 데이터들 조회
+		return mapper.LatestExerRecord(userId);
+	}
+
 }

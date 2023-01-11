@@ -35,19 +35,17 @@ public class OwnhomeController {
 
 	// 홈으로 이동
 	@RequestMapping(value = "/own/home", method = RequestMethod.GET)
-	public String ownHome(OwnUserVO vo ,HttpServletRequest request) { // 오운홈으로 가는 페이지이동
-	      HttpSession session = request.getSession();
-	      
-	      vo = (OwnUserVO) session.getAttribute("loginUser");
-	      return "content/own/ownhome";
-	   }
+	public String ownHome(OwnUserVO vo, HttpServletRequest request) { // 오운홈으로 가는 페이지이동
+		HttpSession session = request.getSession();
+		vo = (OwnUserVO) session.getAttribute("loginUser");
+		return "content/own/ownhome";
+	}
 
 	// 로그인폼으로 이동
 	@RequestMapping(value = "/own/login", method = RequestMethod.GET)
 	public String ownLogin(Model model) { // 오운로그인으로..
 		return "content/own/ownlogin";
 	}
-	
 	
 
 	// 로그인 하기
@@ -56,30 +54,31 @@ public class OwnhomeController {
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
 		OwnUserVO chk = ownMapper.login(vo.getUserId());
 
-		if(chk.getUserPasswd().equals(vo.getUserPasswd())) {
-		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", chk);
-		session.setAttribute("snsNickname",ownMapper.snsLogin(vo.getUserId()));
-		return 1;
-		}
-		else
-		return 0;
+		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
+			HttpSession session = request.getSession();
+			session.setAttribute("loginUser", chk);
+//		session.setAttribute("snsNickname",ownMapper.snsLogin(vo.getUserId()));
+			return 1;
+		} else
+			return 0;
 	}
 
 	@GetMapping("/own/logout")
-	public String logout(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        return "redirect:/own/home";
-    }
+	public String logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+		return "redirect:/own/home";
+	}
+
 	// 테스트페이지
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) { // 오운홈으로 가는 페이지이동
 		return "content/own/test";
 	}
-	//머지되게해주세요
+
+	// 머지되게해주세요
 	// 회원가입 폼으로 이동
 	@RequestMapping(value = "/own/SigninForm", method = RequestMethod.GET)
 	public String ownSignin(Model model) { // 오운로그인으로..
@@ -103,7 +102,7 @@ public class OwnhomeController {
 		ownMapper.insertUser(vo);
 		return vo;
 	}
- 
+
 	// 오운완(나의운동기록하기) 페이지 이동
 	@RequestMapping(value = "/own/ownRecordForm", method = RequestMethod.GET)
 	public String ownRecordForm() {
@@ -125,15 +124,19 @@ public class OwnhomeController {
 
 	// 오운완(나의운동기록보기) 페이지 이동
 	@RequestMapping(value = "/own/ownRecordList", method = RequestMethod.GET)
-	public String ownRecordList() {
+	public String ownRecordList(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		// 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 운동기록 가져오기
+		model.addAttribute("lRecord", exerMapper.LatestExerRecord(user.getUserId()));
 		return "content/own/ownRecordList";
 	}
 
-	// 회원 운동 기록 가져오기
-	@PostMapping("/own/getExerRecord")
-	@ResponseBody 
-	public List<ExerRecordVO> getExerRecord(@RequestBody ExerRecordVO vo) {
-		String id = vo.getUserId();
-		return exerMapper.ExerRecordList(id);
-	}
+//	// 회원의 가장 최신날짜 운동기록 가져오기
+//	@PostMapping("/own/getExerRecord")
+//	@ResponseBody 
+//	public List<ExerRecordVO> getExerRecord(@RequestBody ExerRecordVO vo) {
+//		String id = vo.getUserId();
+//		return exerMapper.LatestExerRecord(id);
+//	}
 }
