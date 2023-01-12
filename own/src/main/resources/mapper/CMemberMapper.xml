@@ -9,4 +9,11 @@
 		WHERE USER_ID = #{userId}
 	</select>
 	
+	<update id="updateCMem" parameterType="co.prjt.own.chall.service.CMemberVO">
+		UPDATE CHALL_MEMBER
+		SET MEM_NICKNAME =  #{memNickname},
+    		MEM_INTRO = #{memIntro}
+		WHERE USER_ID = #{userId}
+	</update>
+	
 </mapper>
