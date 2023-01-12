@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.exercise.service.ExerRecordVO;
-import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 
@@ -133,12 +131,16 @@ public class OwnhomeController {
 		model.addAttribute("lRecord", exerMapper.LatestExerRecord(user.getUserId()));
 		return "content/own/ownRecordList";
 	}
-
-//	// 회원의 가장 최신날짜 운동기록 가져오기
-//	@PostMapping("/own/getExerRecord")
-//	@ResponseBody 
-//	public List<ExerRecordVO> getExerRecord(@RequestBody ExerRecordVO vo) {
-//		String id = vo.getUserId();
-//		return exerMapper.LatestExerRecord(id);
-//	}
+	
+	// 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 기록의 갯수 가져오기
+	@RequestMapping(value = "own/dayChart", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ExerRecordVO> dayChart(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		List<ExerRecordVO> count = exerMapper.DayRecordCounting(user.getUserId());
+		model.addAttribute("ECount", count);
+		return count;
+	}
+	
 }

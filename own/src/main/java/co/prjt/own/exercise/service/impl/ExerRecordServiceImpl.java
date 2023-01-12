@@ -36,4 +36,10 @@ public class ExerRecordServiceImpl implements ExerRecordService{
 		return mapper.LatestExerRecord(userId);
 	}
 
+	@Override
+	public List<ExerRecordVO> DayRecordCounting(String userId) {
+		// 최신 데이터에서 개수 카운팅
+		return mapper.DayRecordCounting(userId);
+	}
+
 }
