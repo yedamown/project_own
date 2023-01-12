@@ -22,6 +22,7 @@ import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.CommonService;
 import co.prjt.own.ownhome.service.OwnUserVO;
 
 
@@ -32,6 +33,9 @@ public class BandController {
 	BandService bandService;
 	@Autowired
 	BandMemberDefaultService bandMemberDefaultService;
+	@Autowired
+	CommonService common;
+	
 	//밴드 홈으로 가기
 	@RequestMapping("")
 	public String bandHome(Model model, HttpServletRequest request) {
@@ -120,5 +124,12 @@ public class BandController {
 		
 		model.addAttribute("bandList", bandService.getBandAll(band, paging));
 		return "content/band/bandSearch";
+	}
+	//밴드생성
+	@RequestMapping("/bandCreate")
+	public String bandCreate(Model model) {
+		//샘플이미지 네장 실어보내기
+		model.addAttribute("createImage", common.selectImgAll("BAND_CREATE"));
+		return "content/band/bandCreate";
 	}
 }

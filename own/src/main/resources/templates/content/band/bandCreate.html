@@ -1,0 +1,398 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}"
+      lang="ko">
+    <head>
+    	<!-- jquery -->
+    	<script type="text/javascript" src="/band/js/jquery-3.2.1.js"></script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="/band/image/favicon.png" type="image/png">
+        <title>Royal Hotel</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/band/css/bootstrap.css">
+        <link rel="stylesheet" href="/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/band/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/band/css/style.css">
+        <link rel="stylesheet" href="/band/css/responsive.css">
+        <!--어썸폰트 무료?-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <style>
+        #alertTag2.vibration{
+          animation: vibration 0.1s infinite;
+        }
+        #alertTag.vibration{
+          animation: vibration 0.1s infinite;
+        }
+        @keyframes vibration {
+          from {
+            transform: rotate(1deg);
+          }
+          to {
+            transform: rotate(-1deg);
+          }
+        }
+        .malp {
+          background: #f3f3f3;
+          border: 1px solid #d8d8d8;
+          text-align: center;
+          border-radius: 50px;
+          width: 50px;
+          height: 50px;
+          padding: 2px 8px;
+          cursor: pointer;
+          margin-left: 10px;
+        }
+
+        /* 말풍선 적절한 top 과 margin-left 로 위치조정 */
+        .arrow_box {
+          display: none;
+          position: absolute;
+          left: -42px;
+          width: 300px;
+          padding: 8px;
+          -webkit-border-radius: 8px;
+          -moz-border-radius: 8px;
+          border-radius: 8px;
+          background: #333;
+          color: #fff;
+          font-size: 14px;
+          z-index: 999;
+        }
+
+        .arrow_box:after {
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          margin-left: -7px;
+          border: solid transparent;
+          border-color: rgba(51, 51, 51, 0);
+          border-bottom-color: #333;
+          border-width: 10px;
+          pointer-events: none;
+          content: ' ';
+        }
+
+        .malp:hover + p.arrow_box {
+          display: block;
+        }
+      </style>
+    </head>
+    <body>
+    <div layout:fragment="content">
+    <p th:text="${createImage}"></p><p>???</p>
+        <!--================위에  Area =================-->
+        <section class="banner_area">
+            <div class="booking_table d_flex align-items-center" style="min-height: 300px;">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+            </div>
+        </section>
+        <!--================위에 Area 끝=================-->
+        
+        <!--================ 폼 Area  =================-->
+		<div class="whole-wrap" style="height: 1500px;">
+			<div class="container">
+				<div class="section-top-border" style="width: 100%; margin: 0 auto;">
+		<!--================폼 시작 Area =================-->      
+		         	<form role="form" id="contact-form" method="post" autocomplete="off" style="margin: 0 auto px; margin-left: 5%; width: 90%;">
+			        	<!--================이미지 Area =================-->      
+			              <div class="accomodation_item text-center" style="margin: 0px; width: 100%;">
+			                <div class="button-group-area mt-40">
+			                  <a href="#" class="genric-btn primary" style="position: relative;top: 240px; z-index: 999;">가치 대표 이미지
+			                  </a>
+			                </div>
+			                <div class="accomodation_item text-center">
+			                <div class="hotel_img" >
+			                    <img src="/band/image/room1.jpg" alt=""></div>
+			                      <div class="single-footer-widget instafeed">
+			                          <ul class="list_style instafeed d-flex flex-wrap">
+			                              <li><img th:src="|/imgView/${createImage[0].mediaServerFile}|" alt=""></li>
+			                              <li><img th:src="|/imgView/${createImage[1].mediaServerFile}|" alt=""></li>
+			                              <li><img th:src="|/imgView/${createImage[2].mediaServerFile}|" alt=""></li>
+			                              <li><img th:src="|/imgView/${createImage[3].mediaServerFile}|" alt=""></li>
+			                          </ul>
+			                  </div>	
+			                </div>
+			              </div>
+			              <!--================이미지 Area 끝 =================-->
+           	              <!--================작성 Area 끝 =================-->
+				            <div>
+				            <!--================ 왼쪽 로우(1) =================-->
+				            <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column" style="float: left; width: 70%; margin: 20px; padding: 20px;">
+				              <!--================ 왼쪽 로우(2) =================-->
+				              <div style="margin:0px;">
+				              <!--================ 이름 =================-->
+				                <div style="display: inline-block; width: 560px;">
+				                  <h4 class="typo-list" style="float: left; padding-left: 10px;">가치 명</h4>
+				                  <div>
+				                    <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
+				                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+				                  </div>
+				                  <div class="mt-10">
+				                    <input type="text" name="first_name" placeholder="가치 이름 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'" required class="single-input" style="height: 50px; font-size: 20px;width: 88%; display: block; float: left;">
+				                  </div>
+				                  <p style="padding: 30px 20px 0px;"><small>12/100</small></p>
+				                </div>
+				                <!--================ 이름 끝 =================-->
+				                <!--================ 소개 =================-->
+				                <div style="display: inline-block; width: 560px;">
+				                  <h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 2px; ">가치 소개</h6>
+				                  <div>
+				                    <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
+				                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+				                  </div>
+				                  <div class="mt-10">
+				                    <textarea name="last_name" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치소개'" required class="single-input" style="width: 88%; display: block; float: left;"></textarea>
+				                  </div>
+				                  <p style="padding: 30px 20px 0px;"><small>12/500</small></p>
+				                </div>
+				                <!--================ 소개 끝 =================-->
+				                <!--================ 나이체크 =================-->
+				                <div style="display: inline-block; width: 560px;">
+				                  <h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 20px;">연령 제한
+				                      <input type="checkbox" id="default-checkbox" style="display: block; float: right; margin: 5px;">
+				                      <label for="default-checkbox"></label>
+				                    </h6>
+				                    <div style="padding: 20px;">
+				                      <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
+				                      <p class="arrow_box" style="margin-left: 27px;">말풍선 등장!말풍선 등장!</p>
+				                    </div>
+				                </div>
+				                <div class="mt-10" id="yearCheck" style="display: inline-block; width: 560 px; display: none;">
+				                  <input type="number" name="last_name" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" required class="single-input" min="1900" value="1900" style="width: 30%; display: block; float: left;">
+				                  <div style="float: left; font-size: 20px; padding-left: 40px; padding-top: 10px;"><p>~</p></div>
+				                  <input type="number" name="last_name" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" required class="single-input" max="2023" value="2023" style="width: 30%; display: block;float: left; margin-left: 50px;" >
+				                </div>
+				                <!--================ 나이체크 끝 =================-->
+				                <!--================ 관심지역 =================-->
+				                <div style="display: inline-block; width: 500px;">
+				                  <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">활동 지역</h6>
+				                  <div style="padding: 9px; display: block;">
+				                    <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
+				                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+				                  </div>
+				                  <div class="input-group-icon mt-10">
+				                    <div class="form-select" id="default-select">
+				                      <select>
+				                        <option value="1">활동 지역</option>
+				                        <option value="1">Dhaka</option>
+				                        <option value="1">Dilli</option>
+				                        <option value="1">Newyork</option>
+				                        <option value="1">Islamabad</option>
+				                      </select>
+				                    </div>
+				                  </div>
+				                </div>
+				                 <!--================ 관심지역 끝 =================-->
+				                 <!--================ 관심종목 =================-->
+				                <div style="display: inline-block; width: 500px;">
+				                  <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">관심 종목</h6>
+				                  <div style="padding: 9px; display: block;">
+				                    <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
+				                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+				                  </div>
+				                  <div class="input-group-icon mt-10">
+				                    <div class="form-select" id="default-select">
+				                      <select>
+				                        <option value="1">관심 종목</option>
+				                        <option value="1">Dhaka</option>
+				                        <option value="1">Dilli</option>
+				                        <option value="1">Newyork</option>
+				                        <option value="1">Islamabad</option>
+				                      </select>
+				                    </div>
+				                  </div>
+				                </div>
+				                <!--================ 관심종목 끝 =================-->
+				                <!--================ 태그 =================-->
+				                <div id="searchTagArea">
+					                <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">밴드 검색 키워드</h6>
+					                <div style="margin-top: 10px;">
+					                  <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
+					                  <p class="arrow_box"  style="margin-left: 45px;">말풍선 등장!말풍선 등장!</p>
+					                </div>
+					                <div style="display: inline-block; width: 500px;">
+					                  <div class="mt-10">
+					                    <input type="text" id="letTag" placeholder="운동하는 1조" maxlength="10" onfocus="this.placeholder = ''" onblur="this.placeholder = '운동하는 1조'" required class="single-input"style="width: 30%; display: block; float: left;">
+					                    <p style="padding: 15px 10px 15px 5px;"><small>5/10</small><a class="genric-btn default-border" id="intag" style="height: 30px; line-height: 30px;float: right;display: block; margin-bottom:5px; color: blue;">입력</a></p>
+					                  </div>
+					                  <div id="insertKeyword"></div>
+					                </div>
+				                  <div>
+				                 	<h5 id="alertTag" style="display: none;">글자를 입력해주세요.</h5>
+				                  	<h5 id="alertTag2" style="display: none;">키워드는 10개만 등록이 가능합니다.</h5>
+				                  </div>
+				                </div>
+				                <!--================ 태그 끝 =================-->
+				              </div>
+				              <!--================ 왼쪽 로우 끝(1) =================-->
+				            </div>
+				            <!--================ 왼쪽 로우 끝(2) =================-->
+				             <!--================ 오른쪽 로우 =================-->
+				            <div style="display: right;">
+				                <div style="display: flex; width: 40%; justify-content: center;">
+				                  <div class="col-lg-8 col-md-8" style="max-width: 100%;">
+				                    <!--================ 성별 라디오  =================-->
+				                    <div class="single-element-widget" style="margin-top: 100px;">
+				                      <h6 class="typo-list">성별 제한</h6>
+				                      <div class="switch-wrap d-flex justify-content-between">
+				                        <p>모두</p>
+				                        <div class="primary-radio">
+				                          <input type="radio" id="positivity" name="gender" value="positivity" checked>
+				                          <label for="positivity"></label>
+				                        </div>
+				                      </div>
+				                      <div class="switch-wrap d-flex justify-content-between">
+				                        <p>남자만</p>
+				                        <div class="primary-radio">
+				                          <input type="radio" id="male" name="gender" value="male">
+				                          <label for="male"></label>
+				                        </div>
+				                      </div>
+				                      <div class="switch-wrap d-flex justify-content-between">
+				                        <p>여자만</p>
+				                        <div class="primary-radio">
+				                          <input type="radio" id="female" name="gender" value="female">
+				                          <label for="female"></label>
+				                        </div>
+				                      </div>
+				                    </div>
+				                    <!--================ 성별 라디오 끝  =================-->
+				                    <hr>
+				                    <!--================ 공개 라디오  =================-->
+				                    <div class="single-element-widget">
+				                      <h6 class="typo-list">가치 공개 유무</h6>
+				                      <div class="switch-wrap d-flex justify-content-between">
+				                        <p>비공개 가치<small> (비공개함)</small></p>
+				                        <div class="primary-radio">
+				                          <input type="radio" id="dopen" name="don" value="dopen" checked>
+				                          <label for="dopen"></label>
+				                        </div>
+				                      </div>
+				                      <div class="switch-wrap d-flex justify-content-between">
+				                        <p>밴드명 공개 가치<small> (밴드명만 공개함)</small></p>
+				                        <div class="primary-radio">
+				                          <input type="radio" id="hide" name="don" value="hide">
+				                          <label for="hide"></label>
+				                        </div>
+				                      </div>
+				                      <div class="switch-wrap d-flex justify-content-between">
+				                        <p>공개 가치<small> (상세히 공개)</small></p>
+				                        <div class="primary-radio">
+				                          <input type="radio" id="oprn" name="don" value="oprn">
+				                          <label for="oprn"></label>
+				                        </div>
+				                      </div>
+				                    </div>
+				                    <hr>
+				                    <!--================ 공개 라디오 끝  =================-->
+				                      
+				                    
+									<!--================ 가입신청옵션단추  =================-->
+				                    
+				                    <div class="switch-wrap d-flex justify-content-between" style="float: right;" >
+				                      <h6 class="typo-list" style="margin-right: 30px;">가입신청받기</h6>
+				                      <div class="primary-switch">
+				                        <input type="checkbox" id="primary-switch" checked>
+				                        <label for="primary-switch"></label>
+				                      </div>
+				                    </div>
+				                    
+									<!--================ 가입신청옵션단추 끝  =================-->
+				                    </div>
+				                </div>
+				            </div>
+				            <!--================ 오른쪽 로우 끝  =================-->
+				            </div>
+				            <!--================작성 Area =================-->
+			              <button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 개설</button>
+			            </form>
+			    <!--================폼 끝 Area =================--> 
+					</div>
+				</div>
+			</div>
+        <!--================ 밴드생성 끝 Area  =================-->
+        
+        <!-- Optional JavaScript -->
+        <script src="/band/js/popper.js"></script>
+        <script src="/band/js/bootstrap.min.js"></script>
+        <script src="/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+        <script src="/band/js/jquery.ajaxchimp.min.js"></script>
+        <script src="/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+        <script src="/band/js/mail-script.js"></script>
+        <script src="/band/js/stellar.js"></script>
+        <script src="/band/vendors/lightbox/simpleLightbox.min.js"></script>
+        <script src="/band/js/custom.js"></script>
+        <script>
+          $('#default-checkbox').change(function(){
+            if($(this).is(':checked')){
+              $('#yearCheck').show();
+            } else {
+              $('#yearCheck').hide();
+            }
+          })
+          function tagFnc(val){
+            let tag = `<div class="aTag" style="height: 30px; line-height: 30px;float: left;display: block; margin-bottom:5px; color: rgb(71, 114, 255);">
+                      <p class="genric-btn default-border inTag" style="display: block; margin-bottom:5px; color: rgb(71, 114, 255);">#${val}</p>
+                      <span style="float: right; margin: -43px 20px 30px 60px;"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>`
+            return tag;
+          }
+          
+          $('#intag').on("click",function(){
+            
+            $('#alertTag').hide();
+            $('#alertTag2').hide();
+            
+            //태그가 열개면
+            if($('#insertKeyword').children().length==10){
+              $('#alertTag2').show();
+              vibration($('#alertTag2'));
+              return false;
+            }
+            //태그에 적힌 게 없을 때
+            if($('#letTag').val()==''){
+              $('#alertTag').show();
+              vibration($('#alertTag'));
+              return false;
+            }
+            
+            $('#letTag').val();
+            $('#insertKeyword').append(tagFnc($('#letTag').val()));
+            $('#letTag').val('')
+
+            //test
+            let allTag = '';
+            $('.inTag').each(function(idx,ele){
+              allTag += $(ele).text();
+            });
+            console.log(allTag)
+          })
+          
+          //진동효과
+          function vibration(target){
+          $(target).addClass("vibration");
+
+          setTimeout(function() {
+            $(target).removeClass("vibration");
+          }, 400);
+        }
+        //태그삭제
+        $('#insertKeyword').on('click','.aTag',function(){
+          $(this).remove();
+        })
+        </script>
+    </div>
+    </body>
+</html>
