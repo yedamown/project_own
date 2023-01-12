@@ -281,6 +281,9 @@
                      <td th:text="${sns.snsBoardDate}"></td>
                      <td th:text="${sns.snsNickname}"></td>
                   </tr>
+                     <tr th:each="img : ${snsImg}">
+                     <td><img th:src="|/imgView/${img.mediaServerFile}" alt="" /></td>
+                     </tr>
                </tbody>
             </table>
             <br>

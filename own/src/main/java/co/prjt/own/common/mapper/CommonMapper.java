@@ -18,7 +18,7 @@ public interface CommonMapper {
 	public String upload(MultipartFile[] uploadfile,String IndenfityId, String INO, String category);
 	
 	//멀티미디어 검색하기
-	public List<MultimediaVO> selectImgAll(String no);
+	public List<MultimediaVO> selectImgAll(String value);
 
 	public void upload(MultimediaVO vo);
 }

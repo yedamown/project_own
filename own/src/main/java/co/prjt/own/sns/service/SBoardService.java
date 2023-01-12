@@ -10,6 +10,8 @@ public interface SBoardService {
 	 //sns 게시글 한건 조회
 	 SBoardVO getSnsBoard(String snsBoardNo);
 	 
+	 //sns 번호 뽑기
+	 public List<SBoardVO> getSnsBoardNo(String id);
 	 //sns 게시글 입력
 	 int insertSnsBoard(SBoardVO SBoardVO);
 	 

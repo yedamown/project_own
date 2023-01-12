@@ -1,9 +1,10 @@
 package co.prjt.own.sns.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
+import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 import co.prjt.own.sns.service.SAccountService;
@@ -79,8 +81,26 @@ public class SnsController {
 		model.addAttribute("snsFList", followService.getFollowerList(ovo.getSnsAccountNo())); //sns 팔로워 리스트
 		model.addAttribute("snsFollower", followService.followerCount(ovo.getSnsAccountNo())); //sns 팔로워 수
 		
+		//list 에 보드넘버 담아두기
+		List<SBoardVO> list = boardService.getSnsBoardNo(ovo.getSnsAccountNo());
+		System.out.println("=============1."+list);
+		//빈배열생성
+		List<MultimediaVO> newList = null;
+
+		for (SBoardVO i : list){
+		    //이미지 개수 구하기 위한 리스트 생성_보드넘버별로 리스트 크기달라서
+		    List<MultimediaVO> imgList = common.selectImgAll(i.getSnsBoardNo());
+		    System.out.println("=============2."+imgList);
+		    if (imgList != null) {
+		    for(int j=0; j<imgList.size(); j++){ 
+		        //새 리스트에 이미지 값 넣기
+		        newList.add(imgList.get(j));
+		    }
+			}
+		}
+		System.out.println("=============3." +newList);
 		return "content/sns/snsFeed"; 
-	}
+		}
 	
 	//2-1. 개인피드 상세보기
 	@RequestMapping(value = "/snsDetail", method = RequestMethod.GET)
