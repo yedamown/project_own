@@ -23,15 +23,16 @@
 			SELECT sns_board_no.NEXTVAL FROM DUAL
 		</selectKey>
 		
-			INSERT INTO SNS_BOARD (SNS_BOARD_NO, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_NICKNAME, SNS_ACCOUNT_NO)
-			VALUES ('SBN_'||#{snsBoardNo}, #{snsBoardContent}, current_date, 
-			       (SELECT sns_nickname 
-			       		   FROM sns_account s, own_users o 
-			       		   WHERE s.sns_account_no = o.sns_account_no 
-			       		   AND   o.user_id = #{userId}),
-			       (SELECT sns_account_no 
-			        	   FROM own_users 
-			        	   WHERE user_id = #{userId})) 
+			INSERT INTO sns_board (sns_board_no, sns_board_content, sns_board_date, sns_nickname, sns_account_no)
+				VALUES ('SBN_'||#{snsBoardNo}, #{snsBoardContent}, current_date, 
+				       (SELECT sns_nickname
+				            FROM sns_account s, own_users o
+				            WHERE o.sns_account_no = #{snsAccountNo}
+				            AND s.sns_account_no = o.sns_account_no),
+				       (select s.sns_account_no
+				            FROM sns_account s, own_users o
+				            where s.sns_account_no = o.sns_account_no
+				            and o.sns_account_no = #{snsAccountNo}))
 	</insert>
 	
 	<!-- 게시글 수정 -->

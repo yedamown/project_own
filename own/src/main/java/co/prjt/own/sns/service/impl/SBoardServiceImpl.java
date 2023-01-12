@@ -25,8 +25,8 @@ public class SBoardServiceImpl implements SBoardService {
 	}
 
 	@Override
-	public int insertSnsBoard(String id) {
-		return sBoardMapper.insertSnsBoard(id);
+	public int insertSnsBoard(SBoardVO SBoardVO) {
+		return sBoardMapper.insertSnsBoard(SBoardVO);
 	}
 
 	@Override

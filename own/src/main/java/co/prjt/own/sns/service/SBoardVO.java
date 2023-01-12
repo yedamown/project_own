@@ -5,12 +5,8 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
-@Getter
-@Setter
 public class SBoardVO {
 	String snsBoardNo;
 	String snsBoardContent;
@@ -19,5 +15,9 @@ public class SBoardVO {
 	Date snsBoardDate;
 	String snsNickname;
 	String snsAccountNo;
+	public String getSnsBoardNo() {
+		return snsBoardNo;
+	}
+	
 	
 }

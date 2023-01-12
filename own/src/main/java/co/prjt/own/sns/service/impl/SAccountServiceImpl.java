@@ -25,8 +25,8 @@ public class SAccountServiceImpl implements SAccountService {
 	}
 
 	@Override
-	public int insertSnsUser(String id, String nickname) {
-		return sAccountMapper.insertSnsUser(id, nickname);
+	public int insertSnsUser(SAccountVO vo) {
+		return sAccountMapper.insertSnsUser(vo);
 	}
 
 	@Override

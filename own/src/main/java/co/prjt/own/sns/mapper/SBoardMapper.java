@@ -13,7 +13,7 @@ public interface SBoardMapper {
 	 SBoardVO getSnsBoard(String snsBoardNo);
 	 
 	 //sns 게시글 입력
-	 int insertSnsBoard(String id);
+	 int insertSnsBoard(SBoardVO SBoardVO);
 	 
 	 //sns 게시글 수정
 	 int updateSnsBoard(SBoardVO SBoardVO);
