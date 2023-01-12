@@ -234,13 +234,12 @@
             <!-- 두 번째 Modal의 내용 -->
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm">
+                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm" enctype="multipart/form-data">
                     <label for="inputContent">내용</label>
                     <textarea type="text" name="snsBoardContent" id="inputContent"></textarea>
-                    <label for="inputAccNo">계정번호</label>
-                    <input name="snsAccountNo"></input>
-                   <label for="inputFile">첨부파일</label>
-                    <input name="file" type="file" id="customFile"/>
+                    <input th:value="${session.loginUser.snsAccountNo}" name="snsAccountNo" type="hidden"></input>
+                    <label for="inputFile">첨부파일</label>
+                    <input name="uploadfile" type="file" id="customFile" multiple="multiple"/>
                     <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
                     <input type="submit" role="button" value="글쓰기"/>
                 </form>

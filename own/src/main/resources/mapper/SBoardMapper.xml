@@ -22,18 +22,16 @@
 		<selectKey keyProperty="snsBoardNo" resultType="string" order="BEFORE">
 			SELECT sns_board_no.NEXTVAL FROM DUAL
 		</selectKey>
-			INSERT INTO SNS_BOARD (SNS_BOARD_NO,
-								   SNS_BOARD_CONTENT,
-								   SNS_BOARD_DATE,
-								   SNS_NICKNAME,
-								   SNS_ACCOUNT_NO)
-			VALUES ( 'SBN_'||#{snsBoardNo}, 
-					 #{snsBoardContent}, 
-					 sysdate, 
-					 (SELECT SNS_NICKNAME FROM SNS_ACCOUNT S, OWN_USERS O
-						WHERE S.SNS_ACCOUNT_NO = O.SNS_ACCOUNT_NO
-						AND O.USER_ID = 'kjk'), 
-					 #{snsAccountNo})
+		
+			INSERT INTO SNS_BOARD (SNS_BOARD_NO, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_NICKNAME, SNS_ACCOUNT_NO)
+			VALUES ('SBN_'||#{snsBoardNo}, #{snsBoardContent}, current_date, 
+			       (SELECT sns_nickname 
+			       		   FROM sns_account s, own_users o 
+			       		   WHERE s.sns_account_no = o.sns_account_no 
+			       		   AND   o.user_id = #{userId}),
+			       (SELECT sns_account_no 
+			        	   FROM own_users 
+			        	   WHERE user_id = #{userId})) 
 	</insert>
 	
 	<!-- 게시글 수정 -->

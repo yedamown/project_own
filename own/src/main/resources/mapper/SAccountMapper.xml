@@ -25,11 +25,11 @@
 	         WHERE USER_ID = #{userId};     
 	END;-->
 		declare
-		v_currval int
-		v_nextval int
+		v_currval number
+		v_nextval number
 		BEGIN
 		 select sns_account_no.currval , sns_account_no.nextval 
-		into v_currval, v_nextval FROM dual
+		into v_currval, v_nextval FROM dual;
 		         INSERT INTO SNS_ACCOUNT (SNS_NICKNAME,
 		                              SNS_ACCOUNT_NO)
 		                              
