@@ -45,5 +45,11 @@ public class OwnhomeServiceImpl implements OwnhomeService {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.idcheck(id);
 	}
+
+	@Override
+	public void searchId(String email) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

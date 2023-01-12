@@ -21,12 +21,13 @@ import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.exercise.service.ExerRecordVO;
 import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
+import co.prjt.own.ownhome.service.OwnhomeService;
 
 @Controller
 public class OwnhomeController {
 
 	@Autowired
-	OwnhomeMapper ownMapper;
+	OwnhomeService ownService;
 	@Autowired
 	ExerRecordMapper exerMapper;
 
@@ -52,12 +53,12 @@ public class OwnhomeController {
 	@PostMapping("/login")
 	@ResponseBody // ajax는 무조건
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
-		OwnUserVO chk = ownMapper.login(vo.getUserId());
+		OwnUserVO chk = ownService.login(vo.getUserId());
 
 		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", chk);
-			session.setAttribute("snsNickname",ownMapper.snsLogin(vo.getUserId()));
+			session.setAttribute("snsNickname",ownService.snsLogin(vo.getUserId()));
 			return 1;
 		} else
 			return 0;
@@ -90,7 +91,7 @@ public class OwnhomeController {
 	@ResponseBody
 	public int idcheck(String id) {
 		System.out.println("-===아이디입니다==="+id);
-		int r = ownMapper.idcheck(id);
+		int r = ownService.idcheck(id);
 		return r;
 	}
 	
@@ -99,7 +100,7 @@ public class OwnhomeController {
 	@ResponseBody // 데이터리턴할때 넣어줘야함. 리턴값을 json 변환
 	public OwnUserVO insert(@RequestBody OwnUserVO vo) {
 		System.out.println("========================" + vo);
-		ownMapper.insertUser(vo);
+		ownService.insertUser(vo);
 		return vo;
 	}
 

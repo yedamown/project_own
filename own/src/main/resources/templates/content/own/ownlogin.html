@@ -8,6 +8,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+    .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Could be more or less, depending on screen size */
+        }
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modalBtn{
+            font-size: 13px;
+        }
+    </style>
 </head>
 <div layout:fragment="content">
 <body>
@@ -20,13 +58,47 @@
                     <input id="u_id" type="text" placeholder="여백없이 입력"></li>
                 <li><label>비밀번호</label>
                     <input id="u_pw" type="password" placeholder="연락가능한 번호"></li>
-                
              </ul>
         </fieldset>
             <br>
         </div>
         <button type="button" id="btnsignin">로그인</button></td>
         <button type="button" id="btnlogout">로그아웃</button></td>
+        <h3 class="modalBtn">아이디 찾기</h3>
+        <h3 class="modalBtn">아이디 찾기</h3>
+        
+        <!-- 아이디찾기 모달창 -->
+         <div class="modal">                
+                    <!-- 첫 번째 Modal의 내용 -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>                         
+                        <h1>아이디찾기</h1>
+                        <ul>
+                <li><label>아이디</label>
+                    <input id="u_id" type="text" placeholder="여백없이 입력"></li>
+                <li><label>비밀번호</label>
+                    <input id="u_pw" type="password" placeholder="연락가능한 번호"></li>
+             </ul>
+                    </div>
+         </div>
+        <div class="modal">        
+            <!-- 두 번째 Modal의 내용 -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm">
+                    <label for="inputContent">내용</label>
+                    <textarea type="text" name="snsBoardContent" id="inputContent"></textarea>
+                    <label for="inputAccNo">계정번호</label>
+                    <input name="snsAccountNo"></input>
+                   <label for="inputFile">첨부파일</label>
+                    <input name="file" type="file" id="customFile"/>
+                    <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
+                    <input type="submit" role="button" value="글쓰기"/>
+                </form>
+            </div>
+            </div>
+        
+        
         <script>
     		$('#btnsignin').on("click",function(){
     			let id = $('#u_id').val();
@@ -49,8 +121,50 @@
         				alert('로그인 실패')
         			}
         		})                
-    		})        
-    		
+    		})      
+        </script>
+        <!-- 모달 스크립트 -->
+        <script>
+     // Modal을 가져옵니다.
+        var modals = document.getElementsByClassName("modal");
+        // Modal을 띄우는 클래스 이름을 가져옵니다.
+        var btns = document.getElementsByClassName("modalBtn");
+        // Modal을 닫는 close 클래스를 가져옵니다.
+        var spanes = document.getElementsByClassName("close");
+        var funcs = [];
+        
+        // Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
+        function Modal(num) {
+        return function() {
+            // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
+            btns[num].onclick =  function() {
+                modals[num].style.display = "block";
+                console.log(num);
+            };
+        
+            // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
+            spanes[num].onclick = function() {
+                modals[num].style.display = "none";
+            };
+        };
+        }
+            
+        // 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
+        for(var i = 0; i < btns.length; i++) {
+        funcs[i] = Modal(i);
+        }
+        
+        // 원하는 Modal 수만큼 funcs 함수를 호출합니다.
+        for(var j = 0; j < btns.length; j++) {
+        funcs[j]();
+        }
+        
+        // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
+        window.onclick = function(event) {
+        if (event.target.className == "modal") {
+            event.target.style.display = "none";
+        }
+        };
         </script>
 </body>
 </div>
