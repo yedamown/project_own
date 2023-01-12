@@ -54,11 +54,12 @@ public class OwnhomeController {
 	@ResponseBody // ajax는 무조건
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
 		OwnUserVO chk = ownService.login(vo.getUserId());
-
+		
 		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", chk);
-			session.setAttribute("snsNickname",ownService.snsLogin(vo.getUserId()));
+			session.setAttribute("snsNickname", ownService.snsLogin(vo.getUserId()));
+			System.out.println("========================="+ownService.snsLogin(vo.getUserId()));
 			return 1;
 		} else
 			return 0;

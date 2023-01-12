@@ -179,7 +179,7 @@
             <br>
             <div class="testimonial_box">
                 <div class="testimonial_author">  
-                    <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
                
                     <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
 
@@ -271,6 +271,7 @@
                      <th>글 내용</th>
                      <th>작성일자</th>
                      <th>작성자</th>
+                     <th>이미지</th>
                   </tr>
                </thead>
                <tbody>

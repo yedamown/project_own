@@ -8,7 +8,14 @@
 	</select>
 	
 	<!-- SNS 회원 가입 -->
-	<insert id="insertSnsUser">
+	<insert id="insertSnsUser" parameterType="SAccountVO">
+	<selectKey keyProperty="snsAccountNo" resultType="string" order="BEFORE">
+		SELECT sns_account_no.nextval from dual
+	</selectKey>
+		INSERT INTO SNS_ACCOUNT (SNS_NICKNAME, SNS_ACCOUNT_NO)
+		VALUES (#{snsNickname}, 'SAU_'||#{snsAccountNo})
+	</insert>
+	
 	<!-- <selectKey keyProperty="currVal,nextVal" resultType="hashmap" order="BEFORE">
       select sns_account_no.currval as currVal, sns_account_no.nextval as nextVal FROM dual
     </selectKey> 
@@ -23,7 +30,7 @@
 	      SET
 	         SNS_ACCOUNT_NO = 'SAU_'||#{nextVal}
 	         WHERE USER_ID = #{userId};     
-	END;-->
+	END;
 		declare
 		v_currval number
 		v_nextval number
@@ -40,9 +47,8 @@
 		         SET
 		            SNS_ACCOUNT_NO = 'SAU_'||v_nextval
 		            WHERE USER_ID = #{userId};     
-		   END;						
-	</insert>
-	
+		   END;		-->				
+
 	
 
 </mapper>

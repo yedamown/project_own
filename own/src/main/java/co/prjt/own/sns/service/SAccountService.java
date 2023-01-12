@@ -12,7 +12,7 @@ public interface SAccountService {
 	SAccountVO getSnsUser(String snsNickname);
 	
 	//SNS 계정가입
-	int insertSnsUser(@Param ("userId") String id, @Param ("snsNickname") String snsNickname);
+	int insertSnsUser(SAccountVO vo);
 	
 	//프로필 수정
 	int updateSnsUser(SAccountVO SAccountVO);
