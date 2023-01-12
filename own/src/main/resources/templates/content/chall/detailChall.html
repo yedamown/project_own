@@ -1,19 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/default_layout}">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>상세보기 페이지</title>
-</head>
+	lang="ko">
+	<head>
+		<!-- jquery -->
+		<script type="text/javascript" src="/band/js/jquery-3.2.1.js"></script>
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		<meta content="Free HTML Templates" name="keywords" />
+		<!-- Favicon -->
+		<link href="/chall/img/favicon.ico" rel="icon" />
+		<!-- Google Web Fonts -->
+		<link rel="preconnect" href="https://fonts.gstatic.com" />
+		<link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet" />
+		<!-- Font Awesome -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+		<!-- Flaticon Font -->
+		<link href="/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+		<!-- Libraries Stylesheet -->
+		<link href="/chall/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+		<link href="/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
+		<!-- Customized Bootstrap Stylesheet -->
+		<link href="/chall/css/style.css" rel="stylesheet" />
+		<!-- JavaScript Libraries -->
+	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+	    <script src="/chall/lib/easing/easing.min.js"></script>
+	    <script src="/chall/lib/owlcarousel/owl.carousel.min.js"></script>
+	    <script src="/chall/lib/isotope/isotope.pkgd.min.js"></script>
+	    <script src="/chall/lib/lightbox/js/lightbox.min.js"></script>
+	    <!-- Contact Javascript File -->
+	    <script src="/chall/mail/jqBootstrapValidation.min.js"></script>
+	    <script src="/chall/mail/contact.js"></script>
+	    <!-- Template Javascript -->
+	    <script src="/chall/js/main.js"></script>
+			<meta charset="utf-8">
+			<title> OWN _ 도전 상세 </title>
+	</head>
 <body>
 <div layout:fragment="content">
 		<h3>도전상세보기</h3>
 		<input id ="challNo" type="hidden" th:value="${detailChall.challNo}" />
 		<ul>
-		<li>도전제목: <span th:text="${detailChall.challTitle}"></span></li>
 		<li>도전대표 이미지 <img th:src="|/imgView/${challImg[0].mediaServerFile}|" alt="" />
 		<li>인증성공 이미지 <span th:text="${challImg[1].mediaRealFile}"></span></li> 
 		<li>도전카테고리: <span th:text="${detailChall.challCategory}"></span></li>
@@ -33,6 +60,175 @@
 			<li th:text="${cImgs.mediaRealFile}"></li>
 		</th:block> -->
 		</ul>
+	
+	<!-- About Start -->
+  <div class="container py-5">
+    <!-- <div class="container"> -->
+    <div class="row align-items-center" style="justify-content: center;">
+      <div class="col-lg-4">
+         <img th:src="|/imgView/${challImg[0].mediaServerFile}|" class="img-fluid rounded mb-4 mb-lg-0" alt="" />
+      </div>
+      <div class="col-lg-5">
+        <p class="section-title pr-5">
+          <span class="pr-2">About Challenges</span>
+        </p>
+        <h1 class="mb-4"><span th:text="${detailChall.challTitle}"></span></h1>
+       <!-- 도전리더 프로필정보 -->
+        <div class="media mb-4" style="margin-bottom: 0px; align-items: flex-end;">
+          <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1" style="width: 45px" />
+          <div class="media-body">
+            <h6>
+              <Big><i>대충 레벨 하지만 구현불가</i></Big> <span th:text="${detailChall.challLeader}"></span>
+            </h6>
+            <!-- <button class="btn btn-sm btn-light">Reply</button> -->
+          </div>
+        </div>
+        <div class="row pt-2 pb-4" style="justify-content: center;">  
+          <div class="col-6 col-md-12">
+            <i class="fa-sharp fa-solid fa-share-nodes"></i>
+            <h2 class="fa fa-regular fa-share text-primary"></h2>
+            <h2 class="fa fa-regular fa-bookmark text-primary" id="bmBtn"></h2>
+            <h2 class="fa fa-solid fa-bookmark text-primary" id="bmBtn" style="font-weight: 100;"></h2>
+            <p class="mr-3"><i class="fa fa-users text-primary"></i>  8명 참여중</p>
+            <h6>도전카테고리: <span th:text="${detailChall.challCategory}"></span></h6>
+            <h6>도전카테고리: <span th:text="${detailChall.challCategory}"></span></h6>
+            <h6>도전태그: <span th:text="${detailChall.challTag}"></span></h6>
+            <ul class="list-inline m-0">
+              <li class="py-2 border-top border-bottom">
+                <i class="fa fa-check text-primary mr-3"></i>
+                시작날짜: <span th:text="${detailChall.challStartdate}"></span>
+              </li>
+              <li class="py-2 border-bottom">
+                <i class="fa fa-check text-primary mr-3"></i>
+                도전기간: <span th:text="${detailChall.challFreq}"></span>주
+           </li><li>
+                 <i class="fa fa-check text-primary mr-3"></i>
+                도전빈도: 주 <span th:text="${detailChall.challDuration}"></span> 회
+              </li>
+            </ul>
+            <button>도전금액:<span th:text="${detailChall.challPrice}"></span></button>
+          </div>
+        </div>
+        <a href="" class="btn btn-primary mt-2 py-2 px-4">도전 신청하기</a>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- About End -->
+  <!-- Detail Start -->
+  <div class="container py-5">
+    <!-- <div class="row pt-5"> -->
+    <div class="col-lg-9" style="margin: auto;">
+      <div class="d-flex flex-column text-left mb-3">
+        <p class="section-title pr-5">
+          <span class="pr-2">Blog Detail Page</span>
+        </p>
+        <h1 class="mb-3">Diam dolor est ipsum clita lorem</h1>
+        <div class="d-flex">
+          <p class="mr-3"><i class="fa fa-user text-primary"></i> Admin</p>
+          <p class="mr-3">
+            <i class="fa fa-folder text-primary"></i> Web Design
+          </p>
+          <p class="mr-3"><i class="fa fa-comments text-primary"></i> 15</p>
+        </div>
+      </div>
+      <div class="mb-5">
+      <img th:src="|/imgView/${challImg[1].mediaServerFile}|" alt="vldSucess" width="400px"/>
+        <p>
+          인증방법: <span th:text="${detailChall.vldMethod}"></span>
+        </p>
+        <p>
+          상세설명2
+        </p>
+        <h2 class="mb-4">Est dolor lorem et ea</h2>
+        <img th:src="|/imgView/${challImg[2].mediaServerFile}|" alt="vldFail" width="400px"/>
+        <p>
+          상세설명3
+        </p>
+
+        
+      </div>
+
+
+
+      <!-- Comment List -->
+      <div class="mb-5" style="display: inline-block; margin-top: 15px;">
+        <h2 class="mb-4">3 Comments</h2>
+        <div class="media mb-4">
+          <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1" style="width: 45px" />
+          <div class="media-body">
+            <h6>
+              John Doe <small><i>01 Jan 2045 at 12:00pm</i></small>
+            </h6>
+            <p>
+              댓글
+            </p>
+            <button class="btn btn-sm btn-light">Reply</button>
+          </div>
+        </div>
+        <div class="media mb-4">
+          <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1" style="width: 45px" />
+          <div class="media-body">
+            <h6>
+              John Doe <small><i>01 Jan 2045 at 12:00pm</i></small>
+            </h6>
+            <p>
+              댓글
+            </p>
+            <button class="btn btn-sm btn-light">Reply</button>
+            <div class="media mt-4">
+              <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1" style="width: 45px" />
+              <div class="media-body">
+                <h6>
+                  John Doe <small><i>01 Jan 2045 at 12:00pm</i></small>
+                </h6>
+                <p>
+                  Diam amet duo labore stet elitr ea clita ipsum, tempor
+                  labore accusam ipsum et no at. Kasd diam tempor rebum
+                  magna dolores sed sed eirmod ipsum. Gubergren clita
+                  aliquyam consetetur, at tempor amet ipsum diam tempor at
+                  sit.
+                </p>
+                <button class="btn btn-sm btn-light">Reply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comment Form -->
+      <div class="bg-light p-5">
+        <h2 class="mb-4">Leave a comment</h2>
+        <form>
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" class="form-control" id="name" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" class="form-control" id="email" />
+          </div>
+          <div class="form-group">
+            <label for="website">Website</label>
+            <input type="url" class="form-control" id="website" />
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+          </div>
+          <div class="form-group mb-0">
+            <input type="submit" value="Leave Comment" class="btn btn-primary px-3" />
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--</div>-->
+  </div>
+  <!-- Detail End -->
+	
+	
+	
 	
 		<script>
 			$('#applyBtn').on("click", function(){
