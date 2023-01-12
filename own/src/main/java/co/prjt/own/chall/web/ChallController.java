@@ -66,7 +66,6 @@ public class ChallController {
 	public String insertProc(@RequestParam List<MultipartFile[]> uploadfile, ChallengeVO vo, Model model) {
 		challenge.insertChall(vo);
 		String cNo = vo.getChallNo();
-
 		for (int i = 0; i < uploadfile.size(); i++) {
 			common.upload(uploadfile.get(i), cNo, "CHA_", "Chall");
 		}
@@ -152,4 +151,5 @@ public class ChallController {
 	public String testCss() {
 		return "content/chall/testhome";
 	}
+	
 }
