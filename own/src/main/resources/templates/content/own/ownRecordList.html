@@ -64,7 +64,7 @@
 		<div class="dayRecord">
 			<span th:text="${#dates.format(lRecord[0].exerecDate, 'yyyy년 MM월 dd일')}" ></span>
 			<span>이 가장 최근 운동데이터임</span>
-			<span>당신은 총 </span><span></span><span>시간 운동하셨습니다.</span>
+			<span>당신은 총 </span><h3 th:each="record, i : ${lRecord}" th:text="${record.exerecTime}"></h3><span>시간 운동하셨습니다.</span>
 		</div>
 		<div class="weekRecord">
 		
