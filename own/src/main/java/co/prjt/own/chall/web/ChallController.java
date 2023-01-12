@@ -42,6 +42,7 @@ public class ChallController {
 	@Autowired
 	CAmountService amount;
 
+
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
 	public String challHome(Model model, HttpServletRequest request) {
@@ -74,8 +75,10 @@ public class ChallController {
 	
 	// 해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
 	@GetMapping("/detailChall")
-	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, Model model) {
+	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, CMemberVO mem, Model model) {
 		vo.setChallNo("CHA_" + no);
+		mem.setUserId(challenge.getChall(vo).getChallLeader());
+		model.addAttribute("leaderInfo", member.getCMem(mem));
 		model.addAttribute("detailChall", challenge.getChall(vo));
 		model.addAttribute("challImg", common.selectImgAll("CHA_" + no));
 		return "content/chall/detailChall";
@@ -116,7 +119,18 @@ public class ChallController {
 		model.addAttribute("memInfo", member.getCMem(vo));
 		return "content/chall/mypageChall";
 	}
-
+	
+	// 마이페이지 프로필 수정
+	@PostMapping("/myprofileUpdate")
+	public String updateMyprofile(CMemberVO vo) {
+		int rs = member.updateCMem(vo);
+		if(rs == 1) {
+			return "sucess";
+		} else {
+			return "fail";
+		}
+	}
+	
 	// 마이페이지 - 내 예치금
 	@GetMapping("/myAmount")
 	public String challMyAmt(CMemberVO vo1, CAmountVO vo2, Model model, HttpServletRequest request) {
