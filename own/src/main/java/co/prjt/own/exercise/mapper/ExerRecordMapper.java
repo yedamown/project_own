@@ -16,4 +16,7 @@ public interface ExerRecordMapper {
 
 	// 오운 유저의 운동 기록 중 가장 최신 데이터들 조회
 	List<ExerRecordVO> LatestExerRecord(String userId);
+
+	// 최신 데이터에서 개수 카운팅
+	List<ExerRecordVO> DayRecordCounting(String userId);
 }

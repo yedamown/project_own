@@ -20,4 +20,7 @@ public class ExerRecordVO {
 	String exerecNo;
 	String exersubNo;
 	String eno;
+	int kcals;
+	String exersubName;
+	int eCount;
 }
