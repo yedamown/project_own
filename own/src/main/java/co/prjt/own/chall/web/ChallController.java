@@ -26,6 +26,7 @@ import co.prjt.own.chall.service.CMemberVO;
 import co.prjt.own.chall.service.ChallengeService;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.service.CommonService;
+import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 
 @Controller
@@ -46,11 +47,22 @@ public class ChallController {
 
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
-	public String challHome(Model model, HttpServletRequest request) {
+	public String challHome(Model model, HttpServletRequest request, ChallengeVO vo) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		System.out.println(user);
-		model.addAttribute("challenges", challenge.getChallAll(null));
+		System.out.println("===================도전 홈"+user);
+		if(user != null) {
+			//내가 만든도전 - 도전리더가 나인
+			vo.setChallLeader(user.getUserId());
+			System.out.println("===================도전 로그인 o "+user.getUserId());
+			System.out.println("===================도전 로그인 o "+ vo);
+			model.addAttribute("challenges", challenge.getChallAll(vo));
+		} else {
+			System.out.println("===================도전 로그인 x"+user);
+			model.addAttribute("challenges", challenge.getChallAll(null));
+		}
+		
+		//내가 참여중인 도전 - 
 		return "content/chall/challHome";
 	}
 
@@ -120,7 +132,9 @@ public class ChallController {
 		String id = user.getUserId();
 		vo.setUserId(id);
 		System.out.println(member.getCMem(vo));
+		String idNo = member.getCMem(vo).getMemNo(); //멤버식별번호
 		model.addAttribute("memInfo", member.getCMem(vo));
+		model.addAttribute("memImg", common.selectImg(idNo));
 		return "content/chall/mypageChall";
 	}
 	
@@ -128,6 +142,7 @@ public class ChallController {
 	@PostMapping("/myprofileUpdate")
 	@ResponseBody
 	public String updateMyprofile(@RequestBody CMemberVO vo) {
+		//데이터수정
 		int rs = member.updateCMem(vo);
 		System.out.println(rs);
 		if(rs == 1) { 
@@ -135,6 +150,27 @@ public class ChallController {
 		} else {
 			return "fail";
 		}
+	}
+
+	//마이페이지 내 프로필사진 수정 form으로 보내야함.
+	@PostMapping("/updateImg")
+	public String updateImg(@RequestParam MultipartFile[] uploadfile, String memNo) {
+	//  해당 멀티미디어 검색하기
+		System.out.println("---------------번호" + memNo);
+		MultimediaVO vo = new MultimediaVO();
+		//하나가 나올테니깐..
+		vo = common.selectImg(memNo);
+		System.out.println("vo검색결과" +vo);
+		//이미지 등록을 하지 않은 경우 업로드하게..
+		if(vo != null) {
+			System.out.println("-----------------이미지있음");
+			common.update(uploadfile, vo);
+		} else {
+			String number = memNo.substring(4);
+			System.out.println("-----------------이미지없음" + number);
+			common.upload(uploadfile, number, "CMB_", "Chall");
+		}
+		return "content/chall/challHome";
 	}
 	
 	// 마이페이지 - 내 예치금
