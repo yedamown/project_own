@@ -19,4 +19,7 @@ public interface ExerRecordMapper {
 
 	// 최신 데이터에서 개수 카운팅
 	List<ExerRecordVO> dayRecordCounting(String userId);
+
+	// 최신 데이터 날짜~7일 간의 날짜와 몸무게 출력
+	List<ExerRecordVO> getWeight(String userId);
 }
