@@ -17,6 +17,12 @@
 		SELECT * FROM SNS_BOARD WHERE SNS_BOARD_NO = #{snsBoardNo}
 	</select>
 	
+	<select id="getSnsBoardNo" resultType="SBoardVO">
+		SELECT SNS_BOARD_NO
+		FROM SNS_BOARD
+		WHERE SNS_ACCOUNT_NO = #{snsAccountNo}
+	</select>
+	
 	<!-- 게시글 입력 -->
 	<insert id="insertSnsBoard" parameterType="SBoardVO">
 		<selectKey keyProperty="snsBoardNo" resultType="string" order="BEFORE">

@@ -27,13 +27,17 @@ public class SnsApplicationTest {
 		}
 		
 		//SNS간편가입
-		@Test
+		//@Test
 		public void insertSnsUser() {
 			SAccountVO svo = new SAccountVO();
 			OwnUserVO ovo = new OwnUserVO();
 			svo.setSnsNickname("test");
 			snsService.insertSnsUser(svo);
 			ownService.updateSnsUser(svo.getSnsNickname(), "testest");
-			
+		}
+		
+		@Test
+		public void boardList(){
+			System.out.println(boardService.getSnsBoardList("kmh"));
 		}
 }

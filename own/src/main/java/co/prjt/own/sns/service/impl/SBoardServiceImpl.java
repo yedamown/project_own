@@ -39,4 +39,9 @@ public class SBoardServiceImpl implements SBoardService {
 		return sBoardMapper.deleteSnsBoard(snsBoardNo);
 	}
 
+	@Override
+	public List<SBoardVO> getSnsBoardNo(String id) {
+		return sBoardMapper.getSnsBoardNo(id);
+	}
+
 }
