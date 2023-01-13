@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.chall.mapper.ChallengeMapper">
+	<!-- 조건은 항상 위에 있어야함 -->
+	<sql id="condition">
+		<where>
+			<if test="challLeader != null and challLeader !='' ">
+				AND CHALL_LEADER = #{challLeader}			
+			</if>
+			<if test="challNo != null and challNo !='' ">
+				AND CHALL_NO = #{challNo}
+			</if>
+			<if test="challStatus != null and challStatus !='' ">
+				AND CHALL_STATUS = #{challStatus}		
+			</if>
+		</where>
+	</sql>
+	
 	<insert id="insertChall">
 		<selectKey keyProperty="challNo" resultType="string" order="BEFORE">
 			SELECT CHA_SEQ.NEXTVAL FROM DUAL
@@ -33,10 +48,16 @@
 				)
 	</insert>
 	
+	
+	<!-- vo중 조건으로 조회 / 아마 여러개라서 list로 출력-->
 	<select id="getChallAll" resultType="co.prjt.own.chall.service.ChallengeVO">
-		SELECT * FROM CHALLENGES
+		SELECT * 
+		FROM CHALLENGES
+		<include refid="condition" />
 	</select>
 	
+	
+	<!-- 단건조회 -->
 	<select id="getChall" resultType="co.prjt.own.chall.service.ChallengeVO">
 		SELECT * FROM CHALLENGES
 		WHERE CHALL_NO = #{challNo}

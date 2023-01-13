@@ -8,7 +8,7 @@
 	</select>
 
 	<!-- 이미지 삽입 -->
-	<insert id="upload">
+	<insert id="uploadImg">
 		<selectKey keyProperty="mediaNo" resultType="string"
 			order="BEFORE">
 			SELECT media_seq.NEXTVAL-1 FROM DUAL
@@ -28,4 +28,18 @@
 		SELECT * FROM MULTIMEDIA
 		WHERE IDENTIFY_ID = #{value} 
 	</select>
+
+	<select id="selectImg" resultType="co.prjt.own.common.service.MultimediaVO">
+		SELECT * FROM MULTIMEDIA
+		WHERE IDENTIFY_ID = #{value} 
+	</select>
+	
+	<update id="updateImg" parameterType="co.prjt.own.common.service.MultimediaVO">
+		UPDATE MULTIMEDIA
+		SET MEDIA_FILE_PATH = #{mediaFilePath},
+			MEDIA_REAL_FILE = #{mediaRealFile},
+			MEDIA_SERVER_FILE = #{mediaServerFile}
+		WHERE IDENTIFY_ID = #{identifyId}
+	</update>
+	
 </mapper>
