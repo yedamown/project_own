@@ -105,11 +105,13 @@
 
 		<h3>마이 프로필</h3>
 		<ul>
+			<input id ="userId" type="hidden" name="challLeader" th:value="${session.loginUser.userId}">
 			<li>내 프로필 :
+			<li><label for="inputFile">프로필 사진:<input type="file" name = "uploadfile" multiple="multiple"></input></label>
 			<li>내 닉네임:<span th:text="${memInfo.memNickname}"></span>
 			<li>내 소개:</li>
 			<li><textarea rows="10" cols="10" th:text="${memInfo.memIntro}">내용을 입력해주세요.</textarea></li>
-			<button type="button" id="updBtn">등록/수정</button>
+			<!-- <button type="button" id="updBtn">등록/수정</button> -->
 		</ul>
 	</div>
 	<!-- Contact Start -->
@@ -136,26 +138,19 @@
 						<div id="success"></div>
 						<form name="sentMessage" id="contactForm" novalidate="novalidate">
 							<div class="control-group">
-								<input type="text" class="form-control" id="name"
-									placeholder="Your Nick Name" required="required"
-									data-validation-required-message="Please enter your name" />
-								<p class="help-block text-danger"></p>
-							</div>
-							<div class="control-group">
-								<input type="email" class="form-control" id="email"
+								<input type="email" class="form-control" id="memNick"
 									th:value="${memInfo.memNickname}"
 									data-validation-required-message="Please enter your email" />
 								<p></p>
 							</div>
 							<div class="control-group">
-								<textarea class="form-control" rows="6" id="message"
-									placeholder="당신의 도전 다짐을 입력해주세요!" required="required"
+								<textarea class="form-control" rows="6" id="memIntro"
+									placeholder="당신의 도전 다짐을 입력해주세요!" th:text="${memInfo.memIntro}"
 									data-validation-required-message="Please enter your message"></textarea>
 								<p class="help-block text-danger"></p>
 							</div>
 							<div>
-								<button class="btn btn-primary py-2 px-4" type="submit"
-									id="sendMessageButton">수정하기</button>
+								<button class="btn btn-primary py-2 px-4" id="updBtn">수정하기</button>
 							</div>
 						</form>
 					</div>
@@ -273,8 +268,21 @@
 	<script>
 		//아작스로 데이터수정해서다시 화면에뿌려주깅
 		$('#updBtn').on("click", function(){
-			
-			console.log("테스트");
+			let nick = $("#memNick").val();
+			let intro = $("#memIntro").val();
+			let userId = $("#userId").val()
+			console.log(nick, intro, userId);
+			$.ajax({
+				url: '/own/chall/myprofileUpdate',
+				method: 'post',
+				data : JSON.stringify({userId: userId, 
+									   memNickname: nick, 
+									   memIntro: intro}
+									   ),
+				contentType: "application/json"
+			}).then(res => {
+				console.log(res)
+			})
 		})
 	</script>
 </body>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.prjt.own.chall.service.CAmountService;
 import co.prjt.own.chall.service.CAmountVO;
@@ -63,14 +64,18 @@ public class ChallController {
 
 	// 도전등록 처리
 	@PostMapping("/insertChall")
-	@ResponseBody // 데이터를 반환할때는 무조건 리스폰스바디 넣기
-	public String insertProc(@RequestParam List<MultipartFile[]> uploadfile, ChallengeVO vo, Model model) {
-		challenge.insertChall(vo);
+//	@ResponseBody // 데이터를 반환할때는 무조건 리스폰스바디 넣기
+	public String insertProc(@RequestParam List<MultipartFile[]> uploadfile, ChallengeVO vo, Model model, RedirectAttributes rttr) {
+		int rs = challenge.insertChall(vo);
 		String cNo = vo.getChallNo();
+		rttr.addFlashAttribute("result", rs);
+		rttr.addFlashAttribute("challNo", cNo);
+		if(rs == 1) {
 		for (int i = 0; i < uploadfile.size(); i++) {
 			common.upload(uploadfile.get(i), cNo, "CHA_", "Chall");
+			}
 		}
-		return "content/chall/challHome";
+		return "redirect:/own/chall/insertFormChall";
 	}
 	
 	// 해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
@@ -113,7 +118,6 @@ public class ChallController {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
-		System.out.println(id);
 		vo.setUserId(id);
 		System.out.println(member.getCMem(vo));
 		model.addAttribute("memInfo", member.getCMem(vo));
@@ -122,9 +126,11 @@ public class ChallController {
 	
 	// 마이페이지 프로필 수정
 	@PostMapping("/myprofileUpdate")
-	public String updateMyprofile(CMemberVO vo) {
+	@ResponseBody
+	public String updateMyprofile(@RequestBody CMemberVO vo) {
 		int rs = member.updateCMem(vo);
-		if(rs == 1) {
+		System.out.println(rs);
+		if(rs == 1) { 
 			return "sucess";
 		} else {
 			return "fail";
@@ -160,6 +166,7 @@ public class ChallController {
 		model.addAttribute("myChall", memberList.getMemList(vo));
 		return "content/chall/myChall";
 	}
+	
 	
 	@GetMapping("/test")
 	public String testCss() {
