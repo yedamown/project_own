@@ -43,6 +43,8 @@ public class CommonServiceImpl implements CommonService {
 	public String upload(MultipartFile[] uploadfile, String IndenfityId,  String INO ,String category){
 		List<FileDto> list = new ArrayList<>();
 		
+		int result = 0;
+		
 		for(MultipartFile file : uploadfile) {
 			MultimediaVO vo = new MultimediaVO();
 			
@@ -72,9 +74,10 @@ public class CommonServiceImpl implements CommonService {
 			}
 			vo.setIno(INO);
 			commonMapper.upload(vo);
+			result++;
 			}
 		
-		return null;
+		return  Integer.toString(result)+"건 첨부파일 입력됨";
 	}
 
 	//멀티미디어에서 각 식별번호로 멀티미디어 파일 검색
