@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.prjt.own.sns.service.SAccountVO;
+
 public interface OwnhomeService {
 	//모든회원정보
 	public List<OwnUserVO> getUserList(OwnUserVO vo);
@@ -16,7 +18,7 @@ public interface OwnhomeService {
 	//아이디찾기
 	public void searchId(String email);
 		
-	public OwnUserVO snsLogin(String id);
+	public SAccountVO snsLogin(String id);
 	
 	//sns 유저 회원가입
 	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);

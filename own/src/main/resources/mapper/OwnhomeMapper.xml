@@ -38,11 +38,12 @@ select * from own_users
 
 <!--================= SNS ==================-->
    <!-- 로그인 정보에서 sns 닉네임 가져오기 -->
-   <select id="snsLogin" resultType="OwnUserVO">
-		select o.*, s.sns_nickname
-		from own_users o, sns_account s
-		where o.sns_account_no = s.sns_account_no
-		and o.user_id = #{userId}
+   <select id="snsLogin" resultType="SAccountVO">
+		SELECT S.SNS_NICKNAME SNS_NICKNAME, S.SNS_PROFILE SNS_PROFILE, S.SNS_WEBSITE SNS_WEBSITE, S.SNS_ACCOUNT_NO SNS_ACCOUNT_NO
+		FROM SNS_ACCOUNT S, OWN_USERS O
+		WHERE S.SNS_ACCOUNT_NO = O.SNS_ACCOUNT_NO
+		AND O.USER_ID =#{userId}
+	
    </select>
    
    <!-- sns 간편 가입 시 own_users 테이블 업데이트 -->
