@@ -69,7 +69,7 @@
 	</select>
 	
 	<!-- 가장 최신날짜의 데이터의 운동종목, 횟수 조회 -->
-	<select id="DayRecordCounting" resultType="ExerRecordVO" parameterType="string">
+	<select id="dayRecordCounting" resultType="ExerRecordVO" parameterType="string">
 		SELECT  S.EXERSUB_NAME EXERSUB_NAME, COUNT(*) E_COUNT
 		FROM	(
 		        <include refid="latestRecord"/>

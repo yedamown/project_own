@@ -16,5 +16,5 @@ public interface ExerRecordService {
 	List<ExerRecordVO> LatestExerRecord(String userId);
 	
 	// 최신 데이터에서 개수 카운팅
-	List<ExerRecordVO> DayRecordCounting(String userId);
+	List<ExerRecordVO> dayRecordCounting(String userId);
 }
