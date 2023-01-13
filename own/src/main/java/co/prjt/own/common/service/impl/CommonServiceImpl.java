@@ -43,6 +43,8 @@ public class CommonServiceImpl implements CommonService {
 	public String upload(MultipartFile[] uploadfile, String IndenfityId,  String INO ,String category){
 		List<FileDto> list = new ArrayList<>();
 		
+		int result = 0;
+		
 		for(MultipartFile file : uploadfile) {
 			MultimediaVO vo = new MultimediaVO();
 			
@@ -73,11 +75,14 @@ public class CommonServiceImpl implements CommonService {
 			}
 			//식별번호 알파벳 붙이기
 			vo.setIno(INO);
+
 			//매퍼에서 db로 정보 insert
 			commonMapper.uploadImg(vo);
+			result++;
+
 			}
 		
-		return null;
+		return  Integer.toString(result)+"건 첨부파일 입력됨";
 	}
 
 	//DB에 넣기

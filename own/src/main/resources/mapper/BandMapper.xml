@@ -17,40 +17,42 @@
 			AND BAND_TAG LIKE '%' || #{bandKeyword} || '%'
 		</if>
 	</sql>
-	<!-- 인서트업데이트 추후 수정...이상함 -->
+	<!-- 밴드 인서트 업데이트 -->
 	<insert id="insertBand">
 		<selectKey keyProperty="bandNo" resultType="string" order="BEFORE">
-			SELECT BAND_SEQ.NEXTVAL FROM DUAL
+			SELECT MAX(TO_NUMBER(SUBSTR(BAND_NO,5)))+1 FROM BAND
 		</selectKey>
 		INSERT INTO BAND(
+			BAND_NO,
+			BAND_LEADERID,
 			BAND_NAME,
 	        BAND_INTRO,
 	        BAND_KEYWORD,
 	        BAND_OPEN_OPTION,
+	        BAND_AGE_OPTION,
 	        BAND_AGE_BEFOROPTION,
 	        BAND_AGE_AFTEROPTION,
 	        BAND_CATEGORY,
 	        BAND_GENDER_OPTION,
 	        BAND_MEMBERSHIP_OPTION,
-	        BAND_LOCATION
-	        BAND_GENDER,
-	        BAND_AGE_OPTION 
+	        BAND_LOCATION,
+	        BAND_GENDER
 			)
 			VALUES(
-					#{bandNo},
+					'BDU_'||#{bandNo},
 					#{bandLeaderid},
 					#{bandName},
                     #{bandIntro},
-                    #{bandCategory},
+                    #{bandKeyword},
                     #{bandOpenOption},
-                    #{bandLocOption},
+                    #{bandAgeOption},
                     #{bandAgeBeforoption},
                     #{bandAgeAfteroption},
                     #{bandCategory},
                     #{bandGenderOption},
                     #{bandMembershipOption},
                     #{bandLocation},
-                    #{bandAgeOption}
+                    #{bandGender}
                   )
 	</insert>
 	<update id="updateBand">

@@ -7,7 +7,7 @@ import co.prjt.own.common.Paging;
 
 public interface BandService {
 		//밴드 생성
-		public int insertBand(BandVO vo);
+		public BandVO insertBand(BandVO vo);
 		//밴드 수정
 		public int updateBand(BandVO vo);
 		//밴드 리스트 전체 + 검색 
