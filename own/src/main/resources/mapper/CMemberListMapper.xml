@@ -17,10 +17,10 @@
 				USER_ID = #{userId}
 			</if> 
 			<if test="challNo !=null">
-				chall_no = #{challNo}
+				CHALL_NO = #{challNo}
 			</if>
 			<if test="challNo !=null and memStatus !=null">
-				chall_no = #{challNo}
+				CHALL_NO = #{challNo}
 				MEM_STATUS = #{memStatus}
 			</if>
 		</where>

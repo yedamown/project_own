@@ -46,6 +46,7 @@ public class ExerRecordServiceImpl implements ExerRecordService{
 	public List<ExerRecordVO> getWeight(String userId) {
 		// 데이터 중 최근 7일 날짜와 몸무게 출력
 		return mapper.getWeight(userId);
+
 	}
 
 }

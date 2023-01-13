@@ -1,5 +1,6 @@
 package co.prjt.own.sns.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,31 +75,38 @@ public class SnsController {
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
 	public String getSnsUser(HttpServletRequest request, Model model, SFollowVO svo, OwnUserVO ovo) {
 		HttpSession session = request.getSession();
+		
+		//세션에 강제로 로그인유저 저장하기
+		//session.setAttribute("loginUser", ownService.login("kmh"));
+		
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
-		System.out.println(ovo);
-		session.setAttribute("snsNickname", ownService.snsLogin(ovo.getUserId()));
+
+		System.out.println("ovo============================="+ovo);
+		
+		session.setAttribute("snsInfo", ownService.snsLogin(ovo.getUserId()));
 		model.addAttribute("snsFeed", boardService.getSnsBoardList(ovo.getUserId())); // sns 개인 피드 게시글 (sns계정식별번호로 조회)
 		model.addAttribute("snsFList", followService.getFollowerList(ovo.getSnsAccountNo())); //sns 팔로워 리스트
 		model.addAttribute("snsFollower", followService.followerCount(ovo.getSnsAccountNo())); //sns 팔로워 수
 		
 		//list 에 보드넘버 담아두기
 		List<SBoardVO> list = boardService.getSnsBoardNo(ovo.getSnsAccountNo());
-		System.out.println("=============1."+list);
 		//빈배열생성
-		List<MultimediaVO> newList = null;
+		List<MultimediaVO> newList = new ArrayList<>();
 
 		for (SBoardVO i : list){
 		    //이미지 개수 구하기 위한 리스트 생성_보드넘버별로 리스트 크기달라서
-		    List<MultimediaVO> imgList = common.selectImgAll(i.getSnsBoardNo());
-		    System.out.println("=============2."+imgList);
-		    if (imgList != null) {
-		    for(int j=0; j<imgList.size(); j++){ 
-		        //새 리스트에 이미지 값 넣기
-		        newList.add(imgList.get(j));
-		    }
+			if(common.selectImgAll(i.getSnsBoardNo())!=null){
+				List<MultimediaVO> imgList = common.selectImgAll(i.getSnsBoardNo());
+				if(imgList.size()!=0 ) {
+					newList.add(imgList.get(0));
+				}
+//				    for(int j=0; j<imgList.size(); j++){ 
+//				        //새 리스트에 이미지 값 넣기
+//				        newList.add(imgList.get(j));
+//				    }
 			}
 		}
-		System.out.println("=============3." +newList);
+		model.addAttribute("snsImg", newList);
 		return "content/sns/snsFeed"; 
 		}
 	
