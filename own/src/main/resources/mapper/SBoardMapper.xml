@@ -9,7 +9,7 @@
 		                        FROM sns_account s, own_users o
 		                        WHERE o.user_id = #{userId}
 		                        AND s.sns_account_no = o.sns_account_no)
-		ORDER BY SNS_BOARD_NO	
+		ORDER BY SNS_BOARD_NO DESC	
 	</select>
 	
 	<!-- 게시글 한건 조회 -->
@@ -21,6 +21,7 @@
 		SELECT SNS_BOARD_NO
 		FROM SNS_BOARD
 		WHERE SNS_ACCOUNT_NO = #{snsAccountNo}
+		ORDER BY SNS_BOARD_NO DESC
 	</select>
 	
 	<!-- 게시글 입력 -->

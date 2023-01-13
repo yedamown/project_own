@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
+import co.prjt.own.sns.service.SAccountVO;
 
 @Service
 public class OwnhomeServiceImpl implements OwnhomeService {
@@ -32,7 +33,7 @@ public class OwnhomeServiceImpl implements OwnhomeService {
 	}
 
 	@Override
-	public OwnUserVO snsLogin(String id) {
+	public SAccountVO snsLogin(String id) {
 		return ownhomeMapper.snsLogin(id);
 	}
 
