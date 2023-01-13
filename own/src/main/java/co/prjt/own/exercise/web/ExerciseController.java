@@ -54,11 +54,18 @@ public class ExerciseController {
 		return "content/own/ownRecordList";
 	}
 	
-	// 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 기록의 갯수 가져오기
+	// 회원의 가장 최신날짜 기록의 운동 개수 가져오기
 	@GetMapping("/dayChart")
 	@ResponseBody
-	public List<ExerRecordVO> dayChart(@RequestParam String userId) {
+	public List<ExerRecordVO> dayExerChart(@RequestParam String userId) {
 		return exerMapper.dayRecordCounting(userId);
 	}
+	
+	// 회원의 가장 최신날짜 기록의 운동 개수 가져오기
+		@GetMapping("/getWeight")
+		@ResponseBody
+		public List<ExerRecordVO> WeightChart(@RequestParam String userId) {
+			return exerMapper.getWeight(userId);
+		}
 	
 }

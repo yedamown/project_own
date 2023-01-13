@@ -79,4 +79,17 @@
 		WHERE R.USER_ID = #{userId}
 		GROUP BY EXERSUB_NAME
 	</select>
+	
+	<!-- 유저의 데이터 중 최근 7일 날짜와 몸무게 출력 -->
+	<select id="getWeight" resultType="ExerRecordVO" parameterType="string">
+		SELECT *
+		FROM (
+			SELECT DISTINCT TO_DATE(EXEREC_DATE, 'YYYY-MM-DD') EXEREC_DATE, EXEREC_WEIGHT
+			FROM EXER_RECORD
+			WHERE USER_ID = #{userId}
+			ORDER BY 1 DESC
+		)
+		WHERE ROWNUM BETWEEN 1 AND 7 
+		ORDER BY 1
+	</select>
 </mapper>

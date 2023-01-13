@@ -10,12 +10,18 @@
 <title>My Exercise Record List</title>
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- 폰트어썸 cdn -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<!-- chart.js cdn -->
 <script
 	src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<!-- 화면캡쳐 cdn -->
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script th:inline="javascript">
 	// 제이쿼리 충돌 방지 처리
 	var $jQ = jQuery.noConflict(); // ${}대신에 쓸 변수 설정해줌.
@@ -23,6 +29,7 @@
 	// 함수 실행
 	  $jQ(document).ready(function(){ 
 		  dayChart();
+		  weightChart();
     	});
 	
 	// datepicker 라이브러리 옵션
@@ -73,24 +80,74 @@
 	
 	// 운동 비율 차트만들기
 	function dayChart() {
-		// 차트 색상
-		function colorize() {
-		var r = Math.floor(Math.random()*200);
-		var g = Math.floor(Math.random()*200);
-		var b = Math.floor(Math.random()*200);
-		var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-		return color;
-		}
 		// 운동 카운트 데이터 받아옴
 		let id = $jQ('#userId').val();
-		console.log(id)
 		$jQ.ajax({
 			url : '/own/dayChart?userId=' + id,
 			method : 'get',
 			dataType : 'json',
 			contentType : "application/json"
 		}).then(res => {
+				// 랜덤으로 차트 색상 생성
+				function colorize() {
+				var r = Math.floor(Math.random()*200);
+				var g = Math.floor(Math.random()*200);
+				var b = Math.floor(Math.random()*200);
+				var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
+				return color;
+				}
+				
+				var labelList = new Array();
+				var valueList = new Array();
+				var colorList = new Array();
+						
+				for(var i = 0; i<res.length; i++) {
+					var d = res[i];
+					labelList.push(d.exersubName);
+					valueList.push(d.ecount);
+					colorList.push(colorize());
+				}	
+				var data = {
+						labels: labelList,
+						datasets: [{
+								backgroundColor: colorList,
+								data : valueList
+						}],
+						options : {
+								title : {
+								display : true,
+								text: '운동 구성비'
+								}
+						}
+				};
+		
+			var ctx1 = document.getElementById('dayChart').getContext('2d');
+			new Chart(ctx1, {
+				      type: 'pie',
+					  data: data
+			});
+		})
+	}
+	
+	// 몸무게 변화 차트만들기
+	function weightChart(){
+		// 몸무게 데이터 받아오기
+		let id = $jQ('#userId').val();
+		$jQ.ajax({
+			url : '/own/getWeight?userId=' + id,
+			method : 'get',
+			dataType : 'json',
+			contentType : "application/json"
+		}).then(res => {
 			console.log(res)
+			// 랜덤으로 차트 색상 생성
+			function colorize() {
+			var r = Math.floor(Math.random()*200);
+			var g = Math.floor(Math.random()*200);
+			var b = Math.floor(Math.random()*200);
+			var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
+			return color;
+			}
 			
 			var labelList = new Array();
 			var valueList = new Array();
@@ -98,9 +155,8 @@
 					
 			for(var i = 0; i<res.length; i++) {
 				var d = res[i];
-				console.log(d.exersubName, d.ecount)
-				labelList.push(d.exersubName);
-				valueList.push(d.ecount);
+				labelList.push(d.exerecDate);
+				valueList.push(d.exerecWeight);
 				colorList.push(colorize());
 			}	
 			var data = {
@@ -112,18 +168,37 @@
 					options : {
 							title : {
 							display : true,
-							text: '운동 구성비'
+							text: '몸무게'
 							}
 					}
 			};
-			
-			var ctx1 = document.getElementById('myChart').getContext('2d');
+		
+			var ctx1 = document.getElementById('weigntChart').getContext('2d');
 			new Chart(ctx1, {
-				      type: 'pie',
+				      type: 'line',
 					  data: data
 			});
 		})
-	}    
+	}
+	
+	// 화면 캡쳐
+	function captureImage(){
+		html2canvas(document.querySelector("#chart")).then(canvas => {
+			var img = canvas.toDataURL();
+	        var fileNm = "파일명";
+	        saveImage(img, fileNm + ".jpg") // 다운로드 되는 이미지파일의 이름 지정
+		});
+	}
+	
+	function saveImage(uri, filename) {
+		// 캡쳐된 파일을 이미지 파일로 내보냄
+		 var link = document.createElement("a")
+	      link.download = filename;
+	      link.href = uri;
+	      document.body.appendChild(link);
+	      link.click();
+	}
+	
 </script>
 
 </head>
@@ -153,10 +228,17 @@
 				th:text="'당신은 총 ' + ${#aggregates.sum(lRecord.![exerecTime])} + '시간 운동하셨습니다.'"></h3>
 			<h3 th:text="'총 ' + ${#aggregates.sum(lRecord.![kcals])} + '칼로리 소모.'"></h3>
 
-			<div style="width: 900px; height: 900px;">
+			<div id="chart" style="width: 900px; height: 900px;">
 				<!--차트가 그려질 부분-->
-				<canvas id="myChart" align="center"></canvas>
-				<canvas id="myChart2"></canvas>
+				<canvas id="dayChart" align="center"></canvas>
+				<canvas id="weigntChart" align="center"></canvas>
+			</div>
+			<div id="shareBtn">
+				<button onclick="captureImage()"><i class="fas fa-light fa-floppy-disk" id="saveBtn"
+					style="font-size: 50px" /></i> </button>
+					<i class="fa-brands fa-blogger"
+					id="bandBtn" style="font-size: 50px"></i> <i
+					class="fa-brands fa-instagram" id="snsBtn" style="font-size: 50px"></i>
 			</div>
 		</div>
 

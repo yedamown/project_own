@@ -39,7 +39,13 @@ public class ExerRecordServiceImpl implements ExerRecordService{
 	@Override
 	public List<ExerRecordVO> dayRecordCounting(String userId) {
 		// 최신 데이터에서 개수 카운팅
-		return mapper.DayRecordCounting(userId);
+		return mapper.dayRecordCounting(userId);
+	}
+
+	@Override
+	public List<ExerRecordVO> getWeight(String userId) {
+		// 데이터 중 최근 7일 날짜와 몸무게 출력
+		return mapper.getWeight(userId);
 	}
 
 }
