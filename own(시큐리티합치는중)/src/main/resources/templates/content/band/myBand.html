@@ -1,0 +1,261 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}"
+      lang="ko">
+    <head>
+   		<!-- jquery -->
+    	<script type="text/javascript" src="/band/js/jquery-3.2.1.js"></script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="image/favicon.png" type="image/png">
+        <title>Royal Hotel</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/band/css/bootstrap.css">
+        <link rel="stylesheet" href="/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/band/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/band/css/style.css">
+        <link rel="stylesheet" href="/band/css/responsive.css">
+        <!--여기부터 이어붙임-->
+        <link rel="stylesheet" href="/band/2nd/css/flaticon.css">
+        <link rel="stylesheet" href="/band/2nd/css/icomoon.css">
+        <link rel="stylesheet" href="/band/2nd/css/style.css">
+    </head>
+    <body>
+    <div layout:fragment="content">
+        <!--================MY 가치 중 검색 Area =================-->
+        <section class="banner_area">
+            <div class="booking_table d_flex align-items-center"  style="min-height: 300px;">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+				<div class="container">
+					<div class="banner_content text-center">
+						<!-- <h6>Today's Exercise together</h6> -->
+						<h2>MY 가치</h2>
+						<!-- <p>Exercise to stimulate, not to annihilate. The world wasn't formed in a day, and neither were we. Set small goals and build upon them</p> -->
+						<!-- <a href="#" class="btn theme_btn button_hover">Get Started</a> -->
+					</div>
+				</div>
+            </div>
+            
+        <!--================ input-group ================-->
+            <form name="searchFrm">
+                <div class="hotel_booking_area position" >
+                    <div class="container">
+                        <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.3);">
+                            <div class="input-group">
+                                
+                                    <input type="text" class="form-control" placeholder="오운 가치이름 검색"style="text-align: center;" name="bandName" th:value="${bandVO.bandName}">
+                                    <input type="hidden" name="page" value="1">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default"><i class="lnr lnr-magnifier"></i></button>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        <!--================ input-group ================-->
+        </section>
+        <!--================MY 가치 중 검색 Area 끝=================-->
+        
+        <!--================ 내 가치 Area  =================-->
+        <section class="accomodation_area section_gap" style="padding-bottom: 0px;">
+            <div class="container">
+        <!--================ 내 밴드 세개씩  ================-->
+                <div style="margin-bottom: 50px;" th:each="band, bandStat :${myBand}">
+                    <input class="bandnums" type="hidden" th:value="${band.bandNo}"/>
+                    <div class="row mb_30">
+                        <div class="col-lg-3 col-sm-6" style="float: left;">
+                            <div class="accomodation_item text-center">
+                                <div class="hotel_img"style="height: 230px;">
+                                    <img src="/band/image/room1.jpg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-top-border" style="float: right; width: 70%; padding: 0; height:230px;">
+                            
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <blockquote class="generic-blockquote"style="height:230px;">
+                                        <h4 class="mb-30 title_color" th:text="${band.bandName}" style="display: inline-block;">Block Quotes</h4>
+                                        <p style="float: right;"><small>멤버 [[${band.memcount}]]</small></p>
+                                            <div class="firstboard">
+                                                <a href="#">
+                                                    <b th:class="${band.bandNo}"></b>
+                                                    <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
+                                                    <b th:class="${band.bandNo}+t" style="float: right;"></b>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a href="#">
+                                                    <b th:class="${band.bandNo}"></b>
+                                                    <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
+                                                    <b th:class="${band.bandNo}+t" style="float: right;"></b>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a href="#">
+                                                    <b th:class="${band.bandNo}"></b>
+                                                    <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
+                                                    <b th:class="${band.bandNo}+t" style="float: right;"></b>
+                                                </a>
+                                            </div>
+                                    </blockquote>
+                                </div>
+                            </div>
+					    </div>
+                    </div>
+                </div>
+        <!--================ 내 밴드 세개씩 끝 ================-->
+            </div>
+        </section>
+        <!--================ 내 가치 끝 Area  =================-->
+        <!--================ 페이지 Area  =================-->
+        <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
+        <!--================ 페이지 Area 끝  =================-->
+        
+        
+        <script>
+	      	//페이징+검색처리
+	        function gopage(i) {
+	            searchFrm.page.value = i;
+	            searchFrm.submit();
+	        }
+            //밴드번호 세개 가져옴
+            let bandnum = '';
+            $('.bandnums').each(function(idx, ele){
+                bandnum += ele.value;
+            })
+             console.log(bandnum);
+            
+            $.ajax({
+                url:'/own/band/myBand/'+bandnum,
+                dataType: 'json',
+                method: 'get',
+                contentType : "application/text; charset=utf-8;"
+            }).then(result => {
+                //결과출력
+                console.log(result);
+                
+                //가져온 배열 돌리기
+                result.forEach(element => {
+                    console.log(element.bandBoardDate);
+                    console.log(element.bandBoardDetailNo);
+                    console.log(element.bandBoardTitle);
+                    //reply_count key 존재유무 확인
+                    if('REPLY_COUNT' in element){
+                        console.log(element.replyCount);
+                    }
+
+                    //밴드번호 가져옴
+                    $('.bandnums').each(function(idx, ele){
+                        //밴드번호 한개씩...
+                        let bandnum = ele.value;
+                        if(bandnum==element.bandNo){
+                            //댓글변경~
+                            $('.'+bandnum).eq(0).text(element.bandBoardTitle+' 댓글식별자 : '+element.bandBoardDetailNo);
+                            //reply_count key 존재유무 확인
+                            if('replyCount' in element){
+                                $('.'+bandnum+'r').eq(0).text(element.replyCount).prepend('<span class="icon-chat"/>');
+                            }
+                            //$('.'+bandnum+'t').eq(0).text(element.bandBoardDate);
+                            $('.'+bandnum+'t').eq(0).text(elapsedText(element.bandBoardDate));
+                            
+                            //다음순회를 위해 클래스명바꾸기
+                            $('.'+bandnum).eq(0).attr("class",bandnum+'_ok');
+                            $('.'+bandnum+'r').eq(0).attr("class",bandnum+'_okr');
+                            $('.'+bandnum+'t').eq(0).attr("class",bandnum+'_okt');
+                        }
+                    })
+                    
+                });
+                //만약 게시글이 하나도 없다면
+                    console.log($('.firstboard').eq(0))
+                    $('.firstboard').each(function(idx, ele){
+                        console.log('게시글이없다면'+$(ele).find('b').eq(0).attr('class')+'class출력됨?');
+                        if(!$(ele).find('b').eq(0).attr('class').includes('_ok')){
+                            $(ele).find('b').eq(0).text('등록된 글이 없습니다.');
+                        }
+                    })
+                 
+            })
+              .fail(err => console.log(err))
+            //날짜 함수
+            function elapsedText(date) {
+                console.log(date);
+                date = new Date(date);
+                // 초 (밀리초)
+                const seconds = 1;
+                // 분
+                const minute = seconds * 60;
+                // 시
+                const hour = minute * 60;
+                // 일
+                const day = hour * 24;
+                
+                var today = new Date();
+                var elapsedTime = Math.trunc((today.getTime() - date.getTime()) / 1000);
+                
+                var elapsedText = "";
+                if (elapsedTime < seconds) {
+                    elapsedText = "방금 전";
+                } else if (elapsedTime < minute) {
+                    elapsedText = elapsedTime + "초 전";
+                } else if (elapsedTime < hour) {
+                    elapsedText = Math.trunc(elapsedTime / minute) + "분 전";
+                } else if (elapsedTime < day) {
+                    elapsedText = Math.trunc(elapsedTime / hour) + "시간 전";
+                } else if (elapsedTime < (day * 3)) {
+                    elapsedText = Math.trunc(elapsedTime / day) + "일 전";
+                } else {
+                    elapsedText = SimpleDateTimeFormat(date, "yyyy-MM-dd");
+                }
+                
+                return elapsedText;
+            }
+            //날짜고치기
+            function SimpleDateTimeFormat(date) {
+                    let month = date.getMonth() + 1;
+                    let day = date.getDate();
+                    let hour = date.getHours();
+                    let minute = date.getMinutes();
+                    let second = date.getSeconds();
+
+                    month = month >= 10 ? month : '0' + month;
+                    day = day >= 10 ? day : '0' + day;
+                    hour = hour >= 10 ? hour : '0' + hour;
+                    minute = minute >= 10 ? minute : '0' + minute;
+                    second = second >= 10 ? second : '0' + second;
+
+                    return date.getFullYear() + '-' + month + '-' + day;
+            }
+            
+            //버튼이 눌렸을 때 검색하기
+            //폼으로 대체해서 안씀
+            // $($('.input-group').find('.input-group-btn')).click(function(){
+            //     //검색 값 출력
+            //     console.log($('.input-group').find('input').val());
+
+            // })
+            
+        </script>
+        <script src="/band/js/popper.js"></script>
+        <script src="/band/js/bootstrap.min.js"></script>
+        <script src="/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+        <script src="/band/js/jquery.ajaxchimp.min.js"></script>
+        <script src="/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+        <script src="/band/js/mail-script.js"></script>
+        <script src="/band/js/stellar.js"></script>
+        <script src="/band/vendors/lightbox/simpleLightbox.min.js"></script>
+        <script src="/band/js/custom.js"></script>
+    </div>
+    </body>
+</html>

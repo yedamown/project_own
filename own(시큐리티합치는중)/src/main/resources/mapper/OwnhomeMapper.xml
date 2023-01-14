@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.prjt.own.ownhome.mapper.OwnhomeMapper">
+
+<select id="getEmpList" resultType="EmpVO">
+select * from employees
+</select>
+
+<!-- 회원가입 -->
+<insert id="insertUser">
+insert into own_users
+(user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_perm)
+values (
+		#{userId},
+		#{userPasswd},
+		#{userName},
+		#{userEmail},
+		#{userPhone},
+		#{userBirthday},
+		#{userGender},
+		'일반회원')
+</insert>
+<!-- 아이디 중복체크 -->
+<select id="idcheck" resultType="int">
+select count(*) from own_users where user_id = #{id}
+</select>
+
+<!-- 로그인 비밀번호 확인-->
+<select id="login" resultType="co.prjt.own.ownhome.service.OwnUserVO">
+select USER_ID,
+USER_PASSWD,
+USER_NAME,
+USER_EMAIL,
+USER_PHONE,
+USER_BIRTHDAY,
+USER_GENDER,
+USER_PERM,
+USER_STATUS,
+USER_HOBBY,
+SNS_ACCOUNT_NO from own_users where user_id= #{userId}
+<!-- 모든회원정보 -->
+</select>
+
+<!-- 비밀번호 찾기 -->
+<update id="setPassword">
+update own_users set user_passwd = ${appNo} where user_id = ${id}
+</update>
+
+<select id="getUserList" resultType="OwnUserVO">
+select * from own_users
+</select>
+
+	<!--================= SNS ==================-->
+   <!-- 로그인 정보에서 sns 닉네임 가져오기 -->
+   <select id="snsLogin" resultType="String">
+      SELECT s.sns_nickname sns_nickname
+      FROM sns_account s, own_users o
+      WHERE o.user_id = #{userId}
+      AND s.sns_account_no = o.sns_account_no
+   </select>
+   
+   <!-- sns 간편 가입 시 own_users 테이블 업데이트 
+   <update id="updateSnsUser" parameterType="OwnUserVO">
+      UPDATE OWN_USERS 
+      SET SNS_ACCOUNT_NO = 'SAU_'||((sns_account_no.nextval) - 1)
+      WHERE USER_ID = #{userId}
+   </update>
+   
+   <update id="updateSnsUser" parameterType="String">
+  BEGIN
+      UPDATE 
+         OWN_USERS
+      SET
+         SNS_ACCOUNT_NO = 'SAU_'||((sns_account_no.nextval) - 1)
+         WHERE USER_ID = #{userId};
+      <selectKey keyProperty="snsAccountNo" resultType="string" order="BEFORE">
+         SELECT sns_account_no.NEXTVAL FROM DUAL
+      </selectKey>
+         INSERT INTO SNS_ACCOUNT (SNS_NICKNAME,
+                           SNS_ACCOUNT_NO)
+         VALUES( #{snsNickname},
+               'SAU_'||#{snsAccountNo});
+   END;
+   </update>-->
+   <!--================= SNS End ==================-->
+   
+</mapper>

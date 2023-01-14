@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="UTF-8">
+    <meta name="description" content="Cocoon -Portfolio">
+    <meta name="keywords" content="Cocoon , Portfolio">
+    <meta name="author" content="Pharaohlab">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ========== Title ========== -->
+    <title> Cocoon -Portfolio</title>
+    <!-- ========== Favicon Ico ========== -->
+    <!--<link rel="icon" href="fav.ico">-->
+    <!-- ========== STYLESHEETS ========== -->
+    <!-- Bootstrap CSS -->
+    <link href="/sns/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts Icon CSS -->
+    <link href="/sns/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/sns/css/et-line.css" rel="stylesheet">
+    <link href="/sns/css/ionicons.min.css" rel="stylesheet">
+    <!-- Carousel CSS -->
+    <link href="/sns/css/slick.css" rel="stylesheet">
+    <!-- Magnific-popup -->
+    <link rel="stylesheet" href="/sns/css/magnific-popup.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="/sns/css/animate.min.css">
+    <!-- Custom styles for this template -->
+    <link href="/sns/css/main.css" rel="stylesheet">
+
+    <style>
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Could be more or less, depending on screen size */
+        }
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modalBtn{
+            font-size: 13px;
+        }
+    </style>
+
+</head>
+<div layout:fragment="content">
+<body>
+<div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+</div>
+
+<div class="body-container container-fluid">
+    <a class="menu-btn" href="javascript:void(0)">
+        <i class="ion ion-grid"></i>
+    </a>
+    <div class="row justify-content-center">
+        <!--=================== side menu ====================-->
+        <div class="col-lg-2 col-md-3 col-12 menu_block">
+
+            <!--logo -->
+            <div class="logo_box">
+                <a href="#">
+                    <img src="/sns/img/logo.png" alt="cocoon">
+                </a>
+            </div>
+            <!--logo end-->
+
+            <!--main menu -->
+            <div class="side_menu_section">
+                <ul class="menu_nav">
+                    <li>
+                        <a href="/own/home">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="about.html">
+                            About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="services.html">
+                            Services
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/own/snsFeed">
+                            개인피드
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/own/sns">
+                            sns메인
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contact.html">
+                            Contact
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--main menu end -->
+
+            <!--filter menu -->
+            <div class="side_menu_section">
+                <h4 class="side_title">filter by:</h4>
+                <ul  id="filtr-container"  class="filter_nav">
+                    <li  data-filter="*" class="active"><a href="javascript:void(0)" >all</a></li>
+                    <li data-filter=".branding"> <a href="javascript:void(0)">branding</a></li>
+                    <li data-filter=".design"><a href="javascript:void(0)">design</a></li>
+                    <li data-filter=".photography"><a href="javascript:void(0)">photography</a></li>
+                    <li data-filter=".architecture"><a href="javascript:void(0)">architecture</a></li>
+                </ul>
+            </div>
+            <!--filter menu end -->
+
+
+            <!--social and copyright -->
+            <div class="side_menu_bottom">
+                <div class="side_menu_bottom_inner">
+                    <ul class="social_menu">
+                        <li>
+                            <a href="#"> <i class="ion ion-social-pinterest"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-facebook"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-twitter"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-dribbble"></i> </a>
+                        </li>
+                    </ul>
+                    <div class="copy_right">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p class="copyright">Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+            <!--social and copyright end -->
+        </div>
+        <!--=================== side menu end====================-->
+
+        <!--=================== content body ====================-->
+        <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
+            <!--=================== filter portfolio start====================-->
+            <div id="snsprofilebox" style="border: 1px solid black; text-align: center;">
+            <br>
+            <div class="testimonial_box">
+                <div class="testimonial_author">  
+                    <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+               
+                    <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
+
+                    <h5>게시글 갯수 / 팔로우 수 /</h5> 
+                    <h1 class="modalBtn">팔로워 수<span th:text="${snsFollower}"></span></h1>
+ 
+                    <!-- 첫 번째 Modal -->
+                    <div class="modal">
+                
+                    <!-- 첫 번째 Modal의 내용 -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>                         
+                        나를 팔로우 한 사람
+                        <table border="1px">
+                            <thead>
+                                <tr>
+                                    <th>팔로우 목록</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="snsf : ${snsFList}">
+                                    <td th:text="${snsf.snsNickname}"></td>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+
+                    <p>소개글을 입력하세요 .... <span>company</span></p>
+                </div>
+
+                <p>
+                   프로필 소개글
+                   웹사이트
+                </p>
+                <br>
+            </div>
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
+            <img src="/sns/img/user.png" alt="author"> 하이라이트  <br> <br>
+           </div>
+           
+            <hr>
+
+            <!-- 두 번째 Modal을 여는 클래스 -->
+            <h1 class="modalBtn" style="text-align: right;">📝글 작성</h1>
+        
+            <!-- 두 번째 Modal -->
+            <div class="modal">
+        
+            <!-- 두 번째 Modal의 내용 -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm" enctype="multipart/form-data">
+                    <label for="inputContent">내용</label>
+                    <textarea type="text" name="snsBoardContent" id="inputContent"></textarea>
+                    <input th:value="${session.loginUser.snsAccountNo}" name="snsAccountNo" type="hidden"></input>
+                    <label for="inputFile">첨부파일</label>
+                    <input name="uploadfile" type="file" id="customFile" multiple="multiple"/>
+                    <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
+                    <input type="submit" role="button" value="글쓰기"/>
+                </form>
+            </div>
+            </div>
+
+           <!-- 첫 번째 Modal을 여는 클래스 -->
+    
+    <hr>
+ 
+ 
+    <hr>
+    <!-- 세 번째 Modal을 여는 클래스 -->
+    <h1 class="modalBtn">MODAL_3</h1>
+ 
+    <!-- 세 번째 Modal -->
+    <div class="modal">
+ 
+      <!-- 세 번째 Modal의 내용 -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>세 번째 Modal</p>
+      </div>
+    </div>
+            <table border="1px">
+               <thead>
+                  <tr>
+                     <th>게시글 번호</th>
+                     <th>글 내용</th>
+                     <th>작성일자</th>
+                     <th>작성자</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr th:each="sns :  ${snsFeed}">
+                     <td th:text="${sns.snsBoardNo}"></td>
+                     <td th:text="${sns.snsBoardContent}"></td>
+                     <td th:text="${sns.snsBoardDate}"></td>
+                     <td th:text="${sns.snsNickname}"></td>
+                  </tr>
+               </tbody>
+            </table>
+            <br>
+            
+            <div class="portfolio gutters grid img-container">
+                <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
+                <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port1.png" title="project name 1">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port1.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  branding architecture  col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port2.png" title="project name 2">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port2.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  design col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port3.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port3.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  photography design col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port4.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port4.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  branding photography  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port5.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port5.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item   architecture design col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port6.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port6.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  photography architecture col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port7.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port7.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  branding design  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port8.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port8.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item architecture  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port9.png" title="project name 4">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port9.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  photography architecture col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port10.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port10.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item  branding design  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port11.png" title="project name 5">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port11.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item architecture  col-sm-12 col-md-6 col-lg-3">
+                    <a href="/sns/img/portfolio/port4.png" title="project name 4">
+                        <div class="project_box_one">
+                            <img src="/sns/img/portfolio/port4.png" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--=================== filter portfolio end====================-->
+        </div>
+        <!--=================== content body end ====================-->
+    </div>
+</div>
+
+<script language="javascript">
+    let fBtn = document.getElementById("followBtn");
+    fBtn.addEventListener("click", function(){
+        if(this.value = 'white'){
+        console.log('팔로우버튼 클릭');
+        this.style.backgroundColor = "skyblue";
+        this.style.color="white";
+        this.value = 'blue';
+        this.textContent = "팔로우✔";
+        }else if (this.value='blue'){
+            this.style.backgroundColor = "";
+            this.style.color="";
+            this.value="white";
+        }
+    })
+
+</script>
+
+    
+    <script>
+        // Modal을 가져옵니다.
+        var modals = document.getElementsByClassName("modal");
+        // Modal을 띄우는 클래스 이름을 가져옵니다.
+        var btns = document.getElementsByClassName("modalBtn");
+        // Modal을 닫는 close 클래스를 가져옵니다.
+        var spanes = document.getElementsByClassName("close");
+        var funcs = [];
+        
+        // Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
+        function Modal(num) {
+        return function() {
+            // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
+            btns[num].onclick =  function() {
+                modals[num].style.display = "block";
+                console.log(num);
+            };
+        
+            // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
+            spanes[num].onclick = function() {
+                modals[num].style.display = "none";
+            };
+        };
+        }
+            
+        // 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
+        for(var i = 0; i < btns.length; i++) {
+        funcs[i] = Modal(i);
+        }
+        
+        // 원하는 Modal 수만큼 funcs 함수를 호출합니다.
+        for(var j = 0; j < btns.length; j++) {
+        funcs[j]();
+        }
+        
+        // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
+        window.onclick = function(event) {
+        if (event.target.className == "modal") {
+            event.target.style.display = "none";
+        }
+        };
+
+
+    </script>
+
+
+
+<script>
+		//날짜 함수
+		function elapsedText(date) {
+		    console.log(date);
+		    date = new Date(date);
+		    // 초 (밀리초)
+		    const seconds = 1;
+		    // 분
+		    const minute = seconds * 60;
+		    // 시
+		    const hour = minute * 60;
+		    // 일
+		    const day = hour * 24;
+		    
+		    var today = new Date();
+		    var elapsedTime = Math.trunc((today.getTime() - date.getTime()) / 1000);
+		    
+		    var elapsedText = "";
+		    if (elapsedTime < seconds) {
+		        elapsedText = "방금 전";
+		    } else if (elapsedTime < minute) {
+		        elapsedText = elapsedTime + "초 전";
+		    } else if (elapsedTime < hour) {
+		        elapsedText = Math.trunc(elapsedTime / minute) + "분 전";
+		    } else if (elapsedTime < day) {
+		        elapsedText = Math.trunc(elapsedTime / hour) + "시간 전";
+		    } else if (elapsedTime < (day * 3)) {
+		        elapsedText = Math.trunc(elapsedTime / day) + "일 전";
+		    } else {
+		        elapsedText = SimpleDateTimeFormat(date, "yyyy-MM-dd");
+		    }
+		    
+		    return elapsedText;
+		}
+		//날짜고치기
+		function SimpleDateTimeFormat(date) {
+		        let month = date.getMonth() + 1;
+		        let day = date.getDate();
+		        let hour = date.getHours();
+		        let minute = date.getMinutes();
+		        let second = date.getSeconds();
+		
+		        month = month >= 10 ? month : '0' + month;
+		        day = day >= 10 ? day : '0' + day;
+		        hour = hour >= 10 ? hour : '0' + hour;
+		        minute = minute >= 10 ? minute : '0' + minute;
+		        second = second >= 10 ? second : '0' + second;
+		
+		        return date.getFullYear() + '-' + month + '-' + day;
+		}
+
+</script>
+
+
+<!-- jquery -->
+<script src="/sns/js/jquery.min.js"></script>
+<!-- bootstrap -->
+<script src="/sns/js/popper.js"></script>
+<script src="/sns/js/bootstrap.min.js"></script>
+<script src="/sns/js/waypoints.min.js"></script>
+<!--slick carousel -->
+<script src="/sns/js/slick.min.js"></script>
+<!--Portfolio Filter-->
+<script src="/sns/js/imgloaded.js"></script>
+<script src="/sns/js/isotope.js"></script>
+<!-- Magnific-popup -->
+<script src="/sns/js/jquery.magnific-popup.min.js"></script>
+<!--Counter-->
+<script src="/sns/js/jquery.counterup.min.js"></script>
+<!-- WOW JS -->
+<script src="/sns/js/wow.min.js"></script>
+<!-- Custom js -->
+<script src="/sns/js/main.js"></script>
+</body>
+</div>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>도전_마이페이지_내 예치금</title>
+</head>
+<div layout:fragment="content">
+	<body>
+		<!-- 내 현재 예치금, 내 예금주 .. 등 -> cmemberVO -->
+		<!-- 내 충전, 출금 상금 등의 내역  -> CAmountVO -->
+		<!-- 두 것을..조인해서 가져와야함. 멤버별로 뽑을땐 cmemeberd에서
+	내거에서 내역별로 볼 때는..  -->
+		<h3>내 현재 보유예치금:<span th:text=${memInfo.memAmt}></span></h3>
+		<h3>내 계좌정보:<span th:text=${memInfo.memAcc}></span> <span>[[${memInfo.memAccname}]]</span></h3>
+		<table border="solid 1">
+			<thead>
+				<tr>
+					<th>날짜</th>
+					<th>유형</th>
+					<th>금액</th>
+					<th>도전번호</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="amt: ${memAmount}">
+					<td th:text="${#dates.format(amt.challAmountDate, 'yyyy-MM-dd HH:mm:ss')}" />
+					<td th:text="${amt.amtType}" />
+					<td th:text="${amt.price}"></td>
+					<td th:text="${amt.challNo}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.prjt.own.sns.mapper.SBoardMapper">
+
+	<!-- 게시글 전체 조회 -->
+	<select id="getSnsBoardList" resultType="SBoardVO">
+		SELECT * FROM SNS_BOARD
+	</select>
+	
+	<!-- 게시글 한건 조회 -->
+	<select id="getSnsBoard" resultType="SBoardVO">
+		SELECT * FROM SNS_BOARD WHERE SNS_BOARD_NO = #{snsBoardNo}
+	</select>
+	
+	<!-- 게시글 입력 -->
+	<insert id="insertSnsBoard" parameterType="SBoardVO">
+		<selectKey keyProperty="snsBoardNo" resultType="string" order="BEFORE">
+			SELECT sns_board_no.NEXTVAL FROM DAUL
+		</selectKey>
+			INSERT INTO SNS_BOARD (SNS_BOARD_NO,
+								   SNS_BOARD_CONTENT,
+								   SNS_BOARD_DATE,
+								   SNS_NICKNAME,
+								   SNS_ACCOUNT_NO)
+			VALUES ( 'SBN_'||#{snsBoardNo}, 
+					 #{snsBoardContent}, 
+					 sysdate, 
+					 (SELECT SNS_NICKNAME FROM SNS_ACCOUNT S, OWN_USERS O
+						WHERE S.SNS_ACCOUNT_NO = O.SNS_ACCOUNT_NO
+						AND O.USER_ID = 'kjk'), 
+					 #{snsAccountNo})
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateSnsBoard" parameterType="SBoardVO">
+		UPDATE SNS_BOARD
+		SET SNS_BOARD_CONTENT = #{snsBoardContent},
+			    SNS_BOARD_DATE = sysdate
+		WHERE SNS_BOARD_NO = ${snsBoardNo}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="deleteSnsBoard">
+		DELETE FROM SNS_BOARD
+		WHERE SNS_BOARD_NO = #{snsBoardNo} 
+	</delete>
+	
+</mapper>

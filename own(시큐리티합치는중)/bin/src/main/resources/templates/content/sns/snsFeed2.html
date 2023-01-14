@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<div layout:fragment="content">
+<body>
+	<h1>sns개인피드</h1>
+	<table border="1px">
+		<thead>
+			<tr>
+				<th>게시글 번호</th>
+				<th>글 내용</th>
+				<th>작성일자</th>
+				<th>작성자</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="sns :  ${snsFeed2}">
+				<td th:text="${sns.snsBoardNo}"></td>
+				<td th:text="${sns.snsBoardContent}"></td>
+				<td th:text="${sns.snsBoardDate}"></td>
+				<td th:text="${sns.snsNickname}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</div>
+</html>

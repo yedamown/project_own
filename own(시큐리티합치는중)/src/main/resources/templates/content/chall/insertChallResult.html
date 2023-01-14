@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>add_chall</title>
+</head>
+<body>
+<div layout:fragment="content">
+	<h3>도전결과 잘 나오나요</h3>
+	<ul>
+		<li><input id ="challNo" type="hidden" th:value="${resultChall.challNo}" /></li>
+		<li>도전제목: <span th:text="${resultChall.challTitle}"></span></li>
+		<li>도전카테고리: <span th:text="${resultChall.challCategory}"></span></li>
+		<li>도전태그: <span th:text="${resultChall.challTag}"></span></li>
+		<li>도전기간: <span th:text="${resultChall.challDuration}"></span></li>
+		<li>도전빈도: <span th:text="${resultChall.challFreq}"></span></li>
+		<li>참여가능 인원:<span th:text="${resultChall.challFreq}"></span></li>
+		<li>도전금액:<span th:text="${resultChall.challPrice}"></span></li>
+		<li>인증방법: <span th:text="${resultChall.vldMethod}"></span></li>
+		<li>도전 시작날짜: <span th:text="${resultChall.challStartdate}"></span></li>
+		<li>도전리더: <span th:text="${resultChall.challLeader}"></span></li>
+	</ul>
+</div>
+</body>
+</html>

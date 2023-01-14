@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상세보기 페이지</title>
+</head>
+<body>
+<div layout:fragment="content">
+		<h3>도전상세보기</h3>
+		<input id ="challNo" type="hidden" th:value="${detailChall.challNo}" />
+		<ul>
+		<li>도전제목: <span th:text="${detailChall.challTitle}"></span></li>
+		<li>도전대표 이미지 <img th:src="|/imgView/${challImg[0].mediaServerFile}|" alt="" />
+		<li>인증성공 이미지 <span th:text="${challImg[1].mediaRealFile}"></span></li> 
+		<li>도전카테고리: <span th:text="${detailChall.challCategory}"></span></li>
+		<li>도전태그: <span th:text="${detailChall.challTag}"></span></li>
+		<li>도전기간: <span th:text="${detailChall.challDuration}"></span></li>
+		<li>도전빈도: <span th:text="${detailChall.challFreq}"></span></li>
+		<li>참여가능 인원:<span th:text="${detailChall.challFreq}"></span></li>
+		<li>도전금액:<span th:text="${detailChall.challPrice}"></span></li>
+		<li>인증방법: <span th:text="${detailChall.vldMethod}"></span></li>
+		<li>인증성공 예시 <img th:src="|/imgView/${challImg[1].mediaServerFile}|" alt="" width="400px"/>
+		<li>인증실패 예시 <img th:src="|/imgView/${challImg[2].mediaServerFile}|" alt="" width="400px" />
+		<li>도전 시작날짜: <span th:text="${detailChall.challStartdate}"></span></li>
+		<li>도전리더: <span th:text="${detailChall.challLeader}"></span></li>
+		<li th:text="${challImg[0].mediaRealFile}"></li>
+		<button type="button" id="applyBtn">도전 신청하기</button>
+<!-- 		<th:block th:each="cImgs: ${challImg}">
+			<li th:text="${cImgs.mediaRealFile}"></li>
+		</th:block> -->
+		</ul>
+	
+		<script>
+			$('#applyBtn').on("click", function(){
+				let cNo =  $('#challNo').val();
+				console.log(cNo);
+				location.href = '/own/chall/applyForm?challNo='+ cNo
+			})
+		</script>
+</div>
+</body>
+</html>
