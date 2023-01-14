@@ -15,4 +15,5 @@ public class OwnApplication {
 		SpringApplication.run(OwnApplication.class, args);
 	}
 	
+	
 }

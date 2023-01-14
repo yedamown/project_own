@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
 </head>
 <div layout:fragment="content">
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -127,8 +128,15 @@
             </div>
         </div>
         </div>
-    <script>
-    
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var header = /*[[${_csrf.headerName}]]*/'defalut';
+  var token = /*[[${_csrf.token}]]*/'defalut';
+    console.log(header);
+    console.log(token);
+
+  /*]]>*/
+
     function pwCheck() {
     	var regExpPw = /(?=.*\d{1,20})(?=.*[~`!@#$%\^&*()-+=]{1,20})(?=.*[a-zA-Z]{1,20}).{8,20}$/;
     	let pw = $('#u_pw').val();
@@ -186,6 +194,9 @@
             url: '/own/idcheck',
             method: 'post',
             data : {id},
+            beforeSend: function(xhr){
+              xhr.setRequestHeader(header,token);
+            }
           }).then(res=>{
               if(res==1){    	  
             	  $("#u_id").attr('value',0)
@@ -244,7 +255,10 @@
     									   userPhone:tel,
     									   userBirthday:birthday,
     									   userGender:gender}),
-    				//dataType : 'object' ,//응답결과랑 타입이 같아야함
+            beforeSend :  function(xhr){
+		        xhr.setRequestHeader(header, token);
+            },            
+    				//dataType : 'object' ,//응답결과랑 타입이 같아야함            
     				contentType : "application/json" //json으로 보낼때 타입이 이렇다..
     			}).then(res=>{
     				if(res){

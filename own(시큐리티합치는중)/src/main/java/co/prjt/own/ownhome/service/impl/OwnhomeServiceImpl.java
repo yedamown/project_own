@@ -25,6 +25,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	@Autowired
 	JavaMailSender javaMailSender;
 	
+	
 	@Override
 	public int insertUser(OwnUserVO UserVO) {
 		return ownhomeMapper.insertUser(UserVO);
