@@ -11,10 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandMemberDefaultVO;
@@ -22,6 +26,7 @@ import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.CommonService;
 import co.prjt.own.ownhome.service.OwnUserVO;
 
 
@@ -32,6 +37,9 @@ public class BandController {
 	BandService bandService;
 	@Autowired
 	BandMemberDefaultService bandMemberDefaultService;
+	@Autowired
+	CommonService common;
+	
 	//밴드 홈으로 가기
 	@RequestMapping("")
 	public String bandHome(Model model, HttpServletRequest request) {
@@ -92,8 +100,6 @@ public class BandController {
 	@ResponseBody
 	public List<BandVO> recomBand(@PathVariable String userId){
 		//유저 아이디지만 스트링으로 여러가지 값이 담김
-		//페이지이동용으로도 같이쓰게..여기선 paging안쓰지만 
-		Paging paging = new Paging();
 		return bandService.recomBand(userId);
 	}
 	//밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용
@@ -122,5 +128,34 @@ public class BandController {
 		
 		model.addAttribute("bandList", bandService.getBandAll(band, paging));
 		return "content/band/bandSearch";
+	}
+	//밴드생성
+	@RequestMapping("/bandCreate")
+	public String bandCreate(Model model, HttpServletRequest request) {
+		//유저아이디 가져오기
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		model.addAttribute("userId", user.getUserId());
+		//운동종류+관심지역 셀렉트박스
+		model.addAttribute("location", bandService.allLocation());
+		model.addAttribute("exercise", bandService.allExcersie());
+		//샘플이미지 여덟장 실어보내기
+		model.addAttribute("createImage", common.selectImgAll("BAND_CREATE"));
+		return "content/band/bandCreate";
+	}
+	//밴드생성
+	@PostMapping("/bandCreate")
+	public String bandCreateComplete(@RequestParam MultipartFile gateImage[], BandVO band, RedirectAttributes rttr) {
+		System.out.println(band.toString());
+		//밴드생성
+		band = bandService.insertBand(band);
+		//밴드생성 성공
+		if(band.getBandNo()!=null) { //bandNo 숫자로 들어옴
+			//밴드대표이미지 추가하기 (MultipartFile[], 밴드번호숫자부분, 밴드번호앞자리(BDU_), "Band")
+			String res = common.upload(gateImage, band.getBandNo(), "BDU_", "Band");
+			System.out.println(res);
+			return "content/band/bandCreateComplete";
+		}
+		return "content/band/bandCreateFail";
 	}
 }

@@ -22,8 +22,9 @@ public class BandServiceImpl implements BandService{
 	@Autowired BandMemberDefaultMapper bandMemberDefaultMapper;
 	
 	@Override
-	public int insertBand(BandVO vo) {
-		return bandMapper.insertBand(vo);
+	public BandVO insertBand(BandVO vo) {
+		int r = bandMapper.insertBand(vo);
+		return vo;
 	}
 
 	@Override

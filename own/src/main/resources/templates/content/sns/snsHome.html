@@ -311,6 +311,7 @@
                         <form action="/own/snsAccount" method="post">
                            <label>ID정보</label>
                            <div th:text="${session.loginUser.userId}"></div>
+                           <input name="userId" type="hidden" th:value="${session.loginUser.userId}" >
                            <br>
                            <label>Email정보</label>
                            <div th:text="${session.loginUser.userEmail}"></div>

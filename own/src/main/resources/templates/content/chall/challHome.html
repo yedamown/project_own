@@ -1,56 +1,63 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	lang="ko">
-	<head>
-		<!-- jquery -->
-		<script type="text/javascript" src="/band/js/jquery-3.2.1.js"></script>
-		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-		<meta content="Free HTML Templates" name="keywords" />
-		<!-- Favicon -->
-		<link href="/chall/img/favicon.ico" rel="icon" />
-		<!-- Google Web Fonts -->
-		<link rel="preconnect" href="https://fonts.gstatic.com" />
-		<link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet" />
-		<!-- Font Awesome -->
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
-		<!-- Flaticon Font -->
-		<link href="/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
-		<!-- Libraries Stylesheet -->
-		<link href="/chall/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
-		<link href="/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
-		<!-- Customized Bootstrap Stylesheet -->
-		<link href="/chall/css/style.css" rel="stylesheet" />
-		<!-- JavaScript Libraries -->
-	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-	    <script src="/chall/lib/easing/easing.min.js"></script>
-	    <script src="/chall/lib/owlcarousel/owl.carousel.min.js"></script>
-	    <script src="/chall/lib/isotope/isotope.pkgd.min.js"></script>
-	    <script src="/chall/lib/lightbox/js/lightbox.min.js"></script>
-	    <!-- Contact Javascript File -->
-	    <script src="/chall/mail/jqBootstrapValidation.min.js"></script>
-	    <script src="/chall/mail/contact.js"></script>
-	    <!-- Template Javascript -->
-	    <script src="/chall/js/main.js"></script>
-			<meta charset="utf-8">
-			<title> OWN _ 도전 </title>
-	</head>
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
+<head>
+<!-- jquery -->
+<script type="text/javascript" src="/band/js/jquery-3.2.1.js"></script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<meta content="Free HTML Templates" name="keywords" />
+<!-- Favicon -->
+<link href="/chall/img/favicon.ico" rel="icon" />
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap"
+	rel="stylesheet" />
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+	rel="stylesheet" />
+<!-- Flaticon Font -->
+<link href="/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+<!-- Libraries Stylesheet -->
+<link href="/chall/lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet" />
+<link href="/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
+<!-- Customized Bootstrap Stylesheet -->
+<link href="/chall/css/style.css" rel="stylesheet" />
+<!-- JavaScript Libraries -->
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="/chall/lib/easing/easing.min.js"></script>
+<script src="/chall/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="/chall/lib/isotope/isotope.pkgd.min.js"></script>
+<script src="/chall/lib/lightbox/js/lightbox.min.js"></script>
+<!-- Contact Javascript File -->
+<script src="/chall/mail/jqBootstrapValidation.min.js"></script>
+<script src="/chall/mail/contact.js"></script>
+<!-- Template Javascript -->
+<script src="/chall/js/main.js"></script>
+<meta charset="utf-8">
+<title>OWN _ 도전</title>
+</head>
 <body>
-<div th:if="${session.loginUser}">
+	<div th:if="${session.loginUser}">
 		도전 홈 _ 로그인 중
-			<h1 th:text="${session.loginUser.userId}"></h1>
-			<input id ="userId" type="hidden" th:value="${session.loginUser.userId}">
-		</div>
-	<div th:if="${session.loginUser} == null">
-		로그인 안한 상태
+		<h1 th:text="${session.loginUser.userId}"></h1>
+		<input id="userId" type="hidden"
+			th:value="${session.loginUser.userId}">
+		
 	</div>
+	<div th:if="${session.loginUser} == null">로그인 안한 상태 로그인 하고 오시오.</div>
+	<button type="button" id="addChallBtn">도전등록으로 이동</button>
+	<a href="/own/chall/mypage">마이페이지</a>
+	<a href="/own/chall/insertFormChall">내가 참여중인 도전보기</a>
+	<a href="/own/chall/insertFormChall">내가 만든 도전보기</a>
+	<h3>오운 홈</h3>
 
-		<button type="button" id="addChallBtn">도전등록으로 이동</button>
-		<a href="/own/chall/mypage">마이페이지</a>
-		<a href="/own/chall/insertFormChall"></a>
-		<h3>오운 홈</h3>
-		<table border="solid 1">
+
+<table border="solid 1">
 			<thead>
 				<tr>
 					<th>도전카테고리</th>
@@ -62,167 +69,238 @@
 				</tr>
 			</thead>
 			<tbody>
-			
 				<tr th:each="cha: ${challenges}">
+					<input type="hidden" th:value="${cha.challNo}" />
 					<td th:text="${cha.challCategory}"></td>
 					<td th:text="${cha.challTitle}" />
 					<td th:text="${cha.challDuration}"></td>
 					<td th:text="${#dates.format(cha.challStartdate, 'MM월 dd일')}"></td>
 					<td th:text="${cha.challFreq}"></td>
 					<td th:text="${cha.challPrice}"></td>
-					<input type="hidden" th:value="${cha.challNo}" />
 				</tr>
 			</tbody>
 		</table>
 
-<!-- Class Start -->
-    <div class="container-fluid pt-5">
-      <div class="container">
-        <div class="text-center pb-2">
-          <p class="section-title px-5">
-            <span class="px-2">Popular Classes</span>
-          </p>
-          <h1 class="mb-4">Classes for Your Kids</h1>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 mb-5">
-            <div class="card border-0 bg-light shadow-sm pb-2">
-              <img class="card-img-top mb-2" src="img/class-1.jpg" alt="" />
-              <div class="card-body text-center">
-                <h4 class="card-title">Drawing Class</h4>
-                <p class="card-text">
-                  Justo ea diam stet diam ipsum no sit, ipsum vero et et diam
-                  ipsum duo et no et, ipsum ipsum erat duo amet clita duo
-                </p>
-              </div>
-              <div class="card-footer bg-transparent py-4 px-5">
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Age of Kids</strong>
-                  </div>
-                  <div class="col-6 py-1">3 - 6 Years</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Total Seats</strong>
-                  </div>
-                  <div class="col-6 py-1">40 Seats</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Class Time</strong>
-                  </div>
-                  <div class="col-6 py-1">08:00 - 10:00</div>
-                </div>
-                <div class="row">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Tution Fee</strong>
-                  </div>
-                  <div class="col-6 py-1">$290 / Month</div>
-                </div>
-              </div>
-              <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-5">
-            <div class="card border-0 bg-light shadow-sm pb-2">
-              <img class="card-img-top mb-2" src="img/class-2.jpg" alt="" />
-              <div class="card-body text-center">
-                <h4 class="card-title">Language Learning</h4>
-                <p class="card-text">
-                  Justo ea diam stet diam ipsum no sit, ipsum vero et et diam
-                  ipsum duo et no et, ipsum ipsum erat duo amet clita duo
-                </p>
-              </div>
-              <div class="card-footer bg-transparent py-4 px-5">
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Age of Kids</strong>
-                  </div>
-                  <div class="col-6 py-1">3 - 6 Years</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Total Seats</strong>
-                  </div>
-                  <div class="col-6 py-1">40 Seats</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Class Time</strong>
-                  </div>
-                  <div class="col-6 py-1">08:00 - 10:00</div>
-                </div>
-                <div class="row">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Tution Fee</strong>
-                  </div>
-                  <div class="col-6 py-1">$290 / Month</div>
-                </div>
-              </div>
-              <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-5">
-            <div class="card border-0 bg-light shadow-sm pb-2">
-              <img class="card-img-top mb-2" src="img/class-3.jpg" alt="" />
-              <div class="card-body text-center">
-                <h4 class="card-title">Basic Science</h4>
-                <p class="card-text">
-                  Justo ea diam stet diam ipsum no sit, ipsum vero et et diam
-                  ipsum duo et no et, ipsum ipsum erat duo amet clita duo
-                </p>
-              </div>
-              <div class="card-footer bg-transparent py-4 px-5">
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Age of Kids</strong>
-                  </div>
-                  <div class="col-6 py-1">3 - 6 Years</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Total Seats</strong>
-                  </div>
-                  <div class="col-6 py-1">40 Seats</div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Class Time</strong>
-                  </div>
-                  <div class="col-6 py-1">08:00 - 10:00</div>
-                </div>
-                <div class="row">
-                  <div class="col-6 py-1 text-right border-right">
-                    <strong>Tution Fee</strong>
-                  </div>
-                  <div class="col-6 py-1">$290 / Month</div>
-                </div>
-              </div>
-              <a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Class End -->
+
+	<!-- Class Start -->
+	<div class="container-fluid pt-5">
+		<div class="container">
+			<div class="text-center pb-2">
+				<p class="section-title px-5">
+					<span class="px-2">My challenge</span>
+				</p>
+				<h1 class="mb-4">나의 진행중인 도전</h1>
+			</div>
+			<div class="row">
+				<div class="col-lg-4 mb-5">
+					<div class="card border-0 bg-light shadow-sm pb-2">
+						<img class="card-img-top mb-2" src="img/class-1.jpg" alt="" />
+						<div class="card-body text-center">
+							<h4 class="card-title">Drawing Class</h4>
+							<p class="card-text">Justo ea diam stet diam ipsum no sit,
+								ipsum vero et et diam ipsum duo et no et, ipsum ipsum erat duo
+								amet clita duo</p>
+						</div>
+						<div class="card-footer bg-transparent py-4 px-5">
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Age of Kids</strong>
+								</div>
+								<div class="col-6 py-1">3 - 6 Years</div>
+							</div>
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Total Seats</strong>
+								</div>
+								<div class="col-6 py-1">40 Seats</div>
+							</div>
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Class Time</strong>
+								</div>
+								<div class="col-6 py-1">08:00 - 10:00</div>
+							</div>
+							<div class="row">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Tution Fee</strong>
+								</div>
+								<div class="col-6 py-1">$290 / Month</div>
+							</div>
+						</div>
+						<a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
+					</div>
+				</div>
+				<div class="col-lg-4 mb-5">
+					<div class="card border-0 bg-light shadow-sm pb-2">
+						<img class="card-img-top mb-2" src="img/class-2.jpg" alt="" />
+						<div class="card-body text-center">
+							<h4 class="card-title">Language Learning</h4>
+							<p class="card-text">Justo ea diam stet diam ipsum no sit,
+								ipsum vero et et diam ipsum duo et no et, ipsum ipsum erat duo
+								amet clita duo</p>
+						</div>
+						<div class="card-footer bg-transparent py-4 px-5">
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Age of Kids</strong>
+								</div>
+								<div class="col-6 py-1">3 - 6 Years</div>
+							</div>
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Total Seats</strong>
+								</div>
+								<div class="col-6 py-1">40 Seats</div>
+							</div>
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Class Time</strong>
+								</div>
+								<div class="col-6 py-1">08:00 - 10:00</div>
+							</div>
+							<div class="row">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Tution Fee</strong>
+								</div>
+								<div class="col-6 py-1">$290 / Month</div>
+							</div>
+						</div>
+						<a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
+					</div>
+				</div>
+				<div class="col-lg-4 mb-5">
+					<div class="card border-0 bg-light shadow-sm pb-2">
+						<img class="card-img-top mb-2" src="img/class-3.jpg" alt="" />
+						<div class="card-body text-center">
+							<h4 class="card-title">Basic Science</h4>
+							<p class="card-text">Justo ea diam stet diam ipsum no sit,
+								ipsum vero et et diam ipsum duo et no et, ipsum ipsum erat duo
+								amet clita duo</p>
+						</div>
+						<div class="card-footer bg-transparent py-4 px-5">
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Age of Kids</strong>
+								</div>
+								<div class="col-6 py-1">3 - 6 Years</div>
+							</div>
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Total Seats</strong>
+								</div>
+								<div class="col-6 py-1">40 Seats</div>
+							</div>
+							<div class="row border-bottom">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Class Time</strong>
+								</div>
+								<div class="col-6 py-1">08:00 - 10:00</div>
+							</div>
+							<div class="row">
+								<div class="col-6 py-1 text-right border-right">
+									<strong>Tution Fee</strong>
+								</div>
+								<div class="col-6 py-1">$290 / Month</div>
+							</div>
+						</div>
+						<a href="" class="btn btn-primary px-4 mx-auto mb-4">Join Now</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Class End -->
+	<!-- Blog Start -->
+	<div class="container-fluid pt-5">
+		<div class="container">
+			<div class="text-center pb-2">
+				<p class="section-title px-5">
+					<span class="px-2">Popular Blog</span>
+				</p>
+				<h1 class="mb-4">인기있는 도전</h1>
+			</div>
+			<div class="row pb-3">
+				<div class="col-lg-4 mb-4">
+					<div class="card border-0 shadow-sm mb-2">
+						<img class="card-img-top mb-2" src="img/blog-1.jpg" alt="" />
+						<div class="card-body bg-light text-center p-4">
+							<h4 class="">Diam amet eos at no eos</h4>
+							<div class="d-flex justify-content-center mb-3">
+								<small class="mr-3"><i
+									class="fa fa-user text-primary"></i> Admin</small> <small class="mr-3"><i
+									class="fa fa-folder text-primary"></i> Web Design</small> <small
+									class="mr-3"><i
+									class="fa fa-comments text-primary"></i> 15</small>
+							</div>
+							<p>Sed kasd sea sed at elitr sed ipsum justo, sit nonumy diam
+								eirmod, duo et sed sit eirmod kasd clita tempor dolor stet
+								lorem. Tempor ipsum justo amet stet...</p>
+							<a href="" class="btn btn-primary px-4 mx-auto my-2">Read
+								More</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 mb-4">
+					<div class="card border-0 shadow-sm mb-2">
+						<img class="card-img-top mb-2" src="img/blog-2.jpg" alt="" />
+						<div class="card-body bg-light text-center p-4">
+							<h4 class="">Diam amet eos at no eos</h4>
+							<div class="d-flex justify-content-center mb-3">
+								<small class="mr-3"><i
+									class="fa fa-user text-primary"></i> Admin</small> <small class="mr-3"><i
+									class="fa fa-folder text-primary"></i> Web Design</small> <small
+									class="mr-3"><i
+									class="fa fa-comments text-primary"></i> 15</small>
+							</div>
+							<p>Sed kasd sea sed at elitr sed ipsum justo, sit nonumy diam
+								eirmod, duo et sed sit eirmod kasd clita tempor dolor stet
+								lorem. Tempor ipsum justo amet stet...</p>
+							<a href="" class="btn btn-primary px-4 mx-auto my-2">Read
+								More</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 mb-4">
+					<div class="card border-0 shadow-sm mb-2">
+						<img class="card-img-top mb-2" src="img/blog-3.jpg" alt="" />
+						<div class="card-body bg-light text-center p-4">
+							<h4 class="">Diam amet eos at no eos</h4>
+							<div class="d-flex justify-content-center mb-3">
+								<small class="mr-3"><i
+									class="fa fa-user text-primary"></i> Admin</small> <small class="mr-3"><i
+									class="fa fa-folder text-primary"></i> Web Design</small> <small
+									class="mr-3"><i
+									class="fa fa-comments text-primary"></i> 15</small>
+							</div>
+							<p>Sed kasd sea sed at elitr sed ipsum justo, sit nonumy diam
+								eirmod, duo et sed sit eirmod kasd clita tempor dolor stet
+								lorem. Tempor ipsum justo amet stet...</p>
+							<a href="" class="btn btn-primary px-4 mx-auto my-2">Read
+								More</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Blog End -->
 
 
 
-  </body>
-		<script>
-			$('#addChallBtn').on('click', function() {
-				console.log('도전 등록이동버튼');
-				let userId = $('#userId').val();
-				console.log(userId);
-				if(userId !=null){
-					location.href = '/own/chall/insertFormChall';
-				} else {
-					alert('로그인을 먼저 해 주세요.')
-					location.href = '/own/login';
-				}
-			});
-		</script>
+</body>
+<script>
+	$('#addChallBtn').on('click', function() {
+		console.log('도전 등록이동버튼');
+		let userId = $('#userId').val();
+		console.log(userId);
+		if (userId != null) {
+			location.href = '/own/chall/insertFormChall';
+		} else {
+			alert('로그인을 먼저 해 주세요.')
+			location.href = '/own/login';
+		}
+	});
+</script>
 
-	</body>
+</body>
 </html>

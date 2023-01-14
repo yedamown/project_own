@@ -20,6 +20,16 @@ $(function(){
 		alert('아이디없음')
 		return location.href = '/own/chall/home';
 	}
+	let challNo = /*[[${challNo}]]*/
+	console.log(challNo)
+	let result = /*[[${result}]]*/
+	console.log(result)
+	if (result == 1) {
+		alert("도전등록 완료. 도전리더가 도전을 신청해야 도전이 시작됩니다.")
+		return location.href = '/own/chall/detailChall?challNo='+ challNo
+	} else if(result == 0){
+		alert("도전 등록에 실패하였습니다. 다시 등록해주세요.")
+	}
     /*]]>*/
 })
 </script>
@@ -79,17 +89,17 @@ $(function(){
 			 url: '/own/chall/insertChall',
 			 method: 'post',
 			 data : JSON.stringify({challTitle: challTitle, 
-				 					challCategory: challCategory, 
-				 					challTag: challTag,
-				 					challDuration: challDuration,
-				 					challFreq: challFreq,
-				 					maxMember: maxMember,
-				 					challPrice: challPrice,
-				 					challIntro: challIntro,
-				 					vldMethod: vldMethod,
-				 					challStartdate: startDate,
-				 					challLeader: challLeader},
-				 					), 
+					challCategory: challCategory, 
+					challTag: challTag,
+					challDuration: challDuration,
+					challFreq: challFreq,
+					maxMember: maxMember,
+					challPrice: challPrice,
+					challIntro: challIntro,
+					vldMethod: vldMethod,
+					challStartdate: startDate,
+					challLeader: challLeader},
+					), 
 				 					
 			 contentType: "application/json"
 			 }).then(res => {

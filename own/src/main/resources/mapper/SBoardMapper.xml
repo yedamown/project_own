@@ -9,7 +9,7 @@
 		                        FROM sns_account s, own_users o
 		                        WHERE o.user_id = #{userId}
 		                        AND s.sns_account_no = o.sns_account_no)
-		ORDER BY SNS_BOARD_NO	
+		ORDER BY SNS_BOARD_NO DESC	
 	</select>
 	
 	<!-- 게시글 한건 조회 -->
@@ -17,23 +17,29 @@
 		SELECT * FROM SNS_BOARD WHERE SNS_BOARD_NO = #{snsBoardNo}
 	</select>
 	
+	<select id="getSnsBoardNo" resultType="SBoardVO">
+		SELECT SNS_BOARD_NO
+		FROM SNS_BOARD
+		WHERE SNS_ACCOUNT_NO = #{snsAccountNo}
+		ORDER BY SNS_BOARD_NO DESC
+	</select>
+	
 	<!-- 게시글 입력 -->
 	<insert id="insertSnsBoard" parameterType="SBoardVO">
 		<selectKey keyProperty="snsBoardNo" resultType="string" order="BEFORE">
 			SELECT sns_board_no.NEXTVAL FROM DUAL
 		</selectKey>
-			INSERT INTO SNS_BOARD (SNS_BOARD_NO,
-								   SNS_BOARD_CONTENT,
-								   SNS_BOARD_DATE,
-								   SNS_NICKNAME,
-								   SNS_ACCOUNT_NO)
-			VALUES ( 'SBN_'||#{snsBoardNo}, 
-					 #{snsBoardContent}, 
-					 sysdate, 
-					 (SELECT SNS_NICKNAME FROM SNS_ACCOUNT S, OWN_USERS O
-						WHERE S.SNS_ACCOUNT_NO = O.SNS_ACCOUNT_NO
-						AND O.USER_ID = 'kjk'), 
-					 #{snsAccountNo})
+		
+			INSERT INTO sns_board (sns_board_no, sns_board_content, sns_board_date, sns_nickname, sns_account_no)
+				VALUES ('SBN_'||#{snsBoardNo}, #{snsBoardContent}, current_date, 
+				       (SELECT sns_nickname
+				            FROM sns_account s, own_users o
+				            WHERE o.sns_account_no = #{snsAccountNo}
+				            AND s.sns_account_no = o.sns_account_no),
+				       (select s.sns_account_no
+				            FROM sns_account s, own_users o
+				            where s.sns_account_no = o.sns_account_no
+				            and o.sns_account_no = #{snsAccountNo}))
 	</insert>
 	
 	<!-- 게시글 수정 -->

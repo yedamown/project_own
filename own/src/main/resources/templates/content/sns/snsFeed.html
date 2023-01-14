@@ -179,7 +179,7 @@
             <br>
             <div class="testimonial_box">
                 <div class="testimonial_author">  
-                    <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsInfo.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
                
                     <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
 
@@ -206,12 +206,18 @@
                         </table>
                     </div>
                     </div>
-
+						
                     <p>소개글을 입력하세요 .... <span>company</span></p>
                 </div>
 
                 <p>
-                   프로필 소개글
+                	<div th:if="${session.snsInfo.snsProfile} != null">
+                	<span th:text="${session.snsInfo.snsProfile}"/>
+                	</p>             
+                		
+                	</div>>
+                	프로필 소개글을 입력하세요.
+
                    웹사이트
                 </p>
                 <br>
@@ -234,13 +240,16 @@
             <!-- 두 번째 Modal의 내용 -->
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm">
+                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm" enctype="multipart/form-data">
                     <label for="inputContent">내용</label>
                     <textarea type="text" name="snsBoardContent" id="inputContent"></textarea>
-                    <label for="inputAccNo">계정번호</label>
-                    <input name="snsAccountNo"></input>
-                   <label for="inputFile">첨부파일</label>
-                    <input name="file" type="file" id="customFile"/>
+                    <input th:value="${session.loginUser.snsAccountNo}" name="snsAccountNo" type="hidden"></input>
+                    <label for="inputFile">첨부파일</label><br>
+                    <div style="text-align:right">
+                    이미지1<input name="uploadfile" type="file" id="customFile" multiple="multiple"/><br><br>
+                    이미지2<input name="uploadfile" type="file" id="customFile" multiple="multiple"/><br><br>
+                    이미지3<input name="uploadfile" type="file" id="customFile" multiple="multiple"/>
+                    </div>
                     <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
                     <input type="submit" role="button" value="글쓰기"/>
                 </form>
@@ -272,6 +281,7 @@
                      <th>글 내용</th>
                      <th>작성일자</th>
                      <th>작성자</th>
+                     <th>이미지</th>
                   </tr>
                </thead>
                <tbody>
@@ -281,27 +291,38 @@
                      <td th:text="${sns.snsBoardDate}"></td>
                      <td th:text="${sns.snsNickname}"></td>
                   </tr>
+                     <tr th:each="img : ${snsImg}">
+                     <td><img th:src="|/imgView/${img.mediaServerFile}" alt="" /></td>
+                     
+                     <td><sapn th:text="${#lists.size(snsImg)}"></sapn> </td>
+                     </tr>
+                     <span>
+                     <!-- <img th:src="|/imgView/${snsImg[0].mediaServerFile}"/> -->
+                     </span>
                </tbody>
             </table>
             <br>
             
             <div class="portfolio gutters grid img-container">
-                <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
-                <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port1.png" title="project name 1">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port1.png" alt="pro1" />
+                <div class="grid-sizer col-sm-12 col-md-6 col-lg-3">
+
+                </div>
+                
+                <th:block th:each="snsimg :${snsImg}">
+                    <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3" id="griditem">      
+                        <a th:href="|/imgView/${snsimg.mediaServerFile}" title="project name 1" id="hrefImg">
+                            <div class="project_box_one"></div>
+                            <img th:src="|/imgView/${snsimg.mediaServerFile}" alt="pro1" id="boardImg"/>
                             <div class="product_info">
                                 <div class="product_info_text">
                                     <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                </th:block>
+
                 <div class="grid-item  branding architecture  col-md-6 col-lg-3">
                     <a href="/sns/img/portfolio/port2.png" title="project name 2">
                         <div class="project_box_one">
@@ -317,6 +338,7 @@
                         </div>
                     </a>
                 </div>
+               
                 <div class="grid-item  design col-sm-12 col-md-6 col-lg-3">
                     <a href="/sns/img/portfolio/port3.png" title="project name 5">
                         <div class="project_box_one">
@@ -332,141 +354,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="grid-item  photography design col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port4.png" title="project name 5">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port4.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item  branding photography  col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port5.png" title="project name 5">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port5.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item   architecture design col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port6.png" title="project name 5">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port6.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item  photography architecture col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port7.png" title="project name 5">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port7.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item  branding design  col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port8.png" title="project name 5">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port8.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item architecture  col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port9.png" title="project name 4">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port9.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item  photography architecture col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port10.png" title="project name 5">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port10.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item  branding design  col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port11.png" title="project name 5">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port11.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item architecture  col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port4.png" title="project name 4">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port4.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+
             </div>
             <!--=================== filter portfolio end====================-->
         </div>
@@ -474,7 +362,10 @@
     </div>
 </div>
 
-<script language="javascript">
+<!--======================== 팔로우버튼js ======================== -->
+<script th:inline="javascript">
+    makeBoardDiv();
+
     let fBtn = document.getElementById("followBtn");
     fBtn.addEventListener("click", function(){
         if(this.value = 'white'){
@@ -489,11 +380,33 @@
             this.value="white";
         }
     })
+    // console.log("이미지경로 불러오는감"+"[(${snsImg[0].mediaServerFile})]");
+    /*<![CDATA[*/
+    // function makeBoardDiv(){
+    //     var gridItem = document.querySelector('#griditem');
+    //     let content = gridItem.cloneNode(true);
+    //     console.log("[(${snsImg})]");
+    //     let ImgArr = [];
 
-</script>
+    //     for(let i=0; i<"[[${#lists.size(snsImg)}]]"; i++){
+    //         ImgArr.push(0);
+    //     }
+    //     console.log("배열길이 구하기 테스트"+ImgArr.length);
 
-    
-    <script>
+        
+        //이미지 붙이기
+
+            //$(content).find("#boardImg").attr("src", "/imgView/[(${snsImg[0].mediaServerFile})]");
+            //$(content).find("#hrefImg").attr("href", "/imgView/[(${snsImg[1].mediaServerFile})]");
+        // $(".img-container").prepend(content);
+        // console.log("3번==="+"/imgView/[(${snsImg[0].mediaServerFile})]");
+        //content.querySelector('img.boardImg').src = "/imgView/[(${snsImg[0].mediaServerFile})]";
+        
+        // }
+        
+    /*]]>*/
+
+
         // Modal을 가져옵니다.
         var modals = document.getElementsByClassName("modal");
         // Modal을 띄우는 클래스 이름을 가져옵니다.
@@ -520,12 +433,12 @@
             
         // 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
         for(var i = 0; i < btns.length; i++) {
-        funcs[i] = Modal(i);
+            funcs[i] = Modal(i);
         }
         
         // 원하는 Modal 수만큼 funcs 함수를 호출합니다.
         for(var j = 0; j < btns.length; j++) {
-        funcs[j]();
+            funcs[j]();
         }
         
         // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
@@ -540,58 +453,6 @@
 
 
 
-<script>
-		//날짜 함수
-		function elapsedText(date) {
-		    console.log(date);
-		    date = new Date(date);
-		    // 초 (밀리초)
-		    const seconds = 1;
-		    // 분
-		    const minute = seconds * 60;
-		    // 시
-		    const hour = minute * 60;
-		    // 일
-		    const day = hour * 24;
-		    
-		    var today = new Date();
-		    var elapsedTime = Math.trunc((today.getTime() - date.getTime()) / 1000);
-		    
-		    var elapsedText = "";
-		    if (elapsedTime < seconds) {
-		        elapsedText = "방금 전";
-		    } else if (elapsedTime < minute) {
-		        elapsedText = elapsedTime + "초 전";
-		    } else if (elapsedTime < hour) {
-		        elapsedText = Math.trunc(elapsedTime / minute) + "분 전";
-		    } else if (elapsedTime < day) {
-		        elapsedText = Math.trunc(elapsedTime / hour) + "시간 전";
-		    } else if (elapsedTime < (day * 3)) {
-		        elapsedText = Math.trunc(elapsedTime / day) + "일 전";
-		    } else {
-		        elapsedText = SimpleDateTimeFormat(date, "yyyy-MM-dd");
-		    }
-		    
-		    return elapsedText;
-		}
-		//날짜고치기
-		function SimpleDateTimeFormat(date) {
-		        let month = date.getMonth() + 1;
-		        let day = date.getDate();
-		        let hour = date.getHours();
-		        let minute = date.getMinutes();
-		        let second = date.getSeconds();
-		
-		        month = month >= 10 ? month : '0' + month;
-		        day = day >= 10 ? day : '0' + day;
-		        hour = hour >= 10 ? hour : '0' + hour;
-		        minute = minute >= 10 ? minute : '0' + minute;
-		        second = second >= 10 ? second : '0' + second;
-		
-		        return date.getFullYear() + '-' + month + '-' + day;
-		}
-
-</script>
 
 
 <!-- jquery -->

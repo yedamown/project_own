@@ -2,12 +2,14 @@ package co.prjt.own.ownhome.service.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
+import co.prjt.own.sns.service.SAccountVO;
 
 @Service
 public class OwnhomeServiceImpl implements OwnhomeService {
@@ -31,13 +33,13 @@ public class OwnhomeServiceImpl implements OwnhomeService {
 	}
 
 	@Override
-	public String snsLogin(String id) {
+	public SAccountVO snsLogin(String id) {
 		return ownhomeMapper.snsLogin(id);
 	}
 
 	@Override
-	public int updateSnsUser(String id) {
-		return ownhomeMapper.updateSnsUser(id);
+	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id) {
+		return ownhomeMapper.updateSnsUser(nickname, id);
 	}
 
 	@Override

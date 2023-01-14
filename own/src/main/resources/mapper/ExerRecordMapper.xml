@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.exercise.mapper.ExerRecordMapper">
+	<sql id="latestRecord">
+		SELECT *
+				FROM(
+					SELECT *
+					FROM EXER_RECORD
+					ORDER BY EXEREC_DATE DESC
+				)
+			WHERE USER_ID = #{userId}
+			AND TO_DATE(EXEREC_DATE, 'YYYY-MM-DD') = TO_DATE((	SELECT MAX(EXEREC_DATE)
+																FROM EXER_RECORD WHERE USER_ID=#{userId}), 'YYYY-MM-DD')
+	</sql>
+	
 	<!-- 등록 -->
 	<insert id="insertExerRecord" parameterType="ExerRecordVO">
 		<selectKey keyProperty="eno" resultType="string"
@@ -40,19 +52,44 @@
 		WHERE USER_ID = #{userId}
 	</select>
 
-	<!-- 회원의 운동기록 중 가장 최신날짜의 데이터 조회 -->
+	<!-- 회원의 운동기록 중 가장 최신날짜의 데이터 조회 
+		 기록날짜, 기록식별번호, 운동식별번호, 운동명, 컨디션, 운동시간, 칼로리계산 출력 -->
 	<select id="LatestExerRecord" resultType="ExerRecordVO"
 		parameterType="string">
+		SELECT	R.EXEREC_DATE EXEREC_DATE, R.EXEREC_NO EXEREC_NO, R.EXERSUB_NO EXERSUB_NO, 
+				S.EXERSUB_NAME EXERSUB_NAME, R.EXEREC_CONDITION EXEREC_CONDITION, R.EXEREC_TIME EXEREC_TIME
+				, ROUND(SUM(R.EXEREC_TIME*S.KCAL)) KCALS
+		FROM ( 
+			<include refid="latestRecord"/>
+			) R
+		JOIN EXER_SUB S
+		ON R.EXERSUB_NO = S.EXERSUB_NO
+		WHERE R.USER_ID = #{userId}
+		GROUP BY R.EXEREC_TIME, R.EXEREC_DATE, R.EXEREC_NO, R.EXERSUB_NO, S.EXERSUB_NAME, R.EXEREC_CONDITION, S.KCAL 
+	</select>
+	
+	<!-- 가장 최신날짜의 데이터의 운동종목, 횟수 조회 -->
+	<select id="dayRecordCounting" resultType="ExerRecordVO" parameterType="string">
+		SELECT  S.EXERSUB_NAME EXERSUB_NAME, COUNT(*) E_COUNT
+		FROM	(
+		        <include refid="latestRecord"/>
+		        ) r
+		JOIN EXER_SUB S
+		ON R.EXERSUB_NO = S.EXERSUB_NO 
+		WHERE R.USER_ID = #{userId}
+		GROUP BY EXERSUB_NAME
+	</select>
+	
+	<!-- 유저의 데이터 중 최근 7일 날짜와 몸무게 출력 -->
+	<select id="getWeight" resultType="ExerRecordVO" parameterType="string">
 		SELECT *
-		FROM(
-			SELECT *
+		FROM (
+			SELECT DISTINCT TO_DATE(EXEREC_DATE, 'YYYY-MM-DD') EXEREC_DATE, EXEREC_WEIGHT
 			FROM EXER_RECORD
-			ORDER BY EXEREC_DATE DESC
-			)
-		WHERE USER_ID = #{userId}
-		AND TO_DATE(exerec_date, 'YYYY-MM-DD') = TO_DATE(( SELECT MAX(EXEREC_DATE)
-														FROM EXER_RECORD
-														WHERE USER_ID = #{userId}
-														), 'YYYY-MM-DD')
+			WHERE USER_ID = #{userId}
+			ORDER BY 1 DESC
+		)
+		WHERE ROWNUM BETWEEN 1 AND 7 
+		ORDER BY 1
 	</select>
 </mapper>

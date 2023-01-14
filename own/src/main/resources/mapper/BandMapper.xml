@@ -13,44 +13,46 @@
 		<if test="bandName != null and bandName !=''">
 			AND BAND_NAME LIKE '%' || #{bandName} || '%'
 		</if>
-		<if test="bandTag != null and bandTag !=''">
-			AND BAND_TAG LIKE '%' || #{bandTag} || '%'
+		<if test="bandKeyword != null and bandKeyword !=''">
+			AND BAND_TAG LIKE '%' || #{bandKeyword} || '%'
 		</if>
 	</sql>
-	<!-- 인서트업데이트 추후 수정...이상함 -->
+	<!-- 밴드 인서트 업데이트 -->
 	<insert id="insertBand">
 		<selectKey keyProperty="bandNo" resultType="string" order="BEFORE">
-			SELECT BAND_SEQ.NEXTVAL FROM DUAL
+			SELECT MAX(TO_NUMBER(SUBSTR(BAND_NO,5)))+1 FROM BAND
 		</selectKey>
 		INSERT INTO BAND(
+			BAND_NO,
+			BAND_LEADERID,
 			BAND_NAME,
 	        BAND_INTRO,
 	        BAND_KEYWORD,
 	        BAND_OPEN_OPTION,
+	        BAND_AGE_OPTION,
 	        BAND_AGE_BEFOROPTION,
 	        BAND_AGE_AFTEROPTION,
 	        BAND_CATEGORY,
 	        BAND_GENDER_OPTION,
 	        BAND_MEMBERSHIP_OPTION,
-	        BAND_LOCATION
-	        BAND_GENDER,
-	        BAND_AGE_OPTION 
+	        BAND_LOCATION,
+	        BAND_GENDER
 			)
 			VALUES(
-					#{bandNo},
+					'BDU_'||#{bandNo},
 					#{bandLeaderid},
 					#{bandName},
                     #{bandIntro},
-                    #{bandCategory},
+                    #{bandKeyword},
                     #{bandOpenOption},
-                    #{bandLocOption},
+                    #{bandAgeOption},
                     #{bandAgeBeforoption},
                     #{bandAgeAfteroption},
                     #{bandCategory},
                     #{bandGenderOption},
                     #{bandMembershipOption},
                     #{bandLocation},
-                    #{bandAgeOption}
+                    #{bandGender}
                   )
 	</insert>
 	<update id="updateBand">
@@ -88,44 +90,64 @@
 	       WHERE 	BAND_NO = #{bandNo}
 	</select>
 	<sql id="condition">
-		<where>
-			<if test="bandCategory != null and bandCategory !=''">
-				AND BAND_CATEGORY LIKE = #{bandCategory} 
-			</if>
-			<if test="bandOpenOption != null and bandOpenOption !=''">
-				AND band_open_option = #{bandOpenOption}
-			</if>
-			<if test="bandCategory != null and bandCategory !=''">
-				AND band_open_option = #{bandCategory}
-			</if>
-			<if test="bandLocation != null and bandLocation !=''">
-				AND band_location = #{bandLocation}
-			</if>
-		</where>
+		<if test="bandCategory != null and bandCategory !=''">
+			AND BAND_CATEGORY LIKE = #{bandCategory} 
+		</if>
+		<if test="bandCategory != null and bandCategory !=''">
+			AND band_open_option = #{bandCategory}
+		</if>
+		<if test="bandLocation != null and bandLocation !=''">
+			AND band_location = #{bandLocation}
+		</if>
 	</sql>
-	<select id="getBandAll" resultType="map">
-		SELECT	BAND_NO,
+	<select id="getBandAll" resultType="BandVO">
+		SELECT  BAND_NO,
 				BAND_LEADERID,
 				BAND_NAME,
 		        BAND_INTRO,
-		        BAND_KEYWORD,
+		        EXERSUB_NAME "band_category",
 		        BAND_OPEN_OPTION,
-		        BAND_AGE_OPTION
+		        BAND_AGE_OPTION,
 		        BAND_AGE_BEFOROPTION,
 		        BAND_AGE_AFTEROPTION,
-		        BAND_CATEGORY,
+		        BAND_KEYWORD,
 		        BAND_GENDER_OPTION,
 		        BAND_MEMBERSHIP_OPTION,
-		        BAND_LOCATION
+		        LOC_CITY "band_location",
 		        BAND_GENDER
-	       FROM ( SELECT ROWNUM RN, A.* FROM (
-				SELECT * FROM BAND
-		 <include refid="condition" />
+		 FROM ( SELECT ROWNUM RN, A.* FROM (
+                      
+                                    SELECT  BAND_NO,
+									        BAND_LEADERID,
+									        BAND_NAME,
+									        BAND_INTRO,
+									        EXERSUB_NAME,
+									        BAND_OPEN_OPTION,
+									        BAND_AGE_OPTION,
+									        BAND_AGE_BEFOROPTION,
+									        BAND_AGE_AFTEROPTION,
+									        BAND_CATEGORY,
+									        BAND_KEYWORD,
+									        BAND_GENDER_OPTION,
+									        BAND_MEMBERSHIP_OPTION,
+									        LOC_CITY,
+									        BAND_GENDER
+                                    FROM BAND A, EXER_SUB B, OWN_LOCATION C
+									        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
+									        AND A.BAND_LOCATION=C.LOC_CODE
+                                            AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+									        <include refid="condition"></include>
+                                    
+        
 		<![CDATA[		
 				) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 		]]>
 	</select>
-	<select id="count">
+	<select id="count" resultType="int">
+		SELECT COUNT(*)
+        	FROM BAND
+                WHERE BAND_OPEN_OPTION IN ('BC01', 'BC03')
+                <include refid="condition"></include>
 	</select>
 	<select id="getMemberBandAll" resultType="BandVO">
 		SELECT		A.BAND_NO,
@@ -382,10 +404,10 @@
 									        <!-- HJJ가 가입되어있는 밴드목록 -->
 									            (SELECT BAND_NO 
 									                FROM BAND_MEMBER_DETAIL
-									                WHERE BAND_MEMBER_STATUS = 'BA02'
+									                WHERE BAND_MEMBER_STATUS in 'BA02'
 									                AND USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
-									        AND BAND_OPEN_OPTION = 'BC01'
+									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 									        <!-- 성별제한없음 -->
 									        AND BAND_GENDER_OPTION = 'BE02'
 									        <!-- 나이제한없음 -->
@@ -401,7 +423,7 @@
 									                WHERE BAND_MEMBER_STATUS = 'BA02'
 									                AND USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
-									        AND BAND_OPEN_OPTION = 'BC01'
+									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 									        <!-- 나이제한없음 -->
 									        AND BAND_AGE_OPTION = 'BD02'
 									        <!-- 성별제한있음(남) -->
@@ -418,7 +440,7 @@
 									                WHERE BAND_MEMBER_STATUS = 'BA02'
 									                AND USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
-									        AND BAND_OPEN_OPTION = 'BC01'
+									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 									        <!-- 나이제한있음 -->
 									        AND BAND_AGE_OPTION = 'BD01'
 									        <!-- 성별제한없음 -->

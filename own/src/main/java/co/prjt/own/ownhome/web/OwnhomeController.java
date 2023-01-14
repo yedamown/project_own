@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.exercise.service.ExerRecordVO;
-import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 
@@ -55,10 +53,12 @@ public class OwnhomeController {
 	public int loginPost(@RequestBody OwnUserVO vo, Model model, HttpServletRequest request, RedirectAttributes rttr) {
 		OwnUserVO chk = ownService.login(vo.getUserId());
 
+
 		if (chk.getUserPasswd().equals(vo.getUserPasswd())) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", chk);
-			session.setAttribute("snsNickname",ownService.snsLogin(vo.getUserId()));
+			session.setAttribute("snsInfo", ownService.snsLogin(vo.getUserId()));
+			System.out.println("========================="+ownService.snsLogin(vo.getUserId()));
 			return 1;
 		} else
 			return 0;
@@ -104,40 +104,40 @@ public class OwnhomeController {
 		return vo;
 	}
 
-	// 오운완(나의운동기록하기) 페이지 이동
-	@RequestMapping(value = "/own/ownRecordForm", method = RequestMethod.GET)
-	public String ownRecordForm() {
-		return "content/own/ownRecordForm";
-	}
-
-	// 오운완(나의운동기록) 등록
-	@PostMapping("/own/exerciseRecord")
-	@ResponseBody
-	public ExerRecordVO exerciseRecord(ExerRecordVO vo, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		String id = user.getUserId();
-		vo.setUserId(id);
-		System.out.println(vo);
-		exerMapper.insertExerRecord(vo);
-		return vo;
-	}
-
-	// 오운완(나의운동기록보기) 페이지 이동
-	@RequestMapping(value = "/own/ownRecordList", method = RequestMethod.GET)
-	public String ownRecordList(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		// 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 운동기록 가져오기
-		model.addAttribute("lRecord", exerMapper.LatestExerRecord(user.getUserId()));
-		return "content/own/ownRecordList";
-	}
-
-//	// 회원의 가장 최신날짜 운동기록 가져오기
-//	@PostMapping("/own/getExerRecord")
-//	@ResponseBody 
-//	public List<ExerRecordVO> getExerRecord(@RequestBody ExerRecordVO vo) {
-//		String id = vo.getUserId();
-//		return exerMapper.LatestExerRecord(id);
-//	}
+	/*
+	 * // 오운완(나의운동기록하기) 페이지 이동
+	 * 
+	 * @RequestMapping(value = "/own/ownRecordForm", method = RequestMethod.GET)
+	 * public String ownRecordForm() { return "content/own/ownRecordForm"; }
+	 * 
+	 * // 오운완(나의운동기록) 등록
+	 * 
+	 * @PostMapping("/own/exerciseRecord")
+	 * 
+	 * @ResponseBody public ExerRecordVO exerciseRecord(ExerRecordVO vo,
+	 * HttpServletRequest request) { HttpSession session = request.getSession();
+	 * OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser"); String id =
+	 * user.getUserId(); vo.setUserId(id); System.out.println(vo);
+	 * exerMapper.insertExerRecord(vo); return vo; }
+	 * 
+	 * // 오운완(나의운동기록보기) 페이지 이동
+	 * 
+	 * @RequestMapping(value = "/own/ownRecordList", method = RequestMethod.GET)
+	 * public String ownRecordList(HttpServletRequest request, Model model) {
+	 * HttpSession session = request.getSession(); OwnUserVO user = (OwnUserVO)
+	 * session.getAttribute("loginUser"); // 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 운동기록 가져오기
+	 * model.addAttribute("lRecord", exerMapper.LatestExerRecord(user.getUserId()));
+	 * return "content/own/ownRecordList"; }
+	 * 
+	 * // 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 기록의 갯수 가져오기
+	 * 
+	 * @GetMapping("/")
+	 * 
+	 * @ResponseBody public List<ExerRecordVO> dayChart(Model model,
+	 * HttpServletRequest request) { HttpSession session = request.getSession();
+	 * OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+	 * List<ExerRecordVO> count = exerMapper.DayRecordCounting(user.getUserId());
+	 * model.addAttribute("ECount", count); return count; }
+	 */
+	
 }

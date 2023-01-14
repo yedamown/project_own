@@ -11,4 +11,5 @@ public class CMemberVO {
 	String memBank;
 	String memIntro;
 	String memAccname;
+	String memNo;
 }

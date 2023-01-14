@@ -88,7 +88,7 @@
          <artifactId>osdt_cert</artifactId>
       </dependency>
 
-		<!--세션 디페넏ㄴ시-->
+		<!--세션 디펜던시-->
 		
 		<dependency>
 		<groupId>org.springframework.session</groupId>
