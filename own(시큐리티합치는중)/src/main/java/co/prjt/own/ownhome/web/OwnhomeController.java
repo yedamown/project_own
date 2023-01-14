@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,9 @@ import co.prjt.own.ownhome.service.OwnhomeService;
 @Controller
 public class OwnhomeController {
 
+	@Autowired 
+	BCryptPasswordEncoder passwordEncoder;
+	
 	@Autowired
 	OwnhomeService ownService;
 	@Autowired
@@ -92,6 +96,7 @@ public class OwnhomeController {
 	@PostMapping("/own/userInfo")
 	@ResponseBody // 데이터리턴할때 넣어줘야함. 리턴값을 json 변환
 	public OwnUserVO insert(@RequestBody OwnUserVO vo) {
+		vo.setUserPasswd(passwordEncoder.encode(vo.getUserPasswd()));
 		System.out.println("========================" + vo);
 		ownService.insertUser(vo);
 		return vo;
