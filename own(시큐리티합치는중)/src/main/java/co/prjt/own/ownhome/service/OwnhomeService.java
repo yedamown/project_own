@@ -15,6 +15,10 @@ public interface OwnhomeService {
 	public void searchId(String email);
 	//이메일보내기
 	public void sendMail();
+	//내정보 수정
+	public int myupdate();
+	//비밀번호 체크
+	public int pwcheck(String pw, String newpw);
 	
 	
 	//비밀번호 재설정

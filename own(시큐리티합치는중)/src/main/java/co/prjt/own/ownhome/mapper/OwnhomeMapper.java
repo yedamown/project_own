@@ -11,6 +11,9 @@ public interface OwnhomeMapper {
 	public String snsLogin(String id);
 	public String setPassword(String appNo, String id);
 	public int idcheck(String id);	
+	public int myupdate();
+	
+	public int pwcheck(String pw, String newpw);
 	//sns 유저 회원가입
 	public int updateSnsUser(String id);
 	

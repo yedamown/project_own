@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -28,6 +31,8 @@ public class WebSecurityConfig {
 	@Autowired
 	CustomLoginSuccessHandler custom;
 	
+	@Autowired
+	DataSource datasource;
 
 	
 	@Bean
@@ -56,6 +61,7 @@ public class WebSecurityConfig {
 				public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 						AuthenticationException exception) throws IOException, ServletException {
 						System.out.println("=================실패");
+					
 				}
 			});
 
@@ -70,12 +76,28 @@ public class WebSecurityConfig {
 		http.logout()
 			.logoutRequestMatcher(new AntPathRequestMatcher("/own/logout"))
 	        .logoutSuccessUrl("/")
-	        .invalidateHttpSession(true)
+	        .invalidateHttpSession(true) //세션 삭제
+			.deleteCookies("remember-me", "JSESSIONID") //자동 로그인 쿠키, Tomcat이 발급한 세션 유지 쿠키 삭제
+
 			
 			//.passwordManagement();
 			;
+		http.rememberMe()	//자동로그인
+		.key("rememberme")
+		.tokenRepository(PersistentTokenRepository())
+		.rememberMeParameter("remember-me")
+		.tokenValiditySeconds(86400*14); //DataSource 추가
+		
 		return http.build();
 	}
+	
+	
+private PersistentTokenRepository PersistentTokenRepository() {
+	 JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+     jdbcTokenRepository.setDataSource(datasource);
+     return jdbcTokenRepository;
+	}
+
 
 //	@Bean
 //	public UserDetailsService userDetailsService() {

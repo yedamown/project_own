@@ -47,6 +47,13 @@ SNS_ACCOUNT_NO from own_users where user_id= #{userId}
 update own_users set user_passwd = ${appNo} where user_id = ${id}
 </update>
 
+<!-- 내정보 수정 -->
+<update id="myupdate">
+update own_users set user_passwd = #{userPasswd},
+					 user_phone = #{userPhone},
+					 user_hobby = #{userHobby};
+</update>
+
 <select id="getUserList" resultType="OwnUserVO">
 select * from own_users
 </select>

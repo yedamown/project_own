@@ -124,4 +124,16 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return ownhomeMapper.setPassword(appNo, id);
 	}
 
+	@Override
+	public int myupdate() {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.myupdate();
+	}
+
+	@Override
+	public int pwcheck(String pw, String newpw) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.pwcheck(pw, newpw);
+	}
+
 }

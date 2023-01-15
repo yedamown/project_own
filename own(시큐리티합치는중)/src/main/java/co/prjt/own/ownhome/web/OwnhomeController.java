@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -75,6 +76,32 @@ public class OwnhomeController {
 		return r;
 	}
 	
+	//내정보수정 비밀번호 체크
+	@GetMapping("/own/pwcheck")
+	@ResponseBody
+	public int pwcheck(String id, String pw, String newpw) {
+		OwnUserVO vo = ownService.login(id);
+		System.out.println(newpw);
+		pw = vo.getUserPasswd();
+		System.out.println(pw);
+		newpw = passwordEncoder.encode(newpw);
+		System.out.println(id);
+		System.out.println(newpw);
+		if(pw.equals(newpw)) {
+			return 1;
+		}
+		else
+		return 0;
+	}
+	
+	//구비번 신비번 맞을시 진행
+	@PostMapping("/own/myinfoupdate")
+	@ResponseBody
+	public int myupdate(@RequestBody OwnUserVO vo) {
+		System.out.println(vo);
+		return 0;		
+	}
+	
 	//이메일테스트
 	@GetMapping("/own/sendemail")
 	@ResponseBody
@@ -86,9 +113,12 @@ public class OwnhomeController {
 	@GetMapping("/searchId")
 	public String searchId(String email) {
 		System.out.println("넘어오나요 이메일"+email);
-		
-		
 		return "redirect:/own/login";
+	}
+	
+	@GetMapping("/own/myupdate")
+	public String myupdate(Model model) {
+		return "content/own/ownupdate";
 	}
 	
 	
