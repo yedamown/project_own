@@ -19,5 +19,6 @@ public class SBoardVO {
 		return snsBoardNo;
 	}
 	
+	int count;
 	
 }

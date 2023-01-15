@@ -77,17 +77,19 @@ public class SnsController {
 		HttpSession session = request.getSession();
 		
 		//세션에 강제로 로그인유저 저장하기
-		//session.setAttribute("loginUser", ownService.login("kmh"));
+		session.setAttribute("loginUser", ownService.login("kyr"));
 		
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
-
-		System.out.println("ovo============================="+ovo);
 		
-		session.setAttribute("snsInfo", ownService.snsLogin(ovo.getUserId()));
+		session.setAttribute("snsInfo", ownService.snsLogin(ovo.getUserId())); //로그인 세션 보내기
 		model.addAttribute("snsFeed", boardService.getSnsBoardList(ovo.getUserId())); // sns 개인 피드 게시글 (sns계정식별번호로 조회)
+		model.addAttribute("snsFeedCount", boardService.countBoard(ovo.getSnsAccountNo())); //sns 게시글 수 
 		model.addAttribute("snsFList", followService.getFollowerList(ovo.getSnsAccountNo())); //sns 팔로워 리스트
 		model.addAttribute("snsFollower", followService.followerCount(ovo.getSnsAccountNo())); //sns 팔로워 수
+		model.addAttribute("snsFollowList", followService.getFollowList(ovo.getSnsAccountNo())); // sns 팔로우 리스트
+		model.addAttribute("snsFollow", followService.followCount(ovo.getSnsAccountNo())); // sns 팔로우 수 
 		
+		//대표이미지 하나만 띄우기 
 		//list 에 보드넘버 담아두기
 		List<SBoardVO> list = boardService.getSnsBoardNo(ovo.getSnsAccountNo());
 		//빈배열생성
@@ -107,8 +109,11 @@ public class SnsController {
 			}
 		}
 		model.addAttribute("snsImg", newList);
+		//게시글 상세보기를 여기다 해도 되나요..?
+		
 		return "content/sns/snsFeed"; 
 		}
+	
 	
 	//2-1. 개인피드 상세보기
 	@RequestMapping(value = "/snsDetail", method = RequestMethod.GET)
@@ -116,13 +121,12 @@ public class SnsController {
 		model.addAttribute("snsImg", common.selectImgAll("SBN_" + no));
 		return null;
 	}
-	@RequestMapping(value = "/snsFeed2", method = RequestMethod.GET)
-	public String getSnsUser2(Model model) {
-		model.addAttribute("snsFeed2", boardService.getSnsBoardList(null));
-		return "content/sns/snsFeed2"; 
-	}
-	//3. 파일 업로드
-	
+		//@RequestMapping(value = "/snsFeed2", method = RequestMethod.GET)
+		//public String getSnsUser2(Model model) {
+		//	model.addAttribute("snsFeed2", boardService.getSnsBoardList(null));
+		//	return "content/sns/snsFeed2"; 
+		//}
+		
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
 	public String insertSnsBoard(HttpServletRequest request, @RequestParam MultipartFile[] uploadfile, SBoardVO svo, OwnUserVO ovo) {
