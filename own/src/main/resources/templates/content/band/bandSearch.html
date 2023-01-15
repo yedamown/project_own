@@ -93,8 +93,7 @@
                     <div class="col-lg-3 col-sm-6" th:each="band, bandStat : ${bandList}">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="/band/image/room1.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
+                                <img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="">
                             </div>
                             <div class="tags" >
                                 <a href="#" class="button_hover tag_btn" style="color: orange;" th:text="${band.bandCategory}">축구</a>
@@ -109,8 +108,11 @@
              </div>
         </section>
          <!--================ 페이지 Area  =================-->
-        <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
+        <div id="pagination">
+        	<nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
+        </div>
         <!--================ 페이지 Area 끝  =================-->
+       
         <!--================ 내 가치 끝 Area  =================-->    
     <script>
 		  //페이징+검색처리

@@ -78,7 +78,6 @@
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
                                 <img src="/band/image/room1.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
                             </div>
                             <a href="/own/band/bandCreate"><h4 class="sec_h4">가치생성</h4></a>
                             <h5><small></small></h5>
@@ -89,8 +88,7 @@
                     <div class="col-lg-3 col-sm-6" th:each="band, bandStat :${bandList}" th:if="${bandStat.index<3}">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="/band/image/room2.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover" style="visibility: hidden;">Book Now</a>
+                                <img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="">
                             </div>
                             <a href="#"><h4 class="sec_h4" th:text="${band.bandName}"></h4></a>
                             <h5><small>멤버 [[${band.memcount}]]</small></h5>
@@ -100,7 +98,7 @@
                 </div>
                 <div style="float: right; display: block; margin-top: 30px;">
                     <a th:if="${!#lists.isEmpty(bandList)} " href="/own/band/myBand"><h4>My 가치 전부 보기>></h4></a>
-                    <h4 th:if="${#lists.isEmpty(bandList)}">지금 당장 시작하세요</h4>
+                    <h4 th:if="${#lists.isEmpty(bandList)}"><a href="/own/band/bandCreate">지금 당장 시작하세요</a></h4>
                 </div>
             </div>
         </section>
@@ -274,7 +272,7 @@
                 let tag = `<div class="col-lg-3 col-sm-6">
                                 <div class="accomodation_item text-center">
                                     <div class="hotel_img">
-                                        <img src="/band/image/room1.jpg" alt="">
+                                    	<img src="/imgView/${element.bandMainImg.mediaServerFile}" alt="">
                                     </div>
                                     <div class="tags recomTag" >
                                         <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandCategory}</a>

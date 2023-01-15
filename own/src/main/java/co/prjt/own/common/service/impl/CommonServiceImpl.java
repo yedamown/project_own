@@ -24,6 +24,7 @@ public class CommonServiceImpl implements CommonService {
 	@Autowired
 	CommonMapper commonMapper;
 	
+	
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 	
@@ -146,4 +147,10 @@ public class CommonServiceImpl implements CommonService {
 	public MultimediaVO selectImg(String no) {
 		return commonMapper.selectImg(no);
 	}
+
+	@Override
+	public List<MultimediaVO> selectImgAllKey(List<String> value) {
+		return commonMapper.selectImgAllKey(value);
+	}
+
 }

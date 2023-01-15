@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.MultimediaVO;
 
 public interface BandService {
 		//밴드 생성
 		public BandVO insertBand(BandVO vo);
+		//샘플이미지사용 밴드생성 이미지 경로 넣기
+		public int bandSampleimg(MultimediaVO vo);
 		//밴드 수정
 		public int updateBand(BandVO vo);
 		//밴드 리스트 전체 + 검색 

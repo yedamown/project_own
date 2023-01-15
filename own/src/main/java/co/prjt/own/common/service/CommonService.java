@@ -26,4 +26,7 @@ public interface CommonService {
 		
 		//멀티미디어 단건조회
 		public MultimediaVO selectImg(String value);
+		
+		//멀티미티어 식별키가 2개이상일 때 조회
+		public List<MultimediaVO> selectImgAllKey(List<String> bandNoList);
 }

@@ -42,4 +42,11 @@
 		WHERE IDENTIFY_ID = #{identifyId}
 	</update>
 	
+	<select id="selectImgAllKey" resultType="co.prjt.own.common.service.MultimediaVO" parameterType="java.util.List">
+		SELECT * FROM MULTIMEDIA
+		WHERE IDENTIFY_ID IN
+               <foreach collection="list" item="v" separator="," open="(" close=")">
+               		#{v}
+               </foreach>
+	</select>
 </mapper>
