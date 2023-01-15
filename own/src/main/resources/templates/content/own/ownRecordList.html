@@ -139,7 +139,6 @@
 			dataType : 'json',
 			contentType : "application/json"
 		}).then(res => {
-			console.log(res)
 			// 랜덤으로 차트 색상 생성
 			function colorize() {
 			var r = Math.floor(Math.random()*200);
@@ -198,6 +197,13 @@
 	      document.body.appendChild(link);
 	      link.click();
 	}
+
+	function changeDate() {
+		let startDate = $jQ("#datepicker1").val();
+		let endDate = $jQ("#datepicker2").val();
+		console.log(startDate);
+		console.log(endDate);
+	}
 	
 </script>
 
@@ -215,8 +221,10 @@
 		</div>
 		<div id="calendar">
 			<p>
-				조회기간을 선택해주세요 <input type="text" id="datepicker1"> <input
-					type="text" id="datepicker2">
+				조회기간을 선택해주세요 
+				<input type="text" id="datepicker1"> 
+				<input type="text" id="datepicker2">
+				<button id="dateBtn" onclick="changeDate()">조회</button>
 			</p>
 		</div>
 
