@@ -37,8 +37,12 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	@Override
 	public List<ChallengeVO> getChallAll(ChallengeVO vo) {
-		// TODO Auto-generated method stub
-		return mapper.getChallAll(null);
+		return mapper.getChallAll(vo);
+	}
+
+	@Override
+	public List<ChallengeVO> getMyChall(String userId) {
+		return mapper.getMyChall(userId);
 	}
 
 

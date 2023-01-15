@@ -9,9 +9,9 @@ public interface CMemberListService {
 	//도전끝나고 상태변경 (수정)
 	CMemberListVO updateMemList(CMemberListVO vo);
 
-	//동적쿼리로 도전
-	List<CMemberListVO> getMemList(CMemberListVO vo);
+	//멤버참여 여부 체크
+	CMemberListVO getMemCheck(CMemberListVO vo);
 	
-	//전체리스트
+	//동적쿼리로 도전
 	List<CMemberListVO> getMemListAll(CMemberListVO vo);
 }
