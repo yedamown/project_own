@@ -9,9 +9,10 @@
         BAND_CONTENT_OPTION,
         BAND_LIKE_OPTION,
         BAND_BOARD_AUTH,
-        BAND_BOARD_NAME
+        BAND_BOARD_NAME,
+        BAND_BOARD_ORDER
 		    FROM BAND_BOARD_OPTION
 		    WHERE BAND_NO = #{bandNo}
-		    ORDER BY BAND_BOARD_LINE
+		    ORDER BY BAND_BOARD_ORDER
 	</select>
 </mapper>
