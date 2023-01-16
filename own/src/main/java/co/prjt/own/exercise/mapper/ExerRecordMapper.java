@@ -21,6 +21,9 @@ public interface ExerRecordMapper {
 	// 기간 설정해서 운동 데이터 조회
 	List<ExerRecordVO> selectRecord(String userId, Date startDate, Date endDate);
 
+	// 기간 설정해서 몸무게 조회
+	List<ExerRecordVO> selectWeight(String userId, Date startDate, Date endDate);
+
 	// 기간 설정해서 운동 카운팅
 	List<ExerRecordVO> selectCounting(String userId, Date startDate, Date endDate);
 }

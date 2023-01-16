@@ -36,11 +36,17 @@ public class ExerRecordServiceImpl implements ExerRecordService{
 		// 데이터 중 최근 7일 날짜와 몸무게 출력
 		return mapper.getWeight(userId);
 	}
-
+	
 	@Override
 	public List<ExerRecordVO> selectRecord(String userId, Date startDate, Date endDate) {
 		// 기간 설정해서 운동 데이터 조회
 		return mapper.selectRecord(userId, startDate, endDate);
+	}
+	
+	@Override
+	public List<ExerRecordVO> selectWeight(String userId, Date startDate, Date endDate) {
+		// 기간 설정해서 운동 데이터 조회
+		return mapper.selectWeight(userId, startDate, endDate);
 	}
 
 	@Override

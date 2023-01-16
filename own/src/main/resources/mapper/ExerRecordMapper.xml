@@ -71,7 +71,7 @@
 	<select id="selectRecord" resultType="ExerRecordVO" parameterType="string">
 		SELECT	R.EXEREC_DATE EXEREC_DATE, R.EXEREC_NO EXEREC_NO, R.EXERSUB_NO EXERSUB_NO, 
 				S.EXERSUB_NAME EXERSUB_NAME, R.EXEREC_CONDITION EXEREC_CONDITION, R.EXEREC_TIME EXEREC_TIME
-				, ROUND(SUM(R.EXEREC_TIME*S.KCAL)) KCALS, R.EXEREC_WEIGHT
+				, ROUND(SUM(R.EXEREC_TIME*S.KCAL)) KCALS
 		FROM ( 
 			SELECT *
             FROM EXER_RECORD
@@ -85,15 +85,25 @@
         ORDER BY EXEREC_DATE DESC
 	</select>
 	
+	<!-- 날짜범위 선택해서 몸무게 출력 -->
+	<select id="selectWeight" resultType="ExerRecordVO" parameterType="string">
+		SELECT DISTINCT TO_DATE(EXEREC_DATE, 'YYYY-MM-DD') EXEREC_DATE, EXEREC_WEIGHT
+		FROM EXER_RECORD
+		WHERE USER_ID = #{userId}
+		AND EXEREC_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') 
+	                          AND TO_DATE(#{endDate}, 'YYYY-MM-DD')
+		ORDER BY 1
+	</select>
+	
 	<!-- 날짜범위 선택해서 운동종목, 횟수 조회 -->
-	<select id="selectCounting" resultType="ExerRecordVO" parameterType="string">
+	<select id="selectCounting" resultType="ExerRecordVO" >
 		SELECT   EXERSUB_NAME, COUNT(*) E_COUNT
 		FROM EXER_RECORD R
         JOIN EXER_SUB S	ON R.EXERSUB_NO = S.EXERSUB_NO 
         WHERE EXEREC_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') 
                             AND TO_DATE(#{endDate}, 'YYYY-MM-DD')
 		AND R.USER_ID = #{userId}
-		GROUP BY EXERSUB_NAME;
+		GROUP BY EXERSUB_NAME
 	</select>
 	
 </mapper>
