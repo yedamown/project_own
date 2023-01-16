@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,16 +71,15 @@ public class ExerciseController {
 	}
 
 	// 기간설정해서 회원의 운동 기록 가져오기
-	@GetMapping("/selectRecord")
+	@PostMapping("/selectRecord")
 	@ResponseBody
-	public List<ExerRecordVO> selectRecord(@RequestParam("userId") String userId, @RequestParam("startDate") Date startDate,
-			@RequestParam("endDate") Date endDate) {
+	public List<ExerRecordVO> selectRecord(@RequestParam String userId, @RequestParam Date startDate, @RequestParam Date endDate) {
 		System.out.println("=======유저아이디1"+userId);
 		return exerMapper.selectRecord(userId, startDate, endDate);
 	}
 	
 	// 기간설정해서 회원의 몸무게 가져오기
-	@GetMapping("/selectWeight")
+	@PostMapping("/selectWeight")
 	@ResponseBody
 	public List<ExerRecordVO> selectWeight(@RequestParam("userId") String userId, @RequestParam("startDate") Date startDate,
 			@RequestParam("endDate") Date endDate) {
@@ -88,7 +88,7 @@ public class ExerciseController {
 	}
 
 	// 기간설정해서 회원의 운동 카운팅 가져오기
-	@GetMapping("/selectCounting")
+	@PostMapping("/selectCounting")
 	@ResponseBody
 	public List<ExerRecordVO> selectCounting(@RequestParam("userId") String userId, @RequestParam("startDate") Date startDate,
 			@RequestParam("endDate") Date endDate) {
