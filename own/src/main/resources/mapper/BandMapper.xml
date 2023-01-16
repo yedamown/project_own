@@ -71,23 +71,32 @@
 				        band_location = #{bandLocation}
 			       where band_no = #{bandNo}
 	</update>
-	<select id="getBand" resultType="BandVO">
-		SELECT		BAND_NO,
-					BAND_LEADERID,
-					BAND_NAME,
-			        BAND_INTRO,
-			        BAND_KEYWORD,
-			        BAND_OPEN_OPTION,
-			        BAND_AGE_OPTION
-			        BAND_AGE_BEFOROPTION,
-			        BAND_AGE_AFTEROPTION,
-			        BAND_CATEGORY,
-			        BAND_GENDER_OPTION,
-			        BAND_MEMBERSHIP_OPTION,
-			        BAND_LOCATION
-			        BAND_GENDER
-			FROM BAND
-	       WHERE 	BAND_NO = #{bandNo}
+	<select id="getBand" resultType="map">
+		SELECT  DISTINCT
+            A.BAND_NO "BANDNO",
+            A.BAND_NAME "BANDNAME",
+            A.BAND_INTRO "BANDINTRO",
+            A.BAND_KEYWORD "BANDKEYWORD",
+            A.BAND_OPEN_OPTION "BANDOPENOPTION",
+            A.BAND_AGE_OPTION "BANDAGEOPTION",
+            A.BAND_AGE_BEFOROPTION "BANDAGEBEFOROPTION",
+            A.BAND_AGE_AFTEROPTION "BANDAGEAFTEROPTION",
+            A.BAND_CATEGORY "BANDCATEGORY",
+            A.BAND_GENDER_OPTION "BANDGENDEROPTION",
+            A.BAND_MEMBERSHIP_OPTION "BANDMEMBERSHIPOPTION",
+            A.BAND_LOCATION "BANDLOCATION",
+            E.MEMCOUNT "MEMCOUNT"
+        FROM BAND A, BAND_MEMBER_DETAIL B, BAND_BOARD_OPTION C,
+                (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
+                    FROM BAND_MEMBER_DETAIL WHERE BAND_NO = #{bandNo}
+                    GROUP BY BAND_NO) E
+            WHERE A.BAND_NO = B.BAND_NO
+            AND A.BAND_NO = #{bandNo}
+            AND B.USER_ID = #{userId}
+            AND B.BAND_MEMBER_STATUS = 'BA02'
+            AND B.BAND_KICK_STATUS = 'BB01'
+            AND A.BAND_NO = C.BAND_NO
+            AND A.BAND_NO = E.BAND_NO
 	</select>
 	<sql id="condition">
 		<if test="bandCategory != null and bandCategory !=''">
@@ -171,7 +180,7 @@
 		        AND B.BAND_KICK_STATUS = 'BB01'
 	</select>
 	<select id="getBandRecentAll" resultType="map">
-		SELECT
+		SELECT distinct
             A.BAND_NO "bandNo",
             A.BAND_NAME "bandName",
             A.BAND_INTRO "bandIntro",
@@ -224,7 +233,7 @@
         from ( SELECT ROWNUM RN, A.* FROM (
                                             SELECT * FROM (
 
-                                                                SELECT
+                                                                SELECT DISTINCT
                                                                             A.BAND_NO,
                                                                             A.BAND_NAME,
                                                                             A.BAND_INTRO,

@@ -90,7 +90,7 @@
                             <div class="hotel_img">
                                 <img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="">
                             </div>
-                            <a href="#"><h4 class="sec_h4" th:text="${band.bandName}"></h4></a>
+                            <a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|"><h4 class="sec_h4" th:text="${band.bandName}"></h4></a>
                             <h5><small>멤버 [[${band.memcount}]]</small></h5>
                         </div>
                     </div>

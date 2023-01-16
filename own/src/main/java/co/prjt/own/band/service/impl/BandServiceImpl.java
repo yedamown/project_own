@@ -55,8 +55,8 @@ public class BandServiceImpl implements BandService{
 	}
 
 	@Override
-	public BandVO getBand(BandVO vo) {
-		return bandMapper.getBand(vo);
+	public Map<String, Object> getBand(String bandNo, String userId) {
+		return bandMapper.getBand(bandNo, userId);
 	}
 
 	@Override
