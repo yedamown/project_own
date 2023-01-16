@@ -72,16 +72,27 @@ public class ExerciseController {
 	// 기간설정해서 회원의 운동 기록 가져오기
 	@GetMapping("/selectRecord")
 	@ResponseBody
-	public List<ExerRecordVO> selectRecord(@RequestParam String userId, @RequestParam Date startDate,
-			@RequestParam Date endDate) {
+	public List<ExerRecordVO> selectRecord(@RequestParam("userId") String userId, @RequestParam("startDate") Date startDate,
+			@RequestParam("endDate") Date endDate) {
+		System.out.println("=======유저아이디1"+userId);
 		return exerMapper.selectRecord(userId, startDate, endDate);
+	}
+	
+	// 기간설정해서 회원의 몸무게 가져오기
+	@GetMapping("/selectWeight")
+	@ResponseBody
+	public List<ExerRecordVO> selectWeight(@RequestParam("userId") String userId, @RequestParam("startDate") Date startDate,
+			@RequestParam("endDate") Date endDate) {
+		System.out.println("=======유저아이디2"+userId);
+		return exerMapper.selectWeight(userId, startDate, endDate);
 	}
 
 	// 기간설정해서 회원의 운동 카운팅 가져오기
 	@GetMapping("/selectCounting")
 	@ResponseBody
-	public List<ExerRecordVO> selectCounting(@RequestParam String userId, @RequestParam Date startDate,
-			@RequestParam Date endDate) {
+	public List<ExerRecordVO> selectCounting(@RequestParam("userId") String userId, @RequestParam("startDate") Date startDate,
+			@RequestParam("endDate") Date endDate) {
+		System.out.println("=======유저아이디3"+userId);
 		return exerMapper.selectCounting(userId, startDate, endDate);
 	}
 }

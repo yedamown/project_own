@@ -23,4 +23,5 @@ public class ExerRecordVO {
 	int kcals;
 	String exersubName;
 	int eCount;
+	
 }
