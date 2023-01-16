@@ -56,8 +56,13 @@ public class OwnhomeController {
 		// 회원가입 폼으로 이동
 		@RequestMapping(value = "/own/SigninForm", method = RequestMethod.GET)
 		public String ownSignin(Model model) { // 오운로그인으로..
-			String id = passwordEncoder.encode("nmj");
-			System.out.println("kmh암호화"+id);
+			String id = passwordEncoder.encode("kyr");
+			System.out.println("김유리"+id);
+			id = passwordEncoder.encode("admin");
+			System.out.println("admin"+id);
+			id = passwordEncoder.encode("khj");
+			System.out.println("김현지"+id);
+			
 			return "content/own/ownsignin";
 		}
 		
