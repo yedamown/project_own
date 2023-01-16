@@ -28,6 +28,5 @@ public class ExersiceApplicationTests {
 //		mapper.insertExerRecord(vo);
 		
 		// 운동 기록 셀렉트
-		mapper.ExerRecordList("nmj");
 	}
 }

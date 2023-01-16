@@ -8,5 +8,4 @@ public class SAccountVO {
 	String snsProfile;
 	String snsWebsite;
 	String snsAccountNo;
-
 }

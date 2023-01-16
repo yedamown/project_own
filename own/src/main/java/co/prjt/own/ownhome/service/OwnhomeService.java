@@ -16,11 +16,18 @@ public interface OwnhomeService {
 	//로그인
 	public OwnUserVO login(String id);
 	//아이디찾기
-	public void searchId(String email);
-		
-	public SAccountVO snsLogin(String id);
+	public String searchId(String email);
+	//이메일보내기
+	public String sendMail(String info, String email);
+	//내정보 수정
+	public int myupdate();
+	//비밀번호 체크
+	public int pwcheck(String pw, String newpw);
+	//비밀번호 재설정
+	public String setPassword(String appNo, String id);
 	
-	//sns 유저 회원가입
+	public SAccountVO snsLogin(String id);
 	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
+	//sns 유저 회원가입
 	
 }
