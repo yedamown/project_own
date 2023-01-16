@@ -114,14 +114,14 @@
 				                <div  style="flex-grow: 3;"class="imgss">
 				                	<div><img th:src="|/imgView/${createImage[1].mediaServerFile}|" id="inputImage" alt="" style="flex-grow: 3;width: 255px;height: 255px; border-radius: 10px;"></div>
 				                </div>
-								<div style="display: flex; flex-wrap: wrap; flex-direction: column; align-items: center; justify-content: flex-end; flex-grow: 2;">
+								<div id="sampleImg" style="display: flex; flex-wrap: wrap; flex-direction: column; align-items: center; justify-content: flex-end; flex-grow: 2;">
 									<div class="imgss2" style="display:flex-wrap; justify-content:space-between;">
 										<img class="aaimg" th:src="|/imgView/${createImage[0].mediaServerFile}|" alt=""><!-- 첨부 사진 -->
 										<img class="aaimg" th:src="|/imgView/${createImage[2].mediaServerFile}|" alt="">
 										<img class="aaimg" th:src="|/imgView/${createImage[3].mediaServerFile}|" alt="">
 										<img class="aaimg" th:src="|/imgView/${createImage[4].mediaServerFile}|" alt="">
 									</div>
-									<div class="imgss3" style="display:flex-wrap; justify-content:space-between;">
+									<div class="imgss2" style="display:flex-wrap; justify-content:space-between;">
 										<img class="aaimg" th:src="|/imgView/${createImage[5].mediaServerFile}|" alt="">
 										<img class="aaimg" th:src="|/imgView/${createImage[6].mediaServerFile}|" alt="">
 										<img class="aaimg" th:src="|/imgView/${createImage[7].mediaServerFile}|" alt="">
@@ -130,6 +130,7 @@
 								</div>
 				              </div>
 				              <input type="file" id="gateImage" multiple="multiple" name="gateImage" style="display: none" onchange="imgFnc()" accept="image/gif, image/jpeg, image/png">
+				              <input type="text" id="mediaServerFile" name="mediaServerFile" style="display: none" value="sample">
 		<!--================이미지 Area 끝 =================-->
 		<hr>
 						</div><!-- 이미지끝남 -->
@@ -171,7 +172,8 @@
 						                <!--================ 나이체크 =================-->
 						                <div style="display: inline-block; width: 60%; display: flex;" >
 						                  <h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 20px;">연령 제한
-						                      <input type="checkbox" name="bandAgeOption" value="BD02" id="bandAgeOption" style="display: block; float: right; margin: 5px;">
+						                      <input type="checkbox" name="bandAgeOption" value="BD01" id="bandAgeOption" style="display: block; float: right; margin: 5px;">
+						                      <input type="checkbox" name="bandAgeOption" value="BD02" id="bandAgeOptionHidden" style="display: none" checked>
 						                      <label for="bandAgeOption"></label>
 						                    </h6>
 						                    <div style="padding: 20px;">
@@ -261,6 +263,7 @@
 					                        <div class="primary-radio">
 					                          <input type="checkbox" id="positivity" name="bandGenderOption" value="BE01" checked>
 					                          <label for="positivity" style="top: 0px"></label>
+					                           <input type="checkbox" id="positivityHidden" name="bandGenderOption" style="display: none" value="BE02">
 					                        </div>
 					                      </div>
 					                      <div class="switch-wrap d-flex justify-content-between">
@@ -318,6 +321,7 @@
 													<label for="primary-switch" style="top: 0px"></label>
 												</div>
 											</div>
+											<input type="checkbox" name="bandMembershipOption" id="primary-switchHidden"  style="display: none" value="BF01">
 					                    </div>
 										<!--================ 가입신청옵션단추 끝  =================-->
 					                    </div>
@@ -436,22 +440,31 @@
         	    }
         	}
         }
-        //이미지 업로드 시 미리보기
+        //이미지 업로드 시 미리보기createImage
         $('#gateImage').on('change', function(e){
         	let file = e.target.files[0];
         	let reader = new FileReader();
         	reader.onload = function(e){
         		$('#inputImage').attr('src', e.target.result);
+        		//기존이미지 누를시..
+        		$('input[name=mediaServerFile]').val('sample')
         	}
         	reader.readAsDataURL(file);
+        	
+        })
+        //디폴트이미지 설정하기###
+        $('.aaimg').on('click', function(){
+        	$('#inputImage').attr('src',$(this).attr('src'));
+        	console.log($(this).attr('src').substr(9));
+        	$('input[name=mediaServerFile]').val($(this).attr('src').substr(9))
         })
         //연령 체크박스 유무에 따라 밸류값변하게+창생기게
-        $('input[name=bandAgeOption]').on('click',function(){
-        	if($('input[name=bandAgeOption]').prop('checked')){
-            	$('input[name=bandAgeOption]').val('BD01');
+        $('#bandAgeOption').on('click',function(){
+        	if($('#bandAgeOption').prop('checked')){
+            	$('#bandAgeOptionHidden').prop('checked',false);
             	$('#yearCheck').show();
             } else {
-            	$('input[name=bandAgeOption]').val('BD02');
+            	$('#bandAgeOptionHidden').prop('checked',true);
             	$('#yearCheck').hide();
             }
         })
@@ -471,26 +484,23 @@
     	//성별..위에껀 체크박스 밑은 라디오라 수정해야함
         $('input[name=bandGenderOption]').on('click',function(){
         	if($('input[name=bandGenderOption]').prop('checked')){
-            	$('input[name=bandGenderOption]').val('BE01');
-            	$('input[name=bandGender]').prop('checked',true);
+            	$('input[name=bandGender]').prop('checked',false);
+            	$('#positivityHidden').prop('checked',false);
             } else {
             	return false;
             }
         })
         //성별 라디오...체크박스랑 중복체크안되게
         $('input[name=bandGender]').on('click',function(){
-        	$('input[name=bandGenderOption]').prop('checked',false);
-        })
-        $('input[name=bandGender]').on('click',function(){
-        	$('input[name=bandGenderOption]').prop('checked',false);
-        	$('input[name=bandGenderOption]').val('BE02')
+        	$('#positivity').prop('checked',false);
+        	$('#positivityHidden').prop('checked',true);
         })
       //가입승인 비승인
-        $('input[name=bandMembershipOption]').on('click',function(){
-        	if($('input[name=bandMembershipOption]').prop('checked')){
-            	$('input[name=bandMembershipOption]').val('BF01');
+        $('#primary-switch').on('click',function(){
+        	if($('#primary-switch').prop('checked')){
+        		$('#primary-switchHidden').prop('checked',false);
             } else {
-            	$('input[name=bandMembershipOption]').val('BF02')
+            	$('#primary-switchHidden').prop('checked',true);
             }
         })
         </script>

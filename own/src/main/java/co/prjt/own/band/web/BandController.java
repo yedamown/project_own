@@ -1,5 +1,6 @@
 package co.prjt.own.band.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,12 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.prjt.own.band.service.BandMemberDefaultService;
-import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
+import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 
 
@@ -37,8 +36,7 @@ public class BandController {
 	BandService bandService;
 	@Autowired
 	BandMemberDefaultService bandMemberDefaultService;
-	@Autowired
-	CommonService common;
+	@Autowired CommonService common;
 	
 	//밴드 홈으로 가기
 	@RequestMapping("")
@@ -47,20 +45,19 @@ public class BandController {
 		//1.세션아이디 불러와서 최신글이 있고 가입상태인 밴드목록을 불러옴..위치설정
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-	      
 	    System.out.println(user);
 	    //세션널..임시
 	  		if(user==null) {
 	  			return "content/own/ownlogin";
 	  		}
+	  		
 		BandMemberDetailVO vo = new BandMemberDetailVO();
-		//vo.setUserId("hjj");
 		vo.setUserId(user.userId);
-		//유저디폴트정보 싣기
-		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.userId));
-		//가입한..최신글올라온 밴드 불러오기
-		model.addAttribute("bandList", bandService.getBandRecentAll(vo));
 		
+		//유저디폴트정보 싣기  DT : BandMemberDefaultVO
+		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.userId));
+		//가입한..최신글올라온 밴드 불러오기 DT : List<Map<String, Object>> Object:bandVO+mapper +impl에서 이미지도 넣음
+		model.addAttribute("bandList", bandService.getBandRecentAll(vo));
 		//운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());
 		model.addAttribute("exercise", bandService.allExcersie());
@@ -78,17 +75,15 @@ public class BandController {
 		if(user==null) {
   			return "content/own/ownlogin";
   		}
-	    System.out.println(user.userId);
-	  //세션널..임시
-  		
 		band.setBandLeaderid(user.userId);
-		//밴드 검색...페이지 정보는 ajax로 받아오기
+		//페이지 정보는 ajax로 받아오기 참고)내 밴드보기에서 검색용
 		model.addAttribute("bandName", band.getBandName());
+		
 		model.addAttribute("myBand", bandService.getMyBandAll(band, paging));
 		return "content/band/myBand";
 		
 	}
-	//RestController..댓글세개씩보내기
+	//RestController..최신글세개씩보내기
 	@GetMapping("/myBand/{threeBand}")
 	@ResponseBody
 	public List<Map<String, Object>> threeBand(@PathVariable String threeBand){
@@ -120,12 +115,9 @@ public class BandController {
 	//홈에서 밴드검색
 	@RequestMapping("/bandSearch")
 	public String bandSearch(Model model, Paging paging, BandVO band) {
-
 		//운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());
 		model.addAttribute("exercise", bandService.allExcersie());
-
-		
 		model.addAttribute("bandList", bandService.getBandAll(band, paging));
 		return "content/band/bandSearch";
 	}
@@ -143,17 +135,30 @@ public class BandController {
 		model.addAttribute("createImage", common.selectImgAll("BAND_CREATE"));
 		return "content/band/bandCreate";
 	}
-	//밴드생성
+	//밴드생성 mutimediavo는 대표이미지를 샘플로 했을 때 파일명을 받아오기 위함//+밴드리더의 멤버디테일생성
 	@PostMapping("/bandCreate")
-	public String bandCreateComplete(@RequestParam MultipartFile gateImage[], BandVO band, RedirectAttributes rttr) {
+	public String bandCreateComplete(@RequestParam MultipartFile gateImage[], BandVO band, RedirectAttributes rttr, MultimediaVO sampleImgInput) {
 		System.out.println(band.toString());
+		System.out.println(sampleImgInput.toString());
 		//밴드생성
 		band = bandService.insertBand(band);
 		//밴드생성 성공
 		if(band.getBandNo()!=null) { //bandNo 숫자로 들어옴
 			//밴드대표이미지 추가하기 (MultipartFile[], 밴드번호숫자부분, 밴드번호앞자리(BDU_), "Band")
-			String res = common.upload(gateImage, band.getBandNo(), "BDU_", "Band");
-			System.out.println(res);
+			//만약 사용자가 대표이미지를 넣었다면
+			if(sampleImgInput.getMediaServerFile().equals("sample")) {
+				String res = common.upload(gateImage, band.getBandNo(), "BDU_", "Band");
+				System.out.println(res);
+			} else {
+			//만약 사용자가 대표이미지를 샘플이미지로 했다면
+				sampleImgInput.setMediaRealFile("band_실제 이미지 없음");
+				sampleImgInput.setMediaFilePath("c:/test");
+				sampleImgInput.setIno("BDU_");
+				sampleImgInput.setIdentifyId(band.getBandNo());
+				sampleImgInput.setMediaCategory("Band");
+				sampleImgInput.setMediaTurn("band_sample");
+				bandService.bandSampleimg(sampleImgInput);
+			}
 			return "content/band/bandCreateComplete";
 		}
 		return "content/band/bandCreateFail";

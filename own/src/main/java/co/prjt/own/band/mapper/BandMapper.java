@@ -9,10 +9,13 @@ import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.MultimediaVO;
 
 public interface BandMapper {
 	//밴드 생성
-	public int insertBand(BandVO vo);
+	public int insertBand(BandVO vo);	
+	//샘플이미지사용 밴드생성 이미지 경로 넣기
+	public int bandSampleimg(MultimediaVO vo);
 	//밴드 수정
 	public int updateBand(BandVO vo);
 	//밴드 리스트 전체 + 검색

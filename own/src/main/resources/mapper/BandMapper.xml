@@ -457,4 +457,21 @@
 				) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 		]]>
 	</select>
+	<!-- 밴드대문에 샘플이미지 사용시.... -->
+	<!-- 이미지 삽입 -->
+	<insert id="bandSampleimg">
+		<selectKey keyProperty="mediaNo" resultType="string"
+			order="BEFORE">
+			SELECT media_seq.NEXTVAL-1 FROM DUAL
+		</selectKey>
+		INSERT INTO MULTIMEDIA VALUES(
+		#{mediaNo},
+		#{mediaRealFile},
+		#{mediaServerFile},
+		#{mediaFilePath},
+		#{ino} || #{identifyId},
+		#{mediaCategory},
+		'1'
+		)
+	</insert>
 </mapper>

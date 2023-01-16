@@ -9,24 +9,30 @@ import org.springframework.stereotype.Service;
 
 import co.prjt.own.band.mapper.BandMapper;
 import co.prjt.own.band.mapper.BandMemberDefaultMapper;
-import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.CommonService;
+import co.prjt.own.common.service.MultimediaVO;
 
 @Service
 public class BandServiceImpl implements BandService{
 	
 	@Autowired BandMapper bandMapper;
 	@Autowired BandMemberDefaultMapper bandMemberDefaultMapper;
-	
+	@Autowired CommonService common;
 	@Override
 	public BandVO insertBand(BandVO vo) {
-		int r = bandMapper.insertBand(vo);
+		bandMapper.insertBand(vo);
 		return vo;
 	}
-
+	
+	@Override
+	public int bandSampleimg(MultimediaVO vo) {
+		return bandMapper.bandSampleimg(vo);
+	}
+	
 	@Override
 	public int updateBand(BandVO vo) {
 		return bandMapper.updateBand(vo);
@@ -60,7 +66,29 @@ public class BandServiceImpl implements BandService{
 
 	@Override
 	public List<Map<String, Object>> getBandRecentAll(BandMemberDetailVO vo) {
-		return bandMapper.getBandRecentAll(vo);
+		//이미지도 넣기
+		List<Map<String, Object>> bandList = bandMapper.getBandRecentAll(vo);
+		//출력용으로 3개만남기기
+		if(bandList.size()>4) {
+			bandList = bandList.subList(0, 3);
+		}
+		//bandList에 이미지 붙이기용
+		List<String> bandNoList = new ArrayList<String>();
+		for(Map<String, Object> band : bandList) {
+			bandNoList.add((String) band.get("bandNo"));
+		}
+		//위에서 가져온 bandNoList리스트로 이미지 얻어오기
+		List<MultimediaVO> imglist = common.selectImgAllKey(bandNoList);
+		if(bandList.size()>1) {
+			for(Map<String, Object> band : bandList) {
+				for(MultimediaVO img : imglist) {
+					if(img.getIdentifyId().equals(band.get("bandNo"))){
+						band.put("bandMainImg", img);
+					}
+				}
+			}
+		}
+		return bandList;
 	}
 
 	@Override
@@ -77,8 +105,31 @@ public class BandServiceImpl implements BandService{
 		band.setFirst(paging.getFirst());
 		band.setLast(paging.getLast());
 		//
-		
-		return bandMapper.getMyBandAll(band);
+		//이미지도 넣기
+		List<Map<String, Object>> bandList = bandMapper.getMyBandAll(band);
+		//출력용으로 3개만남기기
+		if(bandList.size()>4) {
+			bandList = bandList.subList(0, 3);
+		}
+		//bandList에 이미지 붙이기용
+		List<String> bandNoList = new ArrayList<String>();
+		for(Map<String, Object> b : bandList) {
+			bandNoList.add((String) b.get("bandNo"));
+		}
+		//위에서 가져온 bandNoList리스트로 이미지 얻어오기
+		List<MultimediaVO> imglist = common.selectImgAllKey(bandNoList);
+		if(bandList.size()>1) {
+			for(Map<String, Object> b : bandList) {
+				System.out.println(b.toString());
+				for(MultimediaVO img : imglist) {
+					System.out.println(img.toString());
+					if(img.getIdentifyId().equals(b.get("bandNo"))){
+						b.put("bandMainImg", img);
+					}
+				}
+			}
+		}
+		return bandList;
 	}
 
 	@Override
@@ -144,6 +195,23 @@ public class BandServiceImpl implements BandService{
 		if(list.size()>5) {
 			list = list.subList(0, 4);
 		}
+		//리스트에 이미지담기
+		List<String> bandNoList = new ArrayList<String>();
+		for(BandVO b : list) {
+			bandNoList.add(b.getBandNo());
+		}
+		//위에서 가져온 list리스트로 이미지 얻어오기
+		List<MultimediaVO> imglist = null;
+		if(list.size()>1) {
+			imglist = common.selectImgAllKey(bandNoList);
+			for(BandVO b : list) {
+				for(MultimediaVO img : imglist) {
+					if(img.getIdentifyId().equals(b.getBandNo())){
+						b.setBandMainImg(img);
+					}
+				}
+			}
+		}
 		return list;
 	}
 
@@ -162,7 +230,23 @@ public class BandServiceImpl implements BandService{
 		band.setLast(paging.getLast());
 		//페이지카운트..용을 해야하는데 힘드니 list size로 대체
 		list = bandMapper.recomBand(band);
-		//
+		//리스트에 이미지담기
+		List<String> bandNoList = new ArrayList<String>();
+		for(BandVO b : list) {
+			bandNoList.add(b.getBandNo());
+		}
+		//위에서 가져온 list리스트로 이미지 얻어오기
+		List<MultimediaVO> imglist = null;
+		if(list.size()>1) {
+			imglist = common.selectImgAllKey(bandNoList);
+			for(BandVO b : list) {
+				for(MultimediaVO img : imglist) {
+					if(img.getIdentifyId().equals(b.getBandNo())){
+						b.setBandMainImg(img);
+					}
+				}
+			}
+		}
 		return list;
 	}
 }
