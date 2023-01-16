@@ -12,11 +12,14 @@ public interface OwnhomeMapper {
 	public OwnUserVO login(String id);
 	public List<OwnUserVO> getUserList(OwnUserVO vo);
 	public SAccountVO snsLogin(String id);
-
+	public String setPassword(String appNo, String id);
 	public int idcheck(String id);	
-	
-	
+	public int myupdate();
+	//아이디찾기
+	public String searchId(String email);
+	//이메일보내기
+	public String sendMail(String info, String email);
+	public int pwcheck(String pw, String newpw);
 	//sns 유저 회원가입
 	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
-	
 }
