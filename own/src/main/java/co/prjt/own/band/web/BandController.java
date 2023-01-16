@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.prjt.own.band.service.BandBoardOptionService;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
@@ -32,11 +33,10 @@ import co.prjt.own.ownhome.service.OwnUserVO;
 @Controller
 @RequestMapping("/own/band")
 public class BandController {
-	@Autowired
-	BandService bandService;
-	@Autowired
-	BandMemberDefaultService bandMemberDefaultService;
+	@Autowired BandService bandService;
+	@Autowired BandMemberDefaultService bandMemberDefaultService;
 	@Autowired CommonService common;
+	@Autowired BandBoardOptionService bandBoardOptionService;
 	
 	//밴드 홈으로 가기
 	@RequestMapping("")
@@ -162,5 +162,19 @@ public class BandController {
 			return "content/band/bandCreateComplete";
 		}
 		return "content/band/bandCreateFail";
+	}
+	//가입된 개별 밴드 들어가기
+	@GetMapping("/bandGroup")
+	public String bandGroup(Model model, HttpServletRequest request, @RequestParam String bandNo) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		if(user==null) {
+  			return "content/own/ownlogin";
+  		}
+		//밴드+밴드인원수 조회
+		model.addAttribute("band", bandService.getBand(bandNo, user.getUserId()));
+		//밴드 게시판 조회
+		model.addAttribute("boardList", bandBoardOptionService.getBoardList(bandNo));
+		return null;
 	}
 }
