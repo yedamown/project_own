@@ -67,6 +67,7 @@
         
         .modalBtn {
             font-size: 13px;
+            color: black;
         }
         
         #att_zone {
@@ -200,11 +201,11 @@
 								<button id="followBtn" value="white"
 									style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button>
 								<br>
-								<br> 게시글 갯수<span th:text="${snsFeedCount}"></span>
+								<br><span style="font-size: 13px; color:black">게시글 갯수<span th:text="${snsFeedCount}"></span></span>
 								
-								<h1 class="modalBtn">
+								<span class="modalBtn">
 									팔로우 수<span th:text="${snsFollow}"></span>
-								</h1>
+                                </span>
 									<!-- 팔로우 Modal -->
 									<div class="modal">
 										<!-- 첫 번째 Modal의 내용 -->
@@ -225,7 +226,7 @@
 										</div>
 									</div>
 								
-								<h1 class="modalBtn">팔로워 수<span th:text="${snsFollower}"></span></h1>
+								<span class="modalBtn">팔로워 수<span th:text="${snsFollower}"></span></span>
 									<!-- 팔로워 Modal -->
 									<div class="modal">
 										<!-- 두 번째 Modal의 내용 -->
@@ -351,27 +352,13 @@
               <div class="modal-content">
                 <span class="close">&times;</span>
                 <p id="modalP">게시글상세보기</p>
-                <table border="1px">
-                    <thead>
-                        <tr>
-                            <th>게시글 번호</th>
-                            <th>글 내용</th>
-                            <th>작성일자</th>
-                            <th>작성자</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="sns :  ${snsFeed}">
-                            <td th:text="${sns.snsBoardNo}"></td>
-                            <td th:text="${sns.snsBoardContent}"></td>
-                            <td th:text="${sns.snsBoardDate}"></td>
-                            <td th:text="${sns.snsNickname}"></td>
-                        </tr>
-                    </tbody>
-                </table>
+              	<p id="bContent"></p>
+                <img src="" id="bImg"/>
+                <p id="bWriter"></p>
+                <p id="bDate"></p>
               </div>
             </div>
-            </th:block>
+        </th:block>
             <!--=================== filter portfolio end====================-->
         </div>
         <!--=================== content body end ====================-->
@@ -496,14 +483,44 @@
         }
     })
 
-    $('.modalBtn').each(function(){
-        $(this).on("click", function(){
-            console.log(this);
-            let boardNo = $(this).children('#boardNo').val();
-            console.log(boardNo);
-        })
-    })
+    //게시글 상세보기 ajax
+        $('.modalBtn').each(function(){
+            $(this).on("click", function(){
+                console.log(this);
+                let boardNo = $(this).children('#boardNo').val();
+                console.log(boardNo);
 
+                if(boardNo != null){
+                    alert('아작스 보냅니다')
+                    $.ajax({
+                        url: '/own/snsFeed',
+                        method: 'post',
+                        data: {snsBoardNo: boardNo},
+                        success: function(res){
+                        	console.log(res);
+                        	console.log(res.imgList[0]);
+                        	console.log(res.svo.snsBoardContent)
+
+                            $('#bContent').text(res.svo.snsBoardContent);
+                        //    // for(let i=0; i<res.imgList.length; i++){
+                        //         let img = $('<img>').attr("src", "/imgView/"+res.imgList[i].mediaServerFile);
+                        //         $('#modalP').append(img);
+                        //     }
+                            $('#bWriter').text(res.svo.snsNickname);
+                            $('#bDate').text(res.svo.snsBoardDate);
+                            
+                        },
+                        error: function(error){
+                        	console.log(error);
+                        }
+                    })
+                }else{
+                    alert("아작스 아님 아작스 아님")
+                }
+                
+            })
+        })
+            
 
         // Modal을 가져옵니다.
         var modals = document.getElementsByClassName("modal");
