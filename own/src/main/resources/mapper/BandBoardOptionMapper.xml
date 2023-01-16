@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.BandBoardOptionMapper">
-	<select id="" resultType="BandBoardOptionVO">
+<mapper namespace="co.prjt.own.band.mapper.BandBoardOptionMapper">
+	<select id="getBandBoardList" resultType="BandBoardOptionVO">
 		SELECT  BAND_NO,
         BAND_BOARD_OPTION_NO,
         BAND_BOARD_LINE,

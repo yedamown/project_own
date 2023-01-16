@@ -15,8 +15,8 @@ public class BandBoardOptionServiceImpl implements BandBoardOptionService{
 	@Autowired BandBoardOptionMapper bandBoardOptionMapper;
 	
 	@Override
-	public List<BandBoardOptionVO> getBoardList(String bandNo) {
-		return bandBoardOptionMapper.getBoardList(bandNo);
+	public List<BandBoardOptionVO> getBandBoardList(String bandNo) {
+		return bandBoardOptionMapper.getBandBoardList(bandNo);
 	}
 
 }

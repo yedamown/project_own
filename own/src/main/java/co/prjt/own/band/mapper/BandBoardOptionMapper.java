@@ -6,6 +6,6 @@ import co.prjt.own.band.service.BandBoardOptionVO;
 
 
 public interface BandBoardOptionMapper {
-	public List<BandBoardOptionVO> getBoardList(String bandNo);
+	public List<BandBoardOptionVO> getBandBoardList(String bandNo);
 
 }

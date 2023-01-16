@@ -73,20 +73,20 @@
 	</update>
 	<select id="getBand" resultType="map">
 		SELECT  DISTINCT
-            A.BAND_NO "BANDNO",
-            A.BAND_NAME "BANDNAME",
-            A.BAND_INTRO "BANDINTRO",
-            A.BAND_KEYWORD "BANDKEYWORD",
-            A.BAND_OPEN_OPTION "BANDOPENOPTION",
-            A.BAND_AGE_OPTION "BANDAGEOPTION",
-            A.BAND_AGE_BEFOROPTION "BANDAGEBEFOROPTION",
-            A.BAND_AGE_AFTEROPTION "BANDAGEAFTEROPTION",
-            A.BAND_CATEGORY "BANDCATEGORY",
-            A.BAND_GENDER_OPTION "BANDGENDEROPTION",
-            A.BAND_MEMBERSHIP_OPTION "BANDMEMBERSHIPOPTION",
-            A.BAND_LOCATION "BANDLOCATION",
-            E.MEMCOUNT "MEMCOUNT"
-        FROM BAND A, BAND_MEMBER_DETAIL B, BAND_BOARD_OPTION C,
+            A.BAND_NO "bandNo",
+            A.BAND_NAME "bandName",
+            A.BAND_INTRO "bandIntro",
+            A.BAND_KEYWORD "bandKeyword",
+            A.BAND_OPEN_OPTION "bandOpenOption",
+            A.BAND_AGE_OPTION "bandAgeOption",
+            A.BAND_AGE_BEFOROPTION "bandAgeBeforoption",
+            A.BAND_AGE_AFTEROPTION "bandAgeafteroption",
+            C.EXERSUB_NAME "bandCategory",
+            A.BAND_GENDER_OPTION "bandGenderOption",
+            A.BAND_MEMBERSHIP_OPTION "bandMembershipOption",
+            D.LOC_CITY "bandLocation",
+            E.MEMCOUNT "memcount"
+        FROM BAND A, BAND_MEMBER_DETAIL B, EXER_SUB C, OWN_LOCATION D,
                 (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
                     FROM BAND_MEMBER_DETAIL WHERE BAND_NO = #{bandNo}
                     GROUP BY BAND_NO) E
@@ -95,8 +95,9 @@
             AND B.USER_ID = #{userId}
             AND B.BAND_MEMBER_STATUS = 'BA02'
             AND B.BAND_KICK_STATUS = 'BB01'
-            AND A.BAND_NO = C.BAND_NO
             AND A.BAND_NO = E.BAND_NO
+            AND A.BAND_CATEGORY = C.EXERSUB_NO
+			AND A.BAND_LOCATION = D.LOC_CODE
 	</select>
 	<sql id="condition">
 		<if test="bandCategory != null and bandCategory !=''">
