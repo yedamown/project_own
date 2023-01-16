@@ -1,6 +1,5 @@
 package co.prjt.own.band.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.prjt.own.band.service.BandBoardDetailService;
 import co.prjt.own.band.service.BandBoardOptionService;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandMemberDetailVO;
@@ -28,6 +28,7 @@ import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
+import co.prjt.own.ownhome.service.OwnhomeService;
 
 
 @Controller
@@ -37,13 +38,15 @@ public class BandController {
 	@Autowired BandMemberDefaultService bandMemberDefaultService;
 	@Autowired CommonService common;
 	@Autowired BandBoardOptionService bandBoardOptionService;
-	
+	@Autowired OwnhomeService ownService;
+	@Autowired BandBoardDetailService bandBoardDetailService;
 	//밴드 홈으로 가기
 	@RequestMapping("")
 	public String bandHome(Model model, HttpServletRequest request) {
 		//원래는 사용자의 각 기호..세션아이디 에 맞춰서 추천 ...........밴드 검색어 넣어야 함
 		//1.세션아이디 불러와서 최신글이 있고 가입상태인 밴드목록을 불러옴..위치설정
 		HttpSession session = request.getSession();
+		session.setAttribute("loginUser", ownService.login("hjj"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 	    System.out.println(user);
 	    //세션널..임시
@@ -168,13 +171,13 @@ public class BandController {
 	public String bandGroup(Model model, HttpServletRequest request, @RequestParam String bandNo) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		if(user==null) {
-  			return "content/own/ownlogin";
-  		}
+		session.setAttribute("loginUser", ownService.login("hjj"));
 		//밴드+밴드인원수 조회
 		model.addAttribute("band", bandService.getBand(bandNo, user.getUserId()));
 		//밴드 게시판 조회
-		model.addAttribute("boardList", bandBoardOptionService.getBoardList(bandNo));
-		return null;
+		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
+		//밴드의 총 글 수
+		model.addAttribute("boardCount", bandBoardDetailService.countBandBoard(bandNo));
+		return "content/band/bandGroup";
 	}
 }
