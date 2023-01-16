@@ -118,7 +118,9 @@ public class ChallController {
 	// 해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
 	@GetMapping("/detailChall")
 	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, CMemberVO mem, CMemberListVO memck, HttpServletRequest request, Model model) {
+		System.out.println(no);
 		vo.setChallNo("CHA_" + no);
+		System.out.println(challenge.getChall(vo).getChallLeader());
 		mem.setUserId(challenge.getChall(vo).getChallLeader());
 		//프로필 리더정보
 		model.addAttribute("leaderInfo", member.getCMem(mem));
@@ -141,7 +143,7 @@ public class ChallController {
 		}
 		return "content/chall/detailChall";
 	}
-
+	
 	// 도전 신청페이지로 이동
 	@GetMapping("/applyForm") // 등록 폼으로 이동
 	public String applyFormChall(@RequestParam("challNo") String no, ChallengeVO vo, Model model) {
@@ -163,6 +165,15 @@ public class ChallController {
 		String memListNo = vo.getMemListNo();
 		// 우선 멤버대기리스트 식별번호 넘어가게해줌.
 		return memListNo;
+	}
+	
+	//도전리더 - 멤버리스트 출력
+	@GetMapping("/challMemList")
+	@ResponseBody
+	public List<CMemberListVO> challMemList(@RequestParam("challNo") String no, CMemberListVO vo, Model model) {
+		vo.setChallNo(no);
+		List<CMemberListVO> list = memberList.getMemListAll(vo);
+		return list;
 	}
 
 	// 마이페이지 - 프로필
@@ -243,12 +254,5 @@ public class ChallController {
 		return "content/chall/myChall";
 	}
 	
-	//인증 등록
-	@PostMapping("/insertVld")
-	@ResponseBody //아작스로보낼때 해야함
-	public String insertVld(@RequestBody ValidationVO vo, Model model) {
-		
-		return null;
-	}
 	
 }
