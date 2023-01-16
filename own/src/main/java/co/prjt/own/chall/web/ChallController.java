@@ -1,5 +1,6 @@
 package co.prjt.own.chall.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import co.prjt.own.chall.service.CMemberService;
 import co.prjt.own.chall.service.CMemberVO;
 import co.prjt.own.chall.service.ChallengeService;
 import co.prjt.own.chall.service.ChallengeVO;
+import co.prjt.own.chall.service.ValidationVO;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
@@ -47,22 +49,45 @@ public class ChallController {
 
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
-	public String challHome(Model model, HttpServletRequest request, ChallengeVO vo) {
+	public String challHome(Model model, HttpServletRequest request, ChallengeVO vo1, CMemberListVO vo2) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		System.out.println("===================도전 홈"+user);
 		if(user != null) {
-			//내가 만든도전 - 도전리더가 나인
-			vo.setChallLeader(user.getUserId());
-			System.out.println("===================도전 로그인 o "+user.getUserId());
-			System.out.println("===================도전 로그인 o "+ vo);
-			model.addAttribute("challenges", challenge.getChallAll(vo));
+			//내가 참여중인 진행중인 도전
+			//도전정보
+			model.addAttribute("challenges", challenge.getMyChall(user.getUserId()));
+			//도전번호 뽑아내기 위해 도전들 담아두는 리스트
+			List<ChallengeVO> cList = challenge.getMyChall(user.getUserId());
+			//멀티미디어 정보 담아둘 새 리스트
+			List<MultimediaVO> newList = new ArrayList<MultimediaVO>();
+			//도전담아둔 곳에서 도전번호꺼내서 멀티미디어에서 포문돌림.
+			for(ChallengeVO i: cList) {
+				if(common.selectImgAll(i.getChallNo())!=null){
+					List<MultimediaVO> imgList =  common.selectImgAll(i.getChallNo());
+					if(imgList.size()!=0) {
+						System.out.println(imgList.get(0));
+						newList.add(imgList.get(0));
+					}
+				}
+			}
+			model.addAttribute("challImg", newList);
 		} else {
 			System.out.println("===================도전 로그인 x"+user);
 			model.addAttribute("challenges", challenge.getChallAll(null));
+			List<ChallengeVO> cList = challenge.getChallAll(null);
+			List<MultimediaVO> newList = new ArrayList<MultimediaVO>();
+			for(ChallengeVO i: cList) {
+				if(common.selectImgAll(i.getChallNo())!=null){
+					List<MultimediaVO> imgList =  common.selectImgAll(i.getChallNo());
+					if(imgList.size()!=0) {
+						System.out.println(imgList.get(0));
+						newList.add(imgList.get(0));
+					}
+				}
+			}
+			model.addAttribute("challImg", newList);
 		}
-		
-		//내가 참여중인 도전 - 
 		return "content/chall/challHome";
 	}
 
@@ -92,12 +117,28 @@ public class ChallController {
 	
 	// 해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
 	@GetMapping("/detailChall")
-	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, CMemberVO mem, Model model) {
+	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, CMemberVO mem, CMemberListVO memck, HttpServletRequest request, Model model) {
 		vo.setChallNo("CHA_" + no);
 		mem.setUserId(challenge.getChall(vo).getChallLeader());
+		//프로필 리더정보
 		model.addAttribute("leaderInfo", member.getCMem(mem));
+		String memNo = member.getCMem(mem).getMemNo();
+		model.addAttribute("leaderImg", common.selectImg(memNo));
+		//챌린지정보
 		model.addAttribute("detailChall", challenge.getChall(vo));
+		//미디어에서 검색
 		model.addAttribute("challImg", common.selectImgAll("CHA_" + no));
+		//나의 가입현황 확인 --로그인 세션이용
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		if(user != null) {
+			//멤버리스트에서 참여번호, 내번호, 그리고 승인인거 검색!
+			memck.setUserId(user.getUserId()); //멤버리스트 회원번호설정
+			memck.setChallNo("CHA_" + no); //도전번호
+			memck.setMemStatus("승인"); //상태가 승인인
+			model.addAttribute("memcheck", memberList.getMemCheck(memck)); //하나라서
+			//가입된 곳들어왔을때의 넘겨줄 데이터들..
+		}
 		return "content/chall/detailChall";
 	}
 
@@ -198,15 +239,16 @@ public class ChallController {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
 		vo.setUserId(id);
-		System.out.println(memberList.getMemList(vo));
-		model.addAttribute("myChall", memberList.getMemList(vo));
+		model.addAttribute("myChall", memberList.getMemListAll(vo));
 		return "content/chall/myChall";
 	}
 	
-	
-	@GetMapping("/test")
-	public String testCss() {
-		return "content/chall/testhome";
+	//인증 등록
+	@PostMapping("/insertVld")
+	@ResponseBody //아작스로보낼때 해야함
+	public String insertVld(@RequestBody ValidationVO vo, Model model) {
+		
+		return null;
 	}
 	
 }

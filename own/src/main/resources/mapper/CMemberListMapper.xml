@@ -26,9 +26,18 @@
 		</where>
 	</sql>
 	
-	<select id="getMemList" resultType="co.prjt.own.chall.service.CMemberListVO">
+	<select id="getMemListAll" resultType="co.prjt.own.chall.service.CMemberListVO">
 		SELECT * 
 		FROM CHALL_MEM_LIST
 		<include refid="condition" />
+	</select>
+	
+	<!-- 멤버 참여중인지 검색 -->
+	<select id="getMemCheck" resultType="co.prjt.own.chall.service.CMemberListVO">
+		SELECT * 
+		FROM CHALL_MEM_LIST
+		WHERE CHALL_NO = #{challNo}
+		AND USER_ID = #{userId}
+		AND MEM_STATUS = #{memStatus}
 	</select>
 </mapper>

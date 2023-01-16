@@ -25,8 +25,8 @@ public class CMemberListServiceImpl implements CMemberListService{
 	}
 	
 	@Override
-	public List<CMemberListVO> getMemList(CMemberListVO vo) {
-		return mapper.getMemList(vo);
+	public CMemberListVO getMemCheck(CMemberListVO vo) {
+		return mapper.getMemCheck(vo);
 	}
 
 	@Override

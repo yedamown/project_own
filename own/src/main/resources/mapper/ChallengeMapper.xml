@@ -4,15 +4,15 @@
 	<!-- 조건은 항상 위에 있어야함 -->
 	<sql id="condition">
 		<where>
-			<if test="challLeader != null and challLeader !='' ">
-				AND CHALL_LEADER = #{challLeader}			
-			</if>
-			<if test="challNo != null and challNo !='' ">
-				AND CHALL_NO = #{challNo}
-			</if>
-			<if test="challStatus != null and challStatus !='' ">
-				AND CHALL_STATUS = #{challStatus}		
-			</if>
+				<if test="challLeader !=null">
+					CHALL_LEADER = #{challLeader}			
+				</if>
+				<if test="challNo !=null">
+					CHALL_NO = #{challNo}
+				</if>
+				<if test="challStatus !=null">
+					CHALL_STATUS = #{challStatus}		
+				</if>
 		</where>
 	</sql>
 	
@@ -61,5 +61,14 @@
 	<select id="getChall" resultType="co.prjt.own.chall.service.ChallengeVO">
 		SELECT * FROM CHALLENGES
 		WHERE CHALL_NO = #{challNo}
+	</select>
+
+	<select id="getMyChall" resultType="co.prjt.own.chall.service.ChallengeVO">
+		SELECT *
+		FROM CHALL_MEM_LIST M, CHALLENGES C
+		WHERE M.CHALL_NO = C.CHALL_NO
+		AND M.USER_ID = #{userId}
+		AND CHALL_STATUS = '시작 전'
+		AND M.MEM_STATUS = '승인'
 	</select>
 </mapper>
