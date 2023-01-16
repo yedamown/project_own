@@ -1,7 +1,9 @@
 package co.prjt.own.sns.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
@@ -77,7 +80,7 @@ public class SnsController {
 		HttpSession session = request.getSession();
 		
 		//세션에 강제로 로그인유저 저장하기
-		session.setAttribute("loginUser", ownService.login("kyr"));
+		session.setAttribute("loginUser", ownService.login("kmh"));
 		
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
 		
@@ -108,24 +111,28 @@ public class SnsController {
 //				    }
 			}
 		}
-		model.addAttribute("snsImg", newList);
-		//게시글 상세보기를 여기다 해도 되나요..?
-		
+		model.addAttribute("snsImg", newList);		
 		return "content/sns/snsFeed"; 
 		}
 	
 	
 	//2-1. 개인피드 상세보기
-	@RequestMapping(value = "/snsDetail", method = RequestMethod.GET)
-	public String getSnsBoard(Model model, @RequestParam ("snsNo") String no) {
-		model.addAttribute("snsImg", common.selectImgAll("SBN_" + no));
-		return null;
-	}
-		//@RequestMapping(value = "/snsFeed2", method = RequestMethod.GET)
-		//public String getSnsUser2(Model model) {
-		//	model.addAttribute("snsFeed2", boardService.getSnsBoardList(null));
-		//	return "content/sns/snsFeed2"; 
-		//}
+	@RequestMapping(value = "/snsFeed", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getSnsBoard(SBoardVO vo, String snsBoardNo) {
+		System.out.println("컨트롤 도착!");
+		System.out.println(snsBoardNo);
+		
+		
+		Map<String, Object> map = new HashMap<>();
+		SBoardVO svo = new SBoardVO();
+		List<MultimediaVO> list = common.selectImgAll(snsBoardNo);
+		svo = boardService.getSnsBoard(snsBoardNo);
+		svo.setSnsBoardNo(snsBoardNo);
+		map.put("imgList", list);
+		map.put("svo", svo);
+		return map;
+	}	
 		
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
