@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="">
@@ -11,13 +13,12 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!-- Title -->
 
 <title>Original - Lifestyle Blog Template</title>
-<!-- Favicon -->
 <link rel="icon" href="/css/own/img/core-img/favicon.ico">
 <!-- Style CSS -->
 <link rel="stylesheet" href="/css/own/style.css">
 </head>
-
-<body>
+<div layout:fragment="content">
+   <body>
 	<!-- Preloader -->
 	<div id="preloader">
 		<div class="preload-content">
@@ -101,7 +102,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<div class="row h-100 align-items-center">
 					<div class="col-12">
 						<a href="index.html" class="original-logo"><img
-							src="own/img/core-img/logo.png" alt=""></a>
+							src="/css/own/img/core-img/logo.png" alt=""></a>
 					</div>
 				</div>
 			</div>
@@ -207,7 +208,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 		<div class="hero-slides owl-carousel">
 			<!-- Single Slide -->
 			<div class="single-hero-slide bg-img"
-				style="background-image: url(img/bg-img/b2.jpg);">
+				style="background-image: url(/css/own/img/bg-img/b2.jpg);">
 				<div class="container h-100">
 					<div class="row h-100 align-items-center">
 						<div class="col-12">
@@ -226,7 +227,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 			<!-- Single Slide -->
 			<div class="single-hero-slide bg-img"
-				style="background-image: url(img/bg-img/b1.jpg);">
+				style="background-image: url(/css/own/img/bg-img/b1.jpg);">
 				<div class="container h-100">
 					<div class="row h-100 align-items-center">
 						<div class="col-12">
@@ -245,7 +246,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 			<!-- Single Slide -->
 			<div class="single-hero-slide bg-img"
-				style="background-image: url(img/bg-img/b3.jpg);">
+				style="background-image: url(/css/own/img/bg-img/b3.jpg);">
 				<div class="container h-100">
 					<div class="row h-100 align-items-center">
 						<div class="col-12">
@@ -292,7 +293,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<!-- Single Blog Area -->
 				<div class="col-12 col-md-6 col-lg-4">
 					<div class="single-catagory-area clearfix mb-100">
-						<img src="img/blog-img/1.jpg" alt="">
+						<img src="/css/own/img/blog-img/1.jpg" alt="">
 						<!-- Catagory Title -->
 						<div class="catagory-title">
 							<a href="#">Lifestyle posts</a>
@@ -302,7 +303,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<!-- Single Blog Area -->
 				<div class="col-12 col-md-6 col-lg-4">
 					<div class="single-catagory-area clearfix mb-100">
-						<img src="img/blog-img/2.jpg" alt="">
+						<img src="/css/own/img/blog-img/2.jpg" alt="">
 						<!-- Catagory Title -->
 						<div class="catagory-title">
 							<a href="#">latest posts</a>
@@ -323,7 +324,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<div class="row align-items-center">
 							<div class="col-12 col-md-6">
 								<div class="single-blog-thumbnail">
-									<img src="img/blog-img/3.jpg" alt="">
+									<img src="/css/own/img/blog-img/3.jpg" alt="">
 									<div class="post-date">
 										<a href="#">12 <span>march</span></a>
 									</div>
@@ -359,7 +360,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<div class="row align-items-center">
 							<div class="col-12 col-md-6">
 								<div class="single-blog-thumbnail">
-									<img src="img/blog-img/4.jpg" alt="">
+									<img src="/css/own/img/blog-img/4.jpg" alt="">
 									<div class="post-date">
 										<a href="#">12 <span>march</span></a>
 									</div>
@@ -394,7 +395,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<div class="row">
 							<div class="col-12">
 								<div class="single-blog-thumbnail">
-									<img src="img/blog-img/7.jpg" alt="">
+									<img src="/css/own/img/blog-img/7.jpg" alt="">
 									<div class="post-date">
 										<a href="#">10 <span>march</span></a>
 									</div>
@@ -430,7 +431,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<div class="row align-items-center">
 							<div class="col-12 col-md-6">
 								<div class="single-blog-thumbnail">
-									<img src="img/blog-img/5.jpg" alt="">
+									<img src="/css/own/img/blog-img/5.jpg" alt="">
 									<div class="post-date">
 										<a href="#">12 <span>march</span></a>
 									</div>
@@ -466,7 +467,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<div class="row align-items-center">
 							<div class="col-12 col-md-6">
 								<div class="single-blog-thumbnail">
-									<img src="img/blog-img/6.jpg" alt="">
+									<img src="/css/own/img/blog-img/6.jpg" alt="">
 									<div class="post-date">
 										<a href="#">12 <span>march</span></a>
 									</div>
@@ -530,7 +531,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<!-- Widget Area -->
 						<div class="sidebar-widget-area">
 							<h5 class="title">Advertisement</h5>
-							<a href="#"><img src="img/bg-img/add.gif" alt=""></a>
+							<a href="#"><img src="/css/own/img/bg-img/add.gif" alt=""></a>
 						</div>
 
 						<!-- Widget Area -->
@@ -544,7 +545,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 									class="single-blog-post d-flex align-items-center widget-post">
 									<!-- Post Thumbnail -->
 									<div class="post-thumbnail">
-										<img src="img/blog-img/lp1.jpg" alt="">
+										<img src="/css/own/img/blog-img/lp1.jpg" alt="">
 									</div>
 									<!-- Post Content -->
 									<div class="post-content">
@@ -566,7 +567,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 									class="single-blog-post d-flex align-items-center widget-post">
 									<!-- Post Thumbnail -->
 									<div class="post-thumbnail">
-										<img src="img/blog-img/lp2.jpg" alt="">
+										<img src="/css/own/img/blog-img/lp2.jpg" alt="">
 									</div>
 									<!-- Post Content -->
 									<div class="post-content">
@@ -587,7 +588,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 									class="single-blog-post d-flex align-items-center widget-post">
 									<!-- Post Thumbnail -->
 									<div class="post-thumbnail">
-										<img src="img/blog-img/lp3.jpg" alt="">
+										<img src="/css/own/img/blog-img/lp3.jpg" alt="">
 									</div>
 									<!-- Post Content -->
 									<div class="post-content">
@@ -609,7 +610,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 									class="single-blog-post d-flex align-items-center widget-post">
 									<!-- Post Thumbnail -->
 									<div class="post-thumbnail">
-										<img src="img/blog-img/lp4.jpg" alt="">
+										<img src="/css/own/img/blog-img/lp4.jpg" alt="">
 									</div>
 									<!-- Post Content -->
 									<div class="post-content">
@@ -665,7 +666,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 		<div class="instagram-slides owl-carousel">
 			<!-- Single Insta Feed -->
 			<div class="single-insta-feed">
-				<img src="img/instagram-img/1.png" alt="">
+				<img src="/css/own/img/instagram-img/1.png" alt="">
 				<!-- Hover Effects -->
 				<div class="hover-effects">
 					<a href="#"
@@ -675,7 +676,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 			<!-- Single Insta Feed -->
 			<div class="single-insta-feed">
-				<img src="img/instagram-img/2.png" alt="">
+				<img src="/css/own/img/instagram-img/2.png" alt="">
 				<!-- Hover Effects -->
 				<div class="hover-effects">
 					<a href="#"
@@ -685,7 +686,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 			<!-- Single Insta Feed -->
 			<div class="single-insta-feed">
-				<img src="img/instagram-img/3.png" alt="">
+				<img src="/css/own/img/instagram-img/3.png" alt="">
 				<!-- Hover Effects -->
 				<div class="hover-effects">
 					<a href="#"
@@ -695,7 +696,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 			<!-- Single Insta Feed -->
 			<div class="single-insta-feed">
-				<img src="img/instagram-img/4.png" alt="">
+				<img src="/css/own/img/instagram-img/4.png" alt="">
 				<!-- Hover Effects -->
 				<div class="hover-effects">
 					<a href="#"
@@ -705,7 +706,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 			<!-- Single Insta Feed -->
 			<div class="single-insta-feed">
-				<img src="img/instagram-img/5.png" alt="">
+				<img src="/css/own/img/instagram-img/5.png" alt="">
 				<!-- Hover Effects -->
 				<div class="hover-effects">
 					<a href="#"
@@ -715,7 +716,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 			<!-- Single Insta Feed -->
 			<div class="single-insta-feed">
-				<img src="img/instagram-img/6.png" alt="">
+				<img src="/css/own/img/instagram-img/6.png" alt="">
 				<!-- Hover Effects -->
 				<div class="hover-effects">
 					<a href="#"
@@ -725,7 +726,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 			<!-- Single Insta Feed -->
 			<div class="single-insta-feed">
-				<img src="img/instagram-img/7.png" alt="">
+				<img src="/css/own/
+				img/instagram-img/7.png" alt="">
 				<!-- Hover Effects -->
 				<div class="hover-effects">
 					<a href="#"
@@ -824,5 +826,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<script src="/css/own/js/active.js"></script>
 
 </body>
+</div>
 
 </html>

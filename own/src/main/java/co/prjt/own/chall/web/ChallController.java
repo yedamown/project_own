@@ -132,7 +132,10 @@ public class ChallController {
 		model.addAttribute("challImg", common.selectImgAll("CHA_" + no));
 		//나의 가입현황 확인 --로그인 세션이용
 		HttpSession session = request.getSession();
+		
+//		session.setAttribute("loginUser", own);
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		
 		if(user != null) {
 			//멤버리스트에서 참여번호, 내번호, 그리고 승인인거 검색!
 			memck.setUserId(user.getUserId()); //멤버리스트 회원번호설정
