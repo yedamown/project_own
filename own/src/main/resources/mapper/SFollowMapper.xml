@@ -2,12 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	<mapper namespace="co.prjt.own.sns.mapper.SFollowMapper">
 	
-		<select id="getFollowList" resultType="SFollowVO">
-			SELECT * FROM SNS_FOLLOW
+		<!-- 팔로우 목록 조회 -->
+		<select id="getFollowList" resultType="SAccountVO">
+			SELECT A.SNS_NICKNAME
+		    FROM SNS_ACCOUNT A, (SELECT SNS_FOLLOW_ID
+		                             FROM SNS_FOLLOW 
+		                            WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
+		    WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOW_ID
 		</select>
 		
+		<!-- 팔로우 수 조회 -->
 		<select id="followCount" resultType="int">
-			SELECT COUNT(*) FROM SNS_FOLLOW
+			SELECT COUNT(*) as count 
+			FROM SNS_FOLLOW
+			WHERE sns_follower_id = #{snsAccountNo}
 		</select>
 				
 		<!-- 팔로워 리스트 조회 -->
@@ -27,9 +35,6 @@
 		</select>
 		
 
-		
-	
-		
 		
 		
 	</mapper>

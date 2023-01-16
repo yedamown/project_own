@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
     <!-- ========== Meta Tags ========== -->
     <meta charset="UTF-8">
     <meta name="description" content="Cocoon -Portfolio">
@@ -40,16 +39,17 @@
             width: 100%; /* Full width */
             height: 100%; /* Full height */
             overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
         }
         /* Modal Content/Box */
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
+            margin: 0% auto; /* 15% from the top and centered */
             padding: 20px;
             border: 1px solid #888;
-            width: 50%; /* Could be more or less, depending on screen size */
+            width: 70%; /* Could be more or less, depending on screen size */
+            font-size: 16px;
         }
         /* The Close Button */
         .close {
@@ -58,19 +58,31 @@
             font-size: 28px;
             font-weight: bold;
         }
-        .close:hover,
-        .close:focus {
+        
+        .close:hover, .close:focus {
             color: black;
             text-decoration: none;
             cursor: pointer;
         }
-        .modalBtn{
+        
+        .modalBtn {
             font-size: 13px;
         }
-    </style>
-
+        
+        #att_zone {
+            width: 660px;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px dotted #00f;
+        }
+        
+        #att_zone:empty:before {
+            content: attr(data-placeholder);
+            color: #999;
+            font-size: .9em;
+        }
+        </style>
 </head>
-<div layout:fragment="content">
 <body>
 <div class="loader">
     <div class="loader-outter"></div>
@@ -118,7 +130,7 @@
                     </li>
                     <li>
                         <a href="/own/sns">
-                            sns메인
+                            메인
                         </a>
                     </li>
                     <li>
@@ -169,204 +181,307 @@
                 </div>
             </div>
             <!--social and copyright end -->
+
         </div>
         <!--=================== side menu end====================-->
 
         <!--=================== content body ====================-->
         <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
             <!--=================== filter portfolio start====================-->
-            <div id="snsprofilebox" style="border: 1px solid black; text-align: center;">
-            <br>
-            <div class="testimonial_box">
-                <div class="testimonial_author">  
-                    <img src="/sns/img/user.png" alt="author"> <span th:text="${session.snsInfo.snsNickname}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
-               
-                    <button id="followBtn" value="white" style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button><br><br>
+            <div id="snsprofilebox"
+						style="border: 1px solid black; text-align: center;">
+						<br>
+						<div class="testimonial_box">
+							<div class="testimonial_author">
+								<img src="/sns/img/user.png" alt="author"> <span
+									th:text="${session.snsInfo.snsNickname}"></span>
+								&nbsp;&nbsp;&nbsp;&nbsp;
 
-                    <h5>게시글 갯수 / 팔로우 수 /</h5> 
-                    <h1 class="modalBtn">팔로워 수<span th:text="${snsFollower}"></span></h1>
- 
-                    <!-- 첫 번째 Modal -->
-                    <div class="modal">
-                
-                    <!-- 첫 번째 Modal의 내용 -->
-                    <div class="modal-content">
-                        <span class="close">&times;</span>                         
-                        나를 팔로우 한 사람
-                        <table border="1px">
-                            <thead>
-                                <tr>
-                                    <th>팔로우 목록</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="snsf : ${snsFList}">
-                                    <td th:text="${snsf.snsNickname}"></td>
-                            </tbody>
-                        </table>
-                    </div>
-                    </div>
-						
-                    <p>소개글을 입력하세요 .... <span>company</span></p>
-                </div>
+								<button id="followBtn" value="white"
+									style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button>
+								<br>
+								<br> 게시글 갯수<span th:text="${snsFeedCount}"></span>
+								
+								<h1 class="modalBtn">
+									팔로우 수<span th:text="${snsFollow}"></span>
+								</h1>
+									<!-- 팔로우 Modal -->
+									<div class="modal">
+										<!-- 첫 번째 Modal의 내용 -->
+										<div class="modal-content">
+											<span class="close">&times;</span> 
+											<p>내가 팔로우 한 사람</p>
+												<table border="1px">
+													<thead>
+														<tr>
+															<th>팔로우 목록</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="snsfol : ${snsFollowList}">
+															<td th:text="${snsfol.snsNickname}"></td>
+													</tbody>
+												</table>
+										</div>
+									</div>
+								
+								<h1 class="modalBtn">팔로워 수<span th:text="${snsFollower}"></span></h1>
+									<!-- 팔로워 Modal -->
+									<div class="modal">
+										<!-- 두 번째 Modal의 내용 -->
+										<div class="modal-content">
+											<span class="close">&times;</span> 
+											<p>나를 팔로우 한 사람</p>
+											<table border="1px">
+												<thead>
+													<tr>
+														<th>팔로워 목록</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="snsf : ${snsFList}">
+														<td th:text="${snsf.snsNickname}"></td>
+												</tbody>
+											</table>
+										</div>
+									</div>
+							</div>
 
-                <p>
-                	<div th:if="${session.snsInfo.snsProfile} != null">
-                	<span th:text="${session.snsInfo.snsProfile}"/>
-                	</p>             
-                		
-                	</div>>
-                	프로필 소개글을 입력하세요.
+							<div th:if="${session.snsInfo.snsProfile != null}">
+								<span th:text="${session.snsInfo.snsProfile}"></span>
+							</div>
+							<div th:if="${session.snsInfo.snsProfile == null}">프로필 소개글을
+								입력하세요.</div>
 
-                   웹사이트
-                </p>
-                <br>
-            </div>
-            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
-            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
-            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
-            <img src="/sns/img/user.png" alt="author"> 하이라이트  &nbsp;&nbsp;&nbsp;&nbsp;
-            <img src="/sns/img/user.png" alt="author"> 하이라이트  <br> <br>
-           </div>
-           
-            <hr>
+							<div th:if="${session.snsInfo.snsWebsite != null}">
+								<span th:text="${session.snsInfo.snsWebsite}"></span>
+							</div>
+							<br>
+							<div th:if="${session.snsInfo.snsWebsite == null}">웹사이트 링크
+								비어있음</div><br>
 
-            <!-- 두 번째 Modal을 여는 클래스 -->
-            <h1 class="modalBtn" style="text-align: right;">📝글 작성</h1>
-        
-            <!-- 두 번째 Modal -->
-            <div class="modal">
-        
-            <!-- 두 번째 Modal의 내용 -->
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm" enctype="multipart/form-data">
-                    <label for="inputContent">내용</label>
-                    <textarea type="text" name="snsBoardContent" id="inputContent"></textarea>
-                    <input th:value="${session.loginUser.snsAccountNo}" name="snsAccountNo" type="hidden"></input>
-                    <label for="inputFile">첨부파일</label><br>
-                    <div style="text-align:right">
-                    이미지1<input name="uploadfile" type="file" id="customFile" multiple="multiple"/><br><br>
-                    이미지2<input name="uploadfile" type="file" id="customFile" multiple="multiple"/><br><br>
-                    이미지3<input name="uploadfile" type="file" id="customFile" multiple="multiple"/>
-                    </div>
-                    <label class="custom-file-label" for="customFile">파일을 선택해주세요.</label>
-                    <input type="submit" role="button" value="글쓰기"/>
-                </form>
-            </div>
-            </div>
+						</div>
 
-           <!-- 첫 번째 Modal을 여는 클래스 -->
-    
-    <hr>
- 
- 
-    <hr>
-    <!-- 세 번째 Modal을 여는 클래스 -->
-    <h1 class="modalBtn">MODAL_3</h1>
- 
-    <!-- 세 번째 Modal -->
-    <div class="modal">
- 
-      <!-- 세 번째 Modal의 내용 -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>세 번째 Modal</p>
-      </div>
-    </div>
-            <table border="1px">
-               <thead>
-                  <tr>
-                     <th>게시글 번호</th>
-                     <th>글 내용</th>
-                     <th>작성일자</th>
-                     <th>작성자</th>
-                     <th>이미지</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr th:each="sns :  ${snsFeed}">
-                     <td th:text="${sns.snsBoardNo}"></td>
-                     <td th:text="${sns.snsBoardContent}"></td>
-                     <td th:text="${sns.snsBoardDate}"></td>
-                     <td th:text="${sns.snsNickname}"></td>
-                  </tr>
-                     <tr th:each="img : ${snsImg}">
-                     <td><img th:src="|/imgView/${img.mediaServerFile}" alt="" /></td>
-                     
-                     <td><sapn th:text="${#lists.size(snsImg)}"></sapn> </td>
-                     </tr>
-                     <span>
-                     <!-- <img th:src="|/imgView/${snsImg[0].mediaServerFile}"/> -->
-                     </span>
-               </tbody>
-            </table>
-            <br>
-            
+						<img src="/sns/img/user.png" alt="author"> 하이라이트
+						&nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png" alt="author">
+						하이라이트 &nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png"
+							alt="author"> 하이라이트 &nbsp;&nbsp;&nbsp;&nbsp; <img
+							src="/sns/img/user.png" alt="author"> 하이라이트
+						&nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png" alt="author">
+						하이라이트 <br> <br>
+					</div><hr>
+
+					<!-- 글작성 모달을 여는 클래스 -->
+					<h1 class="modalBtn" style="text-align: right;">📝글 작성</h1>
+					<hr>
+					<!-- 글작성모달 Modal -->
+					<div class="modal">
+
+						<!-- 세 번째 Modal의 내용 -->
+						<div class="modal-content">
+							<span class="close">&times;</span>
+							<div id="image_preview">
+								<!--이미지 미리보기-->
+								<form action="/own/snsWriteFeed" method="post"
+									class="snsWriteFrm" enctype="multipart/form-data">
+									<input name="uploadfile" type="file" id="btnAtt"
+										multiple="multiple">
+									<!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
+
+									<div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
+									<br>
+
+									<textarea style="width: 600px; height: 200px;"
+										name="snsBoardContent" id="inputContent"></textarea>
+									<input th:value="${session.loginUser.snsAccountNo}"
+										name="snsAccountNo" type="hidden"></input> <input
+										type="submit" role="button" value="글쓰기" />
+								</form>
+							</div>
+						</div>
+					</div>
+					<table border="1px">
+						<thead>
+							<tr>
+								<th>게시글 번호</th>
+								<th>글 내용</th>
+								<th>작성일자</th>
+								<th>작성자</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="sns :  ${snsFeed}">
+								<td th:text="${sns.snsBoardNo}"></td>
+								<td th:text="${sns.snsBoardContent}"></td>
+								<td th:text="${sns.snsBoardDate}"></td>
+								<td th:text="${sns.snsNickname}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+
             <div class="portfolio gutters grid img-container">
-                <div class="grid-sizer col-sm-12 col-md-6 col-lg-3">
+                <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
 
-                </div>
-                
                 <th:block th:each="snsimg :${snsImg}">
-                    <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3" id="griditem">      
-                        <a th:href="|/imgView/${snsimg.mediaServerFile}" title="project name 1" id="hrefImg">
-                            <div class="project_box_one"></div>
-                            <img th:src="|/imgView/${snsimg.mediaServerFile}" alt="pro1" id="boardImg"/>
+                    <div class="modalBtn">
+                        <input type="hidden" id="boardNo" th:value="${snsimg.identifyId}">
+                        <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
+                            <div class="project_box_one">                      
+                                <img th:src="|/imgView/${snsimg.mediaServerFile}" />
                             <div class="product_info">
                                 <div class="product_info_text">
                                     <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>좋아요 수/ 댓글 수</h4>
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     </div>
-                </th:block>
-
-                <div class="grid-item  branding architecture  col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port2.png" title="project name 2">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port2.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+                    <!--</a>-->
                 </div>
-               
-                <div class="grid-item  design col-sm-12 col-md-6 col-lg-3">
-                    <a href="/sns/img/portfolio/port3.png" title="project name 5">
-                        <div class="project_box_one">
-                            <img src="/sns/img/portfolio/port3.png" alt="pro1" />
-                            <div class="product_info">
-                                <div class="product_info_text">
-                                    <div class="product_info_text_inner">
-                                        <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
+            </th:block>
             </div>
+ 
+            <!-- 두 번째 Modal -->
+            <th:block th:each="snsLength :${snsImg}">
+            <div class="modal">
+              <!-- 두 번째 Modal의 내용 -->
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <p id="modalP">게시글상세보기</p>
+                <table border="1px">
+                    <thead>
+                        <tr>
+                            <th>게시글 번호</th>
+                            <th>글 내용</th>
+                            <th>작성일자</th>
+                            <th>작성자</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sns :  ${snsFeed}">
+                            <td th:text="${sns.snsBoardNo}"></td>
+                            <td th:text="${sns.snsBoardContent}"></td>
+                            <td th:text="${sns.snsBoardDate}"></td>
+                            <td th:text="${sns.snsNickname}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+            </div>
+            </th:block>
             <!--=================== filter portfolio end====================-->
         </div>
         <!--=================== content body end ====================-->
     </div>
 </div>
+	<!--===================스크립트====================-->
+		<script>
+	//첨부파일 이미지 
+    ( /* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
+        imageView = function imageView(att_zone, btn){
 
-<!--======================== 팔로우버튼js ======================== -->
-<script th:inline="javascript">
-    makeBoardDiv();
+            var attZone = document.getElementById(att_zone);
+            var btnAtt = document.getElementById(btn)
+            var sel_files = [];
+            
+            // 이미지와 체크 박스를 감싸고 있는 div 속성
+            var div_style = 'display:inline-block;position:relative;'
+                        + 'width:150px;height:120px;margin:5px;border:1px solid #00f;z-index:1';
+            // 미리보기 이미지 속성
+            var img_style = 'width:100%;height:100%;z-index:none';
+            // 이미지안에 표시되는 체크박스의 속성
+            var chk_style = 'width:30px;height:30px;position:absolute;font-size:24px;'
+                        + 'right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:#f00';
+        
+            btnAtt.onchange = function(e){
+            var files = e.target.files;
+            var fileArr = Array.prototype.slice.call(files)
+            for(f of fileArr){
+                imageLoader(f);
+            }
+            }  
+            
+        
+            // 탐색기에서 드래그앤 드롭 사용
+            attZone.addEventListener('dragenter', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            }, false)
+            
+            attZone.addEventListener('dragover', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            
+            }, false)
+        
+            attZone.addEventListener('drop', function(e){
+            var files = {};
+            e.preventDefault();
+            e.stopPropagation();
+            var dt = e.dataTransfer;
+            files = dt.files;
+            for(f of files){
+                imageLoader(f);
+            }
+            
+            }, false)
+            
 
-    let fBtn = document.getElementById("followBtn");
+            
+            /*첨부된 이미리즐을 배열에 넣고 미리보기 */
+            imageLoader = function(file){
+            sel_files.push(file);
+            var reader = new FileReader();
+            reader.onload = function(ee){
+                let img = document.createElement('img')
+                img.setAttribute('style', img_style)
+                img.src = ee.target.result;
+                attZone.appendChild(makeDiv(img, file));
+            }
+            
+            reader.readAsDataURL(file);
+            }
+            
+            /*첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
+            makeDiv = function(img, file){
+            var div = document.createElement('div')
+            div.setAttribute('style', div_style)
+            
+            var btn = document.createElement('input')
+            btn.setAttribute('type', 'button')
+            btn.setAttribute('value', 'x')
+            btn.setAttribute('delFile', file.name);
+            btn.setAttribute('style', chk_style);
+            btn.onclick = function(ev){
+                var ele = ev.srcElement;
+                var delFile = ele.getAttribute('delFile');
+                for(var i=0 ;i<sel_files.length; i++){
+                if(delFile== sel_files[i].name){
+                    sel_files.splice(i, 1);      
+                }
+                }
+                
+                dt = new DataTransfer();
+                for(f in sel_files) {
+                var file = sel_files[f];
+                dt.items.add(file);
+                }
+                btnAtt.files = dt.files;
+                var p = ele.parentNode;
+                attZone.removeChild(p)
+            }
+            div.appendChild(img)
+            div.appendChild(btn)
+            return div
+            }
+        }
+        )('att_zone', 'btnAtt')
+
+	//팔로우 버튼
+    let fBtn = document.getElementById("followBtn");	    
     fBtn.addEventListener("click", function(){
         if(this.value = 'white'){
         console.log('팔로우버튼 클릭');
@@ -380,31 +495,14 @@
             this.value="white";
         }
     })
-    // console.log("이미지경로 불러오는감"+"[(${snsImg[0].mediaServerFile})]");
-    /*<![CDATA[*/
-    // function makeBoardDiv(){
-    //     var gridItem = document.querySelector('#griditem');
-    //     let content = gridItem.cloneNode(true);
-    //     console.log("[(${snsImg})]");
-    //     let ImgArr = [];
 
-    //     for(let i=0; i<"[[${#lists.size(snsImg)}]]"; i++){
-    //         ImgArr.push(0);
-    //     }
-    //     console.log("배열길이 구하기 테스트"+ImgArr.length);
-
-        
-        //이미지 붙이기
-
-            //$(content).find("#boardImg").attr("src", "/imgView/[(${snsImg[0].mediaServerFile})]");
-            //$(content).find("#hrefImg").attr("href", "/imgView/[(${snsImg[1].mediaServerFile})]");
-        // $(".img-container").prepend(content);
-        // console.log("3번==="+"/imgView/[(${snsImg[0].mediaServerFile})]");
-        //content.querySelector('img.boardImg').src = "/imgView/[(${snsImg[0].mediaServerFile})]";
-        
-        // }
-        
-    /*]]>*/
+    $('.modalBtn').each(function(){
+        $(this).on("click", function(){
+            console.log(this);
+            let boardNo = $(this).children('#boardNo').val();
+            console.log(boardNo);
+        })
+    })
 
 
         // Modal을 가져옵니다.
@@ -421,12 +519,15 @@
             // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
             btns[num].onclick =  function() {
                 modals[num].style.display = "block";
+                event.stopPropagation();
                 console.log(num);
+          
             };
         
             // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
             spanes[num].onclick = function() {
                 modals[num].style.display = "none";
+ 
             };
         };
         }
@@ -453,8 +554,6 @@
 
 
 
-
-
 <!-- jquery -->
 <script src="/sns/js/jquery.min.js"></script>
 <!-- bootstrap -->
@@ -475,5 +574,4 @@
 <!-- Custom js -->
 <script src="/sns/js/main.js"></script>
 </body>
-</div>
 </html>

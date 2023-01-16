@@ -4,11 +4,14 @@ import java.util.List;
 
 public interface SBoardService {
 	
-    //SNS 게시글 전체 조회
+     //SNS 게시글 전체 조회
 	 public List<SBoardVO> getSnsBoardList(String id);
 	 
 	 //sns 게시글 한건 조회
 	 SBoardVO getSnsBoard(String snsBoardNo);
+	
+	 //게시글 갯수
+	 int countBoard(String id);
 	 
 	 //sns 번호 뽑기
 	 public List<SBoardVO> getSnsBoardNo(String id);
@@ -20,5 +23,7 @@ public interface SBoardService {
 	 
 	 //sns 게시글 삭제
 	 int deleteSnsBoard(String snsBoardNo);
+	 
+	
 	 
 }

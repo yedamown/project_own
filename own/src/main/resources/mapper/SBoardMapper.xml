@@ -12,6 +12,13 @@
 		ORDER BY SNS_BOARD_NO DESC	
 	</select>
 	
+	<!-- 게시글 갯수 카운트 -->
+	<select id="countBoard" resultType="int">
+		SELECT COUNT(*)
+			FROM SNS_BOARD
+			WHERE SNS_ACCOUNT_NO= #{snsAccountNo}
+	</select>
+	
 	<!-- 게시글 한건 조회 -->
 	<select id="getSnsBoard" resultType="SBoardVO">
 		SELECT * FROM SNS_BOARD WHERE SNS_BOARD_NO = #{snsBoardNo}
@@ -46,7 +53,7 @@
 	<update id="updateSnsBoard" parameterType="SBoardVO">
 		UPDATE SNS_BOARD
 		SET SNS_BOARD_CONTENT = #{snsBoardContent},
-			    SNS_BOARD_DATE = sysdate
+			    SNS_BOARD_DATE = current_date
 		WHERE SNS_BOARD_NO = ${snsBoardNo}
 	</update>
 	

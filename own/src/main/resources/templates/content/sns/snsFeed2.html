@@ -1,33 +1,536 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="UTF-8">
+    <meta name="description" content="Cocoon -Portfolio">
+    <meta name="keywords" content="Cocoon , Portfolio">
+    <meta name="author" content="Pharaohlab">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ========== Title ========== -->
+    <title> Cocoon -Portfolio</title>
+    <!-- ========== Favicon Ico ========== -->
+    <!--<link rel="icon" href="fav.ico">-->
+    <!-- ========== STYLESHEETS ========== -->
+    <!-- Bootstrap CSS -->
+    <link href="/sns/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts Icon CSS -->
+    <link href="/sns/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/sns/css/et-line.css" rel="stylesheet">
+    <link href="/sns/css/ionicons.min.css" rel="stylesheet">
+    <!-- Carousel CSS -->
+    <link href="/sns/css/slick.css" rel="stylesheet">
+    <!-- Magnific-popup -->
+    <link rel="stylesheet" href="/sns/css/magnific-popup.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="/sns/css/animate.min.css">
+    <!-- Custom styles for this template -->
+    <link href="/sns/css/main.css" rel="stylesheet">
+
+    <style>
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 0% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 70%; /* Could be more or less, depending on screen size */
+            font-size: 16px;
+        }
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .modalBtn {
+            font-size: 13px;
+        }
+        
+        #att_zone {
+            width: 660px;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px dotted #00f;
+        }
+        
+        #att_zone:empty:before {
+            content: attr(data-placeholder);
+            color: #999;
+            font-size: .9em;
+        }
+        </style>
 </head>
-<div layout:fragment="content">
 <body>
-	<h1>sns개인피드</h1>
-	<table border="1px">
-		<thead>
-			<tr>
-				<th>게시글 번호</th>
-				<th>글 내용</th>
-				<th>작성일자</th>
-				<th>작성자</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="sns :  ${snsFeed2}">
-				<td th:text="${sns.snsBoardNo}"></td>
-				<td th:text="${sns.snsBoardContent}"></td>
-				<td th:text="${sns.snsBoardDate}"></td>
-				<td th:text="${sns.snsNickname}"></td>
-			</tr>
-		</tbody>
-	</table>
-</body>
+<div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
 </div>
+
+<div class="body-container container-fluid">
+    <a class="menu-btn" href="javascript:void(0)">
+        <i class="ion ion-grid"></i>
+    </a>
+    <div class="row justify-content-center">
+        <!--=================== side menu ====================-->
+        <div class="col-lg-2 col-md-3 col-12 menu_block">
+
+            <!--logo -->
+            <div class="logo_box">
+                <a href="#">
+                    <img src="/sns/img/logo.png" alt="cocoon">
+                </a>
+            </div>
+            <!--logo end-->
+
+            <!--main menu -->
+            <div class="side_menu_section">
+                <ul class="menu_nav">
+                    <li>
+                        <a href="/own/home">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="about.html">
+                            About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="services.html">
+                            Services
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/own/snsFeed">
+                            개인피드
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/own/sns">
+                            메인
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contact.html">
+                            Contact
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--main menu end -->
+
+            <!--filter menu -->
+            <div class="side_menu_section">
+                <h4 class="side_title">filter by:</h4>
+                <ul  id="filtr-container"  class="filter_nav">
+                    <li  data-filter="*" class="active"><a href="javascript:void(0)" >all</a></li>
+                    <li data-filter=".branding"> <a href="javascript:void(0)">branding</a></li>
+                    <li data-filter=".design"><a href="javascript:void(0)">design</a></li>
+                    <li data-filter=".photography"><a href="javascript:void(0)">photography</a></li>
+                    <li data-filter=".architecture"><a href="javascript:void(0)">architecture</a></li>
+                </ul>
+            </div>
+            <!--filter menu end -->
+
+
+            <!--social and copyright -->
+            <div class="side_menu_bottom">
+                <div class="side_menu_bottom_inner">
+                    <ul class="social_menu">
+                        <li>
+                            <a href="#"> <i class="ion ion-social-pinterest"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-facebook"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-twitter"></i> </a>
+                        </li>
+                        <li>
+                            <a href="#"> <i class="ion ion-social-dribbble"></i> </a>
+                        </li>
+                    </ul>
+                    <div class="copy_right">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p class="copyright">Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+            <!--social and copyright end -->
+
+        </div>
+        <!--=================== side menu end====================-->
+
+        <!--=================== content body ====================-->
+        <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
+            <!--=================== filter portfolio start====================-->
+            <div id="snsprofilebox"
+						style="border: 1px solid black; text-align: center;">
+						<br>
+						<div class="testimonial_box">
+							<div class="testimonial_author">
+								<img src="/sns/img/user.png" alt="author"> <span
+									th:text="${session.snsInfo.snsNickname}"></span>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+
+								<button id="followBtn" value="white"
+									style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button>
+								<br>
+								<br> 게시글 갯수<span th:text="${snsFeedCount}"></span>
+								
+								<h1 class="modalBtn">
+									팔로우 수<span th:text="${snsFollow}"></span>
+								</h1>
+									<!-- 팔로우 Modal -->
+									<div class="modal">
+										<!-- 첫 번째 Modal의 내용 -->
+										<div class="modal-content">
+											<span class="close">&times;</span> 
+											<p>내가 팔로우 한 사람</p>
+												<table border="1px">
+													<thead>
+														<tr>
+															<th>팔로우 목록</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="snsfol : ${snsFollowList}">
+															<td th:text="${snsfol.snsNickname}"></td>
+													</tbody>
+												</table>
+										</div>
+									</div>
+								
+								<h1 class="modalBtn">
+									팔로워 수<span th:text="${snsFollower}"></span>
+								</h1>
+									<!-- 팔로워 Modal -->
+									<div class="modal">
+										<!-- 두 번째 Modal의 내용 -->
+										<div class="modal-content">
+											<span class="close">&times;</span> 
+											<p>나를 팔로우 한 사람</p>
+											<table border="1px">
+												<thead>
+													<tr>
+														<th>팔로워 목록</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="snsf : ${snsFList}">
+														<td th:text="${snsf.snsNickname}"></td>
+												</tbody>
+											</table>
+										</div>
+									</div>
+							</div>
+
+							<div th:if="${session.snsInfo.snsProfile != null}">
+								<span th:text="${session.snsInfo.snsProfile}"></span>
+							</div>
+							<div th:if="${session.snsInfo.snsProfile == null}">프로필 소개글을
+								입력하세요.</div>
+
+							<div th:if="${session.snsInfo.snsWebsite != null}">
+								<span th:text="${session.snsInfo.snsWebsite}"></span>
+							</div>
+							<br>
+							<div th:if="${session.snsInfo.snsWebsite == null}">웹사이트 링크
+								비어있음</div><br>
+
+						</div>
+
+						<img src="/sns/img/user.png" alt="author"> 하이라이트
+						&nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png" alt="author">
+						하이라이트 &nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png"
+							alt="author"> 하이라이트 &nbsp;&nbsp;&nbsp;&nbsp; <img
+							src="/sns/img/user.png" alt="author"> 하이라이트
+						&nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png" alt="author">
+						하이라이트 <br> <br>
+					</div><hr>
+
+					<!-- 글작성 모달을 여는 클래스 -->
+					<h1 class="modalBtn" style="text-align: right;">📝글 작성</h1>
+					<hr>
+					<!-- 글작성모달 Modal -->
+					<div class="modal">
+
+						<!-- 세 번째 Modal의 내용 -->
+						<div class="modal-content">
+							<span class="close">&times;</span>
+							<div id="image_preview">
+								<!--이미지 미리보기-->
+								<form action="/own/snsWriteFeed" method="post"
+									class="snsWriteFrm" enctype="multipart/form-data">
+									<input name="uploadfile" type="file" id="btnAtt"
+										multiple="multiple">
+									<!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
+
+									<div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
+									<br>
+
+									<textarea style="width: 600px; height: 200px;"
+										name="snsBoardContent" id="inputContent"></textarea>
+									<input th:value="${session.loginUser.snsAccountNo}"
+										name="snsAccountNo" type="hidden"></input> <input
+										type="submit" role="button" value="글쓰기" />
+								</form>
+							</div>
+						</div>
+					</div>
+					<table border="1px">
+						<thead>
+							<tr>
+								<th>게시글 번호</th>
+								<th>글 내용</th>
+								<th>작성일자</th>
+								<th>작성자</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="sns :  ${snsFeed}">
+								<td th:text="${sns.snsBoardNo}"></td>
+								<td th:text="${sns.snsBoardContent}"></td>
+								<td th:text="${sns.snsBoardDate}"></td>
+								<td th:text="${sns.snsNickname}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+
+            <div class="portfolio gutters grid img-container">
+                <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
+                <th:block th:each="snsimg :${snsImg}">
+                <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
+                    <a th:href="|/imgView/${snsimg.mediaServerFile}" title="project name 1">
+                        <div class="project_box_one">
+                            <img th:src="|/imgView/${snsimg.mediaServerFile}" alt="pro1" />
+                            <div class="product_info">
+                                <div class="product_info_text">
+                                    <div class="product_info_text_inner">
+                                        <i class="ion ion-plus"></i>
+                                        <h4>project name</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </th:block>
+            </div>
+            <!--=================== filter portfolio end====================-->
+        </div>
+        <!--=================== content body end ====================-->
+    </div>
+</div>
+	<!--===================스크립트====================-->
+		<script>
+	//첨부파일 이미지 
+    ( /* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
+        imageView = function imageView(att_zone, btn){
+
+            var attZone = document.getElementById(att_zone);
+            var btnAtt = document.getElementById(btn)
+            var sel_files = [];
+            
+            // 이미지와 체크 박스를 감싸고 있는 div 속성
+            var div_style = 'display:inline-block;position:relative;'
+                        + 'width:150px;height:120px;margin:5px;border:1px solid #00f;z-index:1';
+            // 미리보기 이미지 속성
+            var img_style = 'width:100%;height:100%;z-index:none';
+            // 이미지안에 표시되는 체크박스의 속성
+            var chk_style = 'width:30px;height:30px;position:absolute;font-size:24px;'
+                        + 'right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:#f00';
+        
+            btnAtt.onchange = function(e){
+            var files = e.target.files;
+            var fileArr = Array.prototype.slice.call(files)
+            for(f of fileArr){
+                imageLoader(f);
+            }
+            }  
+            
+        
+            // 탐색기에서 드래그앤 드롭 사용
+            attZone.addEventListener('dragenter', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            }, false)
+            
+            attZone.addEventListener('dragover', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            
+            }, false)
+        
+            attZone.addEventListener('drop', function(e){
+            var files = {};
+            e.preventDefault();
+            e.stopPropagation();
+            var dt = e.dataTransfer;
+            files = dt.files;
+            for(f of files){
+                imageLoader(f);
+            }
+            
+            }, false)
+            
+
+            
+            /*첨부된 이미리즐을 배열에 넣고 미리보기 */
+            imageLoader = function(file){
+            sel_files.push(file);
+            var reader = new FileReader();
+            reader.onload = function(ee){
+                let img = document.createElement('img')
+                img.setAttribute('style', img_style)
+                img.src = ee.target.result;
+                attZone.appendChild(makeDiv(img, file));
+            }
+            
+            reader.readAsDataURL(file);
+            }
+            
+            /*첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
+            makeDiv = function(img, file){
+            var div = document.createElement('div')
+            div.setAttribute('style', div_style)
+            
+            var btn = document.createElement('input')
+            btn.setAttribute('type', 'button')
+            btn.setAttribute('value', 'x')
+            btn.setAttribute('delFile', file.name);
+            btn.setAttribute('style', chk_style);
+            btn.onclick = function(ev){
+                var ele = ev.srcElement;
+                var delFile = ele.getAttribute('delFile');
+                for(var i=0 ;i<sel_files.length; i++){
+                if(delFile== sel_files[i].name){
+                    sel_files.splice(i, 1);      
+                }
+                }
+                
+                dt = new DataTransfer();
+                for(f in sel_files) {
+                var file = sel_files[f];
+                dt.items.add(file);
+                }
+                btnAtt.files = dt.files;
+                var p = ele.parentNode;
+                attZone.removeChild(p)
+            }
+            div.appendChild(img)
+            div.appendChild(btn)
+            return div
+            }
+        }
+        )('att_zone', 'btnAtt')
+
+	//팔로우 버튼
+    let fBtn = document.getElementById("followBtn");	    
+    fBtn.addEventListener("click", function(){
+        if(this.value = 'white'){
+        console.log('팔로우버튼 클릭');
+        this.style.backgroundColor = "skyblue";
+        this.style.color="white";
+        this.value = 'blue';
+        this.textContent = "팔로우✔";
+        }else if (this.value='blue'){
+            this.style.backgroundColor = "";
+            this.style.color="";
+            this.value="white";
+        }
+    })
+
+        // Modal을 가져옵니다.
+        var modals = document.getElementsByClassName("modal");
+        // Modal을 띄우는 클래스 이름을 가져옵니다.
+        var btns = document.getElementsByClassName("modalBtn");
+        // Modal을 닫는 close 클래스를 가져옵니다.
+        var spanes = document.getElementsByClassName("close");
+        var funcs = [];
+        
+        // Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
+        function Modal(num) {
+        return function() {
+            // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
+            btns[num].onclick =  function() {
+                modals[num].style.display = "block";
+                console.log(num);
+            };
+        
+            // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
+            spanes[num].onclick = function() {
+                modals[num].style.display = "none";
+			
+            };
+        };
+        }
+            
+        // 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
+        for(var i = 0; i < btns.length; i++) {
+            funcs[i] = Modal(i);
+        }
+        
+        // 원하는 Modal 수만큼 funcs 함수를 호출합니다.
+        for(var j = 0; j < btns.length; j++) {
+            funcs[j]();
+        }
+        
+        // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
+        window.onclick = function(event) {
+        if (event.target.className == "modal") {
+            event.target.style.display = "none";
+        }
+        };
+
+
+    </script>
+
+
+
+<!-- jquery -->
+<script src="/sns/js/jquery.min.js"></script>
+<!-- bootstrap -->
+<script src="/sns/js/popper.js"></script>
+<script src="/sns/js/bootstrap.min.js"></script>
+<script src="/sns/js/waypoints.min.js"></script>
+<!--slick carousel -->
+<script src="/sns/js/slick.min.js"></script>
+<!--Portfolio Filter-->
+<script src="/sns/js/imgloaded.js"></script>
+<script src="/sns/js/isotope.js"></script>
+<!-- Magnific-popup -->
+<script src="/sns/js/jquery.magnific-popup.min.js"></script>
+<!--Counter-->
+<script src="/sns/js/jquery.counterup.min.js"></script>
+<!-- WOW JS -->
+<script src="/sns/js/wow.min.js"></script>
+<!-- Custom js -->
+<script src="/sns/js/main.js"></script>
+</body>
 </html>
