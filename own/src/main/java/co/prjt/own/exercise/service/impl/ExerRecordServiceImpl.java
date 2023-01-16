@@ -1,5 +1,6 @@
 package co.prjt.own.exercise.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,6 @@ public class ExerRecordServiceImpl implements ExerRecordService{
 	}
 
 	@Override
-	public int updateExerRecord(ExerRecordVO vo) {
-		// 오운완(나의운동기록) 수정
-		return mapper.updateExerRecord(vo);
-	}
-
-	@Override
-	public List<ExerRecordVO> ExerRecordList(String userId) {
-		// 오운완(나의운동기록) 조회
-		return mapper.ExerRecordList(userId);
-	}
-
-	@Override
 	public List<ExerRecordVO> LatestExerRecord(String userId) {
 		// 오운 유저의 운동 기록 중 가장 최신 데이터들 조회
 		return mapper.LatestExerRecord(userId);
@@ -46,7 +35,18 @@ public class ExerRecordServiceImpl implements ExerRecordService{
 	public List<ExerRecordVO> getWeight(String userId) {
 		// 데이터 중 최근 7일 날짜와 몸무게 출력
 		return mapper.getWeight(userId);
+	}
 
+	@Override
+	public List<ExerRecordVO> selectRecord(String userId, Date startDate, Date endDate) {
+		// 기간 설정해서 운동 데이터 조회
+		return mapper.selectRecord(userId, startDate, endDate);
+	}
+
+	@Override
+	public List<ExerRecordVO> selectCounting(String userId, Date startDate, Date endDate) {
+		// 기간 설정해서 운동 카운팅
+		return mapper.selectCounting(userId, startDate, endDate);
 	}
 
 }

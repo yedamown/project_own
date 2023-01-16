@@ -1,5 +1,6 @@
 package co.prjt.own.exercise.web;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,19 +54,34 @@ public class ExerciseController {
 		model.addAttribute("lRecord", exerMapper.LatestExerRecord(user.getUserId()));
 		return "content/own/ownRecordList";
 	}
-	
+
 	// 회원의 가장 최신날짜 기록의 운동 개수 가져오기
 	@GetMapping("/dayChart")
 	@ResponseBody
 	public List<ExerRecordVO> dayExerChart(@RequestParam String userId) {
 		return exerMapper.dayRecordCounting(userId);
 	}
-	
+
 	// 회원의 가장 최신날짜 기록의 운동 개수 가져오기
-		@GetMapping("/getWeight")
-		@ResponseBody
-		public List<ExerRecordVO> WeightChart(@RequestParam String userId) {
-			return exerMapper.getWeight(userId);
-		}
-	
+	@GetMapping("/getWeight")
+	@ResponseBody
+	public List<ExerRecordVO> WeightChart(@RequestParam String userId) {
+		return exerMapper.getWeight(userId);
+	}
+
+	// 기간설정해서 회원의 운동 기록 가져오기
+	@GetMapping("/selectRecord")
+	@ResponseBody
+	public List<ExerRecordVO> selectRecord(@RequestParam String userId, @RequestParam Date startDate,
+			@RequestParam Date endDate) {
+		return exerMapper.selectRecord(userId, startDate, endDate);
+	}
+
+	// 기간설정해서 회원의 운동 카운팅 가져오기
+	@GetMapping("/selectCounting")
+	@ResponseBody
+	public List<ExerRecordVO> selectCounting(@RequestParam String userId, @RequestParam Date startDate,
+			@RequestParam Date endDate) {
+		return exerMapper.selectCounting(userId, startDate, endDate);
+	}
 }

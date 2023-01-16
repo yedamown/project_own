@@ -46,7 +46,7 @@
 							,
 							changeYear : true //option값 년 선택 가능
 							,
-							changeMonth : true //option값  월 선택 가능                
+							changeMonth : true //option값 월 선택 가능                
 							,
 							showOn : "button" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
 							,
@@ -71,7 +71,7 @@
 							,
 							minDate : "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
 							,
-							maxDate : "+5y" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+							maxDate : "+0D" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
 						});
 
 		//초기값을 오늘 날짜로 설정해줘야 합니다.
@@ -198,11 +198,81 @@
 	      link.click();
 	}
 
-	function changeDate() {
+	// 지정한 날짜로 데이터 받아오기, 차트 출력
+	function selectPeriod() {
+		let id = $jQ('#userId').val();
 		let startDate = $jQ("#datepicker1").val();
 		let endDate = $jQ("#datepicker2").val();
 		console.log(startDate);
 		console.log(endDate);
+		$jQ.ajax({
+			url : '/own/selectRecord?userId=' + id +'&startDate=' + startDate + '&endDate=' + endDate,
+			method : 'get',
+			dataType : 'json',
+			contentType : "application/json"
+		}).then(res => {
+				// 랜덤으로 차트 색상 생성
+				function colorize() {
+				var r = Math.floor(Math.random()*200);
+				var g = Math.floor(Math.random()*200);
+				var b = Math.floor(Math.random()*200);
+				var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
+				return color;
+				}
+				
+				//운동구성비 차트용
+				var labelList = new Array();
+				var valueList = new Array();
+				var colorList = new Array();
+				//몸무게 차트용
+				var wLabelList = new Array();
+				v
+						
+				for(var i = 0; i<res.length; i++) {
+					var d = res[i];
+					labelList.push(d.exersubName);
+					valueList.push(d.ecount);
+					colorList.push(colorize());
+				}	
+				var data = {
+						labels: labelList,
+						datasets: [{
+								backgroundColor: colorList,
+								data : valueList
+						}],
+						options : {
+								title : {
+								display : true,
+								text: '운동 구성비'
+								}
+						}
+				};
+		
+			var ctx1 = document.getElementById('dayChart').getContext('2d');
+			new Chart(ctx1, {
+				      type: 'pie',
+					  data: data
+			});
+		})
+		
+		// 몸무게 데이터로 차트 작성
+		$jQ.ajax({
+			url : '/own/getWeight?userId=' + id,
+			method : 'get',
+			dataType : 'json',
+			contentType : "application/json"
+		}).then(res => {
+			// 랜덤으로 차트 색상 생성
+			function colorize() {
+			var r = Math.floor(Math.random()*200);
+			var g = Math.floor(Math.random()*200);
+			var b = Math.floor(Math.random()*200);
+			var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
+			return color;
+			}
+			
+			
+		})
 	}
 	
 </script>
@@ -214,17 +284,12 @@
 			th:value="${session.loginUser.userId}">
 		<h2 th:text="${session.loginUser.userName}"></h2>
 		<h4>회원님의 운동 기록 보기</h4>
-		<div class="SelectPeriod">
-			<button id="dayBtn">일</button>
-			<button id="weekBtn">주</button>
-			<button id="monthBtn">월</button>
-		</div>
 		<div id="calendar">
 			<p>
 				조회기간을 선택해주세요 
 				<input type="text" id="datepicker1"> 
 				<input type="text" id="datepicker2">
-				<button id="dateBtn" onclick="changeDate()">조회</button>
+				<button id="selectPeriodBtn" onclick="selectPeriod()">조회</button>
 			</p>
 		</div>
 
@@ -233,7 +298,7 @@
 			<span
 				th:text="${#dates.format(lRecord[0].exerecDate, 'yyyy년 MM월 dd일')}+ '이 가장 최근 운동데이터임'"></span>
 			<h3
-				th:text="'당신은 총 ' + ${#aggregates.sum(lRecord.![exerecTime])} + '시간 운동하셨습니다.'"></h3>
+				th:text="'당신은 총 ' + ${#numbers.formatInteger(#aggregates.sum(lRecord.![exerecTime])/60, 0)} + '시간 ' + ${#aggregates.sum(lRecord.![exerecTime])%60} +'분 운동하셨습니다.'"></h3>
 			<h3 th:text="'총 ' + ${#aggregates.sum(lRecord.![kcals])} + '칼로리 소모.'"></h3>
 
 			<div id="chart" style="width: 900px; height: 900px;">
@@ -244,9 +309,8 @@
 			<div id="shareBtn">
 				<button onclick="captureImage()"><i class="fas fa-light fa-floppy-disk" id="saveBtn"
 					style="font-size: 50px" /></i> </button>
-					<i class="fa-brands fa-blogger"
-					id="bandBtn" style="font-size: 50px"></i> <i
-					class="fa-brands fa-instagram" id="snsBtn" style="font-size: 50px"></i>
+				<button onclick="captureImage()"><i class="fa-brands fa-blogger" id="bandBtn" style="font-size: 50px"></i></button>
+				<button onclick="captureImage()"><i class="fa-brands fa-instagram" id="snsBtn" style="font-size: 50px"></i></button>
 			</div>
 		</div>
 
