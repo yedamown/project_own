@@ -3,6 +3,7 @@ package co.prjt.own.chall.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.Message;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -26,31 +27,31 @@ import co.prjt.own.chall.service.CMemberService;
 import co.prjt.own.chall.service.CMemberVO;
 import co.prjt.own.chall.service.ChallengeService;
 import co.prjt.own.chall.service.ChallengeVO;
+import co.prjt.own.chall.service.ValidationService;
 import co.prjt.own.chall.service.ValidationVO;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
+import co.prjt.own.ownhome.service.OwnhomeService;
 
 @Controller
 @RequestMapping("/own/chall")
 public class ChallController {
 
-	@Autowired
-	ChallengeService challenge;
-	@Autowired
-	CMemberListService memberList;
-	@Autowired
-	CommonService common;
-	@Autowired
-	CMemberService member;
-	@Autowired
-	CAmountService amount;
-
+	@Autowired OwnhomeService ownService;
+	@Autowired CommonService common;
+	
+	@Autowired ChallengeService challenge;
+	@Autowired CMemberListService memberList;
+	@Autowired CMemberService member;
+	@Autowired CAmountService amount;
+	@Autowired ValidationService validation;
 
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
 	public String challHome(Model model, HttpServletRequest request, ChallengeVO vo1, CMemberListVO vo2) {
 		HttpSession session = request.getSession();
+		session.setAttribute("loginUser", ownService.login("kmh"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		System.out.println("===================도전 홈"+user);
 		if(user != null) {
@@ -132,10 +133,10 @@ public class ChallController {
 		model.addAttribute("challImg", common.selectImgAll("CHA_" + no));
 		//나의 가입현황 확인 --로그인 세션이용
 		HttpSession session = request.getSession();
-		
-//		session.setAttribute("loginUser", own);
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		
+		CMemberVO mymem =  new CMemberVO();
+		mymem.setUserId(user.getUserId());
+		model.addAttribute("myInfo", member.getCMem(mymem));
 		if(user != null) {
 			//멤버리스트에서 참여번호, 내번호, 그리고 승인인거 검색!
 			memck.setUserId(user.getUserId()); //멤버리스트 회원번호설정
@@ -170,15 +171,54 @@ public class ChallController {
 		return memListNo;
 	}
 	
+	//인증등록 
+	@PostMapping("/insertVld")
+	public String insertVld(@RequestParam List<MultipartFile[]> uploadfile, ValidationVO vo, Model model, RedirectAttributes rttr) {
+		int rs = validation.insertVld(vo);
+		String vldNo = vo.getVldNo();
+		System.out.println(vldNo);
+		String challNo = vo.getChallNo();
+		System.out.println(challNo);
+		String cutChall = challNo.substring(4);
+		System.out.println(cutChall);
+		if(rs == 1) {
+		for (int i = 0; i < uploadfile.size(); i++) {
+			common.upload(uploadfile.get(i), vldNo, "CVD_", "Chall");
+			}
+		}
+		return "redirect:/own/chall/detailChall?challNo=" + cutChall;
+	}
+	
+	//인증리스트 불러오기
+	@PostMapping("/vldList")
+	@ResponseBody
+	public List<ValidationVO> getVldList(@RequestBody ValidationVO vo) {
+		List<ValidationVO> list = validation.getVldAll(vo);
+		return list;
+	}
+	
 	//도전리더 - 멤버리스트 출력
 	@GetMapping("/challMemList")
 	@ResponseBody
-	public List<CMemberListVO> challMemList(@RequestParam("challNo") String no, CMemberListVO vo, Model model) {
+	public List<CMemberListVO> challMemList(@RequestParam("challNo") String no, CMemberListVO vo) {
 		vo.setChallNo(no);
 		List<CMemberListVO> list = memberList.getMemListAll(vo);
 		return list;
 	}
 
+	//멤버리스트 권한 변경 -> 승인/ 거절
+	@PostMapping("/challMemAuth")
+	@ResponseBody
+	public String challMemAuth(@RequestBody CMemberListVO vo) {
+		int rs = memberList.updateMemList(vo);
+		System.out.println(rs);
+		if(rs == 1) { 
+			return "sucess";
+		} else {
+			return "fail";
+		}
+	}
+	
 	// 마이페이지 - 프로필
 	@GetMapping("/mypage")
 	public String challMypage(CMemberVO vo, Model model, HttpServletRequest request) {

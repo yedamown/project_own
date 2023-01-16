@@ -1,3 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="co.prjt.own.chall.mapper.ValidationMapper"></mapper>
+<mapper namespace="co.prjt.own.chall.mapper.ValidationMapper">
+	<insert id="insertVld"
+		parameterType="co.prjt.own.chall.service.ValidationVO">
+		<selectKey keyProperty="vldNo" resultType="string"
+			order="BEFORE">
+			SELECT CHA_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO
+		CHALL_VALIDATION( VLD_NO,
+		CHALL_NO,
+		USER_ID )
+		VALUES ('CVD_'|| #{vldNo},
+		#{challNo},
+		#{userId})
+	</insert>
+
+	<sql id="condition">
+		<where>
+			<if test="challNo != null and userId !=null">
+				CHALL_NO = #{challNo}
+				USER_ID = #{userId}
+			</if>
+		</where>
+	</sql>
+
+	<select id="getVldAll" resultType="co.prjt.own.chall.service.ValidationVO">
+		SELECT * FROM
+		CHALL_VALIDATION
+		<include refid="condition" />
+	</select>
+</mapper>

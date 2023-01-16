@@ -16,22 +16,22 @@ public class ValidationServiceImpl implements ValidationService{
 	
 	@Override
 	public int insertVld(ValidationVO vo) {
-		return 0;
+		return mapper.insertVld(vo);
 	}
 
 	@Override
 	public int updateVld(ValidationVO vo) {
-		return 0;
+		return mapper.updateVld(vo);
 	}
 
 	@Override
 	public ValidationVO getVld(ValidationVO vo) {
-		return null;
+		return mapper.getVld(vo);
 	}
 
 	@Override
 	public List<ValidationVO> getVldAll(ValidationVO vo) {
-		return null;
+		return mapper.getVldAll(vo);
 	}
 
 }
