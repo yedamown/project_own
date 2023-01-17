@@ -1,17 +1,16 @@
 package co.prjt.own.exercise.web;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +31,12 @@ public class ExerciseController {
 	public String ownRecordForm() {
 		return "content/own/ownRecordForm";
 	}
+	
+	// 오운완(나의운동기록하기) 페이지 이동
+		@RequestMapping(value = "/ownRecordForm1", method = RequestMethod.GET)
+		public String ownRecordForm1() {
+			return "content/own/ownRecordForm1";
+		}
 
 	// 오운완(나의운동기록) 등록
 	@PostMapping("/exerciseRecord")
@@ -41,7 +46,6 @@ public class ExerciseController {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
 		vo.setUserId(id);
-		System.out.println(vo);
 		exerMapper.insertExerRecord(vo);
 		return vo;
 	}
@@ -73,26 +77,21 @@ public class ExerciseController {
 	// 기간설정해서 회원의 운동 기록 가져오기
 	@PostMapping("/selectRecord")
 	@ResponseBody
-	public List<ExerRecordVO> selectRecord(@RequestParam String userId, @RequestParam Date startDate, @RequestParam Date endDate) {
-		System.out.println("=======유저아이디1"+userId);
-		return exerMapper.selectRecord(userId, startDate, endDate);
+	public List<ExerRecordVO> selectRecord(@RequestBody ExerRecordVO vo) {
+		return exerMapper.selectRecord(vo);
 	}
-	
+
 	// 기간설정해서 회원의 몸무게 가져오기
 	@PostMapping("/selectWeight")
 	@ResponseBody
-	public List<ExerRecordVO> selectWeight(@RequestParam("userId") String userId, @RequestParam("startDate") Date startDate,
-			@RequestParam("endDate") Date endDate) {
-		System.out.println("=======유저아이디2"+userId);
-		return exerMapper.selectWeight(userId, startDate, endDate);
+	public List<ExerRecordVO> selectWeight(@RequestBody ExerRecordVO vo) {
+		return exerMapper.selectWeight(vo);
 	}
 
 	// 기간설정해서 회원의 운동 카운팅 가져오기
 	@PostMapping("/selectCounting")
 	@ResponseBody
-	public List<ExerRecordVO> selectCounting(@RequestParam("userId") String userId, @RequestParam("startDate") Date startDate,
-			@RequestParam("endDate") Date endDate) {
-		System.out.println("=======유저아이디3"+userId);
-		return exerMapper.selectCounting(userId, startDate, endDate);
+	public List<ExerRecordVO> selectCounting(@RequestBody ExerRecordVO vo) {
+		return exerMapper.selectCounting(vo);
 	}
 }
