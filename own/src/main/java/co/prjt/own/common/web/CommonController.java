@@ -32,16 +32,19 @@ import org.springframework.web.multipart.MultipartFile;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.common.service.MultimediaVO;
+import co.prjt.own.common.service.ReportVO;
+import co.prjt.own.ownhome.service.OwnhomeService;
 
 
 @Controller
 public class CommonController {
-
-
 	
 	@Autowired
 	CommonService commonService;
 
+	@Autowired
+	OwnhomeService ownhomeService;
+	
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;
 	
@@ -52,9 +55,14 @@ public class CommonController {
 		return commonService.getListExersub();
 	}
 	
-	//이거 서비스에 넣기
-	
-	
+	//신고 폼 이동
+	@GetMapping("/own/admin/report")
+	public String reportForm(Model model,List<ReportVO> vo) {
+		//model.addAttribute("lRecord", exerMapper.LatestExerRecord(user.getUserId()));
+		vo = commonService.reportAlllist();
+		return "content/own/report";
+	}	
+	//이거 서비스에 넣기	
 	@GetMapping("/download")
 	public ResponseEntity<Resource> download(@ModelAttribute FileDto dto) throws IOException{
 		Path path = Paths.get(filePath + "/" + dto.getUuid() + "_" + dto.getFileName());

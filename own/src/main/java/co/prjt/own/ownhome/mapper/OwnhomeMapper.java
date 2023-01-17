@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import co.prjt.own.ownhome.service.OwnUserVO;
+import co.prjt.own.ownhome.service.QuestionVO;
 import co.prjt.own.sns.service.SAccountVO;
 
 public interface OwnhomeMapper {
@@ -22,4 +23,10 @@ public interface OwnhomeMapper {
 	public int pwcheck(String pw, String newpw);
 	//sns 유저 회원가입
 	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
+	//질문 목록 불러오기
+	public List<QuestionVO> questionList();
+	//제목 선택시 제목에 맞는 질문 가져오기
+	public QuestionVO selectQuest(String qno);
+	//질문 답변등록
+	public int questionUpdate(QuestionVO vo);
 }
