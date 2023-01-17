@@ -10,6 +10,9 @@ public interface SBoardService {
 	 //sns 게시글 한건 조회
 	 SBoardVO getSnsBoard(String snsBoardNo);
 	
+	 //SNS 최신 게시글 조회
+	 public List<SBoardVO> getNowBoardList(String id);
+	 
 	 //게시글 갯수
 	 int countBoard(String id);
 	 

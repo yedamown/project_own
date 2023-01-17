@@ -54,7 +54,7 @@ public class SnsController {
 	//1. sns홈으로 이동
 	@RequestMapping(value = "/sns", method = RequestMethod.GET)
 	public String getSnsUserList(Model model) {
-		model.addAttribute("snsHome", snsService.getSnsUserList(null));
+		
 		return "content/sns/snsHome"; 
 	}
 	
@@ -80,7 +80,7 @@ public class SnsController {
 		HttpSession session = request.getSession();
 		
 		//세션에 강제로 로그인유저 저장하기
-		session.setAttribute("loginUser", ownService.login("kyr"));
+//		session.setAttribute("loginUser", ownService.login("kjk"));
 		
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
 		
