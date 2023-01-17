@@ -23,7 +23,7 @@
 		CURRENT_DATE,
 		#{exerecWeight}, #{exerecCondition}, #{exerecTime},
 		#{exerecMeter},
-		#{exerecRoution}, #{exerecFeedback}, 'EXR_'||#{eno},
+		#{exerecRoutin}, #{exerecFeedback}, 'EXR_'||#{eno},
 		#{exersubNo})
 	</insert>
 
@@ -76,7 +76,7 @@
 			SELECT *
             FROM EXER_RECORD
 			WHERE EXEREC_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') 
-                            AND TO_DATE(#{endDate}, 'YYYY-MM-DD')
+                            AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
 			) R
 		JOIN EXER_SUB S
 		ON R.EXERSUB_NO = S.EXERSUB_NO
@@ -91,7 +91,7 @@
 		FROM EXER_RECORD
 		WHERE USER_ID = #{userId}
 		AND EXEREC_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') 
-	                          AND TO_DATE(#{endDate}, 'YYYY-MM-DD')
+	                          AND TO_DATE(#{endDate}, 'YYYY-MM-DD')+ 0.99999
 		ORDER BY 1
 	</select>
 	
@@ -101,7 +101,7 @@
 		FROM EXER_RECORD R
         JOIN EXER_SUB S	ON R.EXERSUB_NO = S.EXERSUB_NO 
         WHERE EXEREC_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') 
-                            AND TO_DATE(#{endDate}, 'YYYY-MM-DD')
+                            AND TO_DATE(#{endDate}, 'YYYY-MM-DD')+ 0.99999
 		AND R.USER_ID = #{userId}
 		GROUP BY EXERSUB_NAME
 	</select>

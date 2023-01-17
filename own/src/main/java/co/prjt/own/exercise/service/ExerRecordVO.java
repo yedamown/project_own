@@ -19,9 +19,14 @@ public class ExerRecordVO {
 	String exerecFeedback;
 	String exerecNo;
 	String exersubNo;
+	//시퀀스 돌리기용
 	String eno;
+	//exer_sub 테이블 조인할때 나오는 컬럼
 	int kcals;
 	String exersubName;
 	int eCount;
+	//기간
+	String startDate;
+	String endDate;
 	
 }

@@ -84,108 +84,6 @@ var token = /*[[${_csrf.token}]]*/'defalut';
 		$jQ('#datepicker1, #datepicker2').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
 	});
 	
-	// 운동 비율 차트만들기
-	function dayChart() {
-		// 운동 카운트 데이터 받아옴
-		let id = $jQ('#userId').val();
-		$jQ.ajax({
-			url : '/own/dayChart?userId=' + id,
-			method : 'get',
-			dataType : 'json',
-			contentType : "application/json"
-		}).then(res => {
-				// 랜덤으로 차트 색상 생성
-				function colorize() {
-				var r = Math.floor(Math.random()*200);
-				var g = Math.floor(Math.random()*200);
-				var b = Math.floor(Math.random()*200);
-				var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-				return color;
-				}
-				
-				var labelList = new Array();
-				var valueList = new Array();
-				var colorList = new Array();
-						
-				for(var i = 0; i<res.length; i++) {
-					var d = res[i];
-					labelList.push(d.exersubName);
-					valueList.push(d.ecount);
-					colorList.push(colorize());
-				}	
-				var data = {
-						labels: labelList,
-						datasets: [{
-								backgroundColor: colorList,
-								data : valueList
-						}],
-						options : {
-								title : {
-								display : true,
-								text: '운동 구성비'
-								}
-						}
-				};
-		
-			var ctx1 = document.getElementById('dayChart').getContext('2d');
-			new Chart(ctx1, {
-				      type: 'pie',
-					  data: data
-			});
-		})
-	}
-	
-	// 몸무게 변화 차트만들기
-	function weightChart(){
-		// 몸무게 데이터 받아오기
-		let id = $jQ('#userId').val();
-		$jQ.ajax({
-			url : '/own/getWeight?userId=' + id,
-			method : 'get',
-			dataType : 'json',
-			contentType : "application/json"
-		}).then(res => {
-			// 랜덤으로 차트 색상 생성
-			function colorize() {
-			var r = Math.floor(Math.random()*200);
-			var g = Math.floor(Math.random()*200);
-			var b = Math.floor(Math.random()*200);
-			var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-			return color;
-			}
-			
-			var labelList = new Array();
-			var valueList = new Array();
-			var colorList = new Array();
-					
-			for(var i = 0; i<res.length; i++) {
-				var d = res[i];
-				labelList.push(d.exerecDate);
-				valueList.push(d.exerecWeight);
-				colorList.push(colorize());
-			}	
-			var data = {
-					labels: labelList,
-					datasets: [{
-							backgroundColor: colorList,
-							data : valueList
-					}],
-					options : {
-							title : {
-							display : true,
-							text: '몸무게'
-							}
-					}
-			};
-		
-			var ctx1 = document.getElementById('weightChart').getContext('2d');
-			new Chart(ctx1, {
-				      type: 'line',
-					  data: data
-			});
-		})
-	}
-	
 	// 화면 캡쳐
 	function captureImage(){
 		html2canvas(document.querySelector("#chart")).then(canvas => {
@@ -309,7 +207,7 @@ var token = /*[[${_csrf.token}]]*/'defalut';
      							}
      					}
      			};
-     			var ctx1 = document.getElementById('weightChart').getContext('2d');
+     			var ctx1 = document.getElementById('weigntChart').getContext('2d');
      			new Chart(ctx1, {
      				      type: 'line',
      					  data: data
@@ -359,7 +257,35 @@ var token = /*[[${_csrf.token}]]*/'defalut';
 			<div id="chart" style="width: 900px; height: 900px;">
 				<!--차트가 그려질 부분-->
 				<canvas id="dayChart" align="center"></canvas>
-				<canvas id="weightChart" align="center"></canvas>
+				<canvas id="weigntChart" align="center"></canvas>
+			</div>
+			<div id="shareBtn">
+				<button onclick="captureImage()">
+					<i class="fas fa-light fa-floppy-disk" id="saveBtn"
+						style="font-size: 50px" /></i>
+				</button>
+				<button onclick="captureImage()">
+					<i class="fa-brands fa-blogger" id="bandBtn"
+						style="font-size: 50px"></i>
+				</button>
+				<button onclick="captureImage()">
+					<i class="fa-brands fa-instagram" id="snsBtn"
+						style="font-size: 50px"></i>
+				</button>
+			</div>
+		</div>
+
+		<div class="selectRecord" style="display: none;">
+			<span
+				th:text="${#dates.format(lRecord[0].exerecDate, 'yyyy년 MM월 dd일')}+ '이 가장 최근 운동데이터임'"></span>
+			<h3
+				th:text="'당신은 총 ' + ${#numbers.formatInteger(#aggregates.sum(lRecord.![exerecTime])/60, 0)} + '시간 ' + ${#aggregates.sum(lRecord.![exerecTime])%60} +'분 운동하셨습니다.'"></h3>
+			<h3 th:text="'총 ' + ${#aggregates.sum(lRecord.![kcals])} + '칼로리 소모.'"></h3>
+
+			<div id="chart" style="width: 900px; height: 900px;">
+				<!--차트가 그려질 부분-->
+				<canvas id="dayChart" align="center"></canvas>
+				<canvas id="weigntChart" align="center"></canvas>
 			</div>
 			<div id="shareBtn">
 				<button onclick="captureImage()">

@@ -38,21 +38,21 @@ public class ExerRecordServiceImpl implements ExerRecordService{
 	}
 	
 	@Override
-	public List<ExerRecordVO> selectRecord(String userId, Date startDate, Date endDate) {
+	public List<ExerRecordVO> selectRecord(ExerRecordVO vo) {
 		// 기간 설정해서 운동 데이터 조회
-		return mapper.selectRecord(userId, startDate, endDate);
+		return mapper.selectRecord(vo);
 	}
 	
 	@Override
-	public List<ExerRecordVO> selectWeight(String userId, Date startDate, Date endDate) {
+	public List<ExerRecordVO> selectWeight(ExerRecordVO vo) {
 		// 기간 설정해서 운동 데이터 조회
-		return mapper.selectWeight(userId, startDate, endDate);
+		return mapper.selectWeight(vo);
 	}
 
 	@Override
-	public List<ExerRecordVO> selectCounting(String userId, Date startDate, Date endDate) {
+	public List<ExerRecordVO> selectCounting(ExerRecordVO vo) {
 		// 기간 설정해서 운동 카운팅
-		return mapper.selectCounting(userId, startDate, endDate);
+		return mapper.selectCounting(vo);
 	}
 
 }
