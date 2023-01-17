@@ -214,6 +214,7 @@ public class BandController {
 		
 		//글 5개씩..+댓글 수 담기 (밴드식별번호이용)
 		List<BandBoardDetailSearchVO> fiveboard = bandBoardDetailService.getFiveBoard(vo);
+		
 		List<String> categoryNos = new ArrayList<String>();
 		for(BandBoardDetailSearchVO v : fiveboard) {
 			categoryNos.add(v.getBandBoardDetailNo());
