@@ -17,6 +17,7 @@ import co.prjt.own.common.mapper.CommonMapper;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.common.service.MultimediaVO;
+import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.common.web.FileDto;
 
 @Service
@@ -152,5 +153,10 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public List<MultimediaVO> selectImgAllKey(List<String> value) {
 		return commonMapper.selectImgAllKey(value);
+	}
+	@Override
+	public List<ReportVO> reportAlllist() {
+		// TODO Auto-generated method stub
+		return commonMapper.reportAlllist();
 	}
 }

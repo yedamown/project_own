@@ -57,4 +57,17 @@ select * from own_users
    </update>
    <!--================= SNS End ==================-->
    
+   
+ <!-- 관리자 -->
+ <select id="questionList" resultType="co.prjt.own.ownhome.service.QuestionVO">
+ SELECT * FROM QUESTION
+ </select>
+ 
+ <select id="selectQuest" resultType="co.prjt.own.ownhome.service.QuestionVO">
+ select * from question where quest_no = '${qno}'
+ </select>
+  
+ <update id="questionUpdate">
+ UPDATE QUESTION SET ANSWER = #{answer} , STATUS = '처리' WHERE QUEST_NO = #{questNo}
+ </update>
 </mapper>
