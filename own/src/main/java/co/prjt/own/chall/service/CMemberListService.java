@@ -8,10 +8,13 @@ public interface CMemberListService {
 
 	//도전 승인 상태변경 (수정)
 	int updateMemList(CMemberListVO vo);
-
-	//멤버참여 여부 체크
-	CMemberListVO getMemCheck(CMemberListVO vo);
 	
-	//동적쿼리로 도전
+	//멤버상태 하나 찾기
+	CMemberListVO getMemCheck(CMemberListVO vo);
+		
+	//전체리스트
 	List<CMemberListVO> getMemListAll(CMemberListVO vo);
+	
+	//도전에 참여중인 사람 수
+	int getChallMemNum(String challNo);
 }

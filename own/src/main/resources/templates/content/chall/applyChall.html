@@ -72,6 +72,13 @@
 	</ul>
 		<button type="button" id="applyBtn">도전 신청하기</button>
 	<script>
+    /*<![CDATA[*/
+    var header = '[[${_csrf.headerName}]]';
+     var token = '[[${_csrf.token}]]';
+       console.log(header);
+       console.log(token);
+     /*]]>*/
+
 		$('#applyBtn').on("click", function(){
 			let userId = $('#userId').val();
 			let challNo =  $('#challNo').val();	
@@ -86,11 +93,18 @@
 					method: 'post',
 					data : JSON.stringify({userId: userId, 
 										   challNo: challNo}),
- 					contentType: "application/json"
-				}).then(res => {
-					console.log(res)
-				})
-			}else{
+					beforeSend : function(xhr){
+							     xhr.setRequestHeader(header, token);
+					},					   
+ 					contentType: "application/json",
+ 					success: function(res){
+ 						console.log(res)
+ 					},
+ 					error: function(err){
+ 						console.log(err)
+ 					}
+ 				})
+			} else{
 				alert('모든 안내사항을 확인하고, 동의란에 체크 해 주세요.')
 			}
 		})

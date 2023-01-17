@@ -28,5 +28,5 @@ public class ChallengeVO {
 	String challLeader;
 	String restPrice;
 	
-	String firstImage;
+	String FirstImage;
 }
