@@ -17,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.qos.logback.core.encoder.Encoder;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
-import co.prjt.own.exercise.service.ExerRecordVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 import co.prjt.own.ownhome.service.QuestionVO;
@@ -155,8 +152,12 @@ public class OwnhomeController {
 
 		//내질문 폼
 		@GetMapping("/own/mypage/question")
-		public String myquestionForm() {
-			return null;
+		public String myquestionForm(HttpServletRequest request, Model model) {
+			HttpSession session = request.getSession();
+			OwnUserVO vo = (OwnUserVO) session.getAttribute("loginUser");
+			ownService.myQuestion(vo.getUserId());
+			model.addAttribute("myQlist", ownService.myQuestion(vo.getUserId()));
+			return "content/own/myquestion";
 		}
 		
 		
