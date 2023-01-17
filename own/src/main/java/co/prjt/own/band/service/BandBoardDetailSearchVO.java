@@ -5,6 +5,10 @@ package co.prjt.own.band.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.OwnLikeVO;
 import lombok.AllArgsConstructor;
@@ -28,30 +32,18 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	public int bandBoardCnt;
 	public String bandBoardDetailNo;
 	public String bandRemarks;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	 @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	Date bandBoardDate;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	Date bandBoardUpdate;
 	public String bandBoardTag;
 	public String bandBoardOptionNo;
 	//이미지 주소
 	public List<MultimediaVO> bandImgs;
 	public MultimediaVO bandImg;
-	
-	//더보기 용으로 쓸 예정--폐기
-	public Integer one = 1; //첫페이지
-	public Integer five = 5; //마지막
-	public Integer multi; //곱하기2
-	//폐기
+	public String bandBoardTime;
 	public Integer first = 1;
 	public Integer last = 10;
-	
-	//더보기용...폐기
-	public void setOne(int multi) {
-		this.one = 5*(multi-1)+1;
-	}
-	
-	public void setFive(int multi) {
-		this.five = 5*multi;
-	}
-	//폐기
-	public String findBoard;
 }

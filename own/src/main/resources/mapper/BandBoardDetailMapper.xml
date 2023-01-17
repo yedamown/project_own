@@ -3,7 +3,25 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.prjt.own.band.mapper.BandBoardDetailMapper">
-
+	
+	<sql id="condition">
+			<if test="bandBoardContent != null and bandBoardContent !=''">
+				A.BAND_BOARD_CONTENT LIKE '%' || #{bandBoardContent} || '%'
+			</if>
+			<if test="bandBoardTitle != null and bandBoardTitle !=''">
+				AND A.BAND_BOARD_TITLE LIKE '%' || #{bandBoardTitle} || '%'
+			</if>
+			<if test="bandBoardWriter != null and bandBoardWriter !=''">
+				AND A.BAND_BOARD_WRITER LIKE '%' || #{bandBoardWriter} || '%'
+			</if>
+			<if test="bandBoardTag != null and bandBoardTag !=''">
+				AND A.BAND_BOARD_TAG LIKE '%' || #{bandBoardTag} || '%'
+			</if>
+			<if test="bandBoardDate != null and bandBoardDate !='' and bandBoardUpdate != null and bandBoardUpdate !='' ">
+				AND A.BAND_BOARD_DATE BETWEEN #{bandBoardDate} AND #{bandBoardUpdate}
+			</if>
+	</sql>
+	
 	<select id="countBandBoard" resultType="int">
 		SELECT COUNT(*)
 		    FROM BAND_BOARD_DETAIL A, BAND B, BAND_BOARD_OPTION C
@@ -14,7 +32,7 @@
 	
 	<select id="getFiveBoard" resultType="BandBoardDetailSearchVO">
 		SELECT 
-				A.BAND_BOARD_DETAIL_NO "bandBoardDetailNo",
+            A.BAND_BOARD_DETAIL_NO "bandBoardDetailNo",
                 A.BAND_BOARD_OPTION_NO "bandBoardOptionNo",
                 A.BAND_BOARD_CONTENT "bandBoardContent",
                 A.BAND_BOARD_CNT "bandBoardCnt",
@@ -24,50 +42,36 @@
                 A.BAND_BOARD_DATE "bandBoardDate",
                 A.BAND_BOARD_UPDATE "bandBoardUpdate",
                 A.BAND_BOARD_TAG "bandBoardTag",
-                A.BAND_BOARD_WRITER "bandBoardWriter",
-                A.BAND_BOARD_TITLE "bandBoardTitle",
-                B.REPLY  	 "reply",
-                #{multi} "multi"
-		FROM BAND_BOARD_DETAIL A, (SELECT  BAND_BOARD_DETAIL_NO,
+                B.REPLY      "reply"
+      FROM BAND_BOARD_DETAIL A, (SELECT  BAND_BOARD_DETAIL_NO,
         COUNT(REPLY_NO) "REPLY"
-        FROM
-    (  SELECT  BAND_BOARD_DETAIL_NO,
-                BAND_BOARD_OPTION_NO,
-                BAND_BOARD_CONTENT,
-                BAND_BOARD_CNT,
-                BAND_BOARD_TITLE,
-                BAND_BOARD_WRITER, 
-                BAND_REMARKS,
-                BAND_BOARD_DATE,
-                BAND_BOARD_UPDATE,
-                BAND_BOARD_TAG     
-        FROM ( SELECT ROWNUM RN, A.* FROM (
-                        SELECT * FROM (
-                                        SELECT  A.BAND_BOARD_DETAIL_NO,
-                                                A.BAND_BOARD_OPTION_NO,
-                                                A.BAND_BOARD_CONTENT,
-                                                A.BAND_BOARD_CNT,
-                                                A.BAND_BOARD_TITLE,
-                                                A.BAND_BOARD_WRITER, 
-                                                A.BAND_REMARKS,
-                                                A.BAND_BOARD_DATE,
-                                                A.BAND_BOARD_UPDATE,
-                                                A.BAND_BOARD_TAG
-                                            FROM BAND_BOARD_DETAIL A,
-                                                 BAND_BOARD_OPTION B,
-                                                 BAND C
-                                            WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
-                                            AND     B.BAND_NO = C.BAND_NO
-                                            AND     C.BAND_NO = #{bandNo}
-                                            ORDER BY A.BAND_BOARD_DATE DESC
-                                     )
-<![CDATA[
-		                ) A WHERE ROWNUM <= #{five} ) WHERE RN >= #{one}
-]]>
-			) A, REPLY B
+        FROM (
+    select * from
+    (SELECT  A.BAND_BOARD_DETAIL_NO,
+            A.BAND_BOARD_OPTION_NO,
+            A.BAND_BOARD_CNT,
+            A.BAND_BOARD_WRITER, 
+            A.BAND_REMARKS,
+            A.BAND_BOARD_DATE,
+            A.BAND_BOARD_UPDATE,
+            A.BAND_BOARD_TAG
+        FROM BAND_BOARD_DETAIL A,
+             BAND_BOARD_OPTION B,
+             BAND C
+        WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
+        AND     B.BAND_NO = C.BAND_NO
+        AND     C.BAND_NO = #{bandNo}
+		<if test="bandBoardDetailNo != null and bandBoardDetailNo !=''">
+		
+        AND     TO_NUMBER(SUBSTR(A.BAND_BOARD_DETAIL_NO, 5,5))<![CDATA[ < ]]>TO_NUMBER(SUBSTR(#{bandBoardDetailNo}, 5,5))
+        </if>
+        ORDER BY to_number(SUBSTR(A.BAND_BOARD_DETAIL_NO, 5,5)) DESC
+        )
+        where rownum between 1 and 5   )A, REPLY B
                         WHERE A.BAND_BOARD_DETAIL_NO = B.CATEGORY_NO(+)
                         GROUP BY  BAND_BOARD_DETAIL_NO) B
-                        WHERE A.BAND_BOARD_DETAIL_NO=B.BAND_BOARD_DETAIL_NO		                
+                        WHERE A.BAND_BOARD_DETAIL_NO=B.BAND_BOARD_DETAIL_NO
+                        ORDER BY to_number(SUBSTR(A.BAND_BOARD_DETAIL_NO, 5,5)) DESC     
 	</select>
 	<select id="getOwnLike" resultType="OwnLikeVO">
 		SELECT 	A.CATEGORY_NO,
@@ -94,5 +98,72 @@
 	                                </foreach>
 		        GROUP BY CATEGORY_NO) B
 		        WHERE A.CATEGORY_NO=B.CATEGORY_NO
+	</select>
+	
+	<select id="getBandBoard" resultType="BandBoardDetailSearchVO">
+			Select      BAND_BOARD_DETAIL_NO "bandBoardDetailNo",
+            BAND_BOARD_OPTION_NO "bandBoardOptionNo",
+            BAND_BOARD_CONTENT "bandBoardContent",
+            BAND_BOARD_CNT "bandBoardCnt",
+            BAND_BOARD_TITLE "bandBoardTitle",
+            BAND_BOARD_WRITER "bandBoardWriter", 
+            BAND_REMARKS "bandRemarks",
+            BAND_BOARD_DATE "bandBoardDate",
+            BAND_BOARD_UPDATE "bandBoardUpdate",
+            BAND_BOARD_TAG "bandBoardTag",
+            REPLY      "reply"
+		 FROM ( SELECT ROWNUM RN, A.* FROM (
+				SELECT * FROM 
+(
+SELECT 
+            A.BAND_BOARD_DETAIL_NO,
+            A.BAND_BOARD_OPTION_NO,
+            A.BAND_BOARD_CONTENT,
+            A.BAND_BOARD_CNT,
+            A.BAND_BOARD_TITLE,
+            A.BAND_BOARD_WRITER,
+            A.BAND_REMARKS,
+            A.BAND_BOARD_DATE,
+            A.BAND_BOARD_UPDATE,
+            A.BAND_BOARD_TAG,
+            B.REPLY
+      FROM BAND_BOARD_DETAIL A, (SELECT  BAND_BOARD_DETAIL_NO,
+        COUNT(REPLY_NO) "REPLY"
+        FROM (
+    select * from
+    (SELECT  A.BAND_BOARD_DETAIL_NO,
+            A.BAND_BOARD_OPTION_NO,
+            A.BAND_BOARD_CNT,
+            A.BAND_BOARD_WRITER, 
+            A.BAND_REMARKS,
+            A.BAND_BOARD_DATE,
+            A.BAND_BOARD_UPDATE,
+            A.BAND_BOARD_TAG
+        FROM BAND_BOARD_DETAIL A,
+             BAND_BOARD_OPTION B,
+             BAND C
+        WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
+        AND     B.BAND_NO = C.BAND_NO
+        AND     C.BAND_NO = 'BDU_1'
+        ))A, REPLY B
+        WHERE A.BAND_BOARD_DETAIL_NO = B.CATEGORY_NO(+)
+        GROUP BY  BAND_BOARD_DETAIL_NO) B
+        WHERE A.BAND_BOARD_DETAIL_NO=B.BAND_BOARD_DETAIL_NO
+        <include refid="condition" />
+        ORDER BY to_number(SUBSTR(A.BAND_BOARD_DETAIL_NO, 5,5)) DESC
+ )       
+ <![CDATA[
+ 		) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
+ ]]>
+	</select>
+	<select id="getBandBoardCount" resultType="int">
+		SELECT  count(*)
+        FROM BAND_BOARD_DETAIL A,
+             BAND_BOARD_OPTION B,
+             BAND C
+        WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
+        AND     B.BAND_NO = C.BAND_NO
+        AND     C.BAND_NO = #{bandNo}
+        <include refid="condition" />
 	</select>
 </mapper>
