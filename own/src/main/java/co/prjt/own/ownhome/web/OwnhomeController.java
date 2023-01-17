@@ -153,6 +153,7 @@ public class OwnhomeController {
 			return vo;
 		}
 
+
 		//=================================================관리자모드================================================
 		
 		//질문목록 불러오기
@@ -180,40 +181,5 @@ public class OwnhomeController {
 			return "redirect:/own/admin/question";
 		}
 		
-	/*
-	 * // 오운완(나의운동기록하기) 페이지 이동
-	 * 
-	 * @RequestMapping(value = "/own/ownRecordForm", method = RequestMethod.GET)
-	 * public String ownRecordForm() { return "content/own/ownRecordForm"; }
-	 * 
-	 * // 오운완(나의운동기록) 등록
-	 * 
-	 * @PostMapping("/own/exerciseRecord")
-	 * 
-	 * @ResponseBody public ExerRecordVO exerciseRecord(ExerRecordVO vo,
-	 * HttpServletRequest request) { HttpSession session = request.getSession();
-	 * OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser"); String id =
-	 * user.getUserId(); vo.setUserId(id); System.out.println(vo);
-	 * exerMapper.insertExerRecord(vo); return vo; }
-	 * 
-	 * // 오운완(나의운동기록보기) 페이지 이동
-	 * 
-	 * @RequestMapping(value = "/own/ownRecordList", method = RequestMethod.GET)
-	 * public String ownRecordList(HttpServletRequest request, Model model) {
-	 * HttpSession session = request.getSession(); OwnUserVO user = (OwnUserVO)
-	 * session.getAttribute("loginUser"); // 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 운동기록 가져오기
-	 * model.addAttribute("lRecord", exerMapper.LatestExerRecord(user.getUserId()));
-	 * return "content/own/ownRecordList"; }
-	 * 
-	 * // 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 기록의 갯수 가져오기
-	 * 
-	 * @GetMapping("/")
-	 * 
-	 * @ResponseBody public List<ExerRecordVO> dayChart(Model model,
-	 * HttpServletRequest request) { HttpSession session = request.getSession();
-	 * OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-	 * List<ExerRecordVO> count = exerMapper.DayRecordCounting(user.getUserId());
-	 * model.addAttribute("ECount", count); return count; }
-	 */
 	
 }

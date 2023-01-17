@@ -201,10 +201,10 @@
 								<button id="followBtn" value="white"
 									style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button>
 								<br>
-								<br><span style="font-size: 13px; color:black">게시글 갯수<span th:text="${snsFeedCount}"></span></span>
+								<br><span style="font-size: 13px; color:black">게시글<span th:text="${snsFeedCount}"></span></span>
 								
 								<span class="modalBtn">
-									팔로우 수<span th:text="${snsFollow}"></span>
+									팔로우<span th:text="${snsFollow}"></span>
                                 </span>
 									<!-- 팔로우 Modal -->
 									<div class="modal">
@@ -226,7 +226,7 @@
 										</div>
 									</div>
 								
-								<span class="modalBtn">팔로워 수<span th:text="${snsFollower}"></span></span>
+								<span class="modalBtn">팔로워<span th:text="${snsFollower}"></span></span>
 									<!-- 팔로워 Modal -->
 									<div class="modal">
 										<!-- 두 번째 Modal의 내용 -->
@@ -285,6 +285,8 @@
 								<!--이미지 미리보기-->
 								<form action="/own/snsWriteFeed" method="post"
 									class="snsWriteFrm" enctype="multipart/form-data">
+									<input type="hidden" th:name="${_csrf.parameterName}"
+               						th:value="${_csrf.token}">	
 									<input name="uploadfile" type="file" id="btnAtt"
 										multiple="multiple">
 									<!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
@@ -301,7 +303,7 @@
 							</div>
 						</div>
 					</div>
-					<table border="1px">
+					<table border="1px" style="font-size: 13px;">
 						<thead>
 							<tr>
 								<th>게시글 번호</th>
@@ -346,20 +348,21 @@
             </div>
  
             <!-- 게시글 상세보기 Modal -->
-            <th:block th:each="snsLength :${snsImg}">
-        <div class="modalContainer" style="display: inline-flex;">
+
+            <th:block th:each="snsLength :${snsImg}">   
             <div class="modal" >
               <!-- 게시글 상세보기 Modal의 내용 -->
-              <div class="modal-content" style="width: 1200px; height: 900px;">
+              <div class="modal-content" style="width: 1000px; height: 900px;">
                 <span class="close">&times;</span>
-                <p class="modalP" style="position:relative; ">게시글상세보기</p>
-                <div class="boardBtn">여기어디</div>
-              	<p class="bContent"></p>
-                <p class="bWriter"></p>
-                <p class="bDate"></p>
+                <div class="modalP" style="position:relative;"></div>
+                <div class="boardBtnDiv" style="position:absolute;top:50%;right:20%">버튼이요</div>
+                <div class="contentBox" style="display:flex; flex-direction: column;flex-wrap: wrap;justify-content: flex-end; text-align:right;">
+              	<p class="bContent">글내용:</p>
+                <p class="bWriter">작성자:</p>
+                <p class="bDate">작성일자:</p>
+                 </div>
               </div>
             </div>
-        </div>
             </th:block>
             <!--=================== filter portfolio end====================-->
         </div>
@@ -480,7 +483,7 @@
         
 	//팔로우 버튼
     let fBtn = document.getElementById("followBtn");	    
-    fBtn.addEventListener("click", function(){
+        fBtn.addEventListener("click", function(){
         if(this.value = 'white'){
         console.log('팔로우버튼 클릭');
         this.style.backgroundColor = "skyblue";
@@ -502,7 +505,7 @@
                 console.log(boardNo);
 
                 if(boardNo != null){
-                    alert('아작스 보냅니다')
+                    console.log('모달 아작스 보냅니다')
                     $.ajax({
                         url: '/own/snsFeed',
                         method: 'post',
@@ -519,14 +522,15 @@
 
                             for(let i=res.imgList.length-1; i>=0; i--){
                                 if(res.imgList[i]!=null){
-                                let img = $('<img>').attr("src", "/imgView/"+res.imgList[i].mediaServerFile);
+                                let img = $('<img>').attr({"src" : "/imgView/"+res.imgList[i].mediaServerFile,
+                                                           "class" : "boardImg", "name": "img"+i});
                                 img.css({"width":"500px", "height": "650px", "position":"absolute"});
-                                let boardBtn = $('<div>').css({"width":"20px", "height":"25px", 
+                                
+                                let boardBtn = $('<div>').css({"width":"50px", "height":"25px", 
                                                             "background-color":"lightgray",
-                                                            "border-radius":"50%",
-                                                            "overflow":"hidden"})
+                                                            "border-radius":"50%", "border":"1px black solid"})
                                 boardBtn.attr("class", "pageBtn");
-                                $('.boardBtn').append(boardBtn);
+                                $('.boardBtnDiv').append(boardBtn);
                                 $('.modalP').append(img);
                             }else{
                                 console.log('이미지생성중'+i)
@@ -551,17 +555,32 @@
                         }
                     })
                 }else{
-                    alert("아작스 아님 아작스 아님")
+                    console.log('모달창 띄우기')
                 }
                 
             })
         })
         
+        // $('.pageBtn').on("click", function(e){
+        //     e.preventDefault();
+        //     var i = $(this).index();
+        //     console.log(i+'번째 버튼 클릭')
+        // })
+
+
         //페이징 버튼 도전
         $(document).on('click', '.pageBtn', function(e){
             e.preventDefault();
-              $(this).css('background-color', 'skyblue');
-              $('.pageBtn').not($(this)).css('background-color', 'lightgray');
+            var i = $(this).index();
+            console.log(i+"번째 버튼")
+            $('.modalP').children().hide();
+            $('.modalP').children().eq(i).show();
+            console.log( $('.modalP img').eq(0));
+           // $(`.modalP>img:not(:eq(${i}))`).show();
+           $(this).css('background-color', 'skyblue');
+           $('.pageBtn').not($(this)).css('background-color', 'lightgray');
+           //$('.modalP img(:eq('+i+'))').css("display", "block");
+              
         })
 
         // Modal을 가져옵니다.
@@ -588,7 +607,7 @@
                 console.log('모달닫기버튼클릭')
                 modals[num].style.display = "none";
                 $('.modalP').children('img').remove();
-                $('.boardBtn').children('div').remove();
+                $('.boardBtnDiv').children('div').remove();
             };
         };
         }

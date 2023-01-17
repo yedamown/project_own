@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 폰트어썸 cdn -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+.formbold-mb-5 {
+	margin-bottom: 20px;
+}
+
+.formbold-pt-3 {
+	padding-top: 12px;
+}
+
+.formbold-main-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 48px;
+}
+
+.formbold-form-wrapper {
+	margin: 0 auto;
+	max-width: 600px;
+	width: 100%;
+	background: white;
+}
+
+.formbold-form-label {
+	display: block;
+	font-weight: 500;
+	font-size: 16px;
+	color: #07074d;
+	margin-bottom: 12px;
+}
+
+.formbold-form-label-2 {
+	font-weight: 600;
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+.formbold-form-input {
+	width: 100%;
+	height: 50px;
+	padding: 12px 24px;
+	border-radius: 6px;
+	border: 1px solid #e0e0e0;
+	background: white;
+	font-weight: 500;
+	font-size: 16px;
+	color: #6b7280;
+	outline: none;
+	resize: none;
+}
+
+.formbold-form-input:focus {
+	border-color: #6a64f1;
+	box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.formbold-form-input__input {
+	width: 50px;
+}
+
+.formbold-btn {
+	text-align: center;
+	font-size: 16px;
+	border-radius: 6px;
+	padding: 14px 32px;
+	border: none;
+	font-weight: 600;
+	background-color: #6a64f1;
+	color: white;
+	width: 100%;
+	cursor: pointer;
+}
+
+.formbold-btn:hover {
+	box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.formbold--mx-3 {
+	margin-left: -12px;
+	margin-right: -12px;
+}
+
+.formbold-px-3 {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.flex {
+	display: flex;
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
+}
+
+.w-full {
+	width: 100%;
+}
+
+@media ( min-width : 540px) {
+	.sm\:w-half {
+		width: 50%;
+	}
+}
+
+#badImg {
+	content: url(/css/own/common_img/bad.png);
+	height: 70px;
+	width: 70px;
+}
+
+#sadImg {
+	content: url(/css/own/common_img/sad.png);
+	height: 70px;
+	width: 70px;
+}
+
+#sosoImg {
+	content: url(/css/own/common_img/soso.png);
+	height: 70px;
+	width: 70px;
+}
+
+#smileImg {
+	content: url(/css/own/common_img/smile.png);
+	height: 70px;
+	width: 70px;
+}
+
+#happyImg {
+	content: url(/css/own/common_img/happy.png);
+	height: 70px;
+	width: 70px;
+}
+
+[type=radio] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+[type=radio], .moodImg {
+	cursor: pointer;
+}
+
+.slider {
+	-webkit-appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+	width: 30%; /* 슬라이더 길이 */
+	height: 15px; /* 슬라이더 두께 */
+	border-radius: 5px; /* 슬라이더 모서리를 약간 둥글게 */
+	background: #ccc; /* 슬라이더 색상 */
+	outline: none; /* 슬라이더 테두리 없이 */
+}
+
+/* 슬라이더 핸들(클릭해서 드래그하는 부분) 커스텀 
+(Chrome, Opera, Safari, Edge 브라우저를 위해서는 -webkit-을,
+Firefox 브라우저를 위해서는 -moz- 를 사용하세요 */
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+	appearance: none; /* 기본 CSS 스타일을 적용하지 않기 위해서 */
+	width: 25px; /* 슬라이더 핸들 길이 */
+	height: 25px; /* 슬라이더 핸들 높이 */
+	border-radius: 50%; /* 핸들 모양을 원모양으로 만들기 위함 */
+	background: #00f; /* 슬라이더 핸들 색상 */
+	cursor: pointer; /* 슬라이더 핸들에 마우스를 갖다대면 포인터로 변경 */
+}
+
+.slider::-moz-range-thumb {
+	width: 25px; /* 슬라이더 핸들 길이 */
+	height: 25px; /* 슬라이더 핸들 높이 */
+	border-radius: 50%; /* 핸들 모양을 원모양으로 만들기 위함 */
+	background: #00f; /* 슬라이더 핸들 색상 */
+	cursor: pointer; /* 슬라이더 핸들에 마우스를 갖다대면 포인터로 변경 */
+}
+
+td {
+	cursor: pointer;
+}
+</style>
+</head>
+<div layout:fragment="content">
+	<body>
+		<div class="formbold-main-wrapper">
+			<div class="formbold-form-wrapper">
+				<div class="textDiv" id="current_date"></div>
+				<p>
+					<span th:text="${session.loginUser.userName}"></span> 회원님의 운동 기록하기
+				</p>
+				<form id="exerciseRecordForm" name="exerciseRecordForm"
+					action="/own/ownRecordList">
+					<div class="formbold-mb-5">
+						<div class="moodcontainer">
+							<input type="radio" name="exerecCondition" value="1"> <label
+								for="exerecCondition" id="badImg" onclick="checkedFnc(this)"></label>
+							<input type="radio" name="exerecCondition" value="2"> <label
+								for="exerecCondition" id="sadImg" onclick="checkedFnc(this)"></label>
+							<input type="radio" name="exerecCondition" value="3"> <label
+								for="exerecCondition" id="sosoImg" onclick="checkedFnc(this)"></label>
+							<input type="radio" name="exerecCondition" value="4"> <label
+								for="exerecCondition" id="smileImg" onclick="checkedFnc(this)"></label>
+							<input type="radio" name="exerecCondition" value="5"> <label
+								for="exerecCondition" id="happyImg" onclick="checkedFnc(this)"></label>
+						</div>
+					</div>
+					<div class="formbold-mb-5">
+						<div class="slidecontainer">
+							<label for="exerecWeight">체중 </label> <input type="range"
+								min="30" max="120" value="1" class="slider" name="exerecWeight"
+								id="myRange"> <span id="value"></span> Kg
+						</div>
+					</div>
+					<div class="formbold-mb-5">
+						<i class="fas fa-search"></i> <input type="text" id="exerInput"
+							onkeyup="myFunction()" placeholder="운동명 검색"
+							class="formbold-form-input">
+						<div class="exerciseSearch"
+							style="width: 100%; height: 200px; overflow: auto">
+							<table id="exerTable">
+							</table>
+						</div>
+					</div>
+					<div class="formbold-mb-5">
+						<div id="recordDiv" style="display: none;">
+							<input name="exersubNo" hidden> <label for="exerecTime"
+								class="formbold-form-label"> Time </label> <input type="number"
+								name="hour" id="hour" placeholder="hour"
+								class="formbold-form-input" /> : <input type="number"
+								name="minute" id="minute" placeholder="minute"
+								class="formbold-form-input" /> <input name="exerecTime" hidden>
+							<div id="meterDiv" style="display: none;">
+								<label for="exerecMeter">거리 :</label> <input type="number"
+									name="meter" id="meter">Km <input name="exerecMeter"
+									hidden>
+							</div>
+							<label for="exerecRoution">루틴 :</label>
+							<textarea name="exerecRoution" id="routin"></textarea>
+							<label for="exerecFeedback">피드백 :</label>
+							<textarea name="exerecFeedback" id="feedback"></textarea>
+						</div>
+					</div>
+					<div class="formbold-mb-5">
+						<label for="email" class="formbold-form-label"> Email
+							Address </label> <input type="email" name="email" id="email"
+							placeholder="Enter your email" class="formbold-form-input" />
+					</div>
+					<div class="flex flex-wrap formbold--mx-3">
+						<div class="w-full sm:w-half formbold-px-3">
+							<div class="formbold-mb-5 w-full">
+								<label for="date" class="formbold-form-label"> Date </label> <input
+									type="date" name="date" id="date" class="formbold-form-input" />
+							</div>
+						</div>
+						<div class="w-full sm:w-half formbold-px-3">
+							<div class="formbold-mb-5">
+								<label for="time" class="formbold-form-label"> Time </label> <input
+									type="time" name="time" id="time" class="formbold-form-input" />
+							</div>
+						</div>
+					</div>
+
+					<div class="formbold-mb-5 formbold-pt-3">
+						<label class="formbold-form-label formbold-form-label-2">
+							Address Details </label>
+						<div class="flex flex-wrap formbold--mx-3">
+							<div class="w-full sm:w-half formbold-px-3">
+								<div class="formbold-mb-5">
+									<input type="text" name="area" id="area"
+										placeholder="Enter area" class="formbold-form-input" />
+								</div>
+							</div>
+							<div class="w-full sm:w-half formbold-px-3">
+								<div class="formbold-mb-5">
+									<input type="text" name="city" id="city"
+										placeholder="Enter city" class="formbold-form-input" />
+								</div>
+							</div>
+							<div class="w-full sm:w-half formbold-px-3">
+								<div class="formbold-mb-5">
+									<input type="text" name="state" id="state"
+										placeholder="Enter state" class="formbold-form-input" />
+								</div>
+							</div>
+							<div class="w-full sm:w-half formbold-px-3">
+								<div class="formbold-mb-5">
+									<input type="text" name="post-code" id="post-code"
+										placeholder="Post Code" class="formbold-form-input" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div>
+						<button class="formbold-btn" type="button" id="insertBtn">기록하기</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var header = /*[[${_csrf.headerName}]]*/'defalut';
+		var token = /*[[${_csrf.token}]]*/'defalut';
+		console.log(header);
+		console.log(token);
+		/*]]>*/
+
+		// 오늘 날짜 띄우기
+		date = new Date();
+		year = date.getFullYear();
+		month = date.getMonth() + 1;
+		day = date.getDate();
+		document.getElementById("current_date").innerHTML = year + "년" + month
+				+ "월" + day + "일";
+		
+
+	      // 체중 슬라이더 설정
+	      var slider = document.getElementById("myRange");
+	      var output = document.getElementById("value");
+	      output.innerHTML = slider.value;
+
+	      slider.oninput = function() {
+	         output.innerHTML = this.value;
+	      }
+	      
+	      // 컨디션 라디오 박스 
+	      function checkedFnc(img){
+	         img.previousElementSibling.checked = true; 
+	         if(document.querySelector('[name="exerecCondition"]:checked')){
+	            img.style.outline = '5px solid indigo';
+	         } else {
+	            img.style.outline = '';
+	         }
+	         
+	      }
+	      
+	      //운동 이름 가져오기
+	        $.ajax({
+	            url : '/common/exersub',
+	            method : 'get',
+	            //dataType : 'object' ,//응답결과랑 타입이 같아야함
+	            contentType : "application/json" //json으로 보낼때 타입이 이렇다..
+	         }).then(res=>{
+	            for(sub of res){
+	               $("#exerTable").append(makeTr(sub));
+	            }
+	         })
+	           
+	         
+	         function makeTr(sub){
+	           
+	         let tr = `<tr><td data-sub="${sub.exersubNo}" onClick="showForm(this)">${sub.exersubName}</td></tr>`
+
+	         return tr;
+	      }
+	      
+	      // 운동 검색
+	         function myFunction() {
+	            var input, filter, table, tr, td, i, txtValue;
+	            input = document.getElementById("exerInput");
+	            filter = input.value.toUpperCase();
+	            table = document.getElementById("exerTable");
+	            tr = table.getElementsByTagName("tr");
+	            for (i = 0; i < tr.length; i++) {
+	               td = tr[i].getElementsByTagName("td")[0];
+	               if (td) {
+	                  txtValue = td.textContent || td.innerText;
+	                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+	                     tr[i].style.display = "";
+	                  } else {
+	                     tr[i].style.display = "none";
+	                  }
+	               }
+	            }
+	         }
+	      
+	      // 운동 클릭시 폼 생성
+	      function showForm(td){
+	         let name = td.getAttribute("data-sub");
+	         if (name == "EXS_1" || name == "EXS_5" || name == "EXS_11" || name == "EXS_12" || name == "EXS_14" || name == "EXS_18" || name == "EXS_29") {
+	            document.getElementById("recordDiv").style.display="block";
+	            document.getElementById("meterDiv").style.display="block";
+	            $('[name="exersubNo"]').attr('value', name);
+	         } else  {
+	            document.getElementById("recordDiv").style.display="block"
+	            document.getElementById("meterDiv").style.display="none";
+	            $('[name="exersubNo"]').attr('value', name);
+	         }
+	      }
+	      
+	      // 기록 등록
+	      $('#insertBtn').on("click",function(){
+	         let time = $('[name="exerecTime"]').attr('value', Number($('#hour').val())*60 + Number($('#minute').val()));
+	         let meter = $('[name="exerecMeter"]').attr('value', Number($('#meter').val())*1000);
+	         $.ajax({
+	                  url: '/own/exerciseRecord',
+	                  method: 'post',
+	                  contentType: 'application/x-www-form-urlencoded',
+	                  data: $('form[name="exerciseRecordForm"]').serialize(),
+	                  beforeSend: function(xhr){
+	                      xhr.setRequestHeader(header,token);
+	                    },
+	                  success: function (result) {
+	                     console.log("result: "+ result);
+	                     $('#exerciseRecordForm').submit();
+	                  },
+	                  error: function (error) {
+	                     console.log("error: "+error);
+	                  }
+	               })
+	      })
+	</script>
+</div>
+</html>
