@@ -40,4 +40,11 @@
 		AND USER_ID = #{userId}
 		AND MEM_STATUS = #{memStatus}
 	</select>
+	
+	<update id="updateMemList">
+		UPDATE CHALL_MEM_LIST
+		SET MEM_STATUS = #{memStatus}
+		WHERE USER_ID = #{userId}
+		AND CHALL_NO = #{challNo}
+	</update>
 </mapper>

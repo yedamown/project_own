@@ -20,7 +20,7 @@ public class CMemberListServiceImpl implements CMemberListService{
 	}
 
 	@Override
-	public CMemberListVO updateMemList(CMemberListVO vo) {
+	public int updateMemList(CMemberListVO vo) {
 		return mapper.updateMemList(vo);
 	}
 	

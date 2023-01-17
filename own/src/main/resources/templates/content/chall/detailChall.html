@@ -102,9 +102,6 @@
           </div>
         </div>
 
-        <!--도전번호 히든 -->
-        <input id="challNo" type="hidden" th:value="${detailChall.challNo}" />
-        <input id="userId" type="hidden" th:if="${memcheck !=null }" th:value="${memcheck.userId}" />
         <!--대표사진 및 설명 + 신청 -->
         <div class="mb-5">
           <img th:src="|/imgView/${challImg[0].mediaServerFile}|" class="img-fluid rounded w-100 mb-4" alt="대표사진" />
@@ -172,7 +169,7 @@
 
           <!-- 여기 이 부분을 아작스로 수정해야한다..-->
           <!--여기는 상세정보 탭-->
-          <div style="display: none;" id="challDetail">
+          <div style="display: inline-block;" id="challDetail">
             <!-- 상세보기 소제목 -->
             <h1 class="mb-3">Diam dolor est ipsum clita lorem</h1>
             <div class="d-flex">
@@ -205,22 +202,47 @@
           <!--상세정보 끝-->
 
           <!--달성률 시작-->
-          <div style="display: inline-block;" id="challResult">
+          <div style="display: none;" id="challResult">
+            <input type="hidden" id="resultCheck" value="false">
             <h1>달성률탭</h1>
           </div>
           <!--달성률 탭-->
 
           <!--인증하기 탭-->
-          <div class="mb-5" style="display: inline-block;" id="challVld">
-            <h1 class="mb-3">인증하기</h1>
-            <form>
-              <input type="file" name="uploadfile" multiple="multiple"></input><br />
-              <a th:if="${memcheck !=null }" class="btn btn-primary mt-2 py-2 px-4" id="applyVld">인증 업로드하기</a>
-            </form>
+          <div class="bg-light p-5" style="display: none;" id="challVld">
+            <input type="hidden" id="vldCheck" value="false">
+            <h2 class="mb-4">Validation GoGo</h2>
+            <div id="image_preview">
+              <!--이미지 미리보기-->
+              <form action="/own/chall/insertVld" method="post"  enctype="multipart/form-data">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <div class="form-group">
+                   <!--도전번호, 유저 아이디 히든 -->
+                  <input id="challNo" name="challNo" type="hidden" th:value="${detailChall.challNo}" />
+                  <input id="userId" name="userId" type="hidden" th:if="${memcheck !=null }" th:value="${memcheck.userId}" />
+                  <label for="name">NickName *</label>
+                  <input type="text" class="form-control" id="vldname"  th:value="${myInfo.memNickname}" readonly/>
+                </div>
+                <div class="form-group">
+                  <label for="name">Date *</label>
+                  <input type="text" class="form-control" id="vldname"  th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}" readonly/>
+                </div>
+                <input name="uploadfile" type="file" id="btnAtt">
+                <!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
+                <div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
+                <br>
+                <input th:value="${session.loginUser.snsAccountNo}" name="snsAccountNo" type="hidden"></input> 
+                <input type="submit" role="button" value="글쓰기" />
+                <div class="form-group mb-0">
+                  <input type="submit" value="submit" class="btn btn-primary px-3" />
+                </div>
+              </form>
+            </div>
           </div>
 
           <!--멤버리스트 탭-->
-          <div style="display: inline-block;" id="challMem">
+          <div style="display: none;" id="challMem">
+            <input type="hidden" id="challMemCheck" value="false">
             <h1>멤버 리스트 탭</h1>
           </div>
           <!--멤버리스트 탭 끝-->
@@ -231,7 +253,7 @@
 
         </div>
         <!-- Comment Form -->
-        <div class="bg-light p-5">
+        <div class="bg-light p-5" style="display: none;">
           <h2 class="mb-4">Leave a comment</h2>
           <form>
             <div class="form-group">
@@ -388,7 +410,6 @@
   <!-- Detail End -->
 
 
-
   <!-- Footer Start -->
   <div class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
     <div class="row pt-5">
@@ -476,6 +497,13 @@
   </div>
   <!-- Footer End -->
   <script>
+    /*<![CDATA[*/
+    var header = /*[[${_csrf.headerName}]]*/'defalut';
+     var token = /*[[${_csrf.token}]]*/'defalut';
+       console.log(header);
+       console.log(token);
+     /*]]>*/
+
     $('#applyBtn').on("click", function () {
       let cNo = $('#challNo').val();
       console.log(cNo);
@@ -500,25 +528,33 @@
     /* 상세보기 버튼 */
     $('#detailBtn').on("click", function () {
       $("#challDetail").css('display', 'inline-block');
-      $("#challVld").css('display', ';none');
-      $("#challResult").css("display", "none");
-      $("#challMem").css("display", "none")
+      $("#challVld").css('display', 'none');
+      $("#challResult").css('display', 'none');
+      $("#challMem").css('display', 'none')
     })
 
     /*인증하기 버튼*/
     $('#vldBtn').on("click", function () {
       $("#challVld").css('display', "inline-block");
       $("#challDetail").css('display', 'none');
-      $("#challResult").css("display", "none");
-      $("#challMem").css("display", "none")
-    })
+      $("#challResult").css('display', 'none');
+      $("#challMem").css('display', 'none');
+      let challNo = $('#challNo').val();
+      let userId = $('#userId').val();
+      console.log(challNo, userId);
+      console.log($("#resultCheck").val());
+      if($("#resultCheck").val() == "false"){
+        console.log("인증하기")
+      }
+      $("#resultCheck").val("true");
+    });
 
     /*달성률 버튼*/
     $('#resultBtn').on("click", function () {
       $("#challResult").css("display", "inline-block");
       $("#challVld").css('display', 'none');
       $("#challDetail").css('display', 'none');
-      $("#challMem").css("display", "none")
+      $("#challMem").css('display', 'none')
     })
 
     /*멤버 리스트 버튼*/
@@ -526,31 +562,167 @@
       $("#challMem").css("display", "inline-block");
       $("#challDetail").css('display', 'none');
       $("#challVld").css('display', 'none');
-      $("#challResult").css("display", "none");
+      $("#challResult").css('display', 'none');
       let challNo = $('#challNo').val();
       console.log(challNo);
+      console.log($("#challMemCheck").val());
+      if($("#challMemCheck").val() == "false"){
+        $.ajax({
+          url: '/own/chall/challMemList?challNo=' + challNo,
+          method: 'get',
+          success: function (result) {
+            console.log(result)
+            let ul = $("<ul />")
+            result.forEach(mem => {
+              console.log(mem.userId, mem.memStatus)
+              ul.append($("<li />").text(mem.userId + mem.memStatus)
+              .append($("<button />").text('승인').attr('onclick', 'authChange(this)'), $("<button />").text('거절').attr('onclick', 'authChange(this)')));
+            })
+            $("#challMem").append(ul);
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      }
+      $("#challMemCheck").val("true");
+    })
+    
+
+    $('.acceptBtn').on("click", function() {
+      console.log($('.acceptBtn'));
+    })
+
+    function authChange(e){
+      console.log($(e).text());
+      let challNo = $('#challNo').val();
+      let userId = $(e).parent().text().substring(0,3);
+      let memStatus = $(e).text();
+      console.log(userId, challNo);
       $.ajax({
-        url: '/own/chall/challMemList?challNo=' + challNo,
-        method: 'get',
-        success: function (result) {
+        url: '/own/chall/challMemAuth',
+        method: 'post',
+        data: JSON.stringify({userId: userId,
+                              challNo: challNo,
+                              memStatus: memStatus
+                            }),
+        beforeSend : function(xhr){
+                      xhr.setRequestHeader(header, token);
+        }, 
+        contentType: "application/json",
+        success: function(result){
           console.log(result)
-          let ul = $("<ul />")
-          result.forEach(mem => {
-            console.log(mem.userId, mem.memStatus)
-            ul.append($("<li />").text(mem.userId + mem.memStatus)
-                      .append($("<button />").text('승인').attr('id', 'acceptBtn'),
-                              $("<button />").text('거절').attr('id', 'acceptBtn')));
-          })
-          $("#challMem").append(ul);
         },
-        error: function (err) {
+        error: function(err){
           console.log(err)
         }
       })
-    })
+    }
 
+    
      /* 멤버 승인, 거절 버튼 */
     /*멤버 리스트 ul li 만들기*/
+
+
+    	//첨부파일 이미지 
+      ( /* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
+        imageView = function imageView(att_zone, btn){
+
+            var attZone = document.getElementById(att_zone);
+            var btnAtt = document.getElementById(btn)
+            var sel_files = [];
+            
+            // 이미지와 체크 박스를 감싸고 있는 div 속성
+            var div_style = 'display:inline-block;position:relative;'
+                        + 'width:550px;height:auto;margin:5px;z-index:1';
+            // 미리보기 이미지 속성
+            var img_style = 'width:100%;height:100%;z-index:none';
+            // 이미지안에 표시되는 체크박스의 속성
+            var chk_style = 'width:30px;height:30px;position:absolute;font-size:24px;'
+                        + 'right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:#f00';
+        
+            btnAtt.onchange = function(e){
+            var files = e.target.files;
+            var fileArr = Array.prototype.slice.call(files)
+            for(f of fileArr){
+                imageLoader(f);
+            }
+            }  
+            
+        
+            // 탐색기에서 드래그앤 드롭 사용
+            attZone.addEventListener('dragenter', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            }, false)
+            
+            attZone.addEventListener('dragover', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            
+            }, false)
+        
+            attZone.addEventListener('drop', function(e){
+            var files = {};
+            e.preventDefault();
+            e.stopPropagation();
+            var dt = e.dataTransfer;
+            files = dt.files;
+            for(f of files){
+                imageLoader(f);
+            }
+            
+            }, false)
+            
+            /*첨부된 이미리즐을 배열에 넣고 미리보기 */
+            imageLoader = function(file){
+            sel_files.push(file);
+            var reader = new FileReader();
+            reader.onload = function(ee){
+                let img = document.createElement('img')
+                img.setAttribute('style', img_style)
+                img.src = ee.target.result;
+                attZone.appendChild(makeDiv(img, file));
+            }
+            
+            reader.readAsDataURL(file);
+            }
+            
+            /*첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
+            makeDiv = function(img, file){
+            var div = document.createElement('div')
+            div.setAttribute('style', div_style)
+            
+            var btn = document.createElement('input')
+            btn.setAttribute('type', 'button')
+            btn.setAttribute('value', 'x')
+            btn.setAttribute('delFile', file.name);
+            btn.setAttribute('style', chk_style);
+            btn.onclick = function(ev){
+                var ele = ev.srcElement;
+                var delFile = ele.getAttribute('delFile');
+                for(var i=0 ;i<sel_files.length; i++){
+                if(delFile== sel_files[i].name){
+                    sel_files.splice(i, 1);      
+                }
+                }
+                
+                dt = new DataTransfer();
+                for(f in sel_files) {
+                var file = sel_files[f];
+                dt.items.add(file);
+                }
+                btnAtt.files = dt.files;
+                var p = ele.parentNode;
+                attZone.removeChild(p)
+            }
+            div.appendChild(img)
+            div.appendChild(btn)
+            return div
+            }
+        }
+        )('att_zone', 'btnAtt')
+
   </script>
   </div>
 </body>
