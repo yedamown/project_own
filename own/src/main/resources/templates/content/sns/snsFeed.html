@@ -347,16 +347,19 @@
  
             <!-- 게시글 상세보기 Modal -->
             <th:block th:each="snsLength :${snsImg}">
+        <div class="modalContainer" style="display: inline-flex;">
             <div class="modal" >
               <!-- 게시글 상세보기 Modal의 내용 -->
               <div class="modal-content" style="width: 1200px; height: 900px;">
                 <span class="close">&times;</span>
-                <p class="modalP" style="position:relative">게시글상세보기</p>
+                <p class="modalP" style="position:relative; ">게시글상세보기</p>
+                <div class="boardBtn">여기어디</div>
               	<p class="bContent"></p>
                 <p class="bWriter"></p>
                 <p class="bDate"></p>
               </div>
             </div>
+        </div>
             </th:block>
             <!--=================== filter portfolio end====================-->
         </div>
@@ -518,11 +521,26 @@
                                 if(res.imgList[i]!=null){
                                 let img = $('<img>').attr("src", "/imgView/"+res.imgList[i].mediaServerFile);
                                 img.css({"width":"500px", "height": "650px", "position":"absolute"});
+                                let boardBtn = $('<div>').css({"width":"20px", "height":"25px", 
+                                                            "background-color":"lightgray",
+                                                            "border-radius":"50%",
+                                                            "overflow":"hidden"})
+                                boardBtn.attr("class", "pageBtn");
+                                $('.boardBtn').append(boardBtn);
                                 $('.modalP').append(img);
                             }else{
                                 console.log('이미지생성중'+i)
                             }
+                            
                             }
+                            // for(let i=0; i<res.imgList.length; i++){
+                            //     let boardBtn = $('<div>').css({"width":"60px", "height":"50px", 
+                            //                                 "background-color":"gray",
+                            //                                 "border":"1px black solid",
+                            //                                 "border-radius":"50%",
+                            //                                 "overflow":"hidden"})
+                            //     $('.boardBtn').append(boardBtn);
+                            // }
 
                             $('.bWriter').text(res.svo.snsNickname);
                             $('.bDate').text(elapsedText(res.svo.snsBoardDate));
@@ -538,7 +556,13 @@
                 
             })
         })
-            
+        
+        //페이징 버튼 도전
+        $(document).on('click', '.pageBtn', function(e){
+            e.preventDefault();
+              $(this).css('background-color', 'skyblue');
+              $('.pageBtn').not($(this)).css('background-color', 'lightgray');
+        })
 
         // Modal을 가져옵니다.
         var modals = document.getElementsByClassName("modal");
@@ -564,6 +588,7 @@
                 console.log('모달닫기버튼클릭')
                 modals[num].style.display = "none";
                 $('.modalP').children('img').remove();
+                $('.boardBtn').children('div').remove();
             };
         };
         }
