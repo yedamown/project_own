@@ -30,4 +30,12 @@ public interface OwnhomeService {
 	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
 	//sns 유저 회원가입
 	
+	//=============관리자============
+	//질문목록 불러오기
+	public List<QuestionVO> questionList();
+	//제목 선택시 제목에 맞는 질문 가져오기
+	public QuestionVO selectQuest(String qno);
+	//질문 답변등록
+	public int questionUpdate(QuestionVO vo);
+	
 }

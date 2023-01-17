@@ -60,6 +60,8 @@
                         <div class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
+                        <span class="notpw" >올바른 비밀번호를 입력해주세요</span>
+                        <span class="finepw">사용가능한 비밀번호입니다</span>
                     </div>      
                     <div class="mb-6">
                         <label for="nickname">비밀번호 확인</label>
@@ -68,8 +70,6 @@
                             비밀번호를 입력해주세요.
                         </div>                        
                     </div>
-                    <span class="notpw" >올바른 비밀번호를 입력해주세요</span>
-				          	<span class="finepw">사용가능한 비밀번호입니다</span>
                 
       			
                 <div class="mb-3">
@@ -144,9 +144,11 @@
     		$('.notpw').show();
     		$('.finepw').hide();
     		$('#u_pw').focus();
+        return regExpPw.test(pw);       
     	} else {
     		$('.finepw').show();
     		$('.notpw').hide();
+        return regExpPw.test(pw);
     	}
     }
     
@@ -236,15 +238,27 @@
     })
         	
     		$('#btnsignin').on("click",function(){
-    			let id = $('#u_id').val();
+              let idval = $('#idchk').attr('value')
+              console.log(idval);
+            if(idval==0){
+              alert('중복체크를해주세요')
+              return;
+            }
+            let id = $('#u_id').val();
                 let passwd = $('#u_pw').val();
+                let passwd2 = $('#u_pw2').val();
                 let name = $('#u_name').val();
                 let email = $('#u_email').val();
                 let tel = $('#u_tel').val();
                 let birthday = $('#u_birth').val();
                 let gender = $('[name=u_gen]:checked').val();
                 console.log(gender);
-                $.ajax({
+                let a = pwCheck();
+                console.log(a);
+           
+
+           if(a||pwMatchCheck()){
+            $.ajax({
     				url : '/own/userInfo',
     				method : 'post',
     				// json형태면 JSON.stringify ((무조건)) 넣기..
@@ -268,6 +282,10 @@
     					alert('회원가입 실패')
     				}
     			})
+          }
+            else{
+              alert('입력정보가 올바르지않습니다')
+            }
     		})
     	
         

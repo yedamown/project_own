@@ -16,6 +16,7 @@ import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.CustomUser;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
+import co.prjt.own.ownhome.service.QuestionVO;
 import co.prjt.own.sns.service.SAccountVO;
 
 @Service
@@ -143,6 +144,24 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	public int pwcheck(String pw, String newpw) {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.pwcheck(pw, newpw);
+	}
+
+	@Override
+	public List<QuestionVO> questionList() {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.questionList();
+	}
+
+	@Override
+	public QuestionVO selectQuest(String qno) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.selectQuest(qno);
+	}
+
+	@Override
+	public int questionUpdate(QuestionVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.questionUpdate(vo);
 	}
 
 }

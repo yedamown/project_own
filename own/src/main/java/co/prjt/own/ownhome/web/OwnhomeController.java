@@ -1,5 +1,6 @@
 package co.prjt.own.ownhome.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,13 +15,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ch.qos.logback.core.encoder.Encoder;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.exercise.service.ExerRecordVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
+import co.prjt.own.ownhome.service.QuestionVO;
 
 @Controller
 public class OwnhomeController {
@@ -79,14 +83,15 @@ public class OwnhomeController {
 		@GetMapping("/own/pwcheck")
 		@ResponseBody
 		public int pwcheck(String id, String pw, String newpw) {
-			OwnUserVO vo = ownService.login(id);
-			System.out.println(newpw);
-			pw = vo.getUserPasswd();
-			System.out.println(pw);
+			OwnUserVO vo = new OwnUserVO();
+			System.out.println("입력한 현재 비밀번호 비밀번호==========="+pw);
 			newpw = passwordEncoder.encode(newpw);
 			System.out.println(id);
+			vo = ownService.login(id);
+			System.out.println("vo값======"+vo);
 			System.out.println(newpw);
-			if(pw.equals(newpw)) {
+			//암호화 된거를 비교하기 위해서 쓰는 match함수
+			if(passwordEncoder.matches(pw, vo.getUserPasswd())) {
 				return 1;
 			}
 			else
@@ -148,6 +153,33 @@ public class OwnhomeController {
 			return vo;
 		}
 
+		//=================================================관리자모드================================================
+		
+		//질문목록 불러오기
+		@GetMapping("/own/admin/question")
+		public String questionList(Model model) {
+			List<QuestionVO> vo = ownService.questionList();
+			System.out.println(vo);
+			model.addAttribute("QList", vo);
+			return "content/own/question";
+		}
+		
+		//질문 한건조회
+		@GetMapping("/own/admin/selectquest")
+		@ResponseBody
+		public QuestionVO selectQuest(@RequestParam String qno) {
+			QuestionVO vo = new QuestionVO();
+			vo = ownService.selectQuest(qno);
+			return vo;
+		}
+		
+		//답변 업데이트
+		@PostMapping("/questionUpdate")
+		public String questionUpdate(QuestionVO vo) {
+			ownService.questionUpdate(vo);
+			return "redirect:/own/admin/question";
+		}
+		
 	/*
 	 * // 오운완(나의운동기록하기) 페이지 이동
 	 * 
