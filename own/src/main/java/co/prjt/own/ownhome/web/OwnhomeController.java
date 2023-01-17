@@ -114,7 +114,7 @@ public class OwnhomeController {
 		      return "redirect:/";
 		   }
 		
-		@GetMapping("/own/myupdate")
+		@GetMapping("/own/mypage")
 		public String myupdate(Model model) {
 			return "content/own/ownupdate";
 		}
@@ -153,7 +153,25 @@ public class OwnhomeController {
 			return vo;
 		}
 
-
+		//내질문 폼
+		@GetMapping("/own/mypage/question")
+		public String myquestionForm() {
+			return null;
+		}
+		
+		
+		//내질문 가져오기
+		@GetMapping("/own/mypage/myQuestion")
+		@ResponseBody
+		public List<QuestionVO> myQuestion(String id){
+			List<QuestionVO> vo = new ArrayList<QuestionVO>();
+			vo = ownService.myQuestion(id);
+			System.out.println(vo);
+			return vo;
+		}
+		
+		
+		
 		//=================================================관리자모드================================================
 		
 		//질문목록 불러오기

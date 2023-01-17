@@ -44,7 +44,9 @@
                 <a href="/own/sns" class="nav-item nav-link">SNS</a>
                 <a href="/own/band" class="nav-item nav-link">밴드</a>
                 <a href="/own/chall/home" class="nav-item nav-link">챌린저스</a>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
+				<div th:if="${session.loginUser}">
+                <a href="contact.html" class="nav-item nav-link">마이페이지</a>
+				</div>          
                 <div th:if="${session.loginUser}"><a href="/own/logout" class="nav-item nav-link">로그아웃</a></div>
 				<div th:unless="${session.loginUser}"><a href="/own/login" class="nav-item nav-link">로그인</a>
             </div>

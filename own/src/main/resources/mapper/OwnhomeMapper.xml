@@ -56,7 +56,10 @@ select * from own_users
   		
    </update>
    <!--================= SNS End ==================-->
-   
+   <!-- 내질문 갖고오기 -->
+   <select id="myQuestion" resultType="co.prjt.own.ownhome.service.QuestionVO">
+   SELECT * FROM QUESTION WHERE USER_ID= #{userId}
+   </select>
    
  <!-- 관리자 -->
  <select id="questionList" resultType="co.prjt.own.ownhome.service.QuestionVO">

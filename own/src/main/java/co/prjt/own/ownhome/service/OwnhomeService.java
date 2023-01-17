@@ -37,5 +37,6 @@ public interface OwnhomeService {
 	public QuestionVO selectQuest(String qno);
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);
-	
+	//내 질문 가져오기
+	public List<QuestionVO> myQuestion(String id);
 }
