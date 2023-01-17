@@ -49,4 +49,9 @@ public class SBoardServiceImpl implements SBoardService {
 		return sBoardMapper.countBoard(id);
 	}
 
+	@Override
+	public List<SBoardVO> getNowBoardList(String id) {
+		return sBoardMapper.getNowBoardList(id);
+	}
+
 }
