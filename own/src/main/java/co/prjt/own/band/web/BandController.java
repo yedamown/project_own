@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
-import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.band.service.BandBoardOptionService;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandMemberDetailVO;
@@ -30,6 +30,7 @@ import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
+import co.prjt.own.common.service.OwnLikeVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 
@@ -169,6 +170,12 @@ public class BandController {
 		}
 		return "content/band/bandCreateFail";
 	}
+	
+
+	@GetMapping("/bandGroup/test")
+	public String bandMainGroup(Model model, HttpServletRequest request ) {
+		return "content/band/test";
+	}
 	//가입된 개별 밴드 들어가기
 	@GetMapping("/bandGroup")
 	public String bandGroup(Model model, HttpServletRequest request, @RequestParam String bandNo) {
@@ -191,17 +198,47 @@ public class BandController {
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
 		//밴드의 총 글 수
 		model.addAttribute("boardCount", bandBoardDetailService.countBandBoard(bandNo));
+		//임시 최신글5개랑 페이지번호담아 보내기
+		
 		return "content/band/bandGroup";
 	}
-	//RestController..밴드 상세...최신글 5개씩 내보내기
-	@PostMapping("/bandGroup")
+	//RestController..밴드 상세...글번호 5개 주면 최신글 5개씩 내보내기
+	@GetMapping("/bandGroup/fiveBoard")
 	@ResponseBody
-	public List<BandBoardDetailVO> fiveBoard(BandBoardDetailVO vo){
-		//글 5개씩..
-		List<BandBoardDetailVO> fiveboard = bandBoardDetailService.getFiveBoard(vo);
-		//댓글
+	public List<BandBoardDetailSearchVO> fiveBoard(BandBoardDetailSearchVO vo, HttpServletRequest request){
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		
+		//
+		System.out.println(vo.toString());
+		
+		//글 5개씩..+댓글 수 담기 (밴드식별번호이용)
+		List<BandBoardDetailSearchVO> fiveboard = bandBoardDetailService.getFiveBoard(vo);
+		List<String> categoryNos = new ArrayList<String>();
+		for(BandBoardDetailSearchVO v : fiveboard) {
+			categoryNos.add(v.getBandBoardDetailNo());
+		}
 		//찜 만약 내가 찍었다면 찍었다는 게 필요할 듯.. 단순 수량만 가져가면 안되겠음
-		return bandBoardDetailService.getFiveBoard(vo);
+		List<OwnLikeVO> list = bandBoardDetailService.getOwnLike(categoryNos, user.userId);
+		//확장보드VO에 좋아요VO담담음 BoardVO.like.likecount로 꺼내쓰기
+			for(BandBoardDetailSearchVO v : fiveboard) {
+				for(OwnLikeVO o : list) {
+					if(o.getCategoryNo()!=null&&v.getBandBoardDetailNo().equals(o.getCategoryNo())) {
+						v.setLikeList(o);
+					} else {
+						OwnLikeVO like = new OwnLikeVO();
+						like.setLikeCount(0);
+						like.setUserId("");
+						v.setLikeList(like);
+					}
+				}//널체크..제정신일 때
+				if(list.size()==0) {
+					OwnLikeVO like = new OwnLikeVO();
+					like.setLikeCount(0);
+					like.setUserId("");
+					v.setLikeList(like);
+				}
+			}
+		return fiveboard;
 	}
 }

@@ -5,7 +5,7 @@
       layout:decorate="~{layout/default_layout}"
       lang="ko">
     <head>
-        <script src="/css/band/js/jquery-3.2.1.min.js"></script>
+        <script src="/css/band/js/jquery-3.2.1.js"></script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -89,7 +89,7 @@
                             </aside>
                             <aside class="single_sidebar_widget post_category_widget">
                                 <h4 class="widget_title">글쓰기</h4>
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between" id="totalBoard">
                                     <p><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
                                     <p th:text="${boardCount}">2538</p>
                                 </div>
@@ -113,156 +113,21 @@
                         </div>
                     </div>
                     <div style="flex-grow:3; width: 740px">
-                        <div>
-                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search Posts">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
-                                    </span>
-                                </div>
-                            </article>
-                            <div>
+	                    <div id="mainTemplate">
+	                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber">
+	                        <div>
 	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-	                                <div style="display: flex; flex-direction: column;">
-	                                    <div>
-	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-	                                            <div  style="display: block; width: 300px; padding: 10px;">
-	                                                <ul class="blog_meta list_style" style="display: inline-block;">
-	                                                    <li style="display: block;">Mark wiens</li>
-	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-	                                                </ul>
-	                                            </div>
-	                                        </div>
-	                                        
-	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-	
-	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-	                                        <div class="blog_details">
-	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-	                                        </div>
-	                                    </div>
-	                                    <a href="#" class="view_btn button_hover">View More</a>
-	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                        <div><i class="fa fa-heart" aria-hidden="true"></i><span> 반응추가하기</span></div>
-	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-	                                    </div>
+	                                <div class="input-group">
+	                                    <input type="text" class="form-control" placeholder="Search Posts">
+	                                    <span class="input-group-btn">
+	                                        <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+	                                    </span>
 	                                </div>
 	                            </article>
-	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-	                                <div style="display: flex; flex-direction: column;">
-	                                    <div>
-	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-	                                            <div  style="display: block; width: 300px; padding: 10px;">
-	                                                <ul class="blog_meta list_style" style="display: inline-block;">
-	                                                    <li style="display: block;">Mark wiens</li>
-	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-	                                                </ul>
-	                                            </div>
-	                                        </div>
-	                                        
-	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-	
-	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-	                                        <div class="blog_details">
-	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-	                                        </div>
-	                                    </div>
-	                                    <a href="#" class="view_btn button_hover">View More</a>
-	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-	                                    </div>
-	                                </div>
-	                            </article>
-	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-	                                <div style="display: flex; flex-direction: column;">
-	                                    <div>
-	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-	                                            <div  style="display: block; width: 300px; padding: 10px;">
-	                                                <ul class="blog_meta list_style" style="display: inline-block;">
-	                                                    <li style="display: block;">Mark wiens</li>
-	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-	                                                </ul>
-	                                            </div>
-	                                        </div>
-	                                        
-	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-	
-	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-	                                        <div class="blog_details">
-	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-	                                        </div>
-	                                    </div>
-	                                    <a href="#" class="view_btn button_hover">View More</a>
-	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-	                                    </div>
-	                                </div>
-	                            </article>
-	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-	                                <div style="display: flex; flex-direction: column;">
-	                                    <div>
-	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-	                                            <div  style="display: block; width: 300px; padding: 10px;">
-	                                                <ul class="blog_meta list_style" style="display: inline-block;">
-	                                                    <li style="display: block;">Mark wiens</li>
-	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-	                                                </ul>
-	                                            </div>
-	                                        </div>
-	                                        
-	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-	
-	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-	                                        <div class="blog_details">
-	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-	                                        </div>
-	                                    </div>
-	                                    <a href="#" class="view_btn button_hover">View More</a>
-	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-	                                    </div>
-	                                </div>
-	                            </article>
-	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-	                                <div style="display: flex; flex-direction: column;">
-	                                    <div>
-	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-	                                            <div  style="display: block; width: 300px; padding: 10px;">
-	                                                <ul class="blog_meta list_style" style="display: inline-block;">
-	                                                    <li style="display: block;">Mark wiens</li>
-	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-	                                                </ul>
-	                                            </div>
-	                                        </div>
-	                                        
-	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-	
-	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-	                                        <div class="blog_details">
-	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-	                                        </div>
-	                                    </div>
-	                                    <a href="#" class="view_btn button_hover">View More</a>
-	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-	                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-	                                    </div>
-	                                </div>
-	                            </article>
-	                            <nav class="blog-pagination justify-content-center d-flex">
-			                        <a href="#" class="view_btn button_hover" style="width: 555px;">View More</a>
-			                    </nav>
-			               </div>
-                        </div>
+	                            <div id="articleArea">
+				               </div>
+	                        </div>
+	                    </div>
                     </div>
                     <div style="flex-grow:1; width: 260px">
                         <div class="blog_right_sidebar">
@@ -385,11 +250,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             </div>
         </footer>
 		<!--================ End footer Area  =================-->
-        
-        
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        
         <script src="/css/band/js/popper.js"></script>
         <script src="/css/band/js/bootstrap.min.js"></script>
         <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
@@ -401,6 +263,98 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <script src="/css/band/js/stellar.js"></script>
         <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
         <script src="/css/band/js/custom.js"></script>
+        <script th:inline="javascript">
+        	//더보기 페이지용
+         	//1페이지
+	        let bandNo = $('#bandNumber').val();
+	        let articleArea = $('#articleArea');
+	        let multi = '';
+		    function makeBoard(bandNo, multi){
+	        	$.ajax({
+		            url:'/own/band/bandGroup/fiveBoard?bandNo='+bandNo+'&multi='+multi,
+		            dataType: 'json',
+		            method: 'get',
+		            contentType : "application/text; charset=utf-8;"
+		        }).then(result => {
+		                console.log(result);
+		                $(result).each(function(idx, ele){
+		                	let likeTag = '';
+		                	if(ele.likeList['userId']==null&&ele.likeList['userId']==""){
+		                		likeTag = `<i class="fa fa-heart" aria-hidden="true"></i>`
+		                	} else {
+		                		likeTag = `<i class="fa fa-heartbeat" aria-hidden="true"></i>`
+		                	}
+		                    let articleTag = `<article style="border: 1px solid #eeeeee;padding:30px; ">
+		                    <div style="display: flex; flex-direction: column;">
+		                    <div>
+		                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+		                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
+		                            <div  style="display: block; width: 300px; padding: 10px;">
+		                                <ul class="blog_meta list_style" style="display: inline-block;">
+		                                    <li style="display: block;">${ele.bandBoardWriter}</li>
+		                                    <li style="display: block;">${ele.bandBoardDate}</li>
+		                                </ul>
+		                            </div>
+		                        </div>
+		                        
+		                        <h4>${ele.bandBoardTitle}</h4>
+		
+		                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 678px; height: 280px;">
+		                        <div class="blog_details">
+		                            <p>${ele.bandBoardContent}</p>
+		                        </div>
+		                    </div>
+		                    <a href="#" class="view_btn button_hover">View More</a>
+		                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+		                        <div>
+		                             ${likeTag}
+		                        	<span>${ele.likeList["likeCount"]}</span>
+		                        </div>
+		                        <div><i class="lnr lnr-bubble"></i><span></span>${ele.reply}</div>
+		                    </div>
+		                </div>
+		            </article>`;
+		                $(articleArea).append(articleTag);
+		                //페이지 멀티 버툰에 숫자달기
+		                })
+		                if(result.length==5){
+			                 let multiValue = (result[0]['multi']-0);
+			                 console.log("multimulti 버튼에 붙일 예정"+(multiValue-0));
+			                //more 누르면 나오는 페이지
+			            	let btnTag = `<nav class="blog-pagination justify-content-center d-flex" id="multiId">
+						                <a class="view_btn button_hover" id="nextBtn" style="width: 555px;">View More</a>
+						                <input type="hidden" id="multivalue" value=${multiValue}>
+						                </nav>`
+						              
+			                $(articleArea).append(btnTag);
+			            	console.log('버튼 숫자 붙은거 확인'+$('#multivalue').attr('value'));           
+						    console.log('버튼 숫자 붙은거 확인'+$('#multivalue').val());  
+						    console.log('버튼 숫자 붙은거 확인'+$('#multivalue').prop('value')); 
+		                } else {
+		                	let endtag = `<div><h5>끝입니다</h5></div>`
+		                	$(articleArea).append(endtag);
+		                }
+		            });
+		    }
+		    //처음 5개 불러옴
+		    makeBoard(bandNo, 1);
+                
+		    //버튼누르면 more
+		    $('#articleArea').on('click', '#nextBtn', function(){
+		    	let mul = $('#multivalue').val();
+		    	$('#multiId').remove();
+		    	$('#nextBtn').remove();
+		    	$('#multivalue').remove();
+        		console.log('누른 멀티'+mul)
+        		makeBoard(bandNo, mul);
+        	})
+        </script>
+    	 <!-- 페이지 이동 -->
+    	<script>
+    	$('#totalBoard').on('click', function(){
+    		$('#mainTemplate').load('/own/band/bandGroup/test');
+    	})
+    	</script>
     </div>
     </body>
 </html>

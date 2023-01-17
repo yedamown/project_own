@@ -12,39 +12,87 @@
 		      AND C.BAND_NO = #{bandNo}
 	</select>
 	
-	<select id="getFiveBoard" resultType="BandBoardDetailVO">
-		SELECT  BAND_BOARD_DETAIL_NO,
-		        BAND_BOARD_OPTION_NO,
-		        BAND_BOARD_CONTENT,
-		        BAND_BOARD_CNT,
-		        BAND_BOARD_TITLE,
-		        BAND_BOARD_WRITER, 
-		        BAND_REMARKS,
-		        BAND_BOARD_DATE,
-		        BAND_BOARD_UPDATE,
-		        BAND_BOARD_TAG     
-		FROM ( SELECT ROWNUM RN, A.* FROM (
-						SELECT * FROM (
-		                                SELECT  A.BAND_BOARD_DETAIL_NO,
-		                                        A.BAND_BOARD_OPTION_NO,
-		                                        A.BAND_BOARD_CONTENT,
-		                                        A.BAND_BOARD_CNT,
-		                                        A.BAND_BOARD_TITLE,
-		                                        A.BAND_BOARD_WRITER, 
-		                                        A.BAND_REMARKS,
-		                                        A.BAND_BOARD_DATE,
-		                                        A.BAND_BOARD_UPDATE,
-		                                        A.BAND_BOARD_TAG
-		                                    FROM BAND_BOARD_DETAIL A,
-		                                         BAND_BOARD_OPTION B,
-		                                         BAND C
-		                                    WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
-		                                    AND     B.BAND_NO = C.BAND_NO
-		                                    AND     C.BAND_NO = #{bandNo}
-		                                    ORDER BY A.BAND_BOARD_DATE DESC
-		                )
+	<select id="getFiveBoard" resultType="BandBoardDetailSearchVO">
+		SELECT 
+				A.BAND_BOARD_DETAIL_NO "bandBoardDetailNo",
+                A.BAND_BOARD_OPTION_NO "bandBoardOptionNo",
+                A.BAND_BOARD_CONTENT "bandBoardContent",
+                A.BAND_BOARD_CNT "bandBoardCnt",
+                A.BAND_BOARD_TITLE "bandBoardTitle",
+                A.BAND_BOARD_WRITER "bandBoardWriter", 
+                A.BAND_REMARKS "bandRemarks",
+                A.BAND_BOARD_DATE "bandBoardDate",
+                A.BAND_BOARD_UPDATE "bandBoardUpdate",
+                A.BAND_BOARD_TAG "bandBoardTag",
+                A.BAND_BOARD_WRITER "bandBoardWriter",
+                A.BAND_BOARD_TITLE "bandBoardTitle",
+                B.REPLY  	 "reply",
+                #{multi} "multi"
+		FROM BAND_BOARD_DETAIL A, (SELECT  BAND_BOARD_DETAIL_NO,
+        COUNT(REPLY_NO) "REPLY"
+        FROM
+    (  SELECT  BAND_BOARD_DETAIL_NO,
+                BAND_BOARD_OPTION_NO,
+                BAND_BOARD_CONTENT,
+                BAND_BOARD_CNT,
+                BAND_BOARD_TITLE,
+                BAND_BOARD_WRITER, 
+                BAND_REMARKS,
+                BAND_BOARD_DATE,
+                BAND_BOARD_UPDATE,
+                BAND_BOARD_TAG     
+        FROM ( SELECT ROWNUM RN, A.* FROM (
+                        SELECT * FROM (
+                                        SELECT  A.BAND_BOARD_DETAIL_NO,
+                                                A.BAND_BOARD_OPTION_NO,
+                                                A.BAND_BOARD_CONTENT,
+                                                A.BAND_BOARD_CNT,
+                                                A.BAND_BOARD_TITLE,
+                                                A.BAND_BOARD_WRITER, 
+                                                A.BAND_REMARKS,
+                                                A.BAND_BOARD_DATE,
+                                                A.BAND_BOARD_UPDATE,
+                                                A.BAND_BOARD_TAG
+                                            FROM BAND_BOARD_DETAIL A,
+                                                 BAND_BOARD_OPTION B,
+                                                 BAND C
+                                            WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
+                                            AND     B.BAND_NO = C.BAND_NO
+                                            AND     C.BAND_NO = #{bandNo}
+                                            ORDER BY A.BAND_BOARD_DATE DESC
+                                     )
 <![CDATA[
 		                ) A WHERE ROWNUM <= #{five} ) WHERE RN >= #{one}
-]]>		                
+]]>
+			) A, REPLY B
+                        WHERE A.BAND_BOARD_DETAIL_NO = B.CATEGORY_NO(+)
+                        GROUP BY  BAND_BOARD_DETAIL_NO) B
+                        WHERE A.BAND_BOARD_DETAIL_NO=B.BAND_BOARD_DETAIL_NO		                
+	</select>
+	<select id="getOwnLike" resultType="OwnLikeVO">
+		SELECT 	A.CATEGORY_NO,
+		        A.USER_ID,
+		        A.CATEGORY,
+		        A.LIKE_NO,
+		        B.LIKECOUNT
+		FROM(
+		SELECT  CATEGORY_NO,
+		        USER_ID,
+		        CATEGORY,
+		        LIKE_NO
+		        FROM OWN_LIKE
+		        WHERE CATEGORY_NO IN 
+	                                <foreach collection="categoryNos" item="c" separator="," open="(" close=")">
+	                                	#{c}
+	                                </foreach>
+			                                AND USER_ID=#{userId}) A,
+		(SELECT  CATEGORY_NO, COUNT(CATEGORY_NO) "LIKECOUNT"
+		        FROM OWN_LIKE
+		        WHERE CATEGORY_NO IN 
+	                                <foreach collection="categoryNos" item="c" separator="," open="(" close=")">
+	                                	#{c}
+	                                </foreach>
+		        GROUP BY CATEGORY_NO) B
+		        WHERE A.CATEGORY_NO=B.CATEGORY_NO
 	</select>
 </mapper>
