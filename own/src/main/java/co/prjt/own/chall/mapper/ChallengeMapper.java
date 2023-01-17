@@ -19,5 +19,10 @@ public interface ChallengeMapper {
 	
 	//멤버리스트와 조인 - 아이디로 검색
 	List<ChallengeVO> getMyChall(String userId);
-
+	
+	//멀티미디어와 조인 - 아이디로 검색
+	//멀티미디어와 조인 - 챌린지 카테고리로 검색
+	//멀티미디어 조인 - 태그로 검색
+	//멀티미디어
+	
 }

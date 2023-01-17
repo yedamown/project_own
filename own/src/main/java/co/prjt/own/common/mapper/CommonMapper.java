@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import co.prjt.own.chall.service.ValidationVO;
 import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.ReportVO;
@@ -33,7 +34,7 @@ public interface CommonMapper {
 	
 	//멀티미티어 식별키가 2개이상일 때 조회
 	public List<MultimediaVO> selectImgAllKey(List<String> value);
+
 	//신고리스트 불러오기
 	public List<ReportVO> reportAlllist();
-				
 }

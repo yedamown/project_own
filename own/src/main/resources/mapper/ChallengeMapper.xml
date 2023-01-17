@@ -64,11 +64,11 @@
 	</select>
 
 	<select id="getMyChall" resultType="co.prjt.own.chall.service.ChallengeVO">
-		SELECT *
+		SELECT C.*
 		FROM CHALL_MEM_LIST M, CHALLENGES C
 		WHERE M.CHALL_NO = C.CHALL_NO
 		AND M.USER_ID = #{userId}
-		AND CHALL_STATUS = '시작 전'
+		AND C.CHALL_STATUS = '시작 전'
 		AND M.MEM_STATUS = '승인'
 	</select>
 </mapper>

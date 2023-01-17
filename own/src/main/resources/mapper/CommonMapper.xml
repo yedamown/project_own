@@ -51,6 +51,7 @@
                		#{v}
                </foreach>
 	</select>
+
 	<select id="reportAlllist" resultType="co.prjt.own.common.service.ReportVO">
 	SELECT * FROM REPORT
 	</select>	

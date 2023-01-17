@@ -17,4 +17,6 @@ public interface CMemberListMapper {
 	//전체리스트
 	List<CMemberListVO> getMemListAll(CMemberListVO vo);
 	
+	//도전에 참여중인 사람 수
+	int getChallMemNum(String challNo);
 }

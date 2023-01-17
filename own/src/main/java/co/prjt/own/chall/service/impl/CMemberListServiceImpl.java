@@ -34,5 +34,10 @@ public class CMemberListServiceImpl implements CMemberListService{
 		return mapper.getMemListAll(vo);
 	}
 
+	@Override
+	public int getChallMemNum(String challNo) {
+		return mapper.getChallMemNum(challNo);
+	}
+
 
 }

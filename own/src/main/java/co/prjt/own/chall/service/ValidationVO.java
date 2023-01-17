@@ -16,5 +16,7 @@ public class ValidationVO {
 	Date vldDate;
 	
 	String vldStatus;
-	
+
+	//이미지이름 넣는 곳 ㅎ 조인해서 넣을 곳
+	String mediaServerFile;
 }

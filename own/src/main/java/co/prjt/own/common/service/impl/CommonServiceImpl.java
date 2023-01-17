@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.prjt.own.chall.service.ValidationVO;
 import co.prjt.own.common.mapper.CommonMapper;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ExersubVO;
@@ -153,11 +154,9 @@ public class CommonServiceImpl implements CommonService {
 	public List<MultimediaVO> selectImgAllKey(List<String> value) {
 		return commonMapper.selectImgAllKey(value);
 	}
-
 	@Override
 	public List<ReportVO> reportAlllist() {
 		// TODO Auto-generated method stub
 		return commonMapper.reportAlllist();
 	}
-
 }

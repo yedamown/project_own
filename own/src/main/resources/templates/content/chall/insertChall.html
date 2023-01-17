@@ -74,6 +74,7 @@ $(function(){
 			<h1 th:text="${session.loginUser.userId}"></h1>
 		</div>
 		<form action="/own/chall/insertChall" method="post" id="insertChall" enctype="multipart/form-data">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 			<ul>
 				<input id ="userId" type="hidden" name="challLeader" th:value="${session.loginUser.userId}">
 				<li>도전제목:<input id="challTitle" name="challTitle">

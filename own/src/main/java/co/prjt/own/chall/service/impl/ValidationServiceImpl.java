@@ -30,8 +30,20 @@ public class ValidationServiceImpl implements ValidationService{
 	}
 
 	@Override
-	public List<ValidationVO> getVldAll(ValidationVO vo) {
-		return mapper.getVldAll(vo);
+	public List<ValidationVO> getChallVld(ValidationVO vo) {
+		return mapper.getChallVld(vo);
 	}
+
+	@Override
+	public List<ValidationVO> getMyVld(ValidationVO vo) {
+		return mapper.getMyVld(vo);
+	}
+
+	@Override
+	public List<ValidationVO> getMyChallVld(ValidationVO vo) {
+		return mapper.getMyChallVld(vo);
+	}
+
+
 
 }

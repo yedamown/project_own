@@ -16,18 +16,29 @@
 		#{userId})
 	</insert>
 
-	<sql id="condition">
-		<where>
-			<if test="challNo != null and userId !=null">
-				CHALL_NO = #{challNo}
-				USER_ID = #{userId}
-			</if>
-		</where>
-	</sql>
-
-	<select id="getVldAll" resultType="co.prjt.own.chall.service.ValidationVO">
-		SELECT * FROM
-		CHALL_VALIDATION
-		<include refid="condition" />
+	<select id="getChallVld" resultType="co.prjt.own.chall.service.ValidationVO">
+		SELECT V.*, M.MEDIA_SERVER_FILE
+		FROM CHALL_VALIDATION V, MULTIMEDIA M
+		WHERE M.IDENTIFY_ID = V.VLD_NO
+		AND V.CHALL_NO = #{challNo}
+		ORDER BY V.VLD_DATE DESC
 	</select>
+	
+	<select id="getMyVld" resultType="co.prjt.own.chall.service.ValidationVO">
+		SELECT V.*, M.MEDIA_SERVER_FILE
+		FROM CHALL_VALIDATION V, MULTIMEDIA M
+		WHERE M.IDENTIFY_ID = V.VLD_NO
+		AND V.USER_ID = #{userId}
+		ORDER BY V.VLD_DATE DESC
+	</select>
+	
+	<select id="getMyChallVld" resultType="co.prjt.own.chall.service.ValidationVO">
+		SELECT V.*, M.MEDIA_SERVER_FILE
+		FROM CHALL_VALIDATION V, MULTIMEDIA M
+		WHERE M.IDENTIFY_ID = V.VLD_NO
+		AND V.CHALL_NO = #{challNo}
+		AND V.USER_ID = #{userId}
+		ORDER BY V.VLD_DATE DESC
+	</select>
+	
 </mapper>

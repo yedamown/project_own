@@ -13,14 +13,22 @@
 	
 	<sql id="condition">
 		<where>
+			<!-- 내 도전신청?   -->
 			<if test="userId !=null">
 				USER_ID = #{userId}
 			</if> 
+			<!-- 도전신청회원보기 -->
 			<if test="challNo !=null">
 				CHALL_NO = #{challNo}
 			</if>
+			<!-- 회원상태와 도전번호로 검색 -->
 			<if test="challNo !=null and memStatus !=null">
 				CHALL_NO = #{challNo}
+				MEM_STATUS = #{memStatus}
+			</if>
+			<!-- 상태와 아이디로 검색.. -->
+			<if test="userId !=null and memStatus !=null">
+				USER_ID = #{userId}
 				MEM_STATUS = #{memStatus}
 			</if>
 		</where>
@@ -47,4 +55,11 @@
 		WHERE USER_ID = #{userId}
 		AND CHALL_NO = #{challNo}
 	</update>
+	
+	<select id="getChallMemNum" resultType="int">
+		SELECT COUNT(*)
+		FROM CHALL_MEM_LIST
+		WHERE CHALL_NO = #{value}
+		AND MEM_STATUS = '승인'
+	</select>
 </mapper>
