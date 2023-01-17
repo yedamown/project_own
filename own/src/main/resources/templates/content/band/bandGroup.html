@@ -22,6 +22,8 @@
         <!-- main css -->
         <link rel="stylesheet" href="/css/band/css/style.css">
         <link rel="stylesheet" href="/css/band/css/responsive.css">
+        <style type="text/css">
+        </style>
     </head>
     <body>
     <div layout:fragment="content">
@@ -88,64 +90,29 @@
                             <aside class="single_sidebar_widget post_category_widget">
                                 <h4 class="widget_title">글쓰기</h4>
                                 <div class="d-flex justify-content-between">
-                                    <p><i class="fa fa-file-text-o" aria-hidden="true"></i> 전체 글보기</p>
+                                    <p><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
                                     <p th:text="${boardCount}">2538</p>
                                 </div>
                                 <hr style="margin-bottom: 20px; margin-top: 0px;">
                                 <ul class="list_style cat-list">
-                                    <li>
-                                        <a href="#" class="d-flex justify-content-between">
-                                            <p><i class="fa fa-file-text-o" aria-hidden="true"></i> 자유게시판</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex justify-content-between">
-                                            <p><i class="fa fa-file-text-o" aria-hidden="true"></i></p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex justify-content-between">
-                                            <p><i class="fa fa-file-text-o" aria-hidden="true"></i> Fashion</p>
-                                        </a>
-                                    </li>															
-                                </ul>
-                                <hr style="margin-bottom: 20px; margin-top: 0px;">
-                                <div class="d-flex justify-content-between">
-                                    <p> 제주도 여행</p>
-                                </div>
-                                <hr style="margin-bottom: 20px; margin-top: 0px;">
-                                <ul class="list_style cat-list">
-                                    <li>
-                                        <a href="#" class="d-flex justify-content-between">
-                                            <p><i class="fa fa-file-text-o" aria-hidden="true"></i> 자유게시판</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="d-flex justify-content-between">
-                                            <p><i class="fa fa-file-text-o" aria-hidden="true"></i> Lifestyle</p>
-                                        </a>
+                                    <li th:each="board: ${boardList}">
+                                    	<p th:if="${board.bandBoardLine}!=0"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
+                                    	<b th:if="${board.bandBoardLine}==0" th:text="${board.bandBoardName}"></b>
                                     </li>											
                                 </ul>
                                 <div class="br"></div>
                             </aside>
                             <aside class="single-sidebar-widget tag_cloud_widget">
-                                <h4 class="widget_title">최신 생성 태그</h4>
-                                <ul class="list_style">
-                                    <li><a href="#">Technology</a></li>
-                                    <li><a href="#">Fashion</a></li>
-                                    <li><a href="#">Architecture</a></li>
-                                    <li><a href="#">Fashion</a></li>
-                                    <li><a href="#">Food</a></li>
-                                    <li><a href="#">Technology</a></li>
-                                    <li><a href="#">Lifestyle</a></li>
-                                    <li><a href="#">Art</a></li>
-                                    <li><a href="#">Adventure</a></li>
-                                    <li><a href="#">Food</a></li>
+                                <h4 class="widget_title">가치 태그</h4>
+                            	<ul class="list_style">
+                                    <li th:if="${keyword != null}" th:each="tag: ${keyword}">
+                                    	<a href="#"  th:text="${tag}"></a>
+                                    </li>
                                 </ul>
                             </aside>
                         </div>
                     </div>
-                    <div style="flex-grow:3; width: 600px">
+                    <div style="flex-grow:3; width: 740px">
                         <div>
                             <article style="border: 1px solid #eeeeee;padding:30px; ">
                                 <div class="input-group">
@@ -155,144 +122,146 @@
                                     </span>
                                 </div>
                             </article>
-                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-                                <div style="display: flex; flex-direction: column;">
-                                    <div>
-                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-                                            <div  style="display: block; width: 300px; padding: 10px;">
-                                                <ul class="blog_meta list_style" style="display: inline-block;">
-                                                    <li style="display: block;">Mark wiens</li>
-                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
-                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-
-                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-                                        <div class="blog_details">
-                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="view_btn button_hover">View More</a>
-                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-                                <div style="display: flex; flex-direction: column;">
-                                    <div>
-                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-                                            <div  style="display: block; width: 300px; padding: 10px;">
-                                                <ul class="blog_meta list_style" style="display: inline-block;">
-                                                    <li style="display: block;">Mark wiens</li>
-                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
-                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-
-                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-                                        <div class="blog_details">
-                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="view_btn button_hover">View More</a>
-                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-                                <div style="display: flex; flex-direction: column;">
-                                    <div>
-                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-                                            <div  style="display: block; width: 300px; padding: 10px;">
-                                                <ul class="blog_meta list_style" style="display: inline-block;">
-                                                    <li style="display: block;">Mark wiens</li>
-                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
-                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-
-                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-                                        <div class="blog_details">
-                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="view_btn button_hover">View More</a>
-                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-                                <div style="display: flex; flex-direction: column;">
-                                    <div>
-                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-                                            <div  style="display: block; width: 300px; padding: 10px;">
-                                                <ul class="blog_meta list_style" style="display: inline-block;">
-                                                    <li style="display: block;">Mark wiens</li>
-                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
-                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-
-                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-                                        <div class="blog_details">
-                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="view_btn button_hover">View More</a>
-                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-                                    </div>
-                                </div>
-                            </article>
-                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-                                <div style="display: flex; flex-direction: column;">
-                                    <div>
-                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
-                                            <div  style="display: block; width: 300px; padding: 10px;">
-                                                <ul class="blog_meta list_style" style="display: inline-block;">
-                                                    <li style="display: block;">Mark wiens</li>
-                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
-                                        <h4>Astronomy Binoculars A Great Alternative</h4>
-
-                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
-                                        <div class="blog_details">
-                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="view_btn button_hover">View More</a>
-                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
-                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
-                                    </div>
-                                </div>
-                            </article>
-                            <nav class="blog-pagination justify-content-center d-flex">
-		                        <a href="#" class="view_btn button_hover" style="width: 555px;">View More</a>
-		                    </nav>
+                            <div>
+	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
+	                                <div style="display: flex; flex-direction: column;">
+	                                    <div>
+	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
+	                                            <div  style="display: block; width: 300px; padding: 10px;">
+	                                                <ul class="blog_meta list_style" style="display: inline-block;">
+	                                                    <li style="display: block;">Mark wiens</li>
+	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                        
+	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
+	
+	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
+	                                        <div class="blog_details">
+	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
+	                                        </div>
+	                                    </div>
+	                                    <a href="#" class="view_btn button_hover">View More</a>
+	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                        <div><i class="fa fa-heart" aria-hidden="true"></i><span> 반응추가하기</span></div>
+	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
+	                                    </div>
+	                                </div>
+	                            </article>
+	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
+	                                <div style="display: flex; flex-direction: column;">
+	                                    <div>
+	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
+	                                            <div  style="display: block; width: 300px; padding: 10px;">
+	                                                <ul class="blog_meta list_style" style="display: inline-block;">
+	                                                    <li style="display: block;">Mark wiens</li>
+	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                        
+	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
+	
+	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
+	                                        <div class="blog_details">
+	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
+	                                        </div>
+	                                    </div>
+	                                    <a href="#" class="view_btn button_hover">View More</a>
+	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
+	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
+	                                    </div>
+	                                </div>
+	                            </article>
+	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
+	                                <div style="display: flex; flex-direction: column;">
+	                                    <div>
+	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
+	                                            <div  style="display: block; width: 300px; padding: 10px;">
+	                                                <ul class="blog_meta list_style" style="display: inline-block;">
+	                                                    <li style="display: block;">Mark wiens</li>
+	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                        
+	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
+	
+	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
+	                                        <div class="blog_details">
+	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
+	                                        </div>
+	                                    </div>
+	                                    <a href="#" class="view_btn button_hover">View More</a>
+	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
+	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
+	                                    </div>
+	                                </div>
+	                            </article>
+	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
+	                                <div style="display: flex; flex-direction: column;">
+	                                    <div>
+	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
+	                                            <div  style="display: block; width: 300px; padding: 10px;">
+	                                                <ul class="blog_meta list_style" style="display: inline-block;">
+	                                                    <li style="display: block;">Mark wiens</li>
+	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                        
+	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
+	
+	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
+	                                        <div class="blog_details">
+	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
+	                                        </div>
+	                                    </div>
+	                                    <a href="#" class="view_btn button_hover">View More</a>
+	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
+	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
+	                                    </div>
+	                                </div>
+	                            </article>
+	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
+	                                <div style="display: flex; flex-direction: column;">
+	                                    <div>
+	                                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
+	                                            <div  style="display: block; width: 300px; padding: 10px;">
+	                                                <ul class="blog_meta list_style" style="display: inline-block;">
+	                                                    <li style="display: block;">Mark wiens</li>
+	                                                    <li style="display: block;">2023년 1월 15일 오후 7시 11분</li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                        
+	                                        <h4>Astronomy Binoculars A Great Alternative</h4>
+	
+	                                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 555px; height: 280px;">
+	                                        <div class="blog_details">
+	                                            <p>MCSE boot camps have its supporters and its detractors. Some people do not understand why you should have to spend money on boot camp when you can get the MCSE study materials yourself at a fraction.</p>
+	                                        </div>
+	                                    </div>
+	                                    <a href="#" class="view_btn button_hover">View More</a>
+	                                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+	                                        <div><i class="fa fa-heart-o" aria-hidden="true"></i><span> 반응추가하기</span></div>
+	                                        <div><i class="lnr lnr-bubble"></i><span> 06</span></div>
+	                                    </div>
+	                                </div>
+	                            </article>
+	                            <nav class="blog-pagination justify-content-center d-flex">
+			                        <a href="#" class="view_btn button_hover" style="width: 555px;">View More</a>
+			                    </nav>
+			               </div>
                         </div>
                     </div>
                     <div style="flex-grow:1; width: 260px">

@@ -1,7 +1,9 @@
 package co.prjt.own.band.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.prjt.own.band.service.BandBoardDetailService;
+import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.band.service.BandBoardOptionService;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandMemberDetailVO;
@@ -173,11 +176,32 @@ public class BandController {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		session.setAttribute("loginUser", ownService.login("hjj"));
 		//밴드+밴드인원수 조회
-		model.addAttribute("band", bandService.getBand(bandNo, user.getUserId()));
+		Map<String, Object> band = bandService.getBand(bandNo, user.getUserId());
+		//밴드키워드 자르기
+		StringTokenizer st = new StringTokenizer((String) band.get("bandKeyword"),"#");
+		//처음은 공백이 나와서.. 하나 버리고 감
+		st.nextToken();
+		ArrayList<String> keyword = new ArrayList<String>();
+		while(st.hasMoreTokens()) {
+			keyword.add("#"+st.nextToken());
+		}
+		model.addAttribute("band", band);
+		model.addAttribute("keyword", keyword);
 		//밴드 게시판 조회
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
 		//밴드의 총 글 수
 		model.addAttribute("boardCount", bandBoardDetailService.countBandBoard(bandNo));
 		return "content/band/bandGroup";
+	}
+	//RestController..밴드 상세...최신글 5개씩 내보내기
+	@PostMapping("/bandGroup")
+	@ResponseBody
+	public List<BandBoardDetailVO> fiveBoard(BandBoardDetailVO vo){
+		//글 5개씩..
+		List<BandBoardDetailVO> fiveboard = bandBoardDetailService.getFiveBoard(vo);
+		//댓글
+		
+		//찜 만약 내가 찍었다면 찍었다는 게 필요할 듯.. 단순 수량만 가져가면 안되겠음
+		return bandBoardDetailService.getFiveBoard(vo);
 	}
 }
