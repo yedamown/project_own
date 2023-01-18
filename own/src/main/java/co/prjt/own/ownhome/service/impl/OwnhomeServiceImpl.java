@@ -164,4 +164,10 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return ownhomeMapper.questionUpdate(vo);
 	}
 
+	@Override
+	public List<QuestionVO> myQuestion(String id) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.myQuestion(id);
+	}
+
 }
