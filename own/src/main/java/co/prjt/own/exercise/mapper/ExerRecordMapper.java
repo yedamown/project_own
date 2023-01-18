@@ -1,6 +1,5 @@
 package co.prjt.own.exercise.mapper;
 
-import java.util.Date;
 import java.util.List;
 
 import co.prjt.own.exercise.service.ExerRecordVO;

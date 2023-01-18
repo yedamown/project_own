@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.ChatMapper">
+	<!-- 전체 채팅방 목록 중 해당 멤버의 식별번호로 개설된 채팅방 목록 출력 -->
+	<select id="chatroomList"
+		resultType="co.prjt.own.chat.service.ChatroomVO"
+		parameterType="string">
+		SELECT *
+		FROM CHATROOM
+		WHERE BAND_MEMBER_NO = #{bandMemberNo}
+		ORDER BY CHATROOM_NO DESC
+	</select>
+
+	<!-- 채팅방 개설(1:1) -->
+	<insert id="createChatroom"
+		parameterType="co.prjt.own.chat.service.ChatroomVO">
+		<selectKey keyProperty="cno" resultType="string"
+			order="BEFORE">
+			SELECT CHATROOM_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CHATROOM (	CHATROOM_NO, 
+								CHATROOM_NAME,
+								BAND_MEMBER_NO 	)
+		VALUES ( 'CHAT_'||#{cno}, #{chatroomName}, #{bandMemberNo} )
+	</insert>
+	
+	<!-- 메세지 DB에 저장 -->
+	<insert id="saveMessage" parameterType="co.prjt.own.chat.service.MessageVO">
+		<selectKey keyProperty="mno" resultType="string"
+			order="BEFORE">
+			SELECT CHATROOM_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO MESSAGE (	MESSAGE_NO,
+								MESSAGE_CONTENT,
+								MESSAGE_TIME,
+								CHATROOM_NO,
+								BAND_MEMBER_NO	)
+		VALUES ( 'MES_'||#{mno}, #{messageContent}, SYSTIMESTAMP, #{chatroomNo}, #{bandMemberNo} )
+	</insert>
+	
+	<!-- 메세지 DB에서 조회 -->
+	<select id="getMessage"
+		resultType="co.prjt.own.chat.service.MessageVO"
+		parameterType="string">
+		SELECT *
+		FROM MESSAGE
+		WHERE CHATROOM_NO = #{chatroomNo}
+		ORDER BY MESSAGE_TIME;
+	</select>
+</mapper>
