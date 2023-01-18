@@ -13,9 +13,11 @@ import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.OwnLikeVO;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BandBoardDetailSearchVO extends BandBoardDetailVO{

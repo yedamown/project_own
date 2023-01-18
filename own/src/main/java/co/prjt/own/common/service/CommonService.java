@@ -2,6 +2,7 @@ package co.prjt.own.common.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.chall.service.ValidationVO;
@@ -35,5 +36,7 @@ public interface CommonService {
 
 		//신고리스트 불러오기
 		public List<ReportVO> reportAlllist();
-	
+		
+		//밴드용 이미지식별키수정
+		public int updateKey(@Param(value = "key") String key, @Param(value = "name")List<String> name);
 }

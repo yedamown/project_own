@@ -188,4 +188,33 @@ SELECT
 	<select id="getOwnDetailLike" resultType="OwnLikeVO">
 		SELECT * FROM OWN_LIKE WHERE CATEGORY_NO = #{bandBoardDetailNo}
 	</select>
+	
+	<insert id="insertBandBoard">
+		<selectKey keyProperty="bandBoardDetailNo" resultType="string" order="BEFORE">
+			SELECT MAX(TO_NUMBER(SUBSTR(BAND_BOARD_DETAIL_NO,5)))+1 FROM BAND_BOARD_DETAIL
+		</selectKey>
+		INSERT INTO BAND_BOARD_DETAIL(
+                    BAND_BOARD_CONTENT,
+                    BAND_BOARD_CNT,
+                    BAND_BOARD_DETAIL_NO,
+                    BAND_REMARKS,
+                    BAND_BOARD_DATE,
+                    BAND_BOARD_UPDATE,
+                    BAND_BOARD_TAG,
+                    BAND_BOARD_OPTION_NO,
+                    BAND_BOARD_TITLE,
+                    BAND_BOARD_WRITER)
+            values(
+                    #{bandBoardContent},
+                    1,
+                    'BDD_'||#{bandBoardDetailNo},
+                    #{bandRemarks},
+                    CURRENT_DATE,
+                    NULL,
+                    #{bandBoardTag},
+                    #{bandBoardOptionNo},	
+                    #{bandBoardTitle},
+                    #{bandBoardWriter}
+                    )
+	</insert>
 </mapper>
