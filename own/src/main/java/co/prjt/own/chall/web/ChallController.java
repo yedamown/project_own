@@ -1,9 +1,9 @@
 package co.prjt.own.chall.web;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
-import javax.mail.Message;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -25,10 +25,13 @@ import co.prjt.own.chall.service.CMemberListService;
 import co.prjt.own.chall.service.CMemberListVO;
 import co.prjt.own.chall.service.CMemberService;
 import co.prjt.own.chall.service.CMemberVO;
+import co.prjt.own.chall.service.CResultService;
+import co.prjt.own.chall.service.CResultVO;
 import co.prjt.own.chall.service.ChallengeService;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.chall.service.ValidationService;
 import co.prjt.own.chall.service.ValidationVO;
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
@@ -46,15 +49,17 @@ public class ChallController {
 	@Autowired CMemberService member;
 	@Autowired CAmountService amount;
 	@Autowired ValidationService validation;
+	@Autowired CResultService result;
 
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
-	public String challHome(Model model, HttpServletRequest request, ChallengeVO vo1, CMemberListVO vo2) {
+	public String challHome(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
 		HttpSession session = request.getSession();
 //		session.setAttribute("loginUser", ownService.login("kmh"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		System.out.println("===================도전 홈"+user);
-		List<ChallengeVO> cList = challenge.getChallAll(null);	
+		challenge.getChallAll(vo1);
+		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);	
 		//참여회원 넣은 도전 리스트 담아둘 새 리스트
 		List<ChallengeVO> newMemList = new ArrayList<ChallengeVO>();
 		//멀티미디어 정보 담을 새 리스트
@@ -104,6 +109,13 @@ public class ChallController {
 		return "content/chall/challHome";
 	}
 
+	//홈페이지 페이징 아작스
+	@GetMapping("/popChallAjax")
+	@ResponseBody
+	public String popChallAjax() {
+		return null;
+	}
+	
 	// 도전등록 폼으로 이동
 	@GetMapping("/insertFormChall") // 등록 폼으로 이동
 	public String insertChall(Model model) {
@@ -237,6 +249,29 @@ public class ChallController {
 		} else {
 			return "fail";
 		}
+	}
+	
+	//도전현황 보기
+	//자기자신 도전횟수 , 도전평균 성공률
+	
+	//도전결과 정산처리
+	@PostMapping("/challResult")
+	@ResponseBody
+	public String insertChallResult(@RequestBody CMemberListVO vo, CResultVO rs) {
+		//버튼을 누르면 모든 도전멤버를 가져옴 -> 리스트라서 포문돌리면서 insert해주기
+		String challNo = vo.getChallNo();
+		vo.setMemStatus("승인");
+		int rscount = 0;
+		List<CMemberListVO> list = memberList.getMemListAll(vo);
+		for(CMemberListVO i : list) {
+			String userId = i.getUserId();
+			rs.setChallNo(challNo);
+			rs.setUserId(userId);
+			result.insertCResult(rs);
+			rscount ++;
+		}
+		String msg = rscount + "처리완료";
+		return msg;
 	}
 	
 	// 마이페이지 - 프로필
