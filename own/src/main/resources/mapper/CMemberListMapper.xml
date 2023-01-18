@@ -14,22 +14,22 @@
 	<sql id="condition">
 		<where>
 			<!-- 내 도전신청?   -->
-			<if test="userId !=null">
+			<if test="userId !=null and memStatus == null ">
 				USER_ID = #{userId}
 			</if> 
 			<!-- 도전신청회원보기 -->
-			<if test="challNo !=null">
+			<if test="challNo !=null and memStatus == null " >
 				CHALL_NO = #{challNo}
 			</if>
 			<!-- 회원상태와 도전번호로 검색 -->
 			<if test="challNo !=null and memStatus !=null">
 				CHALL_NO = #{challNo}
-				MEM_STATUS = #{memStatus}
+				AND MEM_STATUS = #{memStatus}
 			</if>
 			<!-- 상태와 아이디로 검색.. -->
 			<if test="userId !=null and memStatus !=null">
 				USER_ID = #{userId}
-				MEM_STATUS = #{memStatus}
+				AND MEM_STATUS = #{memStatus}
 			</if>
 		</where>
 	</sql>

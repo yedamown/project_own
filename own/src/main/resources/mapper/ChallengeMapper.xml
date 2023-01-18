@@ -48,14 +48,16 @@
 				)
 	</insert>
 	
-	
 	<!-- vo중 조건으로 조회 / 아마 여러개라서 list로 출력-->
 	<select id="getChallAll" resultType="co.prjt.own.chall.service.ChallengeVO">
-		SELECT * 
-		FROM CHALLENGES
-		<include refid="condition" />
+		SELECT * FROM ( SELECT ROWNUM RN, A.* FROM (
+   						SELECT * FROM CHALLENGES
+   		<include refid="condition"/>
+		ORDER BY CHALL_NO
+   		<![CDATA[   
+		) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
+		]]>
 	</select>
-	
 	
 	<!-- 단건조회 -->
 	<select id="getChall" resultType="co.prjt.own.chall.service.ChallengeVO">
@@ -70,5 +72,10 @@
 		AND M.USER_ID = #{userId}
 		AND C.CHALL_STATUS = '시작 전'
 		AND M.MEM_STATUS = '승인'
+	</select>
+	
+	<select id="countChall" resultType="int">
+		SELECT count(*)
+		FROM CHALLENGES
 	</select>
 </mapper>

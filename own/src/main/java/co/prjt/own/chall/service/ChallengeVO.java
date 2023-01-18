@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import co.prjt.own.common.Paging;
 import lombok.Data;
 
 @Data
@@ -29,4 +30,8 @@ public class ChallengeVO {
 	String restPrice;
 	
 	String FirstImage;
+	
+	int first;
+	int last;
+	Paging paging;
 }

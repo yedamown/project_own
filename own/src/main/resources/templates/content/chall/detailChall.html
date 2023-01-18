@@ -32,6 +32,8 @@
   <script src="/css/chall/mail/contact.js"></script>
   <!-- Template Javascript -->
   <script src="/css/chall/js/main.js"></script>
+  <!-- google chart -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <meta charset="utf-8">
   <title> OWN _ 도전 상세 </title>
 </head>
@@ -133,6 +135,8 @@
             </div>
             <a th:if="${memcheck !=null }" class="btn btn-primary mt-2 py-2 px-4">이미 참여중인 도전</a>
             <a th:if="${memcheck ==null }" class="btn btn-primary mt-2 py-2 px-4" id="applyBtn">도전 신청하기</a>
+            <a th:if="${leaderInfo.userId == myInfo.userId }" class="btn btn-primary mt-2 py-2 px-4" id="resultProc">도전
+              결과처리하기</a>
           </div>
         </div>
         <!--대표사진 및 설명 + 신청 end-->
@@ -157,7 +161,7 @@
                     id="resultBtn">
                     도전 달성률
                   </li>
-                  <li class="btn btn-outline-primary m-1" th:if="${memcheck !=null }" data-filter=".third" id="memBtn">
+                  <li class="btn btn-outline-primary m-1" th:if="${leaderInfo.userId == myInfo.userId }"  data-filter=".third" id="memBtn">
                     회원보기
                   </li>
                 </ul>
@@ -203,8 +207,11 @@
 
           <!--달성률 시작-->
           <div style="display: none;" id="challResult">
-            <input type="hidden" id="resultCheck" value="false">
             <h1>달성률탭</h1>
+            <div style="width: 400px; height: 400px;">
+              <canvas id="myChart"></canvas>
+            </div>
+            <input type="hidden" id="resultCheck" value="false">
           </div>
           <!--달성률 탭-->
 
@@ -223,7 +230,8 @@
                     <input id="userId" name="userId" type="hidden" th:if="${memcheck !=null }"
                       th:value="${memcheck.userId}" />
                     <label for="name">NickName *</label>
-                    <input type="text" class="form-control" id="vldname" th:if="${memcheck !=null }" th:value="${myInfo.memNickname}" readonly />
+                    <input type="text" class="form-control" id="vldname" th:if="${memcheck !=null }"
+                      th:value="${myInfo.memNickname}" readonly />
                   </div>
                   <div class="form-group">
                     <label for="name">Date *</label>
@@ -542,6 +550,27 @@
               }) */
     })
 
+    //달성률 구글차트
+    var context = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(context, {
+      type: 'doughnut',
+      data: {
+            labels: [
+            '성공',
+            '남은 인증 횟수'
+          ],  
+          datasets: [{
+            label: 'My First Dataset',
+            data: [50, 100],
+            backgroundColor: [
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4
+          }]
+    }
+    });
+
     /* 상세보기 버튼 */
     $('#detailBtn').on("click", function () {
       $("#challDetail").css('display', 'inline-block');
@@ -671,6 +700,27 @@
         }
       })
     }
+ 
+    //도전리더만 결과처리버튼
+    $("#resultProc").on("click", function(){
+      let challNo = $('#challNo').val();
+      console.log(challNo);
+      $.ajax({
+        url: '/own/chall/challResult',
+        method:'post',
+        data: JSON.stringify({challNo: challNo}),
+        beforeSend : function(xhr){
+                      xhr.setRequestHeader(header, token);
+        },
+        contentType: "application/json",
+        success: function(result) {
+          console.log(result)
+        },
+        error: function(err){
+          console.log(err)
+        }
+      })
+    })
 
      /* 멤버 승인, 거절 버튼 */
     /*멤버 리스트 ul li 만들기*/
