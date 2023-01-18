@@ -354,15 +354,15 @@
             <th:block th:each="snsLength :${snsImg}">   
             <div class="modal" >
               <!-- 게시글 상세보기 Modal의 내용 -->
-              <div class="modal-content" style="width: 1000px; height: 900px;">
+              <div class="modal-content" style="width: 1200px; height: 900px;">
                 <span class="close">&times;</span>
                 <div class="modalP" style="position:relative;"></div>
                 <div class="boardBtnDiv" style="position:absolute;top:50%;right:20%">버튼이요</div>
-                <div class="contentBox" style="display:flex; flex-direction: column;flex-wrap: wrap;justify-content: flex-end; text-align:right;">
+                <div class="contentBox" style="text-align:right;">
               	<p class="bContent">글내용:</p>
                 <p class="bWriter">작성자:</p>
                 <p class="bDate">작성일자:</p>
-                <table style="border: 1px solid black">
+                <table style="border: 1px solid black; font-size: 14px; width: 500px;">
                     <thead>
                     <tr>
                         <th>댓글 작성자</th>
@@ -370,7 +370,7 @@
                         <th>댓글 작성일자</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tableBody">
                         <tr>
                             <td>댓글 내용 테스트</td>
                         </tr>
@@ -550,20 +550,20 @@
                                 boardBtn.attr("class", "pageBtn");
                                 $('.boardBtnDiv').append(boardBtn);
                                 $('.modalP').append(img);
+
+                                for(let i=0; i<res.reply.length; i++){
+                                    var tableTd ='<tr>'
+                                        tableTd += '<td>'+res.reply[i].replyWriter+'</td>';
+                                        tableTd += '<td>'+res.reply[i].replyContent+'</td>';
+                                        tableTd += '<td>'+res.reply[i].replyDate+'</td>';
+                                        tableTd += '</tr>';
+                                        $('#tableBody').append(tableTd);
+                                }
                             }else{
                                 console.log('이미지생성중'+i)
                             }
                             
                             }
-                            // for(let i=0; i<res.imgList.length; i++){
-                            //     let boardBtn = $('<div>').css({"width":"60px", "height":"50px", 
-                            //                                 "background-color":"gray",
-                            //                                 "border":"1px black solid",
-                            //                                 "border-radius":"50%",
-                            //                                 "overflow":"hidden"})
-                            //     $('.boardBtn').append(boardBtn);
-                            // }
-
                             $('.bWriter').text(res.svo.snsNickname);
                             $('.bDate').text(elapsedText(res.svo.snsBoardDate));
                             

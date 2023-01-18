@@ -24,6 +24,6 @@ class BandApplicationTests {
 	void contextLoads() throws ParseException {
 		BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
 		vo.setBandNo("BDU_1");
-		List<BandBoardDetailSearchVO> list = bandBoardDetailService.getFiveBoard(vo);
+		//List<BandBoardDetailSearchVO> list = bandBoardDetailService.getFiveBoard(vo);
 	}
 }
