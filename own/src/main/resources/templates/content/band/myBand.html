@@ -120,16 +120,13 @@
         <!--================ 페이지 Area  =================-->
         <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
         <!--================ 페이지 Area 끝  =================-->
-        
+        <script src="/css/band/js/time.js"></script>
         <script>
       //페이징+검색처리
         function gopage(i) {
             searchFrm.page.value = i;
             searchFrm.submit();
         }
-        </script>
-        <script type="module">
-		import {SimpleDateTimeFormat, elapsedText} from "/css/band/js/time.js";
             //밴드번호 세개 가져옴
             let bandnum = '';
             $('.bandnums').each(function(idx, ele){
