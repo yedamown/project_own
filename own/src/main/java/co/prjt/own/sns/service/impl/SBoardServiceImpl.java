@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.prjt.own.common.service.ReplyVO;
 import co.prjt.own.sns.mapper.SBoardMapper;
 import co.prjt.own.sns.service.SBoardService;
 import co.prjt.own.sns.service.SBoardVO;
@@ -52,6 +53,26 @@ public class SBoardServiceImpl implements SBoardService {
 	@Override
 	public List<SBoardVO> getNowBoardList(String id) {
 		return sBoardMapper.getNowBoardList(id);
+	}
+
+	@Override
+	public List<ReplyVO> getBoardReplyList(String boardNo) {
+		return sBoardMapper.getBoardReplyList(boardNo);
+	}
+
+	@Override
+	public int insertSnsReply(ReplyVO vo) {
+		return sBoardMapper.insertSnsReply(vo);
+	}
+
+	@Override
+	public int deleteSnsReply(ReplyVO vo) {
+		return sBoardMapper.deleteSnsReply(vo);
+	}
+
+	@Override
+	public int updateSnsReply(ReplyVO vo) {
+		return sBoardMapper.updateSnsReply(vo);
 	}
 
 }

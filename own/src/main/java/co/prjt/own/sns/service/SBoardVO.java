@@ -1,9 +1,11 @@
 package co.prjt.own.sns.service;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import co.prjt.own.common.service.MultimediaVO;
 import lombok.Data;
 
 @Data
@@ -20,5 +22,6 @@ public class SBoardVO {
 	}
 	
 	int count;
+	List<MultimediaVO> fileList;
 	
 }

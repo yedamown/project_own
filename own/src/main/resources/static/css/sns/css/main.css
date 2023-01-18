@@ -1581,7 +1581,7 @@ img {
 }
 
 .menu_block {
-  background-color: #18181c;
+  background-color: lightgrey;
   min-height: 100vh;
   padding: 0;
 }
