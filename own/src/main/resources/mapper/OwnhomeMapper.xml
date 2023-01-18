@@ -46,7 +46,9 @@ SELECT * FROM ( SELECT ROWNUM RN, A.* FROM (
 ]]>
 </select>
 
-
+<select id="adQuestionCount" resultType="int">
+select count(*) from question
+</select>
 
 <!--================= SNS ==================-->
    <!-- 로그인 정보에서 sns 닉네임 가져오기 -->

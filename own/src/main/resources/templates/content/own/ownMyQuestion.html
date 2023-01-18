@@ -49,17 +49,17 @@
             </div>
         </div>
         <div class="container">
-        <table>
-			<thead>
+        <table border="1">
+			<thead border="1">
 				<th>no</th>
 				<th>유저아이디</th>
 				<th>제목</th>
+				<th>질문내용</th>
 				<th>답변</th>
-				<th></th>
-				<th></th>
-				<th></th>
+				<th>머리말</th>
+				<th>처리상태</th>
 			</thead>
-			<tbody id="userList">
+			<tbody id="userList" border="1">
 			<tr th:each="quest ,userStat : ${OList}">
 				<td th:text="${userStat.index+1}"></td>
 				<td th:text="${quest.userId}"></td>
@@ -79,13 +79,14 @@
 				<span th:unless="${quest.answer==null}">
 					<td th:text="${quest.answer}"></td>
 				</span>
-				<td th:text="${quest.questDate}"></td>
 				<td th:text="${quest.header}"></td>
 				<td th:text="${quest.status}"></td>
 				</tr>
 			</tbody>
 		</table>       
         </div>
+        
+        
         <nav class="blog-pagination justify-content-center d-flex" id="pagegation">
 	<!--================ 이전  =================-->
 		<ul class="pagination">
@@ -126,10 +127,22 @@
 				let tbody = $('#userList');
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
+					console.log(idx);
 					console.log(ele.userId);
+					console.log(ele.answer);
 					let tag = `<tr>
 								<td></td>
 								<td>${ele.userId}</td>
+								<td>${ele.title}</td>
+								<td>${ele.content}</td>
+								<span th:if="${ele.answer==null}">
+								<td>미처리 상태</td>
+								</span>
+								<span th:unless="${ele.answer==null}">
+								<td th:text="${ele.answer}"></td>
+								</span>
+								<td>${ele.header}</td>
+								<td>${ele.status}</td>
 							</tr>`
 					tbody.append(tag);
 				})
