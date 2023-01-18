@@ -1,3 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="co.prjt.own.chall.mapper.CResultMapper"></mapper>
+<mapper namespace="co.prjt.own.chall.mapper.CResultMapper">
+	<insert id="insertCResult">
+		<selectKey keyProperty="resultNo" resultType="String" order="BEFORE">
+			SELECT CRS_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+			INSERT INTO CHALL_RESULT( RESULT_NO, 
+	                          		  USER_ID,
+	                         		  CHALL_NO,
+	                                  CHALL_VLD )
+			VALUES ('CRS_'|| #{resultNo}
+	        		#{userId},
+	        		#{challNo}',
+	        		(SELECT CHALL_DURATION * CHALL_FREQ
+	            	 FROM CHALLENGES
+	         		 WHERE CHALL_NO = #{challNo}));
+	</insert>
+		
+		
+	<!-- 회원 인증횟수, 성공률 업뎃  -->
+	<update id="updateCResult">
+		UPDATE CHALL_RESULT
+        SET MEM_VLD = (SELECT COUNT(*)
+                        FROM CHALL_VALIDATION
+                        WHERE USER_ID = #{userId}
+                        AND CHALL_NO = #{challNo} ),
+            SUCCESS_RATE = (SELECT ROUND (MEM_VLD/CHALL_VLD, 2) 
+                            FROM CHALL_RESULT
+                            WHERE CHALL_NO = #{challNo}
+                            AND USER_ID = #{userId})
+    	WHERE CHALL_NO = #{challNo}
+        AND USER_ID = #{userId}
+	</update>
+	
+	<!--환급금 업뎃, 상금계산해서 업뎃  -->
+	<update id="updateReward">
+		UPDATE CHALL_RESULT
+        SET 	REFUND_PRICE = (SELECT SUCCESS_RATE * (SELECT CHALL_PRICE
+                                           			   FROM CHALLENGES
+                                            		   WHERE CHALL_NO = #{challNo})
+                     			FROM CHALL_RESULT)             
+    	WHERE CHALL_NO = #{challNo}
+        AND USER_ID = #{userId}
+	</update>
+</mapper>
