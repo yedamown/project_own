@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import co.prjt.own.common.Paging;
 import lombok.Data;
 
 @Data
@@ -26,5 +27,9 @@ public class OwnUserVO {
 	public String userHobby;
 	public String snsAccountNo;
 	public String snsNickname;
+	
+	public Paging paging;
+	public int first = 1;
+	public int last = 10;
 	
 }

@@ -51,11 +51,6 @@
 
 	<!-- ##### Header Area Start ##### -->
 	<header class="header-area">
-		<div sec:authorize="isAuthenticated()">
-			안녕하세요세션확인 <span sec:authentication="name">Bob</span>
-			<span th:text="${session.loginUser}"></span>
-		<span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
-		</div>
 		<!-- Logo Area -->
 		<div class="logo-area text-center">
 			<div class="container h-100">

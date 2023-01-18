@@ -1,6 +1,5 @@
 package co.prjt.own.ownhome.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.prjt.own.band.service.BandBoardDetailSearchVO;
+import co.prjt.own.common.Paging;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
@@ -89,6 +90,7 @@ public class OwnhomeController {
 			System.out.println(newpw);
 			//암호화 된거를 비교하기 위해서 쓰는 match함수
 			if(passwordEncoder.matches(pw, vo.getUserPasswd())) {
+				
 				return 1;
 			}
 			else
@@ -152,27 +154,22 @@ public class OwnhomeController {
 
 		//내질문 폼
 		@GetMapping("/own/mypage/question")
-		public String myquestionForm(HttpServletRequest request, Model model) {
+		public String myquestionForm(HttpServletRequest request, Model model, Paging paging, QuestionVO vo) {
 			HttpSession session = request.getSession();
-			OwnUserVO vo = (OwnUserVO) session.getAttribute("loginUser");
-			ownService.myQuestion(vo.getUserId());
-			model.addAttribute("myQlist", ownService.myQuestion(vo.getUserId()));
-			return "content/own/myquestion";
+			OwnUserVO ovo = (OwnUserVO) session.getAttribute("loginUser");
+			vo.setUserId(ovo.getUserId());
+			model.addAttribute("OList", ownService.getPagingmyQuestlist(vo, paging));
+			return "content/own/ownMyQuestion";
 		}
 		
-		
-		//내질문 가져오기
-		@GetMapping("/own/mypage/myQuestion")
-		@ResponseBody
-		public List<QuestionVO> myQuestion(String id){
-			List<QuestionVO> vo = new ArrayList<QuestionVO>();
-			vo = ownService.myQuestion(id);
-			System.out.println(vo);
-			return vo;
+		@ResponseBody		
+		@GetMapping("/own/mypage/myquestionAjax")
+		public List<QuestionVO> myquestionAjax(HttpServletRequest request,Model model, QuestionVO vo, Paging paging) {
+			HttpSession session = request.getSession();
+			OwnUserVO ovo = (OwnUserVO) session.getAttribute("loginUser");
+			vo.setUserId(ovo.getUserId());
+			return ownService.getPagingmyQuestlist(vo,paging);
 		}
-		
-		
-		
 		//=================================================관리자모드================================================
 		
 		//질문목록 불러오기
@@ -181,7 +178,7 @@ public class OwnhomeController {
 			List<QuestionVO> vo = ownService.questionList();
 			System.out.println(vo);
 			model.addAttribute("QList", vo);
-			return "content/own/question";
+			return "content/own/ownAdminQuestion";
 		}
 		
 		//질문 한건조회
@@ -198,6 +195,24 @@ public class OwnhomeController {
 		public String questionUpdate(QuestionVO vo) {
 			ownService.questionUpdate(vo);
 			return "redirect:/own/admin/question";
+		}
+		
+		//모든 회원보기
+		@GetMapping("/own/admin/userList")
+		public String getUserList(Model model,Paging paging,OwnUserVO vo) {
+			model.addAttribute("OList", ownService.getPagingUserList(vo, paging));
+			return "content/own/ownAdminUserList";
+		}
+		
+		
+		@ResponseBody		
+		@GetMapping("/own/userListAjax")
+		public List<OwnUserVO> ownMemberListAjax(Model model, OwnUserVO vo, Paging paging) {
+			System.out.println();
+			System.out.println(vo.toString());
+			System.out.println(paging.toString());
+			//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
+			return ownService.getPagingUserList(vo, paging);
 		}
 		
 	

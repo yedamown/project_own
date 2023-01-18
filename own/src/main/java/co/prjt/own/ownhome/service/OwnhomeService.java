@@ -4,11 +4,17 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.prjt.own.common.Paging;
 import co.prjt.own.sns.service.SAccountVO;
 
 public interface OwnhomeService {
+	//모든회원정보 페이징
+	public List<OwnUserVO> getPagingUserList(OwnUserVO vo, Paging paging);
 	//모든회원정보
 	public List<OwnUserVO> getUserList(OwnUserVO vo);
+	//회원 카운트
+	public int ownUsercount(OwnUserVO vo);
+	
 	//회원가입
 	public int insertUser(OwnUserVO UserVO);
 	//아이디 중복체크
@@ -38,5 +44,9 @@ public interface OwnhomeService {
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);
 	//내 질문 가져오기
-	public List<QuestionVO> myQuestion(String id);
+	public List<QuestionVO> myQuestion(QuestionVO vo);
+	//내질문 갯수
+	public int myquestionCount(QuestionVO VO);
+	//내 질문 페이징처리
+	public List<QuestionVO> getPagingmyQuestlist(QuestionVO vo, Paging paging);
 }

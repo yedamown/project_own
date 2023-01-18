@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<div layout:fragment="content">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <style>
+    body {
+      min-height: 100vh;
+    }
+
+    .input-form {
+      max-width: 680px;
+
+      margin-top: 80px;
+      padding: 32px;
+
+      background: #fff;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+      -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+    }
+    .checkDone, .notYet, .finepw, .notpw .checkid{
+			display:none;
+		}
+  </style>
+<body>
+        <div class="container py-5">
+        <h1>회원목록</h1>
+        </div>
+        <div class="container py-2">
+            <div class="row g-2">
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="mb-4"><a href="/own/mypage" style="text-decoration:none">내정보 수정</a></h4>                 
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="mb-4"><a href="/own/mypage/question" style="text-decoration:none">내 질문목록</a></h4>                 
+                </div>
+            </div>
+        </div>
+        <div class="container">
+        <table>
+			<thead>
+				<th>no</th>
+				<th>유저아이디</th>
+				<th>제목</th>
+				<th>답변</th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</thead>
+			<tbody id="userList">
+			<tr th:each="quest ,userStat : ${OList}">
+				<td th:text="${userStat.index+1}"></td>
+				<td th:text="${quest.userId}"></td>
+                <span th:if="${quest.answer==null}">
+				<td class="titlemodal" th:text="${quest.title}"
+					th:id="${quest.questNo}"></td>
+                </span>
+                <span th:unless="${quest.answer==null}">
+                    <td th:text="${quest.title}"
+                        th:id="${quest.questNo}"></td>
+                </span>
+
+				<td th:text="${quest.content}"></td>
+				<span th:if="${quest.answer==null}">
+					<td>미처리 상태</td>
+				</span>
+				<span th:unless="${quest.answer==null}">
+					<td th:text="${quest.answer}"></td>
+				</span>
+				<td th:text="${quest.questDate}"></td>
+				<td th:text="${quest.header}"></td>
+				<td th:text="${quest.status}"></td>
+				</tr>
+			</tbody>
+		</table>       
+        </div>
+        <nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+	<!--================ 이전  =================-->
+		<ul class="pagination">
+			<li class="page-item" th:if="${paging.startPage>1}">
+				<a class="page-link" aria-label="Previous" th:value="${paging.startPage-1}">
+				<span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+			</li>
+	<!--================ 페이지 이동 1_2_3_4_5  =================-->
+		<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+		<li class="page-item" th:if="${pag != paging.page}" >
+			<a class="page-link pagePort" th:value="${pag}" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+		</li>
+  		<li class="page-item active" th:if="${pag==paging.page}" >
+			<a class="page-link" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+		</li>
+       </th:block>
+	<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+	<!--================ 이후  =================-->
+			<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+			<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}">
+				<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+			</li>
+		</ul>
+	</nav>
+        
+		<script th:inline="javascript">
+		$('#pagegation').on('click', '.pagePort', function(){
+			//페이지번호 + 밴드식별번호
+			let page = $(this).attr('value');
+			let bandNo = $('#bandNo').val();
+			console.log($(this).attr('value'));
+			console.log(bandNo);
+			$.ajax({
+				url: '/own/mypage/myquestionAjax?page='+page,
+				method: 'get',
+			}).then(result => {
+				console.log(result);
+				let tbody = $('#userList');
+				$(tbody).empty();
+				$(result).each(function(idx, ele){
+					console.log(ele.userId);
+					let tag = `<tr>
+								<td></td>
+								<td>${ele.userId}</td>
+							</tr>`
+					tbody.append(tag);
+				})
+				//페이지 버튼 만들기
+				$('#pagegation').empty();
+		         let pagingM = result[0].paging;
+		         //시작 버튼
+				 console.log(result[0]);
+		         let startpageTag = $('<ul class="pagination" />');
+		         $('#pagegation').append(startpageTag);
+		         //이전 버튼만들기
+		         if(pagingM.startPage>1){
+		            let pageBeforTag = `<li class="page-item">
+		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           </li>`
+		               startpageTag.append(pageBeforTag);               
+		         }               
+		         //페이지목록..
+		         for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		            if(pg != pagingM.page){
+		               let pageTag = `<li class="page-item">
+		                           <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                           </li>`
+		               startpageTag.append(pageTag);
+		            } else if(pg == pagingM.page ){
+		               let pageTag =  `<li class="page-item active">
+		                           <a class="page-link" >${pg}</a>
+		                           </li>`
+		               startpageTag.append(pageTag);
+		            }
+		         }               
+		         //이후 버튼만들기
+		         if(pagingM.endPage<pagingM.lastPage){
+		            let pageAfterTag =`<li class="page-item">
+		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           </li>`
+		            startpageTag.append(pageAfterTag);
+		         }
+		         $('#pagegation').append(startpageTag)
+		      })
+		})
+        </script>
+</body>
+</div>
+</html>
