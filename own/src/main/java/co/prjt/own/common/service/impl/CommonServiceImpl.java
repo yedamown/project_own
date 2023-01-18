@@ -23,9 +23,7 @@ import co.prjt.own.common.web.FileDto;
 @Service
 public class CommonServiceImpl implements CommonService {
 
-	@Autowired
-	CommonMapper commonMapper;
-	
+	@Autowired 	CommonMapper commonMapper;
 	
 	@Value("${spring.servlet.multipart.location}")
 	String filePath;

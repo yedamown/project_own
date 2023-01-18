@@ -1,10 +1,17 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
 <script src="/css/band/js/jquery-3.2.1.js"></script>
+ <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
 <input type="hidden" id="bandNo" th:value="${boardList[0].bandNo}">
-<div style="flex-grow:3; width: 740px">
+<div style="flex-grow:3; width: 740px" id="subTemplate">
 	<div>
 	 <article style="border: 1px solid #eeeeee;padding:30px; ">
-		<div class="input-group" name="searchFrm">
+		<div class="input-group">
 			<input type="text" class="form-control" placeholder="Search Posts">
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
@@ -17,12 +24,13 @@
 		<table class="table">
 			<thead  class="thead-dark">
 				<tr>
-				<th>글제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
+				<th><input type="checkbox"></th><th>글제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
 				</tr>
 			</thead>
 			<tbody id="tbodyBand">
 				 <tr th:each="board: ${boardList}">
-					<td th:text="|${board.bandBoardTitle} [${board.reply}]|"></td>
+				 	<td><input type="checkbox"></td>
+					<td><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
 					<td th:text="${board.bandBoardWriter}"></td>
 					<td class="timeCheck" th:text="${#dates.format(board.bandBoardDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
 					<td th:text="${board.bandBoardCnt}"></td>
@@ -32,8 +40,12 @@
 <!-- 목록 종료 -->
 	</article>
 	</div>
-</div>
-  <!--================ 페이지 Area  =================-->
+	<div style="float: right">
+		<a id="writeBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white;" >글쓰기</a>
+		<a id="deleteBtn" class="btn btn-primary mb-2"  style="background-color: #f3c300; color:white;">삭제</a>
+		<a id="deleteBtn" class="btn btn-primary mb-2"  style="background-color: #f3c300; color:white;">이동</a>
+	</div>
+	 <!--================ 페이지 Area  =================-->
 	<nav class="blog-pagination justify-content-center d-flex" id="pagegation">
 	<!--================ 이전  =================-->
 		<ul class="pagination">
@@ -44,10 +56,10 @@
 	<!--================ 페이지 이동 1_2_3_4_5  =================-->
 		<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
 		<li class="page-item" th:if="${pag != paging.page}" >
-			<a class="page-link pagePort" th:value="${pag}" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+			<a class="page-link pagePort" th:value="${pag}" th:text ="${pag}"></a>
 		</li>
   		<li class="page-item active" th:if="${pag==paging.page}" >
-			<a class="page-link" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+			<a class="page-link" th:text ="${pag}"></a>
 		</li>
        </th:block>
 	<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
@@ -59,8 +71,9 @@
 		</ul>
 	</nav>
  <!--================ 페이지 Area 끝  =================-->
-<script type="module">
-	import {SimpleDateTimeFormat, elapsedText} from "/css/band/js/time.js";
+</div>
+ <script src="/css/band/js/time.js"></script>
+<script>
 //시간 수정하기..
 	$('.timeCheck').each(function(idx, ele){
 		let time = $(ele).text();
@@ -90,7 +103,8 @@
 				console.log(time);
 				time = elapsedText(time);
 				let tag = `<tr>
-							<td>${ele.bandBoardTitle} [${ele.reply}]</td>
+							<td><input type="checkbox"></td>
+							<td id=${ele.bandBoardDetailNo}>${ele.bandBoardTitle} [${ele.reply}]</td>
 							<td>${ele.bandBoardWriter}</td>
 							<td>${time}</td>
 							<td>${ele.bandBoardCnt}</td>
@@ -99,8 +113,49 @@
 			})
 			//페이지 버튼 만들기
 			$('#pagegation').empty();
-			
-			$('#pagegation').appen(pagTag);
+			let pagingM = result[0].paging;
+			console.log(pagingM);
+			//시작 버튼
+			let startpageTag = $('<ul class="pagination" />');
+			$('#pagegation').append(startpageTag);
+			//이전 버튼만들기
+			if(pagingM.startPage>1){
+				let pageBeforTag = `<li class="page-item">
+									<a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
+									<span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+									</li>`
+					startpageTag.append(pageBeforTag);					
+			}					
+			//페이지목록..
+			for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+				if(pg != pagingM.page){
+					let pageTag = `<li class="page-item">
+									<a class="page-link pagePort" value=${pg}>${pg}</a>
+									</li>`
+					startpageTag.append(pageTag);
+				} else if(pg == pagingM.page ){
+					let pageTag =  `<li class="page-item active">
+									<a class="page-link" >${pg}</a>
+									</li>`
+					startpageTag.append(pageTag);
+				}
+			}					
+			//이후 버튼만들기
+			if(pagingM.endPage<pagingM.lastPage){
+				let pageAfterTag =`<li class="page-item">
+									<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+									<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+									</li>`
+				startpageTag.append(pageAfterTag);
+			}
+			$('#pagegation').append(startpageTag)
 		})
 	})
+	//페이지 이동
+    	$('#tbodyBand').on('click', $('.detail'), function(e){
+    		//보드번호
+    		console.log(e.target.id);
+    		let boardNo = e.target.id;
+    		$('#subTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo);
+    	})
 </script>

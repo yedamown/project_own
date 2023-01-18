@@ -88,7 +88,7 @@
                                 <hr>
                             </aside>
                             <aside class="single_sidebar_widget post_category_widget">
-                                <h4 class="widget_title">글쓰기</h4>
+                                <h4 class="widget_title" id="writeBoard">글쓰기</h4>
                                 <div class="d-flex justify-content-between" id="totalBoard">
                                     <p><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
                                     <p th:text="${boardCount}">2538</p>
@@ -285,7 +285,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		                $(result).each(function(idx, ele){
 		                	//likeTAG
 		                	let likeTag = '';
-		                	if(ele.likeList['userId']==null&&ele.likeList['userId']==""){
+		                	if(ele.likeList['userId']!=null&&ele.likeList['userId']!=""){
 		                		likeTag = `<i class="fa fa-heart" aria-hidden="true"></i>`
 		                	} else {
 		                		likeTag = `<i class="fa fa-heartbeat" aria-hidden="true"></i>`
@@ -305,8 +305,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 							                        </div>
 							                        
 							                        <h4>${ele.bandBoardTitle}</h4>
-							
-							                        <img src="/css/band/image/blog/main-blog/m-blog-1.jpg" alt="" style="width: 678px; height: 280px;">
+							                        <img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" style="width: 678px; height: 280px;">
 							                        <div class="blog_details">
 							                            <p>${ele.bandBoardContent}</p>
 							                        </div>
@@ -357,6 +356,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
        	//페이지 이동
     	$('#totalBoard').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo);
+    	})
+    	//글쓰기
+    	$('#writeBoard').on('click', function(){
+    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardWrite?bandNo="+bandNo);
     	})
     	</script>
     </div>

@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.OwnLikeVO;
 import lombok.AllArgsConstructor;
@@ -23,9 +24,11 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	public Integer reply;
 	//마음을 담을 곳
 	OwnLikeVO likeList;
+	//Reply
+	//별명
+	public String bandNickName;
 	
 	public String bandNo;
-	
 	public String bandBoardWriter;
 	public String bandBoardTitle;
 	public String bandBoardContent;
@@ -40,10 +43,16 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	Date bandBoardUpdate;
 	public String bandBoardTag;
 	public String bandBoardOptionNo;
+	
 	//이미지 주소
 	public List<MultimediaVO> bandImgs;
 	public MultimediaVO bandImg;
+	
 	public String bandBoardTime;
+	
+	//ajax페이징시 사용
+	public Paging paging;
 	public Integer first = 1;
 	public Integer last = 10;
+	
 }

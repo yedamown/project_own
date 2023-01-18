@@ -2,9 +2,9 @@
  * 
  */
  //날짜 함수
- 
+ 	//yy-DD-mm HH:ss:mm
             function elapsedText(date) {
-                console.log(date);
+                //console.log(date);
                 date = new Date(date);
                 // 초 (밀리초)
                 const seconds = 1;
@@ -51,4 +51,3 @@
 
                     return date.getFullYear() + '-' + month + '-' + day;
             }
-export{SimpleDateTimeFormat, elapsedText}

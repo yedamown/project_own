@@ -166,4 +166,26 @@ SELECT
         AND     C.BAND_NO = #{bandNo}
         <include refid="condition" />
 	</select>
+	
+	<select id="getBandBoardDetail" resultType="BandBoardDetailSearchVO">
+		SELECT BAND_BOARD_DETAIL_NO "bandBoardDetailNo",
+	            BAND_BOARD_OPTION_NO "bandBoardOptionNo",
+	            BAND_BOARD_CONTENT "bandBoardContent",
+	            BAND_BOARD_CNT "bandBoardCnt",
+	            BAND_BOARD_TITLE "bandBoardTitle",
+	            BAND_BOARD_WRITER "bandBoardWriter", 
+	            BAND_REMARKS "bandRemarks",
+	            BAND_BOARD_DATE "bandBoardDate",
+	            BAND_BOARD_UPDATE "bandBoardUpdate",
+	            BAND_BOARD_TAG "bandBoardTag",
+	            BAND_NICKNAME "bandNickname"
+	    FROM  (SELECT * 
+	            FROM BAND_BOARD_DETAIL A, BAND_MEMBER_DETAIL B
+	            WHERE A.BAND_BOARD_WRITER = B.USER_ID
+	                 AND A.BAND_BOARD_DETAIL_NO = #{bandBoardDetailNo}
+	        )WHERE ROWNUM=1
+	</select>
+	<select id="getOwnDetailLike" resultType="OwnLikeVO">
+		SELECT * FROM OWN_LIKE WHERE CATEGORY_NO = #{bandBoardDetailNo}
+	</select>
 </mapper>

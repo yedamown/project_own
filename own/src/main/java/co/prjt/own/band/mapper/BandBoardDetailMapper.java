@@ -14,5 +14,10 @@ public interface BandBoardDetailMapper {
 	public List<OwnLikeVO> getOwnLike(List<String> categoryNos, String userId);
 	//페이징 모든 글 보기
 	public List<BandBoardDetailSearchVO> getBandBoard(BandBoardDetailSearchVO vo);
+	//페이징 모든 글 개수
 	public int getBandBoardCount(BandBoardDetailSearchVO vo);
+	//보드 상세 조회
+	public BandBoardDetailSearchVO getBandBoardDetail(BandBoardDetailSearchVO vo);
+	//보드 좋아요 상세 조회
+	public List<OwnLikeVO> getOwnDetailLike(String bandBoardDetailNo);
 }

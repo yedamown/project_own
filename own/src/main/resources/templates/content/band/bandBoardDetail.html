@@ -1,12 +1,81 @@
+<html xmlns:th="http://www.thymeleaf.org"lang="ko">
 <script src="/css/band/js/jquery-3.2.1.js"></script>
 <div style="flex-grow:3; width: 740px">
 	<div>
 		<article style="border: 1px solid #eeeeee;padding:30px; ">
-			<div class="input-group">
-				<h5>대체HTML</h5>
+			<h3>게시판 상세페이지</h3>
+			<input type="hidden" id="bandBoardDetailNo" th:value="${board.BandBoardDetailNo}">
+			<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
+			<div class="form-group">
+				Title <input type="text" class="form-control" id="title" th:value="${board.bandBoardTitle }"readonly>
+				Writer <input type="text" class="form-control" id="writer" th:value="${board.bandNickName }"readonly>
+				RegDate <input type="text" class="form-control" id="RegDate" th:value="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"readonly>
+				<div class="form-group">
+					<label for="comment">Content:</label>
+					<textarea class="form-control" rows="5" id="content" readonly>[[${board.bandBoardContent }]]</textarea>
+				</div>
+				<!--임시-->
+				<div  th:each="img : ${board.bandImgs}">
+					<img  style="width:678px;" th:src="|/imgView/${img.mediaServerFile}|" alt="">
+				</div>
 			</div>
+		<div>
+			<article id="bandReply">
+			</article>
+			<article id="bandLike">
+			</article>
+		</div>	
+		<h3>댓글</h3>
+		<table class="table" id="replybody">
+				<!-- <%-- <tr>
+					<td>${reply.replyer}</td>
+					<td>${reply.reply}</td>
+					<td><c:if test="${reply.replyDate>=reply.updateDate}">${reply.replyDate}</c:if></td>
+					<td><c:if test="${reply.replyDate<reply.updateDate}">${reply.updateDate}</c:if></td>
+				</tr> --%> -->
+		</table> 
+		<form id="frmRe">
+			<div class="form-group">
+				<label for="reply">Content:</label>
+				<textarea class="form-control" rows="5" id="reply"></textarea>
+				replyer <input type="text" class="form-control" id="replyer">
+				<button type="button" id="btnReployInsert" class="btn btn-primary mb-2">댓글작성</button>
+			</div>
+		</form>
 		</article>
-		<div id="articleArea">
-		</div>
 	</div>
 </div>
+<script>
+$(function(){
+	//유저아이디
+	let userId = $('#userId').val();
+	console.log(userId);
+	//좋아요리스트..댓글리스트
+	let DetailNo = $('#bandBoardDetailNo').val();
+	$.ajax({
+		url: '/own/band/bandGroup/bandBoardDetailLike?bandBoardDetailNo='+DetailNo,
+		dataType: 'json',
+		method: 'get',
+		contentType : "application/text; charset=utf-8;"
+	}).then(result => {
+		console.log(result);
+		let likeTag = '';
+		$(result).each(function(idx, ele){
+        	//likeTAG
+        	if(ele.userId==userId){
+        		likeTag = '♥'
+       			return false;
+        	}
+		})
+		if(likeTag == ''){
+			likeTag = '♡'
+		}
+		//좋아요 수
+		let r = result.length;
+		if(r == null){
+			r = 0;
+		}
+		$('#bandLike').append(likeTag, r);
+	})
+})
+</script>
