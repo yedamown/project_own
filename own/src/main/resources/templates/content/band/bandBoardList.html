@@ -1,0 +1,106 @@
+<html xmlns:th="http://www.thymeleaf.org"lang="ko">
+<script src="/css/band/js/jquery-3.2.1.js"></script>
+<input type="hidden" id="bandNo" th:value="${boardList[0].bandNo}">
+<div style="flex-grow:3; width: 740px">
+	<div>
+	 <article style="border: 1px solid #eeeeee;padding:30px; ">
+		<div class="input-group" name="searchFrm">
+			<input type="text" class="form-control" placeholder="Search Posts">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+				<input type="hidden" name="page" value="1">
+			</span>
+		</div>
+	</article>
+	<article style="border: 1px solid #eeeeee;padding:30px; ">
+		<!-- 목록 시작 -->
+		<table class="table">
+			<thead  class="thead-dark">
+				<tr>
+				<th>글제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
+				</tr>
+			</thead>
+			<tbody id="tbodyBand">
+				 <tr th:each="board: ${boardList}">
+					<td th:text="|${board.bandBoardTitle} [${board.reply}]|"></td>
+					<td th:text="${board.bandBoardWriter}"></td>
+					<td class="timeCheck" th:text="${#dates.format(board.bandBoardDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
+					<td th:text="${board.bandBoardCnt}"></td>
+				</tr>
+			</tbody>
+		</table>
+<!-- 목록 종료 -->
+	</article>
+	</div>
+</div>
+  <!--================ 페이지 Area  =================-->
+	<nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+	<!--================ 이전  =================-->
+		<ul class="pagination">
+			<li class="page-item" th:if="${paging.startPage>1}">
+				<a class="page-link" aria-label="Previous" th:value="${paging.startPage-1}">
+				<span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+			</li>
+	<!--================ 페이지 이동 1_2_3_4_5  =================-->
+		<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+		<li class="page-item" th:if="${pag != paging.page}" >
+			<a class="page-link pagePort" th:value="${pag}" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+		</li>
+  		<li class="page-item active" th:if="${pag==paging.page}" >
+			<a class="page-link" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+		</li>
+       </th:block>
+	<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+	<!--================ 이후  =================-->
+			<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+			<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}">
+				<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+			</li>
+		</ul>
+	</nav>
+ <!--================ 페이지 Area 끝  =================-->
+<script type="module">
+	import {SimpleDateTimeFormat, elapsedText} from "/css/band/js/time.js";
+//시간 수정하기..
+	$('.timeCheck').each(function(idx, ele){
+		let time = $(ele).text();
+		time = new Date(time);
+		$(this).text(elapsedText(time));
+	})
+//페이징+검색처리
+	$('#pagegation').on('click', '.pagePort', function(){
+		//페이지번호 + 밴드식별번호
+		let page = $(this).attr('value');
+		let bandNo = $('#bandNo').val();
+		console.log($(this).attr('value'));
+		console.log(bandNo);
+		$.ajax({
+			url: '/own/band/bandGroup/bandBoardListAjax?bandNo='+bandNo+'&page='+page,
+			dataType: 'json',
+			method: 'get',
+			contentType : "application/text; charset=utf-8;"
+		}).then(result => {
+			console.log(result);
+			let tbody = $('#tbodyBand');
+			$(tbody).empty();
+			$(result).each(function(idx, ele){
+				console.log(ele.bandBoardDate);
+				let time = ele.bandBoardDate;
+				time = new Date(time);
+				console.log(time);
+				time = elapsedText(time);
+				let tag = `<tr>
+							<td>${ele.bandBoardTitle} [${ele.reply}]</td>
+							<td>${ele.bandBoardWriter}</td>
+							<td>${time}</td>
+							<td>${ele.bandBoardCnt}</td>
+						</tr>`
+				tbody.append(tag);
+			})
+			//페이지 버튼 만들기
+			$('#pagegation').empty();
+			
+			$('#pagegation').appen(pagTag);
+		})
+	})
+</script>

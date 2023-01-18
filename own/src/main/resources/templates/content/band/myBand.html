@@ -121,13 +121,15 @@
         <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
         <!--================ 페이지 Area 끝  =================-->
         
-        
         <script>
-	      	//페이징+검색처리
-	        function gopage(i) {
-	            searchFrm.page.value = i;
-	            searchFrm.submit();
-	        }
+      //페이징+검색처리
+        function gopage(i) {
+            searchFrm.page.value = i;
+            searchFrm.submit();
+        }
+        </script>
+        <script type="module">
+		import {SimpleDateTimeFormat, elapsedText} from "/css/band/js/time.js";
             //밴드번호 세개 가져옴
             let bandnum = '';
             $('.bandnums').each(function(idx, ele){
@@ -187,63 +189,7 @@
                  
             })
               .fail(err => console.log(err))
-            //날짜 함수
-            function elapsedText(date) {
-                console.log(date);
-                date = new Date(date);
-                // 초 (밀리초)
-                const seconds = 1;
-                // 분
-                const minute = seconds * 60;
-                // 시
-                const hour = minute * 60;
-                // 일
-                const day = hour * 24;
-                
-                var today = new Date();
-                var elapsedTime = Math.trunc((today.getTime() - date.getTime()) / 1000);
-                
-                var elapsedText = "";
-                if (elapsedTime < seconds) {
-                    elapsedText = "방금 전";
-                } else if (elapsedTime < minute) {
-                    elapsedText = elapsedTime + "초 전";
-                } else if (elapsedTime < hour) {
-                    elapsedText = Math.trunc(elapsedTime / minute) + "분 전";
-                } else if (elapsedTime < day) {
-                    elapsedText = Math.trunc(elapsedTime / hour) + "시간 전";
-                } else if (elapsedTime < (day * 3)) {
-                    elapsedText = Math.trunc(elapsedTime / day) + "일 전";
-                } else {
-                    elapsedText = SimpleDateTimeFormat(date, "yyyy-MM-dd");
-                }
-                
-                return elapsedText;
-            }
-            //날짜고치기
-            function SimpleDateTimeFormat(date) {
-                    let month = date.getMonth() + 1;
-                    let day = date.getDate();
-                    let hour = date.getHours();
-                    let minute = date.getMinutes();
-                    let second = date.getSeconds();
-
-                    month = month >= 10 ? month : '0' + month;
-                    day = day >= 10 ? day : '0' + day;
-                    hour = hour >= 10 ? hour : '0' + hour;
-                    minute = minute >= 10 ? minute : '0' + minute;
-                    second = second >= 10 ? second : '0' + second;
-
-                    return date.getFullYear() + '-' + month + '-' + day;
-            }
-            
-            //버튼이 눌렸을 때 검색하기
-            //폼으로 대체해서 안씀
-            // $($('.input-group').find('.input-group-btn')).click(function(){
-            //     //검색 값 출력
-            //     console.log($('.input-group').find('input').val());
-
-            // })
+           
             
         </script>
         <script src="/css/band/js/popper.js"></script>

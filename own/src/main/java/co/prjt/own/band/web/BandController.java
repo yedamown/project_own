@@ -1,6 +1,9 @@
 package co.prjt.own.band.web;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -77,6 +81,7 @@ public class BandController {
 	@RequestMapping("/myBand")
 	public String myBand(Model model, OwnUserVO vo, Paging paging, BandVO band, HttpServletRequest request) {
 		//유저아이디를 가져와 밴드에 담음
+		System.out.println(paging.toString());
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		if(user==null) {
@@ -171,11 +176,6 @@ public class BandController {
 		return "content/band/bandCreateFail";
 	}
 	
-
-	@GetMapping("/bandGroup/test")
-	public String bandMainGroup(Model model, HttpServletRequest request ) {
-		return "content/band/test";
-	}
 	//가입된 개별 밴드 들어가기
 	@GetMapping("/bandGroup")
 	public String bandGroup(Model model, HttpServletRequest request, @RequestParam String bandNo) {
@@ -185,12 +185,14 @@ public class BandController {
 		//밴드+밴드인원수 조회
 		Map<String, Object> band = bandService.getBand(bandNo, user.getUserId());
 		//밴드키워드 자르기
-		StringTokenizer st = new StringTokenizer((String) band.get("bandKeyword"),"#");
-		//처음은 공백이 나와서.. 하나 버리고 감
-		st.nextToken();
 		ArrayList<String> keyword = new ArrayList<String>();
-		while(st.hasMoreTokens()) {
-			keyword.add("#"+st.nextToken());
+		if(band.get("bandKeyword")!=null) {
+			StringTokenizer st = new StringTokenizer((String) band.get("bandKeyword"),"#");
+			//처음은 공백이 나와서.. 하나 버리고 감
+			st.nextToken();
+			while(st.hasMoreTokens()) {
+				keyword.add("#"+st.nextToken());
+			}
 		}
 		model.addAttribute("band", band);
 		model.addAttribute("keyword", keyword);
@@ -206,14 +208,16 @@ public class BandController {
 	@GetMapping("/bandGroup/fiveBoard")
 	@ResponseBody
 	public List<BandBoardDetailSearchVO> fiveBoard(BandBoardDetailSearchVO vo, HttpServletRequest request){
+		//좋아요 용으로 받아오는 세션
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		
-		//
+		//vo확인
 		System.out.println(vo.toString());
 		
-		//글 5개씩..+댓글 수 담기 (밴드식별번호이용)
+		//글 5개씩..+댓글 수 담기 (밴드식별+직전에 뿌린 마지막번호이용)..만약없다면..
 		List<BandBoardDetailSearchVO> fiveboard = bandBoardDetailService.getFiveBoard(vo);
+		
 		List<String> categoryNos = new ArrayList<String>();
 		for(BandBoardDetailSearchVO v : fiveboard) {
 			categoryNos.add(v.getBandBoardDetailNo());
@@ -240,5 +244,25 @@ public class BandController {
 				}
 			}
 		return fiveboard;
+	}
+	
+	//밴드내 모든 게시판
+	@GetMapping("/bandGroup/bandBoardList")
+	public String bandMainGroup(Model model, HttpServletRequest request, @RequestParam String bandNo, Paging paging) {
+		BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
+		vo.setBandNo(bandNo);
+		//System.out.println(vo.toString());
+		//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
+		model.addAttribute("boardList", bandBoardDetailService.getBandBoard(vo, paging));
+		return "content/band/bandBoardList";
+	}
+	//Ajax//밴드내 모든 게시판//위와 세트
+	@ResponseBody
+	@GetMapping("/bandGroup/bandBoardListAjax")
+	public List<BandBoardDetailSearchVO> bandMainGroupAjax(Model model, HttpServletRequest request, BandBoardDetailSearchVO vo, Paging paging) {
+		System.out.println(vo.toString());
+		System.out.println(paging.toString());
+		//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
+		return bandBoardDetailService.getBandBoard(vo, paging);
 	}
 }

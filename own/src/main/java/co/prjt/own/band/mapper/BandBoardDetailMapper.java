@@ -12,4 +12,7 @@ public interface BandBoardDetailMapper {
 	public List<BandBoardDetailSearchVO> getFiveBoard(BandBoardDetailSearchVO vo);
 	//내가 맘찍은거 가져오기+ 글 다섯개
 	public List<OwnLikeVO> getOwnLike(List<String> categoryNos, String userId);
+	//페이징 모든 글 보기
+	public List<BandBoardDetailSearchVO> getBandBoard(BandBoardDetailSearchVO vo);
+	public int getBandBoardCount(BandBoardDetailSearchVO vo);
 }

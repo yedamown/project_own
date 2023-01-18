@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 import co.prjt.own.band.mapper.BandBoardDetailMapper;
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
-import co.prjt.own.band.service.BandBoardDetailVO;
-import co.prjt.own.band.service.BandVO;
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.OwnLikeVO;
 
 
@@ -25,15 +24,27 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 
 	@Override
 	public List<BandBoardDetailSearchVO> getFiveBoard(BandBoardDetailSearchVO vo) {
-		vo.setFive(vo.getMulti());
-		vo.setOne(vo.getMulti());
-		//다음 페이지 저장..
-		vo.setMulti(vo.getMulti()+1);
 		return bandBoardDetailMapper.getFiveBoard(vo);
 	}
 
 	@Override
 	public List<OwnLikeVO> getOwnLike(@Param(value = "String") List<String> categoryNos, @Param(value = "userId") String userId) {
 		return bandBoardDetailMapper.getOwnLike(categoryNos, userId);
+	}
+
+	@Override
+	public List<BandBoardDetailSearchVO> getBandBoard(BandBoardDetailSearchVO vo, Paging paging) {
+		paging.setTotalRecord(bandBoardDetailMapper.getBandBoardCount(vo));
+		paging.setEndPage(15);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		List<BandBoardDetailSearchVO> list = bandBoardDetailMapper.getBandBoard(vo);
+		list.get(0).setBandNo(vo.getBandNo());
+		return list;
+	}
+
+	@Override
+	public int getBandBoardCount(BandBoardDetailSearchVO vo) {
+		return bandBoardDetailMapper.getBandBoardCount(vo);
 	}
 }
