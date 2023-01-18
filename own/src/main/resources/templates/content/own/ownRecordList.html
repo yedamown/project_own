@@ -36,7 +36,15 @@ var token = /*[[${_csrf.token}]]*/'defalut';
 	  $jQ(document).ready(function(){ 
 		  dayChart();
 		  weightChart();
+		  calTime();
     	});
+	
+	// 시간계산 함수
+	function calTime(){
+		var totalTime = $jQ("#calData1").find("h3").eq(0).text();
+		console.log(totalTime)
+		$jQ("#calData1").find("h3").eq(1).text("당신은 총 " + Math.floor(totalTime/60) + "시간 " + totalTime%60 + "분 운동하셨습니다.");
+	}
 	
 	// datepicker 라이브러리 옵션
 	$jQ(function() {
@@ -382,11 +390,8 @@ var token = /*[[${_csrf.token}]]*/'defalut';
 			<!--====================== 운동시간 계산 div ======================-->
 			<div id="calData1">
 				<h3
-					th:text="'당신은 총 ' + ${(#aggregates.sum(lRecord.![exerecTime])*1.0)/60} + '시간 '"></h3>
-				<h3
-					th:text="'당신은 총 ' + ${#numbers.formatInteger(4.7, 1)} + '시간 '"></h3>
-				<h3
-					th:text="'당신은 총 ' + ${#numbers.formatInteger(((#aggregates.sum(lRecord.![exerecTime])*1.0)/60), 0)} + '시간 ' + ${#aggregates.sum(lRecord.![exerecTime])%60} +'분 운동하셨습니다.'"></h3>
+					th:text="${(#aggregates.sum(lRecord.![exerecTime]))}" hidden></h3>
+				<h3></h3>
 				<h3
 					th:text="'총 ' + ${#aggregates.sum(lRecord.![kcals])} + '칼로리 소모.'"></h3>
 			</div>
