@@ -40,8 +40,8 @@
 				<th>
 				<th>상태</th>
 			</thead>
-			<tbody></tbody>
-			<tr th:each="quest : ${myQlist}">
+			<tbody id="userList">
+			<tr th:each="quest : ${OList}">
 				<td th:text="${quest.questNo}"></td>
 				<td th:text="${quest.userId}"></td>
                 <span th:if="${quest.answer==null}">
@@ -63,8 +63,35 @@
 				<td th:text="${quest.questDate}"></td>
 				<td th:text="${quest.header}"></td>
 				<td th:text="${quest.status}"></td>
+				</tr>
+			</tbody>
 		</table>
+		<nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+			<!--================ 이전  =================-->
+				<ul class="pagination">
+					<li class="page-item" th:if="${paging.startPage>1}">
+						<a class="page-link" aria-label="Previous" th:value="${paging.startPage-1}">
+						<span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+					</li>
+			<!--================ 페이지 이동 1_2_3_4_5  =================-->
+				<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+				<li class="page-item" th:if="${pag != paging.page}" >
+					<a class="page-link pagePort" th:value="${pag}" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+				</li>
+				  <li class="page-item active" th:if="${pag==paging.page}" >
+					<a class="page-link" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+				</li>
+			   </th:block>
+			<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+			<!--================ 이후  =================-->
+					<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+					<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}">
+						<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+					</li>
+				</ul>
+			</nav>
 
+	
 		<!--모달창-->
 		<div id="my_modal">
 			<form action="/questionUpdate" method="post" id="modalform">
@@ -86,6 +113,8 @@
 			</form>
 			<a class="modal_close_btn">닫기</a>
 		</div>
+
+
 	</body>
 	<script>
 	function modal(id) {
@@ -148,6 +177,70 @@
 				console.log(res);
 			})		
 		})
+
+		$('#pagegation').on('click', '.pagePort', function(){
+			//페이지번호 + 밴드식별번호
+			let page = $(this).attr('value');
+			let bandNo = $('#bandNo').val();
+			console.log($(this).attr('value'));
+			console.log(bandNo);
+			$.ajax({
+				url: '/own/mypage/myquestionAjax?page='+page,
+				method: 'get',
+			}).then(result => {
+				console.log(result);
+				let tbody = $('#userList');
+				$(tbody).empty();
+				$(result).each(function(idx, ele){
+					console.log(ele.userId);
+					let tag = `<tr>
+								<td>idx</td>
+								<td>${ele.userId}</td>
+								</tr>`
+					tbody.append(tag);
+				})
+				//페이지 버튼 만들기
+				$('#pagegation').empty();
+		         let pagingM = result[0].paging;
+		         //시작 버튼
+				 console.log(result[0]);
+		         let startpageTag = $('<ul class="pagination" />');
+		         $('#pagegation').append(startpageTag);
+		         //이전 버튼만들기
+		         if(pagingM.startPage>1){
+		            let pageBeforTag = `<li class="page-item">
+		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           </li>`
+		               startpageTag.append(pageBeforTag);               
+		         }               
+		         //페이지목록..
+		         for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		            if(pg != pagingM.page){
+		               let pageTag = `<li class="page-item">
+		                           <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                           </li>`
+		               startpageTag.append(pageTag);
+		            } else if(pg == pagingM.page ){
+		               let pageTag =  `<li class="page-item active">
+		                           <a class="page-link" >${pg}</a>
+		                           </li>`
+		               startpageTag.append(pageTag);
+		            }
+		         }               
+		         //이후 버튼만들기
+		         if(pagingM.endPage<pagingM.lastPage){
+		            let pageAfterTag =`<li class="page-item">
+		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           </li>`
+		            startpageTag.append(pageAfterTag);
+		         }
+		         $('#pagegation').append(startpageTag)
+		      })
+		})
+
+
 	</script>
 </div>
 </html>

@@ -32,9 +32,21 @@ select * from own_users where user_id= #{userId}
 <!-- 모든회원정보 -->
 </select>
 
-<select id="getUserList" resultType="OwnUserVO">
-select * from own_users
+<select id="ownUsercount" resultType="int">
+SELECT COUNT(*) FROM OWN_USERS
 </select>
+
+
+<select id="getUserList" resultType="OwnUserVO">
+SELECT * FROM ( SELECT ROWNUM RN, A.* FROM (
+	SELECT * FROM OWN_USERS
+	ORDER BY USER_ID
+	<![CDATA[	
+) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
+]]>
+</select>
+
+
 
 <!--================= SNS ==================-->
    <!-- 로그인 정보에서 sns 닉네임 가져오기 -->
@@ -58,8 +70,16 @@ select * from own_users
    <!--================= SNS End ==================-->
    <!-- 내질문 갖고오기 -->
    <select id="myQuestion" resultType="co.prjt.own.ownhome.service.QuestionVO">
-   SELECT * FROM QUESTION WHERE USER_ID= #{userId}
+   	SELECT * FROM (SELECT ROWNUM RN, A.* FROM (
+	SELECT * FROM QUESTION where user_id = #{userId}
+	<![CDATA[	
+	) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
+	]]>
    </select>
+   <select id="myquestionCount" resultType="int">
+   SELECT COUNT(*) FROM QUESTION WHERE USER_ID = #{userId}
+   </select>
+   
    
  <!-- 관리자 -->
  <select id="questionList" resultType="co.prjt.own.ownhome.service.QuestionVO">

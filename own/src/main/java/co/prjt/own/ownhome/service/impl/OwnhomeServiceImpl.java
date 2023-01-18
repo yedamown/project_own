@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import co.prjt.own.common.Paging;
 import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.CustomUser;
 import co.prjt.own.ownhome.service.OwnUserVO;
@@ -44,6 +45,20 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return ownhomeMapper.getUserList(vo);
 	}
 
+	@Override
+	public List<OwnUserVO> getPagingUserList(OwnUserVO vo, Paging paging) {
+		paging.setTotalRecord(ownhomeMapper.ownUsercount(vo)); // start end		
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		System.out.println(paging);
+		vo.setPaging(paging);
+		System.out.println("=====페이징하고싶어요======"+paging.toString());
+		List<OwnUserVO> list = ownhomeMapper.getUserList(vo);
+		list.get(0).setPaging(paging);
+		return list;
+	}
+	
+	
 	@Override
 	public SAccountVO snsLogin(String id) {
 		return ownhomeMapper.snsLogin(id);
@@ -165,9 +180,38 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	}
 
 	@Override
-	public List<QuestionVO> myQuestion(String id) {
+	public List<QuestionVO> myQuestion(QuestionVO vo) {
 		// TODO Auto-generated method stub
-		return ownhomeMapper.myQuestion(id);
+		return ownhomeMapper.myQuestion(vo);
 	}
+
+	@Override
+	public int ownUsercount(OwnUserVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.ownUsercount(vo);
+	}
+
+	@Override
+	public int myquestionCount(QuestionVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.myquestionCount(vo);
+	}
+
+	@Override
+	public List<QuestionVO> getPagingmyQuestlist(QuestionVO vo, Paging paging) {
+		paging.setTotalRecord(ownhomeMapper.myquestionCount(vo)); // start end		
+		paging.setPageUnit(5);
+		paging.setPageSize(3);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		System.out.println(paging);
+		vo.setPaging(paging);
+		System.out.println("=====페이징하고싶어요======"+paging.toString());
+		List<QuestionVO> list = ownhomeMapper.myQuestion(vo);
+		list.get(0).setPaging(paging);
+		return list;
+	}
+
+	
 
 }

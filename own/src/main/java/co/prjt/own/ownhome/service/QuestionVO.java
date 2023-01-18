@@ -2,6 +2,7 @@ package co.prjt.own.ownhome.service;
 
 import java.util.Date;
 
+import co.prjt.own.common.Paging;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,8 @@ public class QuestionVO {
 	Date questDate;
 	public String header;
 	public String status;
+	
+	public Paging paging;
+	public int first;
+	public int last;
 }

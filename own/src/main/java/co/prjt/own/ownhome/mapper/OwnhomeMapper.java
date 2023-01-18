@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.prjt.own.common.Paging;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.QuestionVO;
 import co.prjt.own.sns.service.SAccountVO;
@@ -11,6 +12,7 @@ import co.prjt.own.sns.service.SAccountVO;
 public interface OwnhomeMapper {
 	public int insertUser(OwnUserVO UserVO);
 	public OwnUserVO login(String id);
+	public int ownUsercount(OwnUserVO vo);
 	public List<OwnUserVO> getUserList(OwnUserVO vo);
 	public SAccountVO snsLogin(String id);
 	public String setPassword(String appNo, String id);
@@ -30,5 +32,8 @@ public interface OwnhomeMapper {
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);
 	//내 질문 가져오기
-	public List<QuestionVO> myQuestion(String id);
+	public List<QuestionVO> myQuestion(QuestionVO vo);
+	//내질문 갯수
+	public int myquestionCount(QuestionVO vo);
+	
 }
