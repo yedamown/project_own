@@ -53,6 +53,19 @@
             border: 1px solid #888;
             width: 70%; /* Could be more or less, depending on screen size */
         }
+        
+        #snsprofilebox{
+            border : 1px solid black;
+            text-align: center;
+            padding : 20px;
+        }
+        .homeProfile{
+            margin-bottom: 40px;
+        }
+        ul {
+            list-style:none;
+            padding-left:0px;
+        }
     </style>
 </head>
 <div layout:fragment="content">
@@ -132,10 +145,11 @@
         </div>
         <!--=================== side menu end====================-->
 
-        <!--=================== content body ====================-->
+        <!--=================== content body 메인====================-->
         <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
             <br>
-            <div id="snsprofilebox" style="border: 1px solid black; text-align: center; padding-top: 20px;">
+            <div id="snsprofilebox">
+                <img src="/css/sns/img/user.png" alt="author"> 스토리 &nbsp;&nbsp;&nbsp;&nbsp; 
                 <img src="/css/sns/img/user.png" alt="author"> 스토리 &nbsp;&nbsp;&nbsp;&nbsp; 
                 <img src="/css/sns/img/user.png" alt="author"> 스토리 &nbsp;&nbsp;&nbsp;&nbsp; 
                 <img src="/css/sns/img/user.png" alt="author"> 스토리 &nbsp;&nbsp;&nbsp;&nbsp; 
@@ -144,87 +158,42 @@
             
             <div class="blog">
                 <div class="row justify-content-center">
-                
-                    <div class="col-lg-8 col-md-12 col-12">
-                        <article class="blog_card">
-                            <div class="blog_card_top">
-                                <img src="/css/sns/img/blog/blog1.png" alt="blog title " />
-                                <div class="blog_date">
-                                    31
-                                    <span>
-                                        october 2017
-                                    </span>
-                                </div>
+                    <div class="col-lg-8 col-md-12 col-12" >
+                        
+                        <th:block th:each="now : ${nowFeed}">
+                        <article class="blog_card" th:if="${snsFollow != 0}" >
+                            <div class="homeProfile">
+                            <img src="/css/sns/img/user.png" alt="author">
+                            <span th:text="${now.snsNickname}">
+                            </div>
+                            <div class="blog_card_top" style="overflow : hidden;">
+                                <ul class="nowImages" style="float:left; overflow : hidden;">
+                                <li th:each="nowimg : ${now.fileList}" style="float:left;">
+                                    <img th:src="|/imgView/${nowimg.mediaServerFile}" /></li>
+                                </ul>
                             </div>
                             <div class="blog_card_bottom">
-                                <h4>
-                                    <a href="#">
-                                        A short blog post about design
-                                    </a>
-                                </h4>
+                               
                                 <div class="meta_data">
-                                    <span>By Loredana Papp-Dinea</span>
-                                    <span>Design, Inspiration, Creative</span>
-                                    <span>3 Comments</span>
+                                    <span>좋아요 수</span>
+                                    <span>댓글 수 </span>
+                                    <span th:text="${now.snsBoardDate}"></span>
                                 </div>
-                                <p>
-                                    Etiam finibus consequat ante ac congue. Quisque porttitor porttitor tempus. Donec maximusLorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla. Nulla sit amet luctus dolor. Etiam finibus consequat ante ac congue. Quisque porttitor porttitor tempus. Donec maximus ipsum non ornare vestibulum...
+                                <p>게시글내용 /
+                                <p th:text="${now.snsBoardContent}"></p>
                                 </p>
                             </div>
+                         </th:block>
                         </article>
-                        <article class="blog_card">
+
+                        
+                        <article class="blog_card" th:if="${snsFollow == 0}">
                             <div class="blog_card_top">
-                                <img src="/css/sns/img/blog/blog2.png" alt="blog title " />
-                                <div class="blog_date">
-                                    31
-                                    <span>
-                                        october 2017
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="blog_card_bottom">
-                                <h4>
-                                    <a href="#">
-                                        A short blog post about design
-                                    </a>
-                                </h4>
-                                <div class="meta_data">
-                                    <span>By Loredana Papp-Dinea</span>
-                                    <span>Design, Inspiration, Creative</span>
-                                    <span>3 Comments</span>
-                                </div>
-                                <p>
-                                    Etiam finibus consequat ante ac congue. Quisque porttitor porttitor tempus. Donec maximusLorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla. Nulla sit amet luctus dolor. Etiam finibus consequat ante ac congue. Quisque porttitor porttitor tempus. Donec maximus ipsum non ornare vestibulum...
-                                </p>
-                            </div>
-                        </article>
-                        <article class="blog_card">
-                            <div class="blog_card_top">
-                                <img src="/css/sns/img/blog/blog3.png" alt="blog title " />
-                                <div class="blog_date">
-                                    31
-                                    <span>
-                                        october 2017
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="blog_card_bottom">
-                                <h4>
-                                    <a href="#">
-                                        A short blog post about design
-                                    </a>
-                                </h4>
-                                <div class="meta_data">
-                                    <span>By Loredana Papp-Dinea</span>
-                                    <span>Design, Inspiration, Creative</span>
-                                    <span>3 Comments</span>
-                                </div>
-                                <p>
-                                    Etiam finibus consequat ante ac congue. Quisque porttitor porttitor tempus. Donec maximusLorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur leo est, feugiat nec elementum id, suscipit id nulla. Nulla sit amet luctus dolor. Etiam finibus consequat ante ac congue. Quisque porttitor porttitor tempus. Donec maximus ipsum non ornare vestibulum...
-                                </p>
+                                <img style="margin: 100px; margin-left: 250px;" src="/css/sns/img/tung.png" alt="blog title " />
                             </div>
                         </article>
                     </div>
+              
                 </div>
             </div>
         </div>
@@ -246,6 +215,7 @@
                         <h2>SNS 간편가입이 필요한 페이지입니다. 회원 가입을 하시겠습니까?</h2>
                         <form action="/own/snsAccount" method="post">
                            <label>ID정보</label>
+                           <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">	
                            <div th:text="${session.loginUser.userId}"></div>
                            <input name="userId" type="hidden" th:value="${session.loginUser.userId}" >
                            <br>
@@ -275,6 +245,8 @@
    });
     function closeModal() {
         $('.searchModal').hide();
+        alert("메인페이지로 이동합니다.")
+        location.href = "/own/home"
     };
 </script>
 

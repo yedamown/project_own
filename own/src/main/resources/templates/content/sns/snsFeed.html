@@ -201,11 +201,15 @@
 								<button id="followBtn" value="white"
 									style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button>
 								<br>
-								<br><span style="font-size: 13px; color:black">게시글<span th:text="${snsFeedCount}"></span></span>
+								<br><span style="font-size: 13px; color:black">게시글</span>&nbsp;&nbsp;
+									<span class="modalBtn">팔로우</span>&nbsp;&nbsp;
+									<span class="modalBtn">팔로워</span>
+									
+								<p style="font-size:14px;"><span th:text="${snsFeedCount}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<span th:text="${snsFollow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<span th:text="${snsFollower}"></span></p>
 								
-								<span class="modalBtn">
-									팔로우<span th:text="${snsFollow}"></span>
-                                </span>
+								
 									<!-- 팔로우 Modal -->
 									<div class="modal">
 										<!-- 첫 번째 Modal의 내용 -->
@@ -226,7 +230,7 @@
 										</div>
 									</div>
 								
-								<span class="modalBtn">팔로워<span th:text="${snsFollower}"></span></span>
+								
 									<!-- 팔로워 Modal -->
 									<div class="modal">
 										<!-- 두 번째 Modal의 내용 -->
@@ -273,8 +277,7 @@
 					</div><hr>
 
 					<!-- 글작성 모달을 여는 클래스 -->
-					<h1 class="modalBtn" style="text-align: right;">📝글 작성</h1>
-					<hr>
+					<h1 class="modalBtn" style="text-align: right;">📝글 작성</h1><p>
 					<!-- 글작성모달 Modal -->
 					<div class="modal">
 
@@ -285,8 +288,7 @@
 								<!--이미지 미리보기-->
 								<form action="/own/snsWriteFeed" method="post"
 									class="snsWriteFrm" enctype="multipart/form-data">
-									<input type="hidden" th:name="${_csrf.parameterName}"
-               						th:value="${_csrf.token}">	
+									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">	
 									<input name="uploadfile" type="file" id="btnAtt"
 										multiple="multiple">
 									<!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
@@ -303,7 +305,7 @@
 							</div>
 						</div>
 					</div>
-					<table border="1px" style="font-size: 13px;">
+					<!-- <table border="1px" style="font-size: 13px;">
 						<thead>
 							<tr>
 								<th>게시글 번호</th>
@@ -320,7 +322,7 @@
 								<td th:text="${sns.snsNickname}"></td>
 							</tr>
 						</tbody>
-					</table>
+					</table> -->
 					<br>
 
             <div class="portfolio gutters grid img-container">
@@ -360,6 +362,21 @@
               	<p class="bContent">글내용:</p>
                 <p class="bWriter">작성자:</p>
                 <p class="bDate">작성일자:</p>
+                <table style="border: 1px solid black">
+                    <thead>
+                    <tr>
+                        <th>댓글 작성자</th>
+                        <th>댓글 내용</th>
+                        <th>댓글 작성일자</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>댓글 내용 테스트</td>
+                        </tr>
+                    </tbody>
+                
+                </table>
                  </div>
               </div>
             </div>
@@ -516,7 +533,8 @@
                         success: function(res){
                         	console.log(res);
                         	console.log(res.imgList[0]);
-                        	console.log(res.svo.snsBoardContent)
+                        	console.log(res.svo.snsBoardContent);
+                            console.log(res.reply[0].replyContent);
 
                             $('.bContent').text(res.svo.snsBoardContent);
 

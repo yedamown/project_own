@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
+import co.prjt.own.common.service.ReplyVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 import co.prjt.own.sns.service.SAccountService;
@@ -51,12 +52,38 @@ public class SnsController {
 	CommonService common;
 	 //통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
 
+	
+	
+	
+	
 	//1. sns홈으로 이동
 	@RequestMapping(value = "/sns", method = RequestMethod.GET)
-	public String getSnsUserList(Model model) {
+	public String getSnsUserList(HttpServletRequest request, Model model, SBoardVO svo, OwnUserVO ovo) {
+		//세션 담아주기
+		HttpSession session = request.getSession();
+		//세션에 강제로 로그인유저 저장하기
+		//session.setAttribute("loginUser", ownService.login("kmh"));
+		ovo = (OwnUserVO) session.getAttribute("loginUser");
+		session.setAttribute("snsInfo", ownService.snsLogin(ovo.getUserId()));
+
 		
+		if(boardService.getNowBoardList(ovo.getSnsAccountNo())!=null) {	
+	     	//팔로우 한 계정의 최신게시글 1개
+			List<SBoardVO> list = boardService.getNowBoardList(ovo.getSnsAccountNo()); 	
+			System.out.println("★★★★★리스트입니다"+list);
+			
+			//이미지 담을 리스트
+			List<MultimediaVO> imgList;
+			for (SBoardVO i : list){
+				imgList = common.selectImgAll(i.getSnsBoardNo());
+				i.setFileList(imgList);
+			}
+			model.addAttribute("snsFollow", followService.followCount(ovo.getSnsAccountNo())); // sns 팔로우 수 
+			model.addAttribute("nowFeed", list);		
+		}
 		return "content/sns/snsHome"; 
 	}
+	
 	
 	//1-1. sns 간편 회원 가입
 	@PostMapping("/snsAccount")
@@ -74,13 +101,14 @@ public class SnsController {
 		return "content/sns/snsHome";
 	}
 	
+	
 	//2. 개인피드	
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
 	public String getSnsUser(HttpServletRequest request, Model model, SFollowVO svo, OwnUserVO ovo) {
 		HttpSession session = request.getSession();
 		
 		//세션에 강제로 로그인유저 저장하기
-//		session.setAttribute("loginUser", ownService.login("kjk"));
+		session.setAttribute("loginUser", ownService.login("kjk"));
 		
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
 		
@@ -116,24 +144,27 @@ public class SnsController {
 		}
 	
 	
+	
 	//2-1. 개인피드 상세보기
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getSnsBoard(SBoardVO vo, String snsBoardNo) {
 		System.out.println("컨트롤 도착!");
 		System.out.println(snsBoardNo);
-		
-		
 		Map<String, Object> map = new HashMap<>();
 		SBoardVO svo = new SBoardVO();
 		List<MultimediaVO> list = common.selectImgAll(snsBoardNo);
 		svo = boardService.getSnsBoard(snsBoardNo);
+		List<ReplyVO> rvo = boardService.getBoardReplyList(snsBoardNo);
 		svo.setSnsBoardNo(snsBoardNo);
+		System.out.println("댓글조회해봅니다------"+svo);
 		map.put("imgList", list);
 		map.put("svo", svo);
+		map.put("reply", rvo);
 		return map;
 	}	
-		
+	
+	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
 	public String insertSnsBoard(HttpServletRequest request, @RequestParam MultipartFile[] uploadfile, SBoardVO svo, OwnUserVO ovo) {
