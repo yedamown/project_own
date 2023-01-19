@@ -23,4 +23,6 @@ public interface BandBoardDetailService {
 	public List<OwnLikeVO> getOwnDetailLike(String bandBoardDetailNo);
 	//글등록
 	public BandBoardDetailSearchVO insertBandBoard(BandBoardDetailVO vo);
+	//글업데이트
+	public BandBoardDetailSearchVO updateBandBoard(BandBoardDetailVO vo);
 }

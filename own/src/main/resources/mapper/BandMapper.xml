@@ -194,25 +194,30 @@
             A.BAND_GENDER_OPTION "bandGenderOption",
             A.BAND_MEMBERSHIP_OPTION "bandMembershipOption",
             A.BAND_LOCATION "bandLocation",
-            D.RECENTDAY "recentday",
-            E.MEMCOUNT "memcount"
-        FROM BAND A, BAND_MEMBER_DETAIL B, BAND_BOARD_OPTION C, 
-                (SELECT 
-                        MAX(BAND_BOARD_DATE) "RECENTDAY",
-                        BAND_BOARD_OPTION_NO
-                    FROM BAND_BOARD_DETAIL
-                    GROUP BY BAND_BOARD_OPTION_NO) D,
+            C.RECENTDAY "recentday",
+            D.MEMCOUNT "memcount"
+        FROM BAND A, BAND_MEMBER_DETAIL B,(
+                    SELECT BAND_NO, MAX(RECENTDAY) "RECENTDAY" FROM
+                    (
+                    SELECT  A.BAND_NO, B.RECENTDAY FROM BAND_BOARD_OPTION A,
+                    (SELECT 
+                            MAX(BAND_BOARD_DATE) "RECENTDAY",
+                            BAND_BOARD_OPTION_NO
+                        FROM BAND_BOARD_DETAIL
+                        GROUP BY BAND_BOARD_OPTION_NO) B WHERE A.BAND_BOARD_OPTION_NO=B.BAND_BOARD_OPTION_NO
+                        ) GROUP BY BAND_NO
+                        )
+                    C,
                 (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
                     FROM BAND_MEMBER_DETAIL
-                    GROUP BY BAND_NO) E
+                    GROUP BY BAND_NO) D
             WHERE A.BAND_NO = B.BAND_NO
             AND B.USER_ID = #{userId}
             AND B.BAND_MEMBER_STATUS = 'BA02'
             AND B.BAND_KICK_STATUS = 'BB01'
             AND A.BAND_NO = C.BAND_NO(+)
-            AND C.BAND_BOARD_OPTION_NO= D.BAND_BOARD_OPTION_NO(+)
-            AND A.BAND_NO = E.BAND_NO(+)
-            ORDER BY D.RECENTDAY DESC  NULLS LAST
+            AND A.BAND_NO = D.BAND_NO(+)
+            ORDER BY C.RECENTDAY DESC  NULLS LAST
 	</select>
 	<!-- 내가 가입한 모든 밴드 3개씩 페이징 -->
 	<select id="getMyBandAll" resultType="map">
@@ -250,11 +255,17 @@
                                                                             D.RECENTDAY,
           																	E.MEMCOUNT
                                                                         FROM BAND A, BAND_MEMBER_DETAIL B, BAND_BOARD_OPTION C, 
-                                                                                (SELECT 
-                                                                                        MAX(BAND_BOARD_DATE) "RECENTDAY",
-                                                                                        BAND_BOARD_OPTION_NO
-                                                                                    FROM BAND_BOARD_DETAIL
-                                                                                    GROUP BY BAND_BOARD_OPTION_NO) D,
+                                                                                (
+																                    SELECT BAND_NO, MAX(RECENTDAY) "RECENTDAY" FROM
+																                    (
+																                    SELECT  A.BAND_NO, B.RECENTDAY FROM BAND_BOARD_OPTION A,
+																                    (SELECT 
+																                            MAX(BAND_BOARD_DATE) "RECENTDAY",
+																                            BAND_BOARD_OPTION_NO
+																                        FROM BAND_BOARD_DETAIL
+																                        GROUP BY BAND_BOARD_OPTION_NO) B WHERE A.BAND_BOARD_OPTION_NO=B.BAND_BOARD_OPTION_NO
+																                        ) GROUP BY BAND_NO
+																                        ) D,
                                                                                 (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
                                                                                     FROM BAND_MEMBER_DETAIL
                                                                                     GROUP BY BAND_NO) E
@@ -264,7 +275,7 @@
                                                                             AND B.BAND_MEMBER_STATUS = 'BA02'
                                                                             AND B.BAND_KICK_STATUS = 'BB01'
                                                                             AND A.BAND_NO = C.BAND_NO(+)
-                                                                            AND C.BAND_BOARD_OPTION_NO= D.BAND_BOARD_OPTION_NO(+)
+                                                                            AND A.BAND_NO = D.BAND_NO(+)
                                                                             AND A.BAND_NO = E.BAND_NO(+)
                            
 							
