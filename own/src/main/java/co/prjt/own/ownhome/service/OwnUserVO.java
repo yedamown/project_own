@@ -14,6 +14,7 @@ import lombok.Data;
 
 @Data
 public class OwnUserVO {
+	public String ownUsersNo;
 	public String userId;
 	public String userPasswd;
 	public String userName;

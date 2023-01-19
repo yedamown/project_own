@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.ownhome.mapper.OwnhomeMapper;
 import co.prjt.own.ownhome.service.CustomUser;
 import co.prjt.own.ownhome.service.OwnUserVO;
@@ -162,12 +163,6 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	}
 
 	@Override
-	public List<QuestionVO> questionList() {
-		// TODO Auto-generated method stub
-		return ownhomeMapper.questionList();
-	}
-
-	@Override
 	public QuestionVO selectQuest(String qno) {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.selectQuest(qno);
@@ -200,8 +195,8 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	@Override
 	public List<QuestionVO> getPagingmyQuestlist(QuestionVO vo, Paging paging) {
 		paging.setTotalRecord(ownhomeMapper.myquestionCount(vo)); // start end		
-		paging.setPageUnit(5);
-		paging.setPageSize(3);
+		paging.setPageUnit(10);
+		paging.setPageSize(10);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		System.out.println(paging);
@@ -221,15 +216,55 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	@Override
 	public List<QuestionVO> getPagingAdQuestlist(QuestionVO vo, Paging paging) {
 		paging.setTotalRecord(ownhomeMapper.adQuestionCount()); // start end		
-		paging.setPageUnit(5);
-		paging.setPageSize(3);
+		paging.setPageUnit(10);
+		paging.setPageSize(10);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		System.out.println(paging);
 		vo.setPaging(paging);
 		System.out.println("=====페이징하고싶어요======"+paging.toString());
-		List<QuestionVO> list = ownhomeMapper.questionList();
+		List<QuestionVO> list = ownhomeMapper.questionList(paging);
 		list.get(0).setPaging(paging);
 		return list;
 	}
+
+	@Override
+	public List<QuestionVO> questionList(Paging paging) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.questionList(paging);
+	}
+
+	@Override
+	public List<ReportVO> reportList(Paging paging) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.reportList(paging);
+	}
+
+	@Override
+	public int reportCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<ReportVO> getPagingReportList(ReportVO vo, Paging paging) {
+		paging.setTotalRecord(ownhomeMapper.reportCount()); // start end		
+		paging.setPageUnit(10);
+		paging.setPageSize(10);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		System.out.println(paging);
+		vo.setPaging(paging);
+		System.out.println("=====페이징하고싶어요======"+paging.toString());
+		List<ReportVO> list = ownhomeMapper.reportList(paging);
+		list.get(0).setPaging(paging);
+		return list;
+	}
+
+	@Override
+	public ReportVO selectReport(String rno) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.selectReport(rno);
+	}
+
 }
