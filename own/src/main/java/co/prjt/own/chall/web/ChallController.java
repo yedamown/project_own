@@ -119,6 +119,7 @@ public class ChallController {
 		challenge.getChallAll(vo1);
 		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);	
 		model.addAttribute("popChall", cList);
+		//테스트 중~~!!!
 		return "content/chall/challHomeTest";
 		}
 	
