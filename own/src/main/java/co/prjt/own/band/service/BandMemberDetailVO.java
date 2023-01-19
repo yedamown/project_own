@@ -5,6 +5,7 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,8 +21,10 @@ public class BandMemberDetailVO {
 	String bandMemberNo;
 	Date bandBirth;
 	String bandGender;
-	
+
 	Integer first = 1;
 	Integer last = 10;
 
+	// not in DB
+	int chatCheck;
 }

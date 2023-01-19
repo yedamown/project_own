@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -14,6 +15,7 @@ import co.prjt.own.chat.service.ChatService;
 import co.prjt.own.chat.service.ChatroomVO;
 import co.prjt.own.chat.service.MessageVO;	
 
+@Service
 public class ChatServiceImpl implements ChatService {
 	private final ObjectMapper mapper = new ObjectMapper();
 	@Autowired
@@ -26,9 +28,14 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public int createChatroom(List<ChatroomVO> list) {
+	public String createChatroom(List<ChatroomVO> list) {
 		// 채팅방 개설
-		return chatMapper.createChatroom(list);
+		String rNo = chatMapper.getChatroomNo(); // 가져온 시퀀스 번호
+		for(int i=0; i<=list.size(); i++) {
+			list.get(i).setChatroomNo(rNo);
+			chatMapper.createChatroom(list.get(i));
+		}
+		return rNo;
 	}
 
 	@Override

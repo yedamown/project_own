@@ -1,3 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="co.prjt.own.band.mapper.BandMemberDetailMapper"></mapper>
+<mapper namespace="co.prjt.own.band.mapper.BandMemberDetailMapper">
+
+	<!-- 전체 밴드 멤버 목록 + 나랑 채팅중이면 1, 아니면 0뜨는 컬럼까지 -->
+	<select id="bandMemberList"
+		resultType="co.prjt.own.band.service.BandMemberDetailVO"
+		parameterType="string">
+		SELECT B.*, ( 	SELECT COUNT(*)
+						FROM CHATROOM
+						WHERE CHATROOM_NO IN (	SELECT CHATROOM_NO FROM CHATROOM
+												WHERE BAND_MEMBER_NO = #{userId}	)
+						AND BAND_MEMBER_NO <![CDATA[ <> #{userId}]]>
+						AND BAND_MEMBER_NO = B.USER_ID
+					) CHAT_CHECK
+		FROM BAND_MEMBER_DETAIL B
+		WHERE BAND_NO = #{bandNo}
+		<!-- and USER_ID <![CDATA[ <> #{userId}]]>  -->
+	</select>
+</mapper>
