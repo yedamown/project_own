@@ -33,10 +33,10 @@ public interface OwnhomeService {
 	//비밀번호 재설정
 	public String setPassword(String appNo, String id);
 	
+	//=====================SNS=================
 	public SAccountVO snsLogin(String id);
-	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
 	//sns 유저 회원가입
-	
+	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
 	//=============관리자============
 	//질문목록 불러오기
 	public List<QuestionVO> questionList(Paging paging);

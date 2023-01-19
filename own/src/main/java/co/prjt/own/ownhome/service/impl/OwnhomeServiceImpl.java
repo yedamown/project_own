@@ -267,6 +267,4 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return ownhomeMapper.selectReport(rno);
 	}
 
-	
-
 }

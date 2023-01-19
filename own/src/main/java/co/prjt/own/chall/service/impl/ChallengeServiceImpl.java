@@ -64,6 +64,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 		vo.setPaging(paging);
 		System.out.println(vo);
 		List<ChallengeVO> list = mapper.getChallAll(vo);
+		list.get(0).setPaging(paging);
 		return list;
 	}
 
