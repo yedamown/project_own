@@ -3,11 +3,13 @@ package co.prjt.own.exercise.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.exercise.service.ExerRecordService;
 import co.prjt.own.exercise.service.ExerRecordVO;
 
+@Service
 public class ExerRecordServiceImpl implements ExerRecordService{
 	@Autowired
 	ExerRecordMapper mapper;

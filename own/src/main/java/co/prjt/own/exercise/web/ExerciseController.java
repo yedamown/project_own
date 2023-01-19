@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
+import co.prjt.own.exercise.service.ExerRecordService;
 import co.prjt.own.exercise.service.ExerRecordVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 
@@ -24,7 +25,7 @@ import co.prjt.own.ownhome.service.OwnUserVO;
 @RequestMapping("/own")
 public class ExerciseController {
 	@Autowired
-	ExerRecordMapper exerMapper;
+	ExerRecordService exerService;
 
 	// 오운완(나의운동기록하기) 페이지 이동
 	@RequestMapping(value = "/ownRecordForm", method = RequestMethod.GET)
@@ -46,7 +47,7 @@ public class ExerciseController {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
 		vo.setUserId(id);
-		exerMapper.insertExerRecord(vo);
+		exerService.insertExerRecord(vo);
 		return vo;
 	}
 
@@ -56,7 +57,7 @@ public class ExerciseController {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		// 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 운동기록 가져오기
-		model.addAttribute("lRecord", exerMapper.LatestExerRecord(user.getUserId()));
+		model.addAttribute("lRecord", exerService.LatestExerRecord(user.getUserId()));
 		return "content/own/ownRecordList";
 	}
 
@@ -64,34 +65,34 @@ public class ExerciseController {
 	@GetMapping("/dayChart")
 	@ResponseBody
 	public List<ExerRecordVO> dayExerChart(@RequestParam String userId) {
-		return exerMapper.dayRecordCounting(userId);
+		return exerService.dayRecordCounting(userId);
 	}
 
 	// 회원의 가장 최신날짜 기록의 운동 개수 가져오기
 	@GetMapping("/getWeight")
 	@ResponseBody
 	public List<ExerRecordVO> WeightChart(@RequestParam String userId) {
-		return exerMapper.getWeight(userId);
+		return exerService.getWeight(userId);
 	}
 
 	// 기간설정해서 회원의 운동 기록 가져오기
 	@PostMapping("/selectRecord")
 	@ResponseBody
 	public List<ExerRecordVO> selectRecord(@RequestBody ExerRecordVO vo) {
-		return exerMapper.selectRecord(vo);
+		return exerService.selectRecord(vo);
 	}
 
 	// 기간설정해서 회원의 몸무게 가져오기
 	@PostMapping("/selectWeight")
 	@ResponseBody
 	public List<ExerRecordVO> selectWeight(@RequestBody ExerRecordVO vo) {
-		return exerMapper.selectWeight(vo);
+		return exerService.selectWeight(vo);
 	}
 
 	// 기간설정해서 회원의 운동 카운팅 가져오기
 	@PostMapping("/selectCounting")
 	@ResponseBody
 	public List<ExerRecordVO> selectCounting(@RequestBody ExerRecordVO vo) {
-		return exerMapper.selectCounting(vo);
+		return exerService.selectCounting(vo);
 	}
 }

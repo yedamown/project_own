@@ -55,7 +55,8 @@
                             <li class="nav-item"><a class="nav-link" href="index.html">가치 홈</a></li> 
                             <li class="nav-item"><a class="nav-link" href="about.html">앨범</a></li>
                             <li class="nav-item"><a class="nav-link" href="accomodation.html">일정</a></li>
-                            <li class="nav-item"><a class="nav-link" href="gallery.html">멤버</a></li>
+                            <!--================ 채팅기능을 위한 임시 =================-->
+                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></li>
                         </ul>
                     </div> 
                 </nav>
@@ -113,7 +114,7 @@
                         </div>
                     </div>
                     <div style="flex-grow:3; width: 740px">
-                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber">
+                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber" >
 	  <!-- ================== 여기붙음================== -->                    	
                         <div id="mainTemplate">
                         	<div>
