@@ -92,10 +92,9 @@
             <!--main menu -->
             <div class="side_menu_section">
                 <ul class="menu_nav">
-                    <li> <a href="/own/home">Home</a></li>
-                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="/own/home">Home</a></li>
+                    <li><a th:href="@{snsFeed(snsNickname=${snsInfo.snsNickname})}">나의 피드</a></li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="/own/snsFeed" id="snsFeed">개인피드</a></li>
                     <li class="active"><a href="/own/sns">sns메인</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
@@ -164,7 +163,9 @@
                         <article class="blog_card" th:if="${snsFollow != 0}" >
                             <div class="homeProfile">
                             <img src="/css/sns/img/user.png" alt="author">
-                            <span th:text="${now.snsNickname}">
+                            <a th:href="@{/own/snsFeed(snsNickname=${now.snsNickname})}">
+                            	<span th:text="${now.snsNickname}"></span>
+                            </a>
                             </div>
                             <div class="blog_card_top" style="overflow : hidden;">
                                 <ul class="nowImages" style="float:left; overflow : hidden;">

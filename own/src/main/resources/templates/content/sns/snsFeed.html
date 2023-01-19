@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
@@ -82,6 +84,15 @@
             color: #999;
             font-size: .9em;
         }
+        #followBtn{
+            width: 70px; 
+            height: 30px; 
+            font-size: 13px; 
+            background-color: skyblue;
+            border-color: white;
+            color: white;
+            font-weight: 700;
+        }
         </style>
 </head>
 <body>
@@ -109,29 +120,21 @@
             <!--main menu -->
             <div class="side_menu_section">
                 <ul class="menu_nav">
-                    <li>
-                        <a href="/own/home">
-                            Home
-                        </a>
+                    <li> <a href="/own/home">Home</a></li>
+                    
+                    <li class="active" th:if="${userId.snsNickname == snsInfo.snsNickname}">
+                    	<a th:href="@{snsFeed(snsNickname=${userId.snsNickname})}">나의 피드</a>
                     </li>
-                    <li>
-                        <a href="about.html">
-                            About Us
-                        </a>
-                    </li>
+                    <li th:if="${userId.snsNickname != snsInfo.snsNickname}">    
+                         <a th:href="@{snsFeed(snsNickname=${userId.snsNickname})}">나의 피드</a></li>
                     <li>
                         <a href="services.html">
                             Services
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="/own/snsFeed">
-                            개인피드
-                        </a>
-                    </li>
                     <li>
                         <a href="/own/sns">
-                            메인
+                            sns메인
                         </a>
                     </li>
                     <li>
@@ -194,20 +197,20 @@
 						<br>
 						<div class="testimonial_box">
 							<div class="testimonial_author">
-								<img src="/css/sns/img/user.png" alt="author"> <span
-									th:text="${session.snsInfo.snsNickname}"></span>
+								<img id="feedAccountNo" src="/css/sns/img/user.png" alt="author"> <span
+									th:text="${snsInfo.snsNickname}" th:value="${snsInfo.snsAccountNo}"></span>
 								&nbsp;&nbsp;&nbsp;&nbsp;
-
-								<button id="followBtn" value="white"
-									style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button>
+                                
+								<button th:if="${userId.snsNickname != snsInfo.snsNickname}" 
+                                        id="followBtn" value="blue">팔로우</button>
 								<br>
 								<br><span style="font-size: 13px; color:black">게시글</span>&nbsp;&nbsp;
 									<span class="modalBtn">팔로우</span>&nbsp;&nbsp;
 									<span class="modalBtn">팔로워</span>
 									
 								<p style="font-size:14px;"><span th:text="${snsFeedCount}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<span th:text="${snsFollow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<span th:text="${snsFollower}"></span></p>
+										<span th:text="${snsFollower}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<span th:text="${snsFollow}"></span></p>
 								
 								
 									<!-- 팔로우 Modal -->
@@ -223,8 +226,8 @@
 														</tr>
 													</thead>
 													<tbody>
-														<tr th:each="snsfol : ${snsFollowList}">
-															<td th:text="${snsfol.snsNickname}"></td>
+														<tr th:each="snsfol : ${snsFollowerList}">
+															<td th:text="${snsfol.follower}"></td>
 													</tbody>
 												</table>
 										</div>
@@ -244,25 +247,25 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr th:each="snsf : ${snsFList}">
-														<td th:text="${snsf.snsNickname}"></td>
+													<tr th:each="snsf : ${snsFollowList}">
+														<td th:text="${snsf.follow}"></td>
 												</tbody>
 											</table>
 										</div>
 									</div>
 							</div>
 
-							<div th:if="${session.snsInfo.snsProfile != null}">
-								<span th:text="${session.snsInfo.snsProfile}"></span>
+							<div th:if="${snsInfo.snsProfile != null}">
+								<span th:text="${snsInfo.snsProfile}"></span>
 							</div>
-							<div th:if="${session.snsInfo.snsProfile == null}">프로필 소개글을
+							<div th:if="${snsInfo.snsProfile == null}">프로필 소개글을
 								입력하세요.</div>
 
-							<div th:if="${session.snsInfo.snsWebsite != null}">
-								<span th:text="${session.snsInfo.snsWebsite}"></span>
+							<div th:if="${snsInfo.snsWebsite != null}">
+								<span th:text="${snsInfo.snsWebsite}"></span>
 							</div>
 							<br>
-							<div th:if="${session.snsInfo.snsWebsite == null}">웹사이트 링크
+							<div th:if="${snsInfo.snsWebsite == null}">웹사이트 링크
 								비어있음</div><br>
 
 						</div>
@@ -298,7 +301,7 @@
 
 									<textarea style="width: 600px; height: 200px;"
 										name="snsBoardContent" id="inputContent"></textarea>
-									<input th:value="${session.loginUser.snsAccountNo}"
+									<input th:value="${snsInfo.snsAccountNo}"
 										name="snsAccountNo" type="hidden"></input> <input
 										type="submit" role="button" value="글쓰기" />
 								</form>
@@ -499,19 +502,23 @@
 
         
 	//팔로우 버튼
-    let fBtn = document.getElementById("followBtn");	    
+    let fBtn = document.getElementById("followBtn");	 
+
         fBtn.addEventListener("click", function(){
-        if(this.value = 'white'){
-        console.log('팔로우버튼 클릭');
-        this.style.backgroundColor = "skyblue";
-        this.style.color="white";
-        this.value = 'blue';
-        this.textContent = "팔로우✔";
-        }else if (this.value='blue'){
-            this.style.backgroundColor = "";
-            this.style.color="";
-            this.value="white";
-        }
+            if(this.value == 'blue'){
+                console.log('팔로우버튼 클릭');
+                this.style.backgroundColor = "white";
+                this.style.color="black";
+                this.value = 'white';
+                this.textContent = "팔로잉";
+                
+            }else if (this.value=='white'){
+                console.log('팔로잉버튼 클릭')
+                this.style.backgroundColor = "skyblue";
+                this.style.color="white";
+                this.value="blue";
+                this.textContent = "팔로우";
+            }
     })
 
     //게시글 상세보기 ajax
@@ -553,7 +560,7 @@
 
                                 for(let i=0; i<res.reply.length; i++){
                                     var tableTd ='<tr>'
-                                        tableTd += '<td>'+res.reply[i].replyWriter+'</td>';
+                                        tableTd += '<td>'+res.reply[i].userId+'</td>';
                                         tableTd += '<td>'+res.reply[i].replyContent+'</td>';
                                         tableTd += '<td>'+res.reply[i].replyDate+'</td>';
                                         tableTd += '</tr>';

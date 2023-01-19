@@ -4,7 +4,13 @@
 	
 	<!-- SNS 회원 목록 전체 조회 -->
 	<select id="getSnsUserList" resultType="SAccountVO">
-	select * from sns_account
+	SELECT * FROM SNS_ACCOUNT
+	</select>
+	
+	<!-- SNS 회원 한건 조회 -->
+	<select id="getSnsUser" resultType="SAccountVO">
+		SELECT * FROM SNS_ACCOUNT
+		WHERE SNS_NICKNAME = #{snsNickname}
 	</select>
 	
 	<!-- SNS 회원 가입 -->
@@ -15,6 +21,7 @@
 		INSERT INTO SNS_ACCOUNT (SNS_NICKNAME, SNS_ACCOUNT_NO)
 		VALUES (#{snsNickname}, 'SAU_'||#{snsAccountNo})
 	</insert>
+	
 	
 	<!-- <selectKey keyProperty="currVal,nextVal" resultType="hashmap" order="BEFORE">
       select sns_account_no.currval as currVal, sns_account_no.nextval as nextVal FROM dual

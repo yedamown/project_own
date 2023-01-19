@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,12 +65,11 @@ public class SnsController {
 		//세션에 강제로 로그인유저 저장하기
 		//session.setAttribute("loginUser", ownService.login("kmh"));
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
-		session.setAttribute("snsInfo", ownService.snsLogin(ovo.getUserId()));
-
+		SAccountVO snsInfo = ownService.snsLogin(ovo.getUserId());
 		
-		if(boardService.getNowBoardList(ovo.getSnsAccountNo())!=null) {	
+		if(boardService.getNowBoardList(snsInfo.getSnsAccountNo())!=null) {	
 	     	//팔로우 한 계정의 최신게시글 1개
-			List<SBoardVO> list = boardService.getNowBoardList(ovo.getSnsAccountNo()); 	
+			List<SBoardVO> list = boardService.getNowBoardList(snsInfo.getSnsAccountNo()); 	
 			System.out.println("★★★★★리스트입니다"+list);
 			
 			//이미지 담을 리스트
@@ -78,7 +78,8 @@ public class SnsController {
 				imgList = common.selectImgAll(i.getSnsBoardNo());
 				i.setFileList(imgList);
 			}
-			model.addAttribute("snsFollow", followService.followCount(ovo.getSnsAccountNo())); // sns 팔로우 수 
+			model.addAttribute("snsFollow", followService.followCount(snsInfo.getSnsNickname())); // sns 팔로우 수 
+			model.addAttribute("snsInfo", snsInfo);
 			model.addAttribute("nowFeed", list);		
 		}
 		return "content/sns/snsHome"; 
@@ -104,25 +105,31 @@ public class SnsController {
 	
 	//2. 개인피드	
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
-	public String getSnsUser(HttpServletRequest request, Model model, SFollowVO svo, OwnUserVO ovo) {
+	public String getSnsUser(HttpServletRequest request, Model model, SFollowVO svo, String snsNickname) {
 		HttpSession session = request.getSession();
 		
 		//세션에 강제로 로그인유저 저장하기
-		session.setAttribute("loginUser", ownService.login("kyr"));
+		session.setAttribute("loginUser", ownService.login("kjk"));
+		OwnUserVO ovo = new OwnUserVO();
+		ovo =(OwnUserVO) session.getAttribute("loginUser");
+		SAccountVO userId = ownService.snsLogin(ovo.getUserId());
+		System.out.println("로그인 한 정보에 담긴 아이디입니다"+userId);
+		System.out.println(snsNickname);
+		model.addAttribute("userId", userId); //세션값 
+		model.addAttribute("snsInfo", snsService.getSnsUser(snsNickname)); //해당 닉네임에 대한 sns 계정정보 한건
+		model.addAttribute("snsFeed", boardService.getSnsBoardList(snsNickname)); // sns 개인 피드 게시글
+		model.addAttribute("snsFeedCount", boardService.countBoard(snsNickname)); //sns 게시글 수 
+		model.addAttribute("snsFollower", followService.followerCount(snsNickname)); // sns 팔로우 수
+		model.addAttribute("snsFollowList", followService.getFollowList(snsNickname)); // sns 팔로우 리스트
+		model.addAttribute("snsFollowerList", followService.getFollowerList(snsNickname)); //sns 팔로워 리스트
+		model.addAttribute("snsFollow", followService.followCount(snsNickname)); //sns 팔로워 수
 		
-		ovo = (OwnUserVO) session.getAttribute("loginUser");
-		
-		session.setAttribute("snsInfo", ownService.snsLogin(ovo.getUserId())); //로그인 세션 보내기
-		model.addAttribute("snsFeed", boardService.getSnsBoardList(ovo.getUserId())); // sns 개인 피드 게시글 (sns계정식별번호로 조회)
-		model.addAttribute("snsFeedCount", boardService.countBoard(ovo.getSnsAccountNo())); //sns 게시글 수 
-		model.addAttribute("snsFList", followService.getFollowerList(ovo.getSnsAccountNo())); //sns 팔로워 리스트
-		model.addAttribute("snsFollower", followService.followerCount(ovo.getSnsAccountNo())); //sns 팔로워 수
-		model.addAttribute("snsFollowList", followService.getFollowList(ovo.getSnsAccountNo())); // sns 팔로우 리스트
-		model.addAttribute("snsFollow", followService.followCount(ovo.getSnsAccountNo())); // sns 팔로우 수 
+		System.out.println("팔로워"+followService.getFollowerList(snsNickname));
+		System.out.println("팔로우"+followService.getFollowList(snsNickname));
 		
 		//대표이미지 하나만 띄우기 
 		//list 에 보드넘버 담아두기
-		List<SBoardVO> list = boardService.getSnsBoardNo(ovo.getSnsAccountNo());
+		List<SBoardVO> list = boardService.getSnsBoardNo(snsNickname);
 		//빈배열생성
 		List<MultimediaVO> newList = new ArrayList<>();
 
@@ -142,9 +149,7 @@ public class SnsController {
 		model.addAttribute("snsImg", newList);		
 		return "content/sns/snsFeed"; 
 		}
-	
-	
-	
+
 	//2-1. 개인피드 상세보기
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.POST)
 	@ResponseBody

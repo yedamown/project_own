@@ -26,6 +26,8 @@ public interface OwnhomeMapper {
 	public int pwcheck(String pw, String newpw);
 	//sns 유저 회원가입
 	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
+	//SNS가입 유저 단건 조회
+	public OwnUserVO getSnsUser(String id); 
 	//질문 목록 불러오기
 	public List<QuestionVO> questionList();
 	//제목 선택시 제목에 맞는 질문 가져오기
