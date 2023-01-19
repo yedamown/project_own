@@ -53,6 +53,7 @@ public class ChallController {
 
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
+	// @ResponseBody 데이터를 다시 가져올때.. 안붙이면.. 하얀 html에 받아오는 값이뜬다 ㅎ
 	public String challHome(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
 		HttpSession session = request.getSession();
 //		session.setAttribute("loginUser", ownService.login("kmh"));
@@ -127,10 +128,7 @@ public class ChallController {
 	@GetMapping("/popChallAjax")
 	@ResponseBody
 	public List<ChallengeVO> popChallAjax(Model model, Paging paging, ChallengeVO vo) {
-		System.out.println();
-		System.out.println(vo.toString());
-		System.out.println(paging.toString());
-		return null;
+		return challenge.pageChallList(vo, paging);
 	}
 	
 	// 도전등록 폼으로 이동
@@ -166,8 +164,6 @@ public class ChallController {
 		mem.setUserId(challenge.getChall(vo).getChallLeader());
 		//프로필 리더정보
 		model.addAttribute("leaderInfo", member.getCMem(mem));
-		String memNo = member.getCMem(mem).getMemNo();
-		model.addAttribute("leaderImg", common.selectImg(memNo));
 		//챌린지정보
 		model.addAttribute("detailChall", challenge.getChall(vo));
 		//미디어에서 검색
@@ -213,6 +209,7 @@ public class ChallController {
 		return memListNo;
 	}
 	
+	// ------------------------- 인 증 관 련 -----------------------------------------------------------
 	//인증 글 등록 
 	@PostMapping("/insertVld")
 	public String insertVld(@RequestParam List<MultipartFile[]> uploadfile, ValidationVO vo, Model model, RedirectAttributes rttr) {
@@ -231,9 +228,24 @@ public class ChallController {
 		return "redirect:/own/chall/detailChall?challNo=" + cutChall;
 	}
 	
+	///아작스로 함께? 보내기 나중에 여유되면 도전 ㅎ
 	//인증 사진 등록
-	
 	//내 인증사진
+	
+	//오늘 인증횟수+ 이번 주인증횟수 체크
+	@PostMapping("/vldCheckAjax")
+	@ResponseBody
+	public String vldCheck(@RequestBody ValidationVO vo, ChallengeVO cvo) {
+		cvo.setChallNo(vo.getChallNo());
+		int challFreq = challenge.getChall(cvo).getChallFreq();
+		//서비스 가서 처리하기
+		int rs = validation.countWeekVld(vo);
+		if(rs < challFreq) {
+			return "able";
+		} else {
+			return "disable";
+		}
+	}
 	
 	//인증리스트 불러오기
 	@GetMapping("/vldList")

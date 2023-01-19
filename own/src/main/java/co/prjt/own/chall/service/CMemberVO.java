@@ -12,4 +12,6 @@ public class CMemberVO {
 	String memIntro;
 	String memAccname;
 	String memNo;
+	
+	String memImage;
 }

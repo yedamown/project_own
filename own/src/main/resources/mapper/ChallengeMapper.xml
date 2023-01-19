@@ -64,7 +64,7 @@
                        ORDER BY CHALL_NO ) A 
                   <![CDATA[   
 		) A 
-		WHERE ROWNUM <= 3 ) WHERE RN >= 1
+		WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 		]]>
 	</select>
 	

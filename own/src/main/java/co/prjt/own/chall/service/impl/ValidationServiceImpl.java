@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import co.prjt.own.chall.mapper.ValidationMapper;
+import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.chall.service.ValidationService;
 import co.prjt.own.chall.service.ValidationVO;
 
@@ -42,6 +43,30 @@ public class ValidationServiceImpl implements ValidationService{
 	@Override
 	public List<ValidationVO> getMyChallVld(ValidationVO vo) {
 		return mapper.getMyChallVld(vo);
+	}
+
+	//주에 인증 횟수 가져오기
+	@Override
+	public int countWeekVld(ValidationVO vo) {
+		int day = mapper.startToToday(vo);
+		System.out.println("=== 가져온 vo"+vo);
+		int before = (int) Math.floor(day/7);
+		int now = before + 1;
+		System.out.println("============= 시작날짜와 비교" + day);
+		System.out.println("============= 전 주" + before);
+		System.out.println("============= 이번 주" + now);
+		vo.setBeforeWeek(before);
+		vo.setNowWeek(now);
+		System.out.println("=== 설정해서 이제 날짜검색 "+vo);
+		int rs = mapper.countWeekVld(vo);
+		return rs;
+	}
+	
+	// 총 인증횟수
+	@Override
+	public int countVld(ValidationVO vo) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 
