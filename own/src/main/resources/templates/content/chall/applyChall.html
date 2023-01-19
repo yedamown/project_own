@@ -87,7 +87,6 @@
 			console.log(check1)
 			console.log(challNo, userId);
 			if(check1 == true && check2 == true){
-				alert('굿 둘다 동의완')
 				$.ajax({
 					url: '/own/chall/applyChall',
 					method: 'post',
@@ -99,6 +98,7 @@
  					contentType: "application/json",
  					success: function(res){
  						console.log(res)
+						alert('신청완료')
  					},
  					error: function(err){
  						console.log(err)

@@ -125,7 +125,7 @@
 				</p>
 				<h1 class="mb-4">현재 인기 도전</h1>
 			</div>
-			<div class="row">
+			<div class="row pb-3" id="challRow">
 				<th:block th:each="cha: ${popChall}">
 					<div class="col-lg-4 mb-5">
 						<div class="card border-0 bg-light shadow-sm pb-2">
@@ -269,7 +269,7 @@
 						class="fab fa-twitter"></i></a> <a
 						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
 						style="width: 38px; height: 38px" href="#"><i
-						class="fab fa-facebook-f"></i></a> <a
+						class="fab fa-facebook-f"></i></a>foreach <a
 						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
 						style="width: 38px; height: 38px" href="#"><i
 						class="fab fa-linkedin-in"></i></a> <a
@@ -352,29 +352,24 @@
 
 </body>
 <script>
-	$('#addChallBtn').on('click', function() {
-		console.log('도전 등록이동버튼');
-		let userId = $('#userId').val();
-		console.log(userId);
-		if (userId != null) {
-			location.href = '/own/chall/insertFormChall';
-		} else {
-			alert('로그인을 먼저 해 주세요.')
-			location.href = '/own/login';
-		}
-	});
 	
 	$('#pagegation').on('click', '.pagePort', function(){
         //페이지번호 + 밴드식별번호
         let page = $(this).attr('value');
         console.log($(this).attr('value'));
-        console.log(bandNo);
         $.ajax({
            url: '/own/chall/popChallAjax?page='+page,
            method: 'get',
         }).then(result => {
            console.log(result);
-        })
+			//형태만들기
+			let Chall = $('#ChallRow')
+			$('#challRow').empty();
+			result.forEach( cha => {
+              console.log(cha.challNo)
+			  makeChallDiv(cha);
+            })
+
            //페이지 버튼 만들기
            $('#pagegation').empty();
               let pagingM = result[0].paging;
@@ -398,22 +393,38 @@
                                 </li>`
                     startpageTag.append(pageTag);
                  } else if(pg == pagingM.page ){
-                    let pageTag =  `<li class="page-item active">
-                                <a class="page-link" >${pg}</a>
-                                </li>`
-                    startpageTag.append(pageTag);
-                 }
-              }               
-              //이후 버튼만들기
-              if(pagingM.endPage<pagingM.lastPage){
-                 let pageAfterTag =`<li class="page-item">
-                                <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
-                                <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
-                                </li>`
-                 startpageTag.append(pageAfterTag);
-              }
-              $('#pagegation').append(startpageTag)
+					 let pageTag =  `<li class="page-item active">
+						<a class="page-link" >${pg}</a>
+						</li>`
+						startpageTag.append(pageTag);
+					}
+				}               
+				//이후 버튼만들기
+				if(pagingM.endPage<pagingM.lastPage){
+					let pageAfterTag =`<li class="page-item">
+						<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+							<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+							</li>`
+							startpageTag.append(pageAfterTag);
+						}
+						$('#pagegation').append(startpageTag)
+					})
            })
+
+	//챌린지 폼 만들기
+	function makeChallDiv(cha){
+		console.log(cha.challLeader);
+		let div1 = $('<div />').addClass("col-lg-4 mb-4");
+		let div2 = $('<div />').addClass("card border-0 shadow-sm mb-2");
+		let hiddenInput = $('<input />').attr('type', 'hidden').val(cha.challNo);
+		let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage)
+		let div2_2 = $('<div />').addClass("card-body bg-light text-center p-4")
+		let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
+		let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").append(($('<i />').addClass("fa fa-user text-primary"))).text(cha.nowMember)))
+		let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', '#'); 
+		div1.append(div2.append(hiddenInput, img2_1, div2_2.append(h4_3, div_3, a_3)));
+		$('#challRow').append(div1);
+	}
 </script>
 </div>
 </body>

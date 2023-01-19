@@ -20,4 +20,10 @@ public interface ValidationService {
 		
 	//내 도전조회(도전번호 & 아이디)
 	List<ValidationVO> getMyChallVld(ValidationVO vo);
+	
+	//각 도전 한주 인증횟수 카운트 
+	int countWeekVld(ValidationVO vo);
+	
+	//각 도전별 총 인증횟수 카운트
+	int countVld(ValidationVO vo);
 }

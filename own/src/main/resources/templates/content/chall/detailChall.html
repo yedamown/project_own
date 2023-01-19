@@ -135,8 +135,10 @@
             </div>
             <a th:if="${memcheck !=null }" class="btn btn-primary mt-2 py-2 px-4">이미 참여중인 도전</a>
             <a th:if="${memcheck ==null }" class="btn btn-primary mt-2 py-2 px-4" id="applyBtn">도전 신청하기</a>
-            <a th:if="${leaderInfo.userId == myInfo.userId }" class="btn btn-primary mt-2 py-2 px-4" id="resultProc">도전
-              결과처리하기</a>
+            <div th:if="${myInfo}">
+              <a th:if="${leaderInfo.userId == myInfo.userId }" class="btn btn-primary mt-2 py-2 px-4" id="resultProc">도전
+                결과처리하기</a>
+              </div>
           </div>
         </div>
         <!--대표사진 및 설명 + 신청 end-->
@@ -154,6 +156,7 @@
                   <li class="btn btn-outline-primary m-1 active" data-filter="*" id="detailBtn">
                     상세보기
                   </li>
+                  <th:block th:if="${myInfo}">
                   <li class="btn btn-outline-primary m-1" th:if="${memcheck !=null }" data-filter=".first" id="vldBtn">
                     인증하기
                   </li>
@@ -164,6 +167,7 @@
                   <li class="btn btn-outline-primary m-1" th:if="${leaderInfo.userId == myInfo.userId }"  data-filter=".third" id="memBtn">
                     회원보기
                   </li>
+                </th:block>
                 </ul>
               </div>
             </div>
@@ -222,7 +226,7 @@
               <h2 class="mb-4">Validation GoGo</h2>
               <div id="image_preview">
                 <!--이미지 미리보기-->
-                <form action="/own/chall/insertVld" method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data" id="vldForm">
                   <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                   <div class="form-group">
                     <!--도전번호, 유저 아이디 히든 -->
@@ -241,8 +245,8 @@
                 <!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
                 <div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
                 <br>
-                <input type="submit" role="button" value="글쓰기" />
                 <div class="form-group mb-0">
+                  <button type="button" class="btn btn-primary px-3" id="vldFormSubmit">등록</button>
                   <input type="submit" value="submit" class="btn btn-primary px-3" />
                 </div>
               </form>
@@ -309,8 +313,10 @@
 
         <!-- 도전리더 프로필 -->
         <div class="d-flex flex-column text-center bg-primary rounded mb-5 py-5 px-4">
-          <img th:src="|/imgView/${leaderImg.mediaServerFile}|" class="img-fluid rounded-circle mx-auto mb-3"
+         <div th:if="${leaderInfo.memImage}"> <!-- 도전리더 프로필 있는 경우-->
+          <img th:src="|/imgView/${leaderInfo.memImage}|" class="img-fluid rounded-circle mx-auto mb-3"
             style="width: 100px" />
+         </div>
           <h3 class="text-secondary mb-3" th:text="${leaderInfo.memNickname}"></h3>
           <p class="text-white m-0" th:text="${leaderInfo.memIntro}">
           </p>
@@ -522,6 +528,7 @@
   </div>
   <!-- Footer End -->
   <script>
+    //토큰있어야 post가능~!
     /*<![CDATA[*/
     var header = '[[${_csrf.headerName}]]';
      var token = '[[${_csrf.token}]]';
@@ -529,27 +536,44 @@
        console.log(token);
      /*]]>*/
 
+    //도전 신청으로 이동하기   --> 여유가되면 모달로 띄우기...^^;
     $('#applyBtn').on("click", function () {
       let cNo = $('#challNo').val();
       console.log(cNo);
       location.href = '/own/chall/applyForm?challNo=' + cNo
     })
 
-    $('#applyVld').on("click", function () {
+    //
+    $('#vldFormSubmit').on("click", function(){
+      console.log("인증여부 확인")
       let challNo = $('#challNo').val();
       let userId = $('#userId').val();
-      console.log(challNo, userId);
-      /*         $.ajax({
-                url:'/own/chall/applyChall',
-                method: 'post',
-                data : JSON.stringify({userId: userId, 
-      								 challNo: challNo}),
-                contentType: "application/json"
-              }).then(res => {
-                console.log(res)
-              }) */
-    })
-
+      $.ajax({
+        url:'/own/chall/vldCheckAjax',
+        method: 'post',
+        data: JSON.stringify({userId: userId,
+                              challNo: challNo
+                            }),
+        beforeSend : function(xhr){
+                      xhr.setRequestHeader(header, token);
+        }, 
+        contentType: "application/json",
+        success: function(result){
+          if(result == "able"){
+            console.log("인증가능");
+            alert("인증가넝")
+            $("form").submit();
+          } else{
+            console.log("성공")
+            alert("이번 주 인증 완.")
+          }
+        },
+        error: function(err){
+          console.log(err)
+        }
+      })
+      })
+  
     //달성률 구글차트
     var context = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(context, {
@@ -680,7 +704,6 @@
       let challNo = $('#challNo').val();
       let userId = $(e).parent().text().substring(0,3);
       let memStatus = $(e).text();
-      console.log(userId, challNo);
       $.ajax({
         url: '/own/chall/challMemAuth',
         method: 'post',
@@ -723,7 +746,7 @@
     })
 
      /* 멤버 승인, 거절 버튼 */
-    /*멤버 리스트 ul li 만들기*/
+     /*멤버 리스트 ul li 만들기*/
 
 
     	//첨부파일 이미지 

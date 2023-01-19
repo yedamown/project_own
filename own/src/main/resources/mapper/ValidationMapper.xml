@@ -41,4 +41,24 @@
 		ORDER BY V.VLD_DATE DESC
 	</select>
 	
+	<select id="startToToday" resultType="int">
+		SELECT (TO_DATE(TO_CHAR(CURRENT_DATE)) - ( SELECT CHALL_STARTDATE
+		                                          FROM CHALLENGES
+		                                          WHERE CHALL_NO = #{challNo})) AS START_TO_TODAY
+		FROM DUAL
+	</select>
+	
+	<select id="countWeekVld" resultType="int">
+		SELECT COUNT(*)
+		FROM CHALL_VALIDATION
+		WHERE CHALL_NO = #{challNo}
+		AND VLD_STATUS = '승인'
+		AND USER_ID = #{userId}
+ 		AND VLD_DATE >= ( SELECT CHALL_STARTDATE
+                  		  FROM CHALLENGES
+                  		  WHERE CHALL_NO = #{challNo} ) +  7 * #{beforeWeek}
+		AND ( SELECT CHALL_STARTDATE
+              FROM CHALLENGES
+              WHERE CHALL_NO = #{challNo} ) + 7 * #{nowWeek}  > VLD_DATE 
+	</select>
 </mapper>
