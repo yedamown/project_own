@@ -157,4 +157,9 @@ public class CommonServiceImpl implements CommonService {
 		// TODO Auto-generated method stub
 		return commonMapper.reportAlllist();
 	}
+
+	@Override
+	public int updateKey(String key, List<String> name) {
+		return commonMapper.updateKey(key, name);
+	}
 }

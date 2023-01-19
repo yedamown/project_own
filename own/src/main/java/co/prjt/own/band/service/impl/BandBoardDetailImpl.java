@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import co.prjt.own.band.mapper.BandBoardDetailMapper;
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
+import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
@@ -108,12 +109,31 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 		// 글단건조회(글+유저별명)
 		BandBoardDetailSearchVO board = bandBoardDetailMapper.getBandBoardDetail(vo);
 		// 이미지조회
-		board.setBandImgs(common.selectImgAll(vo.getBandBoardDetailNo()));
+		List<MultimediaVO> imgs = common.selectImgAll(vo.getBandBoardDetailNo());
+		if(imgs!=null) {
+			board.setBandImgs(common.selectImgAll(vo.getBandBoardDetailNo()));
+		}
 		return board;
 	}
 
 	@Override
 	public List<OwnLikeVO> getOwnDetailLike(String bandBoardDetailNo) {
 		return bandBoardDetailMapper.getOwnDetailLike(bandBoardDetailNo);
+	}
+
+	@Override
+	public BandBoardDetailSearchVO insertBandBoard(BandBoardDetailVO vo) {
+		int r = bandBoardDetailMapper.insertBandBoard(vo);
+		//성공하면 글조회
+		BandBoardDetailSearchVO searchVo = null;
+		if(r>0) {
+			searchVo = BandBoardDetailSearchVO.builder()
+					.bandBoardDetailNo(vo.getBandBoardDetailNo())
+					.build();
+			//글생성이 성공했으면 searchVo에 널 값 아닌 게 담길 것(숫자임)
+			searchVo.setBandBoardDetailNo("BDD_"+searchVo.getBandBoardDetailNo());
+			bandBoardDetailMapper.getBandBoardDetail(searchVo);
+		}
+		return searchVo;
 	}
 }

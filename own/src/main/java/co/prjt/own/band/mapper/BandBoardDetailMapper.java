@@ -3,6 +3,7 @@ package co.prjt.own.band.mapper;
 import java.util.List;
 
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
+import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.common.service.OwnLikeVO;
 
 public interface BandBoardDetailMapper {
@@ -20,4 +21,6 @@ public interface BandBoardDetailMapper {
 	public BandBoardDetailSearchVO getBandBoardDetail(BandBoardDetailSearchVO vo);
 	//보드 좋아요 상세 조회
 	public List<OwnLikeVO> getOwnDetailLike(String bandBoardDetailNo);
+	//글등록
+	public int insertBandBoard(BandBoardDetailVO vo);
 }

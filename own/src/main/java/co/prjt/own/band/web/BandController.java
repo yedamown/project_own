@@ -1,6 +1,8 @@
 package co.prjt.own.band.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -155,7 +157,7 @@ public class BandController {
 		if(band.getBandNo()!=null) { //bandNo 숫자로 들어옴
 			//밴드대표이미지 추가하기 (MultipartFile[], 밴드번호숫자부분, 밴드번호앞자리(BDU_), "Band")
 			//만약 사용자가 대표이미지를 넣었다면
-			if(sampleImgInput.getMediaServerFile().equals("sample")) {
+			if(sampleImgInput.getMediaServerFile().equals("sample")) {//여기값이 샘플이란 건 실제 들어온 값이 샘플이라는 거..
 				String res = common.upload(gateImage, band.getBandNo(), "BDU_", "Band");
 				System.out.println(res);
 			} else {
@@ -270,31 +272,53 @@ public class BandController {
 		return "content/band/bandBoardWrite";
 	}
 	//개인 글쓰기 창으로
-	@PostMapping("/bandGroup/bandCreate")
-	public String bandBoardInsert(BandBoardDetailVO board, RedirectAttributes rttr) {
+	@ResponseBody
+	@PostMapping("/bandGroup/bandBoardInsert")
+	public BandBoardDetailSearchVO bandBoardInsert(BandBoardDetailVO board) {
 		System.out.println(board.toString());
-//		System.out.println(sampleImgInput.toString());
-		//글생성
-		//band = bandService.insertBand(band);
-		//밴드생성 성공
-//		if(band.getBandNo()!=null) { //bandNo 숫자로 들어옴
-//			//밴드대표이미지 추가하기 (MultipartFile[], 밴드번호숫자부분, 밴드번호앞자리(BDU_), "Band")
-//			//만약 사용자가 대표이미지를 넣었다면
-//			if(sampleImgInput.getMediaServerFile().equals("sample")) {
-//				String res = common.upload(gateImage, band.getBandNo(), "BDU_", "Band");
-//				System.out.println(res);
-//			} else {
-//			//만약 사용자가 대표이미지를 샘플이미지로 했다면
-//				sampleImgInput.setMediaRealFile("band_실제 이미지 없음");
-//				sampleImgInput.setMediaFilePath("c:/test");
-//				sampleImgInput.setIno("BDU_");
-//				sampleImgInput.setIdentifyId(band.getBandNo());
-//				sampleImgInput.setMediaCategory("Band");
-//				sampleImgInput.setMediaTurn("band_sample");
-//				bandService.bandSampleimg(sampleImgInput);
-//			}
-//			return "content/band/bandCreateComplete";
-//		}
-		return "redirect:content/band/bandCreateComplete";
+		//bandBoardDetailNo 여기에 이미지정보들어있음..담아놓고
+		String img = board.getBandBoardDetailNo();
+		//글 업로드 시켜주고..
+		BandBoardDetailSearchVO vo = bandBoardDetailService.insertBandBoard(board);
+		//임시로 DB에 올라간 이미지들 경로 수정
+		String[] imgs = img.split("#");
+		List<String> newImgs = new ArrayList<String>();
+		//imgs[0]은 공백임
+		if(imgs.length>1) {
+			for(int i=1; i<imgs.length; i++) {
+				newImgs.add(imgs[i]);
+			}
+		}
+		//newImgs가지고 이미지 경로 수정하기
+		int r = common.updateKey(vo.getBandBoardDetailNo(), newImgs);
+		System.out.println("사진"+r+"건 키 값 수정완료됨");
+		return vo;
+	}
+	//이미지 업로드...임시 컨트롤러
+	@ResponseBody
+	@PostMapping("/bandGroup/bandBoardInsertImg")
+	public String bandBoardInsertImg(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+		//유저...
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		//현재날짜구하기
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
+		System.out.println(formatter.format(date));
+		
+		
+		//공통 업로드함수가 리스트형태라...리스트로 바꿔주기
+		MultipartFile[] uploadfile = new MultipartFile[1];
+		uploadfile[0] = file;
+		
+		//임시번호 이렇게들어가겠네(식별번호)  (MultipartFile[], 밴드번호숫자부분, 밴드번호앞자리(BDU_), "Band")
+		//ddMMyyyyHHmmss_hjj  //data+"_"+user.userId  //=>BDI_20230119120322_hjj
+		String res = common.upload(uploadfile, date+"_"+user.userId, "BDI_", "Band");
+		String mediaServerFile = "";
+		System.out.println(res);
+		MultimediaVO dbImg = common.selectImg("BDI_"+date+"_"+user.userId);
+		mediaServerFile = dbImg.getMediaServerFile(); //실제경로
+		System.out.println(mediaServerFile);
+		return mediaServerFile; //썸머노트에 뿌릴 값을(이미지의 실제주소..)를 가져감
 	}
 }

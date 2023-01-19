@@ -12,7 +12,7 @@
 				RegDate <input type="text" class="form-control" id="RegDate" th:value="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"readonly>
 				<div class="form-group">
 					<label for="comment">Content:</label>
-					<textarea class="form-control" rows="5" id="content" readonly>[[${board.bandBoardContent }]]</textarea>
+					<div th:utext="${board.bandBoardContent }"></div>
 				</div>
 				<!--임시-->
 				<div  th:each="img : ${board.bandImgs}">
