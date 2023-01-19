@@ -24,7 +24,7 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 	@Autowired CommonService common;
 	
 	@Override
-	public int countBandBoard(String bandNo) {
+	public int countBandBoard(String bandNo) { 
 		return bandBoardDetailMapper.countBandBoard(bandNo);
 	}
 
@@ -108,11 +108,11 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 	public BandBoardDetailSearchVO getBandBoardDetail(BandBoardDetailSearchVO vo) {
 		// 글단건조회(글+유저별명)
 		BandBoardDetailSearchVO board = bandBoardDetailMapper.getBandBoardDetail(vo);
-		// 이미지조회
-		List<MultimediaVO> imgs = common.selectImgAll(vo.getBandBoardDetailNo());
-		if(imgs!=null) {
-			board.setBandImgs(common.selectImgAll(vo.getBandBoardDetailNo()));
-		}
+		// 이미지조회(썸머노트로 인해 인라인 형식의 src첨부가 되면서 주석처리)
+//		List<MultimediaVO> imgs = common.selectImgAll(vo.getBandBoardDetailNo());
+//		if(imgs!=null) {
+//			board.setBandImgs(common.selectImgAll(vo.getBandBoardDetailNo()));
+//		}
 		return board;
 	}
 
@@ -123,6 +123,9 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 
 	@Override
 	public BandBoardDetailSearchVO insertBandBoard(BandBoardDetailVO vo) {
+		//bandBoardDetailNo 여기에 이미지정보들어있음..담아놓고
+//		String img = vo.getBandBoardDetailNo();
+		
 		int r = bandBoardDetailMapper.insertBandBoard(vo);
 		//성공하면 글조회
 		BandBoardDetailSearchVO searchVo = null;
@@ -133,7 +136,58 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 			//글생성이 성공했으면 searchVo에 널 값 아닌 게 담길 것(숫자임)
 			searchVo.setBandBoardDetailNo("BDD_"+searchVo.getBandBoardDetailNo());
 			bandBoardDetailMapper.getBandBoardDetail(searchVo);
+			
+			//p태그(컨텐츠)에서 이미지를 추출하겠음
+			String[] pImgs = vo.getBandBoardContent().split("<img src=\"/imgView/");
+			System.out.println("0000"+pImgs[0]);
+			List<String> pNewImgs = new ArrayList<String>();
+			//pimgs[0]은 공백임
+			if(pImgs.length>0) {
+				for(int i=1; i<pImgs.length; i++) {
+					//자르기..
+					pImgs[i] = pImgs[i].substring(0, pImgs[i].indexOf("\" style=\""));
+					pNewImgs.add(pImgs[i]);
+					System.out.println(pImgs[i]);
+				}
+				//newImgs가지고 이미지 경로 수정하기
+				int re = common.updateKey("BDD_"+vo.getBandBoardDetailNo(), pNewImgs);
+				System.out.println("사진"+re+"건 키 값 수정완료됨");
+			}
 		}
 		return searchVo;
+	}
+
+	@Override
+	public BandBoardDetailSearchVO updateBandBoard(BandBoardDetailVO vo) {
+		int r = bandBoardDetailMapper.updateBandBoard(vo);
+		//리턴할 보 만들기
+		BandBoardDetailSearchVO returnVo = new BandBoardDetailSearchVO();
+		//업데이트 후 이미지 수정하고 서치 한 후 보내기
+		System.out.println(r+"건 수정");
+		if(r>0) {
+			//글 수정이 성공했으면 searchVo에 널 값 아닌 게 담길 것..상세조회해주기
+			returnVo.setBandBoardDetailNo(vo.getBandBoardDetailNo());
+			returnVo = bandBoardDetailMapper.getBandBoardDetail(returnVo);
+			
+			//p태그(컨텐츠)에서 이미지를 추출하겠음
+			String[] pImgs = vo.getBandBoardContent().split("<img src=\"/imgView/");
+			List<String> pNewImgs = new ArrayList<String>();
+			//pimgs[0]은 공백임
+			if(pImgs.length>1) {
+				for(int i=1; i<pImgs.length; i++) {
+					//자르기..
+					pImgs[i] = pImgs[i].substring(0, pImgs[i].indexOf("\" style=\""));
+					pNewImgs.add(pImgs[i]);
+				}
+				//newImgs가지고 이미지 경로 수정하기
+				int re = common.updateKey("BDD_"+vo.getBandBoardDetailNo(), pNewImgs);
+				System.out.println("사진"+re+"건 키 값 수정완료됨");
+				
+				//수정 중 삭제된 이미지가 있다면 db에서 삭제해주기 pNewImgs랑 같지않은 것들 삭제
+				int reD = common.deleteImg(pNewImgs);
+				System.out.println(reD+"건 수정하면서 이미지 삭제됨");
+			}
+		}
+		return returnVo;
 	}
 }

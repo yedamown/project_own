@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,7 +55,7 @@ public class BandController {
 		//원래는 사용자의 각 기호..세션아이디 에 맞춰서 추천 ...........밴드 검색어 넣어야 함
 		//1.세션아이디 불러와서 최신글이 있고 가입상태인 밴드목록을 불러옴..위치설정
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", ownService.login("hjj"));
+		session.setAttribute("loginUser", ownService.login("hjj")); 
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 	    System.out.println(user);
 	    //세션널..임시
@@ -245,7 +247,7 @@ public class BandController {
 		
 		BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
 		vo.setBandBoardDetailNo(bandBoardDetailNo);
-		//글단건조회(글+이미지+유저별명) ... 좋아요랑 댓글은 json으로 구현
+		//글단건조회(글+이미지+유저별명) ... 좋아요랑 댓글은 json으로 구현 --> 이미지 뺌
 		model.addAttribute("board", bandBoardDetailService.getBandBoardDetail(vo));
 		//좋아요 내가 찍었다면 찍었다는 게 필요할 듯..
 		//리스트로 만들어서 검색할 수 있는게 있기에 그걸 사용하겠음
@@ -276,23 +278,7 @@ public class BandController {
 	@PostMapping("/bandGroup/bandBoardInsert")
 	public BandBoardDetailSearchVO bandBoardInsert(BandBoardDetailVO board) {
 		System.out.println(board.toString());
-		//bandBoardDetailNo 여기에 이미지정보들어있음..담아놓고
-		String img = board.getBandBoardDetailNo();
-		//글 업로드 시켜주고..
-		BandBoardDetailSearchVO vo = bandBoardDetailService.insertBandBoard(board);
-		//임시로 DB에 올라간 이미지들 경로 수정
-		String[] imgs = img.split("#");
-		List<String> newImgs = new ArrayList<String>();
-		//imgs[0]은 공백임
-		if(imgs.length>1) {
-			for(int i=1; i<imgs.length; i++) {
-				newImgs.add(imgs[i]);
-			}
-		}
-		//newImgs가지고 이미지 경로 수정하기
-		int r = common.updateKey(vo.getBandBoardDetailNo(), newImgs);
-		System.out.println("사진"+r+"건 키 값 수정완료됨");
-		return vo;
+		return bandBoardDetailService.insertBandBoard(board);
 	}
 	//이미지 업로드...임시 컨트롤러
 	@ResponseBody
@@ -320,5 +306,29 @@ public class BandController {
 		mediaServerFile = dbImg.getMediaServerFile(); //실제경로
 		System.out.println(mediaServerFile);
 		return mediaServerFile; //썸머노트에 뿌릴 값을(이미지의 실제주소..)를 가져감
+	}
+	@GetMapping("/bandGroup/bandBoardUpdate")
+	public String bandBoardUpdate(Model model, HttpServletRequest request, 
+			BandBoardDetailSearchVO vo) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		//세션저장
+		//BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
+		//vo.setBandBoardDetailNo(BandBoardDetailNo);
+		//글단건조회(글+이미지+유저별명) ... 좋아요랑 댓글은 json으로 구현 --> 이미지 뺌 (insert 주석과 같음)
+		vo = bandBoardDetailService.getBandBoardDetail(vo);
+		model.addAttribute("board", vo);
+		//게시판목록
+		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(vo.getBandNo()));
+		return "content/band/bandBoardUpdate";
+	}
+	//
+	@ResponseBody
+	@PutMapping("/bandGroup/bandBoardUpdate")
+	public BandBoardDetailSearchVO bandBoardUpdate(@RequestBody BandBoardDetailSearchVO vo) {
+		//폼에서 들어온 대로 업데이트
+		System.out.println("도달함"+ vo.toString());
+		//기존에 연결되어있던 이미지.....삭제된거? 추가된거는 쉽게 할 듯
+		return bandBoardDetailService.updateBandBoard(vo);
 	}
 }

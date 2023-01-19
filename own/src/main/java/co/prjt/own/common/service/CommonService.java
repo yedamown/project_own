@@ -39,4 +39,6 @@ public interface CommonService {
 		
 		//밴드용 이미지식별키수정
 		public int updateKey(@Param(value = "key") String key, @Param(value = "name")List<String> name);
+		//밴드용 이미지 수정...삭제
+		public int deleteImg(List<String> name);
 }

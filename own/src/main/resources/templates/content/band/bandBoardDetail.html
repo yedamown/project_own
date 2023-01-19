@@ -1,10 +1,55 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
-<script src="/css/band/js/jquery-3.2.1.js"></script>
-<div style="flex-grow:3; width: 740px">
+<!-- <script src="/css/band/js/jquery-3.2.1.js"></script> -->
+<style>
+	.modal {
+		display: none;
+		z-index: 500;
+		width: 100%;
+		height: 100vh;
+		position: fixed;
+		top: 0;
+		left: 0;
+		background-color: rgba(0, 0, 0, 0.3);
+	}
+	
+	.modal button {
+		position: absolute;
+		top: 3rem;
+		right: 3rem;
+		background: transparent;
+		border: 0;
+		color: #ffffff;
+		font-size: 3rem;
+	}
+	
+	.modalBox {
+		position: relative;
+		top: 20%;
+		left: 50%;
+		transform: translate(-50%, -20%);
+		background-color: #ffffff;
+		width: 30%;
+		height: 30%;
+		text-align: center;
+	}
+	
+	.modalBox img {
+		width: 100%;
+	}
+	
+	.modalBox p {
+		color: #ffffff;
+		background-color: #000;
+		font-size: 2rem;
+		padding: .2rem;
+	}
+</style>
+<div id="template" style="flex-grow:3; width: 740px">
 	<div>
 		<article style="border: 1px solid #eeeeee;padding:30px; ">
 			<h3>게시판 상세페이지</h3>
 			<input type="hidden" id="bandBoardDetailNo" th:value="${board.BandBoardDetailNo}">
+			<input type="hidden" id="bandNo" th:value="${board.bandNo}">
 			<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
 			<div class="form-group">
 				Title <input type="text" class="form-control" id="title" th:value="${board.bandBoardTitle }"readonly>
@@ -19,6 +64,10 @@
 					<img  style="width:678px;" th:src="|/imgView/${img.mediaServerFile}|" alt="">
 				</div>
 			</div>
+		<div>
+			<button type="button" id="btnUpdate" class="btn btn-primary mb-2">수정</button>
+			<button type="button" id="btnDelete" class="btn btn-primary mb-2">삭제</button>
+		</div>
 		<div>
 			<article id="bandReply">
 			</article>
@@ -44,11 +93,20 @@
 		</form>
 		</article>
 	</div>
+	<!-- 팝업 될 곳 -->
+	<div class="modal">
+		<button>&times;</button>
+		<div class="modalBox">
+			<img src="" alt="">
+			<p></p>
+		</div>
+	</div>
 </div>
 <script>
 $(function(){
 	//유저아이디
 	let userId = $('#userId').val();
+	let bandNo = $('#bandNo').val();
 	console.log(userId);
 	//좋아요리스트..댓글리스트
 	let DetailNo = $('#bandBoardDetailNo').val();
@@ -77,5 +135,44 @@ $(function(){
 		}
 		$('#bandLike').append(likeTag, r);
 	})
+	//
+// 	이미지 클릭시 해당 이미지 모달
+	$("img").click(function(){
+		$(".modal").show();
+		// 해당 이미지 가겨오기
+		var imgSrc = $(this).attr("src");
+		var imgAlt = $(this).attr("alt");
+		console.log(imgSrc);
+		console.log(imgAlt);
+		
+		$(".modalBox img").attr("src", imgSrc);
+		$(".modalBox img").attr("alt", imgAlt);
+		
+		// 해당 이미지 텍스트 가져오기
+		var imgTit =  $(this).children("p").text();
+		$(".modalBox p").text(imgTit);
+		
+   // 해당 이미지에 alt값을 가져와 제목으로
+		//$(".modalBox p").text(imgAlt);
+	});
+	
+	//.modal안에 button을 클릭하면 .modal닫기
+	$(".modal button").click(function(){
+		$(".modal").hide();
+	});
+	
+	//.modal밖에 클릭시 닫힘
+	$(".modal").click(function (e) {
+    if (e.target.className != "modal") {
+      return false;
+    } else {
+      $(".modal").hide();
+    }
+	
+  });
+	//글 수정
+	$('#btnUpdate').on('click', function(){
+    		$('#template').load("/own/band/bandGroup/bandBoardUpdate?BandBoardDetailNo="+DetailNo+'&bandNo='+bandNo);
+   	})
 })
 </script>
