@@ -108,11 +108,28 @@ public class ChallController {
 		} 
 		return "content/chall/challHome";
 	}
-
+	
+	//홈 테스트
+	@GetMapping("/hometest")
+	public String challHomeTest (Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
+		HttpSession session = request.getSession();
+//		session.setAttribute("loginUser", ownService.login("kmh"));
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		System.out.println("===================도전 홈"+user);
+		challenge.getChallAll(vo1);
+		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);	
+		model.addAttribute("popChall", cList);
+		//테스트 중~~!!!
+		return "content/chall/challHomeTest";
+		}
+	
 	//홈페이지 페이징 아작스
 	@GetMapping("/popChallAjax")
 	@ResponseBody
-	public String popChallAjax() {
+	public List<ChallengeVO> popChallAjax(Model model, Paging paging, ChallengeVO vo) {
+		System.out.println();
+		System.out.println(vo.toString());
+		System.out.println(paging.toString());
 		return null;
 	}
 	

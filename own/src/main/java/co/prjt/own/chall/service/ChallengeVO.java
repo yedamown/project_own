@@ -29,7 +29,7 @@ public class ChallengeVO {
 	String challLeader;
 	String restPrice;
 	
-	String FirstImage;
+	String firstImage;
 	
 	int first;
 	int last;
