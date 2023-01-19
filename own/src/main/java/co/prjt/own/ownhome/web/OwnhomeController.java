@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
@@ -34,7 +35,7 @@ public class OwnhomeController {
 	@Autowired
 	ExerRecordMapper exerMapper;
 
-	// 홈으로 이동
+		//홈으로 이동
 		@RequestMapping(value = {"/","/own/home"}, method = RequestMethod.GET)
 		public String ownHome(OwnUserVO vo, HttpServletRequest request) { // 오운홈으로 가는 페이지이동
 			HttpSession session = request.getSession();
@@ -171,6 +172,16 @@ public class OwnhomeController {
 			return ownService.getPagingmyQuestlist(vo,paging);
 		}
 		//=================================================관리자모드================================================
+		//질문목록 페이징처리
+		@ResponseBody		
+		@GetMapping("/own/admin/QuestionList")
+		public List<QuestionVO> ownQuestionListAjax(Model model, QuestionVO vo, Paging paging) {
+			System.out.println();
+			System.out.println(vo.toString());
+			System.out.println(paging.toString());
+			//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
+			return ownService.getPagingAdQuestlist(vo, paging);
+		}
 		
 		//질문목록 불러오기
 		@GetMapping("/own/admin/question")
@@ -179,6 +190,13 @@ public class OwnhomeController {
 			model.addAttribute("OList", ownService.getPagingAdQuestlist(vo, paging));
 			return "content/own/ownAdminQuestion";
 		}
+		//모든질문 페이징 처리
+		@ResponseBody		
+		@GetMapping("/own/admin/qustionAjax")
+		public List<QuestionVO> qustionAjax(Model model, QuestionVO vo, Paging paging) {
+			return ownService.getPagingAdQuestlist(vo, paging);
+		}
+		
 		
 		//질문 한건조회
 		@GetMapping("/own/admin/selectquest")
@@ -202,8 +220,7 @@ public class OwnhomeController {
 			model.addAttribute("OList", ownService.getPagingUserList(vo, paging));
 			return "content/own/ownAdminUserList";
 		}
-		
-		
+		//모든 회원 페이징처리
 		@ResponseBody		
 		@GetMapping("/own/userListAjax")
 		public List<OwnUserVO> ownMemberListAjax(Model model, OwnUserVO vo, Paging paging) {
@@ -214,5 +231,26 @@ public class OwnhomeController {
 			return ownService.getPagingUserList(vo, paging);
 		}
 		
+		//신고 페이지 이동
+		@GetMapping("/own/admin/reportList")
+		public String reportList(Model model,Paging paging,ReportVO vo) {
+			model.addAttribute("RList", ownService.getPagingReportList(vo,paging));
+			return "/content/own/ownAdminReport";
+		}
+		
+		@ResponseBody		
+		@GetMapping("/own/reportListAjax")
+		public List<ReportVO> reportListAjax(Model model, ReportVO vo, Paging paging) {
+			//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
+			return ownService.getPagingReportList(vo, paging);
+		}
+		
+		//신고 한건조회
+		@GetMapping("/own/admin/selectReport")
+		@ResponseBody
+		public ReportVO selectReport(@RequestParam String rno) {
+			System.out.println("===========RNO========"+rno);
+			return ownService.selectReport(rno);
+		}
 	
 }

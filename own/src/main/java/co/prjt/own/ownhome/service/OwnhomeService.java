@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.sns.service.SAccountVO;
 
 public interface OwnhomeService {
@@ -38,16 +39,25 @@ public interface OwnhomeService {
 	
 	//=============관리자============
 	//질문목록 불러오기
-	public List<QuestionVO> questionList();
+	public List<QuestionVO> questionList(Paging paging);
 	//전체질문 갯수
 	public int adQuestionCount();
 	//전체질문 페이징 처리..
 	public List<QuestionVO> getPagingAdQuestlist(QuestionVO vo, Paging paging);
 	//제목 선택시 제목에 맞는 질문 가져오기
 	public QuestionVO selectQuest(String qno);
+	
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);
 	
+	//신고목록 불러오기
+	public List<ReportVO> reportList(Paging paging);
+	//신고 카운트
+	public int reportCount();
+	//신고 페이징처리
+	public List<ReportVO> getPagingReportList(ReportVO vo, Paging paging);
+	//신고 한건조회
+	public ReportVO selectReport(String rno);
 	//========================마이페이지
 	//내 질문 가져오기
 	public List<QuestionVO> myQuestion(QuestionVO vo);
@@ -55,4 +65,5 @@ public interface OwnhomeService {
 	public int myquestionCount(QuestionVO VO);
 	//내 질문 페이징처리
 	public List<QuestionVO> getPagingmyQuestlist(QuestionVO vo, Paging paging);
+	
 }

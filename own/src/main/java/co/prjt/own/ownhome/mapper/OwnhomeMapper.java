@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.QuestionVO;
 import co.prjt.own.sns.service.SAccountVO;
@@ -27,7 +28,7 @@ public interface OwnhomeMapper {
 	//sns 유저 회원가입
 	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
 	//질문 목록 불러오기
-	public List<QuestionVO> questionList();
+	public List<QuestionVO> questionList(Paging paging);
 	//제목 선택시 제목에 맞는 질문 가져오기
 	public QuestionVO selectQuest(String qno);
 	//질문 답변등록
@@ -36,5 +37,12 @@ public interface OwnhomeMapper {
 	public List<QuestionVO> myQuestion(QuestionVO vo);
 	//내질문 갯수
 	public int myquestionCount(QuestionVO vo);
+    //신고목록 가져오기
+	public List<ReportVO> reportList(Paging paging);
+	//신고 한건조회
+	public ReportVO selectReport(String rno);
+	//신고 갯수갖고오기
+	public int reportCount();
+	//========================마이페이지
 	
 }

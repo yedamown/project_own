@@ -9,9 +9,14 @@ select * from employees
 
 <!-- 회원가입 -->
 <insert id="insertUser">
+<selectKey keyProperty="ownUsersNo" resultType="String" order="BEFORE">
+			SELECT OWN_USER_NO.nextval FROM DUAL
+		</selectKey>
+
 insert into own_users
-(user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_perm)
+(own_users_no, user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_perm)
 values (
+		'ONO_' || #{ownUsersNo},
 		#{userId},
 		#{userPasswd},
 		#{userName},
@@ -39,8 +44,8 @@ SELECT COUNT(*) FROM OWN_USERS
 
 <select id="getUserList" resultType="OwnUserVO">
 SELECT * FROM ( SELECT ROWNUM RN, A.* FROM (
-	SELECT * FROM OWN_USERS
-	ORDER BY USER_ID
+	SELECT * FROM OWN_USERS	
+    ORDER BY TO_NUMBER(SUBSTR(OWN_USERS_NO,5))
 	<![CDATA[	
 ) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 ]]>
@@ -78,14 +83,35 @@ select count(*) from question
 	) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 	]]>
    </select>
+   
    <select id="myquestionCount" resultType="int">
    SELECT COUNT(*) FROM QUESTION WHERE USER_ID = #{userId}
    </select>
    
    
  <!-- 관리자 -->
+ <select id="selectReport" resultType="co.prjt.own.common.service.ReportVO">
+ select * from report where report_no = #{rno}
+ </select>
+ 
+ <select id="reportCount" resultType="int">
+ select count(*) from report
+ </select>
+ 
+ <select id="reportList" resultType="co.prjt.own.common.service.ReportVO">
+  SELECT * FROM ( SELECT ROWNUM RN, A.* FROM (
+	SELECT * FROM REPORT
+	<![CDATA[	
+) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
+]]>
+ </select>
+ 
  <select id="questionList" resultType="co.prjt.own.ownhome.service.QuestionVO">
- SELECT * FROM QUESTION
+ SELECT * FROM ( SELECT ROWNUM RN, A.* FROM (
+	SELECT * FROM QUESTION
+	<![CDATA[	
+) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
+]]>
  </select>
  
  <select id="selectQuest" resultType="co.prjt.own.ownhome.service.QuestionVO">

@@ -43,41 +43,25 @@
         <div class="container">
 		<table>
 			<thead>
-				<th>질문번호</th>
-				<th>질문자ID</th>
-				<th>제목</th>
-				<th>내용</th>
-				<th>답변</th>
-				<th>질문날짜</th>
-				<th>머리말
-				<th>
-				<th>상태</th>
-			</thead>
-			<tbody id="userList">
-			<tr th:each="quest : ${OList}">
-				<td th:text="${quest.questNo}"></td>
-				<td th:text="${quest.userId}"></td>
-                <span th:if="${quest.answer==null}">
-				<td class="titlemodal" th:text="${quest.title}"
-					th:id="${quest.questNo}"></td>
-                </span>
-                <span th:unless="${quest.answer==null}">
-                    <td th:text="${quest.title}"
-                        th:id="${quest.questNo}"></td>
-                </span>
-
-				<td th:text="${quest.content}"></td>
-				<span th:if="${quest.answer==null}">
-					<td>미처리 상태</td>
-				</span>
-				<span th:unless="${quest.answer==null}">
-					<td th:text="${quest.answer}"></td>
-				</span>
-				<td th:text="${quest.questDate}"></td>
-				<td th:text="${quest.header}"></td>
-				<td th:text="${quest.status}"></td>
-				</tr>
-			</tbody>
+		<th>번호</th>
+		<th>신고자</th>
+		<th>피신고자</th>
+		<th>사유</th>
+		<th>내용</th>
+		<th>신고날짜</th>
+		<th>처리상태</th>
+		</thead>
+		<tbody id="reportList">
+			<tr class="titlemodal" th:each="report : ${RList}">
+				<td th:name="${report.reportNo}"th:text="${#strings.substring(report.reportNo,4)}"></td>
+				<td th:text="${report.reporter}"></td>
+				<td th:text="${report.dereporter}"></td>
+				<td th:text="${report.reason}"></td>
+				<td th:text="${report.content}"></td>
+				<td th:text="${report.reportDate}"></td>
+				<td th:text="${report.status}"></td>
+			</tr>
+		</tbody>
 		</table>
 		</div>
 		
@@ -113,12 +97,12 @@
                 <input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">    
 				<div class="form-group">
-					<label for="recipient-name" class="col-form-label">질문제목</label>
+					<label for="recipient-name" class="col-form-label">신고사유</label>
                     <span id="modaltitle"></span>
 				</div>
 				<div class="form-group">
-					<label for="message-text" class="col-form-label">질문내용</label> <span
-						id="modalcontent"></span>
+					<label for="message-text" class="col-form-label">신고내용</label>
+					<span id="modalcontent"></span>
 				</div>
 				<div class="form-group">
 					<label for="message-text" class="col-form-label">답변</label>
@@ -178,19 +162,19 @@
          return this;
      };
 
-			$('.titlemodal').on('click',function(){
+			$('#reportList').on('click','.titlemodal',function(){
 			modal('my_modal');
-			let qno = $(this).attr('id')
-			console.log($(this).attr('id'));
+			let rno = $(this).children().eq(0).attr("name")
 			$.ajax({
-				url : '/own/admin/selectquest',
+				url : '/own/admin/selectReport',
 				method : 'get',
-				data : {qno}
+				data : {rno}
 			}).then(res=>{
-                $('#modalform').append(`<input type="hidden" value="${res.questNo}" name="questNo">`)
-                $('#modaltitle').html(res.title);
+                $('#modalform').append(`<input type="hidden" value="${res.reportNo}" name="questNo">`)
+                $('#modaltitle').html(res.reason);
+                $('#modalcontent').html(`<img src="/imgView/${res.content}" />`);
 				console.log(res);
-			})		
+			})	
 		})
 
 		$('#pagegation').on('click', '.pagePort', function(){
@@ -198,18 +182,24 @@
 			let page = $(this).attr('value');
 			console.log($(this).attr('value'));
 			$.ajax({
-				url: '/own/admin/qustionAjax?page='+page,
-				method: 'get'
+				url: '/own/reportListAjax?page='+page,
+				method: 'get',
 			}).then(result => {
 				console.log(result);
-				let tbody = $('#userList');
+				let tbody = $('#reportList');
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
-					console.log(ele.userId);
-					let tag = `<tr>
-								<td>idx</td>
-								<td>${ele.userId}</td>
-								</tr>`
+					let rno = ele.reportNo;
+					rno = rno.substr(4);					
+					let tag = `<tr class="titlemodal">
+					<td name="${ele.reportNo}">${rno}</td>
+					<td>${ele.reporter}</td>
+					<td>${ele.dereporter}</td>
+					<td>${ele.reason}</td>
+					<td>${ele.content}</td>
+					<td>${ele.reportDate}</td>
+					<td>${ele.status}</td>
+					</tr>`
 					tbody.append(tag);
 				})
 				//페이지 버튼 만들기
