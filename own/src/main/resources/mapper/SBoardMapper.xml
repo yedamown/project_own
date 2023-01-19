@@ -4,23 +4,25 @@
 
 	<!-- 내 게시글 전체 조회 -->
 	<select id="getSnsBoardList" resultType="SBoardVO">
-	SELECT to_number(SUBSTR(sns_board_no,5)) as sns_board_no,
-			SNS_BOARD_CONTENT,
-			SNS_BOARD_DATE,
-			SNS_NICKNAME,
-			SNS_ACCOUNT_NO FROM SNS_BOARD 
-	WHERE SNS_ACCOUNT_NO = (SELECT s.sns_account_no
-		                        FROM sns_account s, own_users o
-		                        WHERE o.user_id = #{userId}
-		                        AND s.sns_account_no = o.sns_account_no)
-		ORDER BY SNS_BOARD_NO DESC	
+		SELECT TO_NUMBER(SUBSTR(sns_board_no,5)) as SNS_BOARD_NO,
+		       SNS_BOARD_CONTENT,
+		       SNS_BOARD_DATE,
+		       SNS_NICKNAME,
+		       SNS_ACCOUNT_NO
+		FROM SNS_BOARD
+		WHERE SNS_NICKNAME =
+						(SELECT S.SNS_NICKNAME 
+							FROM SNS_ACCOUNT S, OWN_USERS O
+							WHERE S.SNS_ACCOUNT_NO=O.SNS_ACCOUNT_NO
+							AND S.SNS_NICKNAME= #{snsNickname})
+		ORDER BY SNS_BOARD_NO DESC
 	</select>
 	
 	<!-- 게시글 갯수 카운트 -->
 	<select id="countBoard" resultType="int">
 		SELECT COUNT(*)
 			FROM SNS_BOARD
-			WHERE SNS_ACCOUNT_NO= #{snsAccountNo}
+			WHERE SNS_NICKNAME= #{snsNickname}
 	</select>
 	
 	<!-- 게시글 한건 조회 -->
@@ -31,7 +33,7 @@
 	<select id="getSnsBoardNo" resultType="SBoardVO">
 		SELECT SNS_BOARD_NO
 		FROM SNS_BOARD
-		WHERE SNS_ACCOUNT_NO = #{snsAccountNo}
+		WHERE SNS_NICKNAME = #{snsNickname}
 		ORDER BY SNS_BOARD_NO DESC
 	</select>
 	
@@ -80,12 +82,14 @@
 	
 	<!-- 게시글 한건에 대한 댓글 전체 조회-->
 	<select id="getBoardReplyList" resultType="ReplyVO">
-	SELECT TO_NUMBER(SUBSTR(REPLY_NO,6)) AS REPLY_NO,
-		   REPLY_CONTENT,
-		   REPLY_DATE,
-		   USER_ID
-		FROM REPLY
-		WHERE CATEGORY_NO = #{snsBoardNo}
+	select TO_NUMBER(SUBSTR(R.REPLY_NO, 6)) AS REPLY_NO,
+		       R.REPLY_CONTENT,
+		       R.REPLY_DATE,
+		       S.SNS_NICKNAME AS userId
+		FROM SNS_ACCOUNT S, OWN_USERS O, REPLY R
+		WHERE R.USER_ID = O.USER_ID
+		AND O.SNS_ACCOUNT_NO = S.SNS_ACCOUNT_NO
+		AND R.CATEGORY_NO = #{snsBoardNo}
 		ORDER BY REPLY_NO DESC
 	</select>
 	

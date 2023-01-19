@@ -53,12 +53,12 @@ select count(*) from question
 <!--================= SNS ==================-->
    <!-- 로그인 정보에서 sns 닉네임 가져오기 -->
    <select id="snsLogin" resultType="SAccountVO">
-		SELECT S.SNS_NICKNAME SNS_NICKNAME, S.SNS_PROFILE SNS_PROFILE, S.SNS_WEBSITE SNS_WEBSITE, S.SNS_ACCOUNT_NO SNS_ACCOUNT_NO
+		SELECT O.USER_ID ,S.SNS_NICKNAME SNS_NICKNAME, S.SNS_PROFILE SNS_PROFILE, S.SNS_WEBSITE SNS_WEBSITE, S.SNS_ACCOUNT_NO SNS_ACCOUNT_NO
 		FROM SNS_ACCOUNT S, OWN_USERS O
 		WHERE S.SNS_ACCOUNT_NO = O.SNS_ACCOUNT_NO
 		AND O.USER_ID =#{userId}
-	
    </select>
+
    
    <!-- sns 간편 가입 시 own_users 테이블 업데이트 -->
    <update id="updateSnsUser" parameterType="map">
@@ -70,6 +70,7 @@ select count(*) from question
   		
    </update>
    <!--================= SNS End ==================-->
+   
    <!-- 내질문 갖고오기 -->
    <select id="myQuestion" resultType="co.prjt.own.ownhome.service.QuestionVO">
    	SELECT * FROM (SELECT ROWNUM RN, A.* FROM (

@@ -232,7 +232,4 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		list.get(0).setPaging(paging);
 		return list;
 	}
-
-	
-
 }

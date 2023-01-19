@@ -15,19 +15,19 @@
     <!--<link rel="icon" href="fav.ico">-->
     <!-- ========== STYLESHEETS ========== -->
     <!-- Bootstrap CSS -->
-    <link href="/sns/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/sns/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts Icon CSS -->
-    <link href="/sns/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/sns/css/et-line.css" rel="stylesheet">
-    <link href="/sns/css/ionicons.min.css" rel="stylesheet">
+    <link href="/css/sns/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/sns/css/et-line.css" rel="stylesheet">
+    <link href="/css/sns/css/ionicons.min.css" rel="stylesheet">
     <!-- Carousel CSS -->
-    <link href="/sns/css/slick.css" rel="stylesheet">
+    <link href="/css/sns/css/slick.css" rel="stylesheet">
     <!-- Magnific-popup -->
-    <link rel="stylesheet" href="/sns/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/sns/css/magnific-popup.css">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="/sns/css/animate.min.css">
+    <link rel="stylesheet" href="/css/sns/css/animate.min.css">
     <!-- Custom styles for this template -->
-    <link href="/sns/css/main.css" rel="stylesheet">
+    <link href="/css/sns/css/main.css" rel="stylesheet">
 
     <style>
         .modal {
@@ -67,6 +67,7 @@
         
         .modalBtn {
             font-size: 13px;
+            color: black;
         }
         
         #att_zone {
@@ -100,7 +101,7 @@
             <!--logo -->
             <div class="logo_box">
                 <a href="#">
-                    <img src="/sns/img/logo.png" alt="cocoon">
+                    <img src="/css/sns/img/logo.png" alt="cocoon">
                 </a>
             </div>
             <!--logo end-->
@@ -193,18 +194,22 @@
 						<br>
 						<div class="testimonial_box">
 							<div class="testimonial_author">
-								<img src="/sns/img/user.png" alt="author"> <span
+								<img src="/css/sns/img/user.png" alt="author"> <span
 									th:text="${session.snsInfo.snsNickname}"></span>
 								&nbsp;&nbsp;&nbsp;&nbsp;
 
 								<button id="followBtn" value="white"
 									style="width: 70px; height: 30px; font-size: 12px; border-color: white;">팔로우</button>
 								<br>
-								<br> 게시글 갯수<span th:text="${snsFeedCount}"></span>
+								<br><span style="font-size: 13px; color:black">게시글</span>&nbsp;&nbsp;
+									<span class="modalBtn">팔로우</span>&nbsp;&nbsp;
+									<span class="modalBtn">팔로워</span>
+									
+								<p style="font-size:14px;"><span th:text="${snsFeedCount}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<span th:text="${snsFollow}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<span th:text="${snsFollower}"></span></p>
 								
-								<h1 class="modalBtn">
-									팔로우 수<span th:text="${snsFollow}"></span>
-								</h1>
+								
 									<!-- 팔로우 Modal -->
 									<div class="modal">
 										<!-- 첫 번째 Modal의 내용 -->
@@ -225,9 +230,7 @@
 										</div>
 									</div>
 								
-								<h1 class="modalBtn">
-									팔로워 수<span th:text="${snsFollower}"></span>
-								</h1>
+								
 									<!-- 팔로워 Modal -->
 									<div class="modal">
 										<!-- 두 번째 Modal의 내용 -->
@@ -264,18 +267,17 @@
 
 						</div>
 
-						<img src="/sns/img/user.png" alt="author"> 하이라이트
-						&nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png" alt="author">
-						하이라이트 &nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png"
+						<img src="/css/sns/img/user.png" alt="author"> 하이라이트
+						&nbsp;&nbsp;&nbsp;&nbsp; <img src="/css/sns/img/user.png" alt="author">
+						하이라이트 &nbsp;&nbsp;&nbsp;&nbsp; <img src="/css/sns/img/user.png"
 							alt="author"> 하이라이트 &nbsp;&nbsp;&nbsp;&nbsp; <img
-							src="/sns/img/user.png" alt="author"> 하이라이트
-						&nbsp;&nbsp;&nbsp;&nbsp; <img src="/sns/img/user.png" alt="author">
+							src="/css/sns/img/user.png" alt="author"> 하이라이트
+						&nbsp;&nbsp;&nbsp;&nbsp; <img src="/css/sns/img/user.png" alt="author">
 						하이라이트 <br> <br>
 					</div><hr>
 
 					<!-- 글작성 모달을 여는 클래스 -->
-					<h1 class="modalBtn" style="text-align: right;">📝글 작성</h1>
-					<hr>
+					<h1 class="modalBtn" style="text-align: right;">📝글 작성</h1><p>
 					<!-- 글작성모달 Modal -->
 					<div class="modal">
 
@@ -286,6 +288,7 @@
 								<!--이미지 미리보기-->
 								<form action="/own/snsWriteFeed" method="post"
 									class="snsWriteFrm" enctype="multipart/form-data">
+									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">	
 									<input name="uploadfile" type="file" id="btnAtt"
 										multiple="multiple">
 									<!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
@@ -302,7 +305,7 @@
 							</div>
 						</div>
 					</div>
-					<table border="1px">
+					<!-- <table border="1px" style="font-size: 13px;">
 						<thead>
 							<tr>
 								<th>게시글 번호</th>
@@ -319,36 +322,80 @@
 								<td th:text="${sns.snsNickname}"></td>
 							</tr>
 						</tbody>
-					</table>
+					</table> -->
 					<br>
 
             <div class="portfolio gutters grid img-container">
                 <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
+
                 <th:block th:each="snsimg :${snsImg}">
-                <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
-                    <a th:href="|/imgView/${snsimg.mediaServerFile}" title="project name 1">
-                        <div class="project_box_one">
-                            <img th:src="|/imgView/${snsimg.mediaServerFile}" alt="pro1" />
+                    <div class="modalBtn">
+                        <input type="hidden" id="boardNo" th:value="${snsimg.identifyId}">
+                        <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
+                            <div class="project_box_one">                      
+                                <img th:src="|/imgView/${snsimg.mediaServerFile}" />
                             <div class="product_info">
                                 <div class="product_info_text">
                                     <div class="product_info_text_inner">
                                         <i class="ion ion-plus"></i>
-                                        <h4>project name</h4>
+                                        <h4>좋아요 수/ 댓글 수</h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                    <!--</a>-->
                 </div>
             </th:block>
             </div>
+ 
+            <!-- 게시글 상세보기 Modal -->
+
+            <th:block th:each="snsLength :${snsImg}">   
+            <div class="modal" >
+              <!-- 게시글 상세보기 Modal의 내용 -->
+              <div class="modal-content" style="width: 1200px; height: 900px;">
+                <span class="close">&times;</span>
+                <div class="modalP" style="position:relative;"></div>
+                <div class="boardBtnDiv" style="position:absolute;top:50%;right:20%">버튼이요</div>
+                <div class="contentBox" style="text-align:right;">
+              	<p class="bContent">글내용:</p>
+                <p class="bWriter">작성자:</p>
+                <p class="bDate">작성일자:</p>
+                <table style="border: 1px solid black; font-size: 14px; width: 500px;">
+                    <thead>
+                    <tr>
+                        <th>댓글 작성자</th>
+                        <th>댓글 내용</th>
+                        <th>댓글 작성일자</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td>댓글 내용 테스트</td>
+                        </tr>
+                    </tbody>
+                
+                </table>
+                 </div>
+              </div>
+            </div>
+            </th:block>
             <!--=================== filter portfolio end====================-->
         </div>
         <!--=================== content body end ====================-->
     </div>
 </div>
 	<!--===================스크립트====================-->
-		<script>
+<script th:inline="javascript">
+	 /*<![CDATA[*/
+	  var header = /*[[${_csrf.headerName}]]*/'defalut';
+	  var token = /*[[${_csrf.token}]]*/'defalut';
+	    console.log(header);
+	    console.log(token);
+
+	  /*]]>*/
+	  
 	//첨부파일 이미지 
     ( /* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
         imageView = function imageView(att_zone, btn){
@@ -450,9 +497,10 @@
         }
         )('att_zone', 'btnAtt')
 
+        
 	//팔로우 버튼
     let fBtn = document.getElementById("followBtn");	    
-    fBtn.addEventListener("click", function(){
+        fBtn.addEventListener("click", function(){
         if(this.value = 'white'){
         console.log('팔로우버튼 클릭');
         this.style.backgroundColor = "skyblue";
@@ -465,6 +513,93 @@
             this.value="white";
         }
     })
+
+    //게시글 상세보기 ajax
+        $('.modalBtn').each(function(){
+            $(this).on("click", function(){
+                console.log(this);
+                let boardNo = $(this).children('#boardNo').val();
+                console.log(boardNo);
+
+                if(boardNo != null){
+                    console.log('모달 아작스 보냅니다')
+                    $.ajax({
+                        url: '/own/snsFeed',
+                        method: 'post',
+                        data: {snsBoardNo: boardNo},
+                        beforeSend :  function(xhr){
+            		        xhr.setRequestHeader(header, token);
+                        },  
+                        success: function(res){
+                        	console.log(res);
+                        	console.log(res.imgList[0]);
+                        	console.log(res.svo.snsBoardContent);
+                            console.log(res.reply[0].replyContent);
+
+                            $('.bContent').text(res.svo.snsBoardContent);
+
+                            for(let i=res.imgList.length-1; i>=0; i--){
+                                if(res.imgList[i]!=null){
+                                let img = $('<img>').attr({"src" : "/imgView/"+res.imgList[i].mediaServerFile,
+                                                           "class" : "boardImg", "name": "img"+i});
+                                img.css({"width":"500px", "height": "650px", "position":"absolute"});
+                                
+                                let boardBtn = $('<div>').css({"width":"50px", "height":"25px", 
+                                                            "background-color":"lightgray",
+                                                            "border-radius":"50%", "border":"1px black solid"})
+                                boardBtn.attr("class", "pageBtn");
+                                $('.boardBtnDiv').append(boardBtn);
+                                $('.modalP').append(img);
+
+                                for(let i=0; i<res.reply.length; i++){
+                                    var tableTd ='<tr>'
+                                        tableTd += '<td>'+res.reply[i].replyWriter+'</td>';
+                                        tableTd += '<td>'+res.reply[i].replyContent+'</td>';
+                                        tableTd += '<td>'+res.reply[i].replyDate+'</td>';
+                                        tableTd += '</tr>';
+                                        $('#tableBody').append(tableTd);
+                                }
+                            }else{
+                                console.log('이미지생성중'+i)
+                            }
+                            
+                            }
+                            $('.bWriter').text(res.svo.snsNickname);
+                            $('.bDate').text(elapsedText(res.svo.snsBoardDate));
+                            
+                        },
+                        error: function(error){
+                        	console.log(error);
+                        }
+                    })
+                }else{
+                    console.log('모달창 띄우기')
+                }
+                
+            })
+        })
+        
+        // $('.pageBtn').on("click", function(e){
+        //     e.preventDefault();
+        //     var i = $(this).index();
+        //     console.log(i+'번째 버튼 클릭')
+        // })
+
+
+        //페이징 버튼 도전
+        $(document).on('click', '.pageBtn', function(e){
+            e.preventDefault();
+            var i = $(this).index();
+            console.log(i+"번째 버튼")
+            $('.modalP').children().hide();
+            $('.modalP').children().eq(i).show();
+            console.log( $('.modalP img').eq(0));
+           // $(`.modalP>img:not(:eq(${i}))`).show();
+           $(this).css('background-color', 'skyblue');
+           $('.pageBtn').not($(this)).css('background-color', 'lightgray');
+           //$('.modalP img(:eq('+i+'))').css("display", "block");
+              
+        })
 
         // Modal을 가져옵니다.
         var modals = document.getElementsByClassName("modal");
@@ -480,13 +615,17 @@
             // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
             btns[num].onclick =  function() {
                 modals[num].style.display = "block";
+                event.stopPropagation();
                 console.log(num);
+          
             };
         
             // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
             spanes[num].onclick = function() {
+                console.log('모달닫기버튼클릭')
                 modals[num].style.display = "none";
-			
+                $('.modalP').children('img').remove();
+                $('.boardBtnDiv').children('div').remove();
             };
         };
         }
@@ -505,32 +644,67 @@
         window.onclick = function(event) {
         if (event.target.className == "modal") {
             event.target.style.display = "none";
+            $('.modalP')[0].reset();
         }
         };
 
+        
+//시간계산 함수
+ function elapsedText(date) {
+                console.log(date);
+                date = new Date(date);
+                // 초 (밀리초)
+                const seconds = 1;
+                // 분
+                const minute = seconds * 60;
+                // 시
+                const hour = minute * 60;
+                // 일
+                const day = hour * 24;
+                
+                var today = new Date();
+                var elapsedTime = Math.trunc((today.getTime() - date.getTime()) / 1000);
+                
+                var elapsedText = "";
+                if (elapsedTime < seconds) {
+                    elapsedText = "방금 전";
+                } else if (elapsedTime < minute) {
+                    elapsedText = elapsedTime + "초 전";
+                } else if (elapsedTime < hour) {
+                    elapsedText = Math.trunc(elapsedTime / minute) + "분 전";
+                } else if (elapsedTime < day) {
+                    elapsedText = Math.trunc(elapsedTime / hour) + "시간 전";
+                } else if (elapsedTime < (day * 3)) {
+                    elapsedText = Math.trunc(elapsedTime / day) + "일 전";
+                } else {
+                    elapsedText = SimpleDateTimeFormat(date, "yyyy-MM-dd");
+                }
+                
+                return elapsedText;
+            }
 
     </script>
 
 
 
 <!-- jquery -->
-<script src="/sns/js/jquery.min.js"></script>
+<script src="/css/sns/js/jquery.min.js"></script>
 <!-- bootstrap -->
-<script src="/sns/js/popper.js"></script>
-<script src="/sns/js/bootstrap.min.js"></script>
-<script src="/sns/js/waypoints.min.js"></script>
+<script src="/css/sns/js/popper.js"></script>
+<script src="/css/sns/js/bootstrap.min.js"></script>
+<script src="/css/sns/js/waypoints.min.js"></script>
 <!--slick carousel -->
-<script src="/sns/js/slick.min.js"></script>
+<script src="/css/sns/js/slick.min.js"></script>
 <!--Portfolio Filter-->
-<script src="/sns/js/imgloaded.js"></script>
-<script src="/sns/js/isotope.js"></script>
+<script src="/css/sns/js/imgloaded.js"></script>
+<script src="/css/sns/js/isotope.js"></script>
 <!-- Magnific-popup -->
-<script src="/sns/js/jquery.magnific-popup.min.js"></script>
+<script src="/css/sns/js/jquery.magnific-popup.min.js"></script>
 <!--Counter-->
-<script src="/sns/js/jquery.counterup.min.js"></script>
+<script src="/css/sns/js/jquery.counterup.min.js"></script>
 <!-- WOW JS -->
-<script src="/sns/js/wow.min.js"></script>
+<script src="/css/sns/js/wow.min.js"></script>
 <!-- Custom js -->
-<script src="/sns/js/main.js"></script>
+<script src="/css/sns/js/main.js"></script>
 </body>
 </html>
