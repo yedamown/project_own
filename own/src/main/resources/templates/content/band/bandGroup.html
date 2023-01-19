@@ -290,7 +290,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		                	} else {
 		                		likeTag = `<i class="fa fa-heartbeat" aria-hidden="true"></i>`
 		                	}
-		                	
+		                	//사진이 있는지 체크
+		                	let imgTag = '';
+		                	if(ele.bandImg!=null){
+		                		imgTag = `<img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" style="width: 678px; height: 280px;">`;
+		                	}
+		                	//정규표현식 html태그 제거
+		                	const reg = /<[^>]*>?/g;
+		                	let newContent = ele.bandBoardContent.replace(reg,'');
 		                    let articleTag = `<article style="border: 1px solid #eeeeee;padding:30px; ">
 							                    <div style="display: flex; flex-direction: column;">
 							                    <div>
@@ -305,9 +312,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 							                        </div>
 							                        
 							                        <h4>${ele.bandBoardTitle}</h4>
-							                        <img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" style="width: 678px; height: 280px;">
+							                        ${imgTag}
 							                        <div class="blog_details">
-							                            <p>${ele.bandBoardContent}</p>
+							                            <p>${newContent}</p>
 							                        </div>
 							                    </div>
 							                    <a href="#" class="view_btn button_hover">View More</a>
@@ -352,6 +359,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         		makeBoard(bandNo, mul);
         	})
         	
+        //이미지.. 인라인 img 숨기기
+        $('#articleArea').find('img').each(function(idx,ele){
+        	console.log(ele);	
+        	ele.hide();
+       	})
         	
        	//페이지 이동
     	$('#totalBoard').on('click', function(){

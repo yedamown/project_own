@@ -37,4 +37,7 @@ public interface CommonMapper {
 
 	//신고리스트 불러오기
 	public List<ReportVO> reportAlllist();
+	
+	//밴드용 이미지식별키수정
+	public int updateKey(String key, List<String> name);
 }

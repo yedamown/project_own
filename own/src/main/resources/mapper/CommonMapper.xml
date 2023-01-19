@@ -54,5 +54,14 @@
 
 	<select id="reportAlllist" resultType="co.prjt.own.common.service.ReportVO">
 	SELECT * FROM REPORT
-	</select>	
+	</select>
+	
+	<update id="updateKey">
+		UPDATE MULTIMEDIA
+		SET IDENTIFY_ID = #{key}
+		WHERE MEDIA_SERVER_FILE IN
+               <foreach collection="name" item="n" separator="," open="(" close=")">
+               		#{n}
+               </foreach>
+	</update>	
 </mapper>
