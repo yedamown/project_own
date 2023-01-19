@@ -174,10 +174,9 @@ public class OwnhomeController {
 		
 		//질문목록 불러오기
 		@GetMapping("/own/admin/question")
-		public String questionList(Model model) {
-			List<QuestionVO> vo = ownService.questionList();
-			System.out.println(vo);
-			model.addAttribute("QList", vo);
+		public String questionList(Model model, Paging paging,QuestionVO vo) {
+			System.out.println("======넘기기전입니다======");
+			model.addAttribute("OList", ownService.getPagingAdQuestlist(vo, paging));
 			return "content/own/ownAdminQuestion";
 		}
 		

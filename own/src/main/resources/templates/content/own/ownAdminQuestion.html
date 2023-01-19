@@ -41,7 +41,7 @@
 				<th>상태</th>
 			</thead>
 			<tbody id="userList">
-			<tr th:each="quest : ${OList}">
+			<tr th:each="quest : ${QList}">
 				<td th:text="${quest.questNo}"></td>
 				<td th:text="${quest.userId}"></td>
                 <span th:if="${quest.answer==null}">

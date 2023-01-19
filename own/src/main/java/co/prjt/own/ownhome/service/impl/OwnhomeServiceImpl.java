@@ -212,6 +212,27 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return list;
 	}
 
+	@Override
+	public int adQuestionCount() {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.adQuestionCount();
+	}
+
+	@Override
+	public List<QuestionVO> getPagingAdQuestlist(QuestionVO vo, Paging paging) {
+		paging.setTotalRecord(ownhomeMapper.adQuestionCount()); // start end		
+		paging.setPageUnit(5);
+		paging.setPageSize(3);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		System.out.println(paging);
+		vo.setPaging(paging);
+		System.out.println("=====페이징하고싶어요======"+paging.toString());
+		List<QuestionVO> list = ownhomeMapper.questionList();
+		list.get(0).setPaging(paging);
+		return list;
+	}
+
 	
 
 }

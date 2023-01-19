@@ -39,10 +39,16 @@ public interface OwnhomeService {
 	//=============관리자============
 	//질문목록 불러오기
 	public List<QuestionVO> questionList();
+	//전체질문 갯수
+	public int adQuestionCount();
+	//전체질문 페이징 처리..
+	public List<QuestionVO> getPagingAdQuestlist(QuestionVO vo, Paging paging);
 	//제목 선택시 제목에 맞는 질문 가져오기
 	public QuestionVO selectQuest(String qno);
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);
+	
+	//========================마이페이지
 	//내 질문 가져오기
 	public List<QuestionVO> myQuestion(QuestionVO vo);
 	//내질문 갯수
