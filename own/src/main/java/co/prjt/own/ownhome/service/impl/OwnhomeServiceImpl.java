@@ -267,4 +267,10 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return ownhomeMapper.selectReport(rno);
 	}
 
+	@Override
+	public int reportUpdate(ReportVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.reportUpdate(vo);
+	}
+
 }

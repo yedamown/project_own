@@ -50,6 +50,9 @@ public interface OwnhomeService {
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);
 	
+	
+	//신고처리
+	public int reportUpdate(ReportVO vo);
 	//신고목록 불러오기
 	public List<ReportVO> reportList(Paging paging);
 	//신고 카운트

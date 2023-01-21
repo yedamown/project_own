@@ -19,6 +19,8 @@ public interface OwnhomeMapper {
 	public String setPassword(String appNo, String id);
 	public int idcheck(String id);	
 	public int myupdate();
+	//신고처리
+		public int reportUpdate(ReportVO vo);
 	public int adQuestionCount();
 	//아이디찾기
 	public String searchId(String email);

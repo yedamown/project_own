@@ -41,10 +41,13 @@
         <div class="container py-2">
             <div class="row g-2">
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/admin/userList" style="text-decoration:none">내정보 수정</a></h4>                 
+                    <h4 class="mb-4"><a href="/own/admin/userList" style="text-decoration:none">회원목록</a></h4>                 
                 </div>
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/admin/question" style="text-decoration:none">내 질문목록</a></h4>                 
+                    <h4 class="mb-4"><a href="/own/admin/question" style="text-decoration:none">질문목록</a></h4>                 
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="mb-4"><a href="/own/admin/reportList" style="text-decoration:none">신고목록</a></h4>                 
                 </div>
             </div>
         </div>
@@ -55,7 +58,7 @@
 				<th>아이디</th>
 				<th>이름</th>
 				<th>sns계정</th>
-				<th>밴드목록</th>
+				<th>챌린저스 진행상태</th>
 				<th>상태</th>
 			</thead>
 			<tbody id="userList">
@@ -69,7 +72,7 @@
 				<span th:unless="${user.snsAccountNo==null}">
 					<td th:text="${user.snsAccountNo}"></td>
 				</span>
-				<td th:text="${user.userHobby}"></td>
+				<td th:text="${user.challcount}+'개 진행중..'"></td>
 				<td th:text="${user.userPerm}"></td>
 			</tbody>
 		</table>       
