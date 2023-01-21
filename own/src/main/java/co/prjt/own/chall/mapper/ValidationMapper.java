@@ -29,6 +29,9 @@ public interface ValidationMapper {
 	//각 도전별 총 인증횟수 카운트
 	int countVld(ValidationVO vo);
 	
+	//오늘날짜 계산하기
 	int startToToday(ValidationVO vo);
 	
+	//오늘 인증 횟수
+	int todayVld(ValidationVO vo);
 }

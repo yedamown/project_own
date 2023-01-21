@@ -61,4 +61,13 @@
               FROM CHALLENGES
               WHERE CHALL_NO = #{challNo} ) + 7 * #{nowWeek}  > VLD_DATE 
 	</select>
+	
+	<select id="todayVld" resultType="int">
+		SELECT COUNT(*)
+		FROM CHALL_VALIDATION
+		WHERE TO_CHAR(VLD_DATE, 'YY/MM/DD')  =  TO_CHAR(CURRENT_DATE, 'YY/MM/DD')
+		AND USER_ID = #{userId}
+		AND CHALL_NO = #{challNo}
+	</select>
+	
 </mapper>

@@ -211,7 +211,7 @@ public class ChallController {
 	
 	// ------------------------- 인 증 관 련 -----------------------------------------------------------
 	//인증 글 등록 
-	@PostMapping("/insertVld")
+	@PostMapping("/insertVldForm")
 	public String insertVld(@RequestParam List<MultipartFile[]> uploadfile, ValidationVO vo, Model model, RedirectAttributes rttr) {
 		int rs = validation.insertVld(vo);
 		String vldNo = vo.getVldNo();
@@ -237,13 +237,20 @@ public class ChallController {
 	@ResponseBody
 	public String vldCheck(@RequestBody ValidationVO vo, ChallengeVO cvo) {
 		cvo.setChallNo(vo.getChallNo());
+		//해당도전 도전횟수 계산하기
 		int challFreq = challenge.getChall(cvo).getChallFreq();
-		//서비스 가서 처리하기
-		int rs = validation.countWeekVld(vo);
-		if(rs < challFreq) {
+		//서비스 이번 주 인증횟수 계산하기
+		int thisWeekCheck = validation.countWeekVld(vo);
+		//오늘 인증횟수 체크
+		int todayVldcheck = validation.todayVld(vo);
+		if(thisWeekCheck < challFreq && todayVldcheck < 1) {
 			return "able";
+		} else  if(todayVldcheck > 1) {
+			return "todaydone";
+		} else if(todayVldcheck < 1 && thisWeekCheck > challFreq){
+			return "thisweekDone";
 		} else {
-			return "disable";
+			return "etc";
 		}
 	}
 	
