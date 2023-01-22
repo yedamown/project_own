@@ -57,4 +57,6 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	public Integer first = 1;
 	public Integer last = 10;
 	
+	//캘린더용
+	public BandCalendarVO bandCalendar;
 }

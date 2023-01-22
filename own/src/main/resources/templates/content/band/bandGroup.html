@@ -1,8 +1,7 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}"
+      layout:decorate="~{layout/band_layout}"
       lang="ko">
     <head>
         <!-- <script src="/css/band/js/jquery-3.2.1.js"></script> -->
@@ -75,13 +74,6 @@
         </aside>
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <a class="navbar-brand logo_h" href="index.html"><img src="/css/band/image/Logo.png" alt=""></a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <aside class="single_sidebar_widget search_widget">
@@ -94,7 +86,7 @@
                         <div class="br"></div>
                     </aside>
                         <ul class="nav navbar-nav menu_nav ml-auto">
-                            <li class="nav-item"><a class="nav-link" href="index.html">가치 홈</a></li> 
+                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">가치 홈</a></li> 
                             <li class="nav-item"><a class="nav-link" href="about.html">앨범</a></li>
                             <li class="nav-item"><a class="nav-link" href="accomodation.html">일정</a></li>
                             <!--================ 채팅기능을 위한 임시 =================-->
@@ -344,7 +336,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		                	//사진이 있는지 체크
 		                	let imgTag = '';
 		                	if(ele.bandImg!=null){
-		                		imgTag = `<img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" style="width: 678px; height: 280px;">`;
+		                		imgTag = `<img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" class="imgss" style="width: 678px; height: 280px;">`;
 		                	}
 		                	//정규표현식 html태그 제거
 		                	const reg = /<[^>]*>?/g;
@@ -364,7 +356,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 							                        
 							                        <h4>${ele.bandBoardTitle}</h4>
 							                        ${imgTag}
-							                        <div class="blog_details">
+							                        <div class="blog_details${ele.bandBoardDetailNo}">
 							                            <p>${newContent}</p>
 							                        </div>
 							                    </div>
@@ -382,6 +374,62 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				                $(articleArea).append(articleTag);
 				                //페이지 버툰에 게시판 끝 숫자달기
 				                bandBoardDetailNo = ele.bandBoardDetailNo;
+				                
+				              //캘린더 붙이기
+				                console.log(ele.bandCalendar);
+			                	if(ele.bandCalendar!=null){
+			                		let calendar = ele.bandCalendar;
+			                		//타이틀
+			                		let title = calendar.bandCalendarTitle;
+			                		//날짜
+			                		let startDay = calendar.bandCalendarStart;
+			                		let endDay = calendar.bandCalendarEnd;
+			                		let sYear = startDay.substr(0, 4);
+			                		let eYear = endDay.substr(0, 4);
+			                		
+			                		startDay = new Date(calendar.bandCalendarStart);
+			                		endDay = new Date(calendar.bandCalendarEnd);
+			                		
+			                		//달
+			                		let sMonth = (1+startDay.getMonth());
+			                		let eMonth = (1+endDay.getMonth());
+			                		//날
+			                		let sDay = startDay.getDate();
+			                		let eDay = endDay.getDate();
+			                		//시간
+			                		let startTime = startDay.getHours();
+			                		let endTime = endDay.getHours();
+			                		//분
+			                		let startTime2 = startDay.getMinutes()
+			                		let endTime2 = endDay.getMinutes()
+			                		//상세시작시간
+			                		let sTime = (startTime < 12 ? "오전" : "오후")+" "
+			                			sTime += startTime+"시 "
+			                			sTime += startTime2+"분";
+			                		//상세끝나는시간
+			                		let eTime = (endTime < 12 ? "오전" : "오후")+" " //오전 오후
+			                				 + endTime+"시 " //12시간표기
+			                				 + endTime2+"분";
+			                		//시작 요일
+			                		let mon = getDayOfWeek(startDay);
+			                		//마크색
+			                		let color = calendar.bandCalendarMark;
+			                	    let cal  = `<div style="width:678px; height:80px; border: 0.3rem solid ${color}; display:flex; justify-content:space-between" id="calendarModal">`
+			                	    			cal += `<div style="padding:10px;"><h3 style="margin-bottom:0px">${sDay}</h3>`
+			                					cal += `<p>${mon}</p></div>`
+			                					cal += `<div style="padding:10px;"><h5>${title}</h5>`
+			                					cal += `<p>${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
+			                				cal += `</div>`;
+			                		//요일뽑기
+			                		function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
+			                	    	const week = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+			                	    	const dayOfWeek = week[new Date(날짜문자열).getDay()];
+			                	    	return dayOfWeek;
+			                		}
+			                		let spot = ".blog_details"+ele.bandBoardDetailNo
+			                		$(spot).prepend(cal);
+			                	}
+				                
 			                })
 			                if(result.length==5){
 				                //more 누르면 나오는 페이지
@@ -396,6 +444,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			                	let endtag = `<div><h5>끝입니다</h5></div>`
 			                	$(articleArea).append(endtag);
 			                }
+			                
 		            	});
 		    }
 		    //처음 5개 불러옴
@@ -418,7 +467,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         
        	// 	이미지 클릭시 해당 이미지 모달
 			$('#articleArea').on('click', $("img"), function(e){
-				$(".modal").show();
+				//임시 밑에 이 조건 내가 씀
+				if($(e.target).attr('class')=='imgss'){
+					$(".modal").show();
+				} else {
+					return false;
+				}
 				// 해당 이미지 가겨오기
 				var imgSrc = $(e.target).attr("src");
 				var imgAlt = $(e.target).attr("alt");
