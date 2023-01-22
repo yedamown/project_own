@@ -14,8 +14,7 @@ public interface ChatMapper {
 	/*
 	 * 채팅방 번호 가져온 후, 채팅방 개설(1:1) 전체 채팅방은 방개설 필요없이 구역을 만들어 메세지만 띄우면 된다.
 	 */
-	String getChatroomNo();
-
+	String createChatroomNo();
 	int createChatroom(ChatroomVO vo);
 
 	// 메세지 DB에 저장
