@@ -2,6 +2,8 @@ package co.prjt.own.sns.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface SFollowService {
 	//팔로잉 조회
 	public List<SFollowVO> getFollowList(String id);	
@@ -10,14 +12,19 @@ public interface SFollowService {
 	public List<SFollowVO> getFollowerList(String id);
 	
 	//팔로잉
-	int insertFollow(SFollowVO SFollowVO);
+	int insertFollow(@Param("snsFollowId")  String snsFollowId, 
+					 @Param("snsFollowerId")String snsFollowerId);
 	
-	//삭제
-	int deleteFollow(String snsFollowId, String snsFollowerId);
+	//언팔
+	int deleteFollow(@Param("snsFollowId")  String snsFollowId, 
+					 @Param("snsFollowerId")String snsFollowerId);
 	
 	//팔로우 카운트
 	int followCount(String id);
 	
 	//팔로워 카운트
 	int followerCount(String id);
+	
+	int isCheckFollow(@Param("snsFollowId")  String snsFollowId, 
+					  @Param("snsFollowerId")String snsFollowerId);
 }

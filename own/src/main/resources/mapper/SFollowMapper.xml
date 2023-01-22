@@ -11,16 +11,17 @@
 				WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOWER_ID
 				AND A.SNS_NICKNAME = #{snsNickname}
 		</select>
-		
 		<!-- 팔로워 수 조회 -->
 		<select id="followerCount" resultType="int">
 		SELECT COUNT(*)
-				FROM SNS_ACCOUNT A, (SELECT S.SNS_NICKNAME AS FOLLOWER, F.SNS_FOLLOW_ID, F.SNS_FOLLOWER_ID
-				                        FROM SNS_ACCOUNT S, SNS_FOLLOW F
-				                        WHERE S.SNS_ACCOUNT_NO = F.SNS_FOLLOW_ID) B
-				WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOWER_ID
-				AND A.SNS_NICKNAME = #{snsNickname}
+			FROM SNS_ACCOUNT A, (SELECT S.SNS_NICKNAME AS FOLLOW, F.SNS_FOLLOW_ID, F.SNS_FOLLOWER_ID
+			                        FROM SNS_ACCOUNT S, SNS_FOLLOW F
+			                        WHERE S.SNS_ACCOUNT_NO = F.SNS_FOLLOWER_ID) B
+			WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOW_ID
+			AND A.SNS_NICKNAME = #{snsNickname}
 		</select>
+		
+	
 				
 		<!-- 팔로우 리스트 조회 -->
 		<select id="getFollowList" resultType="SAccountVO">
@@ -31,18 +32,35 @@
 			WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOW_ID
 			AND A.SNS_NICKNAME = #{snsNickname}
 		</select>
-		
 		<!-- 팔로우 수 조회 -->
 		<select id="followCount" resultType="int">
 		SELECT COUNT(*)
-			FROM SNS_ACCOUNT A, (SELECT S.SNS_NICKNAME AS FOLLOW, F.SNS_FOLLOW_ID, F.SNS_FOLLOWER_ID
-			                        FROM SNS_ACCOUNT S, SNS_FOLLOW F
-			                        WHERE S.SNS_ACCOUNT_NO = F.SNS_FOLLOWER_ID) B
-			WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOW_ID
-			AND A.SNS_NICKNAME = #{snsNickname}
+				FROM SNS_ACCOUNT A, (SELECT S.SNS_NICKNAME AS FOLLOWER, F.SNS_FOLLOW_ID, F.SNS_FOLLOWER_ID
+				                        FROM SNS_ACCOUNT S, SNS_FOLLOW F
+				                        WHERE S.SNS_ACCOUNT_NO = F.SNS_FOLLOW_ID) B
+				WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOWER_ID
+				AND A.SNS_NICKNAME = #{snsNickname}
 		</select>
 		
-
+		<!-- 팔로우 기능 -->
+		<insert id="insertFollow">
+			<selectKey keyProperty="followNo" resultType="string" order="BEFORE">
+				SELECT sns_follow_no.NEXTVAL FROM DUAL
+			</selectKey>
+			   INSERT INTO sns_follow (sns_follow_id, sns_follower_id, sns_follow_no)
+			 	  VALUES (#{snsFollowId}, #{snsFollowerId}, 'SFU_'||#{followNo})
+		</insert>
 		
+		<delete id="deleteFollow">
+			DELETE FROM SNS_FOLLOW
+			WHERE SNS_FOLLOW_ID = #{snsFollowId}
+			AND   SNS_FOLLOWER_ID = #{snsFollowerId}
+		</delete>
 		
+		<select id="isCheckFollow" resultType="int">
+			SELECT COUNT(*) 
+				FROM SNS_FOLLOW
+				WHERE SNS_FOLLOW_ID = #{snsFollowId}
+				AND SNS_FOLLOWER_ID = #{snsFollowerId}
+		</select>
 	</mapper>

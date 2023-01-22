@@ -25,8 +25,18 @@ public class SFollowServiceImpl implements SFollowService {
 	}
 
 	@Override
-	public int insertFollow(SFollowVO SFollowVO) {
-		return sFollowMapper.insertFollow(SFollowVO);
+	public int followCount(String id) {
+		return sFollowMapper.followCount(id);
+	}
+
+	@Override
+	public int followerCount(String id) {
+		return sFollowMapper.followerCount(id);
+	}
+
+	@Override
+	public int insertFollow(String snsFollowId, String snsFollowerId) {
+		return sFollowMapper.insertFollow(snsFollowId, snsFollowerId);
 	}
 
 	@Override
@@ -35,13 +45,8 @@ public class SFollowServiceImpl implements SFollowService {
 	}
 
 	@Override
-	public int followCount(String id) {
-		return sFollowMapper.followCount(id);
-	}
-
-	@Override
-	public int followerCount(String id) {
-		return sFollowMapper.followerCount(id);
+	public int isCheckFollow(String snsFollowId, String snsFollowerId) {
+		return sFollowMapper.isCheckFollow(snsFollowId, snsFollowerId);
 	}
 
 
