@@ -158,7 +158,7 @@ function displayPlaces(places) {
             });
 //나clickLocation
 			kakao.maps.event.addListener(marker, 'click', function() {
-				clickLocation(marker, title);
+				clickLocation(marker, title, placePosition);
             });
             kakao.maps.event.addListener(marker, 'mouseout', function() {
                 infowindow.close();
@@ -169,7 +169,7 @@ function displayPlaces(places) {
             };
 //나clickLocation
             itemEl.onclick =  function () {
-            	clickLocation(marker, title);
+            	clickLocation(marker, title, placePosition);
             };
             itemEl.onmouseout =  function () {
                 infowindow.close();
@@ -281,10 +281,11 @@ function displayInfowindow(marker, title) {
    
 }
 //내가씀 클릭했을 때
-function clickLocation(marker, title){
+function clickLocation(marker, title, placePosition){
 	//내가씀
     window.opener.document.getElementById( "bandCalendarLocation" ).value = title;
-    window.close();
+    window.opener.document.getElementById( "bandCalendarLocationLatlong" ).value = placePosition;
+    window.open('','_self').close();
 }
  // 검색결과 목록의 자식 Element를 제거하는 함수입니다
 function removeAllChildNods(el) {   

@@ -1,7 +1,5 @@
 package co.prjt.own.band.service;
 
-
-
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BandCalendarVO{
 	
-	public String bandCalendarNo;
+	public String StrbandCalendarNo;
 	public String bandBoardDetailNo;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -38,4 +36,6 @@ public class BandCalendarVO{
 	public Date bandCalendarOptionDay;
 	public String bandCalendarOption;
 	public String bandCalendarOptionShare;
+	public String bandCalendarLocationLatlong;
+
 }

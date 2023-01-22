@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailVO;
+import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.common.service.OwnLikeVO;
 
@@ -32,4 +33,6 @@ public interface BandBoardDetailMapper {
 	public BandCalendarVO selectCalendar(String bandBoardDetailNo);
 	//일정가져오기(다중)(밴드홈에서사용)
 	public List<BandCalendarVO> selectCalendars(List<String> bandBoardDetailNo);
+	//일정참여확인상세조회
+	public List<BandCalendarDetailVO> selectCalendarDetail(String bandCalendarNo);
 }

@@ -90,7 +90,7 @@ public class BandBoardDetailController {
 		System.out.println(board.toString());
 		BandBoardDetailSearchVO newBoard = bandBoardDetailService.insertBandBoard(board);
 		//일정등록
-		if(cal.getBandCalendarTitle()!=null) {
+		if(cal.getBandCalendarTitle()!=null && !(cal.getBandCalendarTitle()).equals("")) {
 			cal.setBandBoardDetailNo(newBoard.getBandBoardDetailNo());
 			System.out.println(cal.toString());
 			//캘린더입력..캘린더 객체로 받음
@@ -100,7 +100,7 @@ public class BandBoardDetailController {
 		
 		//뉴게시판보에 일정넣기
 		newBoard.setBandCalendar(cal);
-		return bandBoardDetailService.insertBandBoard(board);
+		return newBoard;
 	}
 	//이미지 업로드...임시 컨트롤러
 	@ResponseBody
