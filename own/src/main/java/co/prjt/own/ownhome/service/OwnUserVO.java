@@ -28,6 +28,8 @@ public class OwnUserVO {
 	public String userHobby;
 	public String snsAccountNo;
 	public String snsNickname;
+	public String challcount;
+	public String bandcount;
 	
 	public Paging paging;
 	public int first = 1;

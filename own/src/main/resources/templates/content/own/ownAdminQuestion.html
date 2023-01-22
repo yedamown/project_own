@@ -33,10 +33,13 @@
         <div class="container py-2">
             <div class="row g-2">
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/admin/userList" style="text-decoration:none">내정보 수정</a></h4>                 
+                    <h4 class="mb-4"><a href="/own/admin/userList" style="text-decoration:none">회원목록</a></h4>                 
                 </div>
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/admin/question" style="text-decoration:none">내 질문목록</a></h4>                 
+                    <h4 class="mb-4"><a href="/own/admin/question" style="text-decoration:none">질문목록</a></h4>                 
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="mb-4"><a href="/own/admin/reportList" style="text-decoration:none">신고목록</a></h4>                 
                 </div>
             </div>
         </div>
@@ -49,8 +52,7 @@
 				<th>내용</th>
 				<th>답변</th>
 				<th>질문날짜</th>
-				<th>머리말
-				<th>
+				<th>머리말</th>
 				<th>상태</th>
 			</thead>
 			<tbody id="userList">
@@ -131,7 +133,7 @@
 
 
 	</body>
-	<script>
+	<script th:inline="javascript">
 	function modal(id) {
         var zIndex = 9999;
         var modal = document.getElementById(id);
@@ -178,10 +180,10 @@
          return this;
      };
 
-			$('.titlemodal').on('click',function(){
+			$('#userList').on('click','.titlemodal',function(){
 			modal('my_modal');
 			let qno = $(this).attr('id')
-			console.log($(this).attr('id'));
+			console.log('id'+$(this).attr('id'));
 			$.ajax({
 				url : '/own/admin/selectquest',
 				method : 'get',
@@ -206,9 +208,19 @@
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
 					console.log(ele.userId);
+					console.log(ele.answer);
 					let tag = `<tr>
-								<td>idx</td>
+								<td>${ele.questNo}</td>
 								<td>${ele.userId}</td>
+								<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>
+								<td>${ele.content}</td>
+								if(!ele.answer){
+								<td>${ele.answer}</td>					
+								}else{
+								}								
+								<td>${ele.questDate}</td>
+								<td>${ele.header}</td>
+								<td>${ele.status}</td>
 								</tr>`
 					tbody.append(tag);
 				})

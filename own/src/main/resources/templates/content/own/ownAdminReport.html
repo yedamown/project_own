@@ -7,6 +7,56 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+body {
+	background-color: #f0f0f0;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #2e2e2e;
+	padding-top: 42px;
+}
+
+div.layout-978 { width: 978px; margin: 0px auto; }
+
+div.tblcontainer {
+	padding: 18px;
+	border: 1px solid #c0c0c0;
+	margin: 20px auto;
+	background: url('../images/splitter.png') repeat-x 0 206px #fff;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px; /* future proofing */
+	-khtml-border-radius: 4px; /* for old Konqueror browsers */
+	width: 93%;	
+}
+.datagrid {
+	border-collapse: collapse;
+}
+
+.datagrid thead tr th {
+	color: #949494;
+	font-size: 11px;
+	font-weight: normal;
+	text-align: left;
+	padding: 6px 8px;
+	border: 1px solid #c9c9c9;
+	background-image: linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -moz-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -webkit-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -ms-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, #EEEFF1), color-stop(0.54, #F9F9F9)); 
+}
+.datagrid tbody tr {
+	background: #fff;
+}
+
+.datagrid tbody tr td {
+	padding: 6px 8px;
+	border: 1px solid #c9c9c9;
+}
+
+
+.datagrid tbody tr td.cash {
+	text-align: right;
+}
 #my_modal {
 	display: none;
 	width: 500px;
@@ -28,42 +78,45 @@
 <div layout:fragment="content">
 	<body>
 		<div class="container py-5">
-        <h1>회원목록</h1>
+        <h1>신고목록</h1>
         </div>
         <div class="container py-2">
             <div class="row g-2">
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/admin/userList" style="text-decoration:none">내정보 수정</a></h4>                 
+                    <h4 class="mb-4"><a href="/own/admin/userList" style="text-decoration:none">회원목록</a></h4>                 
                 </div>
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/admin/question" style="text-decoration:none">내 질문목록</a></h4>                 
+                    <h4 class="mb-4"><a href="/own/admin/question" style="text-decoration:none">질문목록</a></h4>                 
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="mb-4"><a href="/own/admin/reportList" style="text-decoration:none">신고목록</a></h4>                 
                 </div>
             </div>
         </div>
-        <div class="container">
-		<table>
-			<thead>
+        <div class="layout-978">
+<div class="tblcontainer">
+<table class="datagrid">
+    <thead>
 		<th>번호</th>
 		<th>신고자</th>
 		<th>피신고자</th>
 		<th>사유</th>
-		<th>내용</th>
 		<th>신고날짜</th>
 		<th>처리상태</th>
 		</thead>
-		<tbody id="reportList">
+    <tbody id="reportList">
 			<tr class="titlemodal" th:each="report : ${RList}">
-				<td th:name="${report.reportNo}"th:text="${#strings.substring(report.reportNo,4)}"></td>
+				<td th:name="${report.reportNo}" th:text="${#strings.substring(report.reportNo,4)}"></td>
 				<td th:text="${report.reporter}"></td>
 				<td th:text="${report.dereporter}"></td>
 				<td th:text="${report.reason}"></td>
-				<td th:text="${report.content}"></td>
 				<td th:text="${report.reportDate}"></td>
 				<td th:text="${report.status}"></td>
 			</tr>
 		</tbody>
-		</table>
-		</div>
+</table>
+</div>
+</div>
 		
 		<!--================ 이전  =================-->
         <nav class="blog-pagination justify-content-center d-flex" id="pagegation">
@@ -93,9 +146,6 @@
 	
 		<!--모달창-->
 		<div id="my_modal">
-			<form action="/questionUpdate" method="post" id="modalform">
-                <input type="hidden" th:name="${_csrf.parameterName}"
-					th:value="${_csrf.token}">    
 				<div class="form-group">
 					<label for="recipient-name" class="col-form-label">신고사유</label>
                     <span id="modaltitle"></span>
@@ -105,17 +155,23 @@
 					<span id="modalcontent"></span>
 				</div>
 				<div class="form-group">
-					<label for="message-text" class="col-form-label">답변</label>
-					<textarea class="form-control" id="message-text" name="answer"></textarea>
+					<label for="message-text" class="col-form-label">처리</label>
+					<select id="modalSelectBtn">
+					<option value="reporting">신고처리</option>
+					<option value="hold">보류</option>
+					</select>
 				</div>
-                <button type="submit">전송</button>
-			</form>
+                <button type="button" id="modalBtn">처리</button>
 			<a class="modal_close_btn">닫기</a>
 		</div>
 
 
 	</body>
 	<script>
+		$('#modalBtn').on('click',function(){
+			console.log($('#modalSelectBtn').val())
+		})
+
 	function modal(id) {
         var zIndex = 9999;
         var modal = document.getElementById(id);

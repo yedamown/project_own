@@ -214,6 +214,13 @@ public class OwnhomeController {
 			return "redirect:/own/admin/question";
 		}
 		
+		//답변 업데이트
+		@PostMapping("/reportUpdate")
+		public String reportUpdate(ReportVO vo) {
+			ownService.reportUpdate(vo);
+			return "redirect:/own/admin/question";
+		}
+		
 		//모든 회원보기
 		@GetMapping("/own/admin/userList")
 		public String getUserList(Model model,Paging paging,OwnUserVO vo) {
