@@ -7,6 +7,56 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+body {
+	background-color: #f0f0f0;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #2e2e2e;
+	padding-top: 42px;
+}
+
+div.layout-978 { width: 978px; margin: 0px auto; }
+
+div.tblcontainer {
+	padding: 18px;
+	border: 1px solid #c0c0c0;
+	margin: 20px auto;
+	background: url('../images/splitter.png') repeat-x 0 206px #fff;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px; /* future proofing */
+	-khtml-border-radius: 4px; /* for old Konqueror browsers */
+	width: 93%;	
+}
+.datagrid {
+	border-collapse: collapse;
+}
+
+.datagrid thead tr th {
+	color: #949494;
+	font-size: 11px;
+	font-weight: normal;
+	text-align: left;
+	padding: 6px 8px;
+	border: 1px solid #c9c9c9;
+	background-image: linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -moz-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -webkit-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -ms-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, #EEEFF1), color-stop(0.54, #F9F9F9)); 
+}
+.datagrid tbody tr {
+	background: #fff;
+}
+
+.datagrid tbody tr td {
+	padding: 6px 8px;
+	border: 1px solid #c9c9c9;
+}
+
+
+.datagrid tbody tr td.cash {
+	text-align: right;
+}
 #my_modal {
 	display: none;
 	width: 500px;
@@ -43,30 +93,30 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-		<table>
-			<thead>
+        <div class="layout-978">
+<div class="tblcontainer">
+<table class="datagrid">
+    <thead>
 		<th>번호</th>
 		<th>신고자</th>
 		<th>피신고자</th>
 		<th>사유</th>
-		<th>내용</th>
 		<th>신고날짜</th>
 		<th>처리상태</th>
 		</thead>
-		<tbody id="reportList">
+    <tbody id="reportList">
 			<tr class="titlemodal" th:each="report : ${RList}">
 				<td th:name="${report.reportNo}" th:text="${#strings.substring(report.reportNo,4)}"></td>
 				<td th:text="${report.reporter}"></td>
 				<td th:text="${report.dereporter}"></td>
 				<td th:text="${report.reason}"></td>
-				<td th:text="${report.content}"></td>
 				<td th:text="${report.reportDate}"></td>
 				<td th:text="${report.status}"></td>
 			</tr>
 		</tbody>
-		</table>
-		</div>
+</table>
+</div>
+</div>
 		
 		<!--================ 이전  =================-->
         <nav class="blog-pagination justify-content-center d-flex" id="pagegation">

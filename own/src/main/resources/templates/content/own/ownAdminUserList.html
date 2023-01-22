@@ -13,26 +13,57 @@
 
   <style>
     body {
-      min-height: 100vh;
-    }
+	background-color: #f0f0f0;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #2e2e2e;
+}
 
-    .input-form {
-      max-width: 680px;
+div.layout-978 { width: 978px; margin: 0px auto; }
 
-      margin-top: 80px;
-      padding: 32px;
+div.tblcontainer {
+	padding: 18px;
+	border: 1px solid #c0c0c0;
+	margin: 20px auto;
+	background: url('../images/splitter.png') repeat-x 0 206px #fff;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px; /* future proofing */
+	-khtml-border-radius: 4px; /* for old Konqueror browsers */
+	width: 93%;	
+}
 
-      background: #fff;
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
-      -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-      -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-      box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
-    }
-    .checkDone, .notYet, .finepw, .notpw .checkid{
-			display:none;
-		}
+
+
+.datagrid {
+	border-collapse: collapse;
+}
+
+.datagrid thead tr th {
+	color: #949494;
+	font-size: 11px;
+	font-weight: normal;
+	text-align: left;
+	padding: 6px 8px;
+	border: 1px solid #c9c9c9;
+	background-image: linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -moz-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -webkit-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -ms-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
+	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, #EEEFF1), color-stop(0.54, #F9F9F9)); 
+}
+.datagrid tbody tr {
+	background: #fff;
+}
+
+.datagrid tbody tr td {
+	padding: 6px 8px;
+	border: 1px solid #c9c9c9;
+}
+
+
+.datagrid tbody tr td.cash {
+	text-align: right;
+}
   </style>
 <body>
         <div class="container py-5">
@@ -51,18 +82,23 @@
                 </div>
             </div>
         </div>
-        <div class="container">
-        <table>
-			<thead>
+        <div class="layout-978">
+<div class="tblcontainer">
+  
+  
+  
+  
+<table class="datagrid">
+    <thead>
 				<th>no</th>
 				<th>아이디</th>
 				<th>이름</th>
 				<th>sns계정</th>
 				<th>챌린저스 진행상태</th>
 				<th>상태</th>
-			</thead>
-			<tbody id="userList">
-			<tr th:each="user ,userStat : ${OList}">
+    </thead>
+    <tbody id="userList">
+       <tr th:each="user ,userStat : ${OList}">
 				<td th:text="${#strings.substring(user.ownUsersNo,4)}"></td>
 				<td th:text="${user.userId}"></td>
 				<td th:text="${user.userName}"></td>
@@ -75,8 +111,9 @@
 				<td th:text="${user.challcount}+'개 진행중..'"></td>
 				<td th:text="${user.userPerm}"></td>
 			</tbody>
-		</table>       
-        </div>
+</table>
+</div>
+</div>
         <nav class="blog-pagination justify-content-center d-flex" id="pagegation">
 	<!--================ 이전  =================-->
 		<ul class="pagination">

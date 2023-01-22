@@ -2,6 +2,8 @@ package co.prjt.own.common.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import co.prjt.own.common.Paging;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +18,7 @@ public class ReportVO {
 	public String dereporter;
 	public String reason;
 	public String content;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date reportDate;
 	public String status;
 	
