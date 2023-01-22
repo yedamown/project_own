@@ -10,8 +10,7 @@ public interface ChatService {
 	// 전체 채팅방 목록 중 해당 식별번호로 개설된 채팅방 목록 출력 
 	List<ChatroomVO> chatroomList(String bandMemberNo);
 	
-	/* 채팅방 번호 가져온 후, 채팅방 개설(1:1)
-	 * 전체 채팅방은 방개설 필요없이 구역을 만들어 메세지만 띄우면 된다. 
+	/* 신규 채팅방 개설(1:1)
 	 */
 	String createChatroom(List<ChatroomVO> list);
 

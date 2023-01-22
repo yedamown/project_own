@@ -2,34 +2,30 @@ package co.prjt.own.chat.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.util.HtmlUtils;
 
+import co.prjt.own.band.service.BandMemberDetailService;
 import co.prjt.own.chat.service.ChatService;
 import co.prjt.own.chat.service.ChatroomVO;
-import co.prjt.own.chat.service.Greeting;
-import co.prjt.own.chat.service.HelloMessage;
-import co.prjt.own.ownhome.service.OwnUserVO;
+import co.prjt.own.chat.service.MessageVO;
 
 @Controller
 public class ChatController {
 	@Autowired
+	BandMemberDetailService bandMemberDetailService;
+	@Autowired
 	ChatService chatService;
+	@Autowired
+	private SimpMessagingTemplate template;
 
 	/*
-	 * 1:1 채팅(밴드 내 멤버목록에서 기존 채팅 목록이 없는 경우 채팅방 생성 채팅방 생성 하기
+	 * DB에 채팅방 생성(채팅방 시퀀스 번호 받아오고 -> 방만들기)
 	 */
 	@PostMapping("/createChatroom")
 	@ResponseBody
@@ -38,16 +34,30 @@ public class ChatController {
 	}
 
 	// 채팅 페이지 이동
-	@RequestMapping(value = "/chatroom", method = RequestMethod.GET)
+	@PostMapping("/chatroom")
 	public String chatPage() {
-		return "content/chat/chatting";
+		// 밴드 멤버 번호로 닉네임 찾아서 모델에 저장시켜 보내기.
+		return "content/chat/chatroom";
 	}
 
-	// 채팅 시작 환영메세지
-	@MessageMapping("/hello")
-	@SendTo("/topic/greetings")
-	public Greeting greeting1(HelloMessage message) throws Exception {
-		Thread.sleep(1000); // simulated delay
-		return new Greeting(HtmlUtils.htmlEscape(message.getName()) + "님이 입장하셨습니다.");
+	// 채팅 입장 메세지
+	@MessageMapping("/chat/enter")
+	public void greeting(MessageVO vo) throws Exception {
+		System.out.println("채팅 연결성공");
+		// 받아온 메세지 객체에서 밴드멤버식별번호를 가져와 닉네임 set
+		vo.setBandNickname(bandMemberDetailService.getBandMemberNickname(vo));
+		vo.setMessageContent(vo.getBandNickname() + "님이 채팅방에 참여하였습니다.");
+		// 해당 방으로 메세지 전송
+		template.convertAndSend("/subscribe/chat/room/" + vo.getChatroomNo(), vo);
 	}
+
+	// 채팅 입장 메세지
+	@MessageMapping("/chat/message")
+	public void message(MessageVO vo) throws Exception {
+		// 메세지 DB에 저장
+		chatService.saveMessage(vo);
+		// 해당 방으로 메세지 전송
+		template.convertAndSend("/subscribe/chat/room/" + vo.getChatroomNo(), vo);
+	}
+
 }

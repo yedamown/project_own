@@ -26,12 +26,12 @@ public class ChatServiceImpl implements ChatService {
 		// 전체 채팅방 목록 중 해당 식별번호로 개설된 채팅방 목록 출력 
 		return chatMapper.chatroomList(bandMemberNo);
 	}
-
+	
 	@Override
 	public String createChatroom(List<ChatroomVO> list) {
 		// 채팅방 개설
-		String rNo = chatMapper.getChatroomNo(); // 가져온 시퀀스 번호
-		for(int i=0; i<=list.size(); i++) {
+		String rNo = chatMapper.createChatroomNo(); // 가져온 시퀀스 번호
+		for(int i=0; i<list.size(); i++) {
 			list.get(i).setChatroomNo(rNo);
 			chatMapper.createChatroom(list.get(i));
 		}
@@ -60,5 +60,7 @@ public class ChatServiceImpl implements ChatService {
         }
 
 	}
+
+	
 
 }

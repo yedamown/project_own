@@ -17,7 +17,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	 */
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/gs-guide-websocket").withSockJS(); // withSockJS()이용 시 웹소켓을 지원하지 않는 브라우저에서 fallback 옵션을 활성화하는데 사용됨.
+		registry.addEndpoint("/chat").withSockJS(); // withSockJS()이용 시 웹소켓을 지원하지 않는 브라우저에서 fallback 옵션을 활성화하는데 사용됨.
 	}
 
 	/* 한 클라이언트에서 다른 클라이언트로 메시지를 라우팅하는데 사용될 메시지 브로커 */
@@ -26,8 +26,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		//configureMessageBroker 메소드는 한 클라이언트에서 다른 클라이언트로 메세지를 라우팅 할 떄 사용하는 브로커를 구성
 		
 		// app 경로로 시작되는 메시지만 message-handling methods로 라우팅된다. 받는것 
-		registry.setApplicationDestinationPrefixes("/app");
-		// /topic 으로 시작되는 주제를 가진(구독한) 모든 사용자들에게 메시지를 방송한다. 보내는것
-		registry.enableSimpleBroker("/topic");
+		registry.setApplicationDestinationPrefixes("/publish");
+		// subcribe 다음에 넣는 내용으로 시작되는 주제를 가진(구독한) 모든 사용자들에게 메시지를 방송한다. 보내는것
+		registry.enableSimpleBroker("/subscribe");
 	}
 }
