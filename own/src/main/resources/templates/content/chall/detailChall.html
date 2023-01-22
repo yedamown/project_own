@@ -355,10 +355,11 @@
 				<div
 					class="d-flex flex-column text-center bg-primary rounded mb-5 py-5 px-4">
 					<div th:if="${leaderInfo.memImage}">
+					<p class="text-white">CHALLL LEADER</p>
 						<!-- 도전리더 프로필 있는 경우-->
 						<img th:src="|/imgView/${leaderInfo.memImage}|"
-							class="img-fluid rounded-circle mx-auto mb-3"
-							style="width: 100px" />
+							class="img-fluid rounded-circle mx-auto mb-4"
+							style="width: 200px; height:200px ; object-fit: cover" />
 					</div>
 					<h3 class="text-secondary mb-3" th:text="${leaderInfo.memNickname}"></h3>
 					<p class="text-white m-0" th:text="${leaderInfo.memIntro}"></p>

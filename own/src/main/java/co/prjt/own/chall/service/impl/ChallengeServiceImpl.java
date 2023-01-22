@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import co.prjt.own.chall.mapper.ChallengeMapper;
+import co.prjt.own.chall.service.CMemberListVO;
 import co.prjt.own.chall.service.ChallengeService;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.Paging;
@@ -64,6 +65,22 @@ public class ChallengeServiceImpl implements ChallengeService{
 		vo.setPaging(paging);
 		System.out.println(vo);
 		List<ChallengeVO> list = mapper.getChallAll(vo);
+		list.get(0).setPaging(paging);
+		return list;
+	}
+
+	@Override
+	//내 도전 페이징 6개씩
+	public List<ChallengeVO> myPageChall(CMemberListVO mlvo, ChallengeVO vo, Paging paging) {
+//		paging.setTotalRecord(mapper.myChallCount(mlvo.getUserId()));
+//		System.out.println(mapper.myChallCount(mlvo.getUserId()));
+		paging.setPageUnit(6); //한페이지에 몇개
+		paging.setPageSize(4); //페이징 ? 갯수 몇번까지?
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		vo.setPaging(paging);
+		System.out.println(vo);
+		List<ChallengeVO> list = mapper.getMyChall(mlvo.getUserId());
 		list.get(0).setPaging(paging);
 		return list;
 	}

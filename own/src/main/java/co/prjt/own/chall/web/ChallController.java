@@ -131,6 +131,7 @@ public class ChallController {
 		return challenge.pageChallList(vo, paging);
 	}
 	
+	
 	// 도전등록 폼으로 이동
 	@GetMapping("/insertFormChall") // 등록 폼으로 이동
 	public String insertChall(Model model) {
@@ -376,7 +377,7 @@ public class ChallController {
 		return "content/chall/myAmount";
 	}
 
-	// 마이페이지 - 내 도전
+	/*// 마이페이지 - 내 도전
 	@GetMapping("/myChall") // 처리와 검색을 동시에
 	public String myChall(CMemberListVO vo, Model model, HttpServletRequest request) {
 		// 세션 아이디로 도전들 검색 ->동적쿼리로 구분하기
@@ -386,7 +387,20 @@ public class ChallController {
 		vo.setUserId(id);
 		model.addAttribute("myChall", memberList.getMemListAll(vo));
 		return "content/chall/myChall";
-	}
+	} */
 	
-	
+	//마이페이지 도전
+		@GetMapping("/myChall")
+		public String myPageChall(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
+			HttpSession session = request.getSession();
+			OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+			String id = user.userId;
+			vo2.setUserId(id);
+			challenge.getMyChall(id);
+			//6개로 페이징	
+			List<ChallengeVO> cList = challenge.myPageChall(vo2, vo1, paging);	
+			model.addAttribute("myChall", cList);
+			//테스트 중~~!!!
+			return "content/chall/myChall";
+			}
 }
