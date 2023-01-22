@@ -2,6 +2,8 @@ package co.prjt.own.sns.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import co.prjt.own.sns.service.SFollowVO;
 
 public interface SFollowMapper {
@@ -13,15 +15,20 @@ public interface SFollowMapper {
 	public List<SFollowVO> getFollowerList(String id);
 	
 	//팔로잉
-	int insertFollow(SFollowVO SFollowVO);
-	
-	//삭제
-	int deleteFollow(String snsFollowId, String snsFollowerId);
+	int insertFollow(@Param("snsFollowId")  String snsFollowId, 
+						 @Param("snsFollowerId")String snsFollowerId);
+		
+	//언팔
+	int deleteFollow(@Param("snsFollowId")  String snsFollowId, 
+						 @Param("snsFollowerId")String snsFollowerId);
 	
 	//팔로우 카운트
 	int followCount(String id);
 	
 	//팔로워 카운트
 	int followerCount(String id);
+	
+	int isCheckFollow(@Param("snsFollowId")  String snsFollowId, 
+					  @Param("snsFollowerId")String snsFollowerId);
 	
 }

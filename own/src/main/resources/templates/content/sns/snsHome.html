@@ -178,7 +178,7 @@
                                 <div class="meta_data">
                                     <span>좋아요 수</span>
                                     <span>댓글 수 </span>
-                                    <span th:text="${now.snsBoardDate}"></span>
+                                    <span> [[${now.snsBoardDate}]] </span>
                                 </div>
                                 <p>게시글내용 /
                                 <p th:text="${now.snsBoardContent}"></p>
@@ -249,6 +249,40 @@
         alert("메인페이지로 이동합니다.")
         location.href = "/own/home"
     };
+
+    //시간계산 함수
+ function elapsedText(date) {
+                console.log(date);
+                date = new Date(date);
+                // 초 (밀리초)
+                const seconds = 1;
+                // 분
+                const minute = seconds * 60;
+                // 시
+                const hour = minute * 60;
+                // 일
+                const day = hour * 24;
+                
+                var today = new Date();
+                var elapsedTime = Math.trunc((today.getTime() - date.getTime()) / 1000);
+                
+                var elapsedText = "";
+                if (elapsedTime < seconds) {
+                    elapsedText = "방금 전";
+                } else if (elapsedTime < minute) {
+                    elapsedText = elapsedTime + "초 전";
+                } else if (elapsedTime < hour) {
+                    elapsedText = Math.trunc(elapsedTime / minute) + "분 전";
+                } else if (elapsedTime < day) {
+                    elapsedText = Math.trunc(elapsedTime / hour) + "시간 전";
+                } else if (elapsedTime < (day * 3)) {
+                    elapsedText = Math.trunc(elapsedTime / day) + "일 전";
+                } else {
+                    elapsedText = SimpleDateTimeFormat(date, "yyyy-MM-dd");
+                }
+                
+                return elapsedText;
+            }
 </script>
 
 
