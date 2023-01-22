@@ -162,4 +162,8 @@ public class CommonServiceImpl implements CommonService {
 	public int updateKey(String key, List<String> name) {
 		return commonMapper.updateKey(key, name);
 	}
+	@Override
+	public int deleteImg(List<String> name) {
+		return commonMapper.deleteImg(name);
+	}
 }

@@ -5,7 +5,7 @@
       layout:decorate="~{layout/default_layout}"
       lang="ko">
     <head>
-        <script src="/css/band/js/jquery-3.2.1.js"></script>
+        <!-- <script src="/css/band/js/jquery-3.2.1.js"></script> -->
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,6 +23,48 @@
         <link rel="stylesheet" href="/css/band/css/style.css">
         <link rel="stylesheet" href="/css/band/css/responsive.css">
         <style type="text/css">
+        	.modal {
+				display: none;
+				z-index: 500;
+				width: 100%;
+				height: 100vh;
+				position: fixed;
+				top: 0;
+				left: 0;
+				background-color: rgba(0, 0, 0, 0.3);
+			}
+			
+			.modal button {
+				position: absolute;
+				top: 3rem;
+				right: 3rem;
+				background: transparent;
+				border: 0;
+				color: #ffffff;
+				font-size: 3rem;
+			}
+			
+			.modalBox {
+				position: relative;
+				top: 20%;
+				left: 50%;
+				transform: translate(-50%, -20%);
+				background-color: #ffffff;
+				width: 30%;
+				height: 30%;
+				text-align: center;
+			}
+			
+			.modalBox img {
+				width: 100%;
+			}
+			
+			.modalBox p {
+				color: #ffffff;
+				background-color: #000;
+				font-size: 2rem;
+				padding: .2rem;
+			}
         </style>
     </head>
     <body>
@@ -55,7 +97,8 @@
                             <li class="nav-item"><a class="nav-link" href="index.html">가치 홈</a></li> 
                             <li class="nav-item"><a class="nav-link" href="about.html">앨범</a></li>
                             <li class="nav-item"><a class="nav-link" href="accomodation.html">일정</a></li>
-                            <li class="nav-item"><a class="nav-link" href="gallery.html">멤버</a></li>
+                            <!--================ 채팅기능을 위한 임시 =================-->
+                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></li>
                         </ul>
                     </div> 
                 </nav>
@@ -113,7 +156,7 @@
                         </div>
                     </div>
                     <div style="flex-grow:3; width: 740px">
-                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber">
+                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber" >
 	  <!-- ================== 여기붙음================== -->                    	
                         <div id="mainTemplate">
                         	<div>
@@ -251,13 +294,21 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 </div>
             </div>
         </footer>
+        <!-- 팝업 될 곳 -->
+	<div class="modal">
+		<button>&times;</button>
+		<div class="modalBox">
+			<img src="" alt="">
+			<p></p>
+		</div>
+	</div>
 		<!--================ End footer Area  =================-->
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="/css/band/js/popper.js"></script>
-        <script src="/css/band/js/bootstrap.min.js"></script>
+        <!-- <script src="/css/band/js/popper.js"></script> -->
+        <!-- <script src="/css/band/js/bootstrap.min.js"></script> -->
         <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
-        <script src="/css/band/js/jquery.ajaxchimp.min.js"></script>
+       <!--  <script src="/css/band/js/jquery.ajaxchimp.min.js"></script> -->
         <script src="/css/band/js/mail-script.js"></script>
         <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
         <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
@@ -364,7 +415,41 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         	console.log(ele);	
         	ele.hide();
        	})
-        	
+        
+       	// 	이미지 클릭시 해당 이미지 모달
+			$('#articleArea').on('click', $("img"), function(e){
+				$(".modal").show();
+				// 해당 이미지 가겨오기
+				var imgSrc = $(e.target).attr("src");
+				var imgAlt = $(e.target).attr("alt");
+				console.log(imgSrc);
+				console.log(imgAlt);
+				
+				$(".modalBox img").attr("src", imgSrc);
+				$(".modalBox img").attr("alt", imgAlt);
+				
+				// 해당 이미지 텍스트 가져오기
+				var imgTit =  $(this).children("p").text();
+				$(".modalBox p").text(imgTit);
+				
+		   // 해당 이미지에 alt값을 가져와 제목으로
+				//$(".modalBox p").text(imgAlt);
+			})
+			
+			//.modal안에 button을 클릭하면 .modal닫기
+			$(".modal button").click(function(){
+				$(".modal").hide();
+			});
+			
+			//.modal밖에 클릭시 닫힘
+			$(".modal").click(function (e) {
+		    if (e.target.className != "modal") {
+		      return false;
+		    } else {
+		      $(".modal").hide();
+		    }
+		  });
+       	
        	//페이지 이동
     	$('#totalBoard').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo);

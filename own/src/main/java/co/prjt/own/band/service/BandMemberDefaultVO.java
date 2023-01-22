@@ -26,4 +26,5 @@ public class BandMemberDefaultVO {
 
 	Integer first = 1;
 	Integer last = 10;
+	
 }

@@ -19,34 +19,31 @@
 	<div>
 		<article style="border: 1px solid #eeeeee;padding:30px; ">
 		<form name="frm" id="frm">
-			<input type="hidden" th:name="${_csrf.parameterName}"
-					th:value="${_csrf.token}">
 			<input type="hidden" id="bandboardwriter" name="bandBoardWriter" th:value="${session.loginUser.userId}">
-			<!-- 썸머노트를 통해 추가될 이미지 -->
-			<!-- form을 통해 넘어가지 않는 값이니까 이 번호에 이미지정보를 담겠음 -->
-			<input type="hidden" id="bandBoardDetailNo" name="bandBoardDetailNo">
-			<h3>가치 글쓰기</h3>
+			[[${board.bandBoardDetailNo}]]
+			<input type="hidden" id="bandBoardDetailNo" name="bandBoardDetailNo" th:value="${board.bandBoardDetailNo}">
+			<h3>가치 글수정</h3>
 			<select class="form-group" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo">
 				<option disabled>::게시판을 선택해주세요::</option>
-				<option th:if="${list.bandBoardLine}!='0'" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}"></option>
+				<option th:if="${list.bandBoardLine}!='0'" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}" th:selected="${#strings.equals(list.bandBoardOptionNo, board.bandBoardOptionNo)}"></option>
 			</select>
 			<select class="form-group" name="bandRemarks" id="bandRemarks">
 				<option value="">::말머리 선택::</option>
 			</select>
 			<div class="form-group">
-				<input placeholder="타이틀" type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle">
+				<input placeholder="타이틀" type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle" th:value="${board.bandBoardTitle}">
 				<div class="form-group">
 					<textarea id="summernote" name="bandBoardContent"></textarea>
 				</div>
-				<input placeholder="태그" type="text" class="form-control" id="tag">
+				<input placeholder="태그" type="text" class="form-control" id="tag" th:value="${board.bandBoardTag}">
 				댓글 허용<input type="radio" class="form-group">
-				<button type="button" id="writeBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white; float: right">등록</button>
+				<button type="button" id="updateBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white; float: right">수정</button>
 			</div>
 		</form>	
 		</article>
 	</div>
 </div>
-<script>
+<script th:inline="javascript">
 /*<![CDATA[*/
 var header = '[[${_csrf.headerName}]]';
 var token = '[[${_csrf.token}]]';
@@ -55,6 +52,11 @@ var token = '[[${_csrf.token}]]';
  /*]]>*/
 $(function(){
 	$(document).ready(function() {
+		var content = '[[${board.bandBoardContent}]]';
+		console.log(content);
+		//썸머노트에 값넣기
+	   $('#summernote').summernote('code', content);
+		
 		//여기 아래 부분
 		$('#summernote').summernote({
 			  height: 300,                 // 에디터 높이
@@ -149,24 +151,56 @@ $(function(){
 
 $(function(){
 	//글쓰기
-	$('#writeBtn').on('click', function(){
+		$('#updateBtn').on('click', function(){
 		console.log($('#frm').serializeObject());
-		$.ajax({
-			url : '/own/band/bandGroup/bandBoardInsert',
-			method : 'post',
-			data : $('#frm').serializeObject(),
+		//아작스
+		/* $.ajax({
+			url : '/own/band/bandGroup/bandBoardUpdate',
+			method : 'put',
+			data : JSON.stringify($('#frm').serializeObject()),
 			dataType : 'json',
+			contentType : "application/json",
 			beforeSend: function(xhr){
               xhr.setRequestHeader(header,token);
             }
 		}).then( res =>{
 			console.log(res);
 			if(res.bandBoardDetailNo!=null){
-				$('#template').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+res.bandBoardDetailNo);
+				console.log('글수정 완료')
+				//$('#template').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+res.bandBoardDetailNo);
 			} else {
-				alert('글쓰기 실패');
+				alert('글수정 실패');
 			}
 		})
+	})  */
+	/* let da = JSON.stringify($('#frm').serializeObject());
+	function ipGetAddress(da) {
+		  requestFetch = function() {
+		    // perform the action..
+		    xhr.setRequestHeader(header,token);
+		    console.log('** beforeSend request fetch **');
+		    return fetch.apply(this, arguments);
+		  }
+
+		  requestFetch('/own/band/bandGroup/bandBoardUpdate').then((response) => {
+		    return response.json();
+		  }).then((data) => {
+		    console.log(data.ip);
+		  });
+	} */
+//################
+		//ipGetAddress('json') // return local ip address..
+		//################		
+		fetch('/own/band/bandGroup/bandBoardUpdate', {
+	        method : 'put',
+	        headers : {
+	            'Content-Type' : 'application/json',
+	            'X-CSRF-Token' : '82890a8a-4795-4bdf-a919-e6be093d1321'
+	        },
+	        body : JSON.stringify($('#frm').serializeObject())
+	    })
+	      .then(response => response.json())
+	      .then(data => console.log(data));
 	})
 })
 </script>
