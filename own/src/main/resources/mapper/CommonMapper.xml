@@ -66,9 +66,10 @@
 	</update>	
 	<delete id="deleteImg">
 		DELETE FROM MULTIMEDIA
-		WHERE MEDIA_SERVER_FILE IN
+		WHERE MEDIA_SERVER_FILE NOT IN
 			   <foreach collection="name" item="n" separator="," open="(" close=")">
                		#{n}
                </foreach>
+               AND IDENTIFY_ID = #{key}
 	</delete>
 </mapper>

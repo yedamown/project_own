@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+   
+<body>
+    <!-- header fragment 사용 -->
+    <th:block th:replace="fragments/band_header :: bandHeaderFragment">
+    
+    </th:block>
+    <!-- content fragment 사용 -->
+    <th:block layout:fragment="content"></th:block>
+    <!-- footer fragment 사용 -->
+    <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+</body>
+</html>

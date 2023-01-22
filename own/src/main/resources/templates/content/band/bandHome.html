@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}"
+      layout:decorate="~{layout/band_layout}"
       lang="ko">
     <head>
     	<!-- jquery -->
@@ -23,37 +23,40 @@
         <!-- main css -->
         <link rel="stylesheet" href="/css/band/css/style.css">
         <link rel="stylesheet" href="/css/band/css/responsive.css">
+        <style>
+        	
+			.btn:hover{
+			    color:#fff;
+			}
+			
+			.input-text:focus{
+			    box-shadow: 0px 0px 0px;
+			    border-color:#f8c146;
+			    outline: 0px;
+			}
+			
+			.form-control {
+			    border: 1px solid #f8c146;
+			}
+        </style>
     </head>
-   
     <body>
    	<div layout:fragment="content">
         <!--================ 배너=================-->
-        <section class="banner_area"> 
-            <div class="booking_table d_flex align-items-center" style="min-height: 500px;">
+        <section class="banner_area">
+            <div class="booking_table  "  style="min-height: 300px;">
             	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
 				<div class="container">
-							<div class="banner_content text-center">
-								<h6>Today's Exercise together</h6>
-								<h2>오운 가치</h2>
-								<p>Exercise to stimulate, not to annihilate. The world wasn't formed in a day, and neither were we. Set small goals and build upon them</p>
-								<!-- <a href="#" class="btn theme_btn button_hover">Get Started</a> -->
-							</div>
 							<div class="hotel_booking_area position" >
 		<!--================ 검색================ -->
 		                <div class="container">
 		                    <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.3);">
-		                        <div class="col-lg-4">
-			                        <div class="blog_right_sidebar" style="border: hidden;width: 200%;margin-left: 100px;">
-			                            <aside class="single_sidebar_widget search_widget">
-			                                <div class="input-group">
-			                                    <input type="text" class="form-control" name="bandName" placeholder="오운 가치 검색"style="text-align: center;">
-			                                    <span class="input-group-btn">
-			                                        <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
-			                                    </span>
-			                                </div>
-			                            </aside>
-			                        </div>
-			                    </div>
+		                        <div class="input-group mb-3">
+								  <input type="text" class="form-control input-text" name="bandName" placeholder="오운 가치 검색" aria-label="Recipient's username" aria-describedby="basic-addon2">
+								  <div class="input-group-append">
+								    <button class="btn btn-outline-warning btn-lg searchBtn" type="button"><i class="fa fa-search"></i></button>
+								  </div>
+								</div>
 		                    </div>
 		                </div>
 		<!-- ================검색 끝================ -->
@@ -65,9 +68,9 @@
         
         <!--================ 내 가치 Area  =================-->
         <!--================================= 유저아이디 히든  ==================================-->
-        <input type="hidden" class="hiddenUser" th:value="${user.userId}">
+        <input type="hidden" class="hiddenUser" th:value="${session.loginUser.userId}">
 
-        <section class="accomodation_area section_gap">
+        <section class="accomodation_area section_gap"  style="padding-top: 40px">
             <div class="container">
                 <div class="section_title text-center">
                     <h2 class="title_color">My 가치</h2>
@@ -77,9 +80,11 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="/css/band/image/room1.jpg" alt="">
+                            	<a href="/own/band/bandCreate">
+                                	<img src="/css/band/image/room1.jpg" alt="">
+                                </a>
                             </div>
-                            <a href="/own/band/bandCreate"><h4 class="sec_h4">가치생성</h4></a>
+                            <h4 class="sec_h4"><a href="/own/band/bandCreate">가치생성</a></h4>
                             <h5><small></small></h5>
                         </div>
                     </div>
@@ -88,9 +93,11 @@
                     <div class="col-lg-3 col-sm-6" th:each="band, bandStat :${bandList}" th:if="${bandStat.index<3}">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="">
+                            	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|">
+                                	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="">
+                                </a>
                             </div>
-                            <a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|"><h4 class="sec_h4" th:text="${band.bandName}"></h4></a>
+                            <h4 class="sec_h4"><a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|"th:text="${band.bandName}"></a></h4>
                             <h5><small>멤버 [[${band.memcount}]]</small></h5>
                         </div>
                     </div>
