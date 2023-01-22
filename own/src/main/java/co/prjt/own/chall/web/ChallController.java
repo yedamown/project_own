@@ -356,7 +356,7 @@ public class ChallController {
 			System.out.println("-----------------이미지없음" + number);
 			common.upload(uploadfile, number, "CMB_", "Chall");
 		}
-		return "content/chall/challHome";
+		return "redirect:/own/chall/mypage";
 	}
 	
 	// 마이페이지 - 내 예치금
