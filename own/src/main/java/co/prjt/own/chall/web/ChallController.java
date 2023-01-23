@@ -51,6 +51,7 @@ public class ChallController {
 	@Autowired ValidationService validation;
 	@Autowired CResultService result;
 
+	/*
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
 	// @ResponseBody 데이터를 다시 가져올때.. 안붙이면.. 하얀 html에 받아오는 값이뜬다 ㅎ
@@ -109,7 +110,7 @@ public class ChallController {
 		} 
 		return "content/chall/challHome";
 	}
-	
+	*/
 	//홈 테스트
 	@GetMapping("/hometest")
 	public String challHomeTest (Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
@@ -389,18 +390,26 @@ public class ChallController {
 		return "content/chall/myChall";
 	} */
 	
-	//마이페이지 도전
+	//마이페이지 도전정보
 		@GetMapping("/myChall")
-		public String myPageChall(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
+		public String myPageChall(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo) {
 			HttpSession session = request.getSession();
 			OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 			String id = user.userId;
-			vo2.setUserId(id);
-			challenge.getMyChall(id);
+			vo.setUserId(id);
 			//6개로 페이징	
-			List<ChallengeVO> cList = challenge.myPageChall(vo2, vo1, paging);	
+			List<ChallengeVO> cList = challenge.myPageChall(vo, paging);	
 			model.addAttribute("myChall", cList);
 			//테스트 중~~!!!
 			return "content/chall/myChall";
 			}
-}
+
+
+		//마이페이지 도전 페이징 아작스
+		@GetMapping("/myPageChallAjax")
+		@ResponseBody
+		public List<ChallengeVO> myPageChallAjax(Model model, Paging paging, ChallengeVO vo) {
+			return challenge.myPageChall(vo, paging);
+			}
+			
+	}
