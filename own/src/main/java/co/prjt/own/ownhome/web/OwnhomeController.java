@@ -245,6 +245,34 @@ public class OwnhomeController {
 			return "/content/own/ownAdminReport";
 		}
 		
+		
+		//신고처리
+		@PostMapping("/own/admin/reportAccess")
+		public int reportUpdate(String val, String rno, String id) {
+			System.out.println("value는 "+val);
+			System.out.println("rno는 "+rno);
+			System.out.println("id는 "+id);
+			ReportVO vo = new ReportVO();
+			vo.setReportNo(rno);
+			vo.setDereporter(id);
+			
+			OwnUserVO ovo = new OwnUserVO();
+			ovo.setUserId(id);
+			//보류상황
+			if(val.equals(0)) {
+				ownService.reportUpdate(vo);
+				return 0;
+			}else if(val.equals(1)){
+				ownService.reportUpdate(vo);
+				ownService.ReportCountup(ovo);
+				ovo = ownService.login(ovo.getUserId());
+				if(ovo.getUserStatus().equals('3')) {
+					ownService.userPermUpdate(ovo);
+				}
+			}
+			return 0;
+		}
+		
 		//테스트 페이지 이동
 		//상세보기로..
 		@GetMapping("/own/admin/test")

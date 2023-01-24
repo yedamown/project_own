@@ -89,7 +89,7 @@ div.tblcontainer {
                     <h4 class="mb-4"><a href="/own/admin/question" style="text-decoration:none">질문목록</a></h4>                 
                 </div>
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/admin/reportList" style="text-decoration:none">신고목록</a></h4>                 
+                    <h4 class="mb-4"><a href="/own/admin/" style="text-decoration:none">신고목록</a></h4>                 
                 </div>
             </div>
         </div>
@@ -167,9 +167,37 @@ div.tblcontainer {
 
 
 	</body>
-	<script>
+	<script th:inline="javascript">
+		    /*<![CDATA[*/
+			var header = '[[${_csrf.headerName}]]';
+     var token = '[[${_csrf.token}]]';
+       console.log(header);
+       console.log(token);
+     /*]]>*/
 		$('#modalBtn').on('click',function(){
-			console.log($('#modalSelectBtn').val())
+			let value = $('#modalSelectBtn').val();
+			let val;
+			if(value=='hold'){
+			console.log('보류처리')
+			val = 0
+			}else if(value=='reporting'){
+			console.log('신고처리')
+			val = 1
+			}			
+			let rno = $('#my_modal').attr('name');
+			let id = $('#my_modal').attr('value')
+			console.log(rno);
+			console.log(id);			
+			$.ajax({
+				url : '/own/admin/reportAccess',
+				method : 'post',
+				data : {rno,id,val},
+				beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+				},		
+				}).then(res=>{			
+					console.log(res);
+				})	
 		})
 
 	function modal(id) {
@@ -220,6 +248,8 @@ div.tblcontainer {
 
 			$('#reportList').on('click','.titlemodal',function(){
 			modal('my_modal');
+			$('#my_modal').attr('value',$(this).children().eq(2).text())
+			$('#my_modal').attr('name',$(this).children().eq(0).attr("name"))
 			let rno = $(this).children().eq(0).attr("name")
 			$.ajax({
 				url : '/own/admin/selectReport',

@@ -287,4 +287,16 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return ownhomeMapper.Banding(id);
 	}
 
+	@Override
+	public int ReportCountup(OwnUserVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.ReportCountup(vo);
+	}
+
+	@Override
+	public int userPermUpdate(OwnUserVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.userPermUpdate(vo);
+	}
+
 }

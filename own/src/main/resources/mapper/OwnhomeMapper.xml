@@ -114,7 +114,15 @@ select count(*) from question
 ) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 ]]>
  </select>
- 
+<update id="ReportCountup">
+update own_users set user_status = user_status+1 where user_id = #{userId}
+</update> 
+ <update id="reportUpdate">
+UPDATE REPORT SET STATUS = '처리완료' WHERE REPORT_NO = #{reportNo}
+ </update>
+ <update id="userPermUpdate">
+ update own_users set user_perm = 'ROLE_HU_USER' where user_id = #{userId}
+ </update>
  <select id="questionList" resultType="co.prjt.own.ownhome.service.QuestionVO">
  SELECT * FROM ( SELECT ROWNUM RN, A.* FROM (
 	SELECT * FROM QUESTION
