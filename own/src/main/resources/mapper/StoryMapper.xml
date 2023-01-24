@@ -4,7 +4,7 @@
 
 	<!-- 해당계정에 대한 스토리 전체 조회 -->
 	<select id="getStoryList" resultType="StoryVO">
-		SELECT TO_NUMBER(SUBSTR(SNS_STORY_NO,5)) AS SNS_STORY_NO, 
+		SELECT SNS_STORY_NO, 
 			   SNS_NICKNAME, 
 			   SNS_STORY_DATE, 
 			   SNS_STATUS, 
@@ -17,11 +17,11 @@
 	
 	<!-- 스토리 입력 -->
 	<insert id="insertStory" parameterType="StoryVO">
-	<selectKey keyProperty="storyNo" resultType="int" order="BEFORE">
-		SELECT SNS_STORY_NO.NEXTVAL FROM DUAL
-	</selectKey>
-		INSERT INTO SNS_STORY(sns_story_no, sns_nickname, sns_story_date, sns_status, sns_account_no)
-			VALUES ('SSN_'||#{storyNo}, #{snsNickname}, #{snsStoryDate}, 'open', #{snsAccountNo})
+		<selectKey keyProperty="snsStoryNo" resultType="string" order="BEFORE">
+			SELECT SNS_STORY_NO.NEXTVAL FROM DUAL
+		</selectKey>
+			INSERT INTO SNS_STORY(sns_story_no, sns_nickname, sns_story_date, sns_status, sns_account_no)
+				VALUES ('SSN_'||#{snsStoryNo}, #{snsNickname}, current_date, 'open', #{snsAccountNo})
 	</insert>
 	
 	<!--스토리 상태 변경-->
