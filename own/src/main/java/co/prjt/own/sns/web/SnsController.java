@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,33 +29,23 @@ import co.prjt.own.sns.service.SBoardService;
 import co.prjt.own.sns.service.SBoardVO;
 import co.prjt.own.sns.service.SFollowService;
 import co.prjt.own.sns.service.SFollowVO;
+import co.prjt.own.sns.service.StoryVO;
 
 @Controller
 @RequestMapping("/own")
 public class SnsController {
-	@Autowired
-	SAccountService snsService;
+	@Autowired SAccountService snsService;
 
-	@Autowired
-	SBoardService boardService;
+	@Autowired SBoardService boardService;
 	
-	@Autowired
-	SFollowService followService;
+	@Autowired SFollowService followService;
 	
-	@Autowired
-	CommonService commonService;
+	@Autowired CommonService commonService;
 	
-	@Autowired
-	OwnhomeService ownService;
+	@Autowired OwnhomeService ownService;
 	
-	@Autowired
-	CommonService common;
-	 //통신 방식이 상관없다면 Request~로 퉁치기. 아니라면 get.. post..정해주기
+	@Autowired CommonService common;
 
-	
-	
-	
-	
 	//1. sns홈으로 이동
 	@RequestMapping(value = "/sns", method = RequestMethod.GET)
 	public String getSnsUserList(HttpServletRequest request, Model model, SBoardVO svo, OwnUserVO ovo) {
@@ -118,11 +107,11 @@ public class SnsController {
 		String nickname;
 		String followId; //상대방 아이디
 		String followerId;
-		if(snsNickname != null) {
-			nickname = snsNickname;
-		}else {
-			nickname = userId.getSnsNickname();
-		}
+			if(snsNickname != null) {
+				nickname = snsNickname;
+			}else {
+				nickname = userId.getSnsNickname();
+			}
 		
 		model.addAttribute("userId", userId); //세션값 
 		model.addAttribute("snsInfo", snsService.getSnsUser(nickname)); //해당 닉네임에 대한 sns 계정정보 한건
@@ -132,7 +121,7 @@ public class SnsController {
 		model.addAttribute("snsFollowList", followService.getFollowList(nickname)); // sns 팔로우 리스트
 		model.addAttribute("snsFollowerList", followService.getFollowerList(nickname)); //sns 팔로워 리스트
 		model.addAttribute("snsFollower", followService.followerCount(nickname)); //sns 팔로워 수
-		followId = snsService.getSnsUser(nickname).getSnsAccountNo();
+		followId = snsService.getSnsUser(nickname).getSnsAccountNo();  //followId = 대상 ID (본인 or 타인)
 		followerId = userId.getSnsAccountNo();
 		model.addAttribute("isCheckFollow", followService.isCheckFollow(followId, followerId));
 		//팔로우 상태 체크
@@ -153,7 +142,8 @@ public class SnsController {
 				}
 			}
 		}
-		model.addAttribute("snsImg", newList);		
+		model.addAttribute("snsImg", newList);
+		model.addAttribute("profileImg", common.selectImg(followId)); //상대 프로필 이미지
 		return "content/sns/snsFeed"; 
 		}
 
@@ -179,10 +169,8 @@ public class SnsController {
 	
 	//3. 게시글작성
 	@PostMapping("/snsWriteFeed")
-	public String insertSnsBoard(HttpServletRequest request, @RequestParam MultipartFile[] uploadfile, SBoardVO svo, OwnUserVO ovo,
-								 String snsAccountNo) {
-		HttpSession session = request.getSession();
-		ovo = (OwnUserVO) session.getAttribute("loginUser");
+	public String insertSnsBoard(@RequestParam MultipartFile[] uploadfile,
+								 SBoardVO svo, String snsAccountNo) {
 		svo.setSnsAccountNo(snsAccountNo);
 		boardService.insertSnsBoard(svo);
 		commonService.upload(uploadfile, svo.getSnsBoardNo(), "SBN_","SNS");
@@ -228,4 +216,30 @@ public class SnsController {
 		
 	}
 	
+	//7. 프로필 입력 및 수정
+	@PostMapping("/snsProfile")
+	public String updateSnsUser(String snsAccountNo, SAccountVO svo,
+							  	   @RequestParam MultipartFile[] uploadProfile) {
+		System.out.println("받아온 계정번호 값"+snsAccountNo);
+		MultimediaVO imgVO = new MultimediaVO();
+		imgVO = common.selectImg(snsAccountNo);
+		System.out.println("이미지 있는지 체크"+imgVO);
+			if(imgVO != null) { //프로필 이미지가 있는 경우
+				common.update(uploadProfile, imgVO);
+				svo.setSnsAccountNo(snsAccountNo);
+				snsService.updateSnsUser(svo);
+			}else { // 프로필 이미지가 없는 경우
+				String number = snsAccountNo.substring(4);
+				svo.setSnsAccountNo(snsAccountNo);
+				snsService.updateSnsUser(svo);
+				commonService.upload(uploadProfile, number, "SAU_","SNS");
+			}
+			return "redirect:/own/snsFeed";
+		}
+	
+	//8. 스토리 입력
+	@PostMapping("/snsStory")
+	public String insertStory(StoryVO svo, @RequestParam MultipartFile[] uploadStory) {
+		return null;
+	}
 }

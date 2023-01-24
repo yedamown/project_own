@@ -39,4 +39,9 @@ public class SAccountServiceImpl implements SAccountService {
 		return sAccountMapper.deleteSnsUser(snsNickname);
 	}
 
+	@Override
+	public int snsImgCount(String id) {
+		return sAccountMapper.snsImgCount(id);
+	}
+
 }

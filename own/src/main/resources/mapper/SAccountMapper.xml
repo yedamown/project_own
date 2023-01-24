@@ -22,40 +22,20 @@
 		VALUES (#{snsNickname}, 'SAU_'||#{snsAccountNo})
 	</insert>
 	
+	<!-- 프로필 수정 -->
+	<update id="updateSnsUser">
+		UPDATE SNS_ACCOUNT
+			SET SNS_NICKNAME = #{snsNickname},
+				SNS_PROFILE = #{snsProfile},
+				SNS_WEBSITE = #{snsWebsite}
+			WHERE SNS_ACCOUNT_NO = #{snsAccountNo}
+	</update>
 	
-	<!-- <selectKey keyProperty="currVal,nextVal" resultType="hashmap" order="BEFORE">
-      select sns_account_no.currval as currVal, sns_account_no.nextval as nextVal FROM dual
-    </selectKey> 
-	BEGIN
-	      INSERT INTO SNS_ACCOUNT (SNS_NICKNAME,
-	                           SNS_ACCOUNT_NO)
-	                           
-	         VALUES( #{snsNickname},
-	               'SAU_'||#{currVal});
-	      UPDATE 
-	         OWN_USERS
-	      SET
-	         SNS_ACCOUNT_NO = 'SAU_'||#{nextVal}
-	         WHERE USER_ID = #{userId};     
-	END;
-		declare
-		v_currval number
-		v_nextval number
-		BEGIN
-		 select sns_account_no.currval , sns_account_no.nextval 
-		into v_currval, v_nextval FROM dual;
-		         INSERT INTO SNS_ACCOUNT (SNS_NICKNAME,
-		                              SNS_ACCOUNT_NO)
-		                              
-		            VALUES( #{snsNickname},
-		                  'SAU_'||v_currval);
-		         UPDATE 
-		            OWN_USERS
-		         SET
-		            SNS_ACCOUNT_NO = 'SAU_'||v_nextval
-		            WHERE USER_ID = #{userId};     
-		   END;		-->				
-
-	
+	<!-- 프로필 사진 유무 체크 -->
+	<select id="snsImgCount" resultType="int">
+		SELECT COUNT(*)
+			FROM MULTIMEDIA
+			WHERE IDENTIFY_ID = #{snsAccountNo}
+	</select>
 
 </mapper>

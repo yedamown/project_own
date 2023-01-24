@@ -20,6 +20,9 @@ public interface SAccountMapper {
 	//프로필 수정
 	int updateSnsUser(SAccountVO SAccountVO);
 	
+	//프로필 사진 유무 체크
+	int snsImgCount(String id);
+	
 	//SNS계정 탈퇴
 	int deleteSnsUser(String snsNickname);
 	
