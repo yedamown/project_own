@@ -1,7 +1,5 @@
 package co.prjt.own.band.service;
 
-
-
 import java.util.Date;
 import java.util.List;
 
@@ -38,4 +36,6 @@ public class BandCalendarVO{
 	public Date bandCalendarOptionDay;
 	public String bandCalendarOption;
 	public String bandCalendarOptionShare;
+	public String bandCalendarLocationLatlong;
+
 }

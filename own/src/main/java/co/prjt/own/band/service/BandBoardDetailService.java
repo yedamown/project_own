@@ -31,4 +31,8 @@ public interface BandBoardDetailService {
 	public BandCalendarVO selectCalendar(String bandBoardDetailNo);
 	//일정가져오기(다중)(밴드홈에서사용)
 	public List<BandCalendarVO> selectCalendars(List<String> bandBoardDetailNo);
+	//일정참여확인상세조회
+	public List<BandCalendarDetailVO> selectCalendarDetail(String bandCalendarNo);
+	//일정참여업데이트
+	public List<BandCalendarDetailVO> updateCalendarDetail(BandCalendarDetailVO vo);
 }

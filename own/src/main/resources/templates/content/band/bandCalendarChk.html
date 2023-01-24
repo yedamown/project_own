@@ -1,0 +1,127 @@
+<html xmlns:th="http://www.thymeleaf.org"lang="ko">
+<script src="/css/band/js/jquery-3.2.1.js"></script>
+<script src="/css/band/js/json.min.js"></script>
+  <head>
+    <title>memberCalendarChk</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<style>
+		*{
+			margin:0;
+			padding:0;
+			}
+		ul{
+			list-style:none;
+			}
+		a{
+			text-decoration:none;
+			color:white;
+			}
+		.wrap{
+			padding:15px;
+			letter-spacing:-0.5px;
+			}
+		.tab_menu{
+			position:relative;
+			}
+		.tab_menu .list{
+			overflow:hidden;
+			background-color:#333;
+			}
+		.tab_menu .list li{
+			float:left;
+			margin-right:20px;
+			}
+		.tab_menu .list .btn{
+			font-size:20px;
+			}
+		.tab_menu .list .cont{
+			display:none;
+			position:absolute; 
+			top:25px; 
+			left:0; 
+			background:#555; 
+			color:#fff; 
+			text-align:center; 
+			width:100%; 
+			line-height:150%;
+			}
+		.tab_menu .list li.is_on .btn{
+			font-weight:bold; 
+			color:green;
+			}
+		.tab_menu .list li.is_on .cont{
+			display:block;
+			}
+	</style>
+  </head>
+  <body>
+	<div class="wrap">
+		<div class="tab_menu">
+		  <ul class="list">
+			<li id="BK01">
+			  <a href="#BK01" class="btn">참석 <b id="BK01num"></b></a>
+			  <div class="cont">
+		  		<h3 th:each="num:${calendarChk}" th:if="${#strings.equals(num.bandAttend, 'BK01')}" th:text="${num.bandMemberNo}"></h3>
+			  </div>
+			</li>
+			<li id="BK02">
+			  <a href="#BK02" class="btn">불참석 <b id="BK02num"></b></a>
+			  <div class="cont">
+			  		<h3 th:each="num:${calendarChk}" th:if="${#strings.equals(num.bandAttend, 'BK02')}" th:text="${num.bandMemberNo}"></h3>
+			  </div>
+			</li>
+			<li id="BK03">
+			  <a href="#BK03" class="btn">미정 <b id="BK03num"></b></a>
+			  <div class="cont">
+		  		<h3 th:each="num:${calendarChk}" th:if="${#strings.equals(num.bandAttend, 'BK03')}" th:text="${num.bandMemberNo}"></h3>
+			  </div>
+			</li>
+		  </ul>
+		</div>
+	  </div>
+  <script th:inline="javascript">
+  /*<![CDATA[*/
+  calendarChk =  /*[[${calendarChk}]]*/
+  bandAttend =  /*[[${bandAttend}]]*/
+  console.log(calendarChk);
+  console.log(bandAttend);
+  $(function(){
+	//총인원수
+		let per1 = 0;
+		let per2 = 0;
+		let per3 = 0;
+		$(calendarChk).each(function(idx, ele) {
+			console.log(ele);
+			if(ele.bandAttend=='BK01'){
+				per1++;
+			} else if(ele.bandAttend=='BK02') {
+				per2++;
+			} else if(ele.bandAttend=='BK03') {
+				per3++;
+			}
+		})
+		$('#BK01num').text(per1);
+		$('#BK02num').text(per2);
+		$('#BK03num').text(per3);
+		
+		let bandAttendLi = $('#'+bandAttend);
+		console.log(bandAttendLi);
+		console.log($(bandAttendLi));
+	//페이지 떴을 때 처음 뜨는 창 선택하기	
+		$(bandAttendLi).addClass('is_on');
+	})
+  
+	const tabList = document.querySelectorAll('.tab_menu .list li');
+	for(var i = 0; i < tabList.length; i++){
+		tabList[i].querySelector('.btn').addEventListener('click', function(e){
+			e.preventDefault();
+			for(var j = 0; j < tabList.length; j++){
+			tabList[j].classList.remove('is_on');
+			}
+			this.parentNode.classList.add('is_on');
+		});
+	}
+  </script>   
+  </body>
+</html>

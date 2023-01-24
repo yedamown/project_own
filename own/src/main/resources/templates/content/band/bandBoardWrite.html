@@ -118,7 +118,8 @@
 	                <div>
 	                  <h6 class="typo-list">위치</h6>
 	                  <div>
-	                    <input type="text" id="bandCalendarLocation" name="bandCalendarLocation" value="대구광역시">
+	                    <input type="text" id="bandCalendarLocation" name="bandCalendarLocation" value="">
+	                    <input type="hidden" id="bandCalendarLocationLatlong" name="bandCalendarLocationLatlong" value="">
 	                  </div>
 	                </div>
 	                <!--================ 위치 끝 =================-->
@@ -455,7 +456,7 @@ $(function(){
 	})
 	//위치
 	$('#bandCalendarLocation').on('click', function(){
-		window.open( "/own/band/map", "Child", "width=1000px, height=500px, top=50%, left=50%" );
+		window.open( "/own/band/map", "Child", "width=1000px, height=500px, top=50%, left=50% ,resizable = no, scrollbars = no" );
 	})
  </script>
 <script>

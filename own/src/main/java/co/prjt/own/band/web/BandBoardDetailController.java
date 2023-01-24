@@ -23,6 +23,7 @@ import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
 import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.band.service.BandBoardOptionService;
+import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandService;
@@ -90,7 +91,7 @@ public class BandBoardDetailController {
 		System.out.println(board.toString());
 		BandBoardDetailSearchVO newBoard = bandBoardDetailService.insertBandBoard(board);
 		//일정등록
-		if(cal.getBandCalendarTitle()!=null) {
+		if(cal.getBandCalendarTitle()!=null && !(cal.getBandCalendarTitle()).equals("")) {
 			cal.setBandBoardDetailNo(newBoard.getBandBoardDetailNo());
 			System.out.println(cal.toString());
 			//캘린더입력..캘린더 객체로 받음
@@ -100,7 +101,7 @@ public class BandBoardDetailController {
 		
 		//뉴게시판보에 일정넣기
 		newBoard.setBandCalendar(cal);
-		return bandBoardDetailService.insertBandBoard(board);
+		return newBoard;
 	}
 	//이미지 업로드...임시 컨트롤러
 	@ResponseBody
@@ -157,6 +158,26 @@ public class BandBoardDetailController {
 		@GetMapping("/map")
 		public String bandMap(Model model) {
 			return "content/band/bandMap";
-		}
-
+	}
+	//일정
+	@ResponseBody
+	@GetMapping("/bandGroup/CalendarAttend")
+	public List<BandCalendarDetailVO> selectCalendarDetail(String bandCalendarNo){
+		return bandBoardDetailService.selectCalendarDetail(bandCalendarNo);
+	}
+	//일정수정
+	@ResponseBody
+	@GetMapping("/bandGroup/calendarUpdel")
+	public List<BandCalendarDetailVO> calendarUpdel(BandCalendarDetailVO vo){
+		return bandBoardDetailService.updateCalendarDetail(vo);
+	}
+	//일정참여 멤버
+	@GetMapping("/bandCalendarChk")
+	public String bandMap(Model model, String bandAttend, String bandCalendarNo) {
+		//참여중인 멤버리스트 
+		model.addAttribute("calendarChk" , bandBoardDetailService.selectCalendarDetail(bandCalendarNo));
+		model.addAttribute("bandAttend", bandAttend);
+		//후에 사진첨가
+		return "content/band/bandCalendarChk";
+	}
 }
