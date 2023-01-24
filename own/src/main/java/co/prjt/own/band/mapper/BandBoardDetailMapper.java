@@ -1,5 +1,6 @@
 package co.prjt.own.band.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
@@ -35,4 +36,8 @@ public interface BandBoardDetailMapper {
 	public List<BandCalendarVO> selectCalendars(List<String> bandBoardDetailNo);
 	//일정참여확인상세조회
 	public List<BandCalendarDetailVO> selectCalendarDetail(String bandCalendarNo);
+	//일정참여삭제
+	public int deleteCalendarDetail(BandCalendarDetailVO vo);
+	//일정참여인서트업데이트
+	public HashMap<String, Object> inupProCalendarDetail(HashMap<String, Object> inMap);
 }

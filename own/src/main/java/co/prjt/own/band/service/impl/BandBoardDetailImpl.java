@@ -1,6 +1,7 @@
 package co.prjt.own.band.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -225,5 +226,29 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 	@Override
 	public List<BandCalendarDetailVO> selectCalendarDetail(String bandCalendarNo) {
 		return bandBoardDetailMapper.selectCalendarDetail(bandCalendarNo);
+	}
+
+	@Override
+	public List<BandCalendarDetailVO> updateCalendarDetail(BandCalendarDetailVO vo) {
+		//1.없음=>누르면 인서트
+		//2.있는데=>누르면 업데이트
+		//3.있는거없애면=>딜리트
+		int r = 0;
+		if(vo.getBandAttend()==null||vo.getBandAttend().equals("")) {
+			//VO를 받았는데 값이 비어있음..즉 삭제(3)
+			r = bandBoardDetailMapper.deleteCalendarDetail(vo);
+			System.out.println(r+"건 일정투표삭제");
+		} else {
+			//값이 있음..업데이트 혹은 인서트 프로시져 999면 업데이트 //888이면 인서트
+			HashMap<String, Object> inMap = new HashMap<>();
+			inMap.put("bandCalendarNo", vo.getBandCalendarNo());
+			inMap.put("bandMemberNo", vo.getBandMemberNo());
+			inMap.put("bandAttend", vo.getBandAttend());
+			inMap.put("pNum", -1);
+			bandBoardDetailMapper.inupProCalendarDetail(inMap);
+				System.out.println(inMap.get("pNum")+"999:업데이트 888:인서트 일정inup");
+		}
+		List<BandCalendarDetailVO> list = bandBoardDetailMapper.selectCalendarDetail(vo.getBandCalendarNo());
+		return list;
 	}
 }

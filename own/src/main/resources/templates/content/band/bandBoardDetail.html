@@ -209,8 +209,7 @@
 					<div
 						style="width: 500x; height: 100px; display: flex; justify-content: space-between"
 						id="calendarModal2">
-						<input type="hidden"
-							th:value="${board.bandCalendar.bandCalendarNo}">
+						<input type="hidden" th:value="${board.bandCalendar.bandCalendarNo}" id="bandCalendarNo">
 						<div style="padding: 10px;">
 							<h3 id="jsDD" style="margin-bottom: 0px"></h3>
 							<p id="jsDay"></p>
@@ -227,16 +226,15 @@
 				</div>
 				<!--================ 일정상세 끝 =================-->
 				<!--================ if참석여부 ================= not 붙여야 함..임시-->
-				<div
-					th:if="${not #strings.isEmpty(board.bandCalendar.bandCalendarOption)}">
+				<div th:if="${not #strings.isEmpty(board.bandCalendar.bandCalendarOption)}">
 					<h6 class="typo-list">참석여부</h6>
-					<div>
-						<ul style="list-style: none;">
+					<div id="attendChk">
+						<!-- <ul style="list-style: none;">
 							<!-- bandCalendarOptionDay보다 늦으면 체크 못하게 막아야함 -->
-							<li><span>🤍</span>참석<span style="float: right;">💧</span></li>
+							<!-- <li><span>🤍</span>참석<span style="float: right;">💧</span></li>
 							<li><span>🤍</span>불참석<span style="float: right;">💧</span></li>
 							<li><span>🤍</span>미정<span style="float: right;">💧</span></li>
-						</ul>
+						</ul> -->
 					</div>
 				</div>
 				<!--================ if참석여부 끝 =================-->
@@ -262,7 +260,6 @@ $(function(){
 	//일정추가하기....
 	/*<![CDATA[*/
 	var calendar = /*[[${board.bandCalendar}]]*/
-	/*]]>*/
 	console.log(calendar);
 	if(calendar!=null){
 		//타이틀
@@ -424,8 +421,180 @@ $(function(){
         		    level: 3 // 지도의 확대 레벨
         		};
         	marker.setMap(new kakao.maps.Map(document.getElementById('map'), mapOption));
+        	//모달 켤 때 마다 일정받아오기
+ 	       let bandCalendarNo = $('#bandCalendarNo').val();
+ 	       console.log('캘린더번호'+bandCalendarNo)
+ 	       $.ajax({
+		            url:'/own/band/bandGroup/CalendarAttend?bandCalendarNo='+bandCalendarNo,
+		            dataType: 'json',
+		            method: 'get',
+		            contentType : "application/text; charset=utf-8;"
+		        }).then(result => {
+					console.log(result);
+					$('#childVal').val(result);
+					if(result != null){
+						let attendChk = $('#attendChk');
+						let ulTag = $('<ul style="list-style: none;" />')
+						let bk01 = 0; //참석
+						let bk01Per = new Array(); //참석인원
+						let bk02 = 0; //미참석
+						let bk02Per = new Array(); //미참석인원
+						let bk03 = 0; //미정
+						let bk03Per = new Array(); //미참석인원
+						let myChk = ''; // 본인 거 체크
+						$(result).each(function(idx, ele){
+							if(ele.bandAttend=="BK01"){
+								bk01++;
+								bk01Per.push(ele.bandMemberNo);
+							} else if(ele.bandAttend=="BK02"){
+								bk02++;
+								bk02Per.push(ele.bandMemberNo);
+							} else if(ele.bandAttend=="BK03"){
+								bk03++;
+								bk03Per.push(ele.bandMemberNo);
+							}
+							let userId = $('#userId').val();
+							if(ele.bandUserId==userId){
+								myChk = ele.bandAttend;
+							}
+						})
+						//내 체크 확인
+						let myBk1 = '🤍';
+						let nameBk1 = 'BK01'
+						let myBk2 = '🤍';
+						let nameBk2 = 'BK02'
+						let myBk3 = '🤍';
+						let nameBk3 = 'BK03'
+						console.log(myChk);
+						if(myChk == 'BK01'){
+							myBk1 = '❤'
+							nameBk1 = 'BK01chk'
+						} else if(myChk == 'BK02'){
+							myBk2 = '❤';
+							nameBk1 = 'BK02chk'
+						} else if(myChk == 'BK03'){
+							myBk3 = '❤';
+							nameBk1 = 'BK03chk'
+						}
+						let liTag = `
+							<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
+							<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
+							<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right;">💧</span></li>
+						`;
+						attendChk.append(liTag);
+					}
+		        })
         }
     }
+	//일정체크클릭모달
+	$('#attendChk').on('click', $('.attch'), function(e){
+		if($(e.target).attr('class')=='attch'){
+			//선택한 것의 name
+			let heartChk = $(e.target).attr('name');
+			//내 체크 확인 우선 다 지우고 눌린게 체크라면 체크해주기...그외에 체크=>비체크면 그냥 다 빈 칸됨
+			let myBk1 = '🤍';
+			let nameBk1 = 'BK01'
+			let myBk2 = '🤍';
+			let nameBk2 = 'BK02'
+			let myBk3 = '🤍';
+			let nameBk3 = 'BK03'
+			//넘길 값용
+			let result = 0;
+			if(heartChk=='BK01') {
+				myBk1 = '❤';
+				nameBk1 = 'BK01chk';
+				result = 'BK01';
+			} else if (heartChk=='BK02') {
+				myBk2 = '❤';
+				nameBk1 = 'BK02chk';
+				result = 'BK02';
+			} else if (heartChk=='BK03') {
+				myBk3 = '❤';
+				nameBk1 = 'BK03chk';
+				result = 'BK03';
+			}
+			//세개의 name 상태가 출력됨..( 이중 체크된 것 혹은 전부 널이면 널인 상태로 아작스로 보낼 예정)
+			/* $(e.currentTarget).find('.attch').each(function(idx,ele){
+				console.log($(ele).attr('name'));
+			}) */
+			let bandCalendarNo = $('#bandCalendarNo').val();
+			let bandUserId = $('#userId').val();
+			let bandAttend = result==0?null:result;
+			
+			$.ajax({
+				url: '/own/band/bandGroup/calendarUpdel?bandCalendarNo='+bandCalendarNo+'&bandMemberNo='+bandUserId+'&bandAttend='+bandAttend,
+				dataType: 'json',
+				method: 'get',
+				contentType : "application/text; charset=utf-8;"
+			}).then(result => {
+				console.log(result);
+				$('#childVal').val(result);
+				if(result != null){
+					let attendChk = $('#attendChk');
+					attendChk.empty();
+					
+					let ulTag = $('<ul style="list-style: none;" />')
+					let bk01 = 0; //참석
+					let bk01Per = new Array(); //참석인원
+					let bk02 = 0; //미참석
+					let bk02Per = new Array(); //미참석인원
+					let bk03 = 0; //미정
+					let bk03Per = new Array(); //미참석인원
+					let myChk = ''; // 본인 거 체크
+					$(result).each(function(idx, ele){
+						if(ele.bandAttend=="BK01"){
+							bk01++;
+							bk01Per.push(ele.bandMemberNo);
+						} else if(ele.bandAttend=="BK02"){
+							bk02++;
+							bk02Per.push(ele.bandMemberNo);
+						} else if(ele.bandAttend=="BK03"){
+							bk03++;
+							bk03Per.push(ele.bandMemberNo);
+						}
+						let userId = $('#userId').val();
+						if(ele.bandUserId==userId){
+							myChk = ele.bandAttend;
+						}
+					})
+					//내 체크 확인
+					let myBk1 = '🤍';
+					let nameBk1 = 'BK01'
+					let myBk2 = '🤍';
+					let nameBk2 = 'BK02'
+					let myBk3 = '🤍';
+					let nameBk3 = 'BK03'
+					console.log(myChk);
+					if(myChk == 'BK01'){
+						myBk1 = '❤'
+						nameBk1 = 'BK01chk'
+					} else if(myChk == 'BK02'){
+						myBk2 = '❤';
+						nameBk1 = 'BK02chk'
+					} else if(myChk == 'BK03'){
+						myBk3 = '❤';
+						nameBk1 = 'BK03chk'
+					}
+					let liTag = `
+						<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
+						<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
+						<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><spanname="BK03" class="attch2" style="float: right;">💧</span></li>
+					`;
+					attendChk.append(liTag);
+				}
+			})
+		}
+	})
+	
+	//참여중인사람 확인 창
+	$('#attendChk').on('click', $('.attch2'), function(e){
+		if($(e.target).attr('class')=='attch2'){
+			let bandCalendarNo = $('#bandCalendarNo').val();
+			//어던 유형의 체크를 볼 지 저장
+			let type = $(e.target).attr('name');
+			window.open( "/own/band/bandCalendarChk?bandAttend="+type+"&bandCalendarNo="+bandCalendarNo, "Child", "width=500px, height=600px, top=50%, left=50% resizable = no, scrollbars = no" );	
+		}
+	})
 	//일정클릭모달
 	$('#calendarModal').on('click', function(){
 		calModal('my_calendar_modal');

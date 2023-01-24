@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BandCalendarVO{
 	
-	public String StrbandCalendarNo;
+	public String bandCalendarNo;
 	public String bandBoardDetailNo;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

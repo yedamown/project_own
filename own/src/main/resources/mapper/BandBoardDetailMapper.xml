@@ -304,10 +304,35 @@ SELECT
 	</select>
 	
 	<select id="selectCalendarDetail" resultType="BandCalendarDetailVO">
-		SELECT 	BAND_CALENDAR_NO,
-				BAND_MEMBER_NO,
-				BAND_ATTEND
-			FROM BAND_CALENDAR_DETAIL
-			WHERE BAND_CALENDAR_NO = #{bandCalendarNo}
+		SELECT 	BAND_CALENDAR_NO "bandCalendarNo",
+        		BAND_MEMBER_NO "bandUserId",
+        		BAND_ATTEND "bandAttend",
+        		BAND_NICKNAME "bandMemberNo"
+			FROM BAND_CALENDAR_DETAIL A, (SELECT B.BAND_NICKNAME, B.USER_ID FROM BAND A, BAND_MEMBER_DETAIL B
+            WHERE A.BAND_NO = B.BAND_NO
+            AND   B.BAND_NO = (
+                SELECT Z.BAND_NO FROM            
+                BAND Z, BAND_CALENDAR Y, BAND_BOARD_DETAIL X, BAND_BOARD_OPTION W
+                WHERE Z.BAND_NO             =   W.BAND_NO
+                AND   W.BAND_BOARD_OPTION_NO=   X.BAND_BOARD_OPTION_NO
+                AND   X.BAND_BOARD_DETAIL_NO=   Y.BAND_BOARD_DETAIL_NO
+                AND   Y.BAND_CALENDAR_NO    =   #{BANDCALENDARNO}
+            )) B
+            WHERE   B.USER_ID = A.BAND_MEMBER_NO
+            AND     BAND_CALENDAR_NO    =   #{bandCalendarNo}
+	</select>
+	<delete id="deleteCalendarDetail">
+		DELETE FROM BAND_CALENDAR_DETAIL
+				where BAND_CALENDAR_NO = #{bandCalendarNo},
+				 and  BAND_MEMBER_NO = #{bandMemberNo},
+	</delete>
+	<select id="inupProCalendarDetail" statementType="CALLABLE" parameterType="map" resultType="integer">
+		{ call insert_update_cal(
+				#{bandMemberNo, mode=IN, jdbcType=VARCHAR},
+			    #{bandCalendarNo, mode=IN, jdbcType=VARCHAR},
+                #{bandAttend, mode=IN, jdbcType=VARCHAR},
+	            #{pNum, mode=OUT, jdbcType=INTEGER}
+                    )
+                }
 	</select>
 </mapper>
