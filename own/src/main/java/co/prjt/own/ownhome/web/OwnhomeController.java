@@ -245,6 +245,17 @@ public class OwnhomeController {
 			return "/content/own/ownAdminReport";
 		}
 		
+		//테스트 페이지 이동
+		//상세보기로..
+		@GetMapping("/own/admin/test")
+		public String test(Model model, @RequestParam String id) {
+			System.out.println("===아이디가넘어올까요="+id);
+			ownService.Challenging(id);
+			model.addAttribute("CList",	ownService.Challenging(id));
+			model.addAttribute("BList", ownService.Banding(id));
+			return "/content/own/test";
+		}
+		
 		@ResponseBody		
 		@GetMapping("/own/reportListAjax")
 		public List<ReportVO> reportListAjax(Model model, ReportVO vo, Paging paging) {

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8" />
     <title>thymeleaf layout</title>
@@ -11,14 +10,18 @@
     <!-- Style CSS -->
 </head>
 <body>
-<div th:fragment="headerFragment"></div>
-</body>      
-<div layout:fragment="content">
-	<h3>content</h3>
-	<h1>파일업로드</h1>
-	<form method="post" action="/upload" enctype="multipart/form-data">
-		<input type="file" name = "uploadfile" multiple="multiple">
-		<input type="submit">	
-	</form>	
-</div>
+<h1>테스트페이지</h1>
+<h1>참여중인 챌린저스명</h1>
+<span th:each="chall : ${CList}">
+<p th:text="${chall.challNo}"></p>
+<p th:text="${chall.challTitle}"></p>
+</span>
+<h1>참여중인 밴드명</h1>
+<span th:each="band : ${BList}">
+<p th:text="${band.bandNo}"></p>
+<p th:text="${band.bandName}"></p>
+</span>
+
+
+</body>
 </html>

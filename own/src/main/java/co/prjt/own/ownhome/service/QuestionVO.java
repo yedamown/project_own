@@ -20,6 +20,7 @@ public class QuestionVO {
 	public String header;
 	public String status;
 	
+	public String rn;
 	public Paging paging;
 	public int first;
 	public int last;
