@@ -14,6 +14,9 @@ public interface ChatService {
 	 */
 	String createChatroom(List<ChatroomVO> list);
 
+	// 기존 채팅방번호 가져옴.
+	String findChatroomNo(ChatroomVO vo);
+	
 	// 메세지 DB에 저장
 	int saveMessage(MessageVO vo);
 	
@@ -21,5 +24,5 @@ public interface ChatService {
 	List<MessageVO> getMessage(MessageVO vo);
 	
 	// 웹 소켓 세션에 메세지 저장.
-	public <T> void sendMessage(WebSocketSession session, T message);
+	//public <T> void sendMessage(WebSocketSession session, T message);
 }

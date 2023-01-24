@@ -17,6 +17,9 @@ public interface ChatMapper {
 	String createChatroomNo();
 	int createChatroom(ChatroomVO vo);
 
+	// 기존 채팅방번호 가져옴.
+	String findChatroomNo(ChatroomVO vo);
+	
 	// 메세지 DB에 저장
 	int saveMessage(MessageVO vo);
 
