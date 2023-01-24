@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import co.prjt.own.band.service.BandMemberDetailVO;
+import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.ownhome.mapper.OwnhomeMapper;
@@ -271,6 +273,18 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	public int reportUpdate(ReportVO vo) {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.reportUpdate(vo);
+	}
+
+	@Override
+	public List<ChallengeVO> Challenging(String id) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.Challenging(id);
+	}
+
+	@Override
+	public List<BandMemberDetailVO> Banding(String id) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.Banding(id);
 	}
 
 }

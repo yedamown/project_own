@@ -21,7 +21,8 @@ public class BandMemberDetailVO {
 	String bandMemberNo;
 	Date bandBirth;
 	String bandGender;
-
+	String bandName;
+	
 	Integer first = 1;
 	Integer last = 10;
 

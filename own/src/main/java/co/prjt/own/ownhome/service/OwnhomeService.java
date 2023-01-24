@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.prjt.own.band.service.BandMemberDetailVO;
+import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.sns.service.SAccountVO;
@@ -49,8 +51,10 @@ public interface OwnhomeService {
 	
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);
-	
-	
+	//내가 진행중인 챌린저스
+	public List<ChallengeVO> Challenging(String id);
+	//내가 진행중인 밴드
+	public List<BandMemberDetailVO> Banding(String id);
 	//신고처리
 	public int reportUpdate(ReportVO vo);
 	//신고목록 불러오기

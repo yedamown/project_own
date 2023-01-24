@@ -14,7 +14,7 @@ select * from employees
 		</selectKey>
 
 insert into own_users
-(own_users_no, user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_perm)
+(own_users_no, user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_hobby,user_perm)
 values (
 		'ONO_' || #{ownUsersNo},
 		#{userId},
@@ -24,7 +24,8 @@ values (
 		#{userPhone},
 		#{userBirthday},
 		#{userGender},
-		'일반회원')
+		#{userHobby},
+		'ROLE_USER')
 </insert>
 <!-- 아이디 중복체크 -->
 <select id="idcheck" resultType="int">
@@ -129,4 +130,20 @@ select count(*) from question
  <update id="questionUpdate">
  UPDATE QUESTION SET ANSWER = #{answer} , STATUS = '처리' WHERE QUEST_NO = #{questNo}
  </update>
+ 
+ <select id="Challenging" resultType="co.prjt.own.chall.service.ChallengeVO">
+ select *
+from challenges c, chall_mem_list m
+where c.chall_no = m.chall_no
+and c.chall_status = '진행 중'
+and m.mem_status = '승인'
+and m.user_id = #{id}
+ </select>
+ 
+ <select id="Banding" resultType="co.prjt.own.band.service.BandMemberDetailVO">
+SELECT BMD.*,B.BAND_NAME FROM 
+BAND_MEMBER_DETAIL BMD , BAND B
+WHERE BMD.USER_ID=#{ID}
+AND BMD.BAND_NO = B.BAND_NO
+ </select>
 </mapper>
