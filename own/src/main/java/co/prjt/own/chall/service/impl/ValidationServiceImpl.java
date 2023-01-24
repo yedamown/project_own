@@ -65,8 +65,14 @@ public class ValidationServiceImpl implements ValidationService{
 	// 총 인증횟수
 	@Override
 	public int countVld(ValidationVO vo) {
-		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	
+	//오늘 인증 횟수
+	@Override
+	public int todayVld(ValidationVO vo) {
+		return mapper.todayVld(vo);
 	}
 
 

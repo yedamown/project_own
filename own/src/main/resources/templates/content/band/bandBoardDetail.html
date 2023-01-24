@@ -1,99 +1,196 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
-<!-- <script src="/css/band/js/jquery-3.2.1.js"></script> -->
+<script src="/css/band/js/jquery-3.2.1.js"></script>
+<script src="/css/band/js/json.min.js"></script>
+
 <style>
-	.modal {
-		display: none;
-		z-index: 500;
-		width: 100%;
-		height: 100vh;
-		position: fixed;
-		top: 0;
-		left: 0;
-		background-color: rgba(0, 0, 0, 0.3);
-	}
-	
-	.modal button {
-		position: absolute;
-		top: 3rem;
-		right: 3rem;
-		background: transparent;
-		border: 0;
-		color: #ffffff;
-		font-size: 3rem;
-	}
-	
-	.modalBox {
-		position: relative;
-		top: 20%;
-		left: 50%;
-		transform: translate(-50%, -20%);
-		background-color: #ffffff;
-		width: 30%;
-		height: 30%;
-		text-align: center;
-	}
-	
-	.modalBox img {
-		width: 100%;
-	}
-	
-	.modalBox p {
-		color: #ffffff;
-		background-color: #000;
-		font-size: 2rem;
-		padding: .2rem;
-	}
+/*지도*/
+.map_wrap {
+	position: relative;
+	width: 100%;
+	height: 350px;
+}
+
+.title {
+	font-weight: bold;
+	display: block;
+}
+
+.hAddr {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	border-radius: 2px;
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	z-index: 1;
+	padding: 5px;
+}
+
+#centerAddr {
+	display: block;
+	margin-top: 2px;
+	font-weight: normal;
+}
+
+.bAddr {
+	padding: 5px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+/*지도 끝*/
+.modal {
+	display: none;
+	z-index: 500;
+	width: 100%;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal button {
+	position: absolute;
+	top: 3rem;
+	right: 3rem;
+	background: transparent;
+	border: 0;
+	color: #ffffff;
+	font-size: 3rem;
+}
+
+.modalBox {
+	position: relative;
+	top: 20%;
+	left: 50%;
+	transform: translate(-50%, -20%);
+	background-color: #ffffff;
+	width: 30%;
+	height: 30%;
+	text-align: center;
+}
+
+.modalBox img {
+	width: 100%;
+}
+
+.modalBox p {
+	color: #ffffff;
+	background-color: #000;
+	font-size: 2rem;
+	padding: .2rem;
+}
+
+#my_calendar_modal {
+	display: none;
+	width: 650px;
+	padding: 20px 30px;
+	background-color: #fefefe;
+	border: 1px solid #888;
+	border-radius: 3px;
+	position: fixed;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	/* 시꺼먼 레이어 보다 한칸 위에 보이기 */
+	z-index: 1000;
+	/* div center 정렬 */
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+}
+
+#my_calendar_modal .modal_close_btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+.bgg {
+	position: fixed;
+	z-index: 500;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	/* 레이어 색갈은 여기서 바꾸면 됨 */
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.cModal {
+	position: fixed;
+	display: block;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+		rgba(0, 0, 0, 0.19);
+	/* 시꺼먼 레이어 보다 한칸 위에 보이기 */
+	z-index: 1000;
+	/* div center 정렬 */
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+}
 </style>
-<div id="template" style="flex-grow:3; width: 740px">
+<div id="template" style="flex-grow: 3; width: 740px">
 	<div>
-		<article style="border: 1px solid #eeeeee;padding:30px; ">
+		<article style="border: 1px solid #eeeeee; padding: 30px;">
 			<h3>게시판 상세페이지</h3>
-			<input type="hidden" id="bandBoardDetailNo" th:value="${board.BandBoardDetailNo}">
-			<input type="hidden" id="bandNo" th:value="${board.bandNo}">
-			<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
+			<input type="hidden" id="bandBoardDetailNo"
+				th:value="${board.BandBoardDetailNo}"> <input type="hidden"
+				id="bandNo" th:value="${board.bandNo}"> <input type="hidden"
+				id="userId" th:value="${session.loginUser.userId}">
 			<div class="form-group">
-				Title <input type="text" class="form-control" id="title" th:value="${board.bandBoardTitle }"readonly>
-				Writer <input type="text" class="form-control" id="writer" th:value="${board.bandNickName }"readonly>
-				RegDate <input type="text" class="form-control" id="RegDate" th:value="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"readonly>
+				Title <input type="text" class="form-control" id="title"
+					th:value="${board.bandBoardTitle }" readonly> Writer <input
+					type="text" class="form-control" id="writer"
+					th:value="${board.bandNickName }" readonly> RegDate <input
+					type="text" class="form-control" id="RegDate"
+					th:value="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"
+					readonly>
 				<div class="form-group">
 					<label for="comment">Content:</label>
+					<div id="bCalendar"></div>
 					<div th:utext="${board.bandBoardContent }"></div>
 				</div>
 				<!--임시-->
-				<div  th:each="img : ${board.bandImgs}">
-					<img  style="width:678px;" th:src="|/imgView/${img.mediaServerFile}|" alt="">
+				<div th:each="img : ${board.bandImgs}">
+					<img style="width: 700px;"
+						th:src="|/imgView/${img.mediaServerFile}|" alt="">
 				</div>
 			</div>
-		<div>
-			<button type="button" id="btnUpdate" class="btn btn-primary mb-2">수정</button>
-			<button type="button" id="btnDelete" class="btn btn-primary mb-2">삭제</button>
-		</div>
-		<div>
-			<article id="bandReply">
-			</article>
-			<article id="bandLike">
-			</article>
-		</div>	
-		<h3>댓글</h3>
-		<table class="table" id="replybody">
+			<div>
+				<button type="button" id="btnUpdate" class="btn btn-primary mb-2">수정</button>
+				<button type="button" id="btnDelete" class="btn btn-primary mb-2">삭제</button>
+			</div>
+			<div>
+				<article id="bandReply"></article>
+				<article id="bandLike"></article>
+			</div>
+			<h3>댓글</h3>
+			<table class="table" id="replybody">
 				<!-- <%-- <tr>
 					<td>${reply.replyer}</td>
 					<td>${reply.reply}</td>
 					<td><c:if test="${reply.replyDate>=reply.updateDate}">${reply.replyDate}</c:if></td>
 					<td><c:if test="${reply.replyDate<reply.updateDate}">${reply.updateDate}</c:if></td>
 				</tr> --%> -->
-		</table> 
-		<form id="frmRe">
-			<div class="form-group">
-				<label for="reply">Content:</label>
-				<textarea class="form-control" rows="5" id="reply"></textarea>
-				replyer <input type="text" class="form-control" id="replyer">
-				<button type="button" id="btnReployInsert" class="btn btn-primary mb-2">댓글작성</button>
-			</div>
-		</form>
+			</table>
+			<form id="frmRe">
+				<div class="form-group">
+					<label for="reply">Content:</label>
+					<textarea class="form-control" rows="5" id="reply"></textarea>
+					replyer <input type="text" class="form-control" id="replyer">
+					<button type="button" id="btnReployInsert"
+						class="btn btn-primary mb-2">댓글작성</button>
+				</div>
+			</form>
 		</article>
 	</div>
-	<!-- 팝업 될 곳 -->
+	<!-- ========이미지 팝업 될 곳======== -->
 	<div class="modal">
 		<button>&times;</button>
 		<div class="modalBox">
@@ -101,9 +198,126 @@
 			<p></p>
 		</div>
 	</div>
+	<!-- ========이미지 팝업 끝======== -->
+	<!-- ========일정 모달======== -->
+	<!--==캘린더 모달창 ==-->
+	<div id="my_calendar_modal">
+		<div id="modalform">
+			<div th:if="${not #strings.isEmpty(board.bandCalendar)}">
+				<!--================ 일정상세 =================-->
+				<div>
+					<div
+						style="width: 500x; height: 100px; display: flex; justify-content: space-between"
+						id="calendarModal2">
+						<input type="hidden" th:value="${board.bandCalendar.bandCalendarNo}" id="bandCalendarNo">
+						<div style="padding: 10px;">
+							<h3 id="jsDD" style="margin-bottom: 0px"></h3>
+							<p id="jsDay"></p>
+							<!-- 이건 밑에서 붙임 -->
+						</div>
+						<div style="padding: 10px;">
+							<h5 th:text="${board.bandCalendar.bandCalendarTitle}"></h5>
+							<p id="jsDeDay" style="margin-bottom: 0px"></p>
+							<span
+								th:style="|background-color: ${board.bandCalendar.bandCalendarMark}|">💭</span>
+							<span th:text="${board.bandBoardWriter}"></span>
+						</div>
+					</div>
+				</div>
+				<!--================ 일정상세 끝 =================-->
+				<!--================ if참석여부 ================= not 붙여야 함..임시-->
+				<div th:if="${not #strings.isEmpty(board.bandCalendar.bandCalendarOption)}">
+					<h6 class="typo-list">참석여부</h6>
+					<div id="attendChk">
+						<!-- <ul style="list-style: none;">
+							<!-- bandCalendarOptionDay보다 늦으면 체크 못하게 막아야함 -->
+							<!-- <li><span>🤍</span>참석<span style="float: right;">💧</span></li>
+							<li><span>🤍</span>불참석<span style="float: right;">💧</span></li>
+							<li><span>🤍</span>미정<span style="float: right;">💧</span></li>
+						</ul> -->
+					</div>
+				</div>
+				<!--================ if참석여부 끝 =================-->
+				<!--================ if지도 =================-->
+				<div
+					th:if="${not #strings.isEmpty(board.bandCalendar.bandCalendarLocation)}">
+					<h6 class="typo-list"
+						th:text="${board.bandCalendar.bandCalendarLocation}"></h6>
+					<div id="map" style="width:100%;height:350px;"></div>
+				</div>
+				<!--================ if지도 끝 =================-->
+			</div>
+			<button type="button" id="calBtn">이 일정이 첨부된 글 확인하기</button>
+			
+		</div>
+		<a class="modal_close_btn">:</a>
+	</div>
+	<!--==캘린더 모달창 ==-->
 </div>
-<script>
+
+<script th:inline="javascript">
 $(function(){
+	//일정추가하기....
+	/*<![CDATA[*/
+	var calendar = /*[[${board.bandCalendar}]]*/
+	console.log(calendar);
+	if(calendar!=null){
+		//타이틀
+		let title = calendar.bandCalendarTitle;
+		//날짜
+		let startDay = calendar.bandCalendarStart;
+		let endDay = calendar.bandCalendarEnd;
+		let sYear = startDay.substr(0, 4);
+		let eYear = endDay.substr(0, 4);
+		
+		startDay = new Date(calendar.bandCalendarStart);
+		endDay = new Date(calendar.bandCalendarEnd);
+		
+		//달
+		let sMonth = (1+startDay.getMonth());
+		let eMonth = (1+endDay.getMonth());
+		//날
+		let sDay = startDay.getDate();
+		let eDay = endDay.getDate();
+		//시간
+		let startTime = startDay.getHours();
+		let endTime = endDay.getHours();
+		//분
+		let startTime2 = startDay.getMinutes()
+		let endTime2 = endDay.getMinutes()
+		//상세시작시간
+		let sTime = (startTime < 12 ? "오전" : "오후")+" "
+			sTime += startTime+"시 "
+			sTime += startTime2+"분";
+		//상세끝나는시간
+		let eTime = (endTime < 12 ? "오전" : "오후")+" " //오전 오후
+				 + endTime+"시 " //12시간표기
+				 + endTime2+"분";
+		//시작 요일
+		let mon = getDayOfWeek(startDay);
+		//마크색
+		let color = calendar.bandCalendarMark;
+	    let cal  = `<div style="width:678px; height:80px; border: 0.3rem solid ${color}; display:flex; justify-content:space-between" id="calendarModal">`
+	    			cal += `<input type="hidden" value="${calendar.bandCalendarNo}">`
+	    			cal += `<div style="padding:10px;"><h3 style="margin-bottom:0px">${sDay}</h3>`
+					cal += `<p>${mon}</p></div>`
+					cal += `<div style="padding:10px;"><h5>${title}</h5>`
+					cal += `<p>${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
+				cal += `</div>`;
+		//요일뽑기
+		function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
+	    	const week = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+	    	const dayOfWeek = week[new Date(날짜문자열).getDay()];
+	    	return dayOfWeek;
+		}
+		$('#bCalendar').append(cal);
+		
+		//모달로 나오는 곳에 몇 개 붙임
+		$('#jsDay').text(mon);
+		$('#jsDD').text(sDay);
+		$('#jsDeDay').text(`${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}`);
+		
+	}
 	//유저아이디
 	let userId = $('#userId').val();
 	let bandNo = $('#bandNo').val();
@@ -173,6 +387,257 @@ $(function(){
 	//글 수정
 	$('#btnUpdate').on('click', function(){
     		$('#template').load("/own/band/bandGroup/bandBoardUpdate?BandBoardDetailNo="+DetailNo+'&bandNo='+bandNo);
-   	})
-})
+	})
+	
+	//모달
+	function calModal(id) {
+        var cModal = document.getElementById(id);
+		console.log(cModal);	
+        // 모달 div 뒤에 희끄무레한 레이어
+        var bgg = document.createElement('div');
+        console.log(bgg);
+        bgg.classList.add('bgg');
+        document.body.append(bgg);
+		
+        cModal.classList.add('cModal');
+        cModal.style.display='block';
+        document.body.append(cModal);        
+        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+        cModal.querySelector('.modal_close_btn').addEventListener('click', function() {
+            bgg.remove();
+            cModal.style.display = 'none';
+        });
+        if(calendar!=null){
+        	let latLong = calendar.bandCalendarLocationLatlong;
+        	console.log(latLong);
+            let lat = latLong.substr(1, latLong.indexOf(',')-1);
+            let longg = latLong.substr(latLong.indexOf(' ')+1);
+            longg = longg.substr(0, longg.indexOf(')')-1);
+            console.log(lat+'+'+longg);
+       		map.setCenter(new daum.maps.LatLng(lat, longg));
+        	map.relayout();
+        	mapOption = { 
+        		    center: new kakao.maps.LatLng(lat, longg), // 지도의 중심좌표
+        		    level: 3 // 지도의 확대 레벨
+        		};
+        	marker.setMap(new kakao.maps.Map(document.getElementById('map'), mapOption));
+        	//모달 켤 때 마다 일정받아오기
+ 	       let bandCalendarNo = $('#bandCalendarNo').val();
+ 	       console.log('캘린더번호'+bandCalendarNo)
+ 	       $.ajax({
+		            url:'/own/band/bandGroup/CalendarAttend?bandCalendarNo='+bandCalendarNo,
+		            dataType: 'json',
+		            method: 'get',
+		            contentType : "application/text; charset=utf-8;"
+		        }).then(result => {
+					console.log(result);
+					$('#childVal').val(result);
+					if(result != null){
+						let attendChk = $('#attendChk');
+						let ulTag = $('<ul style="list-style: none;" />')
+						let bk01 = 0; //참석
+						let bk01Per = new Array(); //참석인원
+						let bk02 = 0; //미참석
+						let bk02Per = new Array(); //미참석인원
+						let bk03 = 0; //미정
+						let bk03Per = new Array(); //미참석인원
+						let myChk = ''; // 본인 거 체크
+						$(result).each(function(idx, ele){
+							if(ele.bandAttend=="BK01"){
+								bk01++;
+								bk01Per.push(ele.bandMemberNo);
+							} else if(ele.bandAttend=="BK02"){
+								bk02++;
+								bk02Per.push(ele.bandMemberNo);
+							} else if(ele.bandAttend=="BK03"){
+								bk03++;
+								bk03Per.push(ele.bandMemberNo);
+							}
+							let userId = $('#userId').val();
+							if(ele.bandUserId==userId){
+								myChk = ele.bandAttend;
+							}
+						})
+						//내 체크 확인
+						let myBk1 = '🤍';
+						let nameBk1 = 'BK01'
+						let myBk2 = '🤍';
+						let nameBk2 = 'BK02'
+						let myBk3 = '🤍';
+						let nameBk3 = 'BK03'
+						console.log(myChk);
+						if(myChk == 'BK01'){
+							myBk1 = '❤'
+							nameBk1 = 'BK01chk'
+						} else if(myChk == 'BK02'){
+							myBk2 = '❤';
+							nameBk1 = 'BK02chk'
+						} else if(myChk == 'BK03'){
+							myBk3 = '❤';
+							nameBk1 = 'BK03chk'
+						}
+						let liTag = `
+							<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
+							<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
+							<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right;">💧</span></li>
+						`;
+						attendChk.append(liTag);
+					}
+		        })
+        }
+    }
+	//일정체크클릭모달
+	$('#attendChk').on('click', $('.attch'), function(e){
+		if($(e.target).attr('class')=='attch'){
+			//선택한 것의 name
+			let heartChk = $(e.target).attr('name');
+			//내 체크 확인 우선 다 지우고 눌린게 체크라면 체크해주기...그외에 체크=>비체크면 그냥 다 빈 칸됨
+			let myBk1 = '🤍';
+			let nameBk1 = 'BK01'
+			let myBk2 = '🤍';
+			let nameBk2 = 'BK02'
+			let myBk3 = '🤍';
+			let nameBk3 = 'BK03'
+			//넘길 값용
+			let result = 0;
+			if(heartChk=='BK01') {
+				myBk1 = '❤';
+				nameBk1 = 'BK01chk';
+				result = 'BK01';
+			} else if (heartChk=='BK02') {
+				myBk2 = '❤';
+				nameBk1 = 'BK02chk';
+				result = 'BK02';
+			} else if (heartChk=='BK03') {
+				myBk3 = '❤';
+				nameBk1 = 'BK03chk';
+				result = 'BK03';
+			}
+			//세개의 name 상태가 출력됨..( 이중 체크된 것 혹은 전부 널이면 널인 상태로 아작스로 보낼 예정)
+			/* $(e.currentTarget).find('.attch').each(function(idx,ele){
+				console.log($(ele).attr('name'));
+			}) */
+			let bandCalendarNo = $('#bandCalendarNo').val();
+			let bandUserId = $('#userId').val();
+			let bandAttend = result==0?null:result;
+			
+			$.ajax({
+				url: '/own/band/bandGroup/calendarUpdel?bandCalendarNo='+bandCalendarNo+'&bandMemberNo='+bandUserId+'&bandAttend='+bandAttend,
+				dataType: 'json',
+				method: 'get',
+				contentType : "application/text; charset=utf-8;"
+			}).then(result => {
+				console.log(result);
+				$('#childVal').val(result);
+				if(result != null){
+					let attendChk = $('#attendChk');
+					attendChk.empty();
+					
+					let ulTag = $('<ul style="list-style: none;" />')
+					let bk01 = 0; //참석
+					let bk01Per = new Array(); //참석인원
+					let bk02 = 0; //미참석
+					let bk02Per = new Array(); //미참석인원
+					let bk03 = 0; //미정
+					let bk03Per = new Array(); //미참석인원
+					let myChk = ''; // 본인 거 체크
+					$(result).each(function(idx, ele){
+						if(ele.bandAttend=="BK01"){
+							bk01++;
+							bk01Per.push(ele.bandMemberNo);
+						} else if(ele.bandAttend=="BK02"){
+							bk02++;
+							bk02Per.push(ele.bandMemberNo);
+						} else if(ele.bandAttend=="BK03"){
+							bk03++;
+							bk03Per.push(ele.bandMemberNo);
+						}
+						let userId = $('#userId').val();
+						if(ele.bandUserId==userId){
+							myChk = ele.bandAttend;
+						}
+					})
+					//내 체크 확인
+					let myBk1 = '🤍';
+					let nameBk1 = 'BK01'
+					let myBk2 = '🤍';
+					let nameBk2 = 'BK02'
+					let myBk3 = '🤍';
+					let nameBk3 = 'BK03'
+					console.log(myChk);
+					if(myChk == 'BK01'){
+						myBk1 = '❤'
+						nameBk1 = 'BK01chk'
+					} else if(myChk == 'BK02'){
+						myBk2 = '❤';
+						nameBk1 = 'BK02chk'
+					} else if(myChk == 'BK03'){
+						myBk3 = '❤';
+						nameBk1 = 'BK03chk'
+					}
+					let liTag = `
+						<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
+						<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
+						<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><spanname="BK03" class="attch2" style="float: right;">💧</span></li>
+					`;
+					attendChk.append(liTag);
+				}
+			})
+		}
+	})
+	
+	//참여중인사람 확인 창
+	$('#attendChk').on('click', $('.attch2'), function(e){
+		if($(e.target).attr('class')=='attch2'){
+			let bandCalendarNo = $('#bandCalendarNo').val();
+			//어던 유형의 체크를 볼 지 저장
+			let type = $(e.target).attr('name');
+			window.open( "/own/band/bandCalendarChk?bandAttend="+type+"&bandCalendarNo="+bandCalendarNo, "Child", "width=500px, height=600px, top=50%, left=50% resizable = no, scrollbars = no" );	
+		}
+	})
+	//일정클릭모달
+	$('#calendarModal').on('click', function(){
+		calModal('my_calendar_modal');
+	})
+})	
+</script>
+<script th:inline="javascript">
+//일정추가하기....
+/*<![CDATA[*/
+var calendar = /*[[${board.bandCalendar}]]*/
+/*]]>*/
+console.log(calendar);
+	if(calendar != null){
+	
+	//모달로 띄울 때 지도....크기 맞추기
+    //(37.53488514319734, 126.9881144036468)
+    let latLong = calendar.bandCalendarLocationLatlong;
+	console.log(latLong);
+    let lat = latLong.substr(1, latLong.indexOf(',')-1);
+    let longg = latLong.substr(latLong.indexOf(' ')+1);
+    longg = longg.substr(0, longg.indexOf(')')-1);
+    console.log(lat+'+'+longg);
+		
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	mapOption = { 
+	    center: new kakao.maps.LatLng(lat, longg), // 지도의 중심좌표
+	    level: 3 // 지도의 확대 레벨
+	};
+	
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+	//마커가 표시될 위치입니다 
+	var markerPosition  = new kakao.maps.LatLng(lat, longg); 
+	
+	//마커를 생성합니다
+	var marker = new kakao.maps.Marker({
+	position: markerPosition
+	});
+	
+	//마커가 지도 위에 표시되도록 설정합니다
+	marker.setMap(map);
+	
+	//아래 코드는 지도 위의 마커를 제거하는 코드입니다
+	//marker.setMap(null);
+}
 </script>

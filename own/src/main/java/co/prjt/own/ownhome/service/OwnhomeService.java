@@ -51,10 +51,13 @@ public interface OwnhomeService {
 	
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);
+
 	//내가 진행중인 챌린저스
 	public List<ChallengeVO> Challenging(String id);
 	//내가 진행중인 밴드
 	public List<BandMemberDetailVO> Banding(String id);
+
+
 	//신고처리
 	public int reportUpdate(ReportVO vo);
 	//신고목록 불러오기

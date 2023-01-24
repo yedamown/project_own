@@ -237,7 +237,7 @@ public class BandServiceImpl implements BandService{
 		}
 		//위에서 가져온 list리스트로 이미지 얻어오기
 		List<MultimediaVO> imglist = null;
-		if(list.size()>1) {
+		if(list.size()>=1) {
 			imglist = common.selectImgAllKey(bandNoList);
 			for(BandVO b : list) {
 				for(MultimediaVO img : imglist) {

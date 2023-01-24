@@ -10,11 +10,13 @@ public interface ChatService {
 	// 전체 채팅방 목록 중 해당 식별번호로 개설된 채팅방 목록 출력 
 	List<ChatroomVO> chatroomList(String bandMemberNo);
 	
-	/* 채팅방 번호 가져온 후, 채팅방 개설(1:1)
-	 * 전체 채팅방은 방개설 필요없이 구역을 만들어 메세지만 띄우면 된다. 
+	/* 신규 채팅방 개설(1:1)
 	 */
 	String createChatroom(List<ChatroomVO> list);
 
+	// 기존 채팅방번호 가져옴.
+	String findChatroomNo(ChatroomVO vo);
+	
 	// 메세지 DB에 저장
 	int saveMessage(MessageVO vo);
 	
@@ -22,5 +24,5 @@ public interface ChatService {
 	List<MessageVO> getMessage(MessageVO vo);
 	
 	// 웹 소켓 세션에 메세지 저장.
-	public <T> void sendMessage(WebSocketSession session, T message);
+	//public <T> void sendMessage(WebSocketSession session, T message);
 }

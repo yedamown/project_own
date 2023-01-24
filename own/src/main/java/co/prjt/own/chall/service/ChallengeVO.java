@@ -28,8 +28,11 @@ public class ChallengeVO {
 	String challStatus;
 	String challLeader;
 	String restPrice;
-	
+
+	//멀티미디어 정보가져올 곳
 	String firstImage;
+	//내 도전 검색에서 내 아이디 담아둘 곳
+	String userId;
 	
 	int first;
 	int last;

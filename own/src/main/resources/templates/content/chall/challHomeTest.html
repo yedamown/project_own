@@ -114,16 +114,13 @@
 
 	<!-- Class Start -->
 
-	
-
-
 	<div class="container-fluid pt-5">
 		<div class="container">
 			<div class="text-center pb-2">
 				<p class="section-title px-5">
-					<span class="px-2">Popular challenge</span>
+					<span class="px-2">New challenge</span>
 				</p>
-				<h1 class="mb-4">현재 인기 도전</h1>
+				<h1 class="mb-4">새로운 도전</h1>
 			</div>
 			<div class="row pb-3" id="challRow">
 				<th:block th:each="cha: ${popChall}">
@@ -350,7 +347,6 @@
 	</div>
 	<!-- Footer End -->
 
-</body>
 <script>
 	
 	$('#pagegation').on('click', '.pagePort', function(){
@@ -414,18 +410,22 @@
 	//챌린지 폼 만들기
 	function makeChallDiv(cha){
 		console.log(cha.challLeader);
+		let challNo = cha.challNo.substr(4);
+		console.log(challNo);
 		let div1 = $('<div />').addClass("col-lg-4 mb-4");
 		let div2 = $('<div />').addClass("card border-0 shadow-sm mb-2");
 		let hiddenInput = $('<input />').attr('type', 'hidden').val(cha.challNo);
-		let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage)
+		let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage).attr('style', 'height:230px; object-fit: cover')
 		let div2_2 = $('<div />').addClass("card-body bg-light text-center p-4")
 		let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
-		let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").append(($('<i />').addClass("fa fa-user text-primary"))).text(cha.nowMember)))
-		let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', '#'); 
+		let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.nowMember + '참여중')),
+																					   ($('<small />').addClass("mr-3").text(cha.challDuration + '주 동안')),
+																					   ($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회'))
+																					  );
+		let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', 'detailChall?challNo=' + challNo).text('도전하러 가기'); 
 		div1.append(div2.append(hiddenInput, img2_1, div2_2.append(h4_3, div_3, a_3)));
 		$('#challRow').append(div1);
 	}
 </script>
-</div>
 </body>
 </html>

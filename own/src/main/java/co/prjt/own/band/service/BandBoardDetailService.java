@@ -25,4 +25,14 @@ public interface BandBoardDetailService {
 	public BandBoardDetailSearchVO insertBandBoard(BandBoardDetailVO vo);
 	//글업데이트
 	public BandBoardDetailSearchVO updateBandBoard(BandBoardDetailVO vo);
+	//일정업데이트
+	public BandCalendarVO insertCalendar(BandCalendarVO vo);
+	//일정가져오기(단건)
+	public BandCalendarVO selectCalendar(String bandBoardDetailNo);
+	//일정가져오기(다중)(밴드홈에서사용)
+	public List<BandCalendarVO> selectCalendars(List<String> bandBoardDetailNo);
+	//일정참여확인상세조회
+	public List<BandCalendarDetailVO> selectCalendarDetail(String bandCalendarNo);
+	//일정참여업데이트
+	public List<BandCalendarDetailVO> updateCalendarDetail(BandCalendarDetailVO vo);
 }

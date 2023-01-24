@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.chall.service.ValidationVO;
 import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.common.service.MultimediaVO;
@@ -41,5 +42,5 @@ public interface CommonMapper {
 	//밴드용 이미지식별키수정
 	public int updateKey(String key, List<String> name);
 	//밴드용 이미지 수정...삭제
-	public int deleteImg(List<String> name);
+	public int deleteImg(List<String> name, String key);
 }

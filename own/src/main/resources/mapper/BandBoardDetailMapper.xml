@@ -242,4 +242,97 @@ SELECT
                     BAND_BOARD_TITLE = #{bandBoardTitle}
            WHERE BAND_BOARD_DETAIL_NO = #{bandBoardDetailNo}
 	</update>
+	<insert id="insertCalendar">
+		<selectKey keyProperty="bandCalendarNo" resultType="string" order="BEFORE">
+			SELECT CALENDAR_SEQ.NEXTVAL-1 FROM DUAL
+		</selectKey>
+		INSERT INTO BAND_CALENDAR(
+								BAND_CALENDAR_NO,
+								BAND_BOARD_DETAIL_NO,
+								BAND_CALENDAR_START,
+								BAND_CALENDAR_END,
+								BAND_CALENDAR_TITLE,
+								BAND_CALENDAR_MARK,
+								BAND_CALENDAR_LOCATION, 
+								BAND_CALENDAR_OPTION,
+								BAND_CALENDAR_OPTION_DAY,
+								BAND_CALENDAR_LOCATION_LATLONG
+							) VALUES (
+								#{bandCalendarNo},
+								#{bandBoardDetailNo},
+								#{bandCalendarStart},
+								#{bandCalendarEnd},
+								#{bandCalendarTitle},
+								#{bandCalendarMark},
+								#{bandCalendarLocation},
+								#{bandCalendarOption},
+								#{bandCalendarOptionDay},
+								#{bandCalendarLocationLatlong}
+							)
+			
+	</insert>
+	<select id="selectCalendar" resultType="co.prjt.own.band.service.BandCalendarVO">
+		SELECT	BAND_CALENDAR_NO,
+				BAND_BOARD_DETAIL_NO,
+				BAND_CALENDAR_START,
+				BAND_CALENDAR_END,
+				BAND_CALENDAR_TITLE,
+				BAND_CALENDAR_MARK,
+				BAND_CALENDAR_LOCATION, 
+				BAND_CALENDAR_OPTION,
+				BAND_CALENDAR_OPTION_DAY,
+				BAND_CALENDAR_LOCATION_LATLONG
+		FROM BAND_CALENDAR
+		WHERE BAND_BOARD_DETAIL_NO = #{bandBoardDetailNo}
+	</select>
+	<select id="selectCalendars" resultType="co.prjt.own.band.service.BandCalendarVO">
+		SELECT	BAND_CALENDAR_NO,
+				BAND_BOARD_DETAIL_NO,
+				BAND_CALENDAR_START,
+				BAND_CALENDAR_END,
+				BAND_CALENDAR_TITLE,
+				BAND_CALENDAR_MARK,
+				BAND_CALENDAR_LOCATION, 
+				BAND_CALENDAR_OPTION,
+				BAND_CALENDAR_OPTION_DAY,
+				BAND_CALENDAR_LOCATION_LATLONG
+		FROM BAND_CALENDAR
+		WHERE BAND_BOARD_DETAIL_NO  IN 
+                    <foreach collection="bandBoardDetailNo" item="b" separator="," open="(" close=")">
+                    	#{b}
+                    </foreach>
+	</select>
+	
+	<select id="selectCalendarDetail" resultType="BandCalendarDetailVO">
+		SELECT 	BAND_CALENDAR_NO "bandCalendarNo",
+        		BAND_MEMBER_NO "bandUserId",
+        		BAND_ATTEND "bandAttend",
+        		BAND_NICKNAME "bandMemberNo"
+			FROM BAND_CALENDAR_DETAIL A, (SELECT B.BAND_NICKNAME, B.USER_ID FROM BAND A, BAND_MEMBER_DETAIL B
+            WHERE A.BAND_NO = B.BAND_NO
+            AND   B.BAND_NO = (
+                SELECT Z.BAND_NO FROM            
+                BAND Z, BAND_CALENDAR Y, BAND_BOARD_DETAIL X, BAND_BOARD_OPTION W
+                WHERE Z.BAND_NO             =   W.BAND_NO
+                AND   W.BAND_BOARD_OPTION_NO=   X.BAND_BOARD_OPTION_NO
+                AND   X.BAND_BOARD_DETAIL_NO=   Y.BAND_BOARD_DETAIL_NO
+                AND   Y.BAND_CALENDAR_NO    =   #{BANDCALENDARNO}
+            )) B
+            WHERE   B.USER_ID = A.BAND_MEMBER_NO
+            AND     BAND_CALENDAR_NO    =   #{bandCalendarNo}
+	</select>
+	<delete id="deleteCalendarDetail">
+		DELETE FROM BAND_CALENDAR_DETAIL
+				where BAND_CALENDAR_NO = #{bandCalendarNo},
+				 and  BAND_MEMBER_NO = #{bandMemberNo},
+	</delete>
+	<select id="inupProCalendarDetail" statementType="CALLABLE" parameterType="map" resultType="integer">
+		{ call insert_update_cal(
+				#{bandMemberNo, mode=IN, jdbcType=VARCHAR},
+			    #{bandCalendarNo, mode=IN, jdbcType=VARCHAR},
+                #{bandAttend, mode=IN, jdbcType=VARCHAR},
+	            #{pNum, mode=OUT, jdbcType=INTEGER}
+                    )
+                }
+	</select>
 </mapper>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}"
+      layout:decorate="~{layout/band_layout}"
       lang="ko">
     <head>
    		<!-- jquery -->
@@ -117,9 +117,9 @@
             </div>
         </section>
         <!--================ 내 가치 끝 Area  =================-->
-        <!--================ 페이지 Area  =================-->
+        <!-- <!--================ 페이지 Area  =================-->
         <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
-        <!--================ 페이지 Area 끝  =================-->
+        ================ 페이지 Area 끝  ================= -->
         <script src="/css/band/js/time.js"></script>
         <script>
       //페이징+검색처리

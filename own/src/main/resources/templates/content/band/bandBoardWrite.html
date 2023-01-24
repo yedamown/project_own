@@ -2,18 +2,50 @@
 <script src="/css/band/js/jquery-3.2.1.js"></script>
 <script src="/css/band/js/json.min.js"></script>
  <!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-	<link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-	<link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-  	<link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-	<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+<link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
+<link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+<link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+ 	<link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+
+<!-- 서머노트를 위해 추가해야할 부분 -->
+<link rel="stylesheet" href="/css/band/editor/summernote-lite.css">
+<script src="/css/band/editor/summernote-lite.js"></script>
+<script src="/css/band/editor/lang/summernote-ko-KR.js"></script>
+ <!-- 지도 -->
+ <script src="/css/band/js/map.js"></script>
+<style>
+	.note-resize{
+		display: none !important;
+		}
+	.note-control-selection-bg{
+		display: none !important;
+	}
+	.note-control-selection{
+		display: none !important;
+	}
+	.note-popover{
+		display: none !important;
+	}
+	.bottom note-image-popover{
+		display: none !important;
+	}
+	#my_calendar_modal {
+		display: none;
+		width: 600px;
+		padding: 20px 30px;
+		background-color: #fefefe;
+		border: 1px solid #888;
+		border-radius: 3px;
+	}
 	
-	<!-- 서머노트를 위해 추가해야할 부분 -->
-	<link rel="stylesheet" href="/css/band/editor/summernote-lite.css">
-	<script src="/css/band/editor/summernote-lite.js"></script>
-	<script src="/css/band/editor/lang/summernote-ko-KR.js"></script>
-  <!--  --> 
+	#my_calendar_modal .modal_close_btn {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+</style>
 <div id="template">    
 <div style="flex-grow:3; width: 740px">
 	<div>
@@ -23,10 +55,9 @@
 					th:value="${_csrf.token}">
 			<input type="hidden" id="bandboardwriter" name="bandBoardWriter" th:value="${session.loginUser.userId}">
 			<!-- 썸머노트를 통해 추가될 이미지 -->
-			<!-- form을 통해 넘어가지 않는 값이니까 이 번호에 이미지정보를 담겠음 -->
 			<input type="hidden" id="bandBoardDetailNo" name="bandBoardDetailNo">
 			<h3>가치 글쓰기</h3>
-			<select class="form-group" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo">
+			<select class="form-group" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo"  required>
 				<option disabled>::게시판을 선택해주세요::</option>
 				<option th:if="${list.bandBoardLine}!='0'" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}"></option>
 			</select>
@@ -34,14 +65,88 @@
 				<option value="">::말머리 선택::</option>
 			</select>
 			<div class="form-group">
-				<input placeholder="타이틀" type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle">
+				<input placeholder="타이틀" type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle"  required>
 				<div class="form-group">
 					<textarea id="summernote" name="bandBoardContent"></textarea>
 				</div>
+				<div id="calVote"></div>
 				<input placeholder="태그" type="text" class="form-control" id="tag">
 				댓글 허용<input type="radio" class="form-group">
 				<button type="button" id="writeBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white; float: right">등록</button>
 			</div>
+<!--==캘린더 모달창 ==-->
+		<div id="my_calendar_modal">
+			<div id="modalform">
+                <div>
+                	<!--================ 일정명 =================-->
+                	<div>
+	                  <h6 class="typo-list">일정만들기</h6>
+	                  <div>
+	                    <input type="text" name="bandCalendarTitle" id="bandCalendarTitle" placeholder="일정 제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '일정 제목을 입력해주세요'" required>
+	                  </div>
+	                </div>
+	                <!--================ 일정명 끝 =================-->
+	                <!--================ 일정마크 =================-->
+                	<div>
+	                  <h6 class="typo-list">일정마크</h6>
+	                  <div>
+	                    <select name='bandCalendarMark' id="bandCalendarMark">
+						  <option value='0' selected disabled>-- 선택 --</option>
+						  <option value='red' style='padding:15px;'>빨강🔴</option>
+						  <option value='orange' style='padding:15px;'>주황🟠</option>
+						  <option value='yellow' style='padding:15px;'>노랑🟡</option>
+						  <option value='blue' style='padding:15px;'>파랑🔵</option>
+						</select>
+	                  </div>
+	                </div>
+	                <!--================ 일정마크 끝 =================-->
+	                <!--================ 시작/종료 =================-->
+	                <div>
+	                  <h6 class="typo-list">시작</h6>
+                      <input type="date" name="bandCalendarStartDay" id="bandCalendarStartDay">
+                      <input type="time" name="bandCalendarStartTime" id="bandCalendarStartTime">
+					  <input type="hidden" name="bandCalendarStart" id="bandCalendarStart">
+	                </div>
+	                <div>
+	                  <h6 class="typo-list">종료</h6>
+                      <input type="date" name="bandCalendarEndDay" id="bandCalendarEndDay">
+                      <input type="time" name="bandCalendarEndTime" id="bandCalendarEndTime">
+					  <input type="hidden" name="bandCalendarEnd" id="bandCalendarEnd">
+	                </div>
+	                <!--================ 시작/종료 끝 =================-->
+	                 <!--================ 위치 =================-->
+	                <div>
+	                  <h6 class="typo-list">위치</h6>
+	                  <div>
+	                    <input type="text" id="bandCalendarLocation" name="bandCalendarLocation" value="">
+	                    <input type="hidden" id="bandCalendarLocationLatlong" name="bandCalendarLocationLatlong" value="">
+	                  </div>
+	                </div>
+	                <!--================ 위치 끝 =================-->
+	                <!--================ 참석여부 =================-->
+	                <div>
+						<h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 20px;">참석여부 묻기</h6>
+	                	<input type="checkbox" name="bandCalendarOption" value="t" id="bandCalendarOption">
+	                    <div id="checkDate" style="display: none">
+						<h6 class="typo-list">참석여부 확인 종료일</h6>
+	                     	<input type="date" name="bandCalendarOptionDayD" id="bandCalendarOptionDayD">
+                      		<input type="time" name="bandCalendarOptionDayT" id="bandCalendarOptionDayT">
+							<input type="hidden" name="bandCalendarOptionDay" id="bandCalendarOptionDay">
+						</div>
+	                </div>
+	                <!--================ 참석여부 끝 =================-->
+	                <!--================ 공유 =================-->
+	                <!-- <div>
+						<h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 20px;">게시글로 공유</h6>
+	                	<input type="checkbox" name="bandCalendarOptionShare" value="t" id="bandCalendarOptionShare" checked disabled>
+	                </div> -->
+	                <!--================ 공유 끝 =================-->
+	            </div>
+                <button type="button" id="calBtn">전송</button>
+			</div>
+			<a class="modal_close_btn">닫기</a>
+		</div>
+<!--==캘린더 모달창 ==-->
 		</form>	
 		</article>
 	</div>
@@ -143,8 +248,217 @@ $(function(){
         }
        e.preventDefault();
   })
+    
 })
 </script>
+<script>
+	$(document).ready(function () {
+			console.log($.summernote.options);
+			// 실행시 언어 설정을 한글로 설정 
+			//$.summernote.options.lang = 'ko-KR';
+			//$.summernote.options.airMode = false;
+			// summernote 생성시 사이즈 지정
+			//$.summernote.options.width = '90%';
+			//$.summernote.options.heigth = '400';
+	});
+		var a = $("#summernote");
+		// 버튼을 추가하기위한 방법
+		var buttons = $.summernote.options.buttons;
+		// 툴바에 표시할 버튼 넣기
+		$.summernote.options.toolbar.push([
+			  "Paragraph",
+			[
+			    "Calendar", // 단락 H1
+			    "Vote", // 단락 P 태그
+			  ],
+		]);
+		// -----------------------------------------------
+		// 단락 글자 변경 <h1> ~ <h6> - 툴바 버튼 정의
+		var Calendar = function (context) {
+		var ui = $.summernote.ui;
+		var button = ui.button({
+		    contents: '<i class="fa fa-pencil"/> 캘린더',
+		    tooltip: "캘린더넣기",
+		    click: function () {
+		    	//이미 일정있는지 확인
+		    	if($('#calVote').children().length>0){
+		    		alert('이미 등록된 일정이나 투표가 있습니다.');
+		    		return false;
+		    	}
+		    	//우선 모달창띄우기
+		    	modal('my_calendar_modal');
+		    },
+		  });
+		  return button.render();
+		};
+		// 툴바의 버튼 이벤트 붙이기
+		buttons.Calendar = Calendar;
+		//  단락 포맷 H1 - 이벤트 버튼 정의
+		var Calendar = function(){
+		  a.summernote('formatH1');
+		};
+		// -----------------------------------------------
+		// 현재 단락 p 태그로 변경 - 툴바 버튼 정의
+		var Vote = function (context) {
+		var ui = $.summernote.ui;
+		var button = ui.button({
+		    contents: '<i class="fa fa-pencil"/> 투표',
+		    tooltip: "투표하기",
+		    click: function () {
+		      context.invoke("editor.formatPara");
+		    },
+		  });
+		  return button.render();
+		};
+		// 툴바의 버튼 이벤트 붙이기
+		buttons.Vote = Vote;
+		//  현재 단락 p 태그로 변경 - 이벤트 버튼 정의
+		var Vote = function(){
+		  a.summernote('formatPara');
+		};
+		// -----------------------------------------------
+	//모달
+	function modal(id) {
+        var zIndex = 9999;
+        var modal = document.getElementById(id);
+	
+        // 모달 div 뒤에 희끄무레한 레이어
+        var bg = document.createElement('div');
+        bg.setStyle({
+            position: 'fixed',
+            zIndex: zIndex,
+            left: '0px',
+            top: '0px',
+            width: '100%',
+            height: '100%',
+            overflow: 'auto',
+            // 레이어 색갈은 여기서 바꾸면 됨
+            backgroundColor: 'rgba(0,0,0,0.4)'
+        });
+        document.body.append(bg);
+
+        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+        modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+            bg.remove();
+            modal.style.display = 'none';
+        });
+
+        modal.setStyle({
+            position: 'fixed',
+            display: 'block',
+            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+            // 시꺼먼 레이어 보다 한칸 위에 보이기
+            zIndex: zIndex + 1,
+
+            // div center 정렬
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            msTransform: 'translate(-50%, -50%)',
+            webkitTransform: 'translate(-50%, -50%)'
+        });
+      //일정넣기(모달의)버튼 누름
+		$('#calBtn').on('click', function(){
+			let calVote = $('#calVote');
+			console.log(calVote);
+            modal.style.display = 'none';
+			bg.remove();
+			//제목
+			let title = $('#bandCalendarTitle').val();
+			//날짜
+			let startDay = new Date($('#bandCalendarStartDay').val());
+			let endDay = new Date($('#bandCalendarEndDay').val());
+			//년
+			let sYear = startDay.getFullYear();
+			let eYear = endDay.getFullYear();
+			//달
+			let sMonth = (1+startDay.getMonth());
+			let eMonth = (1+endDay.getMonth());
+			//날
+			let sDay = startDay.getDate();
+			let eDay = endDay.getDate();
+			//시간
+			let startTime = $('#bandCalendarStartTime').val();
+			let endTime = $('#bandCalendarEndTime').val();
+			//상세시작시간
+			let sTime = (startTime.substr(0, 2) < 12 ? "오전" : "오후")+" "
+				sTime += (startTime.substr(0, 2) < 12 ? startTime.substr(0, 2) : startTime.substr(0, 2)-12)+"시 "
+				sTime += startTime.substr(3)+"분";
+			//상세끝나는시간
+			let eTime = (endTime.substr(0, 2) < 12 ? "오전" : "오후")+" " //오전 오후
+					 + (endTime.substr(0, 2)< 12 ? endTime.substr(0, 2) : endTime.substr(0, 2)-12)+"시 " //12시간표기
+					 + endTime.substr(3)+"분";
+			//시작 요일
+			let mon = getDayOfWeek($('#bandCalendarStartDay').val());
+			//마크색
+			let color = $('#bandCalendarMark').val();
+		    let cal  = `<div style="width:678px; height:80px; border: 0.3rem solid ${color}; display:flex; justify-content:space-between" id="calendarModal">`
+						cal += `<div style="padding:10px;"><h3 style="margin-bottom:0px">${sDay}</h3>`
+						cal += `<p>${mon}</p></div>`
+						cal += `<div style="padding:10px;"><h5>${title}</h5>`
+						cal += `<p>${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
+						cal += `<div style="float:right; margin-top:30px;"><input type="button" value="수정"><input type="button" value="삭제"></div>`
+					cal += `</div>`;
+			calVote.append(cal);
+			//밴드캘린더시작일 끝나는 날 히든 값 넣기
+			console.log(startDay)
+			startDay.setHours(startTime.substr(0, 2));
+			startDay.setMinutes(startTime.substr(3));
+			console.log(startDay)
+			$('#bandCalendarStart').val(timestamp(startDay));
+			
+			console.log(endDay)
+			endDay.setHours(startTime.substr(0, 2));
+			endDay.setMinutes(startTime.substr(3));
+			console.log(endDay)
+			$('#bandCalendarEnd').val(timestamp(endDay))
+			//투표일정이 잇다면 넣기
+			if($('#bandCalendarOption').prop('checked')){
+				let voteDay = new Date($('#bandCalendarOptionDayD').val());
+				let voteTime = $('#bandCalendarOptionDayT').val();
+				voteDay.setMinutes(voteTime.substr(0, 2));
+				voteDay.setHours(voteTime.substr(3));
+				$('#bandCalendarOptionDay').val(timestamp(voteDay));
+			}
+			
+		})
+    }
+	 Element.prototype.setStyle = function(styles) {
+         for (var k in styles) this.style[k] = styles[k];
+         return this;
+     };
+     $('.note-editing-area').on('click', $('img'), function(e){
+			console.log(e.target);
+		})
+	//요일뽑기
+	function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
+    	const week = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    	const dayOfWeek = week[new Date(날짜문자열).getDay()];
+    	return dayOfWeek;
+	}
+	//날짜 컨트롤러에 보낼 포맷
+	function timestamp(){
+    	var today = new Date();
+    	today.setHours(today.getHours() + 9);
+    	return today.toISOString().replace('T', ' ').substring(0, 19);
+	}
+	
+	//체크박스 클릭시 투표날짜 시간제한
+	$('#bandCalendarOption').on('click',function(){
+		if($('#bandCalendarOption').prop('checked')){
+			$('#checkDate').show();
+		} else {
+			$('#checkDate').hide();
+			//값비우기
+			$('#bandCalendarOptionDay').val();
+		}
+	})
+	//위치
+	$('#bandCalendarLocation').on('click', function(){
+		window.open( "/own/band/map", "Child", "width=1000px, height=500px, top=50%, left=50% ,resizable = no, scrollbars = no" );
+	})
+ </script>
 <script>
 
 $(function(){

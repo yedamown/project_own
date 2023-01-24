@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block  th:fragment="bandHeaderFragment">
+<!--headerFragment 선언-->
+<head>
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">  
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/css/header/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/css/header/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/css/header/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/header/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/header/css/style.css" rel="stylesheet">
+      
+    <!-- Navbar End -->
+
+ 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/css/header/lib/wow/wow.min.js"></script>
+    <script src="/css/header/lib/easing/easing.min.js"></script>
+    <script src="/css/header/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/css/header/lib/counterup/counterup.min.js"></script>
+    <script src="/css/header/lib/parallax/parallax.min.js"></script>
+    <script src="/css/header/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="/css/header/lib/lightbox/js/lightbox.min.js"></script>
+    <!-- 지도 -->
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=11875b29670fe2d80e3abb3d4800699e"></script>
+    <!-- Template Javascript -->
+    <script src="/css/header/js/main.js"></script>
+</head>
+<header class="header-area"> 
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+    	<div style="display: flex; flex-flow: row; justify-content: flex-start;">
+    		<a href="/" class="navbar-brand d-flex align-items-center" style="padding-left: 3rem !important;">
+            	<h4 class="m-0">오운</h4>
+        	</a>
+            <a href="/own/band" class="navbar-brand d-flex align-items-center">
+            	<h1 class="m-0">가치</h1>
+        	</a>
+        </div>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+            	<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">알람</a>
+			 	<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">채팅</a>
+				 <div class="nav-item dropdown"  th:if="${session.loginUser}">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">사람</a>
+                    <div class="dropdown-menu bg-light m-0">
+                		<a href="#" class="nav-item nav-link">마이페이지</a>
+                        <div th:if="${session.loginUser}"><a href="/own/logout" class="nav-item nav-link">로그아웃</a></div>
+						<div th:unless="${session.loginUser}"><a href="/own/login" class="nav-item nav-link">로그인</a>
+                    </div>
+                </div>
+            </div>
+            	<div th:unless="${session.loginUser}">
+            	<a href="/own/SigninForm" class="nav-item nav-link">회원가입</a>
+            </div>
+            </div>
+        </div>
+   </nav>
+</header>
+</th:block>
+</html>
