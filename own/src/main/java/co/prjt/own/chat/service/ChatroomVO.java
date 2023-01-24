@@ -8,4 +8,6 @@ public class ChatroomVO {
     private String chatroomName; // 채팅방 이름
     private String bandMemberNo; // 채팅방 참여자 식별번호 
 
+    //not in DB
+    private String bandMemberNo1; // 채팅방 상대 참여자 식별번호
 }

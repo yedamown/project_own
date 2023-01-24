@@ -35,6 +35,7 @@
 		WHERE CHATROOM_NO IN ( 	SELECT CHATROOM_NO FROM CHATROOM
 								WHERE BAND_MEMBER_NO = #{bandMemberNo} )
 		AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
+		AND BAND_MEMBER_NO = #{bandMemberNo1}
 	</select>
 
 	<!-- 메세지 DB에 저장 -->

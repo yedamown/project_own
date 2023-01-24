@@ -8,6 +8,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.prjt.own.band.service.BandMemberDetailService;
@@ -44,7 +46,7 @@ public class ChatController {
 	
 	
 	// 채팅 페이지 이동
-	@PostMapping("/chatroom")
+	@RequestMapping(value="/chatroom", method=RequestMethod.GET)
 	public String chatPage() {
 		return "content/chat/chatroom";
 	}
