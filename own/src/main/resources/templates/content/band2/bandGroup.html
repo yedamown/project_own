@@ -64,49 +64,6 @@
 				font-size: 2rem;
 				padding: .2rem;
 			}
-			@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-
-		.dropdown{
-		  position : relative;
-		  display : inline-block;
-		}
-		
-		.dropbtn_icon{
-		  font-family : 'Material Icons';
-		}
-		.dropbtn{
-		  border-radius : 4px;
-		  background-color: #f5f5f5;
-		  font-weight: 400;
-		  color : rgb(37, 37, 37);
-		  width :200px;
-		  text-align: left;
-		  cursor : pointer;
-		  font-size : 12px;
-		}
-		.dropdown-content{
-		  display : none;
-		  position : absolute;
-		  z-index : 1; /*다른 요소들보다 앞에 배치*/
-		  font-weight: 400;
-		  background-color: #f9f9f9;
-		  min-width : 200px;
-		}
-		
-		.dropdown-content a{
-		  display : block;
-		  text-decoration : none;
-		  color : rgb(37, 37, 37);
-		  font-size: 12px;
-		  padding : 12px 20px;
-		}
-		
-		.dropdown-content a:hover{
-		  background-color : #ececec
-		}
-		.dropdown:hover .dropdown-content {
-		  display: block;
-		}
         </style>
     </head>
     <body>
@@ -130,8 +87,8 @@
                     </aside>
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">가치 홈</a></li> 
-                            <li class="nav-item"><a class="nav-link" id="bandPhoto">앨범</a></li>
-                            <li class="nav-item"><a class="nav-link" id="bandCalendar">일정</a></li>
+                            <li class="nav-item"><a class="nav-link" href="about.html">앨범</a></li>
+                            <li class="nav-item"><a class="nav-link" href="accomodation.html">일정</a></li>
                             <!--================ 채팅기능을 위한 임시 =================-->
                             <li class="nav-item"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></li>
                         </ul>
@@ -214,22 +171,34 @@
                     <div style="flex-grow:1; width: 260px">
                         <div class="blog_right_sidebar">
                             <aside class="single_sidebar_widget popular_post_widget">
-                                <div class="dropdown">
-                                	<h3 class="widget_title dropbtn">다가오는 일정<i class="fa fa-cog" aria-hidden="true"></i></h3>
-								    <div class="dropdown-content">
-								        <a id="7">7일 이내</a>
-								        <a id="14">14일 이내</a>
-								        <a id="30">30일 이내</a>
-								      </div>
+                                <h3 class="widget_title">다가오는 일정</h3>
+                                <div class="media post_item">
+                                    <img src="/css/band/image/blog/post1.jpg" alt="post">
+                                    <div class="media-body">
+                                        <a href="blog-details.html"><h3>Space The Final Frontier</h3></a>
+                                        <p>02 Hours ago</p>
+                                    </div>
                                 </div>
-                                <div id="groupCal">
-	                                <div class="media post_item" th:each="c : ${calendar}">
-	                                    <div class="media-body">
-	                                        <h3><a href="blog-details.html" th:text="${c.bandCalendarTitle}" th:style="|background-color:${c.bandCalendarMark}|"></a></h3>
-	                                        <span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
-	                                        <span th:text="${#dates.format(c.bandCalendarEnd, 'yyyy-MM-dd')}" style="font-size: 12px"></span>
-	                                    </div>
-	                                </div>
+                                <div class="media post_item">
+                                    <img src="/css/band/image/blog/post2.jpg" alt="post">
+                                    <div class="media-body">
+                                        <a href="blog-details.html"><h3>The Amazing Hubble</h3></a>
+                                        <p>02 Hours ago</p>
+                                    </div>
+                                </div>
+                                <div class="media post_item">
+                                    <img src="/css/band/image/blog/post3.jpg" alt="post">
+                                    <div class="media-body">
+                                        <a href="blog-details.html"><h3>Astronomy Or Astrology</h3></a>
+                                        <p>03 Hours ago</p>
+                                    </div>
+                                </div>
+                                <div class="media post_item">
+                                    <img src="/css/band/image/blog/post4.jpg" alt="post">
+                                    <div class="media-body">
+                                        <a href="blog-details.html"><h3>Asteroids telescope</h3></a>
+                                        <p>01 Hours ago</p>
+                                    </div>
                                 </div>
                                 <div class="br"></div>
                             </aside>
@@ -551,46 +520,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		    }
 		  });
        	
-		//다가오는 일정 _7_14_30
-		$('.dropdown-content').on('click', function(e){
-			console.log(e.target.id);
-			if(e.target.id!=null){
-				$.ajax({
-		            url:'/own/band/bandGroup/calendarDay?bandNo='+bandNo+'&day='+e.target.id,
-		            dataType: 'json',
-		            method: 'get',
-		            contentType : "application/text; charset=utf-8;"
-		        }).then(result => {
-		        	console.log(result);
-		        	//일정만들기..기존 것 지우기
-		        	$('#groupCal').empty();
-		        	$(result).each(function(idx,ele){
-		        	let tag = `<div class="media post_item">
-				        		<div class="media-body">
-				        			<h3><a href="blog-details.html" style="background-color:${c.bandCalendarMark}">${ele.bandCalendarTitle}</a></h3>
-				        			<span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
-				        			<span th:text="${#dates.format(c.bandCalendarEnd, 'yyyy-MM-dd')}" style="font-size: 12px"></span>
-				        		</div>
-				        	</div>			
-				        	`
-		        	})
-				})
-			}
-		})
-		//드롭박스 css
-		$('.dropdown-content a').on('click', function(){
-			//0.2초후
-			setTimeout(() => {
-				$('.dropdown-content').css('display','none');
-			}, 200);
-		})
-		$('.dropbtn').hover(function(){
-			//0.2초후
-			setTimeout(() => {
-				$('.dropdown-content').css('display','block');
-			}, 200);
-		})
-		
        	//페이지 이동
     	$('#totalBoard').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo);
@@ -605,14 +534,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     	})
     	$('#bandOption').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandOption?bandNo="+bandNo);
-    	})
-    	//캘린더로 이동
-    	$('#bandCalendar').on('click', function(){
-    		$('#mainTemplate').load("/own/band/bandGroup/bandCalendar?bandNo="+bandNo);
-    	})
-    	//앨번으로 이동
-    	$('#bandPhoto').on('click', function(){
-    		$('#mainTemplate').load("/own/band/bandGroup/bandPhoto?bandNo="+bandNo);
     	})
     	</script>
     </div>

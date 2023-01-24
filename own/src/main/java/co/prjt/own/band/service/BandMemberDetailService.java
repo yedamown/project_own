@@ -15,4 +15,6 @@ public interface BandMemberDetailService {
 	String getBandMemberNickname(MessageVO vo);
 	
 	
+	//밴드번호+유저아이디로 유저값가져오기
+	public BandMemberDetailVO getBandMemberDetail(BandMemberDetailVO vo);
 }

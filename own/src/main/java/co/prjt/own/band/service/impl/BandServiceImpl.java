@@ -46,7 +46,25 @@ public class BandServiceImpl implements BandService{
 		paging.setPageSize(5);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
-		return bandMapper.getBandAll(vo);
+		//밴드 이미지 담기
+		List<Map<String, Object>> bandList = bandMapper.getBandAll(vo);
+		//bandList에 이미지 붙이기용
+		List<String> bandNoList = new ArrayList<String>();
+		for(Map<String, Object> band : bandList) {
+			bandNoList.add((String) band.get("bandNo"));
+		}
+		if(bandList.size()>0) {
+			//위에서 가져온 bandNoList리스트로 이미지 얻어오기
+			List<MultimediaVO> imglist = common.selectImgAllKey(bandNoList);
+			for(Map<String, Object> band : bandList) {
+				for(MultimediaVO img : imglist) {
+					if(img.getIdentifyId().equals(band.get("bandNo"))){
+						band.put("bandMainImg", img);
+					}
+				}
+			}
+		}
+return bandList;
 	}
 
 	@Override
@@ -79,7 +97,7 @@ public class BandServiceImpl implements BandService{
 		}
 		//위에서 가져온 bandNoList리스트로 이미지 얻어오기
 		List<MultimediaVO> imglist = common.selectImgAllKey(bandNoList);
-		if(bandList.size()>1) {
+		if(bandList.size()>0) {
 			for(Map<String, Object> band : bandList) {
 				for(MultimediaVO img : imglist) {
 					if(img.getIdentifyId().equals(band.get("bandNo"))){
@@ -219,17 +237,15 @@ public class BandServiceImpl implements BandService{
 	public List<BandVO> recomBandPage(BandVO band, Paging paging) {
 		//매퍼를 돌릴 vo
 		//설정으로 추천리스트받아옴
-		//페이지 8개로 임시..
-		List<BandVO> list = bandMapper.recomBand(band);
 		paging.setPageUnit(8);
 		//임시 5..
 		paging.setPageSize(5);
 		//전체 페이지계산
-		paging.setTotalRecord(list.size());
+		paging.setTotalRecord(bandMapper.recomBandCount(band));
 		band.setFirst(paging.getFirst());
 		band.setLast(paging.getLast());
 		//페이지카운트..용을 해야하는데 힘드니 list size로 대체
-		list = bandMapper.recomBand(band);
+		List<BandVO> list = bandMapper.recomBand(band);
 		//리스트에 이미지담기
 		List<String> bandNoList = new ArrayList<String>();
 		for(BandVO b : list) {
