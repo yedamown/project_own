@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<title>웹소켓 채팅 테스트</title>
-	<!-- CSS -->
-	<link rel="stylesheet" href="/css/chat/css/chatroom.css">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>웹소켓 채팅 테스트</title>
+<!-- CSS -->
+<link rel="stylesheet" href="/css/chat/css/chatroom.css">
 </head>
 
 <body>
@@ -14,7 +15,8 @@
 			<div class="avatar-wrapper avatar-big">
 				<img src="상대방프로필이나 밴드이미지나 그런거 띄우기" alt="avatar" />
 			</div>
-			<span class="name">대화방이름</span> <span class="options"> <i class="fas fa-ellipsis-h"></i>
+			<span class="name">대화방이름</span> <span class="options"> <i
+				class="fas fa-ellipsis-h"></i>
 			</span>
 		</div>
 		<!-- =========================== 대화방 =========================== -->
@@ -30,7 +32,8 @@
 			<!-- 내 메세지 -->
 			<div class="message message-right">
 				<div class="avatar-wrapper avatar-small">
-					<img src="https://scontent-xsp1-1.xx.fbcdn.net/v/t1.0-9/s960x960/87853049_2481558942096235_8369025410146500608_o.jpg?_nc_cat=110&_nc_sid=09cbfe&_nc_ohc=0dU4W6nYBk0AX-ZHz-P&_nc_ht=scontent-xsp1-1.xx&_nc_tp=7&oh=20d12357dd09465c5ed2526555651580&oe=5EA2FF44"
+					<img
+						src="https://scontent-xsp1-1.xx.fbcdn.net/v/t1.0-9/s960x960/87853049_2481558942096235_8369025410146500608_o.jpg?_nc_cat=110&_nc_sid=09cbfe&_nc_ohc=0dU4W6nYBk0AX-ZHz-P&_nc_ht=scontent-xsp1-1.xx&_nc_tp=7&oh=20d12357dd09465c5ed2526555651580&oe=5EA2FF44"
 						alt="avatar" />
 				</div>
 				<div class="bubble bubble-dark"></div>
@@ -61,8 +64,15 @@
 	<script src="/webjars/sockjs-client/sockjs.min.js"></script>
 	<script src="/webjars/stomp-websocket/stomp.min.js"></script>
 	<!-- 폰트어썸 cdn -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-	<script type="text/javascript">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+	<script th:inline="javascript">
+			/*<![CDATA[*/
+			var header = /*[[${_csrf.headerName}]]*/'defalut';
+			var token = /*[[${_csrf.token}]]*/'defalut';
+			console.log(header);
+			console.log(token);
+			/*]]>*/
 		//Content Loaded
 		window.addEventListener("DOMContentLoaded", (e) => {
 			var header = document.querySelector(".header");
@@ -109,8 +119,9 @@
 			var url = new URL(link);
 			const urlParams = url.searchParams;
 			let chatroomNo = urlParams.getAll('chatroomNo');
-			let bandMemberNo = urlParams.getAll('bandMemberNo');
+			let userNo = urlParams.getAll('bandMemberNo');
 			console.log(chatroomNo)
+			console.log(userNo)
 			// 웹소켓 구독하기
 			var stompClient = null;
 
@@ -119,7 +130,6 @@
 				stompClient = Stomp.over(socket);
 				stompClient.connect({}, function (frame) {
 					setConnected(true);
-					console.log(chatroomNo)
 					console.log('Connected: ' + frame);
 					//방 구독하기
 					stompClient.subscribe('/subscribe/chat/room/' + chatroomNo, function () { 
@@ -144,9 +154,9 @@
 						// 입장메세지 보내기
 						stompClient.send('/publish/chat/enter', {}, JSON.stringify({ 
 							chatroomNo: chatroomNo, 
-							bandMemberNo: bandMemberNo }))
+							bandMemberNo: userNo }))
 						});
-				
+						
 					});
 			}
 			
@@ -154,7 +164,7 @@
 			$('.button-send').click(function sendMessage() {
 				stompClient.send("/publish/chat/message", {}, JSON.stringify({
 					chatroomNo : chatroomNo,
-					bandMemberNo: bandMemberNo,
+					bandMemberNo: userNo,
 					messageContent: document.querySelector("#inputText").value
 				}));
 				

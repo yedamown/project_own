@@ -25,6 +25,10 @@ public class BandMemberDetailController {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		vo.setUserId(user.getUserId());
+		String bmn = bandMemberDetailService.getBandMemberNo(vo);
+		System.out.println("밴드멤버디테일컨트롤러====================="+bmn);
+				
+		vo.setBandMemberNo(bmn);
 		vo.setBandNo(vo.getBandNo());
 		model.addAttribute("memberList", bandMemberDetailService.bandMemberList(vo));
 		return "content/chat/memberTest";

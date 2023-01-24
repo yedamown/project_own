@@ -30,20 +30,29 @@ public class ChatController {
 	@PostMapping("/createChatroom")
 	@ResponseBody
 	public String createChatroom(@RequestBody List<ChatroomVO> list) {
+		System.out.println("채팅방 list===========" + list);
 		return chatService.createChatroom(list);
 	}
-
+	
+	// 기존 채팅방 번호 가져오기 
+	@PostMapping("/findChatroomNo")
+	@ResponseBody
+	public String findChatroomNo(@RequestBody ChatroomVO vo) {
+		System.out.println("채팅방 번호===========" + vo);
+		return chatService.findChatroomNo(vo);
+	}
+	
+	
 	// 채팅 페이지 이동
 	@PostMapping("/chatroom")
 	public String chatPage() {
-		// 밴드 멤버 번호로 닉네임 찾아서 모델에 저장시켜 보내기.
 		return "content/chat/chatroom";
 	}
 
 	// 채팅 입장 메세지
 	@MessageMapping("/chat/enter")
 	public void greeting(MessageVO vo) throws Exception {
-		System.out.println("채팅 연결성공");
+		System.out.println("채팅 입장성공===========" + vo);
 		// 받아온 메세지 객체에서 밴드멤버식별번호를 가져와 닉네임 set
 		vo.setBandNickname(bandMemberDetailService.getBandMemberNickname(vo));
 		vo.setMessageContent(vo.getBandNickname() + "님이 채팅방에 참여하였습니다.");
@@ -51,7 +60,7 @@ public class ChatController {
 		template.convertAndSend("/subscribe/chat/room/" + vo.getChatroomNo(), vo);
 	}
 
-	// 채팅 입장 메세지
+	// 채팅 메세지
 	@MessageMapping("/chat/message")
 	public void message(MessageVO vo) throws Exception {
 		// 메세지 DB에 저장
