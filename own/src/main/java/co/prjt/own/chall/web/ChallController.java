@@ -1,7 +1,6 @@
 package co.prjt.own.chall.web;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,66 +50,46 @@ public class ChallController {
 	@Autowired ValidationService validation;
 	@Autowired CResultService result;
 
-	/*
+
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
-	// @ResponseBody 데이터를 다시 가져올때.. 안붙이면.. 하얀 html에 받아오는 값이뜬다 ㅎ
+	//@ResponseBody 데이터를 다시 가져올때.. 안붙이면.. 하얀 html에 받아오는 값이뜬다 ㅎ
 	public String challHome(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
 		HttpSession session = request.getSession();
 //		session.setAttribute("loginUser", ownService.login("kmh"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		System.out.println("===================도전 홈"+user);
-		challenge.getChallAll(vo1);
+		//페이징정보담은 
 		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);	
-		//참여회원 넣은 도전 리스트 담아둘 새 리스트
-		List<ChallengeVO> newMemList = new ArrayList<ChallengeVO>();
-		//멀티미디어 정보 담을 새 리스트
-		List<MultimediaVO> newList = new ArrayList<MultimediaVO>();
+		//페이징 담은 곳에다가 참여회원 담을 곳.
+		List<ChallengeVO> newList = new ArrayList<ChallengeVO>();
+		//참여중인 회원 넣기
 		for(ChallengeVO i: cList) {
 			//참여회원수 검색해서 넣기
 			int r= memberList.getChallMemNum(i.getChallNo());
 			i.setNowMember(r);
-			newMemList.add(i);
-			//멀티미디어 이미지 검색
-			if(common.selectImgAll(i.getChallNo())!=null){
-				List<MultimediaVO> imgList =  common.selectImgAll(i.getChallNo());
-				if(imgList.size()!=0) {
-					System.out.println(imgList.get(0));
-					newList.add(imgList.get(0));
-				}
-			}
+			newList.add(i);
 		}
-		model.addAttribute("popChall", newMemList);
-		model.addAttribute("popChallImg",newList);
+		//전체 도전리스트
 		if(user != null) {
-			//내가 참여중인 진행중인 도전
-			//도전정보  - 멤버상태 승인 / 도전상태 우선 시작전! 모델에 담아 보내기
-			//도전번호 뽑아내기 위해 도전들 담아두는 리스트
-			List<ChallengeVO> myList = challenge.getMyChall(user.getUserId());	
-			//참여회원 넣은 도전 리스트 담아둘 새 리스트
-			List<ChallengeVO> myChallList = new ArrayList<ChallengeVO>();
-			//멀티미디어 정보 담아둘 새 리스트
-			List<MultimediaVO> myImgList = new ArrayList<MultimediaVO>();
-			//각 도전번호의 현재 회원 참여중 회원 뽑아내기 위한...리스트for문
+			String id = user.userId;
+			vo1.setUserId(id);
+			//6개로 페이징	
+			List<ChallengeVO> myList = challenge.myPageChall(vo1, paging);	
+			//참여중 회원 담을 새로운 리스트
+			List<ChallengeVO> myNewList = new ArrayList<ChallengeVO>();
 			for(ChallengeVO i: myList) {
+				//참여회원수 검색해서 넣기
 				int r= memberList.getChallMemNum(i.getChallNo());
 				i.setNowMember(r);
-				myChallList.add(i);
-			//도전담아둔 곳에서 도전번호꺼내서 멀티미디어에서 포문돌림.
-				if(common.selectImgAll(i.getChallNo())!=null){
-					List<MultimediaVO> imgList =  common.selectImgAll(i.getChallNo());
-					if(imgList.size()!=0) {
-						System.out.println(imgList.get(0));
-						myImgList.add(imgList.get(0));
-					}
-				}
+				myNewList.add(i);
 			}
-			model.addAttribute("MyChall", myChallList);
-			model.addAttribute("MyChallImg", myImgList);
+			model.addAttribute("myChall", myNewList);
 		} 
+		model.addAttribute("popChall", newList);
 		return "content/chall/challHome";
 	}
-	*/
+
 	//홈 테스트
 	@GetMapping("/hometest")
 	public String challHomeTest (Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
@@ -118,9 +97,18 @@ public class ChallController {
 //		session.setAttribute("loginUser", ownService.login("kmh"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		System.out.println("===================도전 홈"+user);
-		challenge.getChallAll(vo1);
+		//페이징정보담은 
 		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);	
-		model.addAttribute("popChall", cList);
+		//페이징 담은 곳에다가 참여회원 담을 곳.
+		List<ChallengeVO> newMemList = new ArrayList<ChallengeVO>();
+		//참여중인 회원 넣기
+		for(ChallengeVO i: cList) {
+			//참여회원수 검색해서 넣기
+			int r= memberList.getChallMemNum(i.getChallNo());
+			i.setNowMember(r);
+			newMemList.add(i);
+		}
+		model.addAttribute("popChall", newMemList);
 		//테스트 중~~!!!
 		return "content/chall/challHomeTest";
 		}
@@ -129,7 +117,17 @@ public class ChallController {
 	@GetMapping("/popChallAjax")
 	@ResponseBody
 	public List<ChallengeVO> popChallAjax(Model model, Paging paging, ChallengeVO vo) {
-		return challenge.pageChallList(vo, paging);
+		List<ChallengeVO> cList = challenge.pageChallList(vo, paging);	
+		//페이징 담은 곳에다가 참여회원 담을 곳.
+		List<ChallengeVO> newMemList = new ArrayList<ChallengeVO>();
+		//참여중인 회원 넣기
+		for(ChallengeVO i: cList) {
+		//참여회원수 검색해서 넣기
+			int r= memberList.getChallMemNum(i.getChallNo());
+			i.setNowMember(r);
+			newMemList.add(i);
+		}
+		return newMemList;
 	}
 	
 	

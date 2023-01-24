@@ -44,7 +44,6 @@
 <meta charset="utf-8">
 <title>OWN _ 도전</title>
 </head>
-
 <body>
 	<!-- 공통헤더 -->
 	<!-- Navbar Start -->
@@ -113,121 +112,69 @@
 	<a href="/own/chall/insertFormChall">내가 만든 도전보기</a>
 	<h3>오운 홈</h3>
 
-	<!-- Class Start -->
-
-	<!-- 나의 도전 -->
-	<div class="container-fluid pt-5" th:if="${session.loginUser}">
-		<div class="container">
-			<div class="text-center pb-2">
-				<p class="section-title px-5">
-					<span class="px-2">My challenge</span>
-				</p>
-				<h1 class="mb-4">나의 진행중인 도전</h1>
-			</div>
+	<!-- 운동카테고리 -->
+	<!-- Facilities Start -->
+	<div class="container-fluid pt-5">
+		<div class="container pb-3">
 			<div class="row">
-				<th:block th:each="cha: ${MyChall}">
-					<div class="col-lg-4 mb-5">
-						<div class="card border-0 bg-light shadow-sm pb-2">
-							<input type="hidden" th:value="${cha.challNo}" />
-							<th:block th:each="cImg: ${MyChallImg}"
-								th:if="${cha.challNo == cImg.identifyId} ">
-								<img class="card-img-top mb-2"
-									th:src="|/imgView/${cImg.mediaServerFile}|"
-									alt="|${cImg.identifyId}|" />
-							</th:block>
-							<div class="card-body text-center">
-								<h4 class="card-title" th:text="${cha.challTitle}"></h4>
-								<p class="card-text">간단소개?</p>
-							</div>
-							<div class="card-footer bg-transparent py-4 px-5">
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>CATEGORY</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.challCategory}"></div>
-								</div>
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>START DATE</strong>
-									</div>
-									<div class="col-6 py-1"
-										th:text="${#dates.format(cha.challStartdate, 'MM월 dd일')}"></div>
-								</div>
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>도전 횟수</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.challFreq}"></div>
-								</div>
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>도전 금액</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.challPrice}"></div>
-								</div>
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>현재 도전 회원</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.nowMember}"></div>
-								</div>
-								<div class="row">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>도전 기간</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.challDuration}"></div>
-								</div>
-							</div>
-							<a
-								th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(cha.challNo, 'CHA_')})}"
-								class="btn btn-primary px-4 mx-auto mb-4">상세보기</a>
-						</div>
-					</div>
-				</th:block>
+				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
+					<i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
+					<p>수영</p>
+				</div>
+				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
+					<i class="fa fa-swimmer "></i>
+					<p>수영</p>
+				</div>
+				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
+					<i class="fa fa-baseball-ball"></i>
+					<p>수영</p>
+				</div>
+				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
+					<i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
+					<p>수영</p>
+				</div>
+				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
+					<i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
+					<p>수영</p>
+				</div>
+				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
+					<i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
+					<p>수영</p>
+				</div>
 			</div>
 		</div>
 	</div>
+	<!-- Facilities Start -->
 
-	<!-- 인기 도전 -->
+	<!-- 운동카테고리 끝 -->
 
-
-
+	<!-- 나의 도전 -->
 	<div class="container-fluid pt-5">
 		<div class="container">
 			<div class="text-center pb-2">
 				<p class="section-title px-5">
-					<span class="px-2">Popular Blog</span>
+					<span class="px-2">My Page</span>
 				</p>
-				<h1 class="mb-4">마이 도전</h1>
+				<h1 class="mb-4">나의 도전</h1>
 			</div>
+			<!-- 여기부터  6개 한블럭? -->
 			<div class="row pb-3">
-
-				<th:block th:each="cha: ${MyChall}">
+				<th:block th:each="my: ${myChall}">
 					<div class="col-lg-4 mb-4">
 						<div class="card border-0 shadow-sm mb-2">
-
-							<th:block th:each="cImg: ${MyChallImg}"
-								th:if="${cha.challNo == cImg.identifyId} ">
-								<img class="card-img-top mb-2"
-									th:src="|/imgView/${cImg.mediaServerFile}|"
-									alt="|${cImg.identifyId}|" />
-							</th:block>
-
+							<img class="card-img-top mb-2"
+								th:src="|/imgView/${my.firstImage}|" alt=""
+								style="height: 230px; object-fit: cover" />
 							<div class="card-body bg-light text-center p-4">
-								<h4 class="card-title" th:text="${cha.challTitle}"></h4>
+								<input type="hidden" th:value="${my.challNo}" />
+								<h4 class="" th:text="${my.challTitle}"></h4>
 								<div class="d-flex justify-content-center mb-3">
-									<small class="mr-3"><i
-										class="fa fa-user text-primary"></i>[[${cha.nowMember}]]명 참여중</small>
-									<small class="mr-3"><i
-										class="fa fa-folder text-primary"></i>[[${cha.challDuration}]]주
-										동안</small> 
-										<small class="mr-3"><i
-										class="fa fa-comments text-primary"></i>주 [[${cha.challFreq}]]
-										회</small>
+									<small class="mr-3">[[${#dates.format(my.challStartdate,
+										'M/d')}]]시작</small> <small class="mr-3">[[${my.challDuration}]]주
+										동안</small> <small class="mr-3">주 [[${my.challFreq}]]회</small>
 								</div>
-
 								<a
-									th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(cha.challNo, 'CHA_')})}"
+									th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
 									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
 							</div>
 						</div>
@@ -235,28 +182,32 @@
 				</th:block>
 			</div>
 		</div>
+		<!-- 도전 6개 끝 -->
+
+		<!-- 페이징 -->
+		<!-- 페이징 -->
+
+
 	</div>
 
+	<!-- 나의도전 끝 -->
 
+	<!-- 새로운 도전 -->
 	<div class="container-fluid pt-5">
 		<div class="container">
 			<div class="text-center pb-2">
 				<p class="section-title px-5">
-					<span class="px-2">Popular challenge</span>
+					<span class="px-2">New challenge</span>
 				</p>
-				<h1 class="mb-4">현재 인기 도전</h1>
+				<h1 class="mb-4">새로운 도전</h1>
 			</div>
-			<div class="row">
+			<div class="row pb-3" id="challRow">
 				<th:block th:each="cha: ${popChall}">
 					<div class="col-lg-4 mb-5">
 						<div class="card border-0 bg-light shadow-sm pb-2">
-							<input type="hidden" th:value="${cha.challNo}" />
-							<th:block th:each="cImg: ${popChallImg}"
-								th:if="${cha.challNo == cImg.identifyId} ">
-								<img class="card-img-top mb-2"
-									th:src="|/imgView/${cImg.mediaServerFile}|"
-									alt="|${cImg.identifyId}|" />
-							</th:block>
+							<input type="hidden" th:value="${cha.challNo}" /> <img
+								class="card-img-top mb-2" th:src="|/imgView/${cha.firstImage}|"
+								alt="" />
 							<div class="card-body text-center">
 								<h4 class="card-title" th:text="${cha.challTitle}"></h4>
 								<p class="card-text">간단소개?</p>
@@ -337,41 +288,12 @@
 				</li>
 			</ul>
 		</nav>
-
+		<!-- 페이징버튼 끝 -->
 	</div>
-	<!-- Class End -->
+	<!-- 새로운 도전 끝 -->
 
-	<!-- Blog Start -->
-	<div class="container-fluid pt-5">
-		<div class="container">
-			<div class="text-center pb-2">
-				<p class="section-title px-5">
-					<span class="px-2">Popular Blog</span>
-				</p>
-				<h1 class="mb-4">인기있는 도전</h1>
-			</div>
-			<div class="row pb-3">
-				<div class="col-lg-4 mb-4">
-					<div class="card border-0 shadow-sm mb-2">
-						<img class="card-img-top mb-2" src="img/blog-1.jpg" alt="" />
-						<div class="card-body bg-light text-center p-4">
-							<h4 class="">Diam amet eos at no eos</h4>
-							<div class="d-flex justify-content-center mb-3">
-								<small class="mr-3"><i class="fa fa-user text-primary"></i>
-									Admin</small> <small class="mr-3"><i
-									class="fa fa-folder text-primary"></i> Web Design</small> <small
-									class="mr-3"><i class="fa fa-comments text-primary"></i>
-									15</small>
-							</div>
-							<a href="" class="btn btn-primary px-4 mx-auto my-2">Read
-								More</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Blog End -->
+	<!-- 인기 도전 -->
+	<!-- 인기도전 끝 -->
 
 	<!-- Footer Start -->
 	<div
@@ -474,71 +396,86 @@
 	</div>
 	<!-- Footer End -->
 
-</body>
-<script>
-	$('#addChallBtn').on('click', function() {
-		console.log('도전 등록이동버튼');
-		let userId = $('#userId').val();
-		console.log(userId);
-		if (userId != null) {
-			location.href = '/own/chall/insertFormChall';
-		} else {
-			alert('로그인을 먼저 해 주세요.')
-			location.href = '/own/login';
+	<script>
+
+		$('#pagegation').on('click', '.pagePort', function(){
+		    //페이지번호 + 밴드식별번호
+		    let page = $(this).attr('value');
+		    console.log($(this).attr('value'));
+		    $.ajax({
+		       url: '/own/chall/popChallAjax?page='+page,
+		       method: 'get',
+		    }).then(result => {
+		       console.log(result);
+				//형태만들기
+				let Chall = $('#ChallRow')
+				$('#challRow').empty();
+				result.forEach( cha => {
+		          console.log(cha.challNo)
+				  makeChallDiv(cha);
+		        })
+		
+		       //페이지 버튼 만들기
+		       $('#pagegation').empty();
+		          let pagingM = result[0].paging;
+		          //시작 버튼
+		        console.log(result[0]);
+		          let startpageTag = $('<ul class="pagination" />');
+		          $('#pagegation').append(startpageTag);
+		          //이전 버튼만들기
+		          if(pagingM.startPage>1){
+		             let pageBeforTag = `<li class="page-item">
+		                            <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
+		                            <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                            </li>`
+		                startpageTag.append(pageBeforTag);               
+		          }               
+		          //페이지목록..
+		          for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		             if(pg != pagingM.page){
+		                let pageTag = `<li class="page-item">
+		                            <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                            </li>`
+		                startpageTag.append(pageTag);
+		             } else if(pg == pagingM.page ){
+						 let pageTag =  `<li class="page-item active">
+							<a class="page-link" >${pg}</a>
+							</li>`
+							startpageTag.append(pageTag);
+						}
+					}               
+					//이후 버튼만들기
+					if(pagingM.endPage<pagingM.lastPage){
+						let pageAfterTag =`<li class="page-item">
+							<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+								<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+								</li>`
+								startpageTag.append(pageAfterTag);
+							}
+							$('#pagegation').append(startpageTag)
+						})
+		       })
+		
+		//챌린지 폼 만들기
+		function makeChallDiv(cha){
+			console.log(cha.challLeader);
+			let challNo = cha.challNo.substr(4);
+			console.log(challNo);
+			let div1 = $('<div />').addClass("col-lg-4 mb-4");
+			let div2 = $('<div />').addClass("card border-0 shadow-sm mb-2");
+			let hiddenInput = $('<input />').attr('type', 'hidden').val(cha.challNo);
+			let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage).attr('style', 'height:230px; object-fit: cover')
+			let div2_2 = $('<div />').addClass("card-body bg-light text-center p-4")
+			let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
+			let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.nowMember + '참여중')),
+																						   ($('<small />').addClass("mr-3").text(cha.challDuration + '주 동안')),
+																						   ($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회'))
+																						  );
+			let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', 'detailChall?challNo=' + challNo).text('도전하러 가기'); 
+			div1.append(div2.append(hiddenInput, img2_1, div2_2.append(h4_3, div_3, a_3)));
+			$('#challRow').append(div1);
 		}
-	});
-	
-	$('#pagegation').on('click', '.pagePort', function(){
-        //페이지번호 + 밴드식별번호
-        let page = $(this).attr('value');
-        console.log($(this).attr('value'));
-        console.log(bandNo);
-        $.ajax({
-           url: '/own/chall/popChallAjax?page='+page,
-           method: 'get',
-        }).then(result => {
-           console.log(result);
-        })
-           //페이지 버튼 만들기
-           $('#pagegation').empty();
-              let pagingM = result[0].paging;
-              //시작 버튼
-            console.log(result[0]);
-              let startpageTag = $('<ul class="pagination" />');
-              $('#pagegation').append(startpageTag);
-              //이전 버튼만들기
-              if(pagingM.startPage>1){
-                 let pageBeforTag = `<li class="page-item">
-                                <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
-                                <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
-                                </li>`
-                    startpageTag.append(pageBeforTag);               
-              }               
-              //페이지목록..
-              for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
-                 if(pg != pagingM.page){
-                    let pageTag = `<li class="page-item">
-                                <a class="page-link pagePort" value=${pg}>${pg}</a>
-                                </li>`
-                    startpageTag.append(pageTag);
-                 } else if(pg == pagingM.page ){
-                    let pageTag =  `<li class="page-item active">
-                                <a class="page-link" >${pg}</a>
-                                </li>`
-                    startpageTag.append(pageTag);
-                 }
-              }               
-              //이후 버튼만들기
-              if(pagingM.endPage<pagingM.lastPage){
-                 let pageAfterTag =`<li class="page-item">
-                                <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
-                                <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
-                                </li>`
-                 startpageTag.append(pageAfterTag);
-              }
-              $('#pagegation').append(startpageTag)
-           })
+			
 </script>
-</div>
 </body>
 </html>
