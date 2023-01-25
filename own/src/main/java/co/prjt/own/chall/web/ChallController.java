@@ -72,6 +72,7 @@ public class ChallController {
 		}
 		//전체 도전리스트
 		if(user != null) {
+			//나의도전
 			String id = user.userId;
 			vo1.setUserId(id);
 			//6개로 페이징	
