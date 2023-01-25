@@ -33,4 +33,9 @@ public interface ChallengeMapper {
 	//멤버리스트와 조인 - 아이디로 검색
 	List<ChallengeVO> getMyChall(ChallengeVO vo);
  
+	
+	/* ------------------------------  도전 검색 ------------------------------------------*/
+	
+	List<ChallengeVO> searchChall(String words);
+	
 }

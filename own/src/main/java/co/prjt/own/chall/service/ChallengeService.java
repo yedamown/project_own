@@ -38,4 +38,9 @@ public interface ChallengeService {
 	
 	//마이페이지 - 나의도전목록 페이징 6개씩
 	List<ChallengeVO> myPageChall(ChallengeVO vo ,Paging paging);  
+	
+	/* ------------------------------  도전 검색 ------------------------------------------*/
+	
+	List<ChallengeVO> searchChall(String words);
+	
 }

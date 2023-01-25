@@ -97,5 +97,10 @@ public class ChallengeServiceImpl implements ChallengeService{
 		return list;
 	}
 
+	@Override
+	public List<ChallengeVO> searchChall(String words) {
+		return mapper.searchChall(words);
+	}
+
 
 }

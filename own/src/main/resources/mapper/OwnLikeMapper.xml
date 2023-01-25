@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.prjt.own.common.mapper.OwnLikeMapper">
+	<insert id="addLike">
+		<selectKey keyProperty="likeNo" resultType="string" order="BEFORE">
+			SELECT OWL_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+			INSERT INTO OWN_LIKE(LIKE_NO, USER_ID, CATEGORY_NO, CATEGORY)
+			VALUES('OWL_'||#{likeNo}, 
+      			   #{userId}, 
+       			   #{categoryNo},
+       			   #{category})
+	</insert>
+
+	<sql id="condition">
+		<where>
+				<if test="userId !=null and categoryNo !=null"> 
+					USER_ID = #{userId}
+					AND CATEGORY_NO = #{categoryNo}	
+				</if>
+				<if test="categoryNo !=null and userId ==null " >
+					CATEGORY_NO = #{categoryNo}	
+				</if>
+				<if test="userId !=null and categoryNo ==null">
+					CATEGORY_NO = #{categoryNo}	
+				</if>
+		</where>
+	</sql>
+		
+	<!-- 단건 삭제 -->
+	<delete id="delLike">
+		DELETE FROM OWN_LIKE
+		WHERE USER_ID = #{userId}
+		AND CATEGORY_NO = #{categoryNo}	
+	</delete>
+	
+	<!-- 좋아요 여부 체크. 단건조회 -->
+	<select id="getLike" resultType="co.prjt.own.common.service.OwnLikeVO">
+		SELECT * FROM OWN_LIKE
+		WHERE CATEGORY_NO = #{categoryNo}
+		AND USER_ID = #{userId}
+	</select>
+	
+	<!-- 좋아요 리스트 가져오기 .. 우선 회원아이디와 각 식별번호코드로 조회-->
+	<select id="getAllLike" resultType="co.prjt.own.common.service.OwnLikeVO">
+		SELECT * FROM OWN_LIKE
+		<include refid="condition"/>
+	</select>
+	
+	<!-- 좋아요 수 카운트 회원번호 / 식별번호코드로 조회 -->
+	<select id="countLike" resultType="int">
+		SELECT COUNT(*) FROM OWN_LIKE
+		<include refid="condition"/>
+	</select>
+
+</mapper>

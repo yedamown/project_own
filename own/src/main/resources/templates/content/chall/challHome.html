@@ -1,7 +1,8 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko"
+	>
 
 <head>
 <!-- jquery -->
@@ -83,22 +84,21 @@
 	<!-- Navbar End -->
 
 	<!-- Header Start -->
-	<div class="container-fluid bg-primary mb-5">
-		<div
-			class="d-flex flex-column align-items-center justify-content-center"
-			style="min-height: 400px">
-			<h3 class="display-3 font-weight-bold text-white">Contact Us</h3>
+	<div class="container-fluid bg-primary mb-5" style="padding: 0">
+		<div class="d-flex flex-column align-items-center justify-content-center"
+			style="min-height: 400px; background-image: url(/img/chall/category/swim_main.jpg);
+			background-size: contain" >
+		<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
 			<div class="d-inline-flex text-white">
 				<p class="m-0">
-					<a class="text-white" href="">Home</a>
-				</p>
+					<a class="text-white" href="">Home</a></p>
 				<p class="m-0 px-2">/</p>
 				<p class="m-0">Contact Us</p>
 			</div>
 		</div>
 	</div>
 	<!-- Header End -->
-
+	<div>[[${paging}]]</div>
 	<div th:if="${session.loginUser}">
 		도전 홈 _ 로그인 중
 		<h1 th:text="${session.loginUser.userId}"></h1>
@@ -112,44 +112,80 @@
 	<a href="/own/chall/insertFormChall">내가 만든 도전보기</a>
 	<h3>오운 홈</h3>
 
+	
+	<!-- 검색  -->
+	<div class="container-fluid pt-4 mb-4" style="width: 650px">
+						<div class="input-group">
+							<input type="text" class="form-control form-control-lg" id="searchWord"
+								placeholder="Keyword" />
+							<div class="input-group-append" id="searchBtn">
+								<span class="input-group-text bg-transparent text-primary"><i
+									class="fa fa-search"></i></span>
+							</div>
+						</div>
+				</div>
+	<!-- 검색 끝 -->
+	
 	<!-- 운동카테고리 -->
-	<!-- Facilities Start -->
-	<div class="container-fluid pt-5">
-		<div class="container pb-3">
-			<div class="row">
-				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
-					<i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
-					<p>수영</p>
+	<div class="container-fluid pt-4">
+		<div class="container pb-4" style="width: 800px">
+			<div class="row" style="justify-content: center;" id="categoryBtn">
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" value="춤 댄스" picname="댄스"/>
+					<p>1댄스</p>
 				</div>
-				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
-					<i class="fa fa-swimmer "></i>
-					<p>수영</p>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_30.png" style="width: 80px; height: 80px; object-fit: cover" alt="하이킹"/>
+					<p>2하이킹</p>
 				</div>
-				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
-					<i class="fa fa-baseball-ball"></i>
-					<p>수영</p>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_2.png" style="width: 80px; height: 80px; object-fit: cover" alt="3"/>
+					<p>3계단오르기</p>
 				</div>
-				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
-					<i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
-					<p>수영</p>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>4댄스</p>
 				</div>
-				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
-					<i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
-					<p>수영</p>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>5댄스</p>
 				</div>
-				<div class="col-lg-2 col-md-3 pb-1" style="text-align: center;">
-					<i class="flaticon-022-drum h1 font-weight-normal text-primary mb-3"></i>
-					<p>수영</p>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>6댄스</p>
+				</div>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/hiking.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>7하이킹</p>
+				</div>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/swimming.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>8수영</p>
+				</div>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>9댄스</p>
+				</div>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>10댄스</p>
+				</div>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>11댄스</p>
+				</div>
+				<div style="text-align: center; width: 120px; height: 120px">
+				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
+					<p>12댄스</p>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- Facilities Start -->
 
 	<!-- 운동카테고리 끝 -->
 
 	<!-- 나의 도전 -->
-	<div class="container-fluid pt-5">
+	<div class="container-fluid pt-3">
 		<div class="container">
 			<div class="text-center pb-2">
 				<p class="section-title px-5">
@@ -397,7 +433,29 @@
 	<!-- Footer End -->
 
 	<script>
-
+	 //카테고리 그림 클릭 시 검색으로 이동
+	    $('#categoryBtn div img').click(function(){
+	    	console.log(this);
+	    	let picname = $(this).attr('picname');
+	    	console.log(picname);
+	    	//아작스로 이동
+	    	location.href = '/own/chall/applyForm?challNo=' + cNo
+	    })
+    
+ 		//검색
+ 		$('#searchBtn').on('click', function(){
+ 			console.log("헐헐");
+ 			console.log($('#searchWord').val());
+			let searchWord = $('#searchWord').val();
+			console.log(searchWord);
+			if(searchWord != ''){
+				location.href = '/own/chall/searchChall?searchWord=' + searchWord
+			} else if(searchWord == ''){
+				alert('검색어를 입력해주세요!');
+			}
+ 		})
+ 		
+		//페이징 처리..아작스
 		$('#pagegation').on('click', '.pagePort', function(){
 		    //페이지번호 + 밴드식별번호
 		    let page = $(this).attr('value');
