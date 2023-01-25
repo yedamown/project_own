@@ -240,13 +240,7 @@ public class BandController {
 		model.addAttribute("member", bandMemberDetailService.getBandMemberDetail(vo));
 		return "content/band/myOption";
 	}
-	//밴드 수정으로 이동 
-	@GetMapping("/bandGroup/bandOption")
-	public String bandOption(Model model, HttpServletRequest request, BandVO vo) {
-		//임시텍스트
-		model.addAttribute("imsi", "임시텍스트 밴드설정");
-		return "content/band2/bandOption";
-	}
+	
 	//밴드 사진으로 이동 
 	@GetMapping("/bandGroup/bandPhoto")
 	public String bandPhoto(Model model,  BandVO vo) {

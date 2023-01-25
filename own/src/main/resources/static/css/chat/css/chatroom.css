@@ -85,6 +85,28 @@ img {
 	cursor: pointer;
 }
 
+.chat-room {
+	overflow: scroll;
+	min-height: 300px;
+	height: 25px;
+}
+
+/* 스크롤바 설정*/
+.chat-room::-webkit-scrollbar{
+    width: 6px;
+}
+
+/* 스크롤바 막대 설정*/
+.chat-room::-webkit-scrollbar-thumb{
+    background: linear-gradient(#be79df, #fbcffc);
+    border-radius: 25px;
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.chat-room::-webkit-scrollbar-track{
+    background-color: #f7f9fb;
+}
+
 .chat-box .chat-room {
 	min-height: 300px;
 	background-color: #f7f9fb;
@@ -178,7 +200,7 @@ img {
 	position: absolute;
 	top: 5px;
 	z-index: -1;
-	right: -52px;
+	right: -10px;
 	border-radius: 999px;
 	box-shadow: 0 0 25px -5px lightgray;
 	transition: 0.3s all ease-out;
