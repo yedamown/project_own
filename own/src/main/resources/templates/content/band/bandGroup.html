@@ -168,6 +168,7 @@
 	                                    <p id="bandOption"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정</p>
 	                                </div>
 	                                <hr>
+
                                 </div>
                                 <div th:unless="${BandMemberDetail}">
                                 <!-- =======가입======= -->
@@ -659,6 +660,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     	$('#myOption').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/myOption?bandNo="+bandNo);
     	})
+    	//가치 설정으로 이동
     	$('#bandOption').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandOption?bandNo="+bandNo);
     	})

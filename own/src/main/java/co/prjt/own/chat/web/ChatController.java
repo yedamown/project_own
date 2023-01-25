@@ -6,16 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.prjt.own.band.service.BandMemberDetailService;
 import co.prjt.own.chat.service.ChatService;
 import co.prjt.own.chat.service.ChatroomVO;
 import co.prjt.own.chat.service.MessageVO;
+import co.prjt.own.exercise.service.ExerRecordVO;
 
 @Controller
 public class ChatController {
@@ -52,7 +55,7 @@ public class ChatController {
 	}
 
 	// 채팅 입장 메세지
-	@MessageMapping("/chat/enter")
+	@MessageMapping("/chat/room/enter")
 	public void greeting(MessageVO vo) throws Exception {
 		System.out.println("채팅 입장성공===========" + vo);
 		// 받아온 메세지 객체에서 밴드멤버식별번호를 가져와 닉네임 set
@@ -63,12 +66,19 @@ public class ChatController {
 	}
 
 	// 채팅 메세지
-	@MessageMapping("/chat/message")
+	@MessageMapping("/chat/room")
 	public void message(MessageVO vo) throws Exception {
 		// 메세지 DB에 저장
 		chatService.saveMessage(vo);
 		// 해당 방으로 메세지 전송
+		// 구독 주소랑 같아야함 
 		template.convertAndSend("/subscribe/chat/room/" + vo.getChatroomNo(), vo);
 	}
-
+	
+	// 채팅방의 지난 메세지 불러오기
+	@GetMapping("/getMessage")
+	@ResponseBody
+	public List<MessageVO> getMessage(@RequestParam String chatroomNo) {
+		return chatService.getMessage(chatroomNo);
+	}
 }

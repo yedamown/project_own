@@ -247,7 +247,9 @@ public class BandController {
 		model.addAttribute("member", bandMemberDetailService.getBandMemberDetail(vo));
 		return "content/band/myOption";
 	}
-	//밴드 사진함으로 이동 
+	
+	//밴드 사진으로 이동 
+
 	@GetMapping("/bandGroup/bandPhoto")
 	public String bandPhoto(Model model,  BandVO vo) {
 		//임시텍스트
