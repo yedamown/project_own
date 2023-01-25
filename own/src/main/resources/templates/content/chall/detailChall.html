@@ -1,7 +1,8 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko"
+	>
 
 <head>
 <!-- jquery -->
@@ -41,6 +42,7 @@
 <script src="/css/chall/mail/contact.js"></script>
 <!-- Template Javascript -->
 <script src="/css/chall/js/main.js"></script>
+
 <!-- google chart -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -49,42 +51,49 @@
 </head>
 
 <body>
-	<!-- <div layout:fragment="content"> -->
-	<!-- Navbar Start -->
-	<div class="container-fluid bg-light position-relative shadow">
-		<nav
-			class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
-			<a href="" class="navbar-brand font-weight-bold text-secondary"
-				style="font-size: 50px"> <i class="flaticon-043-teddy-bear"></i>
-				<span class="text-primary">OWN_Challenges</span>
-			</a>
-			<button type="button" class="navbar-toggler" data-toggle="collapse"
-				data-target="#navbarCollapse">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse justify-content-between"
-				id="navbarCollapse">
-				<div class="navbar-nav font-weight-bold mx-auto py-0">
-					<a href="index.html" class="nav-item nav-link">Home</a> <a
-						href="about.html" class="nav-item nav-link">About</a> <a
-						href="class.html" class="nav-item nav-link">Classes</a> <a
-						href="team.html" class="nav-item nav-link">Teachers</a> <a
-						href="gallery.html" class="nav-item nav-link">Gallery</a>
-					<div class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle"
-							data-toggle="dropdown">Pages</a>
-						<div class="dropdown-menu rounded-0 m-0">
-							<a href="blog.html" class="dropdown-item">Blog Grid</a> <a
-								href="single.html" class="dropdown-item">Blog Detail</a>
-						</div>
-					</div>
-					<a href="contact.html" class="nav-item nav-link active">Contact</a>
+
+        <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+        <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h1 class="m-0">오늘의 운동</h1>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="/" class="nav-item nav-link active">Home</a>
+                <div class="nav-item dropdown">
+                    <a href="/own/ownRecordForm" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">오운완</a>
+                    <div class="dropdown-menu bg-light m-0">
+                        <a href="/own/ownRecordForm" class="dropdown-item">운동기록 폼</a>
+                        <a href="/own/ownRecordList" class="dropdown-item">운동분석</a>
+                    </div>
+                </div>
+                <a href="/own/sns" class="nav-item nav-link">SNS</a>
+                <a href="/own/band" class="nav-item nav-link">밴드</a>
+                <a href="/own/chall/home" class="nav-item nav-link">챌린저스</a>
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+  				<a href="/own/admin/userList" class="nav-item nav-link">관리페이지</a>
 				</div>
-				<a href="" class="btn btn-primary px-4">Join Class</a>
-			</div>
-		</nav>
-	</div>
-	<!-- Navbar End -->
+				<div sec:authorize="hasRole('ROLE_USER')">
+                <a href="/own/mypage" class="nav-item nav-link">마이페이지</a>
+				</div>          
+				<div sec:authorize="hasRole('ROLE_HU_USER')">
+                <a href="/own/mypage" class="nav-item nav-link">마이페이지</a>
+				</div>          
+                <div th:if="${session.loginUser}"><a href="/own/logout" class="nav-item nav-link">로그아웃</a></div>
+				<div th:unless="${session.loginUser}"><a href="/own/login" class="nav-item nav-link">로그인</a>
+            </div>
+            <div th:unless="${session.loginUser}">
+            <a href="/own/SigninForm" class="nav-item nav-link">회원가입</a>
+            </div>
+            </div>
+        </div>
+   </nav>
+
+
+	
 
 	<!-- Header Start -->
 	<div class="container-fluid bg-primary mb-5">
@@ -133,9 +142,10 @@
 						<div class="col-6 col-md-12">
 							<i class="fa-sharp fa-solid fa-share-nodes"></i>
 							<h2 class="fa fa-regular fa-share text-primary"></h2>
-							<h2 class="fa fa-regular fa-bookmark text-primary" id="bmBtn"></h2>
-							<h2 class="fa fa-solid fa-bookmark text-primary" id="bmBtn"
+							<h2 th:if="${myLike != null }" class="fa fa-regular fa-bookmark text-primary bmBtn"></h2> 
+							<h2 th:if="${myLike ==null }" class="fa fa-solid fa-bookmark text-primary bmBtn" 
 								style="font-weight: 100;"></h2>
+							</th:block>
 							<p class="mr-3">
 								<i class="fa fa-users text-primary"></i> 8명 참여중
 							</p>
@@ -162,13 +172,10 @@
 								도전금액:<span th:text="${detailChall.challPrice}"></span>
 							</button>
 						</div>
-						<a th:if="${memcheck !=null }"
-							class="btn btn-primary mt-2 py-2 px-4">이미 참여중인 도전</a> <a
-							th:if="${memcheck ==null }"
-							class="btn btn-primary mt-2 py-2 px-4" id="applyBtn">도전 신청하기</a>
+						<a th:if="${memcheck !=null }" class="btn btn-primary mt-2 py-2 px-4">이미 참여중인 도전</a> <a
+							th:if="${memcheck ==null }" class="btn btn-primary mt-2 py-2 px-4" id="applyBtn">도전 신청하기</a>
 						<div th:if="${myInfo}">
-							<a th:if="${leaderInfo.userId == myInfo.userId }"
-								class="btn btn-primary mt-2 py-2 px-4" id="resultProc">도전
+						<a th:if="${leaderInfo.userId == myInfo.userId }" class="btn btn-primary mt-2 py-2 px-4" id="resultProc">도전
 								결과처리하기</a>
 						</div>
 					</div>
@@ -266,14 +273,12 @@
 									<input type="hidden" th:name="${_csrf.parameterName}"
 										th:value="${_csrf.token}">
 									<div class="form-group">
-										<!--도전번호, 유저 아이디 히든 -->
-										<input id="challNo" name="challNo" type="hidden"
-											th:value="${detailChall.challNo}" /> <input id="userId"
-											name="userId" type="hidden" th:if="${memcheck !=null }"
-											th:value="${memcheck.userId}" /> <label for="name">NickName
-											*</label> <input type="text" class="form-control" id="vldname"
-											th:if="${memcheck !=null }" th:value="${myInfo.memNickname}"
-											readonly />
+										<!--도전번호, 유저 아이디 히든 if를 걸면 해당 정보 가져오지 못하니 주의하기! -->
+										<input id="challNo" name="challNo" type="hidden" th:value="${detailChall.challNo}" /> 
+										<input id="userId" name="userId" type="hidden" th:if="${session.loginUser}" th:value="${session.loginUser.userId}" />
+										<label for="name">NickName *</label> 
+										<input type="text" class="form-control" id="vldname" th:if="${memcheck !=null }" 
+										 th:value="${myInfo.memNickname}" readonly />
 									</div>
 									<div class="form-group">
 										<label for="name">Date *</label> <input type="text"
@@ -612,6 +617,42 @@
        console.log(token);
      /*]]>*/
 
+	//좋아요 북마크 버튼 아작스
+	$('.bmBtn').click(function(){
+		console.log("북마크 버튼 클릭")
+		let cNo = $('#challNo').val();
+		let userId = $('#userId').val();
+		let category = "Chall";
+		console.log(cNo, userId)
+        $.ajax({
+			url:'/own/likeAjax',
+			method: 'post',
+			data: JSON.stringify({userId: userId,
+							      categoryNo: cNo,
+							      category: category
+								}),
+			beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token);
+			}, 
+			contentType: "application/json",
+			success:function(res){
+				console.log(res);
+				if(res == 'add'){
+				$('.bmBtn').removeAttr('style');					
+				}
+				else if(res == 'del'){
+				$('.bmBtn').attr('style', 'font-weight: 100')
+				}
+				else{
+					alert('다시 시도해주세요!');
+				}
+			},
+			error:function(err){
+				console.log(err);
+			}
+		})
+	})
+
     //메뉴 클릭 색깔 변경 이벤트
     $('#menu-filters li').click(function(){
     	$('#menu-filters li').removeClass('active');
@@ -825,7 +866,7 @@
 
 
     	//첨부파일 이미지 
-      ( /* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
+      	/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
         imageView = function imageView(att_zone, btn){
 
             var attZone = document.getElementById(att_zone);
@@ -920,11 +961,8 @@
             div.appendChild(btn)
             return div
             }
-        }
-        )('att_zone', 'btnAtt')
+        }('att_zone', 'btnAtt')
 
   </script>
-	</div>
 </body>
-
 </html>

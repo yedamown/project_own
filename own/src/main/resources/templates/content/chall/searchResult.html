@@ -1,0 +1,117 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	lang="ko">
+
+<head>
+<!-- jquery -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<meta content="Free HTML Templates" name="keywords" />
+<!-- Favicon -->
+<link href="/css/chall/img/favicon.ico" rel="icon" />
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap"
+	rel="stylesheet" />
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+	rel="stylesheet" />
+<!-- Flaticon Font -->
+<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+<!-- Libraries Stylesheet -->
+<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet" />
+<link href="/css/chall/lib/lightbox/css/lightbox.min.css"
+	rel="stylesheet" />
+<!-- Customized Bootstrap Stylesheet -->
+<link href="/css/chall/css/style.css" rel="stylesheet" />
+<!-- JavaScript Libraries -->
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="/css/chall/lib/easing/easing.min.js"></script>
+<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
+<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
+<!-- Contact Javascript File -->
+<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
+<script src="/css/chall/mail/contact.js"></script>
+<!-- Template Javascript -->
+<script src="/css/chall/js/main.js"></script>
+<meta charset="utf-8">
+<title>검색결과</title>
+</head>
+<body>
+<!-- 공통헤더 푸터 -->
+<h3>검색 결과</h3>
+<!-- Blog Start -->
+	<div class="container-fluid pt-5">
+		<div class="container">
+			<div class="text-center pb-2">
+				<p class="section-title px-5">
+					<span class="px-2">My Page</span>
+				</p>
+				<h1 class="mb-4">나의 도전</h1>
+			</div>
+			
+				<!-- 여기부터  6개 한블럭? -->
+			<div class="row pb-3" id="challRow">
+			
+				<th:block th:each="my: ${searchList}">
+					<div class="col-lg-4 mb-4" >
+						<div class="card border-0 shadow-sm mb-2">
+							<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt=""
+								style="height:240px; object-fit: cover" />
+							<div class="card-body bg-light text-center p-4">
+								<input type="hidden" th:value="${my.challNo}" />
+								<h4 class="" th:text="${my.challTitle}"></h4>
+								<div class="d-flex justify-content-center mb-3">
+									<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
+								    <small class="mr-3">[[${my.challDuration}]]주 동안</small>
+								    <small class="mr-3">주 [[${my.challFreq}]]회</small>
+								</div>
+								<a
+									th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+							</div>
+						</div>
+					</div>
+				</th:block>
+			</div>
+		</div>	
+	<!-- 도전 6개 끝 -->
+
+
+		
+	</div>
+	<!-- Blog End -->
+	<script type="text/javascript">
+
+	//챌린지 폼 만들기
+	function makeChallDiv(cha){
+		console.log(cha.challLeader);
+		let challNo = cha.challNo.substr(4);
+		console.log(challNo);
+		let div1 = $('<div />').addClass("col-lg-4 mb-4");
+		let div2 = $('<div />').addClass("card border-0 shadow-sm mb-2");
+		let hiddenInput = $('<input />').attr('type', 'hidden').val(cha.challNo);
+		let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage).attr('style', 'height:230px; object-fit: cover')
+		let div2_2 = $('<div />').addClass("card-body bg-light text-center p-4")
+		let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
+		let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.challStartdate + '시작')),
+																					   ($('<small />').addClass("mr-3").text(cha.challDuration + '주 동안')),
+																					   ($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회'))
+																					  );
+		let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', 'detailChall?challNo=' + challNo); 
+		div1.append(div2.append(hiddenInput, img2_1, div2_2.append(h4_3, div_3, a_3)));
+		$('#challRow').append(div1);
+	}
+	
+</script>
+
+</body>
+</html>

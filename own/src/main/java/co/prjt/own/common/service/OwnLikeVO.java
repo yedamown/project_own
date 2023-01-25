@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OwnLikeVO {
-	public String categoryNo;
-	public String userId;
-	public String category;
 	public String likeNo;
+	public String userId;
+	public String categoryNo;
+	public String category;
 	
 	//hjj만듬
 	public int likeCount;

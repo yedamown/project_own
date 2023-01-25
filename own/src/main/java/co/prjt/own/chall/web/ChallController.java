@@ -34,6 +34,8 @@ import co.prjt.own.chall.service.ValidationVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
+import co.prjt.own.common.service.OwnLikeService;
+import co.prjt.own.common.service.OwnLikeVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 
@@ -42,6 +44,7 @@ import co.prjt.own.ownhome.service.OwnhomeService;
 public class ChallController {
 
 	@Autowired OwnhomeService ownService;
+	@Autowired OwnLikeService ownLike;
 	@Autowired CommonService common;
 	
 	@Autowired ChallengeService challenge;
@@ -51,10 +54,10 @@ public class ChallController {
 	@Autowired ValidationService validation;
 	@Autowired CResultService result;
 
-
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
 	//@ResponseBody 데이터를 다시 가져올때.. 안붙이면.. 하얀 html에 받아오는 값이뜬다 ㅎ
+
 	public String challHome(Model model, HttpServletRequest request, @ModelAttribute("paging1") Paging paging, @ModelAttribute("paging2") Paging paging2, ChallengeVO vo1, ChallengeVO vo2) {
 		HttpSession session = request.getSession();
 //		session.setAttribute("loginUser", ownService.login("kmh"));
@@ -78,10 +81,13 @@ public class ChallController {
 		//전체 도전리스트
 		if(user != null) {
 			//나의도전
+			ChallengeVO vo = new ChallengeVO();
 			String id = user.userId;
+
 			vo2.setUserId(id);
 			//6개로 페이징	
 			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);	
+
 			//참여중 회원 담을 새로운 리스트
 			//List.<ChallengeVO> myNewList = new ArrayList<ChallengeVO>();
 			for(ChallengeVO i: myList) {
@@ -95,29 +101,6 @@ public class ChallController {
 		return "content/chall/challHome";
 	}
 
-	//홈 테스트
-	@GetMapping("/hometest")
-	public String challHomeTest (Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
-		HttpSession session = request.getSession();
-//		session.setAttribute("loginUser", ownService.login("kmh"));
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		System.out.println("===================도전 홈"+user);
-		//페이징정보담은 
-		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);	
-		//페이징 담은 곳에다가 참여회원 담을 곳.
-		List<ChallengeVO> newMemList = new ArrayList<ChallengeVO>();
-		//참여중인 회원 넣기
-		for(ChallengeVO i: cList) {
-			//참여회원수 검색해서 넣기
-			int r= memberList.getChallMemNum(i.getChallNo());
-			i.setNowMember(r);
-			newMemList.add(i);
-		}
-		model.addAttribute("popChall", newMemList);
-		//테스트 중~~!!!
-		return "content/chall/challHomeTest";
-		}
-	
 	//홈페이지 페이징 아작스
 	@GetMapping("/popChallAjax")
 	@ResponseBody
@@ -135,6 +118,18 @@ public class ChallController {
 		return newMemList;
 	}
 	
+	//검색 후 결과페이지로 이동
+	@GetMapping("/searchChall")
+	public String searchChall(@RequestParam("searchWord") String values, Model model) {
+		String word = values;
+		List<ChallengeVO> list = challenge.searchChall(word);
+		for(ChallengeVO i : list) {
+			int r = memberList.getChallMemNum(i.getChallNo());
+			i.setNowMember(r);
+		}
+		model.addAttribute("searchList", list);
+		return "content/chall/searchResult";
+	}
 	
 	// 도전등록 폼으로 이동
 	@GetMapping("/insertFormChall") // 등록 폼으로 이동
@@ -162,9 +157,10 @@ public class ChallController {
 	
 	// 해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
 	@GetMapping("/detailChall")
-	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, CMemberVO mem, CMemberListVO memck, HttpServletRequest request, Model model) {
+	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, CMemberVO mem, CMemberListVO memck, OwnLikeVO like,HttpServletRequest request, Model model) {
 		System.out.println(no);
-		vo.setChallNo("CHA_" + no);
+		String challNo = "CHA_" + no;
+		vo.setChallNo(challNo);
 		System.out.println(challenge.getChall(vo).getChallLeader());
 		mem.setUserId(challenge.getChall(vo).getChallLeader());
 		//프로필 리더정보
@@ -172,15 +168,21 @@ public class ChallController {
 		//챌린지정보
 		model.addAttribute("detailChall", challenge.getChall(vo));
 		//미디어에서 검색
-		model.addAttribute("challImg", common.selectImgAll("CHA_" + no));
+		model.addAttribute("challImg", common.selectImgAll(challNo));
 		//나의 가입현황 확인 --로그인 세션이용
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		CMemberVO mymem =  new CMemberVO();
 		if(user != null) {
+			String userId = user.getUserId();
 			//user정보있을경우 정보 보내줌
-			mymem.setUserId(user.getUserId());
+			mymem.setUserId(userId);
 			model.addAttribute("myInfo", member.getCMem(mymem));
+			//나의 좋아요 여부 파악하기
+			like.setUserId(userId);
+			like.setCategoryNo(challNo);
+			//북마크 여부 확인 널이면 없는 것임
+			model.addAttribute("myLike", ownLike.getLike(like));
 			//멤버리스트에서 참여번호, 내번호, 그리고 승인인거 검색!
 			memck.setUserId(user.getUserId()); //멤버리스트 회원번호설정
 			memck.setChallNo("CHA_" + no); //도전번호
@@ -190,7 +192,7 @@ public class ChallController {
 		}
 		return "content/chall/detailChall";
 	}
-	
+		
 	// 도전 신청페이지로 이동
 	@GetMapping("/applyForm") // 등록 폼으로 이동
 	public String applyFormChall(@RequestParam("challNo") String no, ChallengeVO vo, Model model) {
