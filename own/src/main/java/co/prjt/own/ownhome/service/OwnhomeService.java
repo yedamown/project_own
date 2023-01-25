@@ -56,12 +56,16 @@ public interface OwnhomeService {
 	public List<ChallengeVO> Challenging(String id);
 	//내가 진행중인 밴드
 	public List<BandMemberDetailVO> Banding(String id);
-
+	
 
 	//신고처리
 	public int reportUpdate(ReportVO vo);
+	//유저 신고스택+1
+	public int ReportCountup(OwnUserVO vo);
 	//신고목록 불러오기
 	public List<ReportVO> reportList(Paging paging);
+	//휴면아이디로 전환
+	public int userPermUpdate(OwnUserVO vo);
 	//신고 카운트
 	public int reportCount();
 	//신고 페이징처리

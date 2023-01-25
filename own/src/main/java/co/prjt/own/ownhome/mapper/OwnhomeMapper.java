@@ -26,6 +26,9 @@ public interface OwnhomeMapper {
 
 	//신고처리
 		public int reportUpdate(ReportVO vo);
+
+		public int userPermUpdate(OwnUserVO vo);
+		public int ReportCountup(OwnUserVO vo);
 	public int adQuestionCount();
 	//아이디찾기
 	public String searchId(String email);
