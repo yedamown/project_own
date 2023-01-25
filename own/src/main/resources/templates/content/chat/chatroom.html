@@ -4,7 +4,7 @@
 
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>웹소켓 채팅 테스트</title>
+<title>채팅방</title>
 <!-- CSS -->
 <link rel="stylesheet" href="/css/chat/css/chatroom.css">
 </head>
@@ -33,7 +33,7 @@
 			<div class="message message-right">
 				<div class="avatar-wrapper avatar-small">
 					<img
-						src="https://scontent-xsp1-1.xx.fbcdn.net/v/t1.0-9/s960x960/87853049_2481558942096235_8369025410146500608_o.jpg?_nc_cat=110&_nc_sid=09cbfe&_nc_ohc=0dU4W6nYBk0AX-ZHz-P&_nc_ht=scontent-xsp1-1.xx&_nc_tp=7&oh=20d12357dd09465c5ed2526555651580&oe=5EA2FF44"
+						src="내프로필이미지"
 						alt="avatar" />
 				</div>
 				<div class="bubble bubble-dark"></div>
@@ -60,6 +60,8 @@
 		</div>
 
 	</div>
+	<!-- 제이쿼리 -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<!-- 웹소켓 cdn -->
 	<script src="/webjars/sockjs-client/sockjs.min.js"></script>
 	<script src="/webjars/stomp-websocket/stomp.min.js"></script>
@@ -120,8 +122,8 @@
 			const urlParams = url.searchParams;
 			let chatroomNo = urlParams.getAll('chatroomNo');
 			let userNo = urlParams.getAll('bandMemberNo');
-			console.log(chatroomNo)
-			console.log(userNo)
+			console.log(chatroomNo[0])
+			console.log(userNo[0])
 			// 웹소켓 구독하기
 			var stompClient = null;
 
@@ -132,7 +134,7 @@
 					setConnected(true);
 					console.log('Connected: ' + frame);
 					//방 구독하기
-					stompClient.subscribe('/subscribe/chat/room/' + chatroomNo, function () { 
+					stompClient.subscribe('/subscribe/chat/room/' + chatroomNo[0], function () { 
 					// 	if(writer === username){
                     //        str = "<div class='col-6'>";
                     //        str += "<div class='alert alert-secondary'>";
@@ -152,23 +154,25 @@
 						
 						
 						// 입장메세지 보내기
-						stompClient.send('/publish/chat/enter', {}, JSON.stringify({ 
-							chatroomNo: chatroomNo, 
-							bandMemberNo: userNo }))
+						stompClient.send('/publish/chat/enter', JSON.stringify({ 
+							chatroomNo: chatroomNo[0], 
+							bandMemberNo: userNo[0] }))
 						});
-						
+						//메세지 처리법을 몰르겠섬...
 					});
 			}
 			
 			// 메세지 보내기
 			$('.button-send').click(function sendMessage() {
-				stompClient.send("/publish/chat/message", {}, JSON.stringify({
-					chatroomNo : chatroomNo,
-					bandMemberNo: userNo,
+				stompClient.send("/publish/chat/message", JSON.stringify({
+					chatroomNo : chatroomNo[0],
+					bandMemberNo: userNo[0],
 					messageContent: document.querySelector("#inputText").value
 				}));
 				
 				//Button Send onclick event
+				var inputText = document.querySelector("#inputText");
+				var messageArea = document.querySelector(".message.message-right");
 				var mess = inputText.value;
 				var bubble = document.createElement('div');
 				bubble.className += " bubble bubble-dark";
