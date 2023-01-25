@@ -14,7 +14,7 @@ select * from employees
 		</selectKey>
 
 insert into own_users
-(own_users_no, user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_gender, user_hobby,user_perm)
+(own_users_no, user_id, user_passwd, user_name, user_email, user_phone, user_birthday, user_status ,user_gender, user_hobby,user_perm)
 values (
 		'ONO_' || #{ownUsersNo},
 		#{userId},
@@ -23,6 +23,7 @@ values (
 		#{userEmail},
 		#{userPhone},
 		#{userBirthday},
+		0,
 		#{userGender},
 		#{userHobby},
 		'ROLE_USER')
@@ -117,9 +118,11 @@ select count(*) from question
 <update id="ReportCountup">
 update own_users set user_status = user_status+1 where user_id = #{userId}
 </update> 
+
  <update id="reportUpdate">
-UPDATE REPORT SET STATUS = '처리완료' WHERE REPORT_NO = #{reportNo}
+ UPDATE REPORT SET STATUS = '처리완료' WHERE REPORT_NO = #{reportNo}
  </update>
+ 
  <update id="userPermUpdate">
  update own_users set user_perm = 'ROLE_HU_USER' where user_id = #{userId}
  </update>

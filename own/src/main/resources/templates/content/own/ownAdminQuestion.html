@@ -265,15 +265,22 @@ div.tblcontainer {
 				$(result).each(function(idx, ele){
 					console.log(ele.userId);
 					console.log(ele.answer);
+					let answer = "";
+					let title = "";
+					if(ele.answer){
+						answer = `<td>${ele.answer}</td>`
+						title = `<td>${ele.title}</td>`
+					}else{
+						answer = `<td>미처리상태</td>`
+						title = `<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>`;
+					}
+
 					let tag = `<tr>
 								<td>${ele.questNo}</td>
 								<td>${ele.userId}</td>
-								<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>
+								${title}
 								<td>${ele.content}</td>
-								if(!ele.answer){
-								<td>${ele.answer}</td>					
-								}else{
-								}								
+								${answer}
 								<td>${ele.questDate}</td>
 								<td>${ele.header}</td>
 								<td>${ele.status}</td>
