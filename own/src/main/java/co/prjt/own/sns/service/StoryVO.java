@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class StoryVO {
-	String snsStroyNo;
+	String snsStoryNo;
 	String snsNickname;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	Date snsStoryDate;

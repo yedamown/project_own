@@ -29,6 +29,7 @@ import co.prjt.own.sns.service.SBoardService;
 import co.prjt.own.sns.service.SBoardVO;
 import co.prjt.own.sns.service.SFollowService;
 import co.prjt.own.sns.service.SFollowVO;
+import co.prjt.own.sns.service.StoryService;
 import co.prjt.own.sns.service.StoryVO;
 
 @Controller
@@ -40,7 +41,7 @@ public class SnsController {
 	
 	@Autowired SFollowService followService;
 	
-	@Autowired CommonService commonService;
+	@Autowired StoryService storyService;
 	
 	@Autowired OwnhomeService ownService;
 	
@@ -173,7 +174,7 @@ public class SnsController {
 								 SBoardVO svo, String snsAccountNo) {
 		svo.setSnsAccountNo(snsAccountNo);
 		boardService.insertSnsBoard(svo);
-		commonService.upload(uploadfile, svo.getSnsBoardNo(), "SBN_","SNS");
+		common.upload(uploadfile, svo.getSnsBoardNo(), "SBN_","SNS");
 		return "redirect:/own/snsFeed";
 	}
 	
@@ -232,14 +233,41 @@ public class SnsController {
 				String number = snsAccountNo.substring(4);
 				svo.setSnsAccountNo(snsAccountNo);
 				snsService.updateSnsUser(svo);
-				commonService.upload(uploadProfile, number, "SAU_","SNS");
+				common.upload(uploadProfile, number, "SAU_","SNS");
 			}
 			return "redirect:/own/snsFeed";
 		}
 	
 	//8. 스토리 입력
 	@PostMapping("/snsStory")
-	public String insertStory(StoryVO svo, @RequestParam MultipartFile[] uploadStory) {
-		return null;
+	public String insertStory(StoryVO svo, @RequestParam MultipartFile[] uploadStory, String snsAccountNo) {
+		svo.setSnsAccountNo(snsAccountNo);
+		storyService.insertStory(svo);
+		common.upload(uploadStory, svo.getSnsStoryNo(), "SSN_","SNS");
+		return "redirect:/own/snsFeed";
+	}
+	
+	
+	//9. 스토리 조회
+	@PostMapping("/snsStoryList")
+	@ResponseBody
+	public Map<String, Object> getStroyList(String snsNickname) {
+		Map<String, Object> map = new HashMap<>();
+		List<StoryVO> list = storyService.getStoryList(snsNickname);
+		List<MultimediaVO> storyImgList = new ArrayList<>();
+		String youId= snsService.getSnsUser(snsNickname).getSnsAccountNo();
+		MultimediaVO imgList = new MultimediaVO();
+		MultimediaVO profileImg = common.selectImg(youId);
+			for (StoryVO i : list) {
+				if(common.selectImg(i.getSnsStoryNo()) != null){
+					imgList = common.selectImg(i.getSnsStoryNo());
+					System.out.println(imgList);
+					storyImgList.add(imgList);
+			  }
+		}
+		map.put("storyImg", storyImgList);
+		map.put("profileImg", profileImg);
+		map.put("storyInfo", list);
+		return map;
 	}
 }
