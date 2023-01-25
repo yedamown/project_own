@@ -73,23 +73,16 @@ public class ChallController {
 			int r= memberList.getChallMemNum(i.getChallNo());
 			i.setNowMember(r);	
 		}
-
-
 			model.addAttribute("popChall", cList);
 			System.out.println("======popChall뉴리스트"+cList);
-		
 		//전체 도전리스트
 		if(user != null) {
 			//나의도전
-			ChallengeVO vo = new ChallengeVO();
 			String id = user.userId;
-
 			vo2.setUserId(id);
 			//6개로 페이징	
 			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);	
-
 			//참여중 회원 담을 새로운 리스트
-			//List.<ChallengeVO> myNewList = new ArrayList<ChallengeVO>();
 			for(ChallengeVO i: myList) {
 				//참여회원수 검색해서 넣기
 				int r= memberList.getChallMemNum(i.getChallNo());
@@ -143,6 +136,7 @@ public class ChallController {
 	@PostMapping("/insertChall")
 //	@ResponseBody // 데이터를 반환할때는 무조건 리스폰스바디 넣기
 	public String insertProc(@RequestParam List<MultipartFile[]> uploadfile, ChallengeVO vo, Model model, RedirectAttributes rttr) {
+		System.out.println(vo);
 		int rs = challenge.insertChall(vo);
 		String cNo = vo.getChallNo();
 		rttr.addFlashAttribute("result", rs);
@@ -383,18 +377,6 @@ public class ChallController {
 		return "content/chall/myAmount";
 	}
 
-	/*// 마이페이지 - 내 도전
-	@GetMapping("/myChall") // 처리와 검색을 동시에
-	public String myChall(CMemberListVO vo, Model model, HttpServletRequest request) {
-		// 세션 아이디로 도전들 검색 ->동적쿼리로 구분하기
-		HttpSession session = request.getSession();
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		String id = user.getUserId();
-		vo.setUserId(id);
-		model.addAttribute("myChall", memberList.getMemListAll(vo));
-		return "content/chall/myChall";
-	} */
-	
 	//마이페이지 도전정보
 		@GetMapping("/myChall")
 		public String myPageChall(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo) {
@@ -408,7 +390,6 @@ public class ChallController {
 			//테스트 중~~!!!
 			return "content/chall/myChall";
 			}
-
 
 		//마이페이지 도전 페이징 아작스
 		@GetMapping("/myPageChallAjax")

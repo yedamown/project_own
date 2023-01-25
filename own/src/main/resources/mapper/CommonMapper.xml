@@ -28,6 +28,7 @@
 	<select id="selectImgAll" resultType="co.prjt.own.common.service.MultimediaVO">
 		SELECT * FROM MULTIMEDIA
 		WHERE IDENTIFY_ID = #{value} 
+		ORDER BY MEDIA_NO
 	</select>
 
 	<select id="selectImg" resultType="co.prjt.own.common.service.MultimediaVO">
