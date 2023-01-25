@@ -89,11 +89,11 @@ div.tblcontainer {
                     <h4 class="mb-4"><a href="/own/admin/question" style="text-decoration:none">질문목록</a></h4>                 
                 </div>
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/admin/" style="text-decoration:none">신고목록</a></h4>                 
+                    <h4 class="mb-4"><a href="/own/admin/reportList" style="text-decoration:none">신고목록</a></h4>                 
                 </div>
             </div>
         </div>
-        <div class="layout-978">
+ <div class="layout-978">
 <div class="tblcontainer">
 <table class="datagrid">
     <thead>
@@ -169,20 +169,20 @@ div.tblcontainer {
 	</body>
 	<script th:inline="javascript">
 		    /*<![CDATA[*/
-			var header = '[[${_csrf.headerName}]]';
-     var token = '[[${_csrf.token}]]';
-       console.log(header);
-       console.log(token);
-     /*]]>*/
+			var header = [[${_csrf.headerName}]];
+    		 var token = [[${_csrf.token}]];
+    	   console.log(header);
+    	   console.log(token);
+    		/*]]>*/
 		$('#modalBtn').on('click',function(){
 			let value = $('#modalSelectBtn').val();
 			let val;
 			if(value=='hold'){
 			console.log('보류처리')
-			val = 0
+			val = "0";
 			}else if(value=='reporting'){
 			console.log('신고처리')
-			val = 1
+			val = "1";
 			}			
 			let rno = $('#my_modal').attr('name');
 			let id = $('#my_modal').attr('value')
@@ -282,7 +282,6 @@ div.tblcontainer {
 					<td>${ele.reporter}</td>
 					<td>${ele.dereporter}</td>
 					<td>${ele.reason}</td>
-					<td>${ele.content}</td>
 					<td>${ele.reportDate}</td>
 					<td>${ele.status}</td>
 					</tr>`

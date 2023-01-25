@@ -263,18 +263,28 @@ div.tblcontainer {
 					console.log(idx);
 					console.log(ele.userId);
 					console.log(ele.answer);
+					//if 여기다가걸기
+					let answer = "";
+					let title = "";
+
+
+
+					if(ele.answer==null){
+					answer = `<td>미처리 상태</td>`
+					title = `<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>`
+							}
+					else{
+					answer = `<td>처리</td>`
+					title = `<td>${ele.title}</td>`
+					}
+
 					let tag = `<tr>
 								<input type="hidden" value="${ele.questNo}">
 								<td>${ele.rn}</td>
 								<td>${ele.userId}</td>
-								<td>${ele.title}</td>
+								${title}
 								<td>${ele.content}</td>
-								<span th:if="${ele.answer==null}">
-								<td>미처리 상태</td>
-								</span>
-								<span th:unless="${ele.answer==null}">
-								<td th:text="${ele.answer}"></td>
-								</span>
+								${answer}
 								<td>${ele.header}</td>
 								<td>${ele.status}</td>
 							</tr>`

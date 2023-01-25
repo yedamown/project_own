@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,7 +55,7 @@ public class ChallController {
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
 	//@ResponseBody 데이터를 다시 가져올때.. 안붙이면.. 하얀 html에 받아오는 값이뜬다 ㅎ
-	public String challHome(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo1, CMemberListVO vo2) {
+	public String challHome(Model model, HttpServletRequest request, @ModelAttribute("paging1") Paging paging, @ModelAttribute("paging2") Paging paging2, ChallengeVO vo1, ChallengeVO vo2) {
 		HttpSession session = request.getSession();
 //		session.setAttribute("loginUser", ownService.login("kmh"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
@@ -62,32 +63,35 @@ public class ChallController {
 		//페이징정보담은 
 		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);	
 		//페이징 담은 곳에다가 참여회원 담을 곳.
-		List<ChallengeVO> newList = new ArrayList<ChallengeVO>();
+		//List<ChallengeVO> newList = new ArrayList<ChallengeVO>();
 		//참여중인 회원 넣기
 		for(ChallengeVO i: cList) {
 			//참여회원수 검색해서 넣기
 			int r= memberList.getChallMemNum(i.getChallNo());
-			i.setNowMember(r);
-			newList.add(i);
+			i.setNowMember(r);	
 		}
+
+
+			model.addAttribute("popChall", cList);
+			System.out.println("======popChall뉴리스트"+cList);
+		
 		//전체 도전리스트
 		if(user != null) {
 			//나의도전
 			String id = user.userId;
-			vo1.setUserId(id);
+			vo2.setUserId(id);
 			//6개로 페이징	
-			List<ChallengeVO> myList = challenge.myPageChall(vo1, paging);	
+			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);	
 			//참여중 회원 담을 새로운 리스트
-			List<ChallengeVO> myNewList = new ArrayList<ChallengeVO>();
+			//List.<ChallengeVO> myNewList = new ArrayList<ChallengeVO>();
 			for(ChallengeVO i: myList) {
 				//참여회원수 검색해서 넣기
 				int r= memberList.getChallMemNum(i.getChallNo());
 				i.setNowMember(r);
-				myNewList.add(i);
 			}
-			model.addAttribute("myChall", myNewList);
+			System.out.println("======마이뉴리스트===="+myList);
+			model.addAttribute("myChall", myList);
 		} 
-		model.addAttribute("popChall", newList);
 		return "content/chall/challHome";
 	}
 

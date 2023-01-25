@@ -111,7 +111,9 @@
 	<a href="/own/chall/insertFormChall">내가 참여중인 도전보기</a>
 	<a href="/own/chall/insertFormChall">내가 만든 도전보기</a>
 	<h3>오운 홈</h3>
-
+	<a th:text="${paging1}"></a>
+	<br><hr>
+	<a th:text="${paging2}"></a>
 	<!-- 운동카테고리 -->
 	<!-- Facilities Start -->
 	<div class="container-fluid pt-5">
@@ -185,6 +187,33 @@
 		<!-- 도전 6개 끝 -->
 
 		<!-- 페이징 -->
+		<nav class="blog-pagination justify-content-center d-flex"
+			id="pagegation">
+			<!--================ 이전  =================-->
+			<ul class="pagination">
+				<li class="page-item" th:if="${myChall[0].paging.startPage>1}"><a
+					class="page-link" aria-label="Previous"
+					th:value="${myChall[0].paging.startPage-1}"> <span aria-hidden="true"><span
+							class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+				<!--================ 페이지 이동 1_2_3_4_5  =================-->
+				<th:block
+					th:each="pag:${#numbers.sequence(myChall[0].paging.startPage,myChall[0].paging.endPage)}">
+					<li class="page-item" th:if="${pag != myChall[0].paging.page}"><a
+						class="page-link pagePort" th:value="${pag}"
+						th:text="${#numbers.formatInteger(pag,1)}"></a></li>
+					<li class="page-item active" th:if="${pag==myChall[0].paging.page}"><a
+						class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+					</li>
+				</th:block>
+				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+				<!--================ 이후  =================-->
+				<li class="page-item" th:if="${myChall[0].paging.endPage<myChall[0].paging.lastPage}">
+					<a class="page-link pagePort" aria-label="Next"
+					th:value="${myChall[0].paging.endPage+1}"> <span aria-hidden="true"><span
+							class="lnr lnr-chevron-right"></span></span></a>
+				</li>
+			</ul>
+		</nav>
 		<!-- 페이징 -->
 
 
@@ -265,25 +294,25 @@
 			id="pagegation">
 			<!--================ 이전  =================-->
 			<ul class="pagination">
-				<li class="page-item" th:if="${paging.startPage>1}"><a
+				<li class="page-item" th:if="${popChall[0].paging.startPage>1}"><a
 					class="page-link" aria-label="Previous"
-					th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+					th:value="${popChall[0].paging.startPage-1}"> <span aria-hidden="true"><span
 							class="lnr lnr-chevron-left pagePort"></span></span></a></li>
 				<!--================ 페이지 이동 1_2_3_4_5  =================-->
 				<th:block
-					th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
-					<li class="page-item" th:if="${pag != paging.page}"><a
+					th:each="pag:${#numbers.sequence(popChall[0].paging.startPage,popChall[0].paging.endPage)}">
+					<li class="page-item" th:if="${pag != popChall[0].paging.page}"><a
 						class="page-link pagePort" th:value="${pag}"
 						th:text="${#numbers.formatInteger(pag,2)}"></a></li>
-					<li class="page-item active" th:if="${pag==paging.page}"><a
+					<li class="page-item active" th:if="${pag==popChall[0].paging.page}"><a
 						class="page-link" th:text="${#numbers.formatInteger(pag,2)}"></a>
 					</li>
 				</th:block>
 				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
 				<!--================ 이후  =================-->
-				<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+				<li class="page-item" th:if="${popChall[0].paging.endPage<popChall[0].paging.lastPage}">
 					<a class="page-link pagePort" aria-label="Next"
-					th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
+					th:value="${popChall[0].paging.endPage+1}"> <span aria-hidden="true"><span
 							class="lnr lnr-chevron-right"></span></span></a>
 				</li>
 			</ul>
