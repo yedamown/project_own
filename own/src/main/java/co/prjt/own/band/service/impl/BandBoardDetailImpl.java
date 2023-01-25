@@ -17,7 +17,6 @@ import co.prjt.own.band.service.BandBoardDetailService;
 import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
-import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
@@ -256,5 +255,10 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 	@Override
 	public List<BandCalendarVO> selectCalendarNum(String bandNo, String day) {
 		return bandBoardDetailMapper.selectCalendarNum(bandNo, day);
+	}
+
+	@Override
+	public List<BandCalendarVO> selectCalendarNow(String bandNo, String month) {
+		return bandBoardDetailMapper.selectCalendarNow(bandNo, month);
 	}
 }

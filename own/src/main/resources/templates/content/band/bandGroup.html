@@ -119,21 +119,23 @@
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <!--================ 전체 검색 =================-->    
                         <aside class="single_sidebar_widget search_widget">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search Posts">
+                            <input type="text" class="form-control" placeholder="오운 가치 검색"  name="bandName">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+                                <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
                             </span>
-                        </div><!-- /input-group -->
+                        </div>
+                   <!--================ 전체 검색 끝 =================-->    
                         <div class="br"></div>
                     </aside>
                         <ul class="nav navbar-nav menu_nav ml-auto">
-                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">가치 홈</a></li> 
-                            <li class="nav-item"><a class="nav-link" id="bandPhoto">앨범</a></li>
-                            <li class="nav-item"><a class="nav-link" id="bandCalendar">일정</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">가치 홈</a></li>
+                            <li class="nav-item"><div th:if="${BandMemberDetail}"><a class="nav-link" id="bandPhoto">앨범</a></div></li>
+                            <li class="nav-item"><div th:if="${BandMemberDetail}"><a class="nav-link" id="bandCalendar">일정</a></div></li>
                             <!--================ 채팅기능을 위한 임시 =================-->
-                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></li>
+                            <li class="nav-item"><div th:if="${BandMemberDetail}"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></div></li>
                         </ul>
                     </div> 
                 </nav>
@@ -155,85 +157,135 @@
                                 <hr>
                                 <div>
                                     <b><i class="fa fa-user"></i>멤버 <span th:text="${band.memcount}"></span></b>
-                                    <b><i class="fa fa-plus-square-o" aria-hidden="true"></i> 초대</b>
+                                    <div th:if="${BandMemberDetail}"><b><i class="fa fa-plus-square-o" aria-hidden="true"></i> 초대</b></div>
                                     <p><i class="fa fa-map-marker" aria-hidden="true"></i> <span th:text="${band.bandLocation}"></span></p>
                                     <p><i class="fa fa-futbol-o" aria-hidden="true"></i> <span th:text="${band.bandCategory}"></span></p>
                                 </div>
                                 <hr>
-                                <div>
-                                	<p id="myOption"><i class="fa fa-cog" aria-hidden="true"></i>내 별명(닉네임)</p>
-                                    <p id="bandOption"><i class="fa fa-cog" aria-hidden="true"></i>가치 설정</p>
+                                <div th:if="${BandMemberDetail}">
+	                                <div>
+	                                	<p id="myOption"><i class="fa fa-cog" aria-hidden="true"></i>내 별명(닉네임)</p>
+	                                    <p id="bandOption"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정</p>
+	                                </div>
+	                                <hr>
+
                                 </div>
-                                <hr>
-                            </aside>
-                            <aside class="single_sidebar_widget post_category_widget">
-                                <h4 class="widget_title" id="writeBoard">글쓰기</h4>
-                                <div class="d-flex justify-content-between" id="totalBoard">
-                                    <p><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
-                                    <p th:text="${boardCount}">2538</p>
+                                <div th:unless="${BandMemberDetail}">
+                                <!-- =======가입======= -->
+                                	<h4 class="widget_title" id="writeBoard" style="color:white;">회원가입</h4>
                                 </div>
-                                <hr style="margin-bottom: 20px; margin-top: 0px;">
-                                <ul class="list_style cat-list">
-                                    <li th:each="board: ${boardList}">
-                                    	<p th:if="${board.bandBoardLine}!=0"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
-                                    	<b th:if="${board.bandBoardLine}==0" th:text="${board.bandBoardName}"></b>
-                                    </li>											
-                                </ul>
-                                <div class="br"></div>
                             </aside>
-                            <aside class="single-sidebar-widget tag_cloud_widget">
-                                <h4 class="widget_title">가치 태그</h4>
-                            	<ul class="list_style">
-                                    <li th:if="${keyword != null}" th:each="tag: ${keyword}">
-                                    	<a href="#"  th:text="${tag}"></a>
-                                    </li>
-                                </ul>
-                            </aside>
+                            <div th:if="${BandMemberDetail}">
+	                            <aside class="single_sidebar_widget post_category_widget">
+	                                <h4 class="widget_title" id="writeBoard">글쓰기</h4>
+	                                <div class="d-flex justify-content-between" id="totalBoard">
+	                                    <p><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
+	                                    <p th:text="${boardCount}">2538</p>
+	                                </div>
+	                                <hr style="margin-bottom: 20px; margin-top: 0px;">
+	                                <ul class="list_style cat-list">
+	                                    <li th:each="board: ${boardList}">
+	                                    	<p th:if="${board.bandBoardLine}!=0"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
+	                                    	<b th:if="${board.bandBoardLine}==0" th:text="${board.bandBoardName}"></b>
+	                                    </li>											
+	                                </ul>
+	                                <div class="br"></div>
+	                            </aside>
+	                            <aside class="single-sidebar-widget tag_cloud_widget">
+	                                <h4 class="widget_title">가치 태그</h4>
+	                            	<ul class="list_style">
+	                                    <li th:if="${keyword != null}" th:each="tag: ${keyword}">
+	                                    	<a href="#"  th:text="${tag}"></a>
+	                                    </li>
+	                                </ul>
+	                            </aside>
+	                    	</div>        
                         </div>
                     </div>
-                    <div style="flex-grow:3; width: 740px">
-                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber" >
-                    	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
-	  <!-- ================== 여기붙음================== -->                    	
-                        <div id="mainTemplate">
-                        	<div>
-	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-	                                <div class="input-group">
-	                                    <input type="text" class="form-control" placeholder="Search Posts">
-	                                    <span class="input-group-btn">
-	                                        <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
-	                                    </span>
-	                                </div>
-	                            </article>
-	                            <div id="articleArea">
+                    <div th:if="${BandMemberDetail}">
+	                    <div style="flex-grow:3; width: 740px">
+	                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber" >
+	                    	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
+		  <!-- ================== 여기붙음================== -->                    	
+	                        <div id="mainTemplate">
+	                        	<div>
+		                            <article style="border: 1px solid #eeeeee;padding:30px; ">
+		                                <div class="input-group">
+		                                    <input type="text" class="form-control" placeholder="Search Posts">
+		                                    <span class="input-group-btn">
+		                                        <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+		                                    </span>
+		                                </div>
+		                            </article>
+		                            <div id="articleArea">
+					               </div>
 				               </div>
-			               </div>
-                        </div>
-      <!-- ================== 여기붙음================== -->
+	                        </div>
+	      <!-- ================== 여기붙음================== -->
+	                    </div>
+                    </div>
+                    <div th:unless="${BandMemberDetail}">
+                    	<div style="flex-grow:3; width: 740px">
+	                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber" >
+	                    	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
+	                        <div id="mainTemplate">
+	                        	<div>
+		                            <div id="articleArea">
+		                            	<article style="border: 1px solid #eeeeee;padding:30px; height: 470px;">
+							                    <div style="display: flex; flex-direction: column;">
+							                    <div>
+							                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+							                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
+							                            <div  style="display: block; width: 300px; padding: 10px;">
+							                                <ul class="blog_meta list_style" style="display: inline-block;">
+							                                </ul>
+							                            </div>
+							                        </div>
+							                        <h4></h4>
+							                        <div>
+							                            <p>회원가입 후 이용가능합니다.</p>
+							                        </div>
+							                    </div>
+							                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+							                        <div><span></span></div>
+							                    </div>
+							                </div>
+							            </article>
+					               </div>
+				               </div>
+	                        </div>
+	                    </div>
                     </div>
                     <div style="flex-grow:1; width: 260px">
-                        <div class="blog_right_sidebar">
-                            <aside class="single_sidebar_widget popular_post_widget">
-                                <div class="dropdown">
-                                	<h3 class="widget_title dropbtn">다가오는 일정<i class="fa fa-cog" aria-hidden="true"></i></h3>
-								    <div class="dropdown-content">
-								        <a id="7">7일 이내</a>
-								        <a id="14">14일 이내</a>
-								        <a id="30">30일 이내</a>
-								      </div>
-                                </div>
-                                <div id="groupCal">
-	                                <div class="media post_item" th:each="c : ${calendar}">
-	                                    <div class="media-body">
-	                                        <h3><a href="blog-details.html" th:text="${c.bandCalendarTitle}" th:style="|background-color:${c.bandCalendarMark}|"></a></h3>
-	                                        <span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
-	                                        <span th:text="${#dates.format(c.bandCalendarEnd, 'yyyy-MM-dd')}" style="font-size: 12px"></span>
-	                                    </div>
-	                                </div>
-                                </div>
-                                <div class="br"></div>
-                            </aside>
-                        </div>
+                        	<div th:if="${BandMemberDetail}">
+	                        	<div class="blog_right_sidebar">
+		                            <aside class="single_sidebar_widget popular_post_widget">
+		                                <div class="dropdown">
+		                                	<h3 class="widget_title dropbtn">다가오는 일정<i class="fa fa-cog" aria-hidden="true"></i></h3>
+										    <div class="dropdown-content">
+										        <a id="7">7일 이내</a>
+										        <a id="14">14일 이내</a>
+										        <a id="30">30일 이내</a>
+										      </div>
+		                                </div>
+		                                <div id="groupCal">
+			                                <div class="media post_item" th:each="c : ${calendar}">
+			                                    <div class="media-body">
+			                                        <h3><a href="blog-details.html" th:text="${c.bandCalendarTitle}" th:style="|background-color:${c.bandCalendarMark}|"></a></h3>
+			                                        <span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
+			                                        <span th:text="${#dates.format(c.bandCalendarEnd, 'yyyy-MM-dd')}" style="font-size: 12px"></span>
+			                                    </div>
+			                                </div>
+		                                </div>
+		                                <div class="br"></div>
+		                            </aside>
+		                    	</div>
+	                    	</div>
+	                    	<div th:unless="${BandMemberDetail}">
+	                    		<div class="blog_right_sidebar" style="height: 470px;">
+	                    			<aside class="single_sidebar_widget popular_post_widget"></aside>
+	                    		</div>
+	                    	</div>
                     </div>
                 </div>
             </div>
@@ -341,6 +393,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <script src="/css/band/js/stellar.js"></script>
         <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
         <script src="/css/band/js/custom.js"></script>
+         <script src="/css/band/js/time.js"></script>
         <script th:inline="javascript">
         	//더보기 페이지용
          	//1페이지
@@ -562,17 +615,21 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		            contentType : "application/text; charset=utf-8;"
 		        }).then(result => {
 		        	console.log(result);
-		        	//일정만들기..기존 것 지우기
+		        	//일정만들기..기존 것 지우기..time.js파일이용
 		        	$('#groupCal').empty();
 		        	$(result).each(function(idx,ele){
-		        	let tag = `<div class="media post_item">
-				        		<div class="media-body">
-				        			<h3><a href="blog-details.html" style="background-color:${c.bandCalendarMark}">${ele.bandCalendarTitle}</a></h3>
-				        			<span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
-				        			<span th:text="${#dates.format(c.bandCalendarEnd, 'yyyy-MM-dd')}" style="font-size: 12px"></span>
-				        		</div>
-				        	</div>			
-				        	`
+		        		let sDay = SimpleDateTimeFormat(new Date(ele.bandCalendarStart));
+		        		let cDay = SimpleDateTimeFormat(new Date(ele.bandCalendarEnd));
+			        	let tag = `<div class="media post_item">
+						        		<div class="media-body">
+					        			<h3><a href="blog-details.html" style="background-color:${ele.bandCalendarMark}">${ele.bandCalendarTitle}</a></h3>
+					        			<span style="font-size: 12px">${sDay}</span> ~
+					        			<span style="font-size: 12px">${cDay}</span>
+					        		</div>
+					        	</div>			
+					        	`
+					   $('#groupCal').append(tag);
+					   console.log(sDay+cDay);
 		        	})
 				})
 			}
@@ -615,6 +672,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     	$('#bandPhoto').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandPhoto?bandNo="+bandNo);
     	})
+    	//검색버튼
+    	//검색버튼
+        $('.searchBtn').on('click', function(){
+        	window.location = '/own/band/bandSearch?bandName='+$('input[name="bandName"]').val();
+        })
     	</script>
     </div>
     </body>

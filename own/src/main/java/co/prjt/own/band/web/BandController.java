@@ -105,7 +105,7 @@ public class BandController {
 		//유저 아이디지만 스트링으로 여러가지 값이 담김
 		return bandService.recomBand(userId);
 	}
-	//밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용
+	//밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용 밴드검색과 별개(옵션이 다름)
 	@RequestMapping("/bandRec")
 	public String bandRec(Model model, Paging paging, HttpServletRequest request, BandVO band) {
 		//유저아이디 가져오기
@@ -178,6 +178,13 @@ public class BandController {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		session.setAttribute("loginUser", ownService.login("hjj"));
+		//적합한 이용자인지 조회
+		BandMemberDetailVO bandMember = BandMemberDetailVO.builder()
+											.bandNo(bandNo)
+											.userId(user.getUserId())
+											.build();
+		bandMember = bandMemberDetailService.getBandMemberDetail(bandMember);
+		model.addAttribute("BandMemberDetail", bandMember);
 		//밴드+밴드인원수 조회
 		Map<String, Object> band = bandService.getBand(bandNo, user.getUserId());
 		//밴드키워드 자르기
@@ -191,7 +198,7 @@ public class BandController {
 			}
 		}
 		model.addAttribute("band", band);
-		model.addAttribute("keyword", keyword);
+		//model.addAttribute("keyword", keyword);
 		//밴드 게시판 조회
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
 		//밴드의 총 글 수
@@ -242,16 +249,17 @@ public class BandController {
 	}
 	
 	//밴드 사진으로 이동 
+
 	@GetMapping("/bandGroup/bandPhoto")
 	public String bandPhoto(Model model,  BandVO vo) {
 		//임시텍스트
 		model.addAttribute("imsi", "임시텍스트 밴드설정");
 		return "content/band/bandPhoto";
 	}
-	//밴드 일정 아작스 가져오기 7/14/30
+	//밴드 메인에서 일정 아작스 가져오기 7/14/30
 	@ResponseBody
 	@GetMapping("/bandGroup/calendarDay")
-	public List<BandCalendarVO> bandPhoto(String bandNo, String day) {
+	public List<BandCalendarVO> bandMaincal(String bandNo, String day) {
 		return bandBoardDetailService.selectCalendarNum(bandNo, day);
 	}
 }
