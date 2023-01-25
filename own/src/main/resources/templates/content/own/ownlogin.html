@@ -16,8 +16,9 @@
 	z-index: 1; /* Sit on top */
 	left: 0;
 	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
+	width: 500px;
+	height: 400px;
+	padding: 20px 60px;
 	overflow: auto; /* Enable scroll if needed */
 	background-color: rgb(0, 0, 0); /* Fallback color */
 	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
@@ -28,7 +29,7 @@
 	margin: 15% auto; /* 15% from the top and centered */
 	padding: 20px;
 	border: 1px solid #888;
-	width: 50%; /* Could be more or less, depending on screen size */
+	width: 20%; /* Could be more or less, depending on screen size */
 }
 /* The Close Button */
 .close {
@@ -169,6 +170,7 @@ body {
       <input type="password" placeholder="password"
              id="u_pw" name="password"/>
       <button type="submit">login</button>
+      <small id="exception"></small>
       <p class="message">Not registered? <a href="#">Create an account</a></p>
       <p class="message modalBtn">아이디 찾기</p>
       <p class="message modalBtn">비밀번호 찾기</p>
@@ -208,6 +210,12 @@ body {
 		</div>
 		<!-- 모달 스크립트 -->
 		<script>
+		const urlParams = new URL(location.href).searchParams;
+        const error = urlParams.get('error');
+        if(error){
+           let exception = urlParams.get('exception');
+           $('#exception').text(exception);
+        }
    		// Modal을 가져옵니다.
         var modals = document.getElementsByClassName("modal");
         // Modal을 띄우는 클래스 이름을 가져옵니다.

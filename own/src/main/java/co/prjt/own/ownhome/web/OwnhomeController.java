@@ -248,6 +248,7 @@ public class OwnhomeController {
 		
 		//신고처리
 		@PostMapping("/own/admin/reportAccess")
+		@ResponseBody
 		public int reportUpdate(String val, String rno, String id) {
 			System.out.println("value는 "+val);
 			System.out.println("rno는 "+rno);
@@ -259,18 +260,18 @@ public class OwnhomeController {
 			OwnUserVO ovo = new OwnUserVO();
 			ovo.setUserId(id);
 			//보류상황
-			if(val.equals(0)) {
+			if(val.equals("0")) {
+				System.out.println("보류처리");
+				vo.setStatus("보류처리");
 				ownService.reportUpdate(vo);
 				return 0;
-			}else if(val.equals(1)){
-				ownService.reportUpdate(vo);
-				ownService.ReportCountup(ovo);
-				ovo = ownService.login(ovo.getUserId());
-				if(ovo.getUserStatus().equals('3')) {
-					ownService.userPermUpdate(ovo);
-				}
 			}
-			return 0;
+			else{
+				System.out.println("신고처리");
+				vo.setStatus("신고처리");
+				ownService.reportUpdate(vo);
+				return 1;
+			}
 		}
 		
 		//테스트 페이지 이동

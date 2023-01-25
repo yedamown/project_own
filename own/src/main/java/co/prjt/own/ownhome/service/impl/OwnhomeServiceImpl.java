@@ -89,8 +89,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	public UserDetails loadUserByUsername(String username)  {
 		// TODO Auto-generated method stub
 		OwnUserVO vo = ownhomeMapper.login(username);
-		System.out.println("체크==="+vo);
-		if (vo ==null) {
+		if (vo == null) {
 			throw new UsernameNotFoundException(""); 
 		}
 		return new CustomUser(vo);

@@ -38,4 +38,6 @@ public class BandCalendarVO{
 	public String bandCalendarOptionShare;
 	public String bandCalendarLocationLatlong;
 	public String bandNo;
+	public String bandNickname;
+	public String userId;
 }

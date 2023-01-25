@@ -10,10 +10,14 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,7 +33,10 @@ public class WebSecurityConfig {
 
 	
 	@Autowired
-	CustomLoginSuccessHandler custom;
+	CustomLoginSuccessHandler scustom;
+	
+	@Autowired
+	CustomLoginFailureHandler fcustom;
 	
 	@Autowired
 	DataSource datasource;
@@ -51,7 +58,7 @@ public class WebSecurityConfig {
 				@Override
 				public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 						Authentication authentication) throws IOException, ServletException {
-						custom.onAuthenticationSuccess(request, response, authentication);
+						scustom.onAuthenticationSuccess(request, response, authentication);
 				}
 			
 			})
@@ -60,8 +67,7 @@ public class WebSecurityConfig {
 				@Override
 				public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 						AuthenticationException exception) throws IOException, ServletException {
-						System.out.println("=================실패");
-					
+						fcustom.onAuthenticationFailure(request, response, exception);
 				}
 			});
 

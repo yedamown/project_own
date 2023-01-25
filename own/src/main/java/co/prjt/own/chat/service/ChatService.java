@@ -21,8 +21,6 @@ public interface ChatService {
 	int saveMessage(MessageVO vo);
 	
 	// 메세지 DB에서 조회, 메세지 여러개 뽑아 오니까 List타입
-	List<MessageVO> getMessage(MessageVO vo);
+	List<MessageVO> getMessage(String chatroomNo);
 	
-	// 웹 소켓 세션에 메세지 저장.
-	//public <T> void sendMessage(WebSocketSession session, T message);
 }
