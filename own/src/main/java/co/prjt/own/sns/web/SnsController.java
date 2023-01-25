@@ -198,7 +198,7 @@ public class SnsController {
 		int result = followService.insertFollow(snsFollowId, snsFollowerId);
 		//팔로우 되는데 ..... 왜 ... 숫자는 오르지 않을까..?
 		if(result == 1) {
-			return followService.followCount(nickname);
+			return followService.followerCount(nickname);
 		}else {
 			return 0;
 		}
