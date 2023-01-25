@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
     <!-- ========== Meta Tags ========== -->
     <meta charset="UTF-8">
     <meta name="description" content="Cocoon -Portfolio">
@@ -67,9 +66,28 @@
             padding-left:0px;
         }
     </style>
+    <!-- bootstrap -->
+    <script src="/css/sns/js/jquery.min.js"></script>
+	<script src="/css/sns/js/popper.js"></script>
+	<script src="/css/sns/js/bootstrap.min.js"></script>
+	<script src="/css/sns/js/waypoints.min.js"></script>
+	<!--slick carousel -->
+	<script src="/css/sns/js/slick.min.js"></script>
+	<!--Portfolio Filter-->
+	<script src="/css/sns/js/imgloaded.js"></script>
+	<script src="/css/sns/js/isotope.js"></script>
+	<!-- Magnific-popup -->
+	<script src="/css/sns/js/jquery.magnific-popup.min.js"></script>
+	<!--Counter-->
+	<script src="/css/sns/js/jquery.counterup.min.js"></script>
+	<!-- WOW JS -->
+	<script src="/css/sns/js/wow.min.js"></script>
+	<!-- Custom js -->
+	<script src="/css/sns/js/main.js"></script>
+
 </head>
-<div layout:fragment="content">
 <body>
+<div layout:fragment="content">
 <div class="loader">
     <div class="loader-outter"></div>
     <div class="loader-inner"></div>
@@ -203,7 +221,7 @@
 </div>
 
 <!--  ========== SNS 계정 간편가입 모달 ==========  -->
-<span th:if="${session.loginUser.snsAccountNo == null}">
+<div th:if="${session.loginUser.snsAccountNo == null}">
 <div id="modal" class="searchModal">
     <div class="search-modal-content">
         <div class="page-header">
@@ -237,7 +255,7 @@
         </div>
     </div>
 </div>
-</span>
+</div>
 <!-- ========== 모달 end ===========  -->
 
 <script>
@@ -287,25 +305,6 @@
 
 
 
-<!-- jquery -->
-<script src="/css/sns/js/jquery.min.js"></script>
-<!-- bootstrap -->
-<script src="/css/sns/js/popper.js"></script>
-<script src="/css/sns/js/bootstrap.min.js"></script>
-<script src="/css/sns/js/waypoints.min.js"></script>
-<!--slick carousel -->
-<script src="/css/sns/js/slick.min.js"></script>
-<!--Portfolio Filter-->
-<script src="/css/sns/js/imgloaded.js"></script>
-<script src="/css/sns/js/isotope.js"></script>
-<!-- Magnific-popup -->
-<script src="/css/sns/js/jquery.magnific-popup.min.js"></script>
-<!--Counter-->
-<script src="/css/sns/js/jquery.counterup.min.js"></script>
-<!-- WOW JS -->
-<script src="/css/sns/js/wow.min.js"></script>
-<!-- Custom js -->
-<script src="/css/sns/js/main.js"></script>
-</body>
 </div>
+</body>
 </html>
