@@ -1,13 +1,71 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
-<script src="/css/band/js/jquery-3.2.1.js"></script>
-<script src="/css/band/js/json.min.js"></script>
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script src="/css/band/js/jquery-3.2.1.js"></script>
+	<script src="/css/band/js/json.min.js"></script>
+	<script src="/css/band/calendar/index.global.js"></script>
+</head>
 
-<style>
-</style>
-<div id="template" style="flex-grow: 3; width: 740px">
-<h3>밴드 일정</h3>
-</div>
-<script>
-$(function(){
-})
-</script>
+<body>
+	<div id="template" style="flex-grow: 3; width: 740px">
+		<article style="border: 1px solid #eeeeee; padding: 30px;">
+			<div id='calendar'></div>
+		</article>
+	</div>
+</body>
+	<script src="/css/band/js/time.js"></script>
+	<script>
+		var calendarEl = document.getElementById('calendar');
+	    var calendar = new FullCalendar.Calendar(calendarEl, {
+	      initialView: 'dayGridMonth',
+	    //날짜포맷
+		    titleFormat: function (date) {
+	          // YYYY년 MM월
+	          return `${date.date.year}년 ${date.date.month + 1}월`;
+	        },
+	        selectable: true,
+	        dragScroll: true
+	    });
+	    calendar.render();
+		//me 한달일정가져오기
+		function getCalendar(bandNo, month){
+			$.ajax({
+		            url:'/own/band/bandGroup/bandCalendarNow?bandNo='+bandNo+'&month='+month,
+		            dataType: 'json',
+		            method: 'get',
+		            contentType : "application/text; charset=utf-8;"
+		        }).then(result => {
+		        	console.log(result);
+		        	//result를 map으로 변환하기..
+		        	let events = result.map(function(item){
+		        		return {
+		        			title : item.bandCalendarTitle,
+		        			start : SimpleDateTimeFormat(new Date(item.bandCalendarStart)),
+		        			end	  : SimpleDateTimeFormat(new Date(item.bandCalendarEnd)),
+		        			backgroundColor : item.bandCalendarMark,
+		        			borderColor : item.bandCalendarMark,
+		        			textColor : 'black',
+		        			id : item.bandCalendarNo
+		        		}
+		        	})
+		        	console.log(events);
+		        	var calendar = new FullCalendar.Calendar(calendarEl, {
+						events : events,
+						 eventTimeFormat: { // like '14:30:00'
+						    hour: '2-digit',
+						    minute: '2-digit',
+						    hour12: false
+						  } 
+					});
+					calendar.render();
+				})
+		}
+		//me 끝
+		$(function(){ //2023-03-23으로 고쳐서 보냄..스트링타입으로 현재값
+			getCalendar(bandNo, SimpleDateTimeFormat(new Date()));
+		})
+	</script>
+</html>
