@@ -35,12 +35,13 @@
 		WHERE CHATROOM_NO IN ( 	SELECT CHATROOM_NO FROM CHATROOM
 								WHERE BAND_MEMBER_NO = #{bandMemberNo} )
 		AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
+		AND BAND_MEMBER_NO = #{bandMemberNo1}
 	</select>
 
 	<!-- 메세지 DB에 저장 -->
 	<insert id="saveMessage"
 		parameterType="co.prjt.own.chat.service.MessageVO">
-		<selectKey keyProperty="mno" resultType="string"
+		<selectKey keyProperty="mno" resultType="int"
 			order="BEFORE">
 			SELECT CHATROOM_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
@@ -60,6 +61,6 @@
 		SELECT *
 		FROM MESSAGE
 		WHERE CHATROOM_NO = #{chatroomNo}
-		ORDER BY MESSAGE_TIME;
+		ORDER BY MESSAGE_TIME
 	</select>
 </mapper>

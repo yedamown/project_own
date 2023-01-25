@@ -32,5 +32,10 @@ public class BandMemberDetailServiceImpl implements BandMemberDetailService{
 		return bandMemberDetailMapper.getBandMemberNickname(vo);
 	}
 
+	@Override
+	public BandMemberDetailVO getBandMemberDetail(BandMemberDetailVO vo) {
+	return bandMemberDetailMapper.getBandMemberDetail(vo);
+	}
+
 
 }

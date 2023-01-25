@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface StoryService {
 	//스토리 전체 조회
-	public List<StoryVO> getStroyList(String snsNickname);
+	public List<StoryVO> getStoryList(String snsNickname);
 	
 	//스토리 추가
 	int insertStory(StoryVO vo);

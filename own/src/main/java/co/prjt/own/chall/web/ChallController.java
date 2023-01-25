@@ -71,10 +71,13 @@ public class ChallController {
 			i.setNowMember(r);	
 		}
 
+
 			model.addAttribute("popChall", cList);
 			System.out.println("======popChall뉴리스트"+cList);
-		//마이 도전리스트
-		if(user != null) {			
+		
+		//전체 도전리스트
+		if(user != null) {
+			//나의도전
 			String id = user.userId;
 			vo2.setUserId(id);
 			//6개로 페이징	

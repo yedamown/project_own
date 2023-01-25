@@ -19,7 +19,7 @@
 		        </li>
 	        <!--================ 페이지 이동 1_2_3_4_5  =================-->
 		        <th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
-		            <li class="page-item" th:if="${pag != paging.page}" >
+		            <li class="page-item" th:if="${pag != paging.page && 0!=paging.endPage}">
 <!-- 		            	<a class="page-link" th:href="@{/own/band/myBand(page=${pag})}" th:text ="${#numbers.formatInteger(pag,2)}"></a> -->
 		            	<a class="page-link" th:href="|javascript:${gopage}(${pag})|" th:text ="${#numbers.formatInteger(pag,2)}"></a>
 		            </li>

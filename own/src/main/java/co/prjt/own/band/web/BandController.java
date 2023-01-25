@@ -23,7 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
 import co.prjt.own.band.service.BandBoardOptionService;
+import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandMemberDefaultService;
+import co.prjt.own.band.service.BandMemberDetailService;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
@@ -39,6 +41,7 @@ import co.prjt.own.ownhome.service.OwnhomeService;
 public class BandController {
 	@Autowired BandService bandService;
 	@Autowired BandMemberDefaultService bandMemberDefaultService;
+	@Autowired BandMemberDetailService bandMemberDetailService;
 	@Autowired CommonService common;
 	@Autowired BandBoardOptionService bandBoardOptionService;
 	@Autowired OwnhomeService ownService;
@@ -102,7 +105,7 @@ public class BandController {
 		//유저 아이디지만 스트링으로 여러가지 값이 담김
 		return bandService.recomBand(userId);
 	}
-	//밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용
+	//밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용 밴드검색과 별개(옵션이 다름)
 	@RequestMapping("/bandRec")
 	public String bandRec(Model model, Paging paging, HttpServletRequest request, BandVO band) {
 		//유저아이디 가져오기
@@ -175,6 +178,13 @@ public class BandController {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		session.setAttribute("loginUser", ownService.login("hjj"));
+		//적합한 이용자인지 조회
+		BandMemberDetailVO bandMember = BandMemberDetailVO.builder()
+											.bandNo(bandNo)
+											.userId(user.getUserId())
+											.build();
+		bandMember = bandMemberDetailService.getBandMemberDetail(bandMember);
+		model.addAttribute("BandMemberDetail", bandMember);
 		//밴드+밴드인원수 조회
 		Map<String, Object> band = bandService.getBand(bandNo, user.getUserId());
 		//밴드키워드 자르기
@@ -188,13 +198,13 @@ public class BandController {
 			}
 		}
 		model.addAttribute("band", band);
-		model.addAttribute("keyword", keyword);
+		//model.addAttribute("keyword", keyword);
 		//밴드 게시판 조회
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
 		//밴드의 총 글 수
 		model.addAttribute("boardCount", bandBoardDetailService.countBandBoard(bandNo));
-		//임시 최신글5개랑 페이지번호담아 보내기
-		
+		//일정보내기(기본 7일)
+		model.addAttribute("calendar", bandBoardDetailService.selectCalendarNum(bandNo, "7"));
 		return "content/band/bandGroup";
 	}
 	//RestController..밴드 상세...글번호 5개 주면 최신글 5개씩 내보내기
@@ -210,6 +220,8 @@ public class BandController {
 	//밴드내 모든 게시판
 	@GetMapping("/bandGroup/bandBoardList")
 	public String bandMainGroup(Model model, HttpServletRequest request, @RequestParam String bandNo, Paging paging) {
+		//세션에 밴드저장해놓자..
+		
 		BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
 		vo.setBandNo(bandNo);
 		//System.out.println(vo.toString());
@@ -225,5 +237,29 @@ public class BandController {
 		System.out.println(paging.toString());
 		//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
 		return bandBoardDetailService.getBandBoard(vo, paging);
+	}
+	//밴드(내) 정보수정으로 이동 
+	@GetMapping("/bandGroup/myOption")
+	public String myOption(Model model, HttpServletRequest request, BandMemberDetailVO vo) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		vo.setUserId(user.userId);
+		model.addAttribute("member", bandMemberDetailService.getBandMemberDetail(vo));
+		return "content/band/myOption";
+	}
+	
+	//밴드 사진으로 이동 
+
+	@GetMapping("/bandGroup/bandPhoto")
+	public String bandPhoto(Model model,  BandVO vo) {
+		//임시텍스트
+		model.addAttribute("imsi", "임시텍스트 밴드설정");
+		return "content/band/bandPhoto";
+	}
+	//밴드 메인에서 일정 아작스 가져오기 7/14/30
+	@ResponseBody
+	@GetMapping("/bandGroup/calendarDay")
+	public List<BandCalendarVO> bandMaincal(String bandNo, String day) {
+		return bandBoardDetailService.selectCalendarNum(bandNo, day);
 	}
 }

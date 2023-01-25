@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.prjt.own.band.mapper.BandMapper">
-	<sql id="recom">
+	<!-- <sql id="recom">
 		<if test="bandCategory != null and bandCategory !=''">
 			AND BAND_CATEGORY = #{bandCategory}
 		</if>
@@ -15,6 +15,15 @@
 		</if>
 		<if test="bandKeyword != null and bandKeyword !=''">
 			AND BAND_TAG LIKE '%' || #{bandKeyword} || '%'
+		</if>
+	</sql> -->
+	<!-- 검색의 다양화를 위해....밴드이름으로 이것저것 검색 -->
+	<sql id="recom">
+		<if test="bandName != null and bandName !=''">
+			WHERE EXERSUB_NAME LIKE '%' || #{bandName} || '%'
+			OR LOC_CITY  LIKE '%' || #{bandName} || '%'
+			OR BAND_NAME LIKE '%' || #{bandName} || '%'
+			OR BAND_KEYWORD LIKE '%' || #{bandName} || '%'
 		</if>
 	</sql>
 	<!-- 밴드 인서트 업데이트 -->
@@ -92,39 +101,53 @@
                     GROUP BY BAND_NO) E
             WHERE A.BAND_NO = B.BAND_NO
             AND A.BAND_NO = #{bandNo}
-            AND B.USER_ID = #{userId}
             AND B.BAND_MEMBER_STATUS = 'BA02'
             AND B.BAND_KICK_STATUS = 'BB01'
             AND A.BAND_NO = E.BAND_NO
             AND A.BAND_CATEGORY = C.EXERSUB_NO
 			AND A.BAND_LOCATION = D.LOC_CODE
 	</select>
-	<sql id="condition">
-		<if test="bandCategory != null and bandCategory !=''">
-			AND BAND_CATEGORY LIKE = #{bandCategory} 
+	<!-- <sql id="condition">
+		<if test="bandName != null and bandName !=''">
+			AND BAND_NAME LIKE '%' || #{bandName} || '%'
 		</if>
 		<if test="bandCategory != null and bandCategory !=''">
-			AND band_open_option = #{bandCategory}
+			AND BAND_CATEGORY LIKE '%' ||  #{bandCategory} || '%'
 		</if>
 		<if test="bandLocation != null and bandLocation !=''">
 			AND band_location = #{bandLocation}
 		</if>
+		<if test="bandKeyword != null and bandKeyword !=''">
+			AND band_keyword = #{bandKeyword}
+		</if>
+	</sql> -->
+	<!-- 밴드네임으로 이것저것 검색하기 위함 -->
+	<!-- AS를 썼기 때문에 검색조건에... -->
+	<sql id="condition">
+		<if test="bandName != null and bandName !=''">
+			AND (BAND_NAME LIKE '%' || #{bandName} || '%'
+			OR EXERSUB_NAME LIKE '%' || #{bandName} || '%'
+			OR LOC_CITY LIKE '%' || #{bandName} || '%'
+			OR BAND_KEYWORD LIKE '%' || #{bandName} || '%'
+			) 
+		</if>
 	</sql>
-	<select id="getBandAll" resultType="BandVO">
-		SELECT  BAND_NO,
-				BAND_LEADERID,
-				BAND_NAME,
-		        BAND_INTRO,
-		        EXERSUB_NAME "band_category",
-		        BAND_OPEN_OPTION,
-		        BAND_AGE_OPTION,
-		        BAND_AGE_BEFOROPTION,
-		        BAND_AGE_AFTEROPTION,
-		        BAND_KEYWORD,
-		        BAND_GENDER_OPTION,
-		        BAND_MEMBERSHIP_OPTION,
-		        LOC_CITY "band_location",
-		        BAND_GENDER
+	<!-- 검색...밴드이름으로 이름, 키워드 등등 으로 활용함 -->
+	<select id="getBandAll" resultType="map">
+		SELECT  BAND_NO "bandNo",
+				BAND_LEADERID "bandLeaderId",
+				BAND_NAME "bandName",
+		        BAND_INTRO "bandIntro",
+		        EXERSUB_NAME "bandCategory",
+		        BAND_OPEN_OPTION "bandOpenOption",
+		        BAND_AGE_OPTION "bandAgeOption",
+		        BAND_AGE_BEFOROPTION "bandAgeBeforoption",
+		        BAND_AGE_AFTEROPTION "bandAgeAfteroption",
+		        BAND_KEYWORD "bandKeyword",
+		        BAND_GENDER_OPTION "bandGenderOption",
+		        BAND_MEMBERSHIP_OPTION "bandMembershipOption",
+		        LOC_CITY "bandLocation",
+		        BAND_GENDER "bandGender"
 		 FROM ( SELECT ROWNUM RN, A.* FROM (
                       
                                     SELECT  BAND_NO,
@@ -146,18 +169,54 @@
 									        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
 									        AND A.BAND_LOCATION=C.LOC_CODE
                                             AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
-									        <include refid="condition"></include>
-                                    
-        
-		<![CDATA[		
-				) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
+											 <include refid="condition"></include>
+				) A 
+		<![CDATA[
+			 WHERE ROWNUM <= #{last} 
 		]]>
+				) WHERE RN >= #{first}  
+			
 	</select>
+	<!-- 이거 검색조건으로 BandName을 써서 이것저것 조회하고 조인한 컬럼을 사용함(운동,지역) 혹시 이거 쓰는 매퍼는 조심할 것.. -->
 	<select id="count" resultType="int">
-		SELECT COUNT(*)
-        	FROM BAND
-                WHERE BAND_OPEN_OPTION IN ('BC01', 'BC03')
-                <include refid="condition"></include>
+		select count(*) from (SELECT BAND_NO "bandNo",
+				BAND_LEADERID "bandLeaderId",
+				BAND_NAME "bandName",
+		        BAND_INTRO "bandIntro",
+		        EXERSUB_NAME "bandCategory",
+		        BAND_OPEN_OPTION "bandOpenOption",
+		        BAND_AGE_OPTION "bandAgeOption",
+		        BAND_AGE_BEFOROPTION "bandAgeBeforoption",
+		        BAND_AGE_AFTEROPTION "bandAgeAfteroption",
+		        BAND_KEYWORD "bandKeyword",
+		        BAND_GENDER_OPTION "bandGenderOption",
+		        BAND_MEMBERSHIP_OPTION "bandMembershipOption",
+		        LOC_CITY "bandLocation",
+		        BAND_GENDER "bandGender"
+			 FROM (
+
+	                                    SELECT  BAND_NO,
+										        BAND_LEADERID,
+										        BAND_NAME,
+										        BAND_INTRO,
+										        EXERSUB_NAME,
+										        BAND_OPEN_OPTION,
+										        BAND_AGE_OPTION,
+										        BAND_AGE_BEFOROPTION,
+										        BAND_AGE_AFTEROPTION,
+										        BAND_CATEGORY,
+										        BAND_KEYWORD,
+										        BAND_GENDER_OPTION,
+										        BAND_MEMBERSHIP_OPTION,
+										        LOC_CITY,
+										        BAND_GENDER
+	                                    FROM BAND A, EXER_SUB B, OWN_LOCATION C
+										        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
+										        AND A.BAND_LOCATION=C.LOC_CODE
+	                                            AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+											 <include refid="condition"></include>
+					)
+                )
 	</select>
 	<select id="getMemberBandAll" resultType="BandVO">
 		SELECT		A.BAND_NO,
@@ -470,13 +529,87 @@
 									        ) A, EXER_SUB B, OWN_LOCATION C
 									        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
 									        AND A.BAND_LOCATION=C.LOC_CODE
-									        <include refid="recom"></include>
                                    ) 
                     <!-- 통 문장 끝 -->
-        
+			<include refid="recom"></include>        
 		<![CDATA[		
 				) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 		]]>
+	</select>
+	<select id="recomBandCount" resultType="int">
+		SELECT count(*) FROM
+
+                          (  
+                            SELECT  BAND_NO,
+                                    BAND_LEADERID,
+                                    BAND_NAME,
+                                    BAND_INTRO,
+                                    EXERSUB_NAME,
+                                    BAND_OPEN_OPTION,
+                                    BAND_AGE_OPTION,
+                                    BAND_AGE_BEFOROPTION,
+                                    BAND_AGE_AFTEROPTION,
+                                    BAND_CATEGORY,
+                                    BAND_KEYWORD,
+                                    BAND_GENDER_OPTION,
+                                    BAND_MEMBERSHIP_OPTION,
+                                    LOC_CITY,
+                                    BAND_GENDER
+                            FROM(
+                                SELECT *
+                                    FROM BAND
+                                    WHERE BAND_NO NOT IN
+
+                                        (SELECT BAND_NO 
+                                            FROM BAND_MEMBER_DETAIL
+                                            WHERE BAND_MEMBER_STATUS in 'BA02'
+                                            AND USER_ID='hjj')
+
+                                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+
+                                    AND BAND_GENDER_OPTION = 'BE02'
+
+                                    AND BAND_AGE_OPTION = 'BD02'
+                                UNION    
+
+                                SELECT *
+                                    FROM BAND
+                                    WHERE BAND_NO NOT IN
+
+                                        (SELECT BAND_NO 
+                                            FROM BAND_MEMBER_DETAIL
+                                            WHERE BAND_MEMBER_STATUS = 'BA02'
+                                            AND USER_ID='hjj')
+
+                                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+
+                                    AND BAND_AGE_OPTION = 'BD02'
+
+                                    AND BAND_GENDER_OPTION = 'BE01'
+                                    AND BAND_GENDER = NULL
+                                UNION    
+
+                                SELECT *
+                                    FROM BAND
+                                    WHERE BAND_NO NOT IN
+
+                                        (SELECT BAND_NO 
+                                            FROM BAND_MEMBER_DETAIL
+                                            WHERE BAND_MEMBER_STATUS = 'BA02'
+                                            AND USER_ID='hjj')
+
+                                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+
+                                    AND BAND_AGE_OPTION = 'BD01'
+
+                                    AND BAND_GENDER_OPTION = 'BE02'
+                                    AND NULL BETWEEN BAND_AGE_BEFOROPTION AND BAND_AGE_AFTEROPTION
+                                    ) A, EXER_SUB B, OWN_LOCATION C
+                                    WHERE A.BAND_CATEGORY = B.EXERSUB_NO
+                                    AND A.BAND_LOCATION=C.LOC_CODE
+
+                           ) 
+    						<include refid="recom"></include>
 	</select>
 	<!-- 밴드대문에 샘플이미지 사용시.... -->
 	<!-- 이미지 삽입 -->

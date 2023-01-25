@@ -251,4 +251,14 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 		List<BandCalendarDetailVO> list = bandBoardDetailMapper.selectCalendarDetail(vo.getBandCalendarNo());
 		return list;
 	}
+
+	@Override
+	public List<BandCalendarVO> selectCalendarNum(String bandNo, String day) {
+		return bandBoardDetailMapper.selectCalendarNum(bandNo, day);
+	}
+
+	@Override
+	public List<BandCalendarVO> selectCalendarNow(String bandNo, String month) {
+		return bandBoardDetailMapper.selectCalendarNow(bandNo, month);
+	}
 }

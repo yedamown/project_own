@@ -10,10 +10,10 @@
 		SELECT B.*, ( SELECT COUNT(*)
 		FROM CHATROOM
 		WHERE CHATROOM_NO IN ( SELECT CHATROOM_NO FROM CHATROOM
-		WHERE BAND_MEMBER_NO = #{bandMemberNo} )
-		AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
-		AND BAND_MEMBER_NO = B.BAND_MEMBER_NO
-		) CHAT_CHECK
+								WHERE BAND_MEMBER_NO = #{bandMemberNo} )
+								AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
+								AND BAND_MEMBER_NO = B.BAND_MEMBER_NO
+							) CHAT_CHECK
 		FROM BAND_MEMBER_DETAIL B
 		WHERE BAND_NO = #{bandNo}
 		<!-- and USER_ID <![CDATA[ <> #{userId}]]> -->
@@ -36,5 +36,23 @@
 		FROM BAND_MEMBER_DETAIL
 		WHERE
 		BAND_MEMBER_NO = #{bandMemberNo}
+	</select>
+	
+	<!-- 밴드식별번호랑 유저아이디로 밴드멤버 가져오기 -->
+	<select id="getBandMemberDetail" resultType="BandMemberDetailVO">
+		SELECT 	USER_ID,
+				BAND_NICKNAME,
+				BAND_NO,
+				BAND_MEMBER_STATUS,
+				BAND_KICK_STATUS,
+				BAND_SIGNUP_DATE,
+				BAND_ACCESS_DATE,
+				BAND_KICK_DATE,
+				BAND_MEMBER_NO,
+				BAND_BIRTH,
+				BAND_GENDER
+		FROM BAND_MEMBER_DETAIL
+		WHERE BAND_NO = #{bandNo}
+		AND USER_ID= #{userId}
 	</select>
 </mapper>

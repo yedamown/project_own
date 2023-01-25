@@ -15,11 +15,11 @@
 	
 	<!-- SNS 회원 가입 -->
 	<insert id="insertSnsUser" parameterType="SAccountVO">
-	<selectKey keyProperty="snsAccountNo" resultType="string" order="BEFORE">
-		SELECT sns_account_no.nextval from dual
-	</selectKey>
-		INSERT INTO SNS_ACCOUNT (SNS_NICKNAME, SNS_ACCOUNT_NO)
-		VALUES (#{snsNickname}, 'SAU_'||#{snsAccountNo})
+		<selectKey keyProperty="snsAccountNo" resultType="string" order="BEFORE">
+			SELECT sns_account_no.nextval from dual
+		</selectKey>
+			INSERT INTO SNS_ACCOUNT (SNS_NICKNAME, SNS_ACCOUNT_NO)
+			VALUES (#{snsNickname}, 'SAU_'||#{snsAccountNo})
 	</insert>
 	
 	<!-- 프로필 수정 -->

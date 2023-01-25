@@ -1,5 +1,6 @@
 package co.prjt.own.sns.service.impl;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class StoryServiceImpl implements StoryService {
 	@Autowired StoryMapper sStoryMapper;
 	
 	@Override
-	public List<StoryVO> getStroyList(String snsNickname) {
-		return sStoryMapper.getStroyList(snsNickname);
+	public List<StoryVO> getStoryList(String snsNickname) {
+		return sStoryMapper.getStoryList(snsNickname);
 	}
 
 	@Override
