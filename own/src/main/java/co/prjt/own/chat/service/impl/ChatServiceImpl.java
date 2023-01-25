@@ -47,21 +47,10 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public List<MessageVO> getMessage(MessageVO vo) {
+	public List<MessageVO> getMessage(String chatroomNo) {
 		// 메세지 DB에서 조회, 메세지 여러개 뽑아 오니까 List타입
-		return getMessage(vo);
+		return chatMapper.getMessage(chatroomNo);
 	}
 
-
-	/*
-	 * @Override public <T> void sendMessage(WebSocketSession session, T message) {
-	 * // 웹 소켓 세션에 메세지 저장. try{ session.sendMessage(new
-	 * TextMessage(mapper.writeValueAsString(message))); } catch (IOException e) {
-	 * //log.error(e.getMessage(), e); }
-	 * 
-	 * }
-	 */
-
-	
 
 }

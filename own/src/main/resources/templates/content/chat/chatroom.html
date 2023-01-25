@@ -20,39 +20,22 @@
 			</span>
 		</div>
 		<!-- =========================== 대화방 =========================== -->
-		<div class="chat-room">
-			<p style="text-align: center;" id="greetingMessage"></p>
-			<!-- 상대방 메세지 -->
-			<div class="message message-left">
-				<div class="avatar-wrapper avatar-small">
-					<img src="상대방프로필사진" alt="avatar" />
-				</div>
-				<div class="bubble bubble-light"></div>
-			</div>
-			<!-- 내 메세지 -->
-			<div class="message message-right">
-				<div class="avatar-wrapper avatar-small">
-					<img
-						src="내프로필이미지"
-						alt="avatar" />
-				</div>
-				<div class="bubble bubble-dark"></div>
-			</div>
-		</div>
+		<div class="chat-room" ></div>
 		<!-- =========================== 대화입력 =========================== -->
 		<div class="type-area">
 			<div class="input-wrapper">
 				<input type="text" id="inputText" placeholder="메세지를 입력하세요" />
 			</div>
+
 			<span class="button-add"> <i class="fas fa-plus-circle"></i>
 				<div class="others">
 					<span class="emoji-button"> <i class="far fa-laugh"></i>
 						<div class="emoji-box">
 							<span>&#x1f604;</span> <span>😀</span> <span>😂</span> <span>😭</span>
 							<span>😍</span> <span>🤮</span> <span>🤑</span> <span>😖</span> <span>😷</span>
+							<span>😎</span> <span>😋</span> <span>😥</span> <span>🙄</span> <span>🙄</span>
+							<span>🙄</span> <span>🙄</span>
 						</div>
-					</span> <span class="image-button"> <i class="far fa-image"></i>
-					</span> <span> <i class="fas fa-paperclip"></i>
 					</span>
 				</div>
 			</span>
@@ -87,7 +70,12 @@
 			var emojis = document.querySelectorAll(".emoji-box span");
 			var inputText = document.querySelector("#inputText");
 			var btnSend = document.querySelector(".button-send");
-			var messageArea = document.querySelector(".message.message-right");
+			
+			// 스크롤 항상 아래로
+			var $chatroom = $('.chat-room');
+			$chatroom.scrollTop($chatroom[0].scrollHeight);	
+			
+			
 			//Header onclick event
 			header.addEventListener("click", (e) => {
 				if (typeArea.classList.contains("d-none")) {
@@ -100,11 +88,17 @@
 			});
 			//Button Add onclick event
 			btnAdd.addEventListener("click", (e) => {
-				others.classList.add("others-show");
+				if(others.classList.contains("others-show") ){
+					others.classList.remove("others-show")
+				}else{
+					others.classList.add("others-show")
+				};
 			});
 			//Emoji onclick event
 			emojiButton.addEventListener("click", (e) => {
 				emojiBox.classList.add("emoji-show");
+				others.classList.toggle("others-show");
+				
 			});
 			
 			for (var emoji of emojis) {
@@ -115,7 +109,7 @@
 					inputText.value += e.target.textContent;
 				});
 			}
-
+		});
 			// url에서 채팅방 번호, 메세지보내는 유저의 밴드멤버식별번호 읽어오기
 			const link = window.location.href;
 			var url = new URL(link);
@@ -127,60 +121,121 @@
 			// 웹소켓 구독하기
 			var stompClient = null;
 
+			$(function() {
+				connect();
+				getMessage();
+			});
+			
 			function connect() {
 				var socket = new SockJS('/chat');
 				stompClient = Stomp.over(socket);
 				stompClient.connect({}, function (frame) {
-					setConnected(true);
 					console.log('Connected: ' + frame);
 					//방 구독하기
-					stompClient.subscribe('/subscribe/chat/room/' + chatroomNo[0], function () { 
-					// 	if(writer === username){
-                    //        str = "<div class='col-6'>";
-                    //        str += "<div class='alert alert-secondary'>";
-                    //        str += "<b>" + writer + " : " + message + "</b>";
-                    //        str += "</div></div>";
-                    //        $("#msgArea").append(str);
-                    //    }
-                    //    else{
-                    //        str = "<div class='col-6'>";
-                    //        str += "<div class='alert alert-warning'>";
-                    //        str += "<b>" + writer + " : " + message + "</b>";
-                    //        str += "</div></div>";
-                    //        $("#msgArea").append(str);
-                    //    }
+					stompClient.subscribe('/subscribe/chat/room/' + chatroomNo[0], function (chat) { 
+					var chatRoom = document.querySelector(".chat-room"); 
+					var content = JSON.parse(chat.body);
+					var writerNo = content.bandMemberNo;
+                    var writerNickname = content.bandNickname;
+                    var mContent = content.messageContent;
+                    var time = content.messageTime;
+                 	
+					 	if(writerNo === userNo[0]){
+					 		var messageDivR = document.createElement('div');
+					 		messageDivR.className += "message message-right"
+					 		var mess = mContent;
+					 		var bubbleD = document.createElement('div');
+							bubbleD.className += "bubble bubble-dark";
+							bubbleD.textContent = mess;
+							chatRoom.appendChild(messageDivR);
+							messageDivR.appendChild(bubbleD);
+						
+							
+							var $chatroom = $('.chat-room');
+							$chatroom.scrollTop($chatroom[0].scrollHeight);
+                        }
+                        else{
+                        	var messageDivL = document.createElement('div');
+                        	messageDivL.className += "message message-left"
+                        	var mess = mContent;
+                        	var bubbleL = document.createElement('div');
+							bubbleL.className += "bubble bubble-light";
+							bubbleL.textContent = mess;
+							chatRoom.appendChild(messageDivL);
+							messageDivL.appendChild(bubbleL);
+							
+							
+							var $chatroom = $('.chat-room');
+							$chatroom.scrollTop($chatroom[0].scrollHeight);
+                        }							
 
-                    //    $("#msgArea").append(str);
-						
-						
-						// 입장메세지 보내기
-						stompClient.send('/publish/chat/enter', JSON.stringify({ 
-							chatroomNo: chatroomNo[0], 
-							bandMemberNo: userNo[0] }))
-						});
-						//메세지 처리법을 몰르겠섬...
+					});
+                    
+					// 입장메세지 보내기
+					stompClient.send('/publish/chat/room/enter', {}, JSON.stringify({ 
+						chatroomNo: chatroomNo[0], 
+						bandMemberNo: userNo[0] }))
 					});
 			}
 			
 			// 메세지 보내기
 			$('.button-send').click(function sendMessage() {
-				stompClient.send("/publish/chat/message", JSON.stringify({
+				stompClient.send("/publish/chat/room", {}, JSON.stringify({
 					chatroomNo : chatroomNo[0],
 					bandMemberNo: userNo[0],
 					messageContent: document.querySelector("#inputText").value
 				}));
 				
-				//Button Send onclick event
-				var inputText = document.querySelector("#inputText");
-				var messageArea = document.querySelector(".message.message-right");
-				var mess = inputText.value;
-				var bubble = document.createElement('div');
-				bubble.className += " bubble bubble-dark";
-				bubble.textContent = mess;
-				messageArea.appendChild(bubble);
 				inputText.value = "";
 			})
 
+			// 채팅방의 기존 메세지 불러오기
+			function getMessage() {
+				$.ajax({
+					url : '/getMessage?chatroomNo='+ chatroomNo[0],
+					method : 'get',
+					dataType : 'json',
+					contentType : "application/json"
+				}).then(chat => {
+					$.each(chat, function(i, e){
+						var chatRoom = document.querySelector(".chat-room"); 
+						var writerNo = $(this).attr("bandMemberNo");
+	                    var mContent = $(this).attr("messageContent");
+	                    chatRoom.ScrollTop = chatRoom.scrollHeight;
+	                    if(writerNo === userNo[0]){
+					 		var messageDivR = document.createElement('div');
+					 		messageDivR.className += "message message-right"
+					 		var mess = mContent;
+					 		var bubbleD = document.createElement('div');
+							bubbleD.className += "bubble bubble-dark";
+							bubbleD.textContent = mess;
+							chatRoom.appendChild(messageDivR);
+							messageDivR.appendChild(bubbleD);
+							
+							
+							var $chatroom = $('.chat-room');
+							$chatroom.scrollTop($chatroom[0].scrollHeight);
+                        }
+                        else{
+                        	var messageDivL = document.createElement('div');
+                        	messageDivL.className += "message message-left"
+							
+                        		var mess = mContent;
+                        	var bubbleL = document.createElement('div');
+							bubbleL.className += "bubble bubble-light";
+							bubbleL.textContent = mess;
+							chatRoom.appendChild(messageDivL);
+							messageDivL.appendChild(bubbleL);
+						
+							var $chatroom = $('.chat-room');
+							$chatroom.scrollTop($chatroom[0].scrollHeight);	
+                        }						 
+					})
+                 	
+					 	
+				})
+			}
+			
 			// 웹소켓 연결끊기
 			function disconnect() {
 				if (stompClient !== null) {
@@ -189,7 +244,7 @@
 				setConnected(false);
 				console.log("Disconnected");
 			}
-		});
+		
 
 	</script>
 </body>
