@@ -431,57 +431,8 @@ $(function(){
 		            contentType : "application/text; charset=utf-8;"
 		        }).then(result => {
 					console.log(result);
-					$('#childVal').val(result);
 					if(result != null){
-						let attendChk = $('#attendChk');
-						let ulTag = $('<ul style="list-style: none;" />')
-						let bk01 = 0; //참석
-						let bk01Per = new Array(); //참석인원
-						let bk02 = 0; //미참석
-						let bk02Per = new Array(); //미참석인원
-						let bk03 = 0; //미정
-						let bk03Per = new Array(); //미참석인원
-						let myChk = ''; // 본인 거 체크
-						$(result).each(function(idx, ele){
-							if(ele.bandAttend=="BK01"){
-								bk01++;
-								bk01Per.push(ele.bandMemberNo);
-							} else if(ele.bandAttend=="BK02"){
-								bk02++;
-								bk02Per.push(ele.bandMemberNo);
-							} else if(ele.bandAttend=="BK03"){
-								bk03++;
-								bk03Per.push(ele.bandMemberNo);
-							}
-							let userId = $('#userId').val();
-							if(ele.bandUserId==userId){
-								myChk = ele.bandAttend;
-							}
-						})
-						//내 체크 확인
-						let myBk1 = '🤍';
-						let nameBk1 = 'BK01'
-						let myBk2 = '🤍';
-						let nameBk2 = 'BK02'
-						let myBk3 = '🤍';
-						let nameBk3 = 'BK03'
-						console.log(myChk);
-						if(myChk == 'BK01'){
-							myBk1 = '❤'
-							nameBk1 = 'BK01chk'
-						} else if(myChk == 'BK02'){
-							myBk2 = '❤';
-							nameBk1 = 'BK02chk'
-						} else if(myChk == 'BK03'){
-							myBk3 = '❤';
-							nameBk1 = 'BK03chk'
-						}
-						let liTag = `
-							<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
-							<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
-							<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right;">💧</span></li>
-						`;
-						attendChk.append(liTag);
+						makeCalModal(result)
 					}
 		        })
         }
@@ -513,11 +464,11 @@ $(function(){
 				result = 'BK01';
 			} else if (heartChk=='BK02') {
 				myBk2 = '❤';
-				nameBk1 = 'BK02chk';
+				nameBk2 = 'BK02chk';
 				result = 'BK02';
 			} else if (heartChk=='BK03') {
 				myBk3 = '❤';
-				nameBk1 = 'BK03chk';
+				nameBk3 = 'BK03chk';
 				result = 'BK03';
 			}
 			//세개의 name 상태가 출력됨..( 이중 체크된 것 혹은 전부 널이면 널인 상태로 아작스로 보낼 예정)
@@ -535,64 +486,65 @@ $(function(){
 				contentType : "application/text; charset=utf-8;"
 			}).then(result => {
 				console.log(result);
-				$('#childVal').val(result);
 				if(result != null){
-					let attendChk = $('#attendChk');
-					attendChk.empty();
-					
-					let ulTag = $('<ul style="list-style: none;" />')
-					let bk01 = 0; //참석
-					let bk01Per = new Array(); //참석인원
-					let bk02 = 0; //미참석
-					let bk02Per = new Array(); //미참석인원
-					let bk03 = 0; //미정
-					let bk03Per = new Array(); //미참석인원
-					let myChk = ''; // 본인 거 체크
-					$(result).each(function(idx, ele){
-						if(ele.bandAttend=="BK01"){
-							bk01++;
-							bk01Per.push(ele.bandMemberNo);
-						} else if(ele.bandAttend=="BK02"){
-							bk02++;
-							bk02Per.push(ele.bandMemberNo);
-						} else if(ele.bandAttend=="BK03"){
-							bk03++;
-							bk03Per.push(ele.bandMemberNo);
-						}
-						let userId = $('#userId').val();
-						if(ele.bandUserId==userId){
-							myChk = ele.bandAttend;
-						}
-					})
-					//내 체크 확인
-					let myBk1 = '🤍';
-					let nameBk1 = 'BK01'
-					let myBk2 = '🤍';
-					let nameBk2 = 'BK02'
-					let myBk3 = '🤍';
-					let nameBk3 = 'BK03'
-					console.log(myChk);
-					if(myChk == 'BK01'){
-						myBk1 = '❤'
-						nameBk1 = 'BK01chk'
-					} else if(myChk == 'BK02'){
-						myBk2 = '❤';
-						nameBk1 = 'BK02chk'
-					} else if(myChk == 'BK03'){
-						myBk3 = '❤';
-						nameBk1 = 'BK03chk'
-					}
-					let liTag = `
-						<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
-						<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
-						<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><spanname="BK03" class="attch2" style="float: right;">💧</span></li>
-					`;
-					attendChk.append(liTag);
+					makeCalModal(result)
 				}
 			})
 		}
 	})
-	
+	//모달상세만들기
+	function makeCalModal(result){
+		let attendChk = $('#attendChk');
+		attendChk.empty();
+		let ulTag = $('<ul style="list-style: none;" />')
+		let bk01 = 0; //참석
+		let bk01Per = new Array(); //참석인원
+		let bk02 = 0; //미참석
+		let bk02Per = new Array(); //미참석인원
+		let bk03 = 0; //미정
+		let bk03Per = new Array(); //미참석인원
+		let myChk = ''; // 본인 거 체크
+		$(result).each(function(idx, ele){
+			if(ele.bandAttend=="BK01"){
+				bk01++;
+				bk01Per.push(ele.bandMemberNo);
+			} else if(ele.bandAttend=="BK02"){
+				bk02++;
+				bk02Per.push(ele.bandMemberNo);
+			} else if(ele.bandAttend=="BK03"){
+				bk03++;
+				bk03Per.push(ele.bandMemberNo);
+			}
+			let userId = $('#userId').val();
+			if(ele.bandUserId==userId){
+				myChk = ele.bandAttend;
+			}
+		})
+		//내 체크 확인
+		let myBk1 = '🤍';
+		let nameBk1 = 'BK01'
+		let myBk2 = '🤍';
+		let nameBk2 = 'BK02'
+		let myBk3 = '🤍';
+		let nameBk3 = 'BK03'
+		console.log(myChk);
+		if(myChk == 'BK01'){
+			myBk1 = '❤'
+			nameBk1 = 'BK01chk'
+		} else if(myChk == 'BK02'){
+			myBk2 = '❤';
+			nameBk2 = 'BK02chk'
+		} else if(myChk == 'BK03'){
+			myBk3 = '❤';
+			nameBk3 = 'BK03chk'
+		}
+		let liTag = `
+			<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
+			<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
+			<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right;">💧</span></li>
+		`;
+		attendChk.append(liTag);
+	}
 	//참여중인사람 확인 창
 	$('#attendChk').on('click', $('.attch2'), function(e){
 		if($(e.target).attr('class')=='attch2'){
@@ -609,7 +561,7 @@ $(function(){
 })	
 </script>
 <script th:inline="javascript">
-//일정추가하기....
+//일정 지도....
 /*<![CDATA[*/
 var calendar = /*[[${board.bandCalendar}]]*/
 /*]]>*/

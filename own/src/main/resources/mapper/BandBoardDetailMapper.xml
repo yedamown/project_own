@@ -257,7 +257,8 @@ SELECT
 								BAND_CALENDAR_OPTION,
 								BAND_CALENDAR_OPTION_DAY,
 								BAND_CALENDAR_LOCATION_LATLONG,
-								BAND_NO
+								BAND_NO,
+								USER_ID
 							) VALUES (
 								#{bandCalendarNo},
 								#{bandBoardDetailNo},
@@ -269,7 +270,8 @@ SELECT
 								#{bandCalendarOption},
 								#{bandCalendarOptionDay},
 								#{bandCalendarLocationLatlong},
-								#{bandNo}
+								#{bandNo},
+								#{userId}
 							)
 			
 	</insert>

@@ -54,6 +54,7 @@
 			<input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">
 			<input type="hidden" id="bandboardwriter" name="bandBoardWriter" th:value="${session.loginUser.userId}">
+			<input type="hidden" id="userId" name="userId" th:value="${session.loginUser.userId}">
 			<!-- 썸머노트를 통해 추가될 이미지 -->
 			<input type="hidden" id="bandBoardDetailNo" name="bandBoardDetailNo">
 			<input type="hidden" id="bandNo" name="bandNo" th:value=${bandNo}>
