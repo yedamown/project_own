@@ -227,8 +227,8 @@
 				<!--================ 일정상세 끝 =================-->
 				<!--================ if참석여부 ================= not 붙여야 함..임시-->
 				<div th:if="${not #strings.isEmpty(board.bandCalendar.bandCalendarOption)}">
-					<h6 class="typo-list">참석여부</h6>
-					<div id="attendChk">
+					<h6 class="typo-list">참석여부 <b>투표마감일: </b><b th:text="|${#dates.format(board.bandCalendar.bandCalendarOptionDay, 'yyyy-MM-dd HH:mm')}"></b></h6>
+					<div id="attendChk"> 
 						<!-- <ul style="list-style: none;">
 							<!-- bandCalendarOptionDay보다 늦으면 체크 못하게 막아야함 -->
 							<!-- <li><span>🤍</span>참석<span style="float: right;">💧</span></li>
@@ -488,6 +488,13 @@ $(function(){
     }
 	//일정체크클릭모달
 	$('#attendChk').on('click', $('.attch'), function(e){
+		//마감일 지나서 투표
+		console.log('마감일'+new Date(calendar.bandCalendarOptionDay))
+		console.log('마감일'+new Date())
+		if(calendar.bandCalendarOptionDay==null || new Date(calendar.bandCalendarOptionDay)<new Date()){
+			alert('투표기한이 마감되었습니다.');
+			return false;
+		}
 		if($(e.target).attr('class')=='attch'){
 			//선택한 것의 name
 			let heartChk = $(e.target).attr('name');

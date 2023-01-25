@@ -35,4 +35,6 @@ public interface BandBoardDetailService {
 	public List<BandCalendarDetailVO> selectCalendarDetail(String bandCalendarNo);
 	//일정참여업데이트
 	public List<BandCalendarDetailVO> updateCalendarDetail(BandCalendarDetailVO vo);
+	//밴드그룹일정범위내 일정가져오기
+	public List<BandCalendarVO> selectCalendarNum(String bandNo, String day);
 }

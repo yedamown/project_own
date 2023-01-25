@@ -56,6 +56,7 @@
 			<input type="hidden" id="bandboardwriter" name="bandBoardWriter" th:value="${session.loginUser.userId}">
 			<!-- 썸머노트를 통해 추가될 이미지 -->
 			<input type="hidden" id="bandBoardDetailNo" name="bandBoardDetailNo">
+			<input type="hidden" id="bandNo" name="bandNo" th:value=${bandNo}>
 			<h3>가치 글쓰기</h3>
 			<select class="form-group" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo"  required>
 				<option disabled>::게시판을 선택해주세요::</option>
@@ -405,21 +406,26 @@ $(function(){
 			console.log(startDay)
 			startDay.setHours(startTime.substr(0, 2));
 			startDay.setMinutes(startTime.substr(3));
-			console.log(startDay)
+			console.log(startDay)//여기까진 변환완료
 			$('#bandCalendarStart').val(timestamp(startDay));
+			console.log('시작일'+$('#bandCalendarStart').val());
 			
 			console.log(endDay)
 			endDay.setHours(startTime.substr(0, 2));
 			endDay.setMinutes(startTime.substr(3));
-			console.log(endDay)
+			console.log(endDay)//여기까진 변환완료
 			$('#bandCalendarEnd').val(timestamp(endDay))
 			//투표일정이 잇다면 넣기
 			if($('#bandCalendarOption').prop('checked')){
 				let voteDay = new Date($('#bandCalendarOptionDayD').val());
 				let voteTime = $('#bandCalendarOptionDayT').val();
-				voteDay.setMinutes(voteTime.substr(0, 2));
-				voteDay.setHours(voteTime.substr(3));
+				console.log(voteDay);
+				console.log(voteTime);
+				voteDay.setHours(voteTime.substr(0, 2));
+				voteDay.setMinutes(voteTime.substr(3));
+				console.log(voteDay);
 				$('#bandCalendarOptionDay').val(timestamp(voteDay));
+				console.log('마감일'+$('#bandCalendarOptionDay').val());
 			}
 			
 		})
@@ -438,10 +444,20 @@ $(function(){
     	return dayOfWeek;
 	}
 	//날짜 컨트롤러에 보낼 포맷
-	function timestamp(){
-    	var today = new Date();
-    	today.setHours(today.getHours() + 9);
-    	return today.toISOString().replace('T', ' ').substring(0, 19);
+	function timestamp(date){
+		let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+
+        month = month >= 10 ? month : '0' + month;
+        day = day >= 10 ? day : '0' + day;
+        hour = hour >= 10 ? hour : '0' + hour;
+        minute = minute >= 10 ? minute : '0' + minute;
+        second = second >= 10 ? second : '0' + second;
+
+        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 	}
 	
 	//체크박스 클릭시 투표날짜 시간제한

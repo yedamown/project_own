@@ -37,5 +37,5 @@ public class BandCalendarVO{
 	public String bandCalendarOption;
 	public String bandCalendarOptionShare;
 	public String bandCalendarLocationLatlong;
-
+	public String bandNo;
 }

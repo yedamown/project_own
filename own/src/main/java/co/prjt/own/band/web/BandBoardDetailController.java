@@ -80,6 +80,8 @@ public class BandBoardDetailController {
 		//게시판목록
 		//밴드 게시판 조회
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
+		//일정넣을 때 밴드번호 넣어야..하네 넣음
+		model.addAttribute("bandNo", bandNo);
 		//말머리도 넣어야 함, 게시판 양식(추후추가)
 		return "content/band/bandBoardWrite";
 	}

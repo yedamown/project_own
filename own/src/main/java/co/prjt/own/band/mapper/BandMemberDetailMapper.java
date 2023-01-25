@@ -14,4 +14,8 @@ public interface BandMemberDetailMapper {
 		
 		// 밴드멤버식별번호로 닉네임 가져오기.
 		String getBandMemberNickname(MessageVO vo);
+		
+		
+		//밴드번호+유저아이디로 유저값가져오기
+		public BandMemberDetailVO getBandMemberDetail(BandMemberDetailVO vo);
 }
