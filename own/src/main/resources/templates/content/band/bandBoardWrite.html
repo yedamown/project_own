@@ -494,6 +494,7 @@ $(function(){
 			console.log(res);
 			if(res.bandBoardDetailNo!=null){
 				$('#template').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+res.bandBoardDetailNo);
+			    window.open('','_self').close();
 			} else {
 				alert('글쓰기 실패');
 			}

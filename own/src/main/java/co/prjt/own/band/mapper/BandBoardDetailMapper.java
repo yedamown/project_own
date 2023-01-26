@@ -32,7 +32,7 @@ public interface BandBoardDetailMapper {
 	public int updateBandBoard(BandBoardDetailVO vo);
 	//일정업데이트
 	public int insertCalendar(BandCalendarVO vo);
-	//일정가져오기(단건)
+	//일정가져오기(단건) 캘린더번호로도 조회가능
 	public BandCalendarVO selectCalendar(String bandBoardDetailNo);
 	//일정가져오기(다중)(밴드홈에서사용)
 	public List<BandCalendarVO> selectCalendars(List<String> bandBoardDetailNo);
@@ -46,4 +46,8 @@ public interface BandBoardDetailMapper {
 	public List<BandCalendarVO> selectCalendarNum(String bandNo, String day);
 	//밴드의 지정 달 일정 가져오기
 	public List<BandCalendarVO> selectCalendarNow(String bandNo, String month);
+	//밴드의 일정 새 글 쓰기
+	public int bandCalendarInsert(BandBoardDetailVO vo);
+	//캘린더번호와 글번호를 가지고 가서 업데이트
+	public int updateBandCalendarBoardNo(String bandCalendarNo, String bandBoardDetailNo);
 }

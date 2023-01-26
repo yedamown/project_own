@@ -287,8 +287,9 @@ SELECT
 				BAND_CALENDAR_OPTION_DAY,
 				BAND_CALENDAR_LOCATION_LATLONG,
 				BAND_NO
-		FROM BAND_CALENDAR
-		WHERE BAND_BOARD_DETAIL_NO = #{bandBoardDetailNo}
+		FROM BAND_CALENDAR 
+		WHERE BAND_BOARD_DETAIL_NO = #{bandBoardDetailNo} OR BAND_CALENDAR_NO = #{bandBoardDetailNo}
+		<!-- 캘린더번호로도 조회하게.. -->
 	</select>
 	<select id="selectCalendars" resultType="co.prjt.own.band.service.BandCalendarVO">
 		SELECT	BAND_CALENDAR_NO,
@@ -384,4 +385,9 @@ SELECT
 		            and( BAND_CALENDAR_START between TRUNC(TO_DATE(#{month}, 'YYYY-MM-DD'), 'MM') and LAST_DAY(TO_DATE(#{month},'YYYY-MM-DD'))
 		            OR BAND_CALENDAR_END  between TRUNC(TO_DATE(#{month}, 'YYYY-MM-DD'), 'MM') and LAST_DAY(TO_DATE(#{month},'YYYY-MM-DD')))
 	</select>
+	<!-- 글이 없던 캘린더 게시글 작성 후 게시글 업데이트 -->
+	<update id="updateBandCalendarBoardNo">
+		UPDATE BAND_CALENDAR SET BAND_BOARD_DETAIL_NO =#{bandBoardDetailNo}
+			WHERE BAND_CALENDAR_NO = #{bandCalendarNo}
+	</update>
 </mapper>

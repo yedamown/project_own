@@ -39,4 +39,8 @@ public interface BandBoardDetailService {
 	public List<BandCalendarVO> selectCalendarNum(String bandNo, String day);
 	//밴드의 지정 달 일정 가져오기
 	public List<BandCalendarVO> selectCalendarNow(String bandNo, String month);
+	//밴드의 일정 새 글 쓰기
+	public BandBoardDetailSearchVO bandCalendarInsert(String bandCalendarNo, BandBoardDetailVO vo);
+	//게시글없이 캘린더만 단건입력
+	public BandCalendarVO insertCalendarSingle(BandCalendarVO vo);
 }
