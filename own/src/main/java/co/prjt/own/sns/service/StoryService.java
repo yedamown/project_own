@@ -6,6 +6,9 @@ public interface StoryService {
 	//스토리 전체 조회
 	public List<StoryVO> getStoryList(String snsNickname);
 	
+	//최신 스토리 조회
+	public List<StoryVO> getNowStoryList(String id);
+	
 	//스토리 추가
 	int insertStory(StoryVO vo);
 	
@@ -14,4 +17,5 @@ public interface StoryService {
 	
 	//스토리 상태 수정
 	int updateStory(StoryVO vo);
+	
 }

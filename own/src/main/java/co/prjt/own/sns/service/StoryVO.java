@@ -14,5 +14,6 @@ public class StoryVO {
 	Date snsStoryDate;
 	String snsSatus;
 	String snsAccountNo;
+	String mediaServerFile;
 	
 }

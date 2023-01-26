@@ -53,25 +53,28 @@ public class SnsController {
 		//세션 담아주기
 		HttpSession session = request.getSession();
 		//세션에 강제로 로그인유저 저장하기
-		//session.setAttribute("loginUser", ownService.login("kmh"));
+		session.setAttribute("loginUser", ownService.login("kyr"));
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
 		SAccountVO snsInfo = ownService.snsLogin(ovo.getUserId());
 		
-		if(boardService.getNowBoardList(snsInfo.getSnsAccountNo())!=null) {	
-	     	//팔로우 한 계정의 최신게시글 1개
-			List<SBoardVO> list = boardService.getNowBoardList(snsInfo.getSnsAccountNo()); 	
-			System.out.println("★★★★★리스트입니다"+list);
-			
-			//이미지 담을 리스트
-			List<MultimediaVO> imgList;
-			for (SBoardVO i : list){
-				imgList = common.selectImgAll(i.getSnsBoardNo());
-				i.setFileList(imgList);
+			if(boardService.getNowBoardList(snsInfo.getSnsAccountNo())!=null) {	
+		     	//팔로우 한 계정의 최신게시글 1개
+				List<SBoardVO> list = boardService.getNowBoardList(snsInfo.getSnsAccountNo()); 	
+				System.out.println("★★★★★리스트입니다"+list);
+				List<StoryVO> storyList = storyService.getNowStoryList(snsInfo.getSnsAccountNo());
+				
+				//이미지 담을 리스트
+				List<MultimediaVO> imgList;
+				for (SBoardVO i : list){
+					imgList = common.selectImgAll(i.getSnsBoardNo());
+					i.setFileList(imgList);
+				}
+				model.addAttribute("snsFollow", followService.followCount(snsInfo.getSnsNickname())); // sns 팔로우 수 
+				model.addAttribute("snsInfo", snsInfo);
+				model.addAttribute("nowFeed", list);
+				model.addAttribute("storyInfo", storyList);
+				System.out.println("받아온 스토리 정보 ----------"+storyList);
 			}
-			model.addAttribute("snsFollow", followService.followCount(snsInfo.getSnsNickname())); // sns 팔로우 수 
-			model.addAttribute("snsInfo", snsInfo);
-			model.addAttribute("nowFeed", list);		
-		}
 		return "content/sns/snsHome"; 
 	}
 	

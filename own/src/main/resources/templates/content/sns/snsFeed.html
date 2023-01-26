@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="/css/sns/css/animate.min.css">
     <!-- Custom styles for this template -->
     <link href="/css/sns/css/main.css" rel="stylesheet">
-
+	<link href="/css/sns/css/Feedstyle.css" rel="stylesheet">
     <style>
         .modal {
             display: none;
@@ -208,72 +208,11 @@
             font-size: 14px;
         }
 
-        #slides {
-            display: none
-        }
-
-        #slides .slidesjs-navigation {
-            margin-top: 3px;
-        }
-
-        #slides .slidesjs-previous {
-            margin-right: 5px;
-            float: left;
-        }
-
-        #slides .slidesjs-next {
-            margin-right: 5px;
-            float: left;
-        }
-
-        .slidesjs-pagination {
-            margin: 6px 0 0;
-            float: right;
-            list-style: none;
-        }
-
-        .slidesjs-pagination li {
-            float: left;
-            margin: 0 1px;
-        }
-
-        .slidesjs-pagination li a {
-            display: block;
-            width: 13px;
-            height: 0;
-            padding-top: 13px;
-            background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/139719/pagination.png");
-            background-position: 0 0;
-            float: left;
-            overflow: hidden;
-        }
-
-        .slidesjs-pagination li a.active,
-        .slidesjs-pagination li a:hover.active {
-            background-position: 0 -13px
-        }
-
-        .slidesjs-pagination li a:hover {
-            background-position: 0 -26px
-        }
-
-        #slides a:link,
-        #slides a:visited {
-            color: #333
-        }
-
-        #slides a:hover,
-        #slides a:active {
-            color: #9e2020
-        }
-
-        .navbar {
-            overflow: hidden
-        }
     </style>
     
     <!-- jquery -->
     <script src="/css/sns/js/jquery.min.js"></script>
+    <script src="/css/sns/js/Feedscript.js"></script>
     <!-- bootstrap -->
     <script src="/css/sns/js/popper.js"></script>
     <script src="/css/sns/js/bootstrap.min.js"></script>
@@ -529,10 +468,11 @@
                     하이라이트 <br> <br>
                 </div>
                 <hr>
-              
+              	<p>여기 테스트</p>
+         
                 <!-- 글작성 모달을 여는 클래스 -->
-                <h1 th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="text-align: right;">📝글
-                    작성</h1>
+                <h1 th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="text-align: right;">
+               		 📝글작성</h1>
                 <p>
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
                         <div class="modal-content">
@@ -590,46 +530,20 @@
                             <!-- 게시글 상세보기 Modal의 내용 -->
                             <div class="modal-content" style="width: 1200px; height: 900px;">
                                 <span class="close">&times;</span>
-                                <div id="slides" style="overflow: hidden; display: block; width: 750px;height: 700px;">
-                                    <div class="slidesjs-container"
-                                        style="overflow: hidden; position: relative; width: 700px; height:700px;">
-
-                                        <div class="slidesjs-control"
-                                            style="position: relative; left: 0px; width: 700px; height:700px;">
-
-                                        </div>
-                                        <ul class="slidesjs-pagination">
-                                            여기 버튼
-
-                                        </ul>
-                                    </div>
+                               
+                                <div class="action-btns">
+                                    <button class="btn prev-btn">&lsaquo;</button>
+                                    <button class="btn next-btn">&rsaquo;</button>
                                 </div>
-                                <div class="contentBox">
-                                    <!-- <p class="bContent">글내용:</p>
-                       <p class="bWriter">작성자:</p>
-                       <p class="bDate">작성일자:</p>
-                       <p class="bNo" style="display: none;">글번호</p> -->
-                                    <!-- <table style="border: 1px solid black; font-size: 14px; width: 500px;">
-                               <thead>
-                                   <tr>
-                                       <th>댓글 작성자</th>
-                                       <th>댓글 내용</th>
-                                       <th>댓글 작성일자</th>
-                                   </tr>
-                               </thead>
-                                   <tbody id="tableBody">
-                                       <tr>
-                                           <td>댓글 내용 테스트</td>
-                                       </tr>
-                                   </tbody>
-                           </table> -->
-                                </div>
+
                                 <div class="btnIcon">
                                     <img src="/css/sns/img/update.png" id="updateBtn">
                                     <img src="/css/sns/img/trash.png" id="trashBtn">
                                 </div>
+                                
                             </div>
-                        </div>
+                                    
+                            </div>
                     </th:block>
                     <!--=================== filter portfolio end====================-->
             </div>
@@ -822,62 +736,7 @@
                             console.log(res)
                             $('.bContent').text(res.svo.snsBoardContent);
 
-                            for (let i = 0; i < res.imgList.length; i++) {
-                                if (i == 0) {
-                                    console.log("첫번째 이미지")
-                                    console.log(i);
-                                    let firstImg = $('<img>').attr({
-                                        "src": "/imgView/" + res.imgList[i].mediaServerFile,
-                                        "class": "slidesjs-slide",
-                                        "slidesjs-index": 0})
-                                    firstImg.css({
-                                        "position": "absoulte",
-                                        "top": "0px",
-                                        "left": "0px",
-                                        "width": "90%",
-                                        "height": "100%",
-                                        "z-index": 10,
-                                        "backface-visibility": "hidden",
-                                        "display": "block",
-                                        "object-fit": "cover"})
-                                    $('.slidesjs-control').append(firstImg)
-                                        let firstPage = $('<li>').attr({"class":"slidesjs-pagination-item"})
-                                        let aTag = $('<a>').attr({"href":"#",
-                                                                "data-slidesjs-item":i,
-                                                                "class":"active"})
-                                            aTag.text(i+1)
-                                            
-                                } else {
-                                    if (res.imgList[i] != null) {
-                                        console.log("나머지 이미지")
-                                        console.log(i)
-                                        let img = $('<img>').attr({
-                                            "src": "/imgView/" + res.imgList[i].mediaServerFile,
-                                            "class": "slidesjs-slide",
-                                            "slidesjs-index": i,
-                                        });
-                                        img.css({
-                                            "width": "800px",
-                                            "height": "700px",
-                                            "position": "absolute",
-                                            "object-fit": "cover",
-                                            "z-index": 0,
-                                            "display": "none",
-                                            "backface-visibility": "hidden"});
-
-                                        $('.slidesjs-control').append(img);
-                                    let elsePage = $('<li>').attr({"class":"slidesjs-pagination-item"})
-                                    let aTag = $('<a>').attr({"href":"#",
-                                                              "data-slidesjs-item":i})
-                                        aTag.text(i+1)
-                                    elsePage.append(aTag);
-                                    $('.slidesjs-pagination').append(elsePage);
-
-                                    } else {
-                                        console.log('이미지생성중' + i)
-                                    }
-                                }   
-                            }
+                            
                               //댓글
                               for (let i = 0; i < res.reply.length; i++) {
                                     var tableTd = '<tr>'
