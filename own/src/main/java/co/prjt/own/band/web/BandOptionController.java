@@ -36,12 +36,9 @@ public class BandOptionController {
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
 		model.addAttribute("count",bandOptionService.bandCount(vo));
 		model.addAttribute("bandInfo",bandOptionService.bandInfo(vo));
-  }
-  
-	@GetMapping("/own/band/bandGroup/bandOptionMain")
-	public String bandOptionMain(Model model) {
 		return "/content/band2/bandOption";
 	}
+  
 
 	// ================================= 밴드 옵션 임시 컨트롤러
 	// =================================

@@ -16,8 +16,5 @@ public interface BandOptionMapper {
 		//밴드 업데이트 제발 되라
 		public int bandUpdate(BandVO vo);
 
-
-public interface BandOptionMapper {
 	List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
-}
 }
