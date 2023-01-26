@@ -1,5 +1,9 @@
 package co.prjt.own.band.mapper;
 
-public interface BandOptionMapper {
+import java.util.List;
 
+import co.prjt.own.band.service.BandMemberDetailVO;
+
+public interface BandOptionMapper {
+	List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
 }

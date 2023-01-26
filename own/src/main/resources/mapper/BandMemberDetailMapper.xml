@@ -7,13 +7,13 @@
 	<select id="bandMemberList"
 		resultType="co.prjt.own.band.service.BandMemberDetailVO"
 		parameterType="string">
-		SELECT B.*, ( SELECT COUNT(*)
-		FROM CHATROOM
-		WHERE CHATROOM_NO IN ( SELECT CHATROOM_NO FROM CHATROOM
-								WHERE BAND_MEMBER_NO = #{bandMemberNo} )
-								AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
-								AND BAND_MEMBER_NO = B.BAND_MEMBER_NO
-							) CHAT_CHECK
+		SELECT B.*, ( 	SELECT COUNT(*)
+						FROM CHATROOM
+						WHERE CHATROOM_NO IN ( SELECT CHATROOM_NO FROM CHATROOM
+												WHERE BAND_MEMBER_NO = #{bandMemberNo} )
+						AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
+						AND BAND_MEMBER_NO = B.BAND_MEMBER_NO
+					) CHAT_CHECK
 		FROM BAND_MEMBER_DETAIL B
 		WHERE BAND_NO = #{bandNo}
 		<!-- and USER_ID <![CDATA[ <> #{userId}]]> -->
