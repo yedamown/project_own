@@ -75,7 +75,7 @@
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            z-index: 21; /* Sit on top */
             left: 0;
             top: 0;
             width: 100%; /* Full width */
@@ -124,7 +124,7 @@
         }
         .storyImg {
             width: 600px;
-            height: 518px;
+            height: 519px;
             position: absolute;
             top: 0px;
             left: -20px;
@@ -153,7 +153,8 @@
             color:#fff;
         }
         li.dot{
-            background-color: lightgray; 
+            background-color: lightgray;
+            margin-top: 20px;
         }
         li.dot:hover {
             background-color: lightblue;
@@ -306,7 +307,7 @@
                             <span class="close"></span>
                             <div class="storyProfile" style="position:relative; width: 450px; height: 60px;">
                             </div>
-                            <div class="storyContent" style="position:relative; width:498px;">
+                            <div class="storyContent" style="position:relative; width:499px;">
 
                             </div>
                         </div>
@@ -333,10 +334,10 @@
                                                     style="position: absolute; width: 800px; height: 500px; object-fit: cover;" />
                                             </div>
                                         </div>
-                                        <div class="container-dots" style="display:flex; justify-content: center; width:900px; height: 100px; margin: 0 auto; padding-inline-start: 0px;">
-                                            <ul class="dots-parent" style="list-style:none;" >
+                                        <div class="container-dots" style="display:flex; justify-content: center; width:600px; margin: 0 auto; padding-inline-start: 0px;">
+                                            <ul class="dots-parent" style="list-style:none; padding-left: 0px;" >
                                                 <li class="dot" th:each="nowimg2 : ${now.fileList}" th:data-item="${nowimg2.mediaNo}"
-                                                    style="float:left; width: 20px; height: 20px; border-radius: 50%; border: 1px solid black; margin-right: 10px; cursor:pointer;"></li>
+                                                    style="float:left; width: 20px; height: 20px; border-radius: 50%; margin-right: 10px; cursor:pointer;"></li>
                                             </ul>
                                         </div>
                                         <div class="blog_card_bottom">
@@ -439,8 +440,9 @@
                 console.log('단추클릭');
                 console.log($(this).attr("data-item"));
                 let btnData = $(this).attr("data-item");
-                $(e.target).find('.blog_card_top').not('[data-item="'+btnData+'"]').removeClass("active")
-                $('.blog_card_top[data-item="'+btnData+'"]').addClass("active")
+                $('.blog_card .blog_card_top').not('[data-item="'+btnData+'"]').removeClass("active")
+                //$('.blog_card_top[data-item="'+btnData+'"]').addClass("active")
+                $('.blog_card .blog_card_top[data-item="'+btnData+'"]').addClass("active")
 
             })
         })

@@ -403,15 +403,15 @@
                     </div>
                     <!-- 프로필 -->
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
-                        <div class="modal-content">
+                        <div class="modal-content" style="width: 800px; height: 700px;">
                             <span class="close">&times;</span>
                             <p>프로필 변경</p>
-                            <form action="/own/snsProfile" method="post" enctype="multipart/form-data">
+                            <form id="form1" action="/own/snsProfile" method="post" enctype="multipart/form-data">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                 <input th:value="${userId.snsAccountNo}" name="snsAccountNo" type="hidden">
                                 <input th:value="${userId.snsNickname}" name="snsNickname">
-                                <input name="uploadProfile" type="file" id="uploadProfile">
-                                <label for="uploadProfile">사진첨부</label>
+                                <input name="uploadProfile" type="file" id="imgInp" />
+                                <img id="blah" style="width: 400px; height: 400px; border-radius: 50%; object-fit: cover;"/>
                                 <textarea style="width:400px; height:100px;" placeholder="프로필 소개글을 입력하세요."
                                     name="snsProfile" th:value="${snsInfo.snsProfile}">
 											</textarea>
@@ -556,6 +556,26 @@
         var header = /*[[${_csrf.headerName}]]*/ 'defalut';
         var token = /*[[${_csrf.token}]]*/ 'defalut';
         /*]]>*/
+
+        //이미지미리보기
+        $(function() {
+            $("#imgInp").on('change', function(){
+                readURL(this);
+            });
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+              reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         //게시글 상세보기 페이징
         $(function() {
             $('#slides').slidesjs({
