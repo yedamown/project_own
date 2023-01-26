@@ -27,13 +27,21 @@ public class BandMemberDefaultController {
 		bandMemberDefaultService.updateMemberDf(vo);
 		return vo;
 	}
-  
+	//================================= 밴드 옵션 임시 컨트롤러 =================================
 	//밴드 수정페이지로 이동 
    @GetMapping("/bandGroup/bandOption")
    public String bandOption(Model model, HttpServletRequest request, BandVO vo) {
       //임시텍스트
       model.addAttribute("imsi", "임시텍스트 밴드설정");
       return "content/band2/bandOption";
+   }
+   
+ //밴드 수정페이지로 이동 
+   @GetMapping("/bandGroup/bandOption2")
+   public String bandOption2(Model model, HttpServletRequest request, BandVO vo) {
+      //임시텍스트
+      model.addAttribute("imsi", "임시텍스트 밴드설정");
+      return "content/band2/bandOption2";
    }
 
 }

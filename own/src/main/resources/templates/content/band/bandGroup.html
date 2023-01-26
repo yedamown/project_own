@@ -166,6 +166,7 @@
 	                                <div>
 	                                	<p id="myOption"><i class="fa fa-cog" aria-hidden="true"></i>내 별명(닉네임)</p>
 	                                    <p id="bandOption"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정</p>
+	                                    <p id="bandOption2"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정2</p>
 	                                </div>
 	                                <hr>
 
@@ -663,6 +664,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     	//가치 설정으로 이동
     	$('#bandOption').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandOption?bandNo="+bandNo);
+    	})
+    	$('#bandOption2').on('click', function(){
+    		$('#mainTemplate').load("/own/band/bandGroup/bandOption2?bandNo="+bandNo);
     	})
     	//캘린더로 이동
     	$('#bandCalendar').on('click', function(){
