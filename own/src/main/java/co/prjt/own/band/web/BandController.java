@@ -196,9 +196,9 @@ public class BandController {
 			while(st.hasMoreTokens()) {
 				keyword.add("#"+st.nextToken());
 			}
+			model.addAttribute("keyword", keyword);
 		}
 		model.addAttribute("band", band);
-		//model.addAttribute("keyword", keyword);
 		//밴드 게시판 조회
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
 		//밴드의 총 글 수
