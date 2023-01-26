@@ -63,13 +63,35 @@
 		-ms-transform: translate(-50%, -50%);
 		-webkit-transform: translate(-50%, -50%);
 	}
-	
-	#my_calendar_modal .modal_close_btn {
+	#my_calendar_modal_input {
+		display: none;
+		width: 650px;
+		padding: 20px 30px;
+		background-color: #fefefe;
+		border: 1px solid #888;
+		border-radius: 3px;
+		position: fixed;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0
+			rgba(0, 0, 0, 0.19);
+		/* 시꺼먼 레이어 보다 한칸 위에 보이기 */
+		z-index: 1000;
+		/* div center 정렬 */
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		-ms-transform: translate(-50%, -50%);
+		-webkit-transform: translate(-50%, -50%);
+	}
+	#my_calendar_modal .modal_close_btn{
 		position: absolute;
 		top: 10px;
 		right: 10px;
 	}
-	
+	#my_calendar_modal_input .modal_close_btn_input{
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
 	.bgg {
 		position: fixed;
 		z-index: 500;
@@ -105,61 +127,145 @@
 		<article style="border: 1px solid #eeeeee; padding: 30px;">
 			<div id='calendar'></div>
 		</article>
-	</div>
-	<!--== 초기에 아작스로 불러온 일정리스트를 저장하는 곳 ==-->
-	<input type="hidden" id="saveCalendar">
-	<input type="hidden" id="saveCalendarEach"><!-- 상세조회중인거 저장 이건번호-->
-	<input type="hidden" id="savesavebandCalendarOptionDay"><!-- 상세조회중인거 저장 이건bandCalendarOptionDay-->
-	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
-	<!--== 캘린더 끝 ==-->
-	<!--== 캘린더 상세 모달창 ==-->
-	<div id="my_calendar_modal">
-		<div id="modalform">
-			<div>
-				<!--================ 일정상세 =================-->
-				<div id="bCalendar">
-					<!-- <div style="width: 500x; height: 100px; display: flex; justify-content: space-between" id="calendarModal2">
-						<input type="hidden" id="bandCalendarNo">
-						<div style="padding: 10px;">
-							<h3 id="jsDD" style="margin-bottom: 0px"></h3>
-							<p id="jsDay"></p>
-						</div>
-						<div style="padding: 10px;">
-							<h5>타이틀</h5>
-							<p id="jsDeDay" style="margin-bottom: 0px"></p>
-							<span>💭</span>
-							<span>글쓴이</span>
-						</div>
-					</div> -->
-				</div>
-				<!--================ 일정상세 끝 =================-->
-				<!--================ if참석여부 =================-->
-				<div id="voteRE">
-					<h6 class="typo-list">참석여부 <b id="voteR"></b><b></b></h6>
-					<div id="attendChk"> 
-						<!-- <ul style="list-style: none;">
-							<!-- bandCalendarOptionDay보다 늦으면 체크 못하게 막아야함 -->
-							<!-- <li><span>🤍</span>참석<span style="float: right;">💧</span></li>
-							<li><span>🤍</span>불참석<span style="float: right;">💧</span></li>
-							<li><span>🤍</span>미정<span style="float: right;">💧</span></li>
-						</ul> -->
-					</div>
-				</div>
-				<!--================ if참석여부 끝 =================-->
-				<!--================ if지도 =================-->
-				<div>
-					<h6 class="typo-list" id="mapName"></h6>
-					<div id="map" style="width:100%;height:350px;"></div>
-				</div>
-				<!--================ if지도 끝 =================-->
+		<article style="border: 1px solid #eeeeee; padding: 30px;">
+			<div id="articleArea">
 			</div>
-			<button type="button" id="calBtn" value=""></button>
+		</article>
+		<!--== 초기에 아작스로 불러온 일정리스트를 저장하는 곳 ==-->
+		<input type="hidden" id="saveCalendar" value="">
+		<input type="hidden" id="saveCalendarEach" value=""><!-- 캘린더번호-->
+		<input type="hidden" id="savesavebandCalendarOptionDay" value=""><!-- bandCalendarOptionDay-->
+		<input type="hidden" id="savebandCalendarTitle" value=""><!--bandCalendarTitle-->
+		<input type="hidden" id="savebandBoardNum" value=""><!--bandBoarNUm-->
+		<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
+		<!--== 캘린더 끝 ==-->
+		<!--== 캘린더 상세 모달창 ==-->
+		<div id="my_calendar_modal">
+			<div id="modalform">
+				<div>
+					<!--================ 일정상세 =================-->
+					<div id="bCalendar">
+						<!-- <div style="width: 500x; height: 100px; display: flex; justify-content: space-between" id="calendarModal2">
+							<input type="hidden" id="bandCalendarNo">
+							<div style="padding: 10px;">
+								<h3 id="jsDD" style="margin-bottom: 0px"></h3>
+								<p id="jsDay"></p>
+							</div>
+							<div style="padding: 10px;">
+								<h5>타이틀</h5>
+								<p id="jsDeDay" style="margin-bottom: 0px"></p>
+								<span>💭</span>
+								<span>글쓴이</span>
+							</div>
+						</div> -->
+					</div>
+					<!--================ 일정상세 끝 =================-->
+					<!--================ if참석여부 =================-->
+					<div id="voteRE">
+						<h6 class="typo-list">참석여부 <b id="voteR"></b><b></b></h6>
+						<div id="attendChk"> 
+							<!-- <ul style="list-style: none;">
+								<!-- bandCalendarOptionDay보다 늦으면 체크 못하게 막아야함 -->
+								<!-- <li><span>🤍</span>참석<span style="float: right;">💧</span></li>
+								<li><span>🤍</span>불참석<span style="float: right;">💧</span></li>
+								<li><span>🤍</span>미정<span style="float: right;">💧</span></li>
+							</ul> -->
+						</div>
+					</div>
+					<!--================ if참석여부 끝 =================-->
+					<!--================ if지도 =================-->
+					<div>
+						<h6 class="typo-list" id="mapName"></h6>
+						<div id="map" style="width:100%;height:350px;"></div>
+					</div>
+					<!--================ if지도 끝 =================-->
+				</div>
+				<button type="button" id="calBtn"></button>
+			</div>
+			<a class="modal_close_btn">:</a>
 		</div>
-		<a class="modal_close_btn">:</a>
-	</div>
 	<!--== 캘린더 모달창 끝 ==-->
+	
+	<!-- =====캘린더 입력 모달 창====== -->
+		<!--==캘린더 모달창 ==-->
+		<form id="my_calendar_modal_input" name="my_calendar_modal_input" class="my_calendar_modal_input">
+		<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}">
+			<div id="modalform_input">
+                <div>
+                	<!--================ 일정명 =================-->
+                	<div>
+	                  <h6 class="typo-list">일정만들기</h6>
+	                  <div>
+	                    <input type="text" name="bandCalendarTitle" id="bandCalendarTitle" placeholder="일정 제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '일정 제목을 입력해주세요'" required>
+	                  </div>
+	                </div>
+	                <!--================ 일정명 끝 =================-->
+	                <!--================ 일정마크 =================-->
+                	<div>
+	                  <h6 class="typo-list">일정마크</h6>
+	                  <div>
+	                    <select name='bandCalendarMark' id="bandCalendarMark">
+						  <option value='0' selected disabled>-- 선택 --</option>
+						  <option value='red' style='padding:15px;'>빨강🔴</option>
+						  <option value='orange' style='padding:15px;'>주황🟠</option>
+						  <option value='yellow' style='padding:15px;'>노랑🟡</option>
+						  <option value='blue' style='padding:15px;'>파랑🔵</option>
+						</select>
+	                  </div>
+	                </div>
+	                <!--================ 일정마크 끝 =================-->
+	                <!--================ 시작/종료 =================-->
+	                <div>
+	                  <h6 class="typo-list">시작</h6>
+                      <input type="date" name="bandCalendarStartDay" id="bandCalendarStartDay">
+                      <input type="time" name="bandCalendarStartTime" id="bandCalendarStartTime">
+					  <input type="hidden" name="bandCalendarStart" id="bandCalendarStart">
+	                </div>
+	                <div>
+	                  <h6 class="typo-list">종료</h6>
+                      <input type="date" name="bandCalendarEndDay" id="bandCalendarEndDay">
+                      <input type="time" name="bandCalendarEndTime" id="bandCalendarEndTime">
+					  <input type="hidden" name="bandCalendarEnd" id="bandCalendarEnd">
+	                </div>
+	                <!--================ 시작/종료 끝 =================-->
+	                 <!--================ 위치 =================-->
+	                <div>
+	                  <h6 class="typo-list">위치</h6>
+	                  <div>
+	                    <input type="text" id="bandCalendarLocation" name="bandCalendarLocation" value="">
+	                    <input type="hidden" id="bandCalendarLocationLatlong" name="bandCalendarLocationLatlong" value="">
+	                  </div>
+	                </div>
+	                <!--================ 위치 끝 =================-->
+	                <!--================ 참석여부 =================-->
+	                <div>
+						<h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 20px;">참석여부 묻기</h6>
+	                	<input type="checkbox" name="bandCalendarOption" value="t" id="bandCalendarOption">
+	                    <div id="checkDate" style="display: none">
+						<h6 class="typo-list">참석여부 확인 종료일</h6>
+	                     	<input type="date" name="bandCalendarOptionDayD" id="bandCalendarOptionDayD">
+                      		<input type="time" name="bandCalendarOptionDayT" id="bandCalendarOptionDayT">
+							<input type="hidden" name="bandCalendarOptionDay" id="bandCalendarOptionDay">
+						</div>
+	                </div>
+	                <!--================ 참석여부 끝 =================-->
+	            </div>
+                <button type="button" id="calBtn_input">전송</button>
+			</div>
+			<a class="modal_close_btn_input">닫기</a>
+		</form>
+<!--==캘린더 모달창 ==-->
+	<!-- =====캘린더 입력 모달 창 끝====== -->
+	
 	<script src="/css/band/js/time.js"></script>
 	<script>
+	/*<![CDATA[*/
+	var header = '[[${_csrf.headerName}]]';
+	var token = '[[${_csrf.token}]]';
+	   console.log(header);
+	   console.log(token);
+	 /*]]>*/
 	$(function(){ //2023-03-23타입의 string으로 고쳐서 보냄..DB에서 1일과 마지막날을 구해서 보낼 것..
 		//me 한달일정가져오기
 		var calendarEl = document.getElementById('calendar');
@@ -170,9 +276,32 @@
 	          // YYYY년 MM월
 	          return `${date.date.year}년 ${date.date.month + 1}월`;
 	        },
+	        customButtons: { 
+	            myCustomButton: { 
+	                text: '일정입력', 
+	                click: function(event) { 
+	                  onSelectEvent(event); 
+	                } 
+	            } 
+	   		},customButtons: {
+	   		    myCustomButton: {
+	   		      text: '➕',
+	   		      click: function() {
+	   		      addCalendar();
+	   			  $('#calBtn_input').on('click', function(){
+	   				 insertView();
+	   			   })
+	   		      }
+	   		    }
+	   		  },
+	   		  headerToolbar: {
+	   		    left: 'prev,next today myCustomButton',
+	   		    center: 'title',
+	   		    right: 'dayGridMonth'
+	   		  },
 	        selectable: true,
 	        selectMirror: true,
-	        select: function(arg) {
+	        select: function(arg) {/* 
 	          var title = prompt('Event Title:');
 	          if (title) {
 	            calendar.addEvent({
@@ -184,13 +313,16 @@
 	              textColor:"blue"
 	            })
 	          }
-	          calendar.unselect()
+	          calendar.unselect() */
 	        },
 	        eventClick: function(arg) {
+	        	//debugger
 	        	//누른 것의 pk출력
 	        	console.log(arg.event.id);
+	        	//일정상세조회
 	        	let bandCalendarLocationLatlong = MakeModalCal(arg.event.id);//모달붙이고 상세 조회 후 캘린더도 리턴
 	        	calModal('my_calendar_modal', bandCalendarLocationLatlong);
+	        	$('.fc-more-popover').hide();
 	        /* 삭제 if (confirm('Are you sure you want to delete this event?')) {
 	            arg.event.remove()
 	          } */
@@ -219,18 +351,87 @@
 	                   		        		   textColor : 'black',
 	                   		        		   id : element.bandCalendarNo                                                   
                                             }); //.push()
+                                          //이벤트보드만들기
+                                        makeBoard(JSON.stringify(element));
 	                                    })//.each()
 	                               //리스트저장
 	                               $('#saveCalendar').val(saveArr);
-	                               console.log(events);
-	                           }//if end                           
+	                               console.log(events);//
+	                           }//if end  
 	                           successCallback(events);                               
 	                       }//success: function end                          
 	            }); //ajax end
 	        }
+	        
 	    })
 	   calendar.render();
-	   
+	    
+	    //일정보드만들기
+	    function makeBoard(item){
+	    	item = JSON.parse(item);
+			//타이틀
+			let title = item.bandCalendarTitle;
+			//타이틀 저장도..
+			//날짜
+			let startDay = item.bandCalendarStart;
+			let endDay = item.bandCalendarEnd;
+			let sYear = startDay.substr(0, 4);
+			let eYear = endDay.substr(0, 4);
+			
+			startDay = new Date(item.bandCalendarStart);
+			endDay = new Date(item.bandCalendarEnd);
+			
+			//달
+			let sMonth = (1+startDay.getMonth());
+			let eMonth = (1+endDay.getMonth());
+			//날
+			let sDay = startDay.getDate();
+			let eDay = endDay.getDate();
+			//시간
+			let startTime = startDay.getHours();
+			let endTime = endDay.getHours();
+			//분
+			let startTime2 = startDay.getMinutes()
+			let endTime2 = endDay.getMinutes()
+			//상세시작시간
+			let sTime = (startTime < 12 ? "오전" : "오후")+" "
+				sTime += startTime+"시 "
+				sTime += startTime2+"분";
+			//상세끝나는시간
+			let eTime = (endTime < 12 ? "오전" : "오후")+" " //오전 오후
+					 + endTime+"시 " //12시간표기
+					 + endTime2+"분";
+			//시작 요일
+			let mon = getDayOfWeek(startDay);
+			//글쓴이
+			let writer = item.bandNickname
+			//마크색
+			let color = item.bandCalendarMark;
+		    let cal  = `<div class='boardC' style="width: 500x;padding:5px; height: 100px; display: flex; justify-content: space-between; border: 1px solid #eeeeee;" id="calendarModal2">`
+		    			cal += `<input type="hidden" value=${item.bandCalendarNo}>`
+		    			cal += `<div style="padding:10px;"><h3 id="jsDD"  style="margin-bottom:0px">${sDay}</h3>`
+						cal += `<p id="jsDay">${mon}</p></div>`
+						cal += `<div style="padding:10px;"><h5>${title}</h5>`
+						cal += `<p id="jsDeDay" style="margin-bottom: 0px">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
+						cal += `<span style="background-color:${color}">💭</span><span>${writer}</span></div>`;
+					
+			//요일뽑기
+			function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
+		    	const week = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+		    	const dayOfWeek = week[new Date(날짜문자열).getDay()];
+		    	return dayOfWeek;		    	
+			}
+			$('#articleArea').append(cal);
+	    }
+	    $('#articleArea').on('click', $('.boardC'), function(e){
+	    	//캘린더 번호
+	    	console.log($(e.target).parentsUntil('#articleArea').find('input').val());
+	    	let item = $(e.target).parentsUntil('#articleArea').find('input').val();
+	    	let bandCalendarLocationLatlong = MakeModalCal(item);//모달붙이고 상세 조회 후 캘린더도 리턴
+	        calModal('my_calendar_modal', bandCalendarLocationLatlong);
+	    })
+	    
+	    
 	    function getCalendar(bandNo, month){
 			$.ajax({
 		            url:'/own/band/bandGroup/bandCalendarNow?bandNo='+bandNo+'&month='+month,
@@ -270,24 +471,32 @@
 	    function MakeModalCal(calendarId){
 	    	//누른 것과 동일한 일정추출
 	    	//와 objobj로 저장될껄 json.parse로 input에 저장한 뒤 꺼내 쓸 때{}{}{}이렇게 되니까 json형태로 만들어준 뒤 파싱해서 쓰니까 되네ㅋㅋ
+	    	//let saveCal = '['+$('#saveCalendar').val()+']'
 	    	let saveCal = '['+$('#saveCalendar').val()+']'
-	    	console.log(JSON.parse(saveCal));
-	    	saveCal = JSON.parse(saveCal);
-	    	//누른 것과 동일한 것을 필터링해 줌
-	    	saveCal = saveCal.filter(item => item.bandCalendarNo==calendarId);
 	    	console.log(saveCal);
+	    	saveCal = JSON.parse(saveCal);
+	    	console.log(saveCal);
+	    	//누른 것과 동일한 것을 필터링해 줌
+	    	saveCal = saveCal.filter(item => {
+	    		return item.bandCalendarNo==calendarId
+	    		});
+	    	console.log('????'+saveCal);
 			//밴드 상세창 붙이기
 			makeModalDetail(saveCal);
 	    	//밴드한개 붙여두기
 	    	$('#saveCalendarEach').val(saveCal[0].bandCalendarNo);
 	    	$('#savesavebandCalendarOptionDay').val(saveCal[0].savebandCalendarOptionDay);
-	    	console.log('왜??'+saveCal[0].bandCalendarLocationLatlong)
-	    		return saveCal[0].bandCalendarLocationLatlong;
+	    	//카카오지도용
+	    	return saveCal[0].bandCalendarLocationLatlong;
 	   	}
+	    
 	  //모달 참석여부 외에 상세창
 	  function makeModalDetail(calendar){
+		  console.log('????'+calendar);
 			//타이틀
 			let title = calendar[0].bandCalendarTitle;
+			//타이틀 저장도..
+			$('#savebandCalendarTitle').val(title);
 			//날짜
 			let startDay = calendar[0].bandCalendarStart;
 			let endDay = calendar[0].bandCalendarEnd;
@@ -333,9 +542,9 @@
 					
 		  //지도가 있다면
 		    if(calendar[0].bandCalendarLocation!=null){
-		    	$('#mapName').css('display','none');
+		    	$('#map').css('display','block');
 		    } else {
-		    	$('#mapName').css('display','block');
+		    	$('#map').css('display','none');
 		    }
 			//투표가없다면	
 		    if(calendar[0].bandCalendarOption==null){
@@ -369,22 +578,38 @@
 				$('#voteR').text('투표 마감일'+con);
 			}
 			//만약 첨부된 글이 있다면 calBtn
-			if(calendar[0].bandboarddetailno!=null){
-				$('#calBtn').val(calendar[0].bandboarddetailno);
+			let userId = $('#userId').val();
+			$('#calBtn').css('display', 'block');
+			if(calendar[0].bandBoardDetailNo!=null){
+				$('#savebandBoardNum').val(calendar[0].bandBoardDetailNo);
 				$('#calBtn').text('이 일정이 첨부된 글 확인하기');
-			} else {
+				console.log('글번호저장'+$('#savebandBoardNum').val())
+			} else if(calendar[0].userId==userId){
+				$('#savebandBoardNum').val(null);
 				$('#calBtn').text('게시글 올리기');
+			} else {
+				$('#calBtn').css('display', 'none');				
 			}
-	  }
+			}
+	  })
+	  //$()끝
 	//게시글 이동
 	  $('#calBtn').on('click', function(){
-		  if($('#calBtn').val()!=null){
-		  	let boardNo = $('#calBtn').val();
+		  let boardNo = $('#savebandBoardNum').val();
+		  	console.log("????"+boardNo);
+		  if(boardNo!=null&&boardNo!=''){
+		  	let boardNo = $('#savebandBoardNum').val();
+		  	console.log(boardNo);
+		  	//모달지우기
+            //이동
    			$('#mainTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo);
 		  } else {
-			//아작스로 글 집어넣기
-			let calendarNo = $('#saveCalendarEach').val();
-			
+		  	let calendarNo = $('#saveCalendarEach').val();
+			let title = $('#savebandCalendarTitle').val();
+			//아작스로 글 집어넣기 //새창을 열어서 해야겠음
+			console.log('새창보낼 값'+calendarNo+title+bandNo)
+			window.open( "/own/band/bandGroup/bandCalendarInsert?bandCalendarNo="+calendarNo+"&title="+title+"&bandNo="+bandNo,
+					"Child", "width=600px, height=200px, top=50%, left=50% resizable = no, scrollbars = no" );	
 		  }
 	  })
 	  //모달 참석여부 상세만들기
@@ -439,27 +664,37 @@
 				<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right;">💧</span></li>
 			`;
 			attendChk.append(liTag);
+			
 		}
 	  //모달버전+지도..글상세에선 보니까 캘린더 상세조회도 햇었네? 여긴 걍 저장시켜 둠
 		function calModal(id, bandCalendarLocationLatlong) {
 	        var cModal = document.getElementById(id);
-			console.log(cModal);	
 	        // 모달 div 뒤에 희끄무레한 레이어
 	        var bgg = document.createElement('div');
-	        console.log(bgg);
 	        bgg.classList.add('bgg');
-	        document.body.append(bgg);
+	        //템플릿에 붙이기
+	        $('#template').append(bgg);
+	        //document.body.append(bgg);
 			
 	        cModal.classList.add('cModal');
 	        cModal.style.display='block';
-	        document.body.append(cModal);        
+	        //document.body.append(cModal);    
+	        $('#template').append(cModal);
 	        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
 	        cModal.querySelector('.modal_close_btn').addEventListener('click', function() {
 	            bgg.remove();
 	            cModal.style.display = 'none';
 	        });
-	        //지도..여기서 해야하나 봄...부를때 마다 초기화시켜서 부름
-       		kakaoMap(bandCalendarLocationLatlong);
+	        //게시글 올릴 때도 지우기
+	        $('#calBtn').on('click', function(){
+	        	bgg.remove();
+	            cModal.style.display = 'none';
+	        })
+	      //지도..여기서 해야하나 봄...부를때 마다 초기화시켜서 부름
+			//지도가 있다면
+		    if(bandCalendarLocationLatlong!=null){
+		    	kakaoMap(bandCalendarLocationLatlong);
+		    }
 	    }
 		//일정체크클릭모달
 		$('#attendChk').on('click', $('.attch'), function(e){
@@ -530,6 +765,7 @@
 		
 	  //여긴 해결
 	  function kakaoMap(bandCalendarLocationLatlong){
+			
 		  console.log(bandCalendarLocationLatlong)
 		  if(bandCalendarLocationLatlong != null){
 			  $('#map').css('display','block');
@@ -564,9 +800,127 @@
 		} else {
 			$('#map').css('display','none');
 		}
-	  }
-		
+		}
+		function addCalendar(){
+			modal('my_calendar_modal_input'); 
+		}
+	//일정추가
+	//체크박스 클릭시 투표날짜 시간제한
+	$('#bandCalendarOption').on('click',function(){
+		if($('#bandCalendarOption').prop('checked')){
+			$('#checkDate').show();
+		} else {
+			$('#checkDate').hide();
+			//값비우기
+			$('#bandCalendarOptionDay').val();
+		}
 	})
+	//날짜 컨트롤러에 보낼 포맷
+	function timestamp(date){
+		let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+
+        month = month >= 10 ? month : '0' + month;
+        day = day >= 10 ? day : '0' + day;
+        hour = hour >= 10 ? hour : '0' + hour;
+        minute = minute >= 10 ? minute : '0' + minute;
+        second = second >= 10 ? second : '0' + second;
+
+        return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+	}
+	//+버튼 눌림
+	function insertCalendar(){
+		alert('눌림');
+	}
+	//입력버튼눌림
+	function insertView(){
+		//투표일정이 잇다면 넣기
+		if($('#bandCalendarOption').prop('checked')){
+			let voteDay = new Date($('#bandCalendarOptionDayD').val());
+			let voteTime = $('#bandCalendarOptionDayT').val();
+			console.log(voteDay);
+			console.log(voteTime);
+			voteDay.setHours(voteTime.substr(0, 2));
+			voteDay.setMinutes(voteTime.substr(3));
+			console.log(voteDay);
+			$('#bandCalendarOptionDay').val(timestamp(voteDay));
+			console.log('마감일'+$('#bandCalendarOptionDay').val());
+		}
+		//밴드캘린더시작일 끝나는 날 히든 값 넣기
+		//날짜
+		let startDay = new Date($('#bandCalendarStartDay').val());
+		let endDay = new Date($('#bandCalendarEndDay').val());
+		//시간
+		let startTime = $('#bandCalendarStartTime').val();
+		let endTime = $('#bandCalendarEndTime').val();
+		
+		console.log(startDay)
+		startDay.setHours(startTime.substr(0, 2));
+		startDay.setMinutes(startTime.substr(3));
+		console.log(startDay)//여기까진 변환완료
+		$('#bandCalendarStart').val(timestamp(startDay));
+		console.log('시작일'+$('#bandCalendarStart').val());
+		
+		console.log(endDay)
+		endDay.setHours(startTime.substr(0, 2));
+		endDay.setMinutes(startTime.substr(3));
+		console.log(endDay)//여기까진 변환완료
+		$('#bandCalendarEnd').val(timestamp(endDay))
+		//입력데이터
+		//글쓰기
+		$.ajax({
+			url : '/own/band/insertCalendar',
+			method : 'post',
+			data : $('#my_calendar_modal_input').serializeObject(),
+			dataType : 'json',
+			beforeSend: function(xhr){
+              xhr.setRequestHeader(header,token);
+            }
+		}).then( res =>{
+			if(res!=null){
+				let bandNo = $('#bandNo').val();
+				console.log(res);
+				$('#template').load("/own/band/bandGroup/bandCalendar?bandNo="+bandNo);
+			} else {
+				alert('글쓰기 실패');
+			}
+		})
+		
+	}
+	//지역
+	$('#bandCalendarLocation').on('click', function(){
+		window.open( "/own/band/map", "Child", "width=1000px, height=500px, top=50%, left=50% ,resizable = no, scrollbars = no" );
+	})
+	//모달
+	function modal(id) {
+		var cModal = document.getElementById(id);
+        // 모달 div 뒤에 희끄무레한 레이어
+        var bgg = document.createElement('div');
+        bgg.classList.add('bgg');
+        //템플릿에 붙이기
+        $('#template').append(bgg);
+        //document.body.append(bgg);
+		
+        cModal.classList.add('cModal');
+        cModal.style.display='block';
+        //document.body.append(cModal);    
+        $('#template').append(cModal);
+        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+        cModal.querySelector('.modal_close_btn_input').addEventListener('click', function() {
+            bgg.remove();
+            cModal.style.display = 'none';
+        });
+        //게시글 올릴 때도 지우기
+        $('#calBtn').on('click', function(){
+        	bgg.remove();
+            cModal.style.display = 'none';
+        })
+        
+	}
 	</script>
+	</div>
 </body>
 </html>

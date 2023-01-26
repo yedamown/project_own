@@ -34,4 +34,7 @@ public class BandBoardDetailVO {
 	public Integer first = 1;
 	public Integer last = 10;
 	
+	//캘린더 업데이트용
+	public String bandCalendarNo;
+	
 }

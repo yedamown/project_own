@@ -261,4 +261,28 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 	public List<BandCalendarVO> selectCalendarNow(String bandNo, String month) {
 		return bandBoardDetailMapper.selectCalendarNow(bandNo, month);
 	}
+
+	@Override
+	public BandBoardDetailSearchVO bandCalendarInsert(String bandCalendarNo, BandBoardDetailVO vo) {
+		int r = bandBoardDetailMapper.insertBandBoard(vo);
+		System.out.println(vo.toString()+"???업데이트 후");
+		if(r>0) {
+			//캘린더번호와 글번호를 가지고 가서 업데이트
+			r = bandBoardDetailMapper.updateBandCalendarBoardNo(bandCalendarNo, "BDD_"+vo.getBandBoardDetailNo());
+		}
+		//상세조회해서 리턴
+		BandBoardDetailSearchVO voD = new BandBoardDetailSearchVO();
+		if(r>0) {
+			voD.setBandBoardDetailNo("BDD_"+vo.getBandBoardDetailNo());
+			bandBoardDetailMapper.getBandBoardDetail(voD);
+		}
+		return voD;
+	}
+
+	@Override
+	public BandCalendarVO insertCalendarSingle(BandCalendarVO vo) {
+		int r = bandBoardDetailMapper.insertCalendar(vo);
+		System.out.println(r+"캘린더입력됨");
+		return vo;
+	}
 }
