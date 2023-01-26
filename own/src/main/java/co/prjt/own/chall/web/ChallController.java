@@ -213,7 +213,7 @@ public class ChallController {
 	// ------------------------- 인 증 관 련 -----------------------------------------------------------
 	//인증 글 등록 
 	@PostMapping("/insertVldForm")
-	public String insertVld(@RequestParam List<MultipartFile[]> uploadfile, ValidationVO vo, Model model, RedirectAttributes rttr) {
+	public String insertVld(@RequestParam List<MultipartFile[]> uploadfile, ValidationVO vo, Model model) {
 		int rs = validation.insertVld(vo);
 		String vldNo = vo.getVldNo();
 		System.out.println(vldNo);
@@ -360,6 +360,7 @@ public class ChallController {
 		return "redirect:/own/chall/mypage";
 	}
 	
+	// -------------------------------------- 예치금관련 ----------------------------------------------------	
 	// 마이페이지 - 내 예치금
 	@GetMapping("/myAmount")
 	public String challMyAmt(CMemberVO vo1, CAmountVO vo2, Model model, HttpServletRequest request) {
@@ -377,6 +378,40 @@ public class ChallController {
 		return "content/chall/myAmount";
 	}
 
+	//마이페이지 - 예치금 충전페이지 이동
+	@GetMapping("/payAmount")
+	public String payAmount (CMemberVO vo, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		String id = user.getUserId();
+		vo.setUserId(id);
+		model.addAttribute("memInfo", member.getCMem(vo));
+		return "content/chall/payForm";
+	}
+	
+	// 마이페이지 - 예치금 결제 
+	@PostMapping("/payAjax")
+	@ResponseBody
+	public String payAjax(@RequestBody CAmountVO vo, Model model) {
+		//결제내역 리스트에 insert하기
+		System.out.println("입력받은 vo--------------"+vo);
+		amount.insertAmount(vo);
+		System.out.println("인서트된..시퀀스값이 나왔나? vo--------------"+vo);
+		String amtNo = vo.getAmtListNo();
+		return amtNo;
+	}
+	
+	//결제 결과아작스
+	@GetMapping("/payResult")
+	public String payResult(@RequestParam("amtNo") String no, CAmountVO vo, Model model) {
+		System.out.println(no);
+		String amtNo = "CAL_" + no;
+		vo.setAmtListNo(amtNo);
+		//챌린지정보
+		model.addAttribute("payResult", amount.getAmt(vo));
+		return "content/chall/payResult";
+	}
+	
 	//마이페이지 도전정보
 		@GetMapping("/myChall")
 		public String myPageChall(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo) {

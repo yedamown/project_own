@@ -192,12 +192,12 @@ $(function(){
                </div>
                <div class="form-group">
                 <label for="maxMember">도전가능 인원 *</label>
-                 <input type="number" class="form-control col-lg-5"  id="maxMember" name="maxMember" min:1 max:20
+                 <input type="number" class="form-control col-lg-5"  id="maxMember" name="maxMember" min="1" max="20"
                		 placeholder="1~20사이로 입력" />
                </div>
                <div class="form-group">
                 <label for="challPrice">도전금액 *</label>
-                 <input type="number" class="form-control col-lg-8"  name="challPrice" id="challPrice" min:1000
+                 <input type="number" class="form-control col-lg-8"  name="challPrice" id="challPrice" min="1000" 
                		 placeholder="최소금액은 1000원입니다. 1000원 단위로 입력하세요."/>
                </div>
                <div class="control-group">
@@ -233,42 +233,6 @@ $(function(){
     <!-- Contact End -->
     <!-- 입력폼 끝 -->
 		
-
-		
-		
-		<form action="/own/chall/insertChall" method="post" id="insertChall" enctype="multipart/form-data">
-		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-			<ul>
-				<input id ="userId" type="hidden" name="challLeader" th:value="${session.loginUser.userId}">
-				<li>도전제목:<input id="challTitle" name="challTitle">
-				<li>카테고리:<select name="challCategory" id="challCategory">
-						<th:block th:each="exer:${exersub}">
-							<option th:value="${exer.exersubName}" th:text=${exer.exersubName} />
-						</th:block>
-				</select>
-				<li>태그<input id="challTag"></li>
-	                   <li><label for="inputFile">대표이미지:<input type="file" name = "uploadfile" multiple="multiple"></input></label>
-				<li><label for="inputFile">인증성공:<input type="file" name = "uploadfile" multiple="multiple"></input></label>
-				<li><label for="inputFile">인증실패:<input type="file" name = "uploadfile" multiple="multiple"></input></label>
-				<li>도전 시작일<input type="date" id="challStartdate" name="challStartdate">
-				<li>도전기간<select name="challDuration" id="challDuration">
-							<option th:each=" i: ${#numbers.sequence(1, 4)}" th:value="${i}" th:text="${i}" />
-				</select>
-				<li>도전빈도<select name="challFreq" id="challFreq">
-						<th:block th:each=" i: ${#numbers.sequence(1, 7)}">
-							주 <option th:value="${i}" th:text="${i}">회</option>
-						</th:block>
-				</select>
-				<li>도전가능인원<input type="number" id="maxMember" name="maxMember"
-					placeholder="1~20사이로 입력" min:1 max:20 >
-				<li>도전금액<input type="number" name="challPrice" id="challPrice" 
-				placeholder="1000원 단위로 입력" min:1000>
-				<li>* 최소 도전금액은 1000원입니다. 금액 단위는 1000원입니다.
-				<li>도전소개<input type="content" id="challIntro" name="challIntro">
-				<li>인증방법<input id="vldMethod" name="vldMethod">
-				<!-- <li><button type="submit" id="addBtn">도전등록</button>  -->
-			</ul>
-	</form>
 	
 <script>
 		//첨부파일 이미지 

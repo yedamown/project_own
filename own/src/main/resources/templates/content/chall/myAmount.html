@@ -125,14 +125,15 @@
 					</ul>
 				</div>
 			</div>
-
+		<div class="col-12" style="text-align: center; ">
 			<h3>
 				내 현재 보유예치금:<span th:text=${memInfo.memAmt}></span>
 			</h3>
+			<p class="btn btn-outline-primary m-1"><a href="/own/chall/payAmount">충전하러가기</a></p>
 			<h3>
 				내 계좌정보:<span th:text=${memInfo.memAcc}></span> <span>[[${memInfo.memAccname}]]</span>
 			</h3>
-			<table border="solid 1">
+			<table border="solid 1" style="text-align: center;">
 				<thead>
 					<tr>
 						<th>날짜</th>
@@ -151,9 +152,8 @@
 					</tr>
 				</tbody>
 			</table>
-
+			</div>
 		</div>
-
 	</div>
 	<!-- Contact End -->
 

@@ -19,6 +19,13 @@ public class CAmountServiceImpl implements CAmountService{
 		return mapper.insertAmount(vo);
 	}
 
+	//단건조회
+	@Override
+	public CAmountVO getAmt(CAmountVO vo) {
+		return mapper.getAmt(vo);
+	}
+	
+	
 	@Override
 	public List<CAmountVO> getAmountListAll() {
 		return mapper.getAmountListAll();
@@ -28,5 +35,6 @@ public class CAmountServiceImpl implements CAmountService{
 	public List<CAmountVO> getAmountList(CAmountVO vo) {
 		return mapper.getAmountList(vo);
 	}
+
 
 }
