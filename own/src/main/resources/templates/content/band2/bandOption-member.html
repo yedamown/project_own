@@ -1,0 +1,165 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<style>
+</style>
+
+<body>
+  <h1>멤버 관리</h1>
+
+
+  <p>전체 멤버</p>
+  <p>승인 대기 멤버</p>
+  <p>강제 탈퇴 멤버</p>
+  <div id="allBandMemberList">
+    <div>
+      <input type="text" class="form-control" placeholder="별명 검색" name="bandNickname">
+      <span class="input-group-btn">
+        <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
+      </span>
+      <select name="searchOption">
+        <option value="">가입일자 순</option>
+        <option value="">이름 순</option>
+        <option value="">최종접속일 순</option>
+        <option value="">방문수 순</option>
+        <option value="">게시글 순</option>
+        <option value="">댓글 순</option>
+      </select>
+      <select name="pagingOption">
+        <option value="">10개씩 보기</option>
+        <option value="">20개씩 보기</option>
+        <option value="">50개씩 보기</option>
+      </select>
+      <span class="">
+        전체 멤버 수
+      </span>
+    </div>
+    <table>
+      <thead>
+        <th>별명(아이디)</th>
+        <th>최종 접속일</th>
+        <th>게시글 수</th>
+        <th>댓글 수</th>
+        <th>성별</th>
+        <th>연령</th>
+        <th><input type="checkbox"></th>
+
+      </thead>
+      <tbody id="">
+        <tr th:each="list : ${memberList}">
+          <span th:if="${#strings.equals(list.bandMemberstatus, 'BA02')}">
+            <td th:text="${list.bandNickname} + '(' + ${list.userId} + ')'"></td>
+            <td th:text="${list.bandAccessDate}"></td>
+            <td th:text="${list.boradCnt}"></td>
+            <td th:text="${list.replyCnt}"></td>
+            <span th:if="${list.bandGender == 'GD01'}">
+              <td th:text="남자"></td>
+            </span>
+            <span th:unless="${list.bandGender == 'GD01'}">
+              <td th:text="여자"></td>
+            </span>
+            <td th:text="${list.age}"></td>
+            <td><input type="checkbox"></td>
+          </span>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="waitingBandMemberList">
+    <div>
+      <input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname">
+      <span class="input-group-btn">
+        <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
+      </span>
+      <select name="pagingOption">
+        <option value="">10개씩 보기</option>
+        <option value="">20개씩 보기</option>
+        <option value="">50개씩 보기</option>
+      </select>
+      <span class="">
+        전체 멤버 수
+      </span>
+    </div>
+    <table>
+      <thead>
+        <th>별명(아이디)</th>
+        <th>소개말</th>
+        <th>성별</th>
+        <th>연령</th>
+        <th><input type="checkbox"></th>
+
+      </thead>
+      <tbody id="">
+        <tr th:each="list : ${memberList}">
+          <span th:if="${#strings.equals(list.bandMemberstatus, 'BA01')}">
+            <td th:text="${list.bandNickname} + '(' + ${list.userId} + ')'"></td>
+            <td th:text="${list.bandMemberIntro}"></td>
+            <span th:if="${list.bandGender == 'GD01'}">
+              <td th:text="남자"></td>
+            </span>
+            <span th:unless="${list.bandGender == 'GD01'}">
+              <td th:text="여자"></td>
+            </span>
+            <td th:text="${list.age}"></td>
+            <td><input type="checkbox"></td>
+          </span>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="kickedBandMemberList">
+    <div>
+      <input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname">
+      <span class="input-group-btn">
+        <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
+      </span>
+      <select name="pagingOption">
+        <option value="">10개씩 보기</option>
+        <option value="">20개씩 보기</option>
+        <option value="">50개씩 보기</option>
+      </select>
+      <span class="">
+        강제 탈퇴 멤버 수 
+      </span>
+    </div>
+    <table>
+      <thead>
+        <th>별명(아이디)</th>
+        <th>사유</th>
+        <th>처리일</th>
+        <th>가입불가여부</th>
+        <th><input type="checkbox"></th>
+
+      </thead>
+      <tbody id="">
+        <tr th:each="list : ${memberList}">
+          <span th:if="${#strings.equals(list.bandMemberstatus, 'BA03')}">
+            <td th:text="${list.bandNickname} + '(' + ${list.userId} + ')'"></td>
+            <td th:text="${list.사유}"></td>
+            <td th:text="${list.bandNo}"></td>
+            <td th:text="${list.bandKickDate}"></td>
+            <td th:text="${list.가입불가여부}"></td>
+            <td><input type="checkbox"></td>
+          </span>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<script>
+  $(function () {
+    // 밴드멤버리스트
+    /* function getMessage() {
+		  $.ajax({
+			  url : '/bandOptionGetAllMemberList?bandNo=',
+					method : 'get',
+					dataType : 'json',
+					contentType : "application/json"
+		  }).then(res => {
+			  
+		  })
+	  }  */
+  })
+</script>
