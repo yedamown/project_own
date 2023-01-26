@@ -3,4 +3,37 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.band.mapper.BandOptionMapper">
 
+<!-- 해당밴드 디테일 불러오기 -->
+<select id="bandManageHome" resultType="co.prjt.own.band.service.BandVO">
+select * from band_member_detail
+where band_no = #{bandNo}
+</select>
+
+<!-- 해당밴드 가입자수 불러오기 -->
+<select id="bandCount" resultType="int">
+select count(*) from band_member_detail
+where band_no = #{bandNo}
+</select>
+
+<select id="bandInfo" resultType="co.prjt.own.band.service.BandVO">
+select b.*,m.media_server_file as mediaServerFile from band b, multimedia m
+where b.band_no = m.identify_id
+and b.band_no = #{bandNo}
+</select>
+
+<update id="bandUpdate">
+UPDATE BAND SET BAND_NAME=#{bandName},
+	          BAND_INTRO=#{bandIntro},
+ 		BAND_KEYWORD=#{bandKeyword},
+		BAND_OPEN_OPTION=#{bandOpenOption},
+		BAND_AGE_OPTION=#{bandAgeOption},
+		BAND_AGE_BEFOROPTION=#{bandAgeBeforoption},
+		BAND_AGE_AFTEROPTION=#{bandAgeAfteroption},
+		BAND_CATEGORY=#{bandCategory},
+		BAND_GENDER_OPTION=#{bandGenderOption},
+		BAND_MEMBERSHIP_OPTION=#{bandMembershipOption},
+		BAND_LOCATION=#{bandLocation},
+		BAND_GENDER=#{bandGender}
+		WHERE BAND_NO = #{bandNo}
+</update>
 </mapper>

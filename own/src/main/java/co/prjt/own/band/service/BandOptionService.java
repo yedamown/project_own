@@ -1,5 +1,14 @@
 package co.prjt.own.band.service;
 
-public interface BandOptionService {
+import java.util.List;
 
+public interface BandOptionService {
+	//해당 밴드에 관련된 사람들을 관리하기위한 밴드메인관리페이지.
+	public List<BandMemberDetailVO> bandManageHome(BandMemberDetailVO vo);
+	//해당 밴드에 가입한 사람들을 카운팅
+	public int bandCount(BandVO vo);
+	//해당 밴드 정보
+	public BandVO bandInfo(BandVO vo);
+	//밴드 업데이트 제발 되라
+	public int bandUpdate(BandVO vo);
 }
