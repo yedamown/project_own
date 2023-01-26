@@ -2,8 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.chall.mapper.CAmountMapper">
 	<select id="getAmountList" resultType="co.prjt.own.chall.service.CAmountVO">
-		select * from chall_amount_list
-		where user_id = #{userId}
+		SELECT * FROM CHALL_AMOUNT_LIST
+		WHERE USER_ID = #{userId}
 	</select>
-
+	
+	<insert id="insertAmount">
+		<selectKey keyProperty="amtListNo" resultType="string" order="BEFORE">
+			SELECT CAL_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CHALL_AMOUNT_LIST(AMT_LIST_NO, USER_ID, PRICE, AMT_TYPE, CHALL_NO)
+		VALUES('CAL_'||#{amtListNo},
+		       #{userId},
+		       #{price},
+		       #{amtType},
+		       #{challNo})
+	</insert>
+	
+	<select id="getAmt" resultType="co.prjt.own.chall.service.CAmountVO">
+		SELECT * FROM CHALL_AMOUNT_LIST
+		WHERE AMT_LIST_NO = #{amtListNo}
+	</select>
 </mapper>
