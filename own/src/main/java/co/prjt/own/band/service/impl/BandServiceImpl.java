@@ -73,8 +73,8 @@ return bandList;
 	}
 
 	@Override
-	public Map<String, Object> getBand(String bandNo, String userId) {
-		return bandMapper.getBand(bandNo, userId);
+	public Map<String, Object> getBand(String bandNo) {
+		return bandMapper.getBand(bandNo);
 	}
 
 	@Override

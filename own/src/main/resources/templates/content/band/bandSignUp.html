@@ -1,0 +1,245 @@
+<html xmlns:th="http://www.thymeleaf.org"lang="ko">
+    <head>
+    	<!-- jquery -->
+    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
+        <title>Royal Hotel</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/css/band/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/css/band/css/style.css">
+        <link rel="stylesheet" href="/css/band/css/responsive.css">
+        <!--어썸폰트 무료?-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <style>
+      	
+		img {
+			border-radius: 10px;
+		}
+		img:hover{
+			border:#BFBFBF 2px solid;
+			cursor:pointer;
+		}
+		.aaimg {
+			padding: 5px;
+			border-radius: 10px;
+			height:100px;
+			width:100px;
+			border-radius: 15px;
+		}
+        #alertTag2.vibration{
+          animation: vibration 0.1s infinite;
+        }
+        #alertTag.vibration{
+          animation: vibration 0.1s infinite;
+        }
+        @keyframes vibration {
+          from {
+            transform: rotate(1deg);
+          }
+          to {
+            transform: rotate(-1deg);
+          }
+        }
+        .malp {
+          background: #f3f3f3;
+          border: 1px solid #d8d8d8;
+          text-align: center;
+          border-radius: 50px;
+          width: 50px;
+          height: 50px;
+          padding: 2px 8px;
+          cursor: pointer;
+          margin-left: 10px;
+        }
+
+        /* 말풍선 적절한 top 과 margin-left 로 위치조정 */
+        .arrow_box {
+          display: none;
+          position: absolute;
+          width: 300px;
+          padding: 8px;
+          -webkit-border-radius: 8px;
+          -moz-border-radius: 8px;
+          border-radius: 8px;
+          background: #333;
+          color: #fff;
+          font-size: 14px;
+          z-index: 999;
+        }
+
+
+        .malp:hover + p.arrow_box {
+          display: block;
+        }
+      </style>
+    </head>
+    <body>
+        <!--================위에  Area =================-->
+        <section class="banner_area">
+            <div class="booking_table d_flex align-items-center" style="min-height: 200px;">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+            	<div><h2 class="typo-list" style="color:white">회원가입</h2></div>
+            </div>
+        </section>
+        <!--================위에 Area 끝=================-->
+        
+        <!--================ 폼 Area  =================-->
+		<div id="template">    
+			<div style="flex-grow:3; width: 740px">
+				<article style="border: 1px solid #eeeeee;padding:20px 0px 50px 70px; ">
+					<div class="container">
+				<!--================폼 시작 Area =================-->      
+				         	<form role="form" method="post" autocomplete="off" style="width: 80%;"enctype="multipart/form-data">
+				         	<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}">
+				         		<input type="hidden" th:value="${session.userId}" name="userId"/>
+				         		<div class="imgArea">
+				<!--================이미지 Area =================-->
+									<div>
+										<h4 class="typo-list" style="padding-bottom: 15px">대표 이미지</h4>  
+									</div>
+						            <div>
+						                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
+					                		<div style="flex-grow: 1; width: 150x; height: 150px;">
+					                			<img src="/css/band/image/room2.jpg" id="inputImage" alt="" style="flex-grow: 1; width: 150x; height: 150px;">
+					                		</div>
+					                		<!--================ 이름 =================-->
+							                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">
+							                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 활동명</h6>
+							                  <div class="mt-10">
+							                    <input type="text" name="bandName" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
+							                  </div>
+							                  <b><small style="display:inline; width: 10%; float: right">12/100</small></b>
+							                  <div><b style="padding-left: 10px;">가입가능한 닉네임입니다</b></div>
+							                </div>
+							                <!--================ 이름 끝 =================-->
+						                </div>
+						            </div>
+						            <input type="file" id="gateImage" multiple="multiple" name="gateImage" style="display: none" onchange="imgFnc()" accept="image/gif, image/jpeg, image/png">
+						            <input type="text" id="mediaServerFile" name="mediaServerFile" style="display: none" value="sample">
+				<!--================이미지 Area 끝 =================-->
+				<hr></div><!-- 이미지끝남 -->
+								<div class="insertArea" style="margin:0px auto;width: 110%; padding: 10px 15px 80px">
+		        <!--================작성 Area 시작 =================-->
+						            <div style="display: flex; flex-wrap: wrap; flex-direction: column;justify-content: flex-end; flex-grow: 2;">
+						                <!--================ 소개 =================-->
+						                <div style="display: inline-block; width: 90%;  display: flex; flex-direction: column;">
+						                  <h6 class="typo-list" style="float: left;margin-top: 2px; ">소개말</h6>
+						                  <div class="mt-10">
+						                    <textarea name="bandIntro" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input" style=" display: block; float: left;flex-grow: 3;"></textarea>
+						                  </div>
+						                  <b><small style="float: right; display: block;">12/100</small></b>
+						                </div>
+						                <!--================ 소개 끝 =================-->
+						                <div  style="margin:0px auto; display: flex; justify-content: space-between; align-content:flex-start;">
+								    	</div><!-- 이름/소개 끝남 -->
+								    </div>
+								    <div>
+					                      <h6 class="typo-list">개인정보 공개범위</h6>
+					                      <div class="d-flex">
+					                        <p style="margin-right: 10px">성별</p>
+					                        <div class="primary-radio" style="margin-top: 3px">
+					                          <input type="checkbox" id="gender" name="gender" value="BE01" checked>
+					                          <label for="gender" style="top: 0px"></label>
+					                        </div>
+					                       </div>
+					                        <div class="d-flex">
+					                        <p style="margin-right: 10px">나이</p>
+					                        <div class="primary-radio"  style="margin-top: 3px">
+					                          <input type="checkbox" id="birthDay" name="birthDay" value="BE01" checked>
+					                          <label for="birthDay" style="top: 0px"></label>
+					                        </div>
+					                       </div>
+					                        <div class="d-flex">
+					                        <p style="margin-right: 10px">생일</p>
+					                        <div class="primary-radio"  style="margin-top: 3px">
+					                          <input type="checkbox" id="location" name="location" value="BE01" checked>
+					                          <label for="location" style="top: 0px"></label>
+					                        </div>
+					                       </div>
+				                     </div>
+					<!--================작성 Area =================-->
+					<button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 가입</button>
+								</div>
+					            </form>
+				<!--================폼 끝 Area =================--> 
+							</div>
+				</article>
+			</div>
+		</div>
+        <!--================ 밴드생성 끝 Area  =================-->
+        
+        <!-- Optional JavaScript -->
+        <script>
+        $(function(){
+        	 //이미지삽임
+            $('.imgss').on('click', '#inputImage', function(){
+            	$('#gateImage').click();
+            })
+            //이미지첨부 눌렀을 때
+            function imgFnc(){
+            	//파일
+            	let imgFile = $('#gateImage').val();
+            	//확장자제한
+            	let fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+            	//50mb로 제한
+            	let maxSize = 100 * 1024 * 1024;
+            	//특수문자 제한
+            	let pattern =  /[\{\}\/?,;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+            	//파일크기제한
+            	let fileSize;
+    			
+            	if($('#gateImage').val() == "") {
+            		alert("첨부파일은 필수!");
+            	    return;
+            	}
+            	//파일명과 사이즈를 뽑기위한..제이쿼리를 모르겠음 이건
+            	let fileName = document.getElementById("gateImage").files[0]
+            	//파일이 비었다면
+            	if(imgFile != "" && imgFile != null) {
+            		//input=file의 files 속성가져와서...
+            		fileSize = fileName.size;
+            	    if(!imgFile.match(fileForm)) {
+            	    	alert("이미지 파일만 업로드 가능");
+            	        return;
+            	    } else if(fileSize > maxSize) {
+            	    	alert("파일 사이즈는 100MB까지 가능");
+            	        return;
+            	    } else if(pattern.test(fileName.name)){
+            	    	alert("파일 이름 특수문자 nono");
+            	        return;
+            	    }
+            	}
+            }
+            //이미지 업로드 시 미리보기createImage
+            $('#gateImage').on('change', function(e){
+            	let file = e.target.files[0];
+            	let reader = new FileReader();
+            	reader.onload = function(e){
+            		$('#inputImage').attr('src', e.target.result);
+            		//기존이미지 누를시..
+            		$('input[name=mediaServerFile]').val('sample')
+            	}
+            	reader.readAsDataURL(file);
+            	
+            })
+            //디폴트이미지 설정하기###
+            $('.aaimg').on('click', function(){
+            	$('#inputImage').attr('src',$(this).attr('src'));
+            	console.log($(this).attr('src').substr(9));
+            	$('input[name=mediaServerFile]').val($(this).attr('src').substr(9))
+            })
+        })
+        </script>
+    </body>
+</html>

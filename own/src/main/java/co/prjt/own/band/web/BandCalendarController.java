@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,5 +90,11 @@ public class BandCalendarController {
 		//글쓴이
 		vo.setUserId(user.getUserId());
 		return bandBoardDetailService.insertCalendarSingle(vo);
+	}
+	@DeleteMapping("/deleteCalendar")
+	@ResponseBody
+	public String deleteCalendar(String calendarNo) {
+		System.out.println(calendarNo);
+		return bandBoardDetailService.deleteCalendar(calendarNo);
 	}
 }

@@ -132,10 +132,10 @@
                     </aside>
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">가치 홈</a></li>
-                            <li class="nav-item"><div th:if="${BandMemberDetail}"><a class="nav-link" id="bandPhoto">앨범</a></div></li>
-                            <li class="nav-item"><div th:if="${BandMemberDetail}"><a class="nav-link" id="bandCalendar">일정</a></div></li>
+                            <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandPhoto">앨범</a></div></li>
+                            <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandCalendar">일정</a></div></li>
                             <!--================ 채팅기능을 위한 임시 =================-->
-                            <li class="nav-item"><div th:if="${BandMemberDetail}"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></div></li>
+                            <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></div></li>
                         </ul>
                     </div> 
                 </nav>
@@ -157,12 +157,12 @@
                                 <hr>
                                 <div>
                                     <b><i class="fa fa-user"></i>멤버 <span th:text="${band.memcount}"></span></b>
-                                    <div th:if="${BandMemberDetail}"><b><i class="fa fa-plus-square-o" aria-hidden="true"></i> 초대</b></div>
+                                    <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><b><i class="fa fa-plus-square-o" aria-hidden="true"></i> 초대</b></div>
                                     <p><i class="fa fa-map-marker" aria-hidden="true"></i> <span th:text="${band.bandLocation}"></span></p>
                                     <p><i class="fa fa-futbol-o" aria-hidden="true"></i> <span th:text="${band.bandCategory}"></span></p>
                                 </div>
                                 <hr>
-                                <div th:if="${BandMemberDetail}">
+                                <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                                <div>
 	                                	<p id="myOption"><i class="fa fa-cog" aria-hidden="true"></i>내 별명(닉네임)</p>
 	                                    <p id="bandOption"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정</p>
@@ -171,12 +171,16 @@
 	                                <hr>
 
                                 </div>
-                                <div th:unless="${BandMemberDetail}">
+                                <div th:unless="${BandMemberDetail}"  id="signUpBand">
                                 <!-- =======가입======= -->
-                                	<h4 class="widget_title" id="writeBoard" style="color:white;">회원가입</h4>
+                                	<h4 class="widget_title" style="color:white;">회원가입</h4>
+                                </div>
+                                <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA01'}">
+                                <!-- =======승인중======= -->
+                                	<h4 class="widget_title" style="color:white;">승인대기중</h4>
                                 </div>
                             </aside>
-                            <div th:if="${BandMemberDetail}">
+                            <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                            <aside class="single_sidebar_widget post_category_widget">
 	                                <h4 class="widget_title" id="writeBoard">글쓰기</h4>
 	                                <div class="d-flex justify-content-between" id="totalBoard">
@@ -203,7 +207,7 @@
 	                    	</div>        
                         </div>
                     </div>
-                    <div th:if="${BandMemberDetail}">
+                    <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                    <div style="flex-grow:3; width: 740px">
 	                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber" >
 	                    	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
@@ -258,7 +262,7 @@
 	                    </div>
                     </div>
                     <div style="flex-grow:1; width: 260px">
-                        	<div th:if="${BandMemberDetail}">
+                        	<div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                        	<div class="blog_right_sidebar">
 		                            <aside class="single_sidebar_widget popular_post_widget">
 		                                <div class="dropdown">
@@ -334,7 +338,7 @@
                             <div id="mc_embed_signup">
                                 <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe_form relative">
                                     <div class="input-group d-flex flex-row">
-                                        <input name="EMAIL" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
+                                        <input name="EMAIL" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required type="email">
                                         <button class="btn sub-btn"><span class="lnr lnr-location"></span></button>		
                                     </div>									
                                     <div class="mt-10 info"></div>
@@ -433,10 +437,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		                	console.log(ele.bandBoardContent);
 		                	if(ele.bandBoardContent.indexOf('<iframe')>0){
 		                		let con = ele.bandBoardContent.substr(0, ele.bandBoardContent.indexOf('</iframe>'));
-		                		console.log(con);
-		                		con = con.substr(ele.bandBoardContent.indexOf('<i'),con.length);
+		                		console.log(con+'11111####################################');
+		                		con = con.substr(ele.bandBoardContent.indexOf('<if'),con.length);
 		                		con += con+'</iframe>';
-		                		console.log(con+'</iframe>');
+		                		console.log(con+'</iframe>2222222####################################');
 		                		//사진이 있다면 동영상으로 바꿔주기
 		                		imgTag = con;
 		                	}
@@ -542,7 +546,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				                $(articleArea).append(btnTag);
 				            	console.log('버튼 value 붙은거 확인'+$('#multivalue').val());           
 			                } else {
-			                	let endtag = `<div><h5>끝입니다</h5></div>`
+			                	/* let endtag = `<div><h5>끝입니다</h5></div>` */
 			                	$(articleArea).append(endtag);
 			                }
 			                
@@ -560,11 +564,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         		makeBoard(bandNo, mul);
         	})
         	
-        //이미지.. 인라인 img 숨기기
-        $('#articleArea').find('img').each(function(idx,ele){
-        	console.log(ele);	
-        	ele.hide();
-       	})
+        //이미지.. 인라인 img 숨기기..이거 이미지 없으니까 에러뜸 이거 왜만들었지??? 밴드가입할 때 에러떠서 주석처리 함
+        /* $('#articleArea').find('img').each(function(idx,ele){
+        	console.log(ele);
+           	ele.hide();
+      	}) */
         
        	// 	이미지 클릭시 해당 이미지 모달
 			$('#articleArea').on('click', $("img"), function(e){
@@ -676,7 +680,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     	$('#bandPhoto').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandPhoto?bandNo="+bandNo);
     	})
-    	//검색버튼
+    	//가입버튼
+    	 $('#signUpBand').on('click', function(){
+    		 $('#mainTemplate').load("/own/band/bandGroup/signUpBand?bandNo="+bandNo);
+    	 })
     	//검색버튼
         $('.searchBtn').on('click', function(){
         	boardNo = $('.searchBtn').val();

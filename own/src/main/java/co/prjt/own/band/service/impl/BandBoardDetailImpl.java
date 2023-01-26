@@ -43,52 +43,54 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 			categoryNos.add(v.getBandBoardDetailNo());
 		}
 		//찜 만약 내가 찍었다면 찍었다는 게 필요할 듯.. 단순 수량만 가져가면 안되겠음
-		List<OwnLikeVO> list = bandBoardDetailMapper.getOwnLike(categoryNos, userId);
-		//확장보드VO에 좋아요VO담담음 BoardVO.like.likecount로 꺼내쓰기
-			for(BandBoardDetailSearchVO v : fiveboard) {
-				for(OwnLikeVO o : list) {
-					if(o.getCategoryNo()!=null&&v.getBandBoardDetailNo().equals(o.getCategoryNo())) {
-						v.setLikeList(o);
-					} else {
+		if(categoryNos.size()>0) {
+			List<OwnLikeVO> list = bandBoardDetailMapper.getOwnLike(categoryNos, userId);
+			//확장보드VO에 좋아요VO담담음 BoardVO.like.likecount로 꺼내쓰기
+				for(BandBoardDetailSearchVO v : fiveboard) {
+					for(OwnLikeVO o : list) {
+						if(o.getCategoryNo()!=null&&v.getBandBoardDetailNo().equals(o.getCategoryNo())) {
+							v.setLikeList(o);
+						} else {
+							OwnLikeVO like = new OwnLikeVO();
+							like.setLikeCount(0);
+							like.setUserId("");
+							v.setLikeList(like);
+						}
+					}//널체크..제정신일 때
+					if(list.size()==0) {
 						OwnLikeVO like = new OwnLikeVO();
 						like.setLikeCount(0);
 						like.setUserId("");
 						v.setLikeList(like);
 					}
-				}//널체크..제정신일 때
-				if(list.size()==0) {
-					OwnLikeVO like = new OwnLikeVO();
-					like.setLikeCount(0);
-					like.setUserId("");
-					v.setLikeList(like);
 				}
-			}
-		//사진넣어주자
-		//bandList에 이미지 붙이기용
-		List<String> bandNoList = new ArrayList<String>();
-		for(BandBoardDetailSearchVO board : fiveboard) {
-			bandNoList.add(board.getBandBoardDetailNo());
-		}
-		//위에서 가져온 bandNoList리스트로 이미지 얻어오기
-		List<MultimediaVO> imglist = common.selectImgAllKey(bandNoList);
-		if(fiveboard.size()>0) {
+			//사진넣어주자
+			//bandList에 이미지 붙이기용
+			List<String> bandNoList = new ArrayList<String>();
 			for(BandBoardDetailSearchVO board : fiveboard) {
-				for(MultimediaVO img : imglist) {
-					if(img.getIdentifyId().equals(board.getBandBoardDetailNo())){
-						board.setBandImg(img);
-						break;
+				bandNoList.add(board.getBandBoardDetailNo());
+			}
+			//위에서 가져온 bandNoList리스트로 이미지 얻어오기
+			List<MultimediaVO> imglist = common.selectImgAllKey(bandNoList);
+			if(fiveboard.size()>0) {
+				for(BandBoardDetailSearchVO board : fiveboard) {
+					for(MultimediaVO img : imglist) {
+						if(img.getIdentifyId().equals(board.getBandBoardDetailNo())){
+							board.setBandImg(img);
+							break;
+						}
 					}
 				}
 			}
-		}
-		//일정넣어주기
-		List<BandCalendarVO> calList = bandBoardDetailMapper.selectCalendars(bandNoList);
-		if(calList.size()>0) {
-			for(BandBoardDetailSearchVO board : fiveboard) {
-				for(BandCalendarVO cal : calList) {
-					if(cal.getBandBoardDetailNo().equals(board.getBandBoardDetailNo())){
-						board.setBandCalendar(cal);
-						break;
+			//일정넣어주기
+			List<BandCalendarVO> calList = bandBoardDetailMapper.selectCalendars(bandNoList);
+			if(calList.size()>0) {
+				for(BandBoardDetailSearchVO board : fiveboard) {
+					for(BandCalendarVO cal : calList) {
+						if(cal.getBandBoardDetailNo().equals(board.getBandBoardDetailNo())){
+							board.setBandCalendar(cal);
+							break;
+						}
 					}
 				}
 			}
@@ -284,5 +286,17 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 		int r = bandBoardDetailMapper.insertCalendar(vo);
 		System.out.println(r+"캘린더입력됨");
 		return vo;
+	}
+
+	@Override
+	public String deleteCalendar(String bandCalendarNo) {
+		int r = bandBoardDetailMapper.deleteCalendar(bandCalendarNo);
+		String delete = "";
+		if(r>0) {
+			delete = "success";
+		} else {
+			delete = "failure";
+		}
+		return delete;
 	}
 }
