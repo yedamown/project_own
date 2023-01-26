@@ -43,10 +43,14 @@ public class BandCalendarController {
 	@GetMapping("/bandGroup/bandCalendarNow")
 	@ResponseBody
 	public List<BandCalendarVO> bandCalendarNow(Model model, BandVO vo, String month) {
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//		Date now = new Date();
-//		String now_dt = format.format(now);
 		//##########date는 yyyy-MM-dd타입의 스트링으로 보내야 함
 		return bandBoardDetailService.selectCalendarNow(vo.getBandNo(), month);
 	}
+	//일정에 게시글이 없는 것 게시글insert 기능
+//	@GetMapping("/bandGroup/bandCalendarInsert")
+//	@ResponseBody
+//	public List<BandCalendarVO> bandCalendarNow(Model model, BandVO vo, String month) {
+//		//##########date는 yyyy-MM-dd타입의 스트링으로 보내야 함
+//		return bandBoardDetailService.selectCalendarNow(vo.getBandNo(), month);
+//	}
 }

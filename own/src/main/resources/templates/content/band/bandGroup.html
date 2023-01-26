@@ -679,7 +679,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     	//검색버튼
     	//검색버튼
         $('.searchBtn').on('click', function(){
-        	window.location = '/own/band/bandSearch?bandName='+$('input[name="bandName"]').val();
+        	boardNo = $('.searchBtn').val();
+        	window.location = "/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo;
         })
     	</script>
     </div>

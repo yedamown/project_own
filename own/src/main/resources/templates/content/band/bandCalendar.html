@@ -153,7 +153,7 @@
 				</div>
 				<!--================ if지도 끝 =================-->
 			</div>
-			<button type="button" id="calBtn">이 일정이 첨부된 글 확인하기</button>
+			<button type="button" id="calBtn" value=""></button>
 		</div>
 		<a class="modal_close_btn">:</a>
 	</div>
@@ -368,8 +368,25 @@
 				let con = calendar[0].bandCalendarOptionDay.substr(0, calendar[0].bandCalendarOptionDay.length-3);
 				$('#voteR').text('투표 마감일'+con);
 			}
+			//만약 첨부된 글이 있다면 calBtn
+			if(calendar[0].bandboarddetailno!=null){
+				$('#calBtn').val(calendar[0].bandboarddetailno);
+				$('#calBtn').text('이 일정이 첨부된 글 확인하기');
+			} else {
+				$('#calBtn').text('게시글 올리기');
+			}
 	  }
-	  //모달 참석여부 리로드 펑션
+	//게시글 이동
+	  $('#calBtn').on('click', function(){
+		  if($('#calBtn').val()!=null){
+		  	let boardNo = $('#calBtn').val();
+   			$('#mainTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo);
+		  } else {
+			//아작스로 글 집어넣기
+			let calendarNo = $('#saveCalendarEach').val();
+			
+		  }
+	  })
 	  //모달 참석여부 상세만들기
 		function makeCalModal(result){
 			let attendChk = $('#attendChk');
