@@ -52,8 +52,7 @@
 		<nav
 			class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
 			<a href="" class="navbar-brand font-weight-bold text-secondary"
-				style="font-size: 50px"> <i class="flaticon-043-teddy-bear"></i>
-				<span class="text-primary">OWN_Challenges</span>
+				style="font-size: 50px"> <span class="text-primary">OWN 오운</span>
 			</a>
 			<button type="button" class="navbar-toggler" data-toggle="collapse"
 				data-target="#navbarCollapse">
@@ -106,14 +105,12 @@
 			th:value="${session.loginUser.userId}">
 	</div>
 	<div th:if="${session.loginUser} == null">로그인 안한 상태 로그인 하고 오시오.</div>
-	<button type="button" id="addChallBtn">도전등록으로 이동</button>
+	<div th:if="${session.loginUser}">
 	<a href="/own/chall/mypage">마이페이지</a>
-	<a href="/own/chall/insertFormChall">내가 참여중인 도전보기</a>
-	<a href="/own/chall/insertFormChall">내가 만든 도전보기</a>
-	<h3>오운 홈</h3>
+	<a href="/own/chall/insertFormChall">도전만들러고고</a>
+	<a href="/own/chall/myChall">내가만든도전보기</a>
+	</div>
 
-
-	
 	<!-- 검색  -->
 	<div class="container-fluid pt-4 mb-4" style="width: 650px">
 						<div class="input-group">
@@ -136,19 +133,15 @@
 			<div class="row" style="justify-content: center;" id="categoryBtn">
 				<div style="text-align: center; width: 120px; height: 120px">
 				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" value="춤 댄스" picname="댄스"/>
-					<p>1댄스</p>
 				</div>
 				<div style="text-align: center; width: 120px; height: 120px">
 				<img src="/img/chall/category/EXS_30.png" style="width: 80px; height: 80px; object-fit: cover" alt="하이킹"/>
-					<p>2하이킹</p>
 				</div>
 				<div style="text-align: center; width: 120px; height: 120px">
 				<img src="/img/chall/category/EXS_2.png" style="width: 80px; height: 80px; object-fit: cover" alt="3"/>
-					<p>3계단오르기</p>
 				</div>
 				<div style="text-align: center; width: 120px; height: 120px">
 				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
-					<p>4댄스</p>
 				</div>
 				<div style="text-align: center; width: 120px; height: 120px">
 				<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"/>
