@@ -11,4 +11,6 @@ public interface BandOptionService {
 	public BandVO bandInfo(BandVO vo);
 	//밴드 업데이트 제발 되라
 	public int bandUpdate(BandVO vo);
+	// 가치 설정 - 멤버 관리 - 전체 멤버 리스트
+	List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
 }

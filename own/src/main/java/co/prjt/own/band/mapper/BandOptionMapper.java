@@ -3,6 +3,7 @@ package co.prjt.own.band.mapper;
 import java.util.List;
 
 import co.prjt.own.band.service.BandMemberDetailVO;
+
 import co.prjt.own.band.service.BandVO;
 
 public interface BandOptionMapper {
@@ -14,4 +15,9 @@ public interface BandOptionMapper {
 		public BandVO bandInfo(BandVO vo);
 		//밴드 업데이트 제발 되라
 		public int bandUpdate(BandVO vo);
+
+
+public interface BandOptionMapper {
+	List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
+}
 }

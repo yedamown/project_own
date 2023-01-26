@@ -12,6 +12,14 @@ import co.prjt.own.band.service.BandVO;
 
 @Service
 public class BandOptionServiceImpl implements BandOptionService {
+	@Autowired
+	BandOptionMapper bandOptionMapper;
+	
+	@Override
+	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo) {
+		// 가치 설정 - 멤버 관리 - 전체 멤버 리스트
+		return bandOptionMapper.bandOptionGetAllMemberList(vo);
+	}
 
 	@Autowired
 	BandOptionMapper bandOptionMapper;
