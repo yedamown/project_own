@@ -1,0 +1,441 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="ko">
+    <head>
+    	<!-- jquery -->
+    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
+        <title>Royal Hotel</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/css/band/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/css/band/css/style.css">
+        <link rel="stylesheet" href="/css/band/css/responsive.css">
+        <!--어썸폰트 무료?-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <style>
+      	
+		img {
+			border-radius: 10px;
+		}
+		img:hover{
+			border:#BFBFBF 2px solid;
+			cursor:pointer;
+		}
+		.aaimg {
+			padding: 5px;
+			border-radius: 10px;
+			height:100px;
+			width:100px;
+			border-radius: 15px;
+		}
+        #alertTag2.vibration{
+          animation: vibration 0.1s infinite;
+        }
+        #alertTag.vibration{
+          animation: vibration 0.1s infinite;
+        }
+        @keyframes vibration {
+          from {
+            transform: rotate(1deg);
+          }
+          to {
+            transform: rotate(-1deg);
+          }
+        }
+        .malp {
+          background: #f3f3f3;
+          border: 1px solid #d8d8d8;
+          text-align: center;
+          border-radius: 50px;
+          width: 50px;
+          height: 50px;
+          padding: 2px 8px;
+          cursor: pointer;
+          margin-left: 10px;
+        }
+
+        /* 말풍선 적절한 top 과 margin-left 로 위치조정 */
+        .arrow_box {
+          display: none;
+          position: absolute;
+          width: 300px;
+          padding: 8px;
+          -webkit-border-radius: 8px;
+          -moz-border-radius: 8px;
+          border-radius: 8px;
+          background: #333;
+          color: #fff;
+          font-size: 14px;
+          z-index: 999;
+        }
+
+        .malp:hover + p.arrow_box {
+          display: block;
+        }
+      </style>
+    </head>
+    <body>
+    <div style="flex-grow:3; width: 740px" id="subTemplate">
+        <!--================위에  Area =================-->
+        <!--================ 폼 Area  =================-->
+		<div class="whole-wrap" style="height: 1300px;">
+			<div class="container">
+				<div style="padding: 60px 0px 100px;">
+		<!--================폼 시작 Area =================-->      
+		         	<form role="form" method="post" autocomplete="off" style="margin: 0 auto; width: 80%;"
+					action="/own/band/bandGroup/bandUpdate" enctype="multipart/form-data">
+		         	<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}">
+					<input type="hidden" th:value="${bandInfo.bandNo}" name="bandNo"/>
+					<input type="hidden" th:value="${bandInfo.bandLeaderid}" name="bandLeaderid"/>					
+		         		<div class="imgArea">
+		<!--================이미지 Area =================-->
+							<div>
+								<h2 class="typo-list" style="padding-left: 125px; padding-bottom: 15px">대표 이미지</h2>  
+							</div>
+				            <div style="display: flex; padding: 0px 0px 30px 100px;">
+				                <div  style="flex-grow: 3;"class="imgss">
+				                	<div><img th:src="|/imgView/${createImage.mediaServerFile}|" id="inputImage" alt="" style="flex-grow: 3;width: 255px;height: 255px; border-radius: 10px;"></div>
+				                </div>
+				            </div>
+							<input type="file" id="gateImage" multiple="multiple" name="uploadfile" style="display: none" onchange="imgFnc()" accept="image/gif, image/jpeg, image/png">
+							<input type="text" id="mediaServerFile" name="mediaServerFile" style="display: none" value="sample">	
+		<!--================이미지 Area 끝 =================-->
+		<hr>
+						</div><!-- 이미지끝남 -->
+						<div class="insertArea" style="margin:0px auto;width: 110%; padding: 10px 15px 80px">
+        <!--================작성 Area 시작 =================-->
+				            <div style="display: flex; flex-wrap: wrap; flex-direction: column;justify-content: flex-end; flex-grow: 2; padding-left: 50px">
+				                <!--================ 이름 =================-->
+				                <div style="display: inline-block; width: 90%;">
+				                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 명</h6>
+				                  <div>
+				                    <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
+				                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+				                  </div>
+				                  <div class="mt-10">
+				                    <input type="text" name="bandName" placeholder="가치 이름 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 이름 입력'" required class="single-input" style="height: 50px; font-size: 20px;width: 88%; display: block; float: left;">
+				                  </div>
+				                  <p style="padding: 30px 20px 0px; display:inline-block; width: 10%;"><small>12/100</small></p>
+				                </div>
+				                <!--================ 이름 끝 =================-->
+				                <!--================ 소개 =================-->
+				                <div style="display: inline-block; width: 90%;">
+				                  <h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 2px; ">가치 소개</h6>
+				                  <div>
+				                    <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
+				                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+				                  </div>
+				                  <div class="mt-10">
+				                    <textarea name="bandIntro" placeholder="가치 소개" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 소개'" required class="single-input" style="width: 88%; display: block; float: left;"></textarea>
+				                  </div>
+				                  <p style="padding: 60px 20px 0px; display:inline-block; width: 10%;"><small>12/100</small></p>
+				                </div>
+				                <!--================ 소개 끝 =================-->
+				                <div  style="margin:0px auto; display: flex; justify-content: space-between; align-content:flex-start;">
+						    	</div><!-- 이름/소개 끝남 -->
+						    </div>
+						    <div style="display: flex; justify-content: space-between; padding-left: 50px;padding-right: 120px;">
+								<!--================ 왼쪽 로우 =================-->
+							        <div style="flex-grow: 3; display: flex; flex-wrap: nowrap; flex-direction: column; align-items: flex-start;">
+						                <!--================ 나이체크 =================-->
+						                <div style="display: inline-block; width: 60%; display: flex;" >
+						                  <h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 20px;">연령 제한
+						                      <input type="checkbox" name="bandAgeOption" value="BD01" id="bandAgeOption" style="display: block; float: right; margin: 5px;">
+						                      <input type="checkbox" name="bandAgeOption" value="BD02" id="bandAgeOptionHidden" style="display: none" checked>
+						                      <label for="bandAgeOption"></label>
+						                    </h6>
+						                    <div style="padding: 20px;">
+						                      <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
+						                      <p class="arrow_box" style="margin-left: 27px;">말풍선 등장!말풍선 등장!</p>
+						                    </div>
+						                </div>
+						                <div class="mt-10" id="yearCheck" style="display: inline-block; width: 120%; display: none;">
+						                  <input type="number" name="bandAgeBeforoptionInput"required class="single-input" min="1900" value="1950" style="width: 30%; display: block; float: left;">
+						                  <div style="float: left; font-size: 20px; padding-left: 40px; padding-top: 10px;"><p>~</p></div>
+						                  <input type="number" name="bandAgeAfteroptionInput" required class="single-input" max="2023" value="2023" style="width: 30%; display: block;float: left; margin-left: 50px;" >
+						                  <input type="date" name="bandAgeBeforoption" style="display: none">
+						                  <input type="date" name="bandAgeAfteroption" style="display: none">
+						                </div>
+						                <!--================ 나이체크 끝 =================-->
+						                <!--================ 관심지역 =================-->
+						                <div style="display: inline-block; width: 90%;display: flex;">
+						                  <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">활동 지역</h6>
+						                  <div style="padding: 9px;">
+						                    <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
+						                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+						                  </div>
+						                </div>
+						                  
+										<div>
+						                      <select name="bandLocation" th:value="*{location}">
+						                        <option disabled="disabled">활동 지역</option>
+						                        <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}"></option>
+						                      </select>
+						                </div>
+
+						                 <!--================ 관심지역 끝 =================-->
+						                 <!--================ 관심종목 =================-->
+						                <div style="display: inline-block; width: 90%;display: flex;">
+						                  <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">관심 종목</h6>
+						                  <div style="padding: 9px; display: block;">
+						                    <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
+						                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+						                  </div>
+						                  </div>
+						                  <div>
+						                      <select name="bandCategory" th:value="*{exercise}">
+						                        <option disabled="disabled">관심 종목</option>
+						                        <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}"></option>
+						                      </select>
+						                  </div>
+						               
+						                <!--================ 관심종목 끝 =================-->
+						                <!--================ 태그 =================-->
+						                <div id="searchTagArea" style="display: flex;">
+							                <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">밴드 검색 키워드</h6>
+							                <div style="margin-top: 10px;">
+							                  <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
+							                  <p class="arrow_box"  style="margin-left: 45px;">말풍선 등장!말풍선 등장!</p>
+							                </div>
+							            </div>
+							            <div style="display: flex;">
+							                <div style=" width: 500px;">
+							                  <div class="mt-10">
+							                    <input type="text" id="letTag" placeholder="운동하는 1조" maxlength="10" onfocus="this.placeholder = ''" onblur="this.placeholder = '운동하는 1조'" class="single-input"style="width: 30%; display: block; float: left;">
+							                  </div>  
+							                  <p style="padding: 15px"><small>5/10</small><a class="genric-btn default-border" id="intag" style="height: 30px; line-height: 30px;float: right;display: block;color: blue;">입력</a></p>
+						                	</div>
+						                </div>
+						                <div id="insertKeyword" style="width: 500px;"></div>
+						                <input type="hidden" name="bandKeyword">
+						                <div style="padding-top: 20px; width: 500px;">
+						                 	<h6 class="typo-list" id="alertTag" style="display: none;">글자를 입력해주세요.</h6>
+						                  	<h6 class="typo-list"id="alertTag2" style="display: none;">키워드는 10개만 등록이 가능합니다.</h6>
+						                </div>
+										<!--성별제한-->
+										<div>
+											<h6 class="typo-list">가치 공개 유무</h6>										  
+											  <div class="d-flex justify-content-between">												
+												  <input type="radio" name="bandOpenOption" value="BE01" checked>공개 가치(상세히 공개)
+												  <input type="radio" name="bandOpenOption" value="BC02">비공개 가치(비공개함)
+												  <input type="radio" name="bandOpenOption" value="BC03">밴드명 공개 가치(검색만 허용)
+											  </div>
+										  </div>
+						                <div>
+					                      <h6 class="typo-list">성별 제한</h6>										  
+											<div class="d-flex justify-content-between">												
+												<div class="d-flex justify-content-between">
+													<p>모두</p>
+													<div class="primary-radio">
+													  <input type="checkbox" id="positivity" name="bandGenderOption" value="BE01" checked>
+													  <label for="positivity" style="top: 0px"></label>
+													   <input type="checkbox" id="positivityHidden" name="bandGenderOption" style="display: none" value="BE02">
+													</div>
+												  </div>
+												<input type="radio" name="bandGender" value="male">남자
+												<input type="radio" name="bandGender" value="female">여자
+					                    	</div>
+										</div>
+						                <!--================ 성별제한  =================-->										
+										<h6 class="typo-list">가입신청받기</h6>
+					                    	<div class="switch-wrap d-flex justify-content-between" style="padding-left: 100px">
+												<div class="primary-switch" style="display: absolute;">
+													<input type="checkbox" name="bandMembershipOption" id="primary-switch" value="BF01" checked>
+													<label for="primary-switch" style="top: 0px"></label>
+												</div>
+											</div>
+										  <hr>
+						            </div>
+								</div>
+			<!--================작성 Area =================-->
+							<button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">정보 변경</button>
+						</div>
+			            </form>
+		<!--================폼 끝 Area =================--> 
+					</div>
+				</div>
+			</div>
+        <!--================ 밴드생성 끝 Area  =================-->
+        
+        <!-- Optional JavaScript -->
+        <script src="/css/band/js/popper.js"></script>
+        <script src="/css/band/js/bootstrap.min.js"></script>
+        <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+        <script src="/css/band/js/jquery.ajaxchimp.min.js"></script>
+        <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+        <script src="/css/band/js/mail-script.js"></script>
+        <script src="/css/band/js/stellar.js"></script>
+        <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
+        <script src="/css/band/js/custom.js"></script>
+        <script>
+
+          function tagFnc(val){
+            let tag = `<div class="aTag" style="height: 30px; line-height: 30px;float: left;display: block; margin-bottom:5px; color: rgb(71, 114, 255);">
+                      <p class="genric-btn default-border inTag" style="display: block; margin-bottom:5px; color: rgb(71, 114, 255);">#${val}</p>
+                      <span style="float: right; margin: -43px 20px 30px 60px;"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>`
+            return tag;
+          }
+          
+          $('#intag').on("click",function(){
+            
+            $('#alertTag').hide();
+            $('#alertTag2').hide();
+            
+            //태그가 열개면
+            if($('#insertKeyword').children().length==10){
+              $('#alertTag2').show();
+              vibration($('#alertTag2'));
+              return false;
+            }
+            //태그에 적힌 게 없을 때
+            if($('#letTag').val()==''){
+              $('#alertTag').show();
+              vibration($('#alertTag'));
+              return false;
+            }
+            
+            $('#letTag').val();
+            $('#insertKeyword').append(tagFnc($('#letTag').val()));
+            $('#letTag').val('')
+            //test
+            let allTag = '';
+            $('.inTag').each(function(idx,ele){
+              allTag += $(ele).text();
+            });
+            $('input[name=bandKeyword]').val(allTag);
+            console.log('bandKeyword TEST'+$('input[name=bandKeyword]').val())
+          })
+          
+          //진동효과
+          function vibration(target){
+          $(target).addClass("vibration");
+
+          setTimeout(function() {
+            $(target).removeClass("vibration");
+          }, 400);
+        }
+        //태그삭제
+        $('#insertKeyword').on('click','.aTag',function(){
+          $(this).remove();
+        })
+        //이미지삽임
+        $('.imgss').on('click', '#inputImage', function(){
+        	$('#gateImage').click();
+        })
+        //이미지첨부 눌렀을 때
+        function imgFnc(){
+        	//파일
+        	let imgFile = $('#gateImage').val();
+        	//확장자제한
+        	let fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+        	//50mb로 제한
+        	let maxSize = 100 * 1024 * 1024;
+        	//특수문자 제한
+        	let pattern =  /[\{\}\/?,;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+        	//파일크기제한
+        	let fileSize;
+			
+        	if($('#gateImage').val() == "") {
+        		alert("첨부파일은 필수!");
+        	    return;
+        	}
+        	//파일명과 사이즈를 뽑기위한..제이쿼리를 모르겠음 이건
+        	let fileName = document.getElementById("gateImage").files[0]
+        	//파일이 비었다면
+        	if(imgFile != "" && imgFile != null) {
+        		//input=file의 files 속성가져와서...
+        		fileSize = fileName.size;
+        	    if(!imgFile.match(fileForm)) {
+        	    	alert("이미지 파일만 업로드 가능");
+        	        return;
+        	    } else if(fileSize > maxSize) {
+        	    	alert("파일 사이즈는 100MB까지 가능");
+        	        return;
+        	    } else if(pattern.test(fileName.name)){
+        	    	alert("파일 이름 특수문자 nono");
+        	        return;
+        	    }
+        	}
+        }
+        //이미지 업로드 시 미리보기createImage
+        $('#gateImage').on('change', function(e){
+        	let file = e.target.files[0];
+        	let reader = new FileReader();
+        	reader.onload = function(e){
+        		$('#inputImage').attr('src', e.target.result);
+        		//기존이미지 누를시..
+        		$('input[name=mediaServerFile]').val('sample')
+        	}
+        	reader.readAsDataURL(file);
+        	
+        })
+        //디폴트이미지 설정하기###
+        $('.aaimg').on('click', function(){
+        	$('#inputImage').attr('src',$(this).attr('src'));
+        	console.log($(this).attr('src').substr(9));
+        	$('input[name=mediaServerFile]').val($(this).attr('src').substr(9))
+        })
+        //연령 체크박스 유무에 따라 밸류값변하게+창생기게
+        $('#bandAgeOption').on('click',function(){
+        	if($('#bandAgeOption').prop('checked')){
+            	$('#bandAgeOptionHidden').prop('checked',false);
+            	$('#yearCheck').show();
+            } else {
+            	$('#bandAgeOptionHidden').prop('checked',true);
+            	$('#yearCheck').hide();
+            }
+        })
+        //연령제한 걸었을 때 나이 최대현재 년도로 맞추기
+       $('input[name=bandAgeOption]').on('click',function(){
+    	   //연령제한옵션켰을 때
+	       	if(!$('input[name=bandAgeAfteroptionInput]').prop('checked')){
+	       		$('input[name=bandAgeBeforoption]').val($('input[name=bandAgeBeforoptionInput]').val()+'-01-01');
+	        	$('input[name=bandAgeAfteroption]').val($('input[name=bandAgeAfteroptionInput]').val()+'-01-01');
+	       	}
+    	})
+    	//연령바 바꿨을 때
+    	$('input[name=bandAgeAfteroptionInput], input[name=bandAgeBeforoptionInput]').on('change',function(){
+        	$('input[name=bandAgeBeforoption]').val($('input[name=bandAgeBeforoptionInput]').val()+'-01-01');
+        	$('input[name=bandAgeAfteroption]').val($('input[name=bandAgeAfteroptionInput]').val()+'-01-01');
+    	})
+    	//성별..위에껀 체크박스 밑은 라디오라 수정해야함
+        $('input[name=bandGenderOption]').on('click',function(){
+        	if($('input[name=bandGenderOption]').prop('checked')){
+            	$('input[name=bandGender]').prop('checked',false);
+            	$('#positivityHidden').prop('checked',false);
+            } else {
+            	return false;
+            }
+        })
+        //성별 라디오...체크박스랑 중복체크안되게
+        $('input[name=bandGender]').on('click',function(){
+        	$('#positivity').prop('checked',false);
+        	$('#positivityHidden').prop('checked',true);
+        })
+      //가입승인 비승인
+        $('#primary-switch').on('click',function(){
+        	if($('#primary-switch').prop('checked')){
+        		$('#primary-switchHidden').prop('checked',false);
+            } else {
+            	$('#primary-switchHidden').prop('checked',true);
+            }
+        })
+        </script>
+    </div>
+    </body>
+</html>

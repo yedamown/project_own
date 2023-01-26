@@ -12,7 +12,8 @@ import co.prjt.own.band.service.BandBoardOptionVO;
 @Service
 public class BandBoardOptionServiceImpl implements BandBoardOptionService{
 	
-	@Autowired BandBoardOptionMapper bandBoardOptionMapper;
+	@Autowired 
+	BandBoardOptionMapper bandBoardOptionMapper;
 	
 	@Override
 	public List<BandBoardOptionVO> getBandBoardList(String bandNo) {

@@ -33,6 +33,9 @@ public class BandVO {
 	String bandMembershipOption;
 	String bandLocation;
 	String bandGender;
+	//밴드이미지주소
+	String mediaServerFile;
+	
 	//밴드 대표이미지 주소
 	MultimediaVO bandMainImg;
 	
