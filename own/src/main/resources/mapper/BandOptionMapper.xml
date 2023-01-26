@@ -11,14 +11,17 @@ where band_no = #{bandNo}
 
 <!-- 해당밴드 가입자수 불러오기 -->
 <select id="bandCount" resultType="int">
-select count(*) from band_member_detail
-where band_no = #{bandNo}
+	SELECT COUNT(*) FROM BAND_MEMBER_DETAIL
+	WHERE BAND_NO = #{bandNo}
+	 <if test="bandMemberStatus != null">
+	       AND BAND_MEMBER_STATUS = #{bandMemberStatus}
+	 </if>
 </select>
 
 <select id="bandInfo" resultType="co.prjt.own.band.service.BandVO">
-select b.*,m.media_server_file as mediaServerFile from band b, multimedia m
-where b.band_no = m.identify_id
-and b.band_no = #{bandNo}
+	SELECT B.*,M.MEDIA_SERVER_FILE AS MEDIASERVERFILE FROM BAND B, MULTIMEDIA M
+	WHERE B.BAND_NO = M.IDENTIFY_ID
+	AND B.BAND_NO = #{bandNo}
 </select>
 
 <update id="bandUpdate">

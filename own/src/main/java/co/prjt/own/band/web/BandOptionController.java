@@ -7,15 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandOptionService;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
 
@@ -50,12 +50,13 @@ public class BandOptionController {
 		return "content/band2/bandOption";
 	}
 
-	// 밴드 수정페이지로 이동
-	@GetMapping("/bandGroup/bandOption2")
-	public String bandOption2(Model model, HttpServletRequest request, BandVO vo) {
-		// 임시텍스트
-		model.addAttribute("imsi", "임시텍스트 밴드설정");
-		return "content/band2/bandOption-member";
+	// 멤버 관리 페이지로 이동
+	@GetMapping("/bandGroup/bandMemberManage")
+	public String bandOption2(Model model, HttpServletRequest request, BandMemberDetailVO vo, Paging paging) {
+		// 밴드의 멤버 리스트
+		System.out.println("=====bandMemberManage컨트롤러 확인======" + vo);
+		//model.addAttribute("memberList", bandOptionService.bandOptionGetAllMemberList(vo, paging));
+		return "content/band2/bandMemberManage";
 	}
 	
 	
