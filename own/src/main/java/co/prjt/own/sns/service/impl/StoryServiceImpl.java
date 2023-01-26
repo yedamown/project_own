@@ -35,4 +35,9 @@ public class StoryServiceImpl implements StoryService {
 		return sStoryMapper.updateStory(vo);
 	}
 
+	@Override
+	public List<StoryVO> getNowStoryList(String id) {
+		return sStoryMapper.getNowStoryList(id);
+	}
+
 }

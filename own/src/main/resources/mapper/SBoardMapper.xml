@@ -39,12 +39,14 @@
 	
 	<!-- 최신 게시글 조회 -->
 	<select id="getNowBoardList" resultType="SBoardVO">
-	select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no
-		FROM (SELECT 
-					SNS_NICKNAME, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_BOARD_NO, SNS_ACCOUNT_NO,
-		            ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_board_no,5)) DESC) AS rn FROM sns_board) A,
-		            (SELECT SNS_FOLLOW_ID FROM SNS_FOLLOW WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
-		WHERE A.SNS_ACCOUNT_NO = B.SNS_Follow_id
+		select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no, a.sns_account_no, 
+				(select media_server_file from multimedia where identify_id = 
+				(select sns_account_no from sns_account where sns_account_no= a.sns_account_no)) as media_server_file
+		      FROM (SELECT 
+		               SNS_NICKNAME, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_BOARD_NO, SNS_ACCOUNT_NO, 
+		                  ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_board_no,5)) DESC) AS rn FROM sns_board) A,
+		                  (SELECT SNS_FOLLOW_ID FROM SNS_FOLLOW WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
+		      WHERE A.SNS_ACCOUNT_NO = B.SNS_Follow_id
 		AND rn = 1
 	</select>
 	

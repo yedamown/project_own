@@ -23,5 +23,7 @@ public class SBoardVO {
 	
 	int count;
 	List<MultimediaVO> fileList;
+	String mediaServerFile;
+	String mediaNo;
 	
 }
