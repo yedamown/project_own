@@ -17,9 +17,9 @@ public class BandOptionServiceImpl implements BandOptionService {
 	@Autowired
 	BandOptionMapper bandOptionMapper;
 
-
 	@Autowired
 	CommonMapper commonMapper;
+
 
 	@Override
 	public List<BandMemberDetailVO> bandManageHome(BandMemberDetailVO vo) {
@@ -46,6 +46,24 @@ public class BandOptionServiceImpl implements BandOptionService {
 	}
 
 	@Override
+
+	public int bandPass(BandVO vo) {
+		// TODO Auto-generated method stub
+		return bandOptionMapper.bandPass(vo);
+	}
+
+	@Override
+	public int bandHuman(String bandNo) {
+		// TODO Auto-generated method stub
+		return bandOptionMapper.bandHuman(bandNo);
+	}
+
+	@Override
+	public int bandDisHuman(String bandNo) {
+		// TODO Auto-generated method stub
+		return bandOptionMapper.bandDisHuman(bandNo);
+    
+   @Override
 	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging) {
 		// 페이징 설정
 		vo.setBandMemberStatus("BA02"); // 조건 설정

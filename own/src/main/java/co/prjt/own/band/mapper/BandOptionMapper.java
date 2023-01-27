@@ -15,6 +15,14 @@ public interface BandOptionMapper {
 		public BandVO bandInfo(BandVO vo);
 		//밴드 업데이트 제발 되라
 		public int bandUpdate(BandVO vo);
+		//밴드위임
+		public int bandPass(BandVO vo);	
+		// 밴드 멤버 리스트
+		public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
+		//밴드 휴면진입..
+		public int bandHuman(String bandNo);
+		//밴드 휴면 풀기..
+		public int bandDisHuman(String bandNo);
 		// 밴드 가입한 멤버 리스트
 		public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
 		// 밴드 가입대기중 멤버 리스트
