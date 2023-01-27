@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class ReplyVO {
 	public String replyNo;
 	public String replyContent;
+	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	Date replyDate;
 	public String userId;
