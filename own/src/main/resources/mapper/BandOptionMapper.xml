@@ -4,7 +4,7 @@
 <mapper namespace="co.prjt.own.band.mapper.BandOptionMapper">
 
 <!-- 해당밴드 디테일 불러오기 -->
-<select id="bandManageHome" resultType="co.prjt.own.band.service.BandVO">
+<select id="bandManageHome" resultType="co.prjt.own.band.service.BandMemberDetailVO">
 select * from band_member_detail
 where band_no = #{bandNo}
 </select>

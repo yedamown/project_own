@@ -31,10 +31,10 @@ public class BandOptionController {
 	CommonService common;
 	
 	
-	@GetMapping("/own/band/bandGroup/bandOptionMain")
+	@GetMapping("/bandGroup/bandOptionMain")
 	public String bandOptionMain(Model model , BandVO vo, BandMemberDetailVO dvo) {
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
-		model.addAttribute("count",bandOptionService.bandCount(vo));
+		model.addAttribute("count",bandOptionService.bandCount(dvo));
 		model.addAttribute("bandInfo",bandOptionService.bandInfo(vo));
 		return "/content/band2/bandOption";
 	}
@@ -61,7 +61,7 @@ public class BandOptionController {
 	
 	
 	//밴드수정 홈페이지 띄우기
-	@GetMapping("/own/band/bandGroup/bandManage")
+	@GetMapping("/bandGroup/bandManage")
 	public String bandManagePage(Model model,BandVO vo) {
 		System.out.println("===밴드번호===="+vo);
 		model.addAttribute("bandInfo", bandOptionService.bandInfo(vo));
@@ -76,7 +76,7 @@ public class BandOptionController {
 	
 	
 	//밴드 업데이트 처리
-	@PostMapping("/own/band/bandGroup/bandUpdate")
+	@PostMapping("/bandGroup/bandUpdate")
 	public String bandUpdate(@RequestParam MultipartFile[] uploadfile, BandVO vo) {
 		MultimediaVO mvo = new MultimediaVO();
 		System.out.println(uploadfile);
@@ -92,6 +92,13 @@ public class BandOptionController {
 		int a = bandOptionService.bandUpdate(vo);
 		return "redirect:/own/band/bandGroup?bandNo="+vo.getBandNo();
 		
+	}
+	
+	//밴드위임페이지 이동
+	@GetMapping("/bandGroup/bandPass")
+	public String bandPass(Model model, BandMemberDetailVO dvo) {
+		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
+		return "/content/band2/bandPass";
 	}
 	
 	
