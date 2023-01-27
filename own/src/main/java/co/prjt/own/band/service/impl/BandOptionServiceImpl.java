@@ -28,7 +28,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 	}
 
 	@Override
-	public int bandCount(BandVO vo) {
+	public int bandCount(BandMemberDetailVO vo) {
 		// TODO Auto-generated method stub
 		return bandOptionMapper.bandCount(vo);
 	}

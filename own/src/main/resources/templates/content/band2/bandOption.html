@@ -134,7 +134,7 @@
     <label for="tab7">게시판 관리</label>
 
     <input type="radio" id="tab8" name="tabGroup2" class="tab">
-    <label for="tab8">중요 기능</label>
+    <label for="tab8" id="bandPass">중요 기능</label>
   </div>
   <div id="manageTemplate">
   <h1>관리 홈</h1>
@@ -148,5 +148,10 @@
 $('#bandmanage').on('click', function(){
 	console.log('dd')
 	$('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
+})
+
+$('#bandPass').on('click', function(){
+	console.log('dd')
+	$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
 })
 </script>

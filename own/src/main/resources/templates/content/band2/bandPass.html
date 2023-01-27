@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<select name="passid">
+	<th:block th:each="list : ${memList}">
+	<option th:text="${list.userId}"></option>
+	</th:block>
+	</select>
+</body>
+</html>
