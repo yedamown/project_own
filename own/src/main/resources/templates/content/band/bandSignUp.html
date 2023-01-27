@@ -97,83 +97,118 @@
 		<div id="template">    
 			<div style="flex-grow:3; width: 740px">
 				<article style="border: 1px solid #eeeeee;padding:20px 0px 50px 70px; ">
-					<div class="container">
-				<!--================폼 시작 Area =================-->      
-				         	<form role="form" method="post" autocomplete="off" style="width: 80%;"enctype="multipart/form-data">
-				         	<input type="hidden" th:name="${_csrf.parameterName}"
-							th:value="${_csrf.token}">
-				         		<input type="hidden" th:value="${session.userId}" name="userId"/>
-				         		<div class="imgArea">
-				<!--================이미지 Area =================-->
-									<div>
-										<h4 class="typo-list" style="padding-bottom: 15px">대표 이미지</h4>  
+					<div th:if="${band.bandOpenOption=='BC02'} or ${band.bandOpenOption=='BC01'}">
+					<div th:if="${band.bandAgeOption=='BD02'}
+					 or (${band.bandAgeOption=='BD01'}
+					  and ${not #strings.isEmpty(band.bandAgeBeforoption)}
+					  and ${not #strings.isEmpty(band.bandAgeAfteroption)} 
+					  and ${band.bandAgeBeforoption.before(user.bandBirth)}
+					  and ${band.bandAgeAfteroption.after(user.bandBirth)})">
+					  	<div th:if="${band.bandGenderOption=='BE02'} 
+					  	or (${band.bandGenderOption=='BE01'} 
+					  	and ${not #strings.isEmpty(band.bandGender)} 
+					  	and ${band.bandGender==user.bandGender})">
+							<div class="container">
+						<!--================폼 시작 Area =================-->      
+						         	<form role="form" action="/own/band/bandGroup/signUp" method="post" autocomplete="off" style="width: 80%;"enctype="multipart/form-data">
+						         	<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
+						         		<input type="hidden" th:value="${session.userId}" name="userId" id="userId"/>
+						         		<input type="hidden" th:value="${band.bandNo}" name="bandNo" id="bandNo"/>
+						         		<input type="hidden" th:value="${user.bandGender}" name="bandGender" id="bandGender"/>
+						         		<input type="hidden" th:value="${#dates.format(user.bandBirth, 'yyyy-MM-dd')}" name="bandBirth" id="bandBirth"/>
+						         		<input type="hidden" th:value="${band.bandMembershipOption}" name="bandMemberStatus" id="bandMemberStatus"/>
+						         		<div class="imgArea">
+						<!--================이미지 Area =================-->
+											<div>
+												<h4 class="typo-list" style="padding-bottom: 15px">대표 이미지</h4>  
+											</div>
+								            <div>
+								                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
+							                		<div style="flex-grow: 1; width: 150x; height: 150px;">
+							                			<img th:if="${user.defaultImg}" th:src="|/imgView/${user.defaultImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1; width: 150x; height: 150px;">
+							                		</div>
+							                		<!--================ 이름 =================-->
+									                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">
+									                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 활동명</h6>
+									                  <div class="mt-10">
+									                    <input type="text" th:value="${user.bandNickname}" name="bandNickname" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
+									                  </div>
+									                  <b><small style="display:inline; width: 10%; float: right">12/100</small></b>
+									                  <div><b style="padding-left: 10px;">가입가능한 닉네임입니다</b></div>
+									                </div>
+									                <!--================ 이름 끝 =================-->
+								                </div>
+								            </div>
+								            <input type="file" id="defaultImg" multiple="multiple" name="defaultImg" style="display: none" onchange="imgFnc()" accept="image/gif, image/jpeg, image/png">
+						<!--================이미지 Area 끝 =================-->
+						<hr></div><!-- 이미지끝남 -->
+										<div class="insertArea" style="margin:0px auto;width: 110%; padding: 10px 15px 80px">
+				        <!--================작성 Area 시작 =================-->
+								            <div style="display: flex; flex-wrap: wrap; flex-direction: column;justify-content: flex-end; flex-grow: 2;">
+								                <!--================ 소개 =================-->
+								                <div style="display: inline-block; width: 90%;  display: flex; flex-direction: column;">
+								                  <h6 class="typo-list" style="float: left;margin-top: 2px; ">소개말</h6>
+								                  <div class="mt-10">
+								                    <textarea id="bandMemberIntro" name="bandMemberIntro" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input" style=" display: block; float: left;flex-grow: 3;"></textarea>
+								                  </div>
+								                  <b><small style="float: right; display: block;">12/100</small></b>
+								                </div>
+								                <!--================ 소개 끝 =================-->
+								                <div  style="margin:0px auto; display: flex; justify-content: space-between; align-content:flex-start;">
+										    	</div><!-- 이름/소개 끝남 -->
+										    </div>
+										    <div>
+							                      <h6 class="typo-list">개인정보 공개범위</h6>
+							                      <div class="d-flex">
+							                        <p style="margin-right: 10px">성별</p>
+							                        <div class="primary-radio" style="margin-top: 3px">
+							                          <input type="checkbox" id="bandMemberGenderOpen" name="bandMemberGenderOpen" value="BM01" checked>
+							                          <label for="gender" style="top: 0px"></label>
+							                        </div>
+							                       </div>
+							                        <div class="d-flex">
+							                        <p style="margin-right: 10px">나이</p>
+							                        <div class="primary-radio"  style="margin-top: 3px">
+							                          <input type="checkbox" id="bandMemberAgeOpen" name="bandMemberAgeOpen" value="BO01" checked>
+							                          <label for="birthDay" style="top: 0px"></label>
+							                        </div>
+							                       </div>
+							                        <div class="d-flex">
+							                        <p style="margin-right: 10px">생일</p>
+							                        <div class="primary-radio"  style="margin-top: 3px">
+							                          <input type="checkbox" id="bandMemberBirthOpen" name="bandMemberBirthOpen" value="BN01" checked>
+							                          <label for="location" style="top: 0px"></label>
+							                        </div>
+							                       </div>
+						                     </div>
+							<!--================작성 Area =================-->
+							<button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 가입</button>
+										</div>
+										<!--================hidden 체크박스 Area =================-->
+										<input type="checkbox" id="bandMemberGenderOpenHi" name="bandMemberGenderOpen" value="BM02">
+										<input type="checkbox" id="bandMemberAgeOpenHi" name="bandMemberAgeOpen" value="BO02">
+										<input type="checkbox" id="bandMemberBirthOpenHi" name="bandMemberBirthOpen" value="BN02">
+										<!--================hidden 체크박스 Area =================-->
+							            </form>
+						<!--================폼 끝 Area =================--> 
 									</div>
-						            <div>
-						                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
-					                		<div style="flex-grow: 1; width: 150x; height: 150px;">
-					                			<img src="/css/band/image/room2.jpg" id="inputImage" alt="" style="flex-grow: 1; width: 150x; height: 150px;">
-					                		</div>
-					                		<!--================ 이름 =================-->
-							                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">
-							                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 활동명</h6>
-							                  <div class="mt-10">
-							                    <input type="text" name="bandName" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
-							                  </div>
-							                  <b><small style="display:inline; width: 10%; float: right">12/100</small></b>
-							                  <div><b style="padding-left: 10px;">가입가능한 닉네임입니다</b></div>
-							                </div>
-							                <!--================ 이름 끝 =================-->
-						                </div>
-						            </div>
-						            <input type="file" id="gateImage" multiple="multiple" name="gateImage" style="display: none" onchange="imgFnc()" accept="image/gif, image/jpeg, image/png">
-						            <input type="text" id="mediaServerFile" name="mediaServerFile" style="display: none" value="sample">
-				<!--================이미지 Area 끝 =================-->
-				<hr></div><!-- 이미지끝남 -->
-								<div class="insertArea" style="margin:0px auto;width: 110%; padding: 10px 15px 80px">
-		        <!--================작성 Area 시작 =================-->
-						            <div style="display: flex; flex-wrap: wrap; flex-direction: column;justify-content: flex-end; flex-grow: 2;">
-						                <!--================ 소개 =================-->
-						                <div style="display: inline-block; width: 90%;  display: flex; flex-direction: column;">
-						                  <h6 class="typo-list" style="float: left;margin-top: 2px; ">소개말</h6>
-						                  <div class="mt-10">
-						                    <textarea name="bandIntro" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input" style=" display: block; float: left;flex-grow: 3;"></textarea>
-						                  </div>
-						                  <b><small style="float: right; display: block;">12/100</small></b>
-						                </div>
-						                <!--================ 소개 끝 =================-->
-						                <div  style="margin:0px auto; display: flex; justify-content: space-between; align-content:flex-start;">
-								    	</div><!-- 이름/소개 끝남 -->
-								    </div>
-								    <div>
-					                      <h6 class="typo-list">개인정보 공개범위</h6>
-					                      <div class="d-flex">
-					                        <p style="margin-right: 10px">성별</p>
-					                        <div class="primary-radio" style="margin-top: 3px">
-					                          <input type="checkbox" id="gender" name="gender" value="BE01" checked>
-					                          <label for="gender" style="top: 0px"></label>
-					                        </div>
-					                       </div>
-					                        <div class="d-flex">
-					                        <p style="margin-right: 10px">나이</p>
-					                        <div class="primary-radio"  style="margin-top: 3px">
-					                          <input type="checkbox" id="birthDay" name="birthDay" value="BE01" checked>
-					                          <label for="birthDay" style="top: 0px"></label>
-					                        </div>
-					                       </div>
-					                        <div class="d-flex">
-					                        <p style="margin-right: 10px">생일</p>
-					                        <div class="primary-radio"  style="margin-top: 3px">
-					                          <input type="checkbox" id="location" name="location" value="BE01" checked>
-					                          <label for="location" style="top: 0px"></label>
-					                        </div>
-					                       </div>
-				                     </div>
-					<!--================작성 Area =================-->
-					<button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 가입</button>
-								</div>
-					            </form>
-				<!--================폼 끝 Area =================--> 
-							</div>
+						</div>
+						<div th:if="${band.bandGenderOption=='BE01'} 
+						and ${not #strings.isEmpty(band.bandGender)} 
+						and ${band.bandGender!=user.bandGender}">
+							<h3>성별제한에 맞지 않습니다.</h3>
+						</div>
+					</div>
+					<div th:if="${band.bandAgeOption=='BD01'} and ${not #strings.isEmpty(band.bandAgeBeforoption)}
+					 and ${not #strings.isEmpty(band.bandAgeAfteroption)} and
+					 ${band.bandAgeBeforoption.after(user.bandBirth)} and
+					  ${band.bandAgeAfteroption.before(user.bandBirth)}">
+						<h3>연령제한에 맞지 않습니다.</h3>
+					</div>
+					</div>
+					<div class="container"  th:if="${band.bandOpenOption=='BC02'}">
+						<h3>비공개 밴드입니다.</h3>
+					</div>
 				</article>
 			</div>
 		</div>
@@ -182,14 +217,40 @@
         <!-- Optional JavaScript -->
         <script>
         $(function(){
+        	//동적 체크박스
+        	//젠더
+        	//연령 체크박스 유무에 따라 밸류값변하게+창생기게
+	        $('#bandMemberGenderOpen').on('click',function(){
+	        	if($('#bandMemberGenderOpen').prop('checked')){
+	            	$('#bandMemberGenderOpenHi').prop('checked',false);
+	            } else {
+	            	$('#bandMemberGenderOpenHi').prop('checked',true);
+	            }
+	        })
+        	//나이
+        	 $('#bandMemberAgeOpen').on('click',function(){
+	        	if($('#bandMemberAgeOpen').prop('checked')){
+	            	$('#bandMemberAgeOpenHi').prop('checked',false);
+	            } else {
+	            	$('#bandMemberAgeOpenHi').prop('checked',true);
+	            }
+	        })
+        	//생일
+        	 $('#bandMemberBirthOpen').on('click',function(){
+	        	if($('#bandMemberBirthOpen').prop('checked')){
+	            	$('#bandMemberBirthOpenHi').prop('checked',false);
+	            } else {
+	            	$('#bandMemberBirthOpenHi').prop('checked',true);
+	            }
+	        })
         	 //이미지삽임
             $('.imgss').on('click', '#inputImage', function(){
-            	$('#gateImage').click();
+            	$('#defaultImg').click();
             })
             //이미지첨부 눌렀을 때
             function imgFnc(){
             	//파일
-            	let imgFile = $('#gateImage').val();
+            	let imgFile = $('#defaultImg').val();
             	//확장자제한
             	let fileForm = /(.*?)\.(jpg|jpeg|png)$/;
             	//50mb로 제한
@@ -199,12 +260,12 @@
             	//파일크기제한
             	let fileSize;
     			
-            	if($('#gateImage').val() == "") {
+            	if($('#defaultImg').val() == "") {
             		alert("첨부파일은 필수!");
             	    return;
             	}
             	//파일명과 사이즈를 뽑기위한..제이쿼리를 모르겠음 이건
-            	let fileName = document.getElementById("gateImage").files[0]
+            	let fileName = document.getElementById("defaultImg").files[0]
             	//파일이 비었다면
             	if(imgFile != "" && imgFile != null) {
             		//input=file의 files 속성가져와서...
@@ -222,7 +283,7 @@
             	}
             }
             //이미지 업로드 시 미리보기createImage
-            $('#gateImage').on('change', function(e){
+            $('#defaultImg').on('change', function(e){
             	let file = e.target.files[0];
             	let reader = new FileReader();
             	reader.onload = function(e){
@@ -232,12 +293,6 @@
             	}
             	reader.readAsDataURL(file);
             	
-            })
-            //디폴트이미지 설정하기###
-            $('.aaimg').on('click', function(){
-            	$('#inputImage').attr('src',$(this).attr('src'));
-            	console.log($(this).attr('src').substr(9));
-            	$('input[name=mediaServerFile]').val($(this).attr('src').substr(9))
             })
         })
         </script>

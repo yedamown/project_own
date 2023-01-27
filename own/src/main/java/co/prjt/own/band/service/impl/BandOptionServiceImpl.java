@@ -16,6 +16,7 @@ import co.prjt.own.common.mapper.CommonMapper;
 public class BandOptionServiceImpl implements BandOptionService {
 	@Autowired
 	BandOptionMapper bandOptionMapper;
+
 	@Autowired
 	CommonMapper commonMapper;
 

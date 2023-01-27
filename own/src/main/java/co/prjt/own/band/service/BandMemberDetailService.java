@@ -17,4 +17,11 @@ public interface BandMemberDetailService {
 	
 	//밴드번호+유저아이디로 유저값가져오기
 	public BandMemberDetailVO getBandMemberDetail(BandMemberDetailVO vo);
+	//유저 회원가입
+	public BandMemberDetailVO insertBandMemberDetail(BandMemberDetailVO vo);
+	//프로필사진없을 시 임의의 사진 입력 value는 식별키
+	public int bandProfilImg(String value);
+	//프로필사진없을 시 디폴트 사진 입력
+	public int bandProfilDefImg(String defaultNo, String detailNo, String mediaServerFile);
+	//밴드 가입시 닉네임 중복체크
 }

@@ -170,7 +170,7 @@
 	                                <hr>
 
                                 </div>
-                                <div th:unless="${BandMemberDetail}"  id="signUpBand">
+                                <div th:if="${#strings.isEmpty(BandMemberDetail)}"  id="signUpBand">
                                 <!-- =======가입======= -->
                                 	<h4 class="widget_title" style="color:white;">회원가입</h4>
                                 </div>
