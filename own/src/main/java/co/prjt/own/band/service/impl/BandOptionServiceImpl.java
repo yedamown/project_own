@@ -62,7 +62,8 @@ public class BandOptionServiceImpl implements BandOptionService {
 	public int bandDisHuman(String bandNo) {
 		// TODO Auto-generated method stub
 		return bandOptionMapper.bandDisHuman(bandNo);
-    
+	}
+	
    @Override
 	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging) {
 		// 페이징 설정
