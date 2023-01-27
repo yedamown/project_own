@@ -56,12 +56,12 @@ UPDATE BAND SET BAND_NAME=#{bandName},
 		BAND_GENDER=#{bandGender}
 		WHERE BAND_NO = #{bandNo}
 </update>
-<!-- 밴드 내 회원의 아이디, 별명, 최종 접속일, 게시글 수, 댓글 수, 성별, 연령을 리스트로 -->
+<!-- 밴드에 가입된 전체 회원리스트, 정렬조건, 검색까지 -->
 <select id="bandOptionGetAllMemberList" resultType="co.prjt.own.band.service.BandMemberDetailVO" parameterType="string">
-	SELECT  M.USER_ID USER_ID , M.BAND_NICKNAME BAND_NICKNAME , 
-			M.BAND_ACCESS_DATE BAND_ACCESS_DATE, M.BAND_BIRTH BAND_BIRTH,  
-			M.BAND_GENDER BAND_GENDER, M.BAND_MEMBER_STATUS BAND_MEMBER_STATUS,
-            M.BAND_MEMBER_INTRO BAND_MEMBER_INTRO, M.BAND_KICK_DATE BAND_KICK_DATE
+	SELECT  M.USER_ID USER_ID , M.BAND_NICKNAME BAND_NICKNAME, M.BAND_NO BAND_NO, 
+			M.BAND_ACCESS_DATE BAND_ACCESS_DATE, M.BAND_BIRTH BAND_BIRTH,
+			M.BAND_GENDER BAND_GENDER, M.BAND_MEMBER_INTRO BAND_MEMBER_INTRO, 
+			M.BAND_SIGNUP_DATE BAND_SIGNUP_DATE, M.BAND_MEMBER_NO BAND_MEMBER_NO
             , ( TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BAND_BIRTH) / 12 ) + 2 
             ) AGE 
 	        , ( SELECT COUNT(*)  
@@ -71,23 +71,78 @@ UPDATE BAND SET BAND_NAME=#{bandName},
 	            AND A.BAND_BOARD_WRITER = M.USER_ID
 	            AND C.BAND_NO = #{bandNo}
 	        )BOARD_CNT
-	        , ( (SELECT COUNT(*) 
-	            FROM BAND A, BAND_BOARD_OPTION B, BAND_BOARD_DETAIL C, REPLY D
-	            WHERE A.BAND_NO = B.BAND_NO
-	            AND B.BAND_BOARD_OPTION_NO = C.BAND_BOARD_OPTION_NO
-	            AND C.BAND_BOARD_DETAIL_NO = D.CATEGORY_NO
-	            AND D.USER_ID = M.USER_ID
-	            AND B.BAND_NO = #{bandNo}) +
-	            (SELECT COUNT(*) 
-	            FROM BAND A, BAND_BOARD_OPTION B, BAND_BOARD_DETAIL C, REPLY D, RE_REPLY E
-	            WHERE A.BAND_NO = B.BAND_NO
-	            AND B.BAND_BOARD_OPTION_NO = C.BAND_BOARD_OPTION_NO
-	            AND C.BAND_BOARD_DETAIL_NO = D.CATEGORY_NO
-	            AND D.REPLY_NO = E.REPLY_NO
-	            AND E.USER_ID = M.USER_ID
-	            AND B.BAND_NO = #{bandNo})
-	        )REPLY_CNT 
+	        , ( (	SELECT COUNT(*) 
+		            FROM BAND A, BAND_BOARD_OPTION B, BAND_BOARD_DETAIL C, REPLY D
+		            WHERE A.BAND_NO = B.BAND_NO
+		            AND B.BAND_BOARD_OPTION_NO = C.BAND_BOARD_OPTION_NO
+		            AND C.BAND_BOARD_DETAIL_NO = D.CATEGORY_NO
+		            AND D.USER_ID = M.USER_ID
+		            AND B.BAND_NO = #{bandNo}) +
+	            (	SELECT COUNT(*) 
+		            FROM BAND A, BAND_BOARD_OPTION B, BAND_BOARD_DETAIL C, REPLY D, RE_REPLY E
+		            WHERE A.BAND_NO = B.BAND_NO
+		            AND B.BAND_BOARD_OPTION_NO = C.BAND_BOARD_OPTION_NO
+		            AND C.BAND_BOARD_DETAIL_NO = D.CATEGORY_NO
+		            AND D.REPLY_NO = E.REPLY_NO
+		            AND E.USER_ID = M.USER_ID
+		            AND B.BAND_NO = #{bandNo})
+	        )REPLY_CNT
+	        , ( SELECT A.MEDIA_SERVER_FILE
+	        	FROM MULTIMEDIA A
+	        	WHERE A.IDENTIFY_ID = M.BAND_MEMBER_NO
+	        ) PROFILE_IMG
 	FROM BAND_MEMBER_DETAIL M
-	WHERE BAND_NO = #{bandNo}
+	WHERE BAND_MEMBER_STATUS = 'BA02'
+	<if test="userId != null and userId !='' ">
+	    AND USER_ID LIKE '%' || #{userId} || '%'
+		OR USER_NICKNAME LIKE '%' || #{userId} || '%'
+	 </if>
+	AND BAND_NO = #{bandNo}
+	ORDER BY
+	<choose>
+        <when test="searchOption == 'name'">BAND_NICKNAME</when>
+        <when test="searchOption == 'accessDate'">BAND_ACCESS_DATE</when>
+        <when test="searchOption == 'boradCnt'">BOARD_CNT</when>
+        <when test="searchOption == 'replyCnt'">REPLY_CNT</when>
+        <when test="searchOption == 'signupDate'">BAND_SIGNUP_DATE</when>
+        <otherwise>BAND_SIGNUP_DATE </otherwise>
+    </choose>
+</select>
+
+<!-- 밴드에 가입신청 한 회원리스트, 검색까지 -->
+<select id="bandOptionGetWaitingMemberList" resultType="co.prjt.own.band.service.BandMemberDetailVO" parameterType="string">
+	SELECT  USER_ID, BAND_NICKNAME, BAND_MEMBER_INTRO, BAND_GENDER
+			, ( TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), BAND_BIRTH) / 12 ) + 2 
+            ) AGE
+            , ( SELECT A.MEDIA_SERVER_FILE
+	        	FROM MULTIMEDIA A
+	        	WHERE A.IDENTIFY_ID = BAND_MEMBER_NO
+	        ) PROFILE_IMG
+	FROM BAND_MEMBER_DETAIL 
+	WHERE BAND_MEMBER_STATUS = 'BA01'
+	<if test="userId != null and userId !='' ">
+	    AND USER_ID LIKE '%' || #{userId} || '%'
+		OR USER_NICKNAME LIKE '%' || #{userId} || '%'
+	 </if>
+	AND BAND_NO = #{bandNo}
+	ORDER BY BAND_SIGNUP_DATE 
+</select>
+
+<!-- 밴드에서 탈퇴된 회원리스트, 검색까지 -->
+<select id="bandOptionGetkickedMemberList" resultType="co.prjt.own.band.service.BandMemberDetailVO" parameterType="string">
+	SELECT  USER_ID, BAND_NICKNAME, BAND_MEMBER_KICK_REASON, 
+			BAND_KICK_DATE, BAND_MEMBER_REJOIN
+			, ( SELECT A.MEDIA_SERVER_FILE
+	        	FROM MULTIMEDIA A
+	        	WHERE A.IDENTIFY_ID = BAND_MEMBER_NO
+	        ) PROFILE_IMG		
+	FROM BAND_MEMBER_DETAIL 
+	WHERE BAND_MEMBER_STATUS = 'BA03'
+	<if test="userId != null and userId !='' ">
+	    AND USER_ID LIKE '%' || #{userId} || '%'
+		OR USER_NICKNAME LIKE '%' || #{userId} || '%'
+	 </if>
+	AND BAND_NO = #{bandNo}
+	ORDER BY BAND_KICK_DATE 
 </select>
 </mapper>

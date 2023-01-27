@@ -1,165 +1,194 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
+
+<head>
+	<!-- jquery -->
+	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Royal Hotel</title>
+</head>
 <style>
+	ul {
+		list-style: none;
+	}
+
+	li {
+		float: left;
+		cursor: default;
+	}
 </style>
 
 <body>
-  <h1>멤버 관리</h1>
+	<div>
+		<ul>
+			<li class="allBandMemberList">전체 멤버</li>
+			<li>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp</li>
+			<li class="waitingBandMemberList">승인 대기 멤버</li>
+			<li>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp</li>
+			<li class="kickedBandMemberList">강제 탈퇴 멤버</li>
+		</ul>
+		<input type="hidden" id="MybandNo" th:value="${memberList[0].bandNo}">
+	</div>
+	<div id="allBandMemberList" style="display:block">
+		<div>
+			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname"> <span
+				class="input-group-btn">
+				<button class="btn btn-default searchBtn" type="button">
+					<i class="lnr lnr-magnifier"></i>
+				</button>
+			</span> <select name="searchOption">
+				<option value="signupDate">가입일자 순</option>
+				<option value="name">이름 순</option>
+				<option value="accessDate">최종접속일 순</option>
+				<option value="boradCnt">게시글 순</option>
+				<option value="replyCnt">댓글 순</option>
+			</select> <select name="pagingOption">
+				<option value="">10개씩 보기</option>
+				<option value="">20개씩 보기</option>
+				<option value="">50개씩 보기</option>
+			</select> <span class=""> 전체 멤버 수 </span>
+		</div>
+		<table>
+			<thead>
+				<th></th>
+				<th>별명(아이디)</th>
+				<th>최종 접속일</th>
+				<th>게시글 수</th>
+				<th>댓글 수</th>
+				<th>성별</th>
+				<th>연령</th>
+				<th><input type="checkbox"></th>
 
+			</thead>
+			<tbody id="">
+				<tr th:each="list : ${memberList}">	
+					<td><img th:src="|/imgView/${list.profileImg}|"
+						style="height: 30px; width: 30px; object-fit: cover" /></td>
+					<td th:text="${list.bandNickname} + '(' + ${list.userId} + ')'"></td>
+					<td th:text="${#dates.format(list.bandAccessDate, 'yyyy년 MM월 dd일')}"></td>
+					<td th:text="${list.boardCnt}"></td>
+					<td th:text="${list.replyCnt}"></td> 
+					<span th:if="${list.bandGender == 'GD01'}">
+						<td th:text="남자"></td>
+					</span> 
+					<span th:unless="${list.bandGender == 'GD01'}">
+						<td th:text="여자"></td>
+					</span>
+					<td th:text="${list.age}"></td>
+					<td><input type="checkbox"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-  <p>전체 멤버</p>
-  <p>승인 대기 멤버</p>
-  <p>강제 탈퇴 멤버</p>
-  <div id="allBandMemberList">
-    <div>
-      <input type="text" class="form-control" placeholder="별명 검색" name="bandNickname">
-      <span class="input-group-btn">
-        <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
-      </span>
-      <select name="searchOption">
-        <option value="">가입일자 순</option>
-        <option value="">이름 순</option>
-        <option value="">최종접속일 순</option>
-        <option value="">방문수 순</option>
-        <option value="">게시글 순</option>
-        <option value="">댓글 순</option>
-      </select>
-      <select name="pagingOption">
-        <option value="">10개씩 보기</option>
-        <option value="">20개씩 보기</option>
-        <option value="">50개씩 보기</option>
-      </select>
-      <span class="">
-        전체 멤버 수
-      </span>
-    </div>
-    <table>
-      <thead>
-        <th>별명(아이디)</th>
-        <th>최종 접속일</th>
-        <th>게시글 수</th>
-        <th>댓글 수</th>
-        <th>성별</th>
-        <th>연령</th>
-        <th><input type="checkbox"></th>
+	<div id="waitingBandMemberList" style ="display:none">
+		<div>
+			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색"
+				name="bandNickname"> <span class="input-group-btn">
+				<button class="btn btn-default searchBtn" type="button">
+					<i class="lnr lnr-magnifier"></i>
+				</button>
+			</span> <select name="pagingOption">
+				<option value="">10개씩 보기</option>
+				<option value="">20개씩 보기</option>
+				<option value="">50개씩 보기</option>
+			</select> <span class=""> 전체 멤버 수 </span>
+		</div>
+		<table>
+			<thead>
+				<th></th>
+				<th>별명(아이디)</th>
+				<th>소개말</th>
+				<th>성별</th>
+				<th>연령</th>
+				<th><input type="checkbox"></th>
 
-      </thead>
-      <tbody id="">
-        <tr th:each="list : ${memberList}">
-          <span th:if="${#strings.equals(list.bandMemberstatus, 'BA02')}">
-            <td th:text="${list.bandNickname} + '(' + ${list.userId} + ')'"></td>
-            <td th:text="${list.bandAccessDate}"></td>
-            <td th:text="${list.boradCnt}"></td>
-            <td th:text="${list.replyCnt}"></td>
-            <span th:if="${list.bandGender == 'GD01'}">
-              <td th:text="남자"></td>
-            </span>
-            <span th:unless="${list.bandGender == 'GD01'}">
-              <td th:text="여자"></td>
-            </span>
-            <td th:text="${list.age}"></td>
-            <td><input type="checkbox"></td>
-          </span>
+			</thead>
+			<tbody id="waitingMemberTable">
+				
+			</tbody>
+		</table>
+	</div>
 
-        </tr>
-      </tbody>
-    </table>
-  </div>
+	<div id="kickedBandMemberList" style ="display:none">
+		<div>
+			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색"
+				name="bandNickname"> <span class="input-group-btn">
+				<button class="btn btn-default searchBtn" type="button">
+					<i class="lnr lnr-magnifier"></i>
+				</button>
+			</span> <select name="pagingOption">
+				<option value="">10개씩 보기</option>
+				<option value="">20개씩 보기</option>
+				<option value="">50개씩 보기</option>
+			</select> <span class=""> 강제 탈퇴 멤버 수 </span>
+		</div>
+		<table>
+			<thead>
+				<th></th>
+				<th>별명(아이디)</th>
+				<th>사유</th>
+				<th>처리일</th>
+				<th>가입불가여부</th>
+				<th><input type="checkbox"></th>
 
-  <div id="waitingBandMemberList">
-    <div>
-      <input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname">
-      <span class="input-group-btn">
-        <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
-      </span>
-      <select name="pagingOption">
-        <option value="">10개씩 보기</option>
-        <option value="">20개씩 보기</option>
-        <option value="">50개씩 보기</option>
-      </select>
-      <span class="">
-        전체 멤버 수
-      </span>
-    </div>
-    <table>
-      <thead>
-        <th>별명(아이디)</th>
-        <th>소개말</th>
-        <th>성별</th>
-        <th>연령</th>
-        <th><input type="checkbox"></th>
+			</thead>
+			<tbody id="kickedMemberTable">
+				
+			</tbody>
+		</table>
 
-      </thead>
-      <tbody id="">
-        <tr th:each="list : ${memberList}">
-          <span th:if="${#strings.equals(list.bandMemberstatus, 'BA01')}">
-            <td th:text="${list.bandNickname} + '(' + ${list.userId} + ')'"></td>
-            <td th:text="${list.bandMemberIntro}"></td>
-            <span th:if="${list.bandGender == 'GD01'}">
-              <td th:text="남자"></td>
-            </span>
-            <span th:unless="${list.bandGender == 'GD01'}">
-              <td th:text="여자"></td>
-            </span>
-            <td th:text="${list.age}"></td>
-            <td><input type="checkbox"></td>
-          </span>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+	</div>
 
-  <div id="kickedBandMemberList">
-    <div>
-      <input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname">
-      <span class="input-group-btn">
-        <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
-      </span>
-      <select name="pagingOption">
-        <option value="">10개씩 보기</option>
-        <option value="">20개씩 보기</option>
-        <option value="">50개씩 보기</option>
-      </select>
-      <span class="">
-        강제 탈퇴 멤버 수 
-      </span>
-    </div>
-    <table>
-      <thead>
-        <th>별명(아이디)</th>
-        <th>사유</th>
-        <th>처리일</th>
-        <th>가입불가여부</th>
-        <th><input type="checkbox"></th>
-
-      </thead>
-      <tbody id="">
-        <tr th:each="list : ${memberList}">
-          <span th:if="${#strings.equals(list.bandMemberstatus, 'BA03')}">
-            <td th:text="${list.bandNickname} + '(' + ${list.userId} + ')'"></td>
-            <td th:text="${list.사유}"></td>
-            <td th:text="${list.bandNo}"></td>
-            <td th:text="${list.bandKickDate}"></td>
-            <td th:text="${list.가입불가여부}"></td>
-            <td><input type="checkbox"></td>
-          </span>
-
-        </tr>
-      </tbody>
-    </table>
-  </div>
 </body>
 <script>
-  $(function () {
-    // 밴드멤버리스트
-    /* function getMessage() {
-		  $.ajax({
-			  url : '/bandOptionGetAllMemberList?bandNo=',
+	$(function() {
+		// 밴드 번호
+		let bandNo = $("#MybandNo").val();
+		
+		// 전체 멤버 목록
+		$(".allBandMemberList").click(function(){
+			$("#allBandMemberList").show(); 
+			$("#waitingBandMemberList").hide();
+			$("#kickedBandMemberList").hide();     
+		});
+		// 가입대기중 멤버 목록
+		$(".waitingBandMemberList").click(function(){
+			$("#waitingBandMemberList").show(); 
+			$("#allBandMemberList").hide();
+			$("#kickedBandMemberList").hide();  
+			
+			$.ajax({
+					url : '/own/band/bandGroup/getWaitingMemberList?bandNo='+ bandNo,
 					method : 'get',
 					dataType : 'json',
 					contentType : "application/json"
-		  }).then(res => {
-			  
-		  })
-	  }  */
-  })
+				}).then(list => {
+					$.each(list, function(i, e){ 
+						console.log("내용======="+e);
+						console.log("내용======="+e.userId);
+						
+						/* let tbody = document.getElementById('waitingMemberTable');
+						let tr = document.createElement('tr');
+						let td1 = document.createElement('td');
+						td1.textContent = e.profileImg;
+						
+
+						tbody.appendChild(tr);
+						tr.appendChild(td1); */
+					})
+					
+				})
+		});
+		// 강퇴된 멤버 목록
+		$(".kickedBandMemberList").click(function(){
+			$("#kickedBandMemberList").show(); 
+			$("#waitingBandMemberList").hide();
+			$("#allBandMemberList").hide();     
+		});
+
+	})
 </script>

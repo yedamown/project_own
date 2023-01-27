@@ -57,16 +57,13 @@ public class ChallController {
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
 	//@ResponseBody 데이터를 다시 가져올때.. 안붙이면.. 하얀 html에 받아오는 값이뜬다 ㅎ
-
 	public String challHome(Model model, HttpServletRequest request, @ModelAttribute("paging1") Paging paging, @ModelAttribute("paging2") Paging paging2, ChallengeVO vo1, ChallengeVO vo2) {
 		HttpSession session = request.getSession();
-//		session.setAttribute("loginUser", ownService.login("kmh"));
+		session.setAttribute("loginUser", ownService.login("kjk"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		System.out.println("===================도전 홈"+user);
 		//페이징정보담은 
 		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);	
-		//페이징 담은 곳에다가 참여회원 담을 곳.
-		//List<ChallengeVO> newList = new ArrayList<ChallengeVO>();
 		//참여중인 회원 넣기
 		for(ChallengeVO i: cList) {
 			//참여회원수 검색해서 넣기
@@ -81,6 +78,8 @@ public class ChallController {
 			String id = user.userId;
 			vo2.setUserId(id);
 			//6개로 페이징	
+			paging2.setPageUnit(3);//3개씩보기
+			paging2.setPageSize(3); //페이딩 동그라미 3개
 			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);	
 			//참여중 회원 담을 새로운 리스트
 			for(ChallengeVO i: myList) {

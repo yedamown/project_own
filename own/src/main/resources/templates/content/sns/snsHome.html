@@ -105,6 +105,7 @@
             text-decoration: none;
             cursor: pointer;
         }
+        
         .storyProfileImg {
             width: 50px;
             height: 50px;
@@ -301,7 +302,7 @@
                     </div>
 
 
-                    <!-- 첫 번째 Modal -->
+                    <!-- 스토리 모달 -->
                     <div class="modal">
                         <div class="modal-content" style="width: 500px; height: 600px;">
                             <span class="close"></span>
@@ -313,7 +314,7 @@
                         </div>
                     </div>
                     <hr>
-                    <hr>
+
                     <!-- sns 메인 -->
                     <div class="blog">
                         <div class="row justify-content-center">
@@ -345,7 +346,8 @@
                                             <div class="meta_data">
                                                 <span>좋아요 수</span>
                                                 <span>댓글 수 </span>
-                                                <span> [[${now.snsBoardDate}]] </span>
+                                                <span th:text="${#dates.format(now.snsBoardDate, 'yyyy-MM-dd HH:mm:ss')}">
+                                                 [[${now.snsBoardDate}]] </span>
                                             </div>
                                             <p>게시글내용 /
                                                 <p th:text="${now.snsBoardContent}"></p>
@@ -423,13 +425,7 @@
                 alert("메인페이지로 이동합니다.")
                 location.href = "/own/home"
             };
-        
-        // $('.dots-parent').on("click", '.dot', function(e){
-        //     console.log('단추 클릭')
-        //     var dataItem = $(e.target)
-        //     console.log(dataItem)
 
-        // })
 
         //게시글 이미지 페이징
         $('.dot').each(function(){
@@ -447,11 +443,11 @@
             })
         })
         //스토리 상세보기 ajax
-        $('.modalBtn').on("click",'.storyInfo', function (e) {
-           
+        $('.modalBtn').on("click",'.storyInfo', function (e) {      
             // console.log($(this).text());
              var storyNickname = $(e.target).text()
              $(".modal").show();
+
                 $.ajax({
                 url: '/own/snsStoryList',
                 method: 'post',

@@ -84,18 +84,26 @@
 	
 	<!-- 게시글 한건에 대한 댓글 전체 조회-->
 	<select id="getBoardReplyList" resultType="ReplyVO">
-	select TO_NUMBER(SUBSTR(R.REPLY_NO, 6)) AS REPLY_NO,
-		       R.REPLY_CONTENT,
-		       R.REPLY_DATE,
-		       S.SNS_NICKNAME AS userId
-		FROM SNS_ACCOUNT S, OWN_USERS O, REPLY R
-		WHERE R.USER_ID = O.USER_ID
-		AND O.SNS_ACCOUNT_NO = S.SNS_ACCOUNT_NO
-		AND R.CATEGORY_NO = #{snsBoardNo}
-		ORDER BY REPLY_NO DESC
+		select TO_NUMBER(SUBSTR(R.REPLY_NO, 6)) AS REPLY_NO,
+			       R.REPLY_CONTENT,
+			       R.REPLY_DATE,
+			       S.SNS_NICKNAME AS userId
+			FROM SNS_ACCOUNT S, OWN_USERS O, REPLY R
+			WHERE R.USER_ID = O.USER_ID
+			AND O.SNS_ACCOUNT_NO = S.SNS_ACCOUNT_NO
+			AND R.CATEGORY_NO = #{snsBoardNo}
+			ORDER BY REPLY_NO DESC
 	</select>
 	
 	<!-- 댓글 입력 -->
+	<insert id="insertSnsReply" parameterType="ReplyVO">
+	<selectKey keyProperty="replyNo" resultType="string" order="BEFORE">
+			SELECT reply_seq.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into reply(reply_no, reply_content, reply_date, user_id, category_no)
+		values ('SRE_'||#{replyNo}, #{replyContent}, current_date, #{userId}, #{categoryNo})
+	</insert>
+	
 	<!-- 댓글 수정 -->
 	<!-- 댓글 삭제 -->
 	

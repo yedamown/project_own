@@ -33,14 +33,13 @@
     <link rel="stylesheet" href="/css/sns/css/animate.min.css">
     <!-- Custom styles for this template -->
     <link href="/css/sns/css/main.css" rel="stylesheet">
-	<link href="/css/sns/css/Feedstyle.css" rel="stylesheet">
     <style>
         .modal {
             display: none;
             /* Hidden by default */
             position: fixed;
             /* Stay in place */
-            z-index: 1;
+            z-index: 21;
             /* Sit on top */
             left: 0;
             top: 0;
@@ -89,7 +88,7 @@
         }
 
         #att_zone {
-            width: 660px;
+            width: 900px;
             min-height: 150px;
             padding: 10px;
             border: 1px dotted #00f;
@@ -204,15 +203,56 @@
         .storyProfileDate {
             position: absolute;
             top: 6px;
-            right: 5px;
+            right: 25px;
             font-size: 14px;
+        }
+
+        .Feedmodal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 21; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        /* Modal Content/Box */
+        .Feedmodal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Could be more or less, depending on screen size */
+        }
+        li.dot{
+            background-color: lightgray;
+            margin-top: 20px;
+            margin-left: 10px;
+        }
+        li.dot:hover {
+            background-color: lightblue;
+        }
+        li.dot.active {
+            background-color: skyblue;
+        }
+
+        .boardImg{
+            opacity: 0;
+        }
+        .boardImg.active{
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+            z-index: 20;
         }
 
     </style>
     
     <!-- jquery -->
     <script src="/css/sns/js/jquery.min.js"></script>
-    <script src="/css/sns/js/Feedscript.js"></script>
     <!-- bootstrap -->
     <script src="/css/sns/js/popper.js"></script>
     <script src="/css/sns/js/bootstrap.min.js"></script>
@@ -230,7 +270,7 @@
     <script src="/css/sns/js/wow.min.js"></script>
     <!-- Custom js -->
     <script src="/css/sns/js/main.js"></script>
-    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/139719/jquery.slides.min.js"></script>
+
 </head>
 
 <body>
@@ -334,7 +374,7 @@
             <!--=================== content body ====================-->
             <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
                 <!--=================== filter portfolio start====================-->
-                <div id="snsprofilebox" style="border: 1px solid black; text-align: center;">
+                <div id="snsprofilebox" style="border: 1px solid lightgray; text-align: center;">
                     <br>
                     <div class="profile">
                         <img id="instaImg" src="/css/sns/img/insta.png">
@@ -391,8 +431,9 @@
                     <!-- 다른사람 스토리-->
                     <div th:if="${userId.snsNickname != snsInfo.snsNickname}" class="modal">
                         <div class="modal-content" style="width: 500px; height: 600px;">
-                            <span class="close"></span>
+                            
                             <div class="storyProfile" style="position:relative; width: 450px; height: 60px;">
+                                <span class="close" style="padding-left: 16px; padding-top:2px;">&times;</span>
                             </div>
                             <div class="storyContent" style="position:relative; width:498px;">
 
@@ -407,11 +448,12 @@
                             <span class="close">&times;</span>
                             <p>프로필 변경</p>
                             <form id="form1" action="/own/snsProfile" method="post" enctype="multipart/form-data">
+                                <div style="width: 300px; height: 300px; border-radius: 50%; border:1px #00f dotted;">
+                                <img id="blah" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover;"/></div>
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                 <input th:value="${userId.snsAccountNo}" name="snsAccountNo" type="hidden">
                                 <input th:value="${userId.snsNickname}" name="snsNickname">
                                 <input name="uploadProfile" type="file" id="imgInp" />
-                                <img id="blah" style="width: 400px; height: 400px; border-radius: 50%; object-fit: cover;"/>
                                 <textarea style="width:400px; height:100px;" placeholder="프로필 소개글을 입력하세요."
                                     name="snsProfile" th:value="${snsInfo.snsProfile}">
 											</textarea>
@@ -471,7 +513,7 @@
               	<p>여기 테스트</p>
          
                 <!-- 글작성 모달을 여는 클래스 -->
-                <h1 th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="text-align: right;">
+                <h1 th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="text-align: right; cursor:pointer;">
                		 📝글작성</h1>
                 <p>
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
@@ -503,12 +545,10 @@
                         <div class="grid-sizer col-sm-12 col-md-6 col-lg-3"></div>
 
                         <th:block th:each="snsimg :${snsImg}">
-                            <div class="modalBtn">
-                                <input type="hidden" id="boardNo" th:value="${snsimg.identifyId}">
-                                <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3">
+                                <div class="grid-item branding  col-sm-12 col-md-6 col-lg-3" >
                                     <div class="project_box_one">
                                         <img th:src="|/imgView/${snsimg.mediaServerFile}" />
-                                        <div class="product_info">
+                                        <div class="product_info"  th:value="${snsimg.identifyId}">
                                             <div class="product_info_text">
                                                 <div class="product_info_text_inner">
                                                     <i class="ion ion-plus"></i>
@@ -519,22 +559,34 @@
                                     </div>
                                 </div>
                                 <!--</a>-->
-                            </div>
-                        </th:block>
+                            </th:block>
+
                     </div>
 
-                    <!-- 게시글 상세보기 Modal -->
-
-                    <th:block th:each="snsLength :${snsImg}">
-                        <div class="modal">
-                            <!-- 게시글 상세보기 Modal의 내용 -->
-                            <div class="modal-content" style="width: 1200px; height: 900px;">
-                                <span class="close">&times;</span>
-                               
-                                <div class="action-btns">
-                                    <button class="btn prev-btn">&lsaquo;</button>
-                                    <button class="btn next-btn">&rsaquo;</button>
+                    <!-- 게시글 상세보기 Modal -->                  
+                        <div class="Feedmodal">
+                            <div class="Feedmodal-content" style="width: 1100px; height: 800px;">
+                                <span class="close"></span>
+                                <div class="boardContent" style="float: right; width: 500px;border-bottom: 1px lightgray solid; padding-bottom: 16px;">
+                                  
                                 </div>
+                                
+                                <div class="boardImgList" style="position:relative; width: 500px; height: 600px; float:left">
+                                </div>
+                                <div class="replyContent" style="width:500px; float: right; border-bottom: 1px lightgray solid; padding-top: 16px; padding-bottom: 16px; margin-bottom: 10px;">
+                                    여기는 댓글자리입니다
+                                </div>   
+                                <div class="replyInsert" style="width:500px; height: 200px;float:right;">
+                                    <div class="replyInput" style="cursor:pointer;">📝댓글쓰기</div>
+                                    <div class="realReply"></div>
+                                </div>
+                                <div class="container-dots">
+                                    <ul class="dots-parent" style="list-style: none; margin-left: 150px; width: 300px; height: 50px;">
+                                        
+                                    </ul>
+                                </div>
+
+                                
 
                                 <div class="btnIcon">
                                     <img src="/css/sns/img/update.png" id="updateBtn">
@@ -542,9 +594,7 @@
                                 </div>
                                 
                             </div>
-                                    
-                            </div>
-                    </th:block>
+                        </div>
                     <!--=================== filter portfolio end====================-->
             </div>
             <!--=================== content body end ====================-->
@@ -575,22 +625,73 @@
               reader.readAsDataURL(input.files[0]);
             }
         }
+   
+        "[(${snsInfo.snsAccountNo})]"
+        var replyId = "[(${userId.userId})]"
+        var categoryNo = '';
 
-        //게시글 상세보기 페이징
-        $(function() {
-            $('#slides').slidesjs({
-                width: 940,
-                height: 528,
-                navigation: false,
-            effect: {
-            slide: {speed: 1500},
-            fade: { speed: 300, },
+    //댓글 입력 창 생성
+    $('.replyInsert').on("click",'.replyInput', function(e){
+        console.log('댓글쓰기 버튼 클릭')
+
+        $(e.target).remove();
+            let replyArea = $('<textarea>').css({"width":"500px","height" : "200px"})
+                replyArea.attr({"class":"replyText"})
+            let insertBtn = $('<button>').text("입력")
+                insertBtn.attr({"class": "insertBtn"})
+            let delBtn = $('<button>').text("취소")
+                delBtn.attr({"class" : "delBtn"})
+
+            $('.realReply').append(replyArea, insertBtn, delBtn);
+
+    })
+    //댓글 입력
+        $('.realReply').on("click", '.insertBtn', function(){
+                console.log("입력버튼 클릭");
+                console.log(replyId);
+                console.log(categoryNo);
+                let replyText = $('.realReply').children('.replyText').val();
+                console.log(replyText);
+
+                $.ajax({
+                    url : '/own/snsReply',
+                    method : 'post',
+                    data: {
+                        replyContent : replyText,
+                        userId : replyId,
+                        categoryNo : categoryNo
+                    },  
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function(res){
+                        console.log(res)
+
+                    },
+                    error : function(err){
+                        console.log(err);
                     }
-            });
-            });
+
+                })
+        })
+
+        //댓글취소
+        $('.realReply').on("click", '.delBtn', function(){
+            console.log("취소버튼 클릭")
+            $('.replyInsert').children('.realReply').children().remove();
+            $('.replyInsert').children('.replyInput').remove();
+            let replyInput = $('<div>').text('📝댓글쓰기');
+                replyInput.attr({"class" : "replyInput"})
+                replyInput.css({"cursor":"pointer"})
+            $('.replyInsert').append(replyInput);
+            
+        })
+
+
+    //게시글 한건 삭제 
         $('#trashBtn').on("click", function () {
             console.log('쓰레기통버튼 클릭')
-            let bNo = $('#boardNo').val()
+            let bNo = $('.boardContent').children('.boardNo').attr("value");
             console.log(bNo)
             if (window.confirm("정말 삭제하시겠습니까?")) {
                 console.log("네")
@@ -626,8 +727,20 @@
         var followId = "[(${snsInfo.snsAccountNo})]"
         var followerId = "[(${userId.snsAccountNo})]"
         var followNickname = "[(${snsInfo.snsNickname})]"
-
-
+    
+    //게시글 상세보기 이미지 페이징
+        $('.dots-parent').on("click", '.dot', function(e){
+            console.log("단추클릭")
+            let btnData = $(e.target).attr("data-item");
+            console.log(this);
+            $('.dot').not(this).removeClass("active");
+            $(this).addClass("active");
+            console.log(this);
+            console.log('단추클릭');
+            console.log($(this).attr("data-item"));
+            $('.boardImg').not('[data-item="'+btnData+'"]').removeClass("active")
+            $('.boardImg[data-item="'+btnData+'"]').addClass("active")
+        })
         //팔로우버튼
         $('.followBtn').on("click", function () {
             if (this.value == '팔로우') {
@@ -724,8 +837,6 @@
                         $('.storyProfile').append(storyProfileDate);
                         $('.storyContent').append(storyImg);
                     }
-
-
                 },
                 error: function (err) {
                     console.log(err)
@@ -733,60 +844,84 @@
             })
         })
 
-
-        //게시글 상세보기 ajax
-        $('.modalBtn').each(function () {
-            $(this).on("click", function () {
-                console.log(this);
-                let boardNo = $(this).children('#boardNo').val();
-                console.log(boardNo);
-
-                if (boardNo != null) {
-                    console.log('모달 아작스 보냅니다')
-                    $.ajax({
-                        url: '/own/snsFeed',
-                        method: 'post',
-                        data: {
-                            snsBoardNo: boardNo
-                        },
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader(header, token);
-                        },
-                        success: function (res) {
-                            console.log(res)
-                            $('.bContent').text(res.svo.snsBoardContent);
-
-                            
-                              //댓글
-                              for (let i = 0; i < res.reply.length; i++) {
-                                    var tableTd = '<tr>'
-                                    tableTd += '<td>' + res.reply[i].userId + '</td>';
-                                    tableTd += '<td>' + res.reply[i].replyContent + '</td>';
-                                    tableTd += '<td>' + res.reply[i].replyDate + '</td>';
-                                    tableTd += '</tr>';
-                                    $('#tableBody').append(tableTd);
+        //게시글 상세 보기 ajax
+        $('.portfolio').on("click", '.grid-item', function(e){
+            console.log($(this));
+            console.log($(e.target).attr("value"));
+            let boardNo = $(e.target).attr("value");
+            console.log('게시글 클릭입니다')
+            if(boardNo != null){
+                    $(".Feedmodal").show();
+                    console.log("모달 아작스 보냅니다");
+                        $.ajax({
+                            url : '/own/snsFeed',
+                            method : 'post',
+                            data: {
+                                snsBoardNo : boardNo
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success: function (res){
+                                console.log(res);
+                                let boardNo = $('<div>').attr({"value": res.svo.snsBoardNo,
+                                                               "class" : "boardNo"});
+                                let boardDate = $('<div>').text(res.svo.snsBoardDate);
+                                let boardContent = $('<div>').text(res.svo.snsBoardContent);
+                                     $('.boardContent').append(boardNo, boardDate, boardContent);
+                                
+                                for(let i=res.imgList.length-1; i>= 0; i--){
+                                    let boardImg = $('<img>').attr({
+                                        "src" : "/imgView/" + res.imgList[i].mediaServerFile,
+                                        "class": "boardImg",
+                                        "data-item" : i})
+                                        boardImg.css({"width":"500px", "height":"600px", "object-fit":"cover",
+                                                      "position" : "absolute"})
+                                    
+                                    $('.boardImgList').append(boardImg);  
                                 }
-                              
+                                for(let i=0; i<res.imgList.length; i++){
+                                    let liTag = $('<li>').attr({"data-item" : i,
+                                                                "class" : "dot"})
+                                        liTag.css({"width":"20px", "height" : "20px", 
+                                                   "border-radius":"50%","cursor" :"pointer",
+                                                   "float" : "left"})
+                                    $('.dots-parent').append(liTag);
+                                }
 
+                                $(".boardImgList .boardImg:last-child").addClass("active");
+                                $(".dots-parent .dot:first-child").addClass("active");
 
-                            let time = res.svo.snsBoardDate
-                            time = new Date(time);
-                            console.log(time);
-                            $('.bWriter').text(res.svo.snsNickname);
-                            $('.bDate').text(elapsedText(time));
+                                for(let i=res.reply.length-1; i>=0; i--){
+                                    // let replyContent = $('<div>').text(res.reply[i].replyContent);
+                                    // let replyUserId = $('<div>').text(res.reply[i].userId);
+                                    // let replyDate =$('<div>').text(res.reply[i].replyDate);
 
-                        },
-                        error: function (error) {
-                            console.log(error);
-                        }
-                    })
-                } else {
-                    console.log('모달창 띄우기')
+                                        $('.replyContent').append(makeReply(res.reply[i]));
+                                }
+                                categoryNo = boardNo.attr("value");
+                                
+                            },error: function (err){
+                                console.log(err)
+                            }
+                        })
+                }else{
+                    console.log("잘못클릭")
                 }
-
-            })
         })
+        
+        function makeReply(reply){
+            // let replyTag = $('<div>').text(reply.replyContent);
+            // let replyUserId = $('<div>').text(reply.userId);
+            // let replyDate =$('<div>').text(reply.replyDate);
 
+            let Tag = `<div>${reply.replyContent}</div>
+                       <div>${reply.userId}</div>
+                       <div>${reply.replyDate}</div>
+                       <input type="hidden" value="${reply.replyNo}" />`
+            return Tag;
+        }
+   
               
         // Modal을 가져옵니다.
         var modals = document.getElementsByClassName("modal");
@@ -811,12 +946,8 @@
                 spanes[num].onclick = function () {
                     console.log('모달닫기버튼클릭')
                     modals[num].style.display = "none";
-                    $('.modalP').children('img').remove();
                     $('.storyContent').children('img').remove();
-                    $('.boardBtnDiv').children('div').remove();
-                    $('.storyProfile').children().remove();
-                    $('.slidesjs-control').children().remove();
-                    $('.slidesjs-pagination').children().remove();
+                    $('.storyProfile').children().not('.close').remove();
                 };
             };
         }
@@ -831,16 +962,23 @@
             funcs[j]();
         }
 
-        // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
+        // // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
         window.onclick = function (event) {
-            if (event.target.className == "modal") {
+            if (event.target.className == "modal" ) {
                 event.target.style.display = "none";
-                $('.modalP').children('img').remove();
-                $('.storyContent').children('img').remove();
-                $('.boardBtnDiv').children('div').remove();
+                $('.storyContent').children('img').remove();           
                 $('.storyProfile').children().remove();
-                $('.slidesjs-control').children().remove();
-                $('.slidesjs-pagination').children().remove();
+            }
+        };
+
+        window.onclick = function (event) {
+            if (event.target.className == "Feedmodal") {
+                event.target.style.display = "none";
+                $('.boardContent').children().remove();
+                $('.boardImgList').children().remove();
+                $('.dots-parent').children().remove();
+                $('.replyContent').children().remove();
+                $('.replyInsert').children().remove();
             }
         };
 
@@ -854,12 +992,12 @@
 
                 // 이미지와 체크 박스를 감싸고 있는 div 속성
                 var div_style = 'display:inline-block;position:relative;' +
-                    'width:150px;height:120px;margin:5px;border:1px solid #00f;z-index:1';
+                    'width:150px;height:120px;margin:5px;border:1px solid white;z-index:1';
                 // 미리보기 이미지 속성
                 var img_style = 'width:100%;height:100%;z-index:none';
                 // 이미지안에 표시되는 체크박스의 속성
-                var chk_style = 'width:30px;height:30px;position:absolute;font-size:24px;' +
-                    'right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:#f00';
+                var chk_style = 'width:30px;height:30px;position:absolute;font-size:18px;' +
+                    'right:0px;bottom:0px;z-index:999;background-color:lightgray;color:white; border:none; opacity:0.9;';
 
                 btnAtt.onchange = function (e) {
                     var files = e.target.files;
