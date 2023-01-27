@@ -19,7 +19,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 	@Override
 	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO bmdvo, BandVO vo, Paging paging) {
 		// 페이징 설정
-		paging.setTotalRecord(bandOptionMapper.bandCount(vo));
+		paging.setTotalRecord(bandOptionMapper.bandCount(bmdvo));
 		// 가치 설정 - 멤버 관리 - 전체 멤버 리스트
 		return bandOptionMapper.bandOptionGetAllMemberList(bmdvo);
 		
@@ -47,6 +47,24 @@ public class BandOptionServiceImpl implements BandOptionService {
 	public int bandUpdate(BandVO vo) {
 		// TODO Auto-generated method stub
 		return bandOptionMapper.bandUpdate(vo);
+	}
+
+	@Override
+	public int bandPass(BandVO vo) {
+		// TODO Auto-generated method stub
+		return bandOptionMapper.bandPass(vo);
+	}
+
+	@Override
+	public int bandHuman(String bandNo) {
+		// TODO Auto-generated method stub
+		return bandOptionMapper.bandHuman(bandNo);
+	}
+
+	@Override
+	public int bandDisHuman(String bandNo) {
+		// TODO Auto-generated method stub
+		return bandOptionMapper.bandDisHuman(bandNo);
 	}
 
 }

@@ -138,9 +138,25 @@
   </div>
   <div id="manageTemplate">
   <h1>관리 홈</h1>
+  <p>밴드명</p>
+  <p th:text="${bandInfo.bandName}"></p>
+  <p th:text="${bandInfo.bandLocation}"></p>
+  <p th:text="${bandInfo.bandCategory}"></p>
+  <th:block th:if="${bandInfo.bandKeyword != null}">
+  <p th:text="${bandInfo.bandKeyword}"></p>
+  </th:block>
+  <span th:if="${#strings.equals(bandInfo.bandMembershipOption, 'BF01')}">
+  공개
+  </span>
+  <span th:if="${#strings.equals(bandInfo.bandMembershipOption, 'BF02')}">
+  비공개
+  </span> 
   <p th:text="${count}"></p>
+  <p>승인멤버</p>
   <span th:each="list : ${memList}">
-	<p th:text="${list.bandNo}"></p>
+  	<th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA02')}">
+	<p th:text="${list.userId}"></p>
+	</th:block>
   </span>
   </div>
 </div>
@@ -158,6 +174,6 @@ $('#memberManage').on('click', function(){
 
 $('#bandPass').on('click', function(){
 	console.log('dd')
-	$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
+	$('#manageTemplate').load("/own/band/bandGroup/bandImport?bandNo="+bandNo);
 })
 </script>

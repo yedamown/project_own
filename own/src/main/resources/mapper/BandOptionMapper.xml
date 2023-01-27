@@ -24,6 +24,23 @@ where band_no = #{bandNo}
 	AND B.BAND_NO = #{bandNo}
 </select>
 
+<!-- 밴드위임 -->
+<update id="bandPass">
+UPDATE BAND SET BAND_LEADERID = #{bandLeaderid} WHERE BAND_NO = #{bandNo}
+</update>
+<!-- 밴드 휴면 진입 -->
+<update id="bandHuman">
+UPDATE BAND SET BAND_STATUS = 'BS_2',
+                BAND_DISABLETIME = SYSDATE + 30
+                WHERE BAND_NO = #{bandNo}
+</update>
+<!-- 밴드 휴면 풀기 -->
+<update id="bandDisHuman">
+UPDATE BAND SET BAND_STATUS = 'BS_1',
+                BAND_DISABLETIME = null
+                WHERE BAND_NO = #{bandNo}
+</update>
+
 <update id="bandUpdate">
 UPDATE BAND SET BAND_NAME=#{bandName},
 	          BAND_INTRO=#{bandIntro},

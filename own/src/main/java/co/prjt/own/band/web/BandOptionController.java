@@ -1,5 +1,9 @@
 package co.prjt.own.band.web;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.prjt.own.band.service.BandMemberDetailService;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandOptionService;
 import co.prjt.own.band.service.BandService;
@@ -25,6 +33,9 @@ public class BandOptionController {
 
 	@Autowired
 	BandOptionService bandOptionService;
+	@Autowired
+	BandMemberDetailService BandMemberDetailService;
+	
 	@Autowired 
 	BandService bandService;
 	@Autowired
@@ -35,7 +46,25 @@ public class BandOptionController {
 	public String bandOptionMain(Model model , BandVO vo, BandMemberDetailVO dvo) {
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
 		model.addAttribute("count",bandOptionService.bandCount(dvo));
-		model.addAttribute("bandInfo",bandOptionService.bandInfo(vo));
+		
+		Map<String, Object> band = bandService.getBand(vo.getBandNo());
+		//밴드키워드 자르기
+		ArrayList<String> keyword = new ArrayList<String>();
+		
+		if(band.get("bandKeyword")!=null) {
+			StringTokenizer st = new StringTokenizer((String) band.get("bandKeyword"),"#");
+			//처음은 공백이 나와서.. 하나 버리고 감
+			st.nextToken();
+			while(st.hasMoreTokens()) {
+				keyword.add("#"+st.nextToken());
+			}
+			model.addAttribute("keyword", keyword);
+		}else {
+			band.put("bandKeyword","");
+		}
+		
+		model.addAttribute("bandInfo", band);
+		
 		return "/content/band2/bandOption";
 	}
   
@@ -95,11 +124,34 @@ public class BandOptionController {
 	}
 	
 	//밴드위임페이지 이동
-	@GetMapping("/bandGroup/bandPass")
+	@GetMapping("/bandGroup/bandImport")
 	public String bandPass(Model model, BandMemberDetailVO dvo) {
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
-		return "/content/band2/bandPass";
+		return "/content/band2/bandImport";
 	}
 	
 	
+	//밴드위임처리
+	@PostMapping("/bandGroup/bandPass")
+	@ResponseBody
+	public int bandPass(@RequestBody BandVO vo) {
+		System.out.println(vo+"========vo넘어오나요???????????????====");
+		bandOptionService.bandPass(vo);
+		return 0;
+	}
+	
+	@PostMapping("/bandGroup/bandHuman")
+	@ResponseBody
+	public int bandHuman(String bandNo) {
+		System.out.println(bandNo+"넘어와라~~");
+		bandOptionService.bandHuman(bandNo);
+		return 0;
+	}
+	
+	@PostMapping("/bandGroup/bandDisHuman")
+	@ResponseBody
+	public int bandDisHuman(String bandNo) {
+		bandOptionService.bandDisHuman(bandNo);
+		return 0;
+	}
 }
