@@ -484,8 +484,7 @@
 									        <!-- HJJ가 가입되어있는 밴드목록 -->
 									            (SELECT BAND_NO 
 									                FROM BAND_MEMBER_DETAIL
-									                WHERE BAND_MEMBER_STATUS in 'BA02'
-									                AND USER_ID=#{bandLeaderid})
+									                WHERE USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
 									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 									        <!-- 성별제한없음 -->
@@ -500,8 +499,7 @@
 									        <!-- hjj가 가입되어있는 밴드목록 -->
 									            (SELECT BAND_NO 
 									                FROM BAND_MEMBER_DETAIL
-									                WHERE BAND_MEMBER_STATUS = 'BA02'
-									                AND USER_ID=#{bandLeaderid})
+									                WHERE USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
 									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 									        <!-- 나이제한없음 -->
@@ -517,8 +515,7 @@
 									        <!-- HJJ가 가입되어있는 밴드목록 -->
 									            (SELECT BAND_NO 
 									                FROM BAND_MEMBER_DETAIL
-									                WHERE BAND_MEMBER_STATUS = 'BA02'
-									                AND USER_ID=#{bandLeaderid})
+									                WHERE USER_ID=#{bandLeaderid})
 									        <!-- 추가조건오픈 -->
 									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 									        <!-- 나이제한있음 -->

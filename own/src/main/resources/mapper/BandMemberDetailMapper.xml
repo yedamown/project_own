@@ -50,9 +50,88 @@
 				BAND_KICK_DATE,
 				BAND_MEMBER_NO,
 				BAND_BIRTH,
-				BAND_GENDER
+				BAND_GENDER,
+				BAND_MEMBER_INTRO,
+				BAND_MEMBER_REJOIN,
+				BAND_MEMBER_KICK_REASON,
+				BAND_MEMBER_GENDER_OPEN,
+				BAND_MEMBER_BIRTH_OPEN, 
+				BAND_MEMBER_AGE_OPEN 
 		FROM BAND_MEMBER_DETAIL
 		WHERE BAND_NO = #{bandNo}
 		AND USER_ID= #{userId}
 	</select>
+	<insert id="insertBandMemberDetail">
+		<selectKey keyProperty="bandMemberNo" resultType="string" order="BEFORE">
+			SELECT MAX(TO_NUMBER(SUBSTR(BAND_MEMBER_NO,5)))+1 FROM BAND_MEMBER_DETAIL
+		</selectKey>
+		INSERT INTO BAND_MEMBER_DETAIL(
+			 	USER_ID,
+				BAND_NICKNAME,
+				BAND_NO,
+				BAND_MEMBER_STATUS,
+				BAND_KICK_STATUS,
+				BAND_SIGNUP_DATE,
+				BAND_ACCESS_DATE,
+				BAND_KICK_DATE,
+				BAND_MEMBER_NO,
+				BAND_BIRTH,
+				BAND_GENDER,
+				BAND_MEMBER_INTRO,
+				BAND_MEMBER_REJOIN,
+				BAND_MEMBER_KICK_REASON,
+				BAND_MEMBER_GENDER_OPEN,
+				BAND_MEMBER_BIRTH_OPEN,
+				BAND_MEMBER_AGE_OPEN
+		) VALUES (
+				#{userId},
+				#{bandNickname},
+				#{bandNo},
+				#{bandMemberStatus},
+				null,
+				current_date,
+				current_date,
+				null,
+				'BDM_'||#{bandMemberNo},
+				#{bandBirth},
+				#{bandGender},
+				#{bandMemberIntro},
+				'BL01',
+				null,
+				#{bandMemberGenderOpen},
+				#{bandMemberBirthOpen},
+				#{bandMemberAgeOpen}
+		)
+	</insert>
+	<!-- 프로필사진이 없을 때 이미지 삽입 -->
+	<insert id="bandProfilImg">
+		<selectKey keyProperty="mediaNo" resultType="string"
+			order="BEFORE">
+			SELECT media_seq.NEXTVAL-1 FROM DUAL
+		</selectKey>
+		INSERT INTO MULTIMEDIA VALUES(
+		#{mediaNo},
+		'bandprofilnull.png',
+		'bandprofilnull.png',
+		'C:/test',
+		#{value},
+		'Band',
+		'1'
+		)
+	</insert>
+	<!-- 프로필사진을 디폴트 이미지 삽입 -->
+	<insert id="bandProfilDefImg">
+		<selectKey keyProperty="mediaServerFile" resultType="string" order="BEFORE">
+			SELECT MEDIA_SERVER_FILE "mediaServerFile" FROM MULTIMEDIA WHERE IDENTIFY_ID = #{defaultNo}
+		</selectKey>
+		INSERT INTO MULTIMEDIA VALUES(
+		media_seq.NEXTVAL-1,
+		'defaultImage',
+		#{mediaServerFile},
+		'C:/test',
+		#{detailNo},
+		'Band',
+		'1'
+		)
+	</insert>
 </mapper>
