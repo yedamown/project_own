@@ -531,7 +531,7 @@
 		    let page = $(this).attr('value');
 		    console.log($(this).attr('value'));
 		    $.ajax({
-		       url: '/own/chall/popChallAjax?page='+page,
+		       url: '/own/chall/myChallAjax?page='+page,
 		       method: 'get',
 		    }).then(result => {
 		       console.log(result);
