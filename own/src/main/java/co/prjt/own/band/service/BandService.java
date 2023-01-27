@@ -20,7 +20,7 @@ public interface BandService {
 		public int count(BandVO vo);
 		
 		//밴드 단건조회
-		public Map<String, Object> getBand(String bandNo, String userId);
+		public Map<String, Object> getBand(String bandNo);
 		//삭제필요없을듯
 
 		//조인 세션아이디가 들어가있는 밴드 검색

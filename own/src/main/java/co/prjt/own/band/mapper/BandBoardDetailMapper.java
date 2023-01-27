@@ -50,4 +50,6 @@ public interface BandBoardDetailMapper {
 	public int bandCalendarInsert(BandBoardDetailVO vo);
 	//캘린더번호와 글번호를 가지고 가서 업데이트
 	public int updateBandCalendarBoardNo(String bandCalendarNo, String bandBoardDetailNo);
+	//일정삭제
+	public int deleteCalendar(String bandCalendarNo);
 }

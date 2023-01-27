@@ -43,4 +43,6 @@ public interface BandBoardDetailService {
 	public BandBoardDetailSearchVO bandCalendarInsert(String bandCalendarNo, BandBoardDetailVO vo);
 	//게시글없이 캘린더만 단건입력
 	public BandCalendarVO insertCalendarSingle(BandCalendarVO vo);
+	//일정삭제
+	public String deleteCalendar(String bandCalendarNo);
 }

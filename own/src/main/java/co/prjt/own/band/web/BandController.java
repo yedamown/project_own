@@ -186,7 +186,7 @@ public class BandController {
 		bandMember = bandMemberDetailService.getBandMemberDetail(bandMember);
 		model.addAttribute("BandMemberDetail", bandMember);
 		//밴드+밴드인원수 조회
-		Map<String, Object> band = bandService.getBand(bandNo, user.getUserId());
+		Map<String, Object> band = bandService.getBand(bandNo);
 		//밴드키워드 자르기
 		ArrayList<String> keyword = new ArrayList<String>();
 		if(band.get("bandKeyword")!=null) {
@@ -247,9 +247,7 @@ public class BandController {
 		model.addAttribute("member", bandMemberDetailService.getBandMemberDetail(vo));
 		return "content/band/myOption";
 	}
-	
 	//밴드 사진으로 이동 
-
 	@GetMapping("/bandGroup/bandPhoto")
 	public String bandPhoto(Model model,  BandVO vo) {
 		//임시텍스트
@@ -261,5 +259,18 @@ public class BandController {
 	@GetMapping("/bandGroup/calendarDay")
 	public List<BandCalendarVO> bandMaincal(String bandNo, String day) {
 		return bandBoardDetailService.selectCalendarNum(bandNo, day);
+	}
+	//밴드 회원가입으로 이동 
+	@GetMapping("/bandGroup/signUpBand")
+	public String signUpBand(Model model,  BandVO vo, HttpServletRequest request) {
+		System.out.println(vo.toString());
+		//밴드설정
+		model.addAttribute("band", bandService.getBand(vo.getBandNo()));
+		//개인디폴트설정붙이기
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.getUserId()));
+		//유저기본 프로필사진조회해서 넣기
+		return "content/band/bandSignUp";
 	}
 }

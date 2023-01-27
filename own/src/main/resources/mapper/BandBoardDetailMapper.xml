@@ -362,7 +362,7 @@ SELECT
           		AND BAND_NO = #{bandNo}
 	</select>
 	
-	<!-- 30일 밴드캘린더 창 용-->
+	<!-- 30일 밴드캘린더 창 용 ....그냥 다 넘기자 -->
 	<select id="selectCalendarNow" resultType="BandCalendarVO">
 		SELECT 	BAND_CALENDAR_NO "bandCalendarNo",
 		        BAND_BOARD_DETAIL_NO "bandBoardDetailNo",
@@ -382,12 +382,17 @@ SELECT
 		                WHERE A.BAND_NO = B.BAND_NO
 		                AND   A.BAND_NO = #{bandNo}) Y
 		            WHERE Z.USER_ID = Y.USER_ID
-		            and( BAND_CALENDAR_START between TRUNC(TO_DATE(#{month}, 'YYYY-MM-DD'), 'MM') and LAST_DAY(TO_DATE(#{month},'YYYY-MM-DD'))
-		            OR BAND_CALENDAR_END  between TRUNC(TO_DATE(#{month}, 'YYYY-MM-DD'), 'MM') and LAST_DAY(TO_DATE(#{month},'YYYY-MM-DD')))
+		            <!-- and( BAND_CALENDAR_START between TRUNC(TO_DATE(#{month}, 'YYYY-MM-DD'), 'MM') and LAST_DAY(TO_DATE(#{month},'YYYY-MM-DD')) -->
+		            <!-- OR BAND_CALENDAR_END  between TRUNC(TO_DATE(#{month}, 'YYYY-MM-DD'), 'MM') and LAST_DAY(TO_DATE(#{month},'YYYY-MM-DD'))) -->
+		            ORDER BY BAND_CALENDAR_START
 	</select>
 	<!-- 글이 없던 캘린더 게시글 작성 후 게시글 업데이트 -->
 	<update id="updateBandCalendarBoardNo">
 		UPDATE BAND_CALENDAR SET BAND_BOARD_DETAIL_NO =#{bandBoardDetailNo}
 			WHERE BAND_CALENDAR_NO = #{bandCalendarNo}
 	</update>
+	<!-- 캘린더 삭제 -->
+	<delete id="deleteCalendar">
+		DELETE BAND_CALENDAR WHERE BAND_CALENDAR_NO = #{BANDCALENDARNO}
+	</delete>
 </mapper>

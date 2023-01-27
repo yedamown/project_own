@@ -130,6 +130,9 @@
 		<article style="border: 1px solid #eeeeee; padding: 30px;">
 			<div id="articleArea">
 			</div>
+			<div  style="padding-top:20px;">
+				<button type="button" id="loadBtn" class="more">더보기</button>
+			</div>
 		</article>
 		<!--== 초기에 아작스로 불러온 일정리스트를 저장하는 곳 ==-->
 		<input type="hidden" id="saveCalendar" value="">
@@ -181,13 +184,12 @@
 					<!--================ if지도 끝 =================-->
 				</div>
 				<button type="button" id="calBtn"></button>
+				<button type="button" id="deleteBtn">삭제</button>
 			</div>
 			<a class="modal_close_btn">:</a>
 		</div>
-	<!--== 캘린더 모달창 끝 ==-->
-	
+		<!--== 캘린더 모달창 끝 ==-->
 	<!-- =====캘린더 입력 모달 창====== -->
-		<!--==캘린더 모달창 ==-->
 		<form id="my_calendar_modal_input" name="my_calendar_modal_input" class="my_calendar_modal_input">
 		<input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">
@@ -196,6 +198,7 @@
                 	<!--================ 일정명 =================-->
                 	<div>
 	                  <h6 class="typo-list">일정만들기</h6>
+	                  <input type="hidden" th:value="${bandNo}" th:name="bandNo">
 	                  <div>
 	                    <input type="text" name="bandCalendarTitle" id="bandCalendarTitle" placeholder="일정 제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '일정 제목을 입력해주세요'" required>
 	                  </div>
@@ -255,7 +258,6 @@
 			</div>
 			<a class="modal_close_btn_input">닫기</a>
 		</form>
-<!--==캘린더 모달창 ==-->
 	<!-- =====캘린더 입력 모달 창 끝====== -->
 	
 	<script src="/css/band/js/time.js"></script>
@@ -275,15 +277,7 @@
 		    titleFormat: function (date) {
 	          // YYYY년 MM월
 	          return `${date.date.year}년 ${date.date.month + 1}월`;
-	        },
-	        customButtons: { 
-	            myCustomButton: { 
-	                text: '일정입력', 
-	                click: function(event) { 
-	                  onSelectEvent(event); 
-	                } 
-	            } 
-	   		},customButtons: {
+	        },customButtons: {
 	   		    myCustomButton: {
 	   		      text: '➕',
 	   		      click: function() {
@@ -353,7 +347,8 @@
                                             }); //.push()
                                           //이벤트보드만들기
                                         makeBoard(JSON.stringify(element));
-	                                    })//.each()
+	                                   })
+                                      //.each()
 	                               //리스트저장
 	                               $('#saveCalendar').val(saveArr);
 	                               console.log(events);//
@@ -366,9 +361,15 @@
 	    })
 	   calendar.render();
 	    
-	    //일정보드만들기
+	    //일정보드만들기.....이번달 것만 만들자
 	    function makeBoard(item){
 	    	item = JSON.parse(item);
+	    	//이번달보다 뒤의 껀 리스트안만들거임
+	    	console.log(new Date(item.bandCalendarStart)+'리스트만들기용')
+	    	console.log(new Date()+'리스트만들기용')
+	    	if(new Date(item.bandCalendarStart)<=new Date()){
+	    		return false;
+	    	}
 			//타이틀
 			let title = item.bandCalendarTitle;
 			//타이틀 저장도..
@@ -407,13 +408,14 @@
 			let writer = item.bandNickname
 			//마크색
 			let color = item.bandCalendarMark;
-		    let cal  = `<div class='boardC' style="width: 500x;padding:5px; height: 100px; display: flex; justify-content: space-between; border: 1px solid #eeeeee;" id="calendarModal2">`
+		    let cal  = `<div class='pagingCal' style= "display:none;" >
+		    			<div class='boardC' style= "width: 500x;padding:5px; height: 100px; display: flex; justify-content: space-between; border: 1px solid #eeeeee;" id="calendarModal2">`
 		    			cal += `<input type="hidden" value=${item.bandCalendarNo}>`
 		    			cal += `<div style="padding:10px;"><h3 id="jsDD"  style="margin-bottom:0px">${sDay}</h3>`
 						cal += `<p id="jsDay">${mon}</p></div>`
 						cal += `<div style="padding:10px;"><h5>${title}</h5>`
 						cal += `<p id="jsDeDay" style="margin-bottom: 0px">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
-						cal += `<span style="background-color:${color}">💭</span><span>${writer}</span></div>`;
+						cal += `<span style="background-color:${color}">💭</span><span>${writer}</span></div></div>`;
 					
 			//요일뽑기
 			function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
@@ -422,13 +424,50 @@
 		    	return dayOfWeek;		    	
 			}
 			$('#articleArea').append(cal);
+			//페이징..초기개수
+		    $('.pagingCal').slice(0, 5).show();
+		    console.log($('.pagingCal'));
 	    }
+	    //페이징
+	    $('#loadBtn').click(function(e){
+	    	e.preventDefault();
+	    	$('.pagingCal:hidden').slice(0, 5).show();
+	    	if($('.pagingCal:hidden').length == 0){
+	    		alert('게시물의 끝입니다.');
+	    	}
+	    })
 	    $('#articleArea').on('click', $('.boardC'), function(e){
 	    	//캘린더 번호
 	    	console.log($(e.target).parentsUntil('#articleArea').find('input').val());
 	    	let item = $(e.target).parentsUntil('#articleArea').find('input').val();
 	    	let bandCalendarLocationLatlong = MakeModalCal(item);//모달붙이고 상세 조회 후 캘린더도 리턴
 	        calModal('my_calendar_modal', bandCalendarLocationLatlong);
+	    })
+	    
+	     //삭제 let calendarNo = $('#saveCalendarEach').val();
+	    $('#deleteBtn').on('click', function(){
+	    	let calendarNo = $('#saveCalendarEach').val();
+	    	//삭제 아작스
+	    	if(confirm('일정이 삭제됩니다.'+calendarNo)){
+	    		$.ajax({
+	    			url:'/own/band/deleteCalendar?calendarNo='+calendarNo,
+		            method: 'delete',
+		            contentType : "application/text; charset=utf-8;",
+					beforeSend: function(xhr){
+			              xhr.setRequestHeader(header,token);
+			            }
+	    		}).then(res => {
+	    			console.log(res);
+	    			console.log('??');
+		    			if(res=='success'){
+		    				alert('삭제완료');
+		    				//이동
+		    				$('#template').load("/own/band/bandGroup/bandCalendar?bandNo="+bandNo);
+		    			} else {
+		    				alert('삭제실패');	    				
+		    			}
+	    			})
+	    	}
 	    })
 	    
 	    
@@ -577,9 +616,10 @@
 				let con = calendar[0].bandCalendarOptionDay.substr(0, calendar[0].bandCalendarOptionDay.length-3);
 				$('#voteR').text('투표 마감일'+con);
 			}
-			//만약 첨부된 글이 있다면 calBtn
+			//만약 첨부된 글이 있다면 calBtn, deletebtn
 			let userId = $('#userId').val();
 			$('#calBtn').css('display', 'block');
+			$('#deleteBtn').css('display', 'block');
 			if(calendar[0].bandBoardDetailNo!=null){
 				$('#savebandBoardNum').val(calendar[0].bandBoardDetailNo);
 				$('#calBtn').text('이 일정이 첨부된 글 확인하기');
@@ -588,11 +628,10 @@
 				$('#savebandBoardNum').val(null);
 				$('#calBtn').text('게시글 올리기');
 			} else {
-				$('#calBtn').css('display', 'none');				
+				$('#calBtn').css('display', 'none');
+				$('#deleteBtn').css('display', 'none');
 			}
 			}
-	  })
-	  //$()끝
 	//게시글 이동
 	  $('#calBtn').on('click', function(){
 		  let boardNo = $('#savebandBoardNum').val();
@@ -881,8 +920,7 @@
             }
 		}).then( res =>{
 			if(res!=null){
-				let bandNo = $('#bandNo').val();
-				console.log(res);
+				alert('일정이 추가되었습니다.');
 				$('#template').load("/own/band/bandGroup/bandCalendar?bandNo="+bandNo);
 			} else {
 				alert('글쓰기 실패');
@@ -920,6 +958,8 @@
         })
         
 	}
+	 })
+	  //$()끝
 	</script>
 	</div>
 </body>
