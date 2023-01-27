@@ -9,6 +9,7 @@ import co.prjt.own.band.mapper.BandOptionMapper;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandOptionService;
 import co.prjt.own.band.service.BandVO;
+import co.prjt.own.common.Paging;
 
 @Service
 public class BandOptionServiceImpl implements BandOptionService {
@@ -16,9 +17,12 @@ public class BandOptionServiceImpl implements BandOptionService {
 	BandOptionMapper bandOptionMapper;
 	
 	@Override
-	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo) {
+	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO bmdvo, BandVO vo, Paging paging) {
+		// 페이징 설정
+		paging.setTotalRecord(bandOptionMapper.bandCount(vo));
 		// 가치 설정 - 멤버 관리 - 전체 멤버 리스트
-		return bandOptionMapper.bandOptionGetAllMemberList(vo);
+		return bandOptionMapper.bandOptionGetAllMemberList(bmdvo);
+		
 	}	
 	
 	@Override

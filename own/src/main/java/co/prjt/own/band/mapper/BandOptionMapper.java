@@ -15,6 +15,6 @@ public interface BandOptionMapper {
 		public BandVO bandInfo(BandVO vo);
 		//밴드 업데이트 제발 되라
 		public int bandUpdate(BandVO vo);
-
-	List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
+		// 밴드 멤버 리스트
+		public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
 }

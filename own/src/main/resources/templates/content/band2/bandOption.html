@@ -128,7 +128,7 @@
     <label for="tab5" id="bandmanage">밴드 관리</label>
 
     <input type="radio" id="tab6" name="tabGroup2" class="tab">
-    <label for="tab6" >멤버 관리</label>
+    <label for="tab6" id="memberManage">멤버 관리</label>
 
     <input type="radio" id="tab7" name="tabGroup2" class="tab">
     <label for="tab7">게시판 관리</label>
@@ -148,7 +148,13 @@
 $('#bandmanage').on('click', function(){
 	console.log('dd')
 	$('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
-})
+});
+
+// 멤버 관리 탭
+$('#memberManage').on('click', function(){
+	$('#manageTemplate').load("/own/band/bandGroup/bandMemberManage?bandNo="+bandNo);
+});
+
 
 $('#bandPass').on('click', function(){
 	console.log('dd')
