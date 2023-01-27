@@ -65,6 +65,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	//페이징 3개씩..
 	public List<ChallengeVO> pageChallList(ChallengeVO vo, Paging paging) {
+		//밖에서 하고오면 보는갯수 줄어들지않을까?
 		paging.setTotalRecord(mapper.countChall(vo));
 		System.out.println(mapper.countChall(vo));
 		paging.setPageUnit(3); //한페이지에 몇개
@@ -86,8 +87,9 @@ public class ChallengeServiceImpl implements ChallengeService{
 		//내 도전갯수 세기
 		paging.setTotalRecord(mapper.countMychall(vo.getUserId()));
 		//페이징 정보 우선 검색할 거에 담아두기.
-		paging.setPageUnit(6); //내 도전이라 6개씩 보여줄 것
-		paging.setPageSize(4); //페이징 동그라미로 할 거라 4개
+//		밖에서 정하고가져고온다..
+//		paging.setPageUnit(6); //내 도전이라 6개씩 보여줄 것
+//		paging.setPageSize(4); //페이징 동그라미로 할 거라 4개
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		vo.setPaging(paging);
