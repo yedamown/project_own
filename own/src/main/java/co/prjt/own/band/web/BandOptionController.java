@@ -1,5 +1,7 @@
 package co.prjt.own.band.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.band.service.BandMemberDetailVO;
@@ -25,23 +28,20 @@ public class BandOptionController {
 
 	@Autowired
 	BandOptionService bandOptionService;
-	@Autowired 
+	@Autowired
 	BandService bandService;
 	@Autowired
 	CommonService common;
-	
-	
+
 	@GetMapping("/bandGroup/bandOptionMain")
-	public String bandOptionMain(Model model , BandVO vo, BandMemberDetailVO dvo) {
+	public String bandOptionMain(Model model, BandVO vo, BandMemberDetailVO dvo) {
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
-		model.addAttribute("count",bandOptionService.bandCount(dvo));
-		model.addAttribute("bandInfo",bandOptionService.bandInfo(vo));
+		model.addAttribute("count", bandOptionService.bandCount(dvo));
+		model.addAttribute("bandInfo", bandOptionService.bandInfo(vo));
 		return "/content/band2/bandOption";
 	}
-  
 
 	// ================================= 밴드 옵션 임시 컨트롤러
-	// =================================
 	// 밴드 수정페이지로 이동
 	@GetMapping("/bandGroup/bandOption")
 	public String bandOption(Model model, HttpServletRequest request, BandVO vo) {
@@ -50,56 +50,65 @@ public class BandOptionController {
 		return "content/band2/bandOption";
 	}
 
-	// 멤버 관리 페이지로 이동
+	// 멤버 관리 페이지로 이동 - 전체 회원 목록
 	@GetMapping("/bandGroup/bandMemberManage")
-	public String bandOption2(Model model, HttpServletRequest request, BandMemberDetailVO vo, Paging paging) {
-		// 밴드의 멤버 리스트
-		System.out.println("=====bandMemberManage컨트롤러 확인======" + vo);
-		//model.addAttribute("memberList", bandOptionService.bandOptionGetAllMemberList(vo, paging));
+	public String bandMemberManage(Model model, BandMemberDetailVO vo, Paging paging) {
+		model.addAttribute("memberList", bandOptionService.bandOptionGetAllMemberList(vo, paging));
 		return "content/band2/bandMemberManage";
 	}
-	
-	
-	//밴드수정 홈페이지 띄우기
+
+	// 가입 대기 중 회원 목록
+	@GetMapping("/bandGroup/getWaitingMemberList")
+	@ResponseBody
+	public List<BandMemberDetailVO> GetWaitingMemberList(BandMemberDetailVO vo, Paging paging) {
+		return bandOptionService.bandOptionGetWaitingMemberList(vo, paging);
+	}
+
+	// 강퇴된 회원 목록
+	@GetMapping("/bandGroup/getkickedMemberList")
+	@ResponseBody
+	public List<BandMemberDetailVO> GetkickedMemberList(BandMemberDetailVO vo, Paging paging) {
+		return bandOptionService.bandOptionGetkickedMemberList(vo, paging);
+	}
+
+	// 밴드수정 홈페이지 띄우기
 	@GetMapping("/bandGroup/bandManage")
-	public String bandManagePage(Model model,BandVO vo) {
-		System.out.println("===밴드번호===="+vo);
+	public String bandManagePage(Model model, BandVO vo) {
+		System.out.println("===밴드번호====" + vo);
 		model.addAttribute("bandInfo", bandOptionService.bandInfo(vo));
-		//운동종류+관심지역 셀렉트박스		
+		// 운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());
 		model.addAttribute("exercise", bandService.allExcersie());
-		//샘플이미지 여덟장 실어보내기
-		//밴드 대표이미지 찾기
+		// 샘플이미지 여덟장 실어보내기
+		// 밴드 대표이미지 찾기
 		model.addAttribute("createImage", common.selectImg(vo.getBandNo()));
 		return "/content/band2/bandManage";
 	}
-	
-	
-	//밴드 업데이트 처리
+
+	// 밴드 업데이트 처리
 	@PostMapping("/bandGroup/bandUpdate")
 	public String bandUpdate(@RequestParam MultipartFile[] uploadfile, BandVO vo) {
 		MultimediaVO mvo = new MultimediaVO();
 		System.out.println(uploadfile);
 		mvo = common.selectImg(vo.getBandNo());
-		if(mvo != null) {
+		if (mvo != null) {
 			common.update(uploadfile, mvo);
-		}else {
-		 String number = vo.getBandNo().substring(4);
-		 common.upload(uploadfile, number, "BDU_", "BAND");
-		}		
-		System.out.println("수정누름"+vo);
+		} else {
+			String number = vo.getBandNo().substring(4);
+			common.upload(uploadfile, number, "BDU_", "BAND");
+		}
+		System.out.println("수정누름" + vo);
 		System.out.println(vo.getMediaServerFile());
 		int a = bandOptionService.bandUpdate(vo);
-		return "redirect:/own/band/bandGroup?bandNo="+vo.getBandNo();
-		
+		return "redirect:/own/band/bandGroup?bandNo=" + vo.getBandNo();
+
 	}
-	
-	//밴드위임페이지 이동
+
+	// 밴드위임페이지 이동
 	@GetMapping("/bandGroup/bandPass")
 	public String bandPass(Model model, BandMemberDetailVO dvo) {
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
 		return "/content/band2/bandPass";
 	}
-	
-	
+
 }
