@@ -2,6 +2,8 @@ package co.prjt.own.band.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.chat.service.MessageVO;
 
@@ -18,4 +20,10 @@ public interface BandMemberDetailMapper {
 		
 		//밴드번호+유저아이디로 유저값가져오기
 		public BandMemberDetailVO getBandMemberDetail(BandMemberDetailVO vo);
+		//유저 회원가입
+		public int insertBandMemberDetail(BandMemberDetailVO vo);
+		//프로필사진없을 시 임의의 사진 입력 value는 식별키
+		public int bandProfilImg(String value);
+		//프로필사진없을 시 디폴트 사진 입력
+		public int bandProfilDefImg(@Param("defaultNo") String defaultNo, @Param("detailNo") String detailNo, @Param("mediaServerFile") String mediaServerFile);
 }

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
+import co.prjt.own.common.service.OwnLikeVO;
 import co.prjt.own.common.service.ReplyVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
@@ -49,7 +50,7 @@ public class SnsController {
 
 	//1. sns홈으로 이동
 	@RequestMapping(value = "/sns", method = RequestMethod.GET)
-	public String getSnsUserList(HttpServletRequest request, Model model, SBoardVO svo, OwnUserVO ovo) {
+	public String getSnsUserList(HttpServletRequest request, Model model, SBoardVO svo, OwnUserVO ovo, OwnLikeVO like) {
 		//세션 담아주기
 		HttpSession session = request.getSession();
 		//세션에 강제로 로그인유저 저장하기
@@ -273,4 +274,20 @@ public class SnsController {
 		map.put("storyInfo", list);
 		return map;
 	}
+	
+	//10. 댓글 입력
+	@PostMapping("/snsReply")
+	@ResponseBody
+	public ReplyVO insertSnsReply(ReplyVO rvo, String replyContent, String userId, String categoryNo) {
+		System.out.println("댓글등록 컨트롤러 도착");
+		System.out.println(replyContent + "1111111"+userId + "222222222"+categoryNo);
+			rvo.setReplyContent(replyContent);
+			rvo.setUserId(userId);
+			rvo.setCategoryNo(categoryNo);
+			
+			boardService.insertSnsReply(rvo);
+			System.out.println("등록할 댓글 정보" + rvo);
+		return rvo;
+	}
+
 }

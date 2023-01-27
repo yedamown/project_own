@@ -33,7 +33,6 @@ public interface CommonService {
 		//멀티미티어 식별키가 2개이상일 때 조회
 		public List<MultimediaVO> selectImgAllKey(List<String> bandNoList);
 		
-
 		//신고리스트 불러오기
 		public List<ReportVO> reportAlllist();
 		
@@ -41,4 +40,5 @@ public interface CommonService {
 		public int updateKey(@Param(value = "key") String key, @Param(value = "name")List<String> name);
 		//밴드용 이미지 수정...삭제
 		public int deleteImg(List<String> name, String key);
+
 }

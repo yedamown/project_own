@@ -197,6 +197,8 @@ public class BandController {
 				keyword.add("#"+st.nextToken());
 			}
 			model.addAttribute("keyword", keyword);
+		} else {
+	         band.put("bandKeyword","");
 		}
 		model.addAttribute("band", band);
 		//밴드 게시판 조회
@@ -270,7 +272,26 @@ public class BandController {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.getUserId()));
-		//유저기본 프로필사진조회해서 넣기
 		return "content/band/bandSignUp";
+	}
+	//밴드 회원가입
+	@PostMapping("/bandGroup/signUp")//bandno는 포스트방식으로쓰는데 쿼리스트링으로 같이 넘어와서 넣음
+	public String signUpBandInsert(HttpServletRequest request, @RequestParam MultipartFile defaultImg[], BandMemberDetailVO vo, RedirectAttributes rttr) {
+		System.out.println(vo.toString());
+		//이미지입력을 안했을 경우를 대비해 디폴트 이미지 주소값을 받아둠
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		vo.setUserId(user.getUserId());
+		//입력완료
+		vo = bandMemberDetailService.insertBandMemberDetail(vo);
+		//만약 사용자가 대표이미지를 넣었다면 첨부된 파일이 1개
+		if(defaultImg[0].getSize()>0) {
+			String res = common.upload(defaultImg, vo.getBandMemberNo(), "BDM_", "Band");
+			System.out.println(res);
+		} else {
+			bandMemberDetailService.bandProfilDefImg("BandDef_"+vo.getUserId(), "BDM_"+vo.getBandMemberNo(), null);
+		}
+		//처리가 됨..
+		return "redirect:/own/band/bandGroup?bandNo="+vo.getBandNo();
 	}
 }

@@ -6,15 +6,20 @@ import org.springframework.stereotype.Service;
 import co.prjt.own.band.mapper.BandMemberDefaultMapper;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandMemberDefaultVO;
+import co.prjt.own.common.mapper.CommonMapper;
 
 @Service
 public class BandMemberDefaultServiceImpl implements BandMemberDefaultService{
 	
 	@Autowired BandMemberDefaultMapper bandMemberDefaultMapper;
+	@Autowired CommonMapper commonMapper;
 
 	@Override
 	public BandMemberDefaultVO getBandMemberDefault(String userId) {
-		return bandMemberDefaultMapper.getBandMemberDefault(userId);
+		//프로필 이미지넣음
+		BandMemberDefaultVO vo = bandMemberDefaultMapper.getBandMemberDefault(userId);
+		vo.setDefaultImg(commonMapper.selectImg("BandDef_"+userId));
+		return vo;
 	}
 
 	@Override
