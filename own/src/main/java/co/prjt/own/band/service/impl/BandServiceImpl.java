@@ -74,7 +74,17 @@ return bandList;
 
 	@Override
 	public Map<String, Object> getBand(String bandNo) {
-		return bandMapper.getBand(bandNo);
+		Map<String, Object> vo = bandMapper.getBand(bandNo);
+		if(vo.get("bandAgeAfteroption")==null) {
+			vo.put("bandAgeAfteroption", "");
+		}
+		if(vo.get("bandAgeBeforoption")==null) {
+			vo.put("bandAgeBeforoption", "");
+		}
+		if(vo.get("bandGender")==null) {
+			vo.put("bandGender", "");
+		}
+		return vo;
 	}
 
 	@Override

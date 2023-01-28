@@ -9,10 +9,12 @@ import co.prjt.own.band.mapper.BandMemberDetailMapper;
 import co.prjt.own.band.service.BandMemberDetailService;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.chat.service.MessageVO;
+import co.prjt.own.common.mapper.CommonMapper;
 
 @Service
 public class BandMemberDetailServiceImpl implements BandMemberDetailService{
 	@Autowired BandMemberDetailMapper bandMemberDetailMapper;
+	@Autowired CommonMapper commonMapper;
 	
 	@Override
 	public List<BandMemberDetailVO> bandMemberList(BandMemberDetailVO vo) {
@@ -34,8 +36,32 @@ public class BandMemberDetailServiceImpl implements BandMemberDetailService{
 
 	@Override
 	public BandMemberDetailVO getBandMemberDetail(BandMemberDetailVO vo) {
-	return bandMemberDetailMapper.getBandMemberDetail(vo);
+		vo = bandMemberDetailMapper.getBandMemberDetail(vo);
+		vo.setDetailImg(commonMapper.selectImg(vo.getBandMemberNo()));
+		return vo;
 	}
 
+	@Override
+	public BandMemberDetailVO insertBandMemberDetail(BandMemberDetailVO vo) {
+		//if(getBandMemberStatus에 membershipoption을 담아둠)의 값에 따라 멤버의 현재상태 ..(승인중? / 바로 가입됨)
+		//만약 승인없이 회원가입이 안된다면 승인대기회원으로....아니면 바로 승인
+		if(vo.getBandMemberStatus().equals("BF01")) {
+			vo.setBandMemberStatus("BA01");
+		} else {
+			vo.setBandMemberStatus("BA02");
+		}
+		int r = bandMemberDetailMapper.insertBandMemberDetail(vo);
+		System.out.println(r+"건 입력 됨");
+		return vo;
+	}
 
+	@Override
+	public int bandProfilImg(String value) {
+		return bandProfilImg(value);
+	}
+
+	@Override 
+	public int bandProfilDefImg(String defaultNo, String detailNo, String mediaServerFile) {
+		return bandMemberDetailMapper.bandProfilDefImg(defaultNo, detailNo, mediaServerFile);
+	}
 }
