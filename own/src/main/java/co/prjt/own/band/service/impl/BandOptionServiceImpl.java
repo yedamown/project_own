@@ -18,8 +18,14 @@ public class BandOptionServiceImpl implements BandOptionService {
 	@Autowired
 	BandOptionMapper bandOptionMapper;
 
-	@Autowired
-	CommonMapper commonMapper;
+	@Override
+	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO bmdvo, BandVO vo, Paging paging) {
+		// 페이징 설정
+		//paging.setTotalRecord(bandOptionMapper.bandCount(vo));
+		// 가치 설정 - 멤버 관리 - 전체 멤버 리스트
+		return bandOptionMapper.bandOptionGetAllMemberList(bmdvo);
+		
+	}	
 
 	@Override
 	public List<BandMemberDetailVO> bandManageHome(BandMemberDetailVO vo) {
