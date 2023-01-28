@@ -113,11 +113,6 @@
             font-weight: 700;
         }
 
-        .btnIcon {
-            width: 30px;
-            height: 25px;
-        }
-
         .profile {
             width: 700px;
             height: 200px;
@@ -248,8 +243,18 @@
             visibility: visible;
             z-index: 20;
         }
+        .btnIcon{
+            width: 60px;
+            height: 39px;
+            float: right;     
+            margin-top: 20px;
+        }
+        #snsLikeBtn{
+            width: 30px;
+            height: 30px;
+        }
 
-    </style>
+    </style><!--스타일-->
     
     <!-- jquery -->
     <script src="/css/sns/js/jquery.min.js"></script>
@@ -510,7 +515,6 @@
                     하이라이트 <br> <br>
                 </div>
                 <hr>
-              	<p>여기 테스트</p>
          
                 <!-- 글작성 모달을 여는 클래스 -->
                 <h1 th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="text-align: right; cursor:pointer;">
@@ -570,14 +574,15 @@
                                 <div class="boardContent" style="float: right; width: 500px;border-bottom: 1px lightgray solid; padding-bottom: 16px;">
                                   
                                 </div>
-                                
+                                <div class="snsLikeBox">
+                                   
+                                </div>
                                 <div class="boardImgList" style="position:relative; width: 500px; height: 600px; float:left">
                                 </div>
                                 <div class="replyContent" style="width:500px; float: right; border-bottom: 1px lightgray solid; padding-top: 16px; padding-bottom: 16px; margin-bottom: 10px;">
-                                    여기는 댓글자리입니다
                                 </div>   
                                 <div class="replyInsert" style="width:500px; height: 200px;float:right;">
-                                    <div class="replyInput" style="cursor:pointer;">📝댓글쓰기</div>
+                                    
                                     <div class="realReply"></div>
                                 </div>
                                 <div class="container-dots">
@@ -586,11 +591,9 @@
                                     </ul>
                                 </div>
 
-                                
-
                                 <div class="btnIcon">
-                                    <img src="/css/sns/img/update.png" id="updateBtn">
-                                    <img src="/css/sns/img/trash.png" id="trashBtn">
+                                    <img src="/css/sns/img/update.png" id="updateBtn" style="width: 20px; height: 20px; cursor: pointer;">
+                                    <img src="/css/sns/img/trash.png" id="trashBtn" style="width: 20px; height: 20px; cursor: pointer;" >
                                 </div>
                                 
                             </div>
@@ -606,6 +609,10 @@
         var header = /*[[${_csrf.headerName}]]*/ 'defalut';
         var token = /*[[${_csrf.token}]]*/ 'defalut';
         /*]]>*/
+
+        
+        var loginUserId = "[(${userId.userId})]"
+        var categoryNo = '';
 
         //이미지미리보기
         $(function() {
@@ -624,11 +631,92 @@
 
               reader.readAsDataURL(input.files[0]);
             }
-        }
-   
-        "[(${snsInfo.snsAccountNo})]"
-        var replyId = "[(${userId.userId})]"
-        var categoryNo = '';
+        };
+       
+        //검색기능
+            $.ajax({
+        url: '/own/sns/ListSearch',
+        method: 'get',
+        }).then(res=>{
+            console.log(res)
+            let array = new Array();
+            for(key in res){
+            array.push(res[key].snsNickname)
+            }
+            console.log(array)
+            $('#inputBox').autocomplete({
+                source : array,
+                minLength : 1,
+                scroll: true,
+                select: function(event, ui) {   
+                console.log(ui.item.value);
+                    location.href="/own/snsFeed?snsNickname="+ui.item.value;
+            }
+            });
+            }
+        )
+        
+        
+    
+    //좋아요 ajax
+        $('.snsLikeBox').on("click", '#snsLikeBtn', function(){
+            console.log("하트 클릭")
+            console.log($(this).attr("value"))
+            $('.snsLikeBox').children('#snsLikeCount').remove();
+                if($(this).attr("value") == 'noLike'){
+                    console.log('빈하트 클릭')
+                    $(this).attr("value", "Like");
+                    $(this).attr({"src" : "/css/sns/img/fullHeart.png"});
+                        $.ajax({
+                            url : '/own/snsLike' ,
+                            method : 'post',
+                            data : {
+                                snsBoardNo : categoryNo,
+                                userId : loginUserId
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success : function(res){
+                                console.log('좋아요 성공~!')
+                                let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
+                                    snsLikeCount.attr({"id" : "snsLikeCount"})
+                                    $('.snsLikeBox').append(snsLikeCount);
+                            },
+                            error : function(err){
+                                console.log(err)
+                            }
+                        })
+                }else{
+                    console.log("하트 클릭")
+                    $(this).attr("value", "noLike");
+                    $(this).attr({"src": "/css/sns/img/emptyHeart.png"});
+                        $.ajax({
+                            url : '/own/snsLikeDel',
+                            method : 'post',
+                            data : {
+                                snsBoardNo : categoryNo,
+                                userId : loginUserId
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success : function(res){
+                                console.log('좋아요 취소~!')
+                                
+                                let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
+                                    snsLikeCount.attr({"id" : "snsLikeCount"})
+                                    $('.snsLikeBox').append(snsLikeCount);
+                            },
+                            error : function(err){
+                                console.log(err)
+                            }
+
+                        })
+                }
+
+        })
+
 
     //댓글 입력 창 생성
     $('.replyInsert').on("click",'.replyInput', function(e){
@@ -648,17 +736,18 @@
     //댓글 입력
         $('.realReply').on("click", '.insertBtn', function(){
                 console.log("입력버튼 클릭");
-                console.log(replyId);
+                console.log(loginUserId);
                 console.log(categoryNo);
                 let replyText = $('.realReply').children('.replyText').val();
                 console.log(replyText);
 
+                $('.replyContent').children().remove();
                 $.ajax({
                     url : '/own/snsReply',
                     method : 'post',
                     data: {
                         replyContent : replyText,
-                        userId : replyId,
+                        userId : loginUserId,
                         categoryNo : categoryNo
                     },  
                     beforeSend: function (xhr) {
@@ -666,6 +755,10 @@
                     },
                     success: function(res){
                         console.log(res)
+
+                          for(let i=0; i<res.length; i++){
+                                $('.replyContent').append(makeReply(res[i]));
+                          }
 
                     },
                     error : function(err){
@@ -680,11 +773,42 @@
             console.log("취소버튼 클릭")
             $('.replyInsert').children('.realReply').children().remove();
             $('.replyInsert').children('.replyInput').remove();
-            let replyInput = $('<div>').text('📝댓글쓰기');
+            let replyInput = $('<div>').text('댓글쓰기');
                 replyInput.attr({"class" : "replyInput"})
-                replyInput.css({"cursor":"pointer"})
+                replyInput.css({"cursor":"pointer",
+                                "font-size":"14px"});
             $('.replyInsert').append(replyInput);
             
+        })
+
+        //댓글 삭제
+        $('.replyContent').on("click", '.snsReplyDelBtn', function(e){
+                console.log($(e.target).next().attr("value"));
+                let replyNo = $(e.target).next().attr("value");
+                console.log(replyNo)
+                $('.replyContent').children().remove();
+                $.ajax({
+                    url : '/own/snsReplyDelete',
+                    method : 'post',
+                    data : {
+                           replyNo : replyNo,
+                           categoryNo : categoryNo
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                        success : function(res){
+                            console.log("삭제완료")
+                          for(let i=0; i<res.length; i++){
+                                $('.replyContent').append(makeReply(res[i]));
+                          }
+
+                    }, 
+                        error : function(err){
+
+                    }
+
+                })
         })
 
 
@@ -857,7 +981,8 @@
                             url : '/own/snsFeed',
                             method : 'post',
                             data: {
-                                snsBoardNo : boardNo
+                                snsBoardNo : boardNo,
+                                userId : loginUserId
                             },
                             beforeSend: function (xhr) {
                                 xhr.setRequestHeader(header, token);
@@ -892,14 +1017,38 @@
                                 $(".boardImgList .boardImg:last-child").addClass("active");
                                 $(".dots-parent .dot:first-child").addClass("active");
 
-                                for(let i=res.reply.length-1; i>=0; i--){
-                                    // let replyContent = $('<div>').text(res.reply[i].replyContent);
-                                    // let replyUserId = $('<div>').text(res.reply[i].userId);
-                                    // let replyDate =$('<div>').text(res.reply[i].replyDate);
-
+                                if(res.reply.length != 0){
+                                    for(let i=0; i<res.reply.length; i++){
                                         $('.replyContent').append(makeReply(res.reply[i]));
+                                    }
+
+                                }else{
+                                    console.log('여기까지오나요?')
+                                    let emptyReply = $('<div>').text("등록된 댓글이 없습니다.")
+                                        $('.replyContent').append(emptyReply);
                                 }
+
+                                    let replyInput = $('<div>').attr({"class" : "replyInput"})
+                                        replyInput.css({"cursor": "pointer"})
+                                        replyInput.text('댓글쓰기')
+                                        $('.replyInsert').append(replyInput);
                                 categoryNo = boardNo.attr("value");
+
+                                if(res.snsLikeCheck != null){
+                                    let snsLikeImg = $('<img>').attr({"src" : "/css/sns/img/fullHeart.png",
+                                                                       "id" : "snsLikeBtn",
+                                                                       "value" : "Like"})
+                                        $('.snsLikeBox').append(snsLikeImg);
+                                }else {
+                                    let snsLikeImg = $('<img>').attr({"src" : "/css/sns/img/emptyHeart.png",
+                                                                       "id" : "snsLikeBtn",
+                                                                       "value" : "noLike"})
+                                        $('.snsLikeBox').append(snsLikeImg);
+                                }
+                                
+                                let snsLikeCount = $('<span>').text("좋아요 "+res.snsLikeCount+"개");
+                                    snsLikeCount.attr({"id" : "snsLikeCount"})
+                                    $('.snsLikeBox').append(snsLikeCount);
                                 
                             },error: function (err){
                                 console.log(err)
@@ -911,14 +1060,11 @@
         })
         
         function makeReply(reply){
-            // let replyTag = $('<div>').text(reply.replyContent);
-            // let replyUserId = $('<div>').text(reply.userId);
-            // let replyDate =$('<div>').text(reply.replyDate);
-
-            let Tag = `<div>${reply.replyContent}</div>
-                       <div>${reply.userId}</div>
-                       <div>${reply.replyDate}</div>
-                       <input type="hidden" value="${reply.replyNo}" />`
+            let Tag = ` <div class="replyIdDate">${reply.userId} | ${elapsedText(`${reply.replyDate}`)}
+                        <span class="snsReplyDelBtn" style="font-size:20px; padding-left:350px; cursor:pointer;">&times;</span>
+                        <input type="hidden" value="${reply.replyNo}" /></div> 
+                        <div style="padding-left:50px;">${reply.replyContent}</div>
+                        `
             return Tag;
         }
    
@@ -979,6 +1125,7 @@
                 $('.dots-parent').children().remove();
                 $('.replyContent').children().remove();
                 $('.replyInsert').children().remove();
+                $('.snsLikeBox').children().remove();
             }
         };
 

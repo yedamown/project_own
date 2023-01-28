@@ -66,13 +66,15 @@ public class SBoardServiceImpl implements SBoardService {
 	}
 
 	@Override
+	public int updateSnsReply(ReplyVO vo) {
+		return sBoardMapper.updateSnsReply(vo);
+	}
+
+	@Override
 	public int deleteSnsReply(ReplyVO vo) {
 		return sBoardMapper.deleteSnsReply(vo);
 	}
 
-	@Override
-	public int updateSnsReply(ReplyVO vo) {
-		return sBoardMapper.updateSnsReply(vo);
-	}
+
 
 }

@@ -27,11 +27,10 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,500");
 /* ----------------Text Fonts ------------------- */
 body {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
   font-weight: 300;
   font-family: "Montserrat", sans-serif;
-  color: #9c9ca9;
   font-style: normal;
   overflow-x: hidden;
 }
@@ -79,7 +78,6 @@ p {
   margin: 0 0 15px;
   line-height: 2.1;
   font-weight: 300;
-  color: #9c9ca9;
 }
 p:last-child {
   margin-bottom: 0;

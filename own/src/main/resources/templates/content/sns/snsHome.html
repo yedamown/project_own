@@ -194,13 +194,14 @@
     <script src="/css/sns/js/wow.min.js"></script>
     <!-- Custom js -->
     <script src="/css/sns/js/main.js"></script>
+
     <script>
             $(document).ready(function(){
                 $(".blog_card .blog_card_top:first-child").addClass("active");
                 $(".blog_card .dot:first-child").addClass("active");
 
             });
-        </script>
+    </script>
 </head>
 
 <body>
@@ -286,6 +287,7 @@
                 <!--=================== content body 메인====================-->
                 <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
                     <br>
+                    <input type="text" id="inputBox">
                     <div id="snsprofilebox" class="modalBtn">
                         <span class="storyInfo" th:each="story : ${storyInfo}">
                             <span th:if="${story.mediaServerFile != null}">
@@ -425,8 +427,35 @@
                 alert("메인페이지로 이동합니다.")
                 location.href = "/own/home"
             };
+   
+         //검색기능
+             $.ajax({
+            url: '/own/sns/ListSearch',
+            method: 'get',
+            }).then(res=>{
+                console.log(res)
+                let array = new Array();
+                for(key in res){
+                array.push(res[key].snsNickname)
+                }
+                console.log(array)
+                $('#inputBox').autocomplete({
+                    source : array,
+                    minLength : 1,
+                    scroll: true,
+                    select: function(event, ui) {   
+                    console.log(ui.item.value);
+                        location.href="/own/snsFeed?snsNickname="+ui.item.value;
+                }
+                });
+                }
+            )
+   
+
+      
 
 
+        
         //게시글 이미지 페이징
         $('.dot').each(function(){
             $(this).on("click", function(e){
