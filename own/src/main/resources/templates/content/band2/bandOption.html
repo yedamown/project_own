@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
 <!-- Bootstrap CSS -->
-
+<meta charset="utf-8">
 <style>
 .tab-wrap {
   transition: 0.3s box-shadow ease;
@@ -122,23 +122,23 @@
 <div class="tab-wrap">
 
     <input type="radio" id="tab4" name="tabGroup2" class="tab" checked>
-    <label for="tab4">관리 홈</label>
+    <label for="tab4">밴드정보</label>
 
     <input type="radio" id="tab5" name="tabGroup2" class="tab">
-    <label for="tab5" id="bandmanage">밴드 관리</label>
+    <label for="tab5" id="bandmanage">밴드 수정</label>
 
     <input type="radio" id="tab6" name="tabGroup2" class="tab">
-    <label for="tab6" id="memberManage">멤버 관리</label>
+    <label for="tab6" id="memberManage">멤버관리</label>
 
     <input type="radio" id="tab7" name="tabGroup2" class="tab">
-    <label for="tab7">게시판 관리</label>
+    <label for="tab7">채팅관리</label>
 
     <input type="radio" id="tab8" name="tabGroup2" class="tab">
-    <label for="tab8" id="bandPass">중요 기능</label>
+    <label for="tab8" id="bandPass">밴드위임</label>
   </div>
   <div id="manageTemplate">
-  <h1>관리 홈</h1>
-  <p>밴드명</p>
+  <h1>밴드정보</h1>
+  <p>밴드정보�</p>
   <p th:text="${bandInfo.bandName}"></p>
   <p th:text="${bandInfo.bandLocation}"></p>
   <p th:text="${bandInfo.bandCategory}"></p>
@@ -146,13 +146,13 @@
   <p th:text="${bandInfo.bandKeyword}"></p>
   </th:block>
   <span th:if="${#strings.equals(bandInfo.bandMembershipOption, 'BF01')}">
-  공개
+  가입인원
   </span>
   <span th:if="${#strings.equals(bandInfo.bandMembershipOption, 'BF02')}">
-  비공개
+  승인대기인원
   </span> 
   <p th:text="${count}"></p>
-  <p>승인멤버</p>
+  <p>가입인원</p>
   <span th:each="list : ${memList}">
   	<th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA02')}">
 	<p th:text="${list.userId}"></p>
@@ -166,7 +166,7 @@ $('#bandmanage').on('click', function(){
 	$('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
 });
 
-// 멤버 관리 탭
+// 硫ㅻ쾭 愿�由� �꺆
 $('#memberManage').on('click', function(){
 	$('#manageTemplate').load("/own/band/bandGroup/bandMemberManage?bandNo="+bandNo);
 });
@@ -174,6 +174,6 @@ $('#memberManage').on('click', function(){
 
 $('#bandPass').on('click', function(){
 	console.log('dd')
-	$('#manageTemplate').load("/own/band/bandGroup/bandImport?bandNo="+bandNo);
+	$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
 })
 </script>

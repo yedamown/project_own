@@ -24,6 +24,8 @@ import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 import co.prjt.own.ownhome.service.QuestionVO;
+import co.prjt.own.sns.service.SAccountService;
+import co.prjt.own.sns.service.SAccountVO;
 
 @Controller
 public class OwnhomeController {
@@ -34,7 +36,11 @@ public class OwnhomeController {
 	OwnhomeService ownService;
 	@Autowired
 	ExerRecordMapper exerMapper;
-
+//검색기능 테스트
+	@Autowired
+	SAccountService SAccountService;
+	
+	
 		//홈으로 이동
 		@RequestMapping(value = {"/","/own/home"}, method = RequestMethod.GET)
 		public String ownHome(OwnUserVO vo, HttpServletRequest request) { // 오운홈으로 가는 페이지이동
@@ -49,12 +55,20 @@ public class OwnhomeController {
 			return "content/own/ownlogin";
 		}
 
-		// 테스트페이지
-		@RequestMapping(value = "/test", method = RequestMethod.GET)
+// 검색테스트페이지====================================
+		@RequestMapping(value = "/searchtest", method = RequestMethod.GET)
 		public String test(Model model) { // 오운홈으로 가는 페이지이동
-			return "content/own/test";
+			return "content/own/searchTest";
 		}
-
+		
+		@GetMapping("/own/sns/ListSearch")
+		@ResponseBody
+		public List<SAccountVO> ListSearch(){
+			return SAccountService.getSnsUserList(null);
+		}
+		
+//검색테스트=======================
+		
 		// 머지되게해주세요
 		// 회원가입 폼으로 이동
 		@RequestMapping(value = "/own/SigninForm", method = RequestMethod.GET)
