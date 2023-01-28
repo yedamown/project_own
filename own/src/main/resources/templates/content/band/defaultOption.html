@@ -1,0 +1,227 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/band_layout}"
+      lang="ko">
+    <head>
+    	<!-- jquery -->
+    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
+        <title>Royal Hotel</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/css/band/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/css/band/css/style.css">
+        <link rel="stylesheet" href="/css/band/css/responsive.css">
+        <style>
+        	
+			.btn:hover{
+			    color:#fff;
+			}
+			
+			.input-text:focus{
+			    box-shadow: 0px 0px 0px;
+			    border-color:#f8c146;
+			    outline: 0px;
+			}
+			
+			.form-control {
+			    border: 1px solid #f8c146;
+			}
+			img {
+				border-radius: 10px;
+			}
+			img:hover{
+				border:#BFBFBF 2px solid;
+				cursor:pointer;
+			}
+			.aaimg {
+				padding: 5px;
+				border-radius: 10px;
+				height:100px;
+				width:100px;
+				border-radius: 15px;
+			}
+        </style>
+    </head>
+    <body>
+   	<div layout:fragment="content">
+        <!--================위에  Area =================-->
+        <section class="banner_area">
+            <div class="booking_table d_flex align-items-center" style="min-height: 200px;">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+            	<div><h2 class="typo-list" style="color:white">가치 시작하기</h2></div>
+            </div>
+        </section>
+        <!--================위에 Area 끝=================-->
+        
+        <!--================ 폼 Area  =================-->
+		<div id="template">    
+			<article style="border: 1px solid #eeeeee;">
+				<div class="container">
+					<!--================폼 시작 Area =================-->      
+		         	<form role="form" action="/own/band/insertDefault" method="post" autocomplete="off" style="width: 80%;"enctype="multipart/form-data">
+		         	<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
+		         		<input type="hidden" th:value="${session.userId}" name="userId" id="userId"/>
+		         		<div class="imgArea">
+		<!--================이미지 Area =================-->
+							<div>
+								<h4 class="typo-list" style="padding-bottom: 15px">대표 이미지</h4>  
+							</div>
+				            <div>
+				                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
+			                		<div style="flex-grow: 1; width: 150x; height: 150px;">
+			                			<img th:src="|/imgView/bandprofilnull.png|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1; width: 150x; height: 150px;">
+			                		</div>
+			                		<!--================ 이름 =================-->
+					                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">
+					                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 활동명</h6>
+					                  <div class="mt-10">
+					                    <input type="text" id="bandNickname" name="bandNickname" maxlength="10" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
+					                  </div>
+					                  <b><small style="display:inline; width: 10%; float: right" id="nickNamelength">4/10</small></b>
+					                  <div id="hiddenBox" style="display: none"><b style="padding-left: 10px;" id="hiddenBoxText">가입가능한 닉네임입니다</b></div>
+					                </div>
+					                <!--================ 이름 끝 =================-->
+				                </div>
+				            </div>
+				            <input type="file" id="deImg" multiple="multiple" name="deImg" style="display: none" onchange="imgFnc()" accept="image/gif, image/jpeg, image/png">
+		<!--================이미지 Area 끝 =================-->
+		<hr></div><!-- 이미지끝남 -->
+						<div class="insertArea" style="margin:0px auto;width: 110%; padding: 10px 15px 80px">
+	       <!--================작성 Area 시작 =================-->
+				            <div class="col-md-4">
+                               <div class="input-group">
+                                   <select class="recom_exercise form-select" th:value="*{exercise}" name="bandInterest">
+                                       <option value="all">관심운동..전체</option>
+                                       <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}"></option>
+                                   </select>
+                               </div>
+                           </div>
+                           <div class="col-md-4">
+                               <div class="input-group">
+                                   <select class="recom_location form-select" th:value="*{location}" name="bandLocation">
+                                   	<option value="all">관심지역..전체</option>
+                                       <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}"></option>
+                                   </select>
+                               </div>
+                           </div>
+			<!--================작성 Area =================-->
+						<button type="submit" id="submitBtn" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 시작</button>
+						</div>
+			            </form>
+					<!--================폼 끝 Area =================--> 
+				</div>
+			</article>
+		</div>
+        <!--================ 밴드생성 끝 Area  =================-->
+        
+        <!-- Optional JavaScript -->
+        <script>
+        // 특수문자 정규식 변수(공백 미포함)
+        var replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
+ 		// 완성형 아닌 한글 정규식		
+        var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+        $(function(){
+            //별명 중복체크...
+            $('#bandNickname').on('change', function(){
+            	let nickName = $('#bandNickname').val();
+    			if(nickName == '') {
+    				$('#hiddenBoxText').text('닉네임을 입력해주세요.');
+    				$('#hiddenBox').show();
+    			} else if(nickName.match(replaceChar)||nickName.match(replaceNotFullKorean)){
+    				$('#hiddenBoxText').text('특수문자를 제외하고 올바른 문자를 입력해주십시오.');
+    				$('#hiddenBox').show();
+    			} else {
+    				$('#hiddenBoxText').text('사용가능한 닉네임입니다.');
+    				$('#hiddenBox').show();
+    			}
+            })
+            //닉네임 공백막기 글자수
+             $('#bandNickname').keyup(function(e){
+            	//닉네임 공백막기
+            	 if($(this).val().search(/\s/) != -1){ //공백이 있나 체크 후
+           			$(this).val( $(this).val().replace(/ /gi, '') );
+           			$('#hiddenBox').show();
+           			$('#hiddenBoxText').text('공백입력은 불가능합니다.');
+            	 }
+            	//글자수 체크
+            	 chkNickLength();
+            })
+          //닉네임 글자수 체크  
+        	function chkNickLength(){
+        		$('#nickNamelength').text($('#bandNickname').val().length+'/10');
+        	}
+          	//인트로  글자수
+            $('#bandMemberIntro').keyup(function(e){
+           	//글자수 체크
+           	 chkIntroLength();
+           })
+            //글자수체크
+            chkNickLength();
+        })
+        //이미지삽임
+            $('.imgss').on('click', '#inputImage', function(){
+            	$('#deImg').click();
+            })
+            //이미지첨부 눌렀을 때
+            function imgFnc(){
+            	//파일
+            	let imgFile = $('#deImg').val();
+            	//확장자제한
+            	let fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+            	//50mb로 제한
+            	let maxSize = 100 * 1024 * 1024;
+            	//특수문자 제한
+            	let pattern =  /[\{\}\/?,;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+            	//파일크기제한
+            	let fileSize;
+    			
+            	if($('#deImg').val() == "") {
+            		alert("첨부파일은 필수!");
+            	    return;
+            	}
+            	//파일명과 사이즈를 뽑기위한..제이쿼리를 모르겠음 이건
+            	let fileName = document.getElementById("deImg").files[0]
+            	//파일이 비었다면
+            	if(imgFile != "" && imgFile != null) {
+            		//input=file의 files 속성가져와서...
+            		fileSize = fileName.size;
+            	    if(!imgFile.match(fileForm)) {
+            	    	alert("이미지 파일만 업로드 가능");
+            	        return;
+            	    } else if(fileSize > maxSize) {
+            	    	alert("파일 사이즈는 100MB까지 가능");
+            	        return;
+            	    } else if(pattern.test(fileName.name)){
+            	    	alert("파일 이름 특수문자 nono");
+            	        return;
+            	    }
+            	}
+            }
+            //이미지 업로드 시 미리보기createImage
+            $('#deImg').on('change', function(e){
+            	let file = e.target.files[0];
+            	let reader = new FileReader();
+            	reader.onload = function(e){
+            		$('#inputImage').attr('src', e.target.result);
+            		//기존이미지 누를시..
+            		$('input[name=mediaServerFile]').val('sample')
+            	}
+            	reader.readAsDataURL(file);
+            	
+            })
+        </script>
+    	</div>
+	</body>
+</html>

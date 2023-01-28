@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import co.prjt.own.common.service.MultimediaVO;
@@ -31,6 +33,7 @@ public class BandMemberDetailVO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	public Date bandKickDate;
 	public String bandMemberNo;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	public Date bandBirth;
 	public String bandGender;
@@ -57,5 +60,6 @@ public class BandMemberDetailVO {
    public String profileImg;
    public MultimediaVO detailImg;
    public List<MultimediaVO> detailImgs;
-   
+   //new FormData로 집어넣는 이미지(ajax)
+   private MultipartFile attachFile;
 }

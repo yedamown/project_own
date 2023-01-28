@@ -7,4 +7,6 @@ public interface BandMemberDefaultMapper {
 	public BandMemberDefaultVO getBandMemberDefault(String userId);
 	//수정
 	public int updateMemberDf(BandMemberDefaultVO vo);
+	//입력
+	public int insertDefault(BandMemberDefaultVO vo);
 }

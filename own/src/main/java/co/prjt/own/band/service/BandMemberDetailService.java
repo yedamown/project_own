@@ -23,5 +23,8 @@ public interface BandMemberDetailService {
 	public int bandProfilImg(String value);
 	//프로필사진없을 시 디폴트 사진 입력
 	public int bandProfilDefImg(String defaultNo, String detailNo, String mediaServerFile);
-	//밴드 가입시 닉네임 중복체크
+	//가입시 닉네임중복체크
+	public int duplicateChk(String bandNo, String nickName);
+	//밴드설정 업데이트
+	public int myOptionUpdate(BandMemberDetailVO vo);
 }
