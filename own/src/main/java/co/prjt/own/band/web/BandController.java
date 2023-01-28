@@ -25,6 +25,7 @@ import co.prjt.own.band.service.BandBoardDetailService;
 import co.prjt.own.band.service.BandBoardOptionService;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandMemberDefaultService;
+import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailService;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
@@ -52,25 +53,37 @@ public class BandController {
 		//원래는 사용자의 각 기호..세션아이디 에 맞춰서 추천 ...........밴드 검색어 넣어야 함
 		//1.세션아이디 불러와서 최신글이 있고 가입상태인 밴드목록을 불러옴..위치설정
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", ownService.login("hjj")); 
+		//session.setAttribute("loginUser", ownService.login("hjj")); 
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		/*
-		 * System.out.println(user); //세션널..임시 if(user==null) { return
-		 * "content/own/ownlogin"; }
-		 */	  		
-		BandMemberDetailVO vo = new BandMemberDetailVO();
-		vo.setUserId(user.userId);
 		
+		System.out.println(user); //세션널..임시
+		if(user==null) { 
+			 return "content/own/ownlogin"; 
+		 }
+		 	  		
 		//유저디폴트정보 싣기  DT : BandMemberDefaultVO
-		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.userId));
-		//가입한..최신글올라온 밴드 불러오기 DT : List<Map<String, Object>> Object:bandVO+mapper +impl에서 이미지도 넣음
-		model.addAttribute("bandList", bandService.getBandRecentAll(vo));
-		//운동종류+관심지역 셀렉트박스
-		model.addAttribute("location", bandService.allLocation());
-		model.addAttribute("exercise", bandService.allExcersie());
-		//인기글 세개 싣기
-		
-		return "content/band/bandHome";
+		//만약 디폴트 설정이 없다면 밴드 프로필설정으로 보내겠음
+		BandMemberDefaultVO def = new BandMemberDefaultVO();
+		def = bandMemberDefaultService.getBandMemberDefault(user.userId);
+		if(def!=null) {
+			model.addAttribute("user", def);
+			//가입한..최신글올라온 밴드 불러오기 DT : List<Map<String, Object>> Object:bandVO+mapper +impl에서 이미지도 넣음
+			BandMemberDetailVO vo = new BandMemberDetailVO();
+			vo.setUserId(user.userId);
+			model.addAttribute("bandList", bandService.getBandRecentAll(vo));
+			//운동종류+관심지역 셀렉트박스
+			model.addAttribute("location", bandService.allLocation());
+			model.addAttribute("exercise", bandService.allExcersie());
+			//인기글 세개 싣기
+			
+			return "content/band/bandHome";
+		} else {
+			//디폴트설정이 없으니 디폴트설정만들러 보냄
+			//운동종류+관심지역 셀렉트박스
+			model.addAttribute("location", bandService.allLocation());
+			model.addAttribute("exercise", bandService.allExcersie());
+			return "content/band/defaultOption";
+		}
 	}
 	//내 가치 전부보기(페이징 임시로 3개...밴드VO에 개인의 아이디를 리더아이디로 담음..검색시사용)
 	//페이징처리(서비스랑 서비스임플까지..후로매퍼검색)
@@ -247,7 +260,7 @@ public class BandController {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		vo.setUserId(user.userId);
 		model.addAttribute("member", bandMemberDetailService.getBandMemberDetail(vo));
-		return "content/band/myOption";
+		return "content/band/bandMyOption";
 	}
 	//밴드 사진으로 이동 
 	@GetMapping("/bandGroup/bandPhoto")
@@ -276,7 +289,7 @@ public class BandController {
 	}
 	//밴드 회원가입
 	@PostMapping("/bandGroup/signUp")//bandno는 포스트방식으로쓰는데 쿼리스트링으로 같이 넘어와서 넣음
-	public String signUpBandInsert(HttpServletRequest request, @RequestParam MultipartFile defaultImg[], BandMemberDetailVO vo, RedirectAttributes rttr) {
+	public String signUpBandInsert(HttpServletRequest request, MultipartFile defaultImg[], BandMemberDetailVO vo, RedirectAttributes rttr) {
 		System.out.println(vo.toString());
 		//이미지입력을 안했을 경우를 대비해 디폴트 이미지 주소값을 받아둠
 		HttpSession session = request.getSession();

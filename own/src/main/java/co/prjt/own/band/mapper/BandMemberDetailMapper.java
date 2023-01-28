@@ -23,7 +23,11 @@ public interface BandMemberDetailMapper {
 		//유저 회원가입
 		public int insertBandMemberDetail(BandMemberDetailVO vo);
 		//프로필사진없을 시 임의의 사진 입력 value는 식별키
-		public int bandProfilImg(String value);
+		public int bandProfilImg(String mediaNo, String value);
 		//프로필사진없을 시 디폴트 사진 입력
 		public int bandProfilDefImg(@Param("defaultNo") String defaultNo, @Param("detailNo") String detailNo, @Param("mediaServerFile") String mediaServerFile);
+		//가입시 닉네임중복체크
+		public int duplicateChk(String bandNo, String nickName);
+		//밴드 내 설정변경
+		public int myOptionUpdate(BandMemberDetailVO vo);
 }

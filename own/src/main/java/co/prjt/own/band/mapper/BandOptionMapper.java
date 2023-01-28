@@ -10,6 +10,7 @@ import co.prjt.own.ownhome.service.OwnUserVO;
 
 public interface BandOptionMapper {
 
+
 	// 해당 밴드에 관련된 사람들을 관리하기위한 밴드메인관리페이지.
 	public List<BandMemberDetailVO> bandManageHome(BandMemberDetailVO vo);
 
