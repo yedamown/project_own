@@ -71,7 +71,7 @@ public class ChallController {
 		for(ChallengeVO i: cList) {
 			//참여회원수 검색해서 넣기
 			int r= memberList.getChallMemNum(i.getChallNo());
-			i.setNowMember(r);	
+			i.setNowMem(r);	
 		}
 			model.addAttribute("popChall", cList);
 			System.out.println("======popChall뉴리스트"+cList);
@@ -88,7 +88,7 @@ public class ChallController {
 			for(ChallengeVO i: myList) {
 				//참여회원수 검색해서 넣기
 				int r= memberList.getChallMemNum(i.getChallNo());
-				i.setNowMember(r);
+				i.setNowMem(r);
 			}
 			System.out.println("======마이뉴리스트===="+myList);
 			model.addAttribute("myChall", myList);
@@ -106,7 +106,7 @@ public class ChallController {
 		for(ChallengeVO i: cList) {
 		//참여회원수 검색해서 넣기
 			int r= memberList.getChallMemNum(i.getChallNo());
-			i.setNowMember(r);
+			i.setNowMem(r);
 		}
 		return cList;
 	}
@@ -126,7 +126,7 @@ public class ChallController {
 		for(ChallengeVO i: cList) {
 		//참여회원수 검색해서 넣기
 			int r= memberList.getChallMemNum(i.getChallNo());
-			i.setNowMember(r);
+			i.setNowMem(r);
 		}
 		return cList;
 	}
@@ -138,7 +138,7 @@ public class ChallController {
 		List<ChallengeVO> list = challenge.searchChall(word);
 		for(ChallengeVO i : list) {
 			int r = memberList.getChallMemNum(i.getChallNo());
-			i.setNowMember(r);
+			i.setNowMem(r);
 		}
 		model.addAttribute("searchList", list);
 		return "content/chall/searchResult";
@@ -171,16 +171,19 @@ public class ChallController {
 	
 	// 해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
 	@GetMapping("/detailChall")
-	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, CMemberVO mem, CMemberListVO memck, OwnLikeVO like,HttpServletRequest request, Model model) {
+	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo,ChallengeVO vo2, CMemberVO mem, CMemberListVO memck, OwnLikeVO like,HttpServletRequest request, Model model) {
 		System.out.println(no);
 		String challNo = "CHA_" + no;
 		vo.setChallNo(challNo);
+		vo2 = challenge.getChall(vo);
+		vo2.setNowMem(memberList.getChallMemNum(challNo));
+		//현재회원 수 구하기
 		System.out.println(challenge.getChall(vo).getChallLeader());
 		mem.setUserId(challenge.getChall(vo).getChallLeader());
 		//프로필 리더정보
 		model.addAttribute("leaderInfo", member.getCMem(mem));
 		//챌린지정보
-		model.addAttribute("detailChall", challenge.getChall(vo));
+		model.addAttribute("detailChall", vo2);
 		//미디어에서 검색
 		model.addAttribute("challImg", common.selectImgAll(challNo));
 		//나의 가입현황 확인 --로그인 세션이용
@@ -295,6 +298,16 @@ public class ChallController {
 		return r;
 	}
 	
+	//내가 인증신고했는지 확인 
+	@GetMapping("/checkRptAjax")
+	@ResponseBody
+	public int checkRptAjax(@RequestParam("vldNo") String vldNo, @RequestParam("reporter") String reporter, CReportVO vo) {
+		vo.setVldNo(vldNo);
+		vo.setReporter(reporter);
+		int r = report.checkReport(vo);
+		return r;
+	}
+	
 //---------------------------------- 멤버관리관련 -----------------------------------------------------------
 	//도전리더 - 멤버리스트 출력
 	@GetMapping("/challMemList")
@@ -317,9 +330,21 @@ public class ChallController {
 			return "fail";
 		}
 	}
+
 	
+	//-------------------------달성률 및 결과처리 관련 -----------------------
 	//도전현황 보기
 	//자기자신 도전횟수 , 도전평균 성공률
+	@GetMapping("/vldCountAvgAjax")
+	@ResponseBody
+	
+	public ValidationVO vldAvgAjax(String userId, String challNo,ValidationVO vo, ValidationVO vo2) {
+		vo.setUserId(userId);
+		vo.setChallNo(challNo);
+		vo2.setMyVld(validation.countVld(vo));
+		vo2.setMemVldAvg(validation.memVldAvg(vo));
+		return vo2;
+	}
 	
 	//도전결과 정산처리
 	@PostMapping("/challResult")

@@ -375,7 +375,7 @@
 									<div class="col-6 py-1 text-right border-right">
 										<strong>현재 도전 회원</strong>
 									</div>
-									<div class="col-6 py-1" th:text="${cha.nowMember}"></div>
+									<div class="col-6 py-1" th:text="${cha.nowMem}"></div>
 								</div>
 								<div class="row">
 									<div class="col-6 py-1 text-right border-right">
@@ -709,7 +709,7 @@
 			let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage).attr('style', 'height:230px; object-fit: cover')
 			let div2_2 = $('<div />').addClass("card-body bg-light text-center p-4")
 			let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
-			let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.nowMember + '참여중')),
+			let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.nowMem + '참여중')),
 																						   ($('<small />').addClass("mr-3").text(cha.challDuration + '주 동안')),
 																						   ($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회'))
 																						  );

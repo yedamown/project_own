@@ -236,7 +236,8 @@
 									style="font-weight: 100;"></h2>
 								</th:block>
 								<p class="mr-3">
-									<i class="fa fa-users text-primary"></i> 8명 참여중
+									<i class="fa fa-users text-primary"></i>
+									<span th:text="${detailChall.nowMem}"></span> 명 참여중
 								</p>
 								<h6>
 									도전카테고리: <span th:text="${detailChall.challCategory}"></span>
@@ -344,44 +345,9 @@
 					<div style="display: none;" id="challVld">
 						<div style="width: 700px; text-align: center;">
 							<!-- 첫 번째 Modal을 여는 클래스 -->
-							<p class="modalBtn btn btn-primary px-3">MODAL_1 인증 신고 버튼</p>
-							<!-- 						<div class="bg-light p-5">
-							<input type="hidden" id="vldCheck" value="false">
-							<h2 class="mb-4">Validation GoGo</h2>
-							<div id="image_preview">
-								이미지 미리보기
-								<form action="/own/chall/insertVldForm" method="post" id="insertChall"
-									enctype="multipart/form-data">
-									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-									<div class="form-group">
-										도전번호, 유저 아이디 히든 if를 걸면 해당 정보 가져오지 못하니 주의하기!
-										<input id="challNo" name="challNo" type="hidden"
-											th:value="${detailChall.challNo}" />
-										<input id="userId" name="userId" type="hidden" th:if="${session.loginUser}"
-											th:value="${session.loginUser.userId}" />
-										<label for="name">NickName *</label>
-										<input type="text" class="form-control" id="vldname" th:if="${memcheck !=null }"
-											th:value="${myInfo.memNickname}" readonly />
-									</div>
-									<div class="form-group">
-										<label for="name">Date *</label> <input type="text" class="form-control"
-											id="vldname" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"
-											readonly />
-									</div>
-									<input name="uploadfile" type="file" id="btnAtt">
-									<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분
-									<div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
-									<br>
-									<div class="form-group mb-0">
-										<button type="submit" class="btn btn-primary px-3" id="vldFormSubmit">등록</button>
-										<input type="submit" value="등록인풋" class="btn btn-primary px-3"
-											id="vldFormSubmit" />
-									</div>
-								</form>
-							</div>
-						</div> -->
+							<p class="modalBtn btn btn-primary px-3" id="vldAddModal">MODAL_1 인증하기</p>
 
-							<!-- 인증사진 보이는 곳 -->
+							<!-- 인증 구분 라벨 -->
 							<div class="col-12 text-center mb-2">
 								<ul class="list-inline mb-4 mt-4">
 									<li class="btn btn-outline-primary m-1 active">MY</li>
@@ -399,12 +365,14 @@
 
 					<!--달성률 시작-->
 					<div style="display: none;" id="challResult">
-						<div style="width: 700px;">
-							<div style="width: 400px; height: 400px;">
-								<canvas id="myChart"></canvas>
+						<div style="width: 700px; display: flex;justify-content: center;">
+							<div style="text-align: center;" >
+								<canvas id="myChart" style="width: 450px; height: 450px; "></canvas>
+								<p>나의 달성률</p>
 							</div>
-							<div>
-								<h3>나의 달성률</h3>
+							<div style="text-align: center;">
+								<canvas id="memChart" style="width: 200px; height: 200px;"></canvas>
+								<p>멤버 달성률</p>
 							</div>
 							<input type="hidden" id="resultCheck" value="false">
 						</div>
@@ -436,6 +404,11 @@
 						<h2 class="mb-4">Validation GoGo</h2>
 						<div id="image_preview">
 							<!--이미지 미리보기-->
+							<!--도전기간 / 횟수 / 참여자 수 -->
+							<input id="challDur" name="challDur" type="hidden"
+								th:value="${detailChall.challDuration}" />
+							<input id="challFreq" name="challFreq" type="hidden" th:value="${detailChall.challFreq}" />
+							<input id="nowMem" type="hidden" th:value="${detailChall.nowMem}" />
 							<form action="/own/chall/insertVldForm" method="post" id="insertChall"
 								enctype="multipart/form-data">
 								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
@@ -460,7 +433,7 @@
 									<br>
 									<div class="form-group mb-0">
 										<!-- <button type="submit" class="btn btn-primary px-3" id="vldFormSubmit">등록</button> -->
-										<input type="submit" value="등록인풋" class="btn btn-primary px-3"
+										<input type="submit" value="등록하기" class="btn btn-primary px-3"
 											id="vldFormSubmit" />
 									</div>
 								</form>
@@ -469,7 +442,6 @@
     </div>
  
     <hr>
-
 
      <!-- 두 번째 Modal -->
     <div class="modal">
@@ -481,6 +453,11 @@
         <h3></h3>
         <p>두 번째 Modal</p>
         <button class="btn btn-primary px-3" id="rptBtn">신고</button>
+    		<div style="display: none" id="reportArea">
+				<textarea style="width:95%; margin:10px" id="rptReason"></textarea>
+				     		   <button class="btn btn-primary px-3" id="rptAddBtn" style="width: 150px; margin:auto">
+				     			   신고 접수하기</button>
+			</div>
       </div>
     </div>
  
@@ -935,13 +912,13 @@
         success: function(result){
           if(result == "able"){
             console.log('인증가능 - 이번주 인증 덜채움');
-            alert(result);
+            alert('인증가능');
           } else if(result == "todaydone"){
             console.log("이미 오늘 인증 완료.")
-            $('#vldFormSubmit').attr('type', 'button').val('오늘 인증 완료.');
+            $('#vldAddModal').attr('type', 'button').val('오늘 인증 완료.');
           } else if(result == "thisweekDone"){
             console.log("이번 주 인증완료.")
-            $('#vldFormSubmit').attr('type', 'button').val('이번주 인증 완료.');
+            $('#vldAddModal').attr('type', 'button').val('이번주 인증 완료.');
           } else{
             console.log("모르겠노");
           }
@@ -951,15 +928,9 @@
         }
       })
       }
+
       $("#resultCheck").val("true");
-    });
-
-	/* // Portfolio isotope and filter 사진..필터..가능할까?
-	 var portfolioIsotope = $('.portfolio-container').isotope({
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows'
-    });
-
+    }); //인증하기 첫버튼 끝
 
     /* 인증내역 아작스로읽어와서 사진폼으로 만들기*/
     function makeVldForm(vld){
@@ -969,11 +940,6 @@
       let vldNo = (vld.vldNo);
       console.log(userId);
       console.log(vldDate);
-/*       let firstdiv = $('<div />').addClass('col-lg-6 col-md-6 mb-4 portfolio-item').addClass(userId);
-      let secondDiv = $('<div />').addClass('position-relative overflow-hidden mb-2')
-      let hTag = $('<h5 />').text(userId, vldDate)
-      th:src="|/imgView/${challImg[0].mediaServerFile}|"
-      let imgDiv = $('<img />').addClass('img-fluid w-100 m-1 ').attr('src', '/imgView/'+ mediaName) */
       let gridVld = `<div class="grid" style="padding: 10px" id=${vldNo}>
       					<div class="card card__one">
 							<figure class="card__img">
@@ -990,7 +956,14 @@
  	  /*   $('#vldImg').append(firstdiv.append(secondDiv.append(imgDiv, hTag))) */ 
     }
     
-    
+    //모달엑스누르면..초기화될 아이들..ㅋ
+	$('.close').on('click',function(){
+		$('#reportArea').attr('style', 'display:none');
+		console.log($('#rptReason').val(""));
+		$('#rptBtn').attr('style', 'display:block');
+		console.log('왜안되나'); 
+	})
+
 	//모달신고...정보빼오기..ㅎ -> 모달 두번째창에 띄우기!
 	$('#vldImg').on('click','.grid',function(e){
 		console.log(this); //이 창을.. 클릭하면 모달띄우기..
@@ -1003,20 +976,33 @@
 		$('#vldReport h1').text("오 성공");
 		$('#vldReport img').attr('src', vldDtImg);
 		$('#vldReport h3').text(vldDtId);
-		$('#vldReport p').text("날짜넣어야지 등록날짜 포맷해서");
-		let reportDiv = `<div style="display: none" class="reportArea" >
-	       					<textarea style="width:95%; margin:10px" id="rptReason"></textarea>
-	        			  <button class="btn btn-primary px-3" id="rptAddBtn" style="width: 150px; margin:auto">신고 접수하기</button>
-	        				</div>`
-	    $('#vldReport').append(reportDiv);   				
+		//첫번째 p 바꾸기
+		$('#vldReport p').eq(0).text("날짜넣어야지 등록날짜 포맷해서");
+
+		//아작스로 내가 신고했는지? 내꺼인지 확인하기
+		$.ajax({
+	        url:'/own/chall/checkRptAjax?vldNo='+ vldNo + '&&reporter=' + userId,
+	        method: 'get',
+	        success: function(result){
+	        		if(result > 0){
+		          		console.log(result);
+						$('#rptBtn').attr('style', 'display:none');
+
+						//$('#rptBtn').replaceWith('<p>이미 신고한 인증입니다.</p>');
+	        		}else {
+	        			console.log('신고신청가능');
+	        		}
+	        },
+	        error: function(err){
+	          	console.log(err)
+	        }
+      	})		
+
+		//신고하기 누르면 나오는 신고내역부분~! 수정해야함 ㅠㅠ
 		$('#rptBtn').on('click', function(){
-			//신고창열리기..
-			$('.reportArea').attr('style','display:block');
-			//엑스 누르면..다 지우는것도 넣어야할듯?
-			$('.close').on('click',function(){
-				$('.reportArea').empty();
-			})
-		})
+			$('#reportArea').attr('style', 'display:block');
+		});
+
 		$('#rptAddBtn').on('click', function(){
 			console.log('신고하기');
 			//신고사유
@@ -1045,7 +1031,6 @@
 	                alert('신고가 완료되었습니다.');
 	                location.href = '/own/chall/detailChall?challNo=' + cutChallNo
 	              } else {
-	                console.log("이미 오늘 인증 완료.");
 	                alert('오류가 발생하였습니다. 다시 시도해주세요.');
 	              } 
 	            },
@@ -1056,41 +1041,86 @@
 		})
 	})
     
-	/*
-	let nowChallNum = $('#challNo').val();
-	let loginUserId = $('#userId').val();
-	*/	
-	
-
     //--------------------------------달성률-------------------------------------
+
      /*달성률 버튼*/
     $('#resultBtn').on("click", function () {
       $("#challResult").css("display", "inline-block");
       $("#challVld").css('display', 'none');
       $("#challDetail").css('display', 'none');
       $("#challMem").css('display', 'none')
-    })
-    
-     //달성률 구글차트
-    var context = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(context, {
-      type: 'doughnut',
-      data: {
-            labels: [
-            '나의 인증 성공 횟수',
-            '남은 인증 횟수'
-          ],  
-          datasets: [{
-            label: 'My First Dataset',
-            data: [50, 100],
-            backgroundColor: [
-              'rgb(54, 162, 235)',
-              'rgb(255, 205, 86)'
-            ],
-            hoverOffset: 4
-          }]
-    }
-    });
+
+	  let duration = $('#challDur').val();
+	  let freq = $('#challFreq').val();
+	  let challVldCount = duration * freq;
+	  console.log(challVldCount);
+	  //내 인증횟수 카운트로 가져오기 ㅎ
+	  //현재 챌린지 회원들의 평균 인증 횟수..
+	  $.ajax({
+	        url:'/own/chall/vldCountAvgAjax?userId='+ userId + '&&challNo=' + challNo,
+	        method: 'get',
+	        success: function(result){
+	        		console.log(result);
+					let myVld =  result.myVld;
+					let nowMem = $('#nowMem').val();
+					let memVldAvg = (result.memVldAvg)/nowMem;
+					console.log(myVld);
+					console.log(memVldAvg);
+					console.log(nowMem);
+					if(myVld == null){
+						myVld = 0;
+					}
+					if(memVldAvg == null){
+						memVldAvg = 0;
+					}
+					console.log(memVldAvg);
+					console.log(myVld);
+					var myChart = new Chart(context, {
+						type: 'doughnut',
+						data: {
+							labels: [
+								'나의 인증 성공 횟수',
+								'남은 인증 횟수'
+							  ],  
+							  datasets: [{
+								  label: '나의 인증',
+								  data: [myVld, challVldCount - myVld],
+								  backgroundColor: [
+									  'rgb(54, 162, 235)',
+									  'rgb(255, 205, 86)'
+								  ],
+								  hoverOffset: 4
+							  }]
+						  }
+					});
+					var memChart = new Chart(context2, {
+						type: 'doughnut',
+						data: {
+							labels: [
+								'멤버 평균 성공 횟수',
+								'남은 인증 횟수'
+							  ],  
+							  datasets: [{
+								  label: '멤버 평균 인증',
+								  data: [memVldAvg, challVldCount - memVldAvg],
+								  backgroundColor: [
+									  'rgb(54, 162, 235)',
+									  'rgb(255, 205, 86)'
+								  ],
+								  hoverOffset: 4
+							  }]
+						  }
+					  });
+	        },
+	        error: function(err){
+	          	console.log(err)
+	        }
+      	})
+	  
+	  //달성률 구글차트
+		var context = document.getElementById('myChart').getContext('2d');
+		var context2 = document.getElementById('memChart').getContext('2d');
+	})
     
     //-----------------------------리더만 신청회원보기-------------------------------------
    
@@ -1167,7 +1197,7 @@
       })
     })
 
-	
+
 	//----------------------------첨부파일 화면에 띄우기------------------------------------
       	/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
         imageView = function imageView(att_zone, btn){
