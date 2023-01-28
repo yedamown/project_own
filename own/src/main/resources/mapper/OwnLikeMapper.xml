@@ -22,7 +22,7 @@
 					CATEGORY_NO = #{categoryNo}	
 				</if>
 				<if test="userId !=null and categoryNo ==null">
-					CATEGORY_NO = #{categoryNo}	
+					USER_ID = #{userId}	
 				</if>
 		</where>
 	</sql>
