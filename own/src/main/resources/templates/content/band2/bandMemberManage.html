@@ -49,7 +49,8 @@
 				<option value="">10개씩 보기</option>
 				<option value="">20개씩 보기</option>
 				<option value="">50개씩 보기</option>
-			</select> <span class=""> 전체 멤버 수 </span>
+			</select>
+			<span class=""> 전체 멤버 수 </span> <span th:text="${#lists.size(memberList)}"></span>
 		</div>
 		<table>
 			<thead>
@@ -64,16 +65,16 @@
 
 			</thead>
 			<tbody id="">
-				<tr th:each="list : ${memberList}">	
+				<tr th:each="list : ${memberList}">
 					<td><img th:src="|/imgView/${list.profileImg}|"
-						style="height: 30px; width: 30px; object-fit: cover" /></td>
+							style="height: 30px; width: 30px; object-fit: cover" /></td>
 					<td th:text="${list.bandNickname} + '(' + ${list.userId} + ')'"></td>
 					<td th:text="${#dates.format(list.bandAccessDate, 'yyyy년 MM월 dd일')}"></td>
 					<td th:text="${list.boardCnt}"></td>
-					<td th:text="${list.replyCnt}"></td> 
+					<td th:text="${list.replyCnt}"></td>
 					<span th:if="${list.bandGender == 'GD01'}">
 						<td th:text="남자"></td>
-					</span> 
+					</span>
 					<span th:unless="${list.bandGender == 'GD01'}">
 						<td th:text="여자"></td>
 					</span>
@@ -82,12 +83,14 @@
 				</tr>
 			</tbody>
 		</table>
+		<span>선택 멤버를</span> <button>강제탈퇴</button>
+		<div id="paging"></div>
 	</div>
 
-	<div id="waitingBandMemberList" style ="display:none">
+	<div id="waitingBandMemberList" style="display:none">
 		<div>
-			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색"
-				name="bandNickname"> <span class="input-group-btn">
+			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname"> <span
+				class="input-group-btn">
 				<button class="btn btn-default searchBtn" type="button">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
@@ -95,7 +98,7 @@
 				<option value="">10개씩 보기</option>
 				<option value="">20개씩 보기</option>
 				<option value="">50개씩 보기</option>
-			</select> <span class=""> 전체 멤버 수 </span>
+			</select> <span class=""> 승인 대기 멤버 수 </span> <span id="waitingMemberCnt"></span>
 		</div>
 		<table>
 			<thead>
@@ -108,15 +111,16 @@
 
 			</thead>
 			<tbody id="waitingMemberTable">
-				
 			</tbody>
 		</table>
+		<span>선택 멤버를</span> <button>멤버가입승인</button><button>멤버가입반려</button>
+		<div id="paging"></div>
 	</div>
 
-	<div id="kickedBandMemberList" style ="display:none">
+	<div id="kickedBandMemberList" style="display:none">
 		<div>
-			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색"
-				name="bandNickname"> <span class="input-group-btn">
+			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname"> <span
+				class="input-group-btn">
 				<button class="btn btn-default searchBtn" type="button">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
@@ -124,7 +128,7 @@
 				<option value="">10개씩 보기</option>
 				<option value="">20개씩 보기</option>
 				<option value="">50개씩 보기</option>
-			</select> <span class=""> 강제 탈퇴 멤버 수 </span>
+			</select> <span class=""> 강제 탈퇴 멤버 수 </span> <span id="kickedMemberCnt"></span>
 		</div>
 		<table>
 			<thead>
@@ -137,58 +141,96 @@
 
 			</thead>
 			<tbody id="kickedMemberTable">
-				
 			</tbody>
 		</table>
-
+		<span>선택 멤버를</span> <button>가입불가</button><button>가입불가 해제</button>
+		<div id="paging"></div>
 	</div>
 
 </body>
 <script>
-	$(function() {
+	$(function () {
 		// 밴드 번호
 		let bandNo = $("#MybandNo").val();
-		
+
 		// 전체 멤버 목록
-		$(".allBandMemberList").click(function(){
-			$("#allBandMemberList").show(); 
+		$(".allBandMemberList").click(function () {
+			$("#allBandMemberList").show();
 			$("#waitingBandMemberList").hide();
-			$("#kickedBandMemberList").hide();     
+			$("#kickedBandMemberList").hide();
 		});
 		// 가입대기중 멤버 목록
-		$(".waitingBandMemberList").click(function(){
-			$("#waitingBandMemberList").show(); 
+		$(".waitingBandMemberList").click(function () {
+			$("#waitingBandMemberList").show();
 			$("#allBandMemberList").hide();
-			$("#kickedBandMemberList").hide();  
-			
-			$.ajax({
-					url : '/own/band/bandGroup/getWaitingMemberList?bandNo='+ bandNo,
-					method : 'get',
-					dataType : 'json',
-					contentType : "application/json"
-				}).then(list => {
-					$.each(list, function(i, e){ 
-						console.log("내용======="+e);
-						console.log("내용======="+e.userId);
-						
-						/* let tbody = document.getElementById('waitingMemberTable');
-						let tr = document.createElement('tr');
-						let td1 = document.createElement('td');
-						td1.textContent = e.profileImg;
-						
+			$("#kickedBandMemberList").hide();
 
-						tbody.appendChild(tr);
-						tr.appendChild(td1); */
-					})
-					
+			$.ajax({
+				url: '/own/band/bandGroup/getWaitingMemberList?bandNo=' + bandNo,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(list => {
+				let memberCnt = 0;
+				// 기존 테이블 내용 삭제
+				$('#waitingMemberTable').empty();
+				$.each(list, function (i, e) {
+
+					var td = '<tr>'
+					td += '<td>' + '<img src="|/imgView/' + e.profileImg + '|"style="height: 30px; width: 30px; object-fit: cover"/>' + '</td>';
+					td += '<td>' + e.bandNickname + "(" + e.userId + ")" + '</td>';
+					td += '<td>' + e.bandMemberIntro + '</td>';
+					if (e.bandGender == 'GD01') {
+						td += '<td>' + "남자" + '</td>';
+					} else {
+						td += '<td>' + "여자" + '</td>';
+					}
+					td += '<td>' + e.age + '</td>';
+					td += '<td>' + '<input type="checkbox">' + '</td>';
+					td += '</tr>';
+					$('#waitingMemberTable').append(td);
+
+					// 데이터 개수 세기
+					memberCnt += 1;
 				})
+				$("#waitingMemberCnt").text(memberCnt);
+			})
 		});
 		// 강퇴된 멤버 목록
-		$(".kickedBandMemberList").click(function(){
-			$("#kickedBandMemberList").show(); 
+		$(".kickedBandMemberList").click(function () {
+			$("#kickedBandMemberList").show();
 			$("#waitingBandMemberList").hide();
-			$("#allBandMemberList").hide();     
-		});
+			$("#allBandMemberList").hide();
 
+			$.ajax({
+				url: '/own/band/bandGroup/getkickedMemberList?bandNo=' + bandNo,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(list => {
+				let memberCnt = 0;
+				// 기존 테이블 내용 삭제
+				$('#kickedMemberTable').empty();
+				$.each(list, function (i, e) {
+					var td = '<tr>'
+					td += '<td>' + '<img src="|/imgView/' + e.profileImg + '|"style="height: 30px; width: 30px; object-fit: cover"/>' + '</td>';
+					td += '<td>' + e.bandNickname + "(" + e.userId + ")" + '</td>';
+					td += '<td>' + e.bandMemberKickReason + '</td>';
+					td += '<td>' + e.bandKickDate + '</td>';
+					if (e.bandMemberRejoin == 'BL01') {
+						td += '<td>' + "가입불가" + '</td>';
+					} else {
+						td += '<td>' + "가입가능" + '</td>';
+					}
+					td += '<td>' + '<input type="checkbox">' + '</td>';
+					td += '</tr>';
+					$('#kickedMemberTable').append(td);
+
+					// 데이터 개수 세기
+					memberCnt += 1;
+				})
+				$("#kickedMemberCnt").text(memberCnt);
+			})
+		});
 	})
 </script>

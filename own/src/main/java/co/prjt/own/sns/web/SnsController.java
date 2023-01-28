@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
+import co.prjt.own.common.service.OwnLikeService;
+import co.prjt.own.common.service.OwnLikeService;
 import co.prjt.own.common.service.OwnLikeVO;
 import co.prjt.own.common.service.ReplyVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
@@ -47,6 +50,9 @@ public class SnsController {
 	@Autowired OwnhomeService ownService;
 	
 	@Autowired CommonService common;
+	
+	@Autowired OwnLikeService likeService;
+	
 
 	//1. sns홈으로 이동
 	@RequestMapping(value = "/sns", method = RequestMethod.GET)
@@ -99,7 +105,8 @@ public class SnsController {
 	
 	//2. 개인피드	
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
-	public String getSnsUser(HttpServletRequest request, Model model, SFollowVO svo, String snsNickname) {
+	public String getSnsUser(HttpServletRequest request, Model model, SFollowVO svo,
+							 String snsNickname) {
 		HttpSession session = request.getSession();
 		
 		//세션에 강제로 로그인유저 저장하기
@@ -155,20 +162,35 @@ public class SnsController {
 	//2-1. 개인피드 상세보기
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> getSnsBoard(SBoardVO vo, String snsBoardNo) {
+	public Map<String, Object> getSnsBoard(SBoardVO vo, String snsBoardNo, OwnLikeVO like, String userId) {
 		System.out.println("컨트롤 도착!");
 		System.out.println(snsBoardNo);
-		Map<String, Object> map = new HashMap<>();
-		SBoardVO svo = new SBoardVO();
-		List<MultimediaVO> list = common.selectImgAll(snsBoardNo);
-		svo = boardService.getSnsBoard(snsBoardNo);
-		List<ReplyVO> rvo = boardService.getBoardReplyList(snsBoardNo);
-		svo.setSnsBoardNo(snsBoardNo);
-		System.out.println("댓글조회해봅니다------"+svo);
-		map.put("imgList", list);
-		map.put("svo", svo);
-		map.put("reply", rvo);
-		return map;
+			Map<String, Object> map = new HashMap<>();
+			SBoardVO svo = new SBoardVO();
+			
+			//한 게시글에 대한 모든 이미지 들고오기
+			List<MultimediaVO> list = common.selectImgAll(snsBoardNo);
+			//게시글 내용 조회
+			svo = boardService.getSnsBoard(snsBoardNo);
+			//게시글에 대한 댓글 리스트 들고 오기
+			List<ReplyVO> rvo = boardService.getBoardReplyList(snsBoardNo);
+			svo.setSnsBoardNo(snsBoardNo);
+			
+			// 좋아요 조회 해봅니데이
+			like.setCategoryNo(snsBoardNo);
+			int snsLikeCount = likeService.countLike(like);
+			like.setUserId(userId);
+			
+		    OwnLikeVO likeResult =likeService.getLike(like);
+		    System.out.println("댓글조회해봅니다------"+svo);
+				map.put("imgList", list);
+				map.put("svo", svo);
+				map.put("reply", rvo);
+				map.put("snsLikeCheck", likeResult);
+				map.put("snsLikeCount", snsLikeCount);
+				
+			
+				return map;
 	}	
 	
 	
@@ -278,7 +300,7 @@ public class SnsController {
 	//10. 댓글 입력
 	@PostMapping("/snsReply")
 	@ResponseBody
-	public ReplyVO insertSnsReply(ReplyVO rvo, String replyContent, String userId, String categoryNo) {
+	public List<ReplyVO> insertSnsReply(ReplyVO rvo, String replyContent, String userId, String categoryNo) {
 		System.out.println("댓글등록 컨트롤러 도착");
 		System.out.println(replyContent + "1111111"+userId + "222222222"+categoryNo);
 			rvo.setReplyContent(replyContent);
@@ -287,7 +309,67 @@ public class SnsController {
 			
 			boardService.insertSnsReply(rvo);
 			System.out.println("등록할 댓글 정보" + rvo);
-		return rvo;
+			List<ReplyVO> reply = boardService.getBoardReplyList(categoryNo);
+		return reply;
 	}
-
+	
+	//11. 댓글 삭제
+	@PostMapping("/snsReplyDelete")
+	@ResponseBody
+	public List<ReplyVO> deleteSnsReply(ReplyVO rvo, String replyNo, String categoryNo) {
+		System.out.println("삭제 컨트롤러 도착");
+		System.out.println(replyNo);
+			String delReply = "SRE_"+ replyNo;
+			rvo.setReplyNo(delReply);
+			boardService.deleteSnsReply(rvo);
+			List<ReplyVO> reply = boardService.getBoardReplyList(categoryNo);
+		return reply;
+		
+	}
+	
+	//12. sns 좋아요
+	@PostMapping("/snsLike")
+	@ResponseBody
+	public int addLike(OwnLikeVO like, String snsBoardNo, String userId) {
+		like.setCategoryNo(snsBoardNo);
+		like.setUserId(userId);
+		like.setCategory("SNS");
+		
+		int result = likeService.addLike(like);
+		int snsLikeCount = likeService.countLike(like);
+		
+		if(result == 1) {
+			return snsLikeCount;
+		}else {
+			return 0;
+		}
+		
+		
+	}
+	
+	//12-1. 좋아요 취소
+	@PostMapping("/snsLikeDel")
+	@ResponseBody
+	public int delLike(OwnLikeVO like, String snsBoardNo, String userId) {
+		like.setCategoryNo(snsBoardNo);
+		
+		like.setUserId(userId);
+		int result = likeService.delLike(like);
+		int snsLikeCount = likeService.countLike(like);
+		
+		if(result == 1) {
+			return snsLikeCount;
+		}else {
+			return 0;
+		}
+		
+	}
+	
+	//13. 검색
+    @GetMapping("/snsListSearch")
+    @ResponseBody
+    public List<SAccountVO> ListSearch(){
+    	System.out.println("검색 컨트롤 도착");
+       return snsService.getSnsUserList(null);
+    }
 }

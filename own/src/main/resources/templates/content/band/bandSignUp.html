@@ -115,7 +115,7 @@
 						         		<input type="hidden" th:value="${session.userId}" name="userId" id="userId"/>
 						         		<input type="hidden" th:value="${band.bandNo}" name="bandNo" id="bandNo"/>
 						         		<input type="hidden" th:value="${user.bandGender}" name="bandGender" id="bandGender"/>
-						         		<input type="hidden" th:value="${#dates.format(user.bandBirth, 'yyyy-MM-dd')}" name="bandBirth" id="bandBirth"/>
+						         		<input type="hidden" th:value="${#dates.format(user.bandBirth, 'yyyy-MM-dd HH:mm:ss')}" name="bandBirth" id="bandBirth"/>
 						         		<input type="hidden" th:value="${band.bandMembershipOption}" name="bandMemberStatus" id="bandMemberStatus"/>
 						         		<div class="imgArea">
 						<!--================이미지 Area =================-->
@@ -131,10 +131,10 @@
 									                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">
 									                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 활동명</h6>
 									                  <div class="mt-10">
-									                    <input type="text" th:value="${user.bandNickname}" name="bandNickname" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
+									                    <input type="text" th:value="${user.bandNickname}" id="bandNickname" name="bandNickname" maxlength="10" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
 									                  </div>
-									                  <b><small style="display:inline; width: 10%; float: right">12/100</small></b>
-									                  <div><b style="padding-left: 10px;">가입가능한 닉네임입니다</b></div>
+									                  <b><small style="display:inline; width: 10%; float: right" id="nickNamelength">4/10</small></b>
+									                  <div id="hiddenBox" style="display: none"><b style="padding-left: 10px;" id="hiddenBoxText">가입가능한 닉네임입니다</b></div>
 									                </div>
 									                <!--================ 이름 끝 =================-->
 								                </div>
@@ -149,9 +149,9 @@
 								                <div style="display: inline-block; width: 90%;  display: flex; flex-direction: column;">
 								                  <h6 class="typo-list" style="float: left;margin-top: 2px; ">소개말</h6>
 								                  <div class="mt-10">
-								                    <textarea id="bandMemberIntro" name="bandMemberIntro" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input" style=" display: block; float: left;flex-grow: 3;"></textarea>
+								                    <textarea id="bandMemberIntro" name="bandMemberIntro" maxlength="300" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input" style=" display: block; float: left;flex-grow: 3;"></textarea>
 								                  </div>
-								                  <b><small style="float: right; display: block;">12/100</small></b>
+								                  <b><small style="float: right; display: block;" id="introlength">12/300</small></b>
 								                </div>
 								                <!--================ 소개 끝 =================-->
 								                <div  style="margin:0px auto; display: flex; justify-content: space-between; align-content:flex-start;">
@@ -160,34 +160,31 @@
 										    <div>
 							                      <h6 class="typo-list">개인정보 공개범위</h6>
 							                      <div class="d-flex">
-							                        <p style="margin-right: 10px">성별</p>
-							                        <div class="primary-radio" style="margin-top: 3px">
+							                        <label for="bandMemberGenderOpen" style="top: 0px; margin-right: 10px;">성별</label>
+							                        <div class="" style="margin-top: 3px">
 							                          <input type="checkbox" id="bandMemberGenderOpen" name="bandMemberGenderOpen" value="BM01" checked>
-							                          <label for="gender" style="top: 0px"></label>
 							                        </div>
 							                       </div>
 							                        <div class="d-flex">
-							                        <p style="margin-right: 10px">나이</p>
-							                        <div class="primary-radio"  style="margin-top: 3px">
+							                        <label for="bandMemberAgeOpen" style="top: 0px; margin-right: 10px;">나이</label>
+							                        <div style="margin-top: 3px">
 							                          <input type="checkbox" id="bandMemberAgeOpen" name="bandMemberAgeOpen" value="BO01" checked>
-							                          <label for="birthDay" style="top: 0px"></label>
 							                        </div>
 							                       </div>
 							                        <div class="d-flex">
-							                        <p style="margin-right: 10px">생일</p>
-							                        <div class="primary-radio"  style="margin-top: 3px">
+							                        <label for="bandMemberBirthOpen" style="top: 0px; margin-right: 10px;">생일</label>
+							                        <div style="margin-top: 3px">
 							                          <input type="checkbox" id="bandMemberBirthOpen" name="bandMemberBirthOpen" value="BN01" checked>
-							                          <label for="location" style="top: 0px"></label>
 							                        </div>
 							                       </div>
 						                     </div>
 							<!--================작성 Area =================-->
-							<button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 가입</button>
+							<button type="submit" id="submitBtn" disabled class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 가입</button>
 										</div>
 										<!--================hidden 체크박스 Area =================-->
-										<input type="checkbox" id="bandMemberGenderOpenHi" name="bandMemberGenderOpen" value="BM02">
-										<input type="checkbox" id="bandMemberAgeOpenHi" name="bandMemberAgeOpen" value="BO02">
-										<input type="checkbox" id="bandMemberBirthOpenHi" name="bandMemberBirthOpen" value="BN02">
+										<input style="display: none;" type="checkbox" id="bandMemberGenderOpenHi" name="bandMemberGenderOpen" value="BM02">
+										<input style="display: none;" type="checkbox" id="bandMemberAgeOpenHi" name="bandMemberAgeOpen" value="BO02">
+										<input style="display: none;" type="checkbox" id="bandMemberBirthOpenHi" name="bandMemberBirthOpen" value="BN02">
 										<!--================hidden 체크박스 Area =================-->
 							            </form>
 						<!--================폼 끝 Area =================--> 
@@ -216,7 +213,14 @@
         
         <!-- Optional JavaScript -->
         <script>
+        // 특수문자 정규식 변수(공백 미포함)
+        var replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
+ 		// 완성형 아닌 한글 정규식		
+        var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
         $(function(){
+        	//밴드번호
+        	let bandNo = $('#bandNo').val();
+        	
         	//동적 체크박스
         	//젠더
         	//연령 체크박스 유무에 따라 밸류값변하게+창생기게
@@ -294,6 +298,71 @@
             	reader.readAsDataURL(file);
             	
             })
+            //별명 중복체크...
+            $('#bandNickname').on('change', function(){
+            	nickNameChk();
+            })
+            //닉네임 공백막기 글자수
+             $('#bandNickname').keyup(function(e){
+            	//닉네임 공백막기
+            	 if($(this).val().search(/\s/) != -1){ //공백이 있나 체크 후
+           			$(this).val( $(this).val().replace(/ /gi, '') );
+           			$('#hiddenBox').show();
+           			$('#hiddenBoxText').text('공백입력은 불가능합니다.');
+            	 }
+            	//글자수 체크
+            	 chkNickLength();
+            })
+          //닉네임 글자수 체크  
+        	function chkNickLength(){
+        		$('#nickNamelength').text($('#bandNickname').val().length+'/10');
+        	}
+          //인트로  글자수
+            $('#bandMemberIntro').keyup(function(e){
+           	//글자수 체크
+           	 chkIntroLength();
+           })
+            //인트로  글자수
+           function chkIntroLength(){
+        		$('#introlength').text($('#bandMemberIntro').val().length+'/300');
+        	}
+            //별명 중복체크(자동)
+            function nickNameChk(){
+            	let nickName = $('#bandNickname').val();
+            	$.ajax({
+        			url : '/own/band/bandGroup/duplicateChk?bandNo='+bandNo+'&nickName='+nickName,
+        			method : 'get',
+        		}).then( res =>{
+        			console.log(res);
+        			if(res>0){
+        				$('#hiddenBoxText').text('중복된 닉네임입니다. 다른 닉네임을 사용해주십시오.');
+        				$('#hiddenBox').show();
+        				$('#submitBtn').prop('disabled', true);
+        				$('#submitBtn').css('backgroundColor', '#495057');
+        			} else if(nickName == '') {
+        				$('#hiddenBoxText').text('닉네임을 입력해주세요.');
+        				$('#hiddenBox').show();
+        				$('#submitBtn').prop('disabled', true);
+        				$('#submitBtn').css('backgroundColor', '#495057');
+        			} else if(nickName.match(replaceChar)||nickName.match(replaceNotFullKorean)){
+        				$('#hiddenBoxText').text('특수문자를 제외하고 올바른 문자를 입력해주십시오.');
+        				$('#hiddenBox').show();
+        				$('#submitBtn').prop('disabled', true);
+        				$('#submitBtn').css('backgroundColor', '#495057');
+        			} else {
+        				$('#hiddenBoxText').text('사용가능한 닉네임입니다.');
+        				$('#hiddenBox').show();
+        				$('#submitBtn').prop('disabled', false);
+        				$('#submitBtn').css('backgroundColor', '#F3C300');
+        			}
+        		})
+            }
+            //디폴트닉네임체크
+            nickNameChk();
+            //글자수체크
+            chkNickLength();
+            //인트로 글자수 체크
+            chkIntroLength();
         })
         </script>
     </body>

@@ -37,7 +37,10 @@ public class BandMemberDetailServiceImpl implements BandMemberDetailService{
 	@Override
 	public BandMemberDetailVO getBandMemberDetail(BandMemberDetailVO vo) {
 		vo = bandMemberDetailMapper.getBandMemberDetail(vo);
-		vo.setDetailImg(commonMapper.selectImg(vo.getBandMemberNo()));
+		//검색된 정보가 있으면
+		if(vo!=null) {
+			vo.setDetailImg(commonMapper.selectImg(vo.getBandMemberNo()));
+		}
 		return vo;
 	}
 
@@ -57,11 +60,22 @@ public class BandMemberDetailServiceImpl implements BandMemberDetailService{
 
 	@Override
 	public int bandProfilImg(String value) {
-		return bandProfilImg(value);
+		String mediaNo = null;
+		return bandMemberDetailMapper.bandProfilImg(mediaNo, value);
 	}
 
 	@Override 
 	public int bandProfilDefImg(String defaultNo, String detailNo, String mediaServerFile) {
 		return bandMemberDetailMapper.bandProfilDefImg(defaultNo, detailNo, mediaServerFile);
+	}
+
+	@Override
+	public int duplicateChk(String bandNo, String nickName) {
+		return bandMemberDetailMapper.duplicateChk(bandNo, nickName);
+	}
+
+	@Override
+	public int myOptionUpdate(BandMemberDetailVO vo) {
+		return bandMemberDetailMapper.myOptionUpdate(vo);
 	}
 }

@@ -134,4 +134,50 @@
 		'1'
 		)
 	</insert>
+	<!-- 닉네임 중복체크 -->
+	<select id="duplicateChk" resultType="int">
+		SELECT COUNT(*) FROM BAND_MEMBER_DETAIL
+		WHERE BAND_NO = #{bandNo} AND BAND_NICKNAME = #{nickName} 
+	</select>
+	<!-- 밴드 내의 개인 설정 변경 -->
+	<update id="myOptionUpdate">
+		UPDATE BAND_MEMBER_DETAIL SET
+			<if test="bandNickname != null and bandNickname !=''">
+				BAND_NICKNAME = #{bandNickname},
+			</if>
+			<if test="bandMemberStatus != null and bandMemberStatus !=''">
+				BAND_MEMBER_STATUS = #{bandMemberStatus},
+			</if>
+			<if test="bandKickStatus != null and bandKickStatus !=''">
+				BAND_KICK_STATUS = #{bandKickStatus},
+			</if>
+			<if test="bandSignupDate != null and bandSignupDate !=''">
+				BAND_SIGNUP_DATE = #{bandSignupDate},
+			</if>
+			<if test="bandAccessDate != null and bandAccessDate !=''">
+				BAND_ACCESS_DATE = #{bandAccessDate},
+			</if>
+			<if test="bandKickDate != null and bandKickDate !=''">
+				BAND_KICK_DATE = #{bandKickDate},
+			</if>
+			<if test="bandMemberIntro != null">
+				BAND_MEMBER_INTRO = #{bandMemberIntro},
+			</if>
+			<if test="bandMemberRejoin != null and bandMemberRejoin !=''">
+				BAND_MEMBER_REJOIN = #{bandMemberRejoin},
+			</if>
+			<if test="bandMemberKickReason != null">
+				BAND_MEMBER_KICK_REASON = #{bandMemberKickReason},
+			</if>
+			<if test="bandMemberGenderOpen != null and bandMemberGenderOpen !=''">
+				BAND_MEMBER_GENDER_OPEN = #{bandMemberGenderOpen},
+			</if>
+			<if test="bandMemberBirthOpen != null and bandMemberBirthOpen !=''">
+				BAND_MEMBER_BIRTH_OPEN = #{bandMemberBirthOpen},
+			</if>
+			<if test="bandMemberAgeOpen != null and bandMemberAgeOpen !=''">
+				BAND_MEMBER_AGE_OPEN = #{bandMemberAgeOpen}
+			</if>
+		WHERE BAND_MEMBER_NO = #{bandMemberNo}
+	</update>
 </mapper>

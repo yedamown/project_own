@@ -31,4 +31,25 @@
 		        <include refid="condition" />
 		    where user_id = #{userId}
 	</update>
+	
+	<insert id="insertDefault">
+		<selectKey keyColumn="USER_BIRTHDAY,USER_GENDER" keyProperty="bandBirth,bandGender" resultType="hashmap" order="BEFORE">
+			SELECT USER_BIRTHDAY, USER_GENDER FROM OWN_USERS WHERE USER_ID = #{userId}
+		</selectKey>
+		INSERT INTO BAND_MEMBER_DEFAULT (
+					USER_ID,
+					BAND_NICKNAME,
+					BAND_GENDER,
+					BAND_LOCATION,
+					BAND_INTEREST,
+					BAND_BIRTH
+					) VALUES (
+					#{userId},
+					#{bandNickname},
+					#{bandGender},
+					#{bandLocation},
+					#{bandInterest},
+					#{bandBirth}
+					)
+	</insert>
 </mapper>

@@ -105,8 +105,11 @@ return bandList;
 		for(Map<String, Object> band : bandList) {
 			bandNoList.add((String) band.get("bandNo"));
 		}
+		List<MultimediaVO> imglist = new ArrayList<MultimediaVO>();
 		//위에서 가져온 bandNoList리스트로 이미지 얻어오기
-		List<MultimediaVO> imglist = common.selectImgAllKey(bandNoList);
+		if(bandNoList.size()>0) {
+			imglist = common.selectImgAllKey(bandNoList);
+		}
 		if(bandList.size()>0) {
 			for(Map<String, Object> band : bandList) {
 				for(MultimediaVO img : imglist) {
