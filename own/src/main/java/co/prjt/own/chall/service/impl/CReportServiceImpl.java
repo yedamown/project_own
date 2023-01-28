@@ -13,25 +13,27 @@ import co.prjt.own.chall.service.CReportVO;
 public class CReportServiceImpl implements CReportService{
 
 	@Autowired CReportMapper mapper;
-	
+
 	@Override
-	public CReportVO insertCreport(CReportVO vo) {
-		return null;
+	public int insertCReport(CReportVO vo) {
+		return mapper.insertCReport(vo);
 	}
 
 	@Override
-	public CReportVO updateCreport(CReportVO vo) {
-		return null;
+	public int updateCReport(CReportVO vo) {
+		return mapper.updateCReport(vo);
 	}
 
 	@Override
 	public List<CReportVO> getCReport(CReportVO vo) {
-		return null;
+		return mapper.getCReport(vo);
 	}
 
 	@Override
 	public List<CReportVO> getCReportAll(CReportVO vo) {
-		return null;
+		return mapper.getCReportAll(vo);
 	}
+
+
 
 }

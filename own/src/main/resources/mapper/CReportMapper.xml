@@ -1,3 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="co.prjt.own.chall.mapper.CReportMapper"></mapper>
+<mapper namespace="co.prjt.own.chall.mapper.CReportMapper">
+	<insert id="insertCReport">
+		<selectKey keyProperty="reportNo" resultType="string" order="BEFORE">
+			SELECT CRP_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+			INSERT INTO CHALL_REPORT( REPORT_NO, 
+									  VLD_NO ,
+									  REPORTER,
+									  REPORT_REASON )
+			VALUES( 'CRP_'||#{reportNo},
+				    #{vldNo},
+				    #{reporter},
+				    #{reportReason})
+	</insert>
+	
+	<update id="updateCReport">
+		UPDATE CHALL_REPORT
+		SET REPORT_STATE = #{reportState}
+		WHERE REPORT_NO = #{reportNo}
+	</update>
+
+	<select id="getCReport">
+		SELECT R.*
+		FROM CHALL_VALIDATION V, CHALL_REPORT R
+		WHERE V.VLD_NO = R.VLD_NO
+		AND V.CHALL_NO = #{challNo}
+		AND R.REPORT_STATE = #{reportState}
+	</select>
+</mapper>

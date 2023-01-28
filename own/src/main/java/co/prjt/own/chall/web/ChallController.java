@@ -1,6 +1,6 @@
 package co.prjt.own.chall.web;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +25,8 @@ import co.prjt.own.chall.service.CMemberListService;
 import co.prjt.own.chall.service.CMemberListVO;
 import co.prjt.own.chall.service.CMemberService;
 import co.prjt.own.chall.service.CMemberVO;
+import co.prjt.own.chall.service.CReportService;
+import co.prjt.own.chall.service.CReportVO;
 import co.prjt.own.chall.service.CResultService;
 import co.prjt.own.chall.service.CResultVO;
 import co.prjt.own.chall.service.ChallengeService;
@@ -53,6 +55,7 @@ public class ChallController {
 	@Autowired CAmountService amount;
 	@Autowired ValidationService validation;
 	@Autowired CResultService result;
+	@Autowired CReportService report;
 
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
@@ -283,6 +286,16 @@ public class ChallController {
 		return list;
 	}
 	
+	//인증 신고 등록 아작스
+	@PostMapping("/addRptAjax")
+	@ResponseBody
+	public int addRptAjax(@RequestBody CReportVO vo) {
+		System.out.println(vo);
+		int r = report.insertCReport(vo);
+		return r;
+	}
+	
+//---------------------------------- 멤버관리관련 -----------------------------------------------------------
 	//도전리더 - 멤버리스트 출력
 	@GetMapping("/challMemList")
 	@ResponseBody

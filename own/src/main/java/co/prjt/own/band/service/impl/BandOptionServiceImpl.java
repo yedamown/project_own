@@ -63,8 +63,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 		// TODO Auto-generated method stub
 		return bandOptionMapper.bandDisHuman(bandNo);
 	}
-	
-   @Override
+  /*@Override
 	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging) {
 		// 페이징 설정
 		vo.setBandMemberStatus("BA02"); // 조건 설정
@@ -76,7 +75,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 
 		// 가치 설정 - 멤버 관리 - 전체 멤버 리스트
 		return bandOptionMapper.bandOptionGetAllMemberList(vo);
-	}
+	}*/ 
 
 	@Override
 	public List<BandMemberDetailVO> bandOptionGetWaitingMemberList(BandMemberDetailVO vo, Paging paging) {
@@ -104,6 +103,12 @@ public class BandOptionServiceImpl implements BandOptionService {
 
 		// 가치 설정 - 멤버 관리 - 강퇴된 멤버 리스트
 		return bandOptionMapper.bandOptionGetkickedMemberList(vo);
+	}
+
+	@Override
+	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO bmdvo, BandVO vo, Paging paging) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
