@@ -16,6 +16,8 @@ public class CReportVO {
 	Date reportDate;
 	
 	String reportReason;
-	String reportStatus;
+	String reportState;
 	String reportResult;
+	
+	String challNo;
 }

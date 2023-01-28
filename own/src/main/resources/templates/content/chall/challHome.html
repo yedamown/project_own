@@ -4,6 +4,7 @@
 
 <head>
 	<!-- jquery -->
+	<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="Free HTML Templates" name="keywords" />
@@ -27,11 +28,11 @@
 	<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
 	<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
-	<!-- Contact Javascript File -->
-	<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
-	<script src="/css/chall/mail/contact.js"></script>
-	<!-- Template Javascript -->
-	<script src="/css/chall/js/main.js"></script>
+    <!-- Contact Javascript File -->
+    <script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
+    <script src="/css/chall/mail/contact.js"></script>
+    <!-- Template Javascript -->
+    <script src="/css/chall/js/main.js"></script>
 	<meta charset="utf-8">
 	<title>OWN _ 도전</title>
 </head>
@@ -167,7 +168,94 @@
 	<!-- 운동카테고리 끝 -->
 
 
+    <!-- Testimonial Start -->
+	<div class="container-fluid py-5">
+      <div class="container p-0">
+        <div class="text-center pb-2">
+          <p class="section-title px-5">
+            <span class="px-2">Testimonial</span>
+          </p>
+          <h1 class="mb-4">What Parents Say!</h1>
+        </div>
+      <!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
+        <div class="owl-carousel testimonial-carousel" >
+         <div class="testimonial-item px-3" >
+            <div class="bg-light shadow-sm rounded mb-4 p-4">
+              <h3 class="fas fa-quote-left text-primary mr-3">나의 도전 보러가기</h3>
+            </div>
+            <div class="d-flex align-items-center">
+              <img
+                class="rounded-circle"
+                src="img/testimonial-4.jpg"
+                style="width: 70px; height: 70px"
+                alt="Image"
+              />
+              <div class="pl-3">
+                <h5>77777777777</h5>
+                <i>Profession</i>
+              </div>
+            </div>
+          </div>
+          
+        <th:block th:each="my: ${myChall}">
+          <div class="testimonial-item px-3">
+            <div class="bg-light shadow-sm rounded mb-4 p-4">
+              <h3 class="fas fa-quote-left text-primary mr-3" th:text="${my.challTitle}"></h3>
+            </div>
+            <div class="d-flex align-items-center">
+              <img
+                class="rounded-circle" th:src="|/imgView/${my.firstImage}|" style="width: 70px; height: 70px"
+                alt="Image"
+              />
+              <div class="pl-3">
+                <h5  th:text="${my.challTitle}"></h5>
+                <a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+				class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+              </div>
+            </div>
+          </div>
+          </th:block>
+        </div>
+      </div>
+    </div> 
+    <!-- Testimonial End -->
+    
+        <!-- Testimonial Start3333 -->
+	<div class="container-fluid py-5">
+      <div class="container p-0">
+        <div class="text-center pb-2">
+          <p class="section-title px-5">
+            <span class="px-2">Testimonial</span>
+          </p>
+          <h1 class="mb-4">What's New Challenges!</h1>
+        </div>
 
+        <div class="owl-carousel testimonial-carousel" >
+        <th:block th:each="my: ${myChall}">
+          <div class="testimonial-item col-lg-4 mb-4">
+						<div class="card border-0 shadow-sm mb-2" style="width: 300px">
+							<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt="도전사진"
+								style="height: 230px; object-fit: cover" />
+							<div class="card-body bg-light text-center p-4">
+								<input type="hidden" th:value="${my.challNo}" />
+								<h5 class="" th:text="${my.challTitle}"></h5>
+								<div class="d-flex justify-content-center mb-3">
+									<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
+									<small class="mr-3">[[${my.challDuration}]]주 동안</small> 
+									<small class="mr-3">주 [[${my.challFreq}]]회</small>
+								</div>
+								<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+							</div>
+						</div>
+					
+          </div>
+          </th:block>
+        </div>
+      </div>
+    </div> 
+    <!-- Testimonial End -->
+    
 	<!-- 나의 도전 -->
 	<div class="container-fluid pt-3" th:if="${myChall}">
 		<div class="container">
@@ -181,10 +269,10 @@
 			<div class="row pb-3" id="rowMyChall">
 				<th:block th:each="my: ${myChall}">
 					<div class="col-lg-4 mb-4">
-						<div class="card border-0 shadow-sm mb-2">
+						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
 							<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt="도전사진"
-								style="height: 230px; object-fit: cover" />
-							<div class="card-body bg-light text-center p-4">
+								style="height: 230px;"/>
+							<div class="card-body bg-light text-center p-4" style="width: 300px">
 								<input type="hidden" th:value="${my.challNo}" />
 								<h4 class="" th:text="${my.challTitle}"></h4>
 								<div class="d-flex justify-content-center mb-3">
@@ -440,7 +528,10 @@
 		</div>
 	</div>
 	<!-- Footer End -->
-
+	
+	<!-- Back to Top -->
+    <a href="#" class="btn btn-primary p-3 back-to-top" >
+    	<i class="fa fa-angle-double-up"></i></a>
 	<script>
 	 //카테고리 그림 클릭 시 검색으로 이동
 	    $('#categoryBtn div img').click(function(){
@@ -451,6 +542,30 @@
 	    	location.href = '/own/chall/applyForm?challNo=' + cNo
 	    })
     
+	    //흑흑
+	    // Testimonials carousel
+    $(".testimonial-carousel").owlCarousel({
+        center: true,
+        autoplay: true,
+        smartSpeed: 2000,
+        dots: true,
+        loop: true,
+        responsive: {
+            0:{
+                items:1
+            },
+            576:{
+                items:1
+            },
+            768:{
+                items:2
+            },
+            992:{
+                items:3
+            }
+        }
+    });
+	    
  		//검색
  		$('#searchBtn').on('click', function(){
  			console.log("헐헐");
@@ -531,7 +646,7 @@
 		    let page = $(this).attr('value');
 		    console.log($(this).attr('value'));
 		    $.ajax({
-		       url: '/own/chall/popChallAjax?page='+page,
+		       url: '/own/chall/myChallAjax?page='+page,
 		       method: 'get',
 		    }).then(result => {
 		       console.log(result);

@@ -1,6 +1,6 @@
 package co.prjt.own.chall.web;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +25,8 @@ import co.prjt.own.chall.service.CMemberListService;
 import co.prjt.own.chall.service.CMemberListVO;
 import co.prjt.own.chall.service.CMemberService;
 import co.prjt.own.chall.service.CMemberVO;
+import co.prjt.own.chall.service.CReportService;
+import co.prjt.own.chall.service.CReportVO;
 import co.prjt.own.chall.service.CResultService;
 import co.prjt.own.chall.service.CResultVO;
 import co.prjt.own.chall.service.ChallengeService;
@@ -53,6 +55,7 @@ public class ChallController {
 	@Autowired CAmountService amount;
 	@Autowired ValidationService validation;
 	@Autowired CResultService result;
+	@Autowired CReportService report;
 
 	// 홈페이지, 도전리스트
 	@GetMapping("/home")
@@ -96,18 +99,36 @@ public class ChallController {
 	//홈페이지 페이징 아작스
 	@GetMapping("/popChallAjax")
 	@ResponseBody
-	public List<ChallengeVO> popChallAjax(Model model, Paging paging, ChallengeVO vo) {
+	public List<ChallengeVO> popChallAjax(Paging paging, ChallengeVO vo) {
 		List<ChallengeVO> cList = challenge.pageChallList(vo, paging);	
 		//페이징 담은 곳에다가 참여회원 담을 곳.
-		List<ChallengeVO> newMemList = new ArrayList<ChallengeVO>();
 		//참여중인 회원 넣기
 		for(ChallengeVO i: cList) {
 		//참여회원수 검색해서 넣기
 			int r= memberList.getChallMemNum(i.getChallNo());
 			i.setNowMember(r);
-			newMemList.add(i);
 		}
-		return newMemList;
+		return cList;
+	}
+	
+	//내 도전 페이징 아작스
+	@GetMapping("/myChallAjax")
+	@ResponseBody
+	public List<ChallengeVO> myChallAjax(HttpServletRequest request, Paging paging, ChallengeVO vo) {
+		HttpSession session = request.getSession();
+		session.setAttribute("loginUser", ownService.login("kjk"));
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		String id = user.userId;
+		vo.setUserId(id);
+		paging.setPageUnit(3);//3개씩보기
+		paging.setPageSize(3); //페이딩 동그라미 3개
+		List<ChallengeVO> cList = challenge.myPageChall(vo, paging);	
+		for(ChallengeVO i: cList) {
+		//참여회원수 검색해서 넣기
+			int r= memberList.getChallMemNum(i.getChallNo());
+			i.setNowMember(r);
+		}
+		return cList;
 	}
 	
 	//검색 후 결과페이지로 이동
@@ -265,6 +286,16 @@ public class ChallController {
 		return list;
 	}
 	
+	//인증 신고 등록 아작스
+	@PostMapping("/addRptAjax")
+	@ResponseBody
+	public int addRptAjax(@RequestBody CReportVO vo) {
+		System.out.println(vo);
+		int r = report.insertCReport(vo);
+		return r;
+	}
+	
+//---------------------------------- 멤버관리관련 -----------------------------------------------------------
 	//도전리더 - 멤버리스트 출력
 	@GetMapping("/challMemList")
 	@ResponseBody

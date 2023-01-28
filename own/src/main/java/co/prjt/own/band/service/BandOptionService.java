@@ -26,9 +26,9 @@ public interface BandOptionService {
 
 	// 밴드 휴면 풀기..
 	public int bandDisHuman(String bandNo);
-
+  
 	// 밴드 가입한 멤버 리스트
-	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging);
+	//public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging);
 
 	// 밴드 가입대기중 멤버 리스트
 	public List<BandMemberDetailVO> bandOptionGetWaitingMemberList(BandMemberDetailVO vo, Paging paging);

@@ -69,8 +69,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 		// TODO Auto-generated method stub
 		return bandOptionMapper.bandDisHuman(bandNo);
 	}
-
-
+  
 	@Override
 	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging) {
 		// 페이징 설정
@@ -81,11 +80,11 @@ public class BandOptionServiceImpl implements BandOptionService {
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		vo.setPaging(paging);
-
 		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetAllMemberList(vo);
 		list.get(0).setPaging(paging);
 		return list;
 	}
+
 
 	@Override
 	public List<BandMemberDetailVO> bandOptionGetWaitingMemberList(BandMemberDetailVO vo, Paging paging) {
@@ -118,6 +117,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 	@Override
 	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO bmdvo, BandVO vo, Paging paging) {
 		// TODO Auto-generated method stub
+
 		return bandOptionMapper.bandOptionGetAllMemberList(bmdvo);
 	}
 
