@@ -16,6 +16,12 @@ public interface SBoardMapper {
    	 //SNS 최신 게시글 조회
      public List<SBoardVO> getNowBoardList(String id);
    	 
+     //SNS 전체 최신 게시글 조회
+   	 public List<SBoardVO> getNewBoardList();
+   	 
+   	 //SNS 좋아요 한 게시글 조회
+	 public List<SBoardVO> snsBoardLikeList(String id);
+   	 
 	 int countBoard(String id);
 	 
 	 //sns 번호 뽑기
@@ -29,6 +35,9 @@ public interface SBoardMapper {
 	 
 	 //sns 게시글 삭제
 	 int deleteSnsBoard(String snsBoardNo);
+	 
+	 //댓글 수 조회
+	 int snsReplyCount(String boardNo);
 	 
 	//댓글 조회
 	 public List<ReplyVO> getBoardReplyList(String boardNo);

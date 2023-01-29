@@ -75,6 +75,21 @@ public class SBoardServiceImpl implements SBoardService {
 		return sBoardMapper.deleteSnsReply(vo);
 	}
 
+	@Override
+	public int snsReplyCount(String boardNo) {
+		return sBoardMapper.snsReplyCount(boardNo);
+	}
+
+	@Override
+	public List<SBoardVO> getNewBoardList() {
+		return sBoardMapper.getNewBoardList();
+	}
+
+	@Override
+	public List<SBoardVO> snsBoardLikeList(String id) {
+		return sBoardMapper.snsBoardLikeList(id);
+	}
+
 
 
 }
