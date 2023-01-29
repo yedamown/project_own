@@ -1,0 +1,682 @@
+<html xmlns:th="http://www.thymeleaf.org"lang="ko">
+   <!--CDN으로 사용함-->
+   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<!-- Bootstrap CSS -->
+<meta charset="utf-8">
+<style>
+	.tab-wrap {
+	  transition: 0.3s box-shadow ease;
+	  border-radius: 6px;
+	  max-width: 100%;
+	  display: flex;
+	  flex-wrap: wrap;
+	  position: relative;
+	  list-style: none;
+	  background-color: #fff;
+	  margin: 40px 0;
+	  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	}
+	
+	.tab-wrap:hover {
+	  box-shadow: 0 12px 23px rgba(0, 0, 0, 0.23), 0 10px 10px rgba(0, 0, 0, 0.19);
+	}
+	
+	.tab {
+	  display: none;
+	}
+	.tab:checked:nth-of-type(1) ~ .tab__content:nth-of-type(1) {
+	  opacity: 1;
+	  transition: 0.5s opacity ease-in, 0.8s transform ease;
+	  position: relative;
+	  top: 0;
+	  z-index: 100;
+	  transform: translateY(0px);
+	  text-shadow: 0 0 0;
+	}
+	.tab:checked:nth-of-type(2) ~ .tab__content:nth-of-type(2) {
+	  opacity: 1;
+	  transition: 0.5s opacity ease-in, 0.8s transform ease;
+	  position: relative;
+	  top: 0;
+	  z-index: 100;
+	  transform: translateY(0px);
+	  text-shadow: 0 0 0;
+	}
+	.tab:checked:nth-of-type(3) ~ .tab__content:nth-of-type(3) {
+	  opacity: 1;
+	  transition: 0.5s opacity ease-in, 0.8s transform ease;
+	  position: relative;
+	  top: 0;
+	  z-index: 100;
+	  transform: translateY(0px);
+	  text-shadow: 0 0 0;
+	}
+	.tab:checked:nth-of-type(4) ~ .tab__content:nth-of-type(4) {
+	  opacity: 1;
+	  transition: 0.5s opacity ease-in, 0.8s transform ease;
+	  position: relative;
+	  top: 0;
+	  z-index: 100;
+	  transform: translateY(0px);
+	  text-shadow: 0 0 0;
+	}
+	.tab:checked:nth-of-type(5) ~ .tab__content:nth-of-type(5) {
+	  opacity: 1;
+	  transition: 0.5s opacity ease-in, 0.8s transform ease;
+	  position: relative;
+	  top: 0;
+	  z-index: 100;
+	  transform: translateY(0px);
+	  text-shadow: 0 0 0;
+	}
+	.tab:first-of-type:not(:last-of-type) + label {
+	  border-top-right-radius: 0;
+	  border-bottom-right-radius: 0;
+	}
+	.tab:not(:first-of-type):not(:last-of-type) + label {
+	  border-radius: 0;
+	}
+	.tab:last-of-type:not(:first-of-type) + label {
+	  border-top-left-radius: 0;
+	  border-bottom-left-radius: 0;
+	}
+	.tab:checked + label {
+	  background-color: #fff;
+	  box-shadow: 0 -1px 0 #fff inset;
+	  cursor: default;
+	}
+	.tab:checked + label:hover {
+	  box-shadow: 0 -1px 0 #fff inset;
+	  background-color: #fff;
+	}
+	.tab + label {
+	  box-shadow: 0 -1px 0 #eee inset;
+	  border-radius: 6px 6px 0 0;
+	  cursor: pointer;
+	  display: block;
+	  text-decoration: none;
+	  color: #333;
+	  flex-grow: 3;
+	  text-align: center;
+	  background-color: #f2f2f2;
+	  user-select: none;
+	  text-align: center;
+	  transition: 0.3s background-color ease, 0.3s box-shadow ease;
+	  height: 50px;
+	  box-sizing: border-box;
+	  padding: 15px;
+	}
+	
+	.tab__content {
+	  padding: 10px 25px;
+	  background-color: transparent;
+	  position: absolute;
+	  width: 100%;
+	  z-index: -1;
+	  opacity: 0;
+	  left: 0;
+	  transform: translateY(-3px);
+	  border-radius: 6px;
+	}
+	.clickBoard {
+		color : blue;
+		text-decoration : underline;
+	}
+	ul{
+		list-style: none;
+	}
+</style>
+<h1>옵션</h1>
+<div style="flex-grow:3; width: 740px" id="subTemplate">
+<div class="tab-wrap">
+	<input type="hidden" id="bandNo" th:value="${bandNo}">
+    <input type="radio" id="tab4" name="tabGroup2" class="tab" checked>
+    <label for="tab4">밴드정보</label>
+
+    <input type="radio" id="tab5" name="tabGroup2" class="tab">
+    <label for="tab5" id="bandmanage">밴드 수정</label>
+
+    <input type="radio" id="tab6" name="tabGroup2" class="tab">
+    <label for="tab6" id="memberManage">멤버관리</label>
+
+    <input type="radio" id="tab7" name="tabGroup2" class="tab">
+    <label for="tab7">게시판 관리</label>
+
+    <input type="radio" id="tab8" name="tabGroup2" class="tab">
+    <label for="tab8" id="bandPass">밴드위임</label>
+  </div>
+  <div id="manageTemplate">
+	<article style="border: 1px solid #eeeeee;padding:20px 30px 50px 30px; ">
+		<div class="container">
+			<h4 class="typo-list" style="padding-bottom: 15px">게시판 관리</h4>  
+			<hr>
+			<div style="display: flex;">
+				<div style="border: 1px solid #eeeeee;">
+					<div>
+						<span id="dowwdoww">⏬</span>
+						<span id="uppupp">⏫</span>
+						<span id="doww">🔽</span>
+						<span id="upp">🔼</span>
+						<span id="pluu">➕</span>
+						<span id="linn">➗</span>
+						<span id="minn">➖</span>
+					</div>
+					<div>
+						<ul style="border: 15px solid #eeeeee;" id="boardListArray">
+	                          <li th:each="board: ${boardList}" class="boards ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+	                          	<p class="boardLine" th:if="${board.bandBoardLine}!=0" th:name="${board.bandBoardOptionNo}" th:id="${board.bandBoardName}">[[${board.bandBoardName}]] ([[${board.boardNumber}]])</p>
+	                          	<b class="boardLine" th:if="${board.bandBoardLine}==0" th:text="${board.bandBoardName}"  th:name="${board.bandBoardOptionNo}" th:id="${board.bandBoardName}"></b>
+	                          </li>											
+						</ul>
+						<div><button type="button" id="boardSaveBtn">게시판 순서 저장</button></div>
+						<div><button type="button" id="boardSaveReset">게시판 순서 초기화</button></div>
+					</div>
+				</div>
+				<div style="border: 1px solid #eeeeee;">
+					<form id="frm" name="frm">
+						<div>
+							<input type="hidden" id="bandBoardOptionNo" name="bandBoardOptionNo">
+							<input type="hidden" id="bandBoardLine" name="bandBoardLine">
+							<input type="hidden" id="bandBoardOrder" name="bandBoardOrder">
+							<input type="hidden" id="numberss" name="numberss"class="numberss"><!-- 글개수 -->
+							<h5 class="typo-list">메뉴명</h5>
+							<input type="text" id="bandBoardName" name="bandBoardName" maxlength="10">
+						</div>
+						<div id="linee" style="display: block">
+							<div>
+								<h5 class="typo-list">권한 설정</h5>
+								<select id="bandBoardAuth" name="bandBoardAuth">
+									<option value="BG01" th:selected="${boardList[0].bandBoardAuth}=='BG01'">가치리더</option>
+									<option value="BG02" th:selected="${boardList[0].bandBoardAuth}=='BG02'">일반멤버</option>
+								</select>
+							</div>
+							<div>
+								<h5 class="typo-list">좋아요 기능</h5>
+								<input type="radio" id="bandLikeOption" name="bandLikeOption" value="BH01">
+								<input type="radio" id="bandLikeOption2" name="bandLikeOption" value="BH02">
+							</div>
+							<div>
+								<h5 class="typo-list">양식 사용</h5>
+								<input type="checkbox" id="conOption" name="conOption" value="T">
+								<textarea rows="2" cols="30" id="bandContentOption" name="bandContentOption" style="display: none"></textarea>
+							</div>
+							<div>
+								<h5 class="typo-list">말머리</h5>
+								<input type="text" id="inputBox" maxlength="8">
+								<button type="button" id="reAdd">추가</button>
+								<button type="button" id="reUp">수정</button>
+								<button type="button" id="reDel">삭제</button>
+								<select id="bandBoardRemarks" name="bandBoardRemarks">
+									<option selected value="no" disabled>말머리 추가</option>
+									<option></option>
+								</select>
+							</div>
+						</div>
+					</form>
+					<!-- 여기다 저장해놓고 js에서 잘라서 씀 -->
+					<input type="hidden" value="" id="saveRemark">
+					<!-- 여기다가 태그#태그#으로 저장할때 저장 -->
+					<input type="hidden" value="" id="saveRe">
+					<div><button type="button" id="savee">저장</button></div>
+					<div><button type="button" id="resett">초기화</button></div>
+				</div>
+			</div>
+		</div>
+	</article>
+  </div>
+</div>
+<script th:inline="javascript">
+var header = /*[[${_csrf.headerName}]]*/
+	console.log(header);
+var token = /*[[${_csrf.token}]]*/
+   console.log(token);
+	$(function(){
+		//초기 보드 저장
+		let boardListSave = new Array();
+		let board = new Object;
+		/*[# th:each="board : ${boardList}"]*/
+		board = new Object;
+		board.bandBoardOrder = /*[[${board.bandBoardOrder}]]*/
+		board.bandBoardName = /*[[${board.bandBoardName}]]*/
+		board.bandBoardAuth = /*[[${board.bandBoardAuth}]]*/
+		board.bandLikeOption = /*[[${board.bandLikeOption}]]*/
+		board.bandContentOption = /*[[${board.bandContentOption}]]*/
+		board.bandBoardRemarks = /*[[${board.bandBoardRemarks}]]*/
+		board.bandBoardLine = /*[[${board.bandBoardLine}]]*/
+		board.bandBoardOptionNo = /*[[${board.bandBoardOptionNo}]]*/
+		board.bandNo = /*[[${board.bandNo}]]*/
+		board.boardNumber = /*[[${board.boardNumber}]]*/
+		boardListSave.push(board);
+		/*[/]*/
+		console.log(boardListSave);
+		//로드되면 우선 처음꺼선택
+		$('.boardLine:eq(0)').addClass('clickBoard');
+		console.log(boardListSave[0].bandBoardOptionNo);
+		boardLoad(boardListSave[0].bandBoardOptionNo);
+		
+		//클릭설정불러오기
+		$('#boardListArray').on('click', $('.boardLine'), function(e){
+			e.stopPropagation();
+			//클릭이벤트css
+			console.log($(e.target).attr('class'))
+				if($(e.target).attr('class')=='boardLine'){
+				$('.boardLine').each(function (idx, ele){
+					$(ele).removeClass('clickBoard');
+					//태그비워주기
+					$('#saveRemark').val('');
+					//양식비워주기
+					$('#bandContentOption').val('');
+					$(e.target).addClass('clickBoard');
+				})
+				$(e.target).addClass('clickBoard');
+				//보드식별번호보내기 name="optionNo"
+				boardLoad($(e.target).attr('name'));
+			}
+		})
+		//보드 식별 번호 받아서 설정불러오기
+		function boardLoad(optionNo){
+			console.log(optionNo);
+			//ele 에 저장..
+			let ele = "";
+			$(boardListSave).each(function(idx, element){
+				if(element.bandBoardOptionNo==optionNo){
+					ele = element;
+				}
+			})
+			//히든 bandBoardName
+			$('#bandBoardOptionNo').val(ele.bandBoardOptionNo);
+			//bandBoardName
+			$('#bandBoardName').val(ele.bandBoardName);
+			//줄
+			$('#bandBoardLine').val(ele.bandBoardLine);
+			//순서
+			$('#bandBoardOrder').val(ele.bandBoardOrder);
+			//글 개수
+			$('#numberss').val(ele.boardNumber);
+			//게시판이면
+			if(ele.bandBoardLine==1){
+				console.log($('#linee'))
+				$('#linee').show();
+				makeBoardOption(ele);
+			} else {
+				//여긴 줄 설정
+				$('#linee').hide();
+			}
+		}
+		function makeBoardOption(ele){
+			//권한설정
+			$('#bandBoardAuth option[value='+ele.bandBoardAuth+']').prop("selected",true);
+			//좋아요
+			$('input[name=bandLikeOption]').each(function(idx, i){
+				if($(i).val()==ele.bandLikeOption){
+					$(i).prop('checked', true);
+				}
+			})
+			//양식사용bandContentOption
+			//우선 비워주고
+			$('#bandContentOption').val('');
+			if(ele.bandContentOption!=null){
+				$('#conOption').prop('checked', true);
+				$('#bandContentOption').show();
+				$('#bandContentOption').val(ele.bandContentOption);
+			} else {
+				$('#conOption').prop('checked', false);
+				$('#bandContentOption').hide();
+			}
+			//말머리
+			$('#bandBoardRemarks').empty();
+			let bandBoardRemarks = $('#bandBoardRemarks');
+			bandBoardRemarks.append($('<option disabled selected>말머리 추가</option>'))
+			let tag = '';
+			if(ele.bandBoardRemarks!=null){
+				//마지막에# 떼주기
+				tag = (ele.bandBoardRemarks).slice(0, -1);
+				let arr = tag.split('#');
+				for(let i=0; i<arr.length; i++){
+					let r = arr[i];
+					let optionTag = $('<option value='+r+'>'+r+'</option>');
+					bandBoardRemarks.append(optionTag);
+				}
+				//말머리저장
+				$('#saveRemark').val(tag);
+			}
+		}
+		//정규식
+		// 특수문자 정규식 변수(공백 미포함)
+        var replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
+ 		// 완성형 아닌 한글 정규식		
+        var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+ 		//공백
+ 		var reg = /\s/g;
+		//말머리설정 복잡해서 따로 뺌
+		//말머리추가
+		$('#reAdd').on('click', function(){
+			let inputVal = $('#inputBox').val();
+			if(inputVal.match(replaceChar)||inputVal.match(replaceNotFullKorean)||inputVal.replace(/\s/g, "").length==0){
+				alert('특수문자를 제외하고, 올바른 글자를 입력해주세요.')
+				return false;
+			}
+			//리마크 저장해둔거 자르기 중복체크
+			console.log($('#saveRemark').val());
+			let arr = $('#saveRemark').val().split('#');
+			console.log(arr);
+			for(let a of arr){
+				if(a==inputVal){
+					alert('중복됩니다.');
+					return false;
+				}
+			}
+			arr.push(inputVal);
+			let bandBoardRemarks = $('#bandBoardRemarks');
+			bandBoardRemarks.append($('<option value='+inputVal+'>'+inputVal+'</option>'))
+			
+			//여기도 저장
+			console.log(arr)
+			$('#saveRemark').val(arr.join("#"));
+			$('#inputBox').val('');
+		})
+		//셀렉트박스 이벤트
+		$('#bandBoardRemarks').on('click', function(){
+			$('#inputBox').val($('#bandBoardRemarks option:selected').val());
+		})
+		//말머리수정
+		$('#reUp').on('click', function(){
+			let inputVal = $('#inputBox').val();
+			if(inputVal.match(replaceChar)||inputVal.match(replaceNotFullKorean)||inputVal.replace(/\s/g, "").length==0){
+				alert('특수문자를 제외하고, 올바른 글자를 입력해주세요.')
+				return false;
+			}
+			
+			//리마크 저장해둔거 자르기
+			console.log($('#saveRemark').val());
+			let arr = $('#saveRemark').val().split('#');
+			
+			//arr중 selected 된 거 뽑아온거에 넣어주기+ 중복체크
+			let selVal = $('#bandBoardRemarks option:selected').val();
+			if(selVal=='말머리 추가'){
+				alert('말머리를 선택해주세요.');
+				return false;
+			}
+			//중복체크 넣었으니까 2개이상같은게 나오면 중복
+			//자리저장
+			console.log(arr);
+			let arrNum = '';
+			for(let a in arr){
+				//셀렉티드된거랑 a값이 같으면 배열(a의값)을 바꿔줌
+				console.log('in'+a)
+				console.log('arr'+arr[a])
+				if(arr[a]==selVal){
+					arrNum = a
+				}
+				if(arr[a]==inputVal){
+					alert('중복됩니다.');
+					return false;
+				}
+			}
+			//여기서 바꿔주기(배열)
+			console.log("바뀌기전"+arr);
+			arr.splice(arrNum, 1, inputVal);
+			console.log(arr);
+			$('#bandBoardRemarks option:selected').replaceWith($('<option value='+inputVal+' selected>'+inputVal+'</option>'));
+			
+			//여기도 저장
+			$('#saveRemark').val(arr.join("#"));
+			$('#inputBox').val('');
+		})
+		//말머리삭제
+		$('#reDel').on('click', function(){
+			let selVal = $('#bandBoardRemarks option:selected').val();
+			//배열처리
+			let arr = $('#saveRemark').val().split('#');
+			console.log(arr);
+			let arrNum = '';
+			
+			for(let a in arr){
+				//셀렉티드된거랑 a값이 같으면 배열(a의값)을 삭제할거임
+				if(arr[a]==selVal){
+					arrNum = a
+				}
+			}
+			//여기서 바꿔주기(배열)
+			arr.splice(arrNum, 1);
+			console.log(arr);
+			//여기도 저장
+			$('#saveRemark').val(arr.join("#"));
+			//화면상지우기
+			$('#bandBoardRemarks option:selected').remove();
+		})
+		//양식설정임
+		$('#conOption').on('click', function(){
+			if($('#conOption').prop('checked')){
+				//우선 비워주고
+				$('#bandContentOption').val('');
+				$('#bandContentOption').show();
+				
+			} else {
+				$('#bandContentOption').val('');
+				$('#bandContentOption').hide();
+			}
+		})
+		//초기화버튼
+		$('#resett').on('click', function(){
+			//no뽑아와서 돌리기
+			console.log('??');
+			console.log($('#bandBoardOptionNo').val())
+			boardLoad($('#bandBoardOptionNo').val());
+		})
+		//보드저장옵션
+		$('#savee').on('click', function(){
+			let bandNo = $('#bandNo').val();
+			let bandBoardLine = $('#bandBoardLine').val();
+			let bandBoardName = $('#bandBoardName').val();
+			if(bandBoardName.replace(/\s/g, "").length==0){
+				alert('공백제목 불가능합니다.');
+				return false;
+			}
+			let bandBoardOptionNo = $('#bandBoardOptionNo').val();
+			let bandBoardOrder = $('#bandBoardOrder').val();
+			let data = {bandNo, bandBoardLine, bandBoardName, bandBoardOptionNo, bandBoardOrder}
+			//게시판이면
+			if(bandBoardLine==1){
+				let bandLikeOption = $('input[name=bandLikeOption]').val();
+				let bandContentOption = $('#bandContentOption').val();
+				//trim 스페이만 입력됐을 경우
+				if(bandContentOption.replace(/\s/g, "").length==0){
+					bandContentOption = null;
+				}
+				let bandBoardAuth   = $('input[name=bandBoardAuth]').val();
+					//aaa#bbb#ccc#이 형태로 저장해줘야하니...첫#자르고 마지막#붙이기..앞에 있다면 떼주기
+				let bandBoardRemarks  = $('#saveRemark').val();
+				if(bandBoardRemarks!=null){
+					if($('#saveRemark').val().indexOf('#')==0){
+						bandBoardRemarks = bandBoardRemarks.substr(1);
+					}
+					if(bandBoardRemarks.lastIndexOf('#')!=bandBoardRemarks.length){
+						bandBoardRemarks = bandBoardRemarks+"#";
+					}
+				}
+				console.log("출력"+bandBoardRemarks);
+				data = {bandNo, bandBoardLine, bandBoardName, bandBoardOptionNo, bandBoardOrder, bandBoardOptionNo, bandBoardName, bandLikeOption, bandContentOption, bandBoardAuth, bandBoardRemarks}
+			}
+			$.ajax({
+				url : "/own/band/bandGroup/bandOption9",
+				method : "put",
+				 beforeSend: function(xhr){
+ 	                  xhr.setRequestHeader(header,token);
+ 	                },
+				data : JSON.stringify(data),
+				contentType : "application/json;"
+			}).then( res =>{
+				console.log(res);
+				//보드리스트 저장분 새걸로 채우기..+ 이름 바꾸기
+				console.log(boardListSave+"헌거");
+				boardListSave = res;
+				//현재 클릭된거 클래스명으로 찾기 $(e.target).addClass('clickBoard');
+				console.log($('.clickBoard'));
+				//bandBoardLine 만약 0이면 b로 1이면 p로
+				let tab = '';
+				let boardNumber = $('#numberss').val(); //글개수..
+				console.log(boardNumber);
+				let text = bandBoardName+" ("+boardNumber+")";
+				if(bandBoardLine==1){
+					tab = `<li class="boards ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><p class="clickBoard boardLine" name=${bandBoardOptionNo} id=${bandBoardName}>${text}</p></li>`
+				} else {
+					tab = `<li class="boards ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><b class="clickBoard boardLine" name=${bandBoardOptionNo}  id=${bandBoardName}>${bandBoardName}</b></li>`
+				}
+				$('.clickBoard').parent().replaceWith(tab)
+			})
+		})
+		
+		//게시판 삭제
+		$('#minn').on('click', function(){
+			let bandBoardOptionNo = $('.clickBoard').attr('name');
+			let bandNo = $('#bandNo').val();
+			if(confirm("<"+$('.clickBoard').attr('id')+">가 삭제됩니다. 게시판인 경우 글도 함께 삭제되며 복구하실 수 없습니다.")){
+				$.ajax({
+					url : "/own/band/bandGroup/bandOption9/"+bandBoardOptionNo+"/"+bandNo,
+					method : "delete",
+					contentType : "application/text; charset=utf-8;",
+					 beforeSend: function(xhr){
+	 	                  xhr.setRequestHeader(header,token);
+	 	                }
+				}).then( res =>{
+					console.log(res);
+					//삭제성공
+					if(res!=null){
+						boardListSave = res;
+						alert('삭제성공');
+						//삭제한거 빼기
+						console.log(boardListSave+"헌거");
+						//css체크된거 지우기
+						$('.clickBoard').parent().remove();
+						
+						//처음껄로
+						let bandBN = (res[0])['bandBoardOptionNo'];
+						console.log(bandBN+"되나?")
+						boardLoad(bandBN);
+						//css도먹이게
+						$('p[name='+bandBN+']').addClass('clickBoard');
+						
+						} else {
+						alert('삭제실패');
+					}
+					//보드리스트 저장분 새걸로 채우기..+ 이름 바꾸기
+				})
+			}
+		})
+		//게시판 생성
+		$('#pluu').on('click', function(){
+			let bandNo = $('#bandNo').val();
+			$.ajax({
+				url : "/own/band/bandGroup/bandOption9/insert/"+bandNo,
+				method : "delete",
+				contentType : "application/text; charset=utf-8;",
+				 beforeSend: function(xhr){
+ 	                  xhr.setRequestHeader(header,token);
+ 	                }
+			}).then( res =>{
+				console.log(res);
+				//생성성공
+				if(res!=null){
+					boardListSave = res;
+					alert('생성성공');
+					console.log(boardListSave+"헌거");
+					//css체크된거 지우기
+					$('.clickBoard').removeClass('clickBoard');
+					let bandBN = (res[res.length-1])['bandBoardOptionNo'];//마지막꺼..
+					console.log(bandBN+"되나?")
+					tab = `<li class="boards ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><p class="clickBoard boardLine" name=${bandBN} id="게시판">게시판 (0)</p></li>`
+					boardLoad(bandBN);
+				$('#boardListArray').append(tab)
+				} else {
+					alert('생성실패');
+				}
+			})
+		})
+		//구분선 생성
+		$('#linn').on('click', function(){
+			let bandNo = $('#bandNo').val();
+			$.ajax({
+				url : "/own/band/bandGroup/bandOption9/insertLine/"+bandNo,
+				method : "delete",
+				contentType : "application/text; charset=utf-8;",
+				 beforeSend: function(xhr){
+ 	                  xhr.setRequestHeader(header,token);
+ 	                }
+			}).then( res =>{
+				console.log(res);
+				//생성성공
+				if(res!=null){
+					boardListSave = res;
+					alert('생성성공');
+					//삭제한거 빼기
+					console.log(boardListSave+"헌거");
+					//css체크된거 지우기
+					$('.clickBoard').removeClass('clickBoard');
+					let bandBN = (res[res.length-1])['bandBoardOptionNo'];//마지막꺼..
+					console.log(bandBN+"되나?")
+					tab = `<li class="boards ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><b class="clickBoard boardLine" name=${bandBN} id=구분카테고리>구분카테고리</b></li>`
+					boardLoad(bandBN);
+				$('#boardListArray').append(tab)
+				} else {
+					alert('생성실패');
+				}
+			})
+		})
+		//jquery sortable
+		$('#boardListArray').sortable({
+	        placeholder:"itemBoxHighlight", /* 이동할 위치 css 적용  */
+	        start:function(event,ui){
+	            // 드래그 시작 시 호출
+	        },
+	        stop:function(event,ui){
+	            // 드래그 종료 시 호출
+	            reorder();
+	        }
+	   });
+	    $("#boardListArray").disableSelection();
+	    /* 번호 재입력(내부적으로) */
+	    function reorder() {
+	        $("#sortable li").each(function(i, box) {
+	            $(box).val(i + 1);
+	        });
+	    }
+	    //게시판 순서 초기화
+	    $('#boardSaveReset').on('click', function(){
+	    	$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
+	    })
+	    //게시판 순서 저장
+	    $('#boardSaveBtn').on('click', function(){
+	    	console.log('?')
+	    	let boardOrderArray = new Array();
+	    	$(".boards").each(function(i, ele) {
+	            let bandBoardOptionNo = $(ele).children(':eq(1)').attr('name');
+	            let bandBoardOrder = i+1;
+	            let s = {bandBoardOptionNo, bandBoardOrder};
+	            console.log(s);
+	            boardOrderArray.push(s);
+	        });
+	    	console.log("완성"+boardOrderArray)
+	    	console.log("완성"+JSON.stringify(boardOrderArray))
+	    	
+			$.ajax({
+				url : "/own/band/bandGroup/bandOption9",
+				method : "post",
+				data : JSON.stringify(boardOrderArray),
+				contentType : "application/json;",
+				 beforeSend: function(xhr){
+	                  xhr.setRequestHeader(header,token);
+	                }
+			}).then( res =>{
+				if(res>0){
+					alert('변경되었습니다.')
+					let bandNo = $('#bandNo').val();
+					location.replace("/own/band/bandGroup?bandNo="+bandNo);
+				}
+			})
+	    	 
+	    })
+	})
+</script>

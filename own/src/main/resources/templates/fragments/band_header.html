@@ -54,14 +54,14 @@
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="collapse navbar-collapse" id="navbarCollapse" th:if="${session.defUser}">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
             	<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">알람</a>
 			 	<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">채팅</a>
 				 <div class="nav-item dropdown"  th:if="${session.loginUser}">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">사람</a>
+                    <img th:src="|/imgView/${session.defUser.defaultImg.mediaServerFile}|" alt="" style="flex-grow: 1; width: 70x; height: 70px;">
                     <div class="dropdown-menu bg-light m-0">
-                		<a href="#" class="nav-item nav-link">마이페이지</a>
+                		<a href="/own/band/myBandOption" class="nav-item nav-link">마이페이지</a>
                         <div th:if="${session.loginUser}"><a href="/own/logout" class="nav-item nav-link">로그아웃</a></div>
 						<div th:unless="${session.loginUser}"><a href="/own/login" class="nav-item nav-link">로그인</a>
                     </div>

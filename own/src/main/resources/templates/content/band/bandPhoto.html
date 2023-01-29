@@ -1,13 +1,134 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
-<script src="/css/band/js/jquery-3.2.1.js"></script>
-<script src="/css/band/js/json.min.js"></script>
-
+<head>
+	<script src="/css/band/js/jquery-3.2.1.js"></script>
+	<script src="/css/band/js/json.min.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
+    <title>Royal Hotel</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/band/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
+    <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+    <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/band/vendors/lightbox/simpleLightbox.css">
+    <!-- main css -->
+    <link rel="stylesheet" href="/css/band/css/style.css">
+    <link rel="stylesheet" href="/css/band/css/responsive.css">
+    <!-- 라이트 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
+</head>
 <style>
+	
 </style>
 <div id="template" style="flex-grow: 3; width: 740px">
-<h3>밴드 사진</h3>
+        <!--================Breadcrumb Area =================-->
+        <section class="banner_area">
+        <input type="hidden" id="bandNo" th:value="${bandNo}">
+            <div class="booking_table d_flex align-items-center" style="min-height: 200px;">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+            	<div class="container" >
+                <div class="page-cover text-center">
+                    <h2 class="page-cover-tittle">앨범</h2>
+                </div>
+            </div>
+            </div>
+        </section>
+        <!--================Breadcrumb Area =================-->
+        
+        <!--================Breadcrumb Area =================-->
+        <section class="gallery_area section_gap">
+            <div class="container">
+                <div class="row imageGallery1" id="gallery">
+                    <!-- <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="/css/band/image/gallery/01.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div> -->
+            	</div>
+            </div>
+        </section>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="/css/band/js/popper.js"></script>
+        <script src="/css/band/js/bootstrap.min.js"></script>
+        <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+        <script src="/css/band/js/jquery.ajaxchimp.min.js"></script>
+        <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+        <script src="/css/band/js/mail-script.js"></script>
+        <script src="/css/band/js/stellar.js"></script>
+        <script src="/css/band/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
+        <script src="/css/band/vendors/isotope/isotope-min.js"></script>
+        <script src="/css/band/js/stellar.js"></script>
+        <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
+        <script src="/css/band/js/custom.js"></script>
+        
 </div>
 <script>
 $(function(){
+	//이미지 스무개 받아오기
+	let bandNo = $('#bandNo').val();
+	//우선 빈값으로 15개 받아오기 인덱스가 저것보다 작은거..(줄세우기페이징)
+	getPhotos('999999999');
+	
+	$('#gallery').on('click', $('#nextBtn'), function(){
+		let v = $('#mediaNo').val();
+		console.log(v);
+		getPhotos(v);
+	})
+	function getPhotos(mediaNo){
+		$.ajax({
+	        url:'/own/band/bandGroup/bandPhotos?bandNo='+bandNo+'&mediaNo='+mediaNo,
+	        dataType: 'json',
+	        method: 'get',
+	        contentType : "application/text; charset=utf-8;"
+	    }).then(result => {
+	    	console.log(result);
+	    	let gallery = $('#gallery');
+	    	$('#multiId').remove();
+	    	$('#multiId').empty();
+	    	$(result).each(function(idx, ele){
+	    		gallery.append(makePhoto(ele));
+	    	})
+	    	let leg = result.length;
+	    	//마지막 식별번호
+	    	let mediaNo = result[leg-1].mediaNo
+	    	if(leg==9){
+                //more 누르면 나오는 페이지
+            	let btnTag = `<nav class="blog-pagination justify-content-center d-flex" id="multiId">
+			                <a class="view_btn button_hover" id="nextBtn" style="width: 555px;">View More</a>
+			                <input type="hidden" id="mediaNo" value=${mediaNo}>
+			                </nav>`
+			              
+                gallery.append(btnTag);
+            } else {
+            	let endtag = `<div><h5>끝입니다</h5></div>`
+           		gallery.append(endtag);
+            }
+		})
+	}
+	function makePhoto(ele){
+		let tag = `<div class="col-md-4 gallery_item">
+				        <div class="gallery_img">
+				            	<a class="light" href="/imgView/${ele.mediaServerFile}" data-title="${ele.bandBoardTitle}" data-lightbox="example-set"><img src="/imgView/${ele.mediaServerFile}" alt=""><i class="fa fa-expand"></i></a>
+				        </div>
+				    </div>`
+		return tag;
+	}
+	lightbox.option({
+	    resizeDuration: 200,
+	    wrapAround: true,
+	    disableScrolling: false,
+	    fitImagesInViewport:false
+	})
 })
 </script>

@@ -6,6 +6,7 @@ import java.util.List;
 
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailVO;
+import co.prjt.own.band.service.BandBoardOptionVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandVO;
@@ -52,4 +53,8 @@ public interface BandBoardDetailMapper {
 	public int updateBandCalendarBoardNo(String bandCalendarNo, String bandBoardDetailNo);
 	//일정삭제
 	public int deleteCalendar(String bandCalendarNo);
+	//게시판설정업데이트
+	public int updateBandBoardOption(BandBoardOptionVO vo);
+	//글삭제 글번호 혹은 게시판번호사용(다중)
+	public int deleteBandBoard(String bandBoardOptionNo);
 }

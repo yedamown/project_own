@@ -3,29 +3,28 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.prjt.own.band.mapper.BandMapper">
-	<!-- <sql id="recom">
-		<if test="bandCategory != null and bandCategory !=''">
-			AND BAND_CATEGORY = #{bandCategory}
-		</if>
-		<if test="bandLocation != null and bandLocation !=''">
-			AND BAND_LOCATION = #{bandLocation}
-		</if>
-		<if test="bandName != null and bandName !=''">
-			AND BAND_NAME LIKE '%' || #{bandName} || '%'
-		</if>
-		<if test="bandKeyword != null and bandKeyword !=''">
-			AND BAND_TAG LIKE '%' || #{bandKeyword} || '%'
-		</if>
-	</sql> -->
-	<!-- 검색의 다양화를 위해....밴드이름으로 이것저것 검색 -->
 	<sql id="recom">
+			<if test="bandName != null and bandName !=''">
+				WHERE AND BAND_NAME LIKE '%' || #{bandName} || '%'
+				AND LIKE LIKE '%' || #{bandKeyword} || '%'
+			</if>
+	</sql>
+	<sql id="recom2">
+			<if test="bandLocation != null and bandLocation !=''">
+				AND BAND_LOCATION = #{bandLocation}
+			</if>
+			<if test="bandCategory != null and bandCategory !=''">
+				AND band_category  = #{bandCategory}
+			</if>
+	</sql>
+	<!-- <sql id="recom">
 		<if test="bandName != null and bandName !=''">
 			WHERE EXERSUB_NAME LIKE '%' || #{bandName} || '%'
 			OR LOC_CITY  LIKE '%' || #{bandName} || '%'
 			OR BAND_NAME LIKE '%' || #{bandName} || '%'
 			OR BAND_KEYWORD LIKE '%' || #{bandName} || '%'
 		</if>
-	</sql>
+	</sql> -->
 	<!-- 밴드 인서트 업데이트 -->
 	<insert id="insertBand">
 		<selectKey keyProperty="bandNo" resultType="string" order="BEFORE">
@@ -126,8 +125,6 @@
 	<sql id="condition">
 		<if test="bandName != null and bandName !=''">
 			AND (BAND_NAME LIKE '%' || #{bandName} || '%'
-			OR EXERSUB_NAME LIKE '%' || #{bandName} || '%'
-			OR LOC_CITY LIKE '%' || #{bandName} || '%'
 			OR BAND_KEYWORD LIKE '%' || #{bandName} || '%'
 			) 
 		</if>
@@ -526,6 +523,7 @@
 									        ) A, EXER_SUB B, OWN_LOCATION C
 									        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
 									        AND A.BAND_LOCATION=C.LOC_CODE
+             <include refid="recom2"></include>                         
                                    ) 
                     <!-- 통 문장 끝 -->
 			<include refid="recom"></include>        
@@ -604,7 +602,7 @@
                                     ) A, EXER_SUB B, OWN_LOCATION C
                                     WHERE A.BAND_CATEGORY = B.EXERSUB_NO
                                     AND A.BAND_LOCATION=C.LOC_CODE
-
+						<include refid="recom2"></include> 
                            ) 
     						<include refid="recom"></include>
 	</select>
@@ -625,4 +623,22 @@
 		'1'
 		)
 	</insert>
+	<!-- 앨범 사진검색 용 -->
+	<select id="bandPhotos" resultType="BandBoardDetailSearchVO">
+		SELECT * FROM(
+		        SELECT MEDIA_NO, MEDIA_REAL_FILE, MEDIA_SERVER_FILE, MEDIA_FILE_PATH, IDENTIFY_ID,BAND_BOARD_TITLE,BAND_BOARD_WRITER FROM MULTIMEDIA, BAND_BOARD_DETAIL
+		                    WHERE IDENTIFY_ID IN (
+		                                    SELECT BAND_BOARD_DETAIL_NO
+		                                    FROM BAND_BOARD_DETAIL B, BAND_BOARD_OPTION C, BAND D
+		                                        WHERE D.BAND_NO = C.BAND_NO
+		                                        AND C.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
+		                                        AND D.BAND_NO = #{bandNo}
+                                    )
+<![CDATA[		AND IDENTIFY_ID = BAND_BOARD_DETAIL_NO
+                AND MEDIA_NO<#{mediaNo}
+                ORDER BY MEDIA_NO DESC
+                )
+                WHERE ROWNUM <=9
+  ]]>
+	</select>
 </mapper>
