@@ -65,9 +65,8 @@ public class ValidationServiceImpl implements ValidationService{
 	// 총 인증횟수
 	@Override
 	public int countVld(ValidationVO vo) {
-		return 0;
+		return mapper.countVld(vo);
 	}
-
 	
 	//오늘 인증 횟수
 	@Override
@@ -75,6 +74,10 @@ public class ValidationServiceImpl implements ValidationService{
 		return mapper.todayVld(vo);
 	}
 
-
+	//도전멤버 인증 평균
+	@Override
+	public int memVldAvg(ValidationVO vo) {
+		return mapper.memVldAvg(vo);
+	}
 
 }

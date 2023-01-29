@@ -21,11 +21,18 @@
 		WHERE REPORT_NO = #{reportNo}
 	</update>
 
-	<select id="getCReport">
+	<select id="getCReport" resultType="co.prjt.own.chall.service.CResultVO">
 		SELECT R.*
 		FROM CHALL_VALIDATION V, CHALL_REPORT R
 		WHERE V.VLD_NO = R.VLD_NO
 		AND V.CHALL_NO = #{challNo}
 		AND R.REPORT_STATE = #{reportState}
+	</select>
+	
+	<select id="checkReport" resultType="int">
+		SELECT COUNT(*)
+		FROM CHALL_REPORT
+		WHERE VLD_NO = #{vldNo}
+		AND REPORTER = #{reporter}
 	</select>
 </mapper>

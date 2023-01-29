@@ -35,4 +35,16 @@ public class CMemberServiceImpl implements CMemberService{
 		return mapper.getCMemAll(vo);
 	}
 
+	//아이디 중복체크
+	@Override
+	public int nickCheck(String nickName) {
+		return mapper.nickCheck(nickName);
+	}
+	
+	//미디어랑 조인안한 단순 조회.
+	@Override
+	public CMemberVO challMemCheck(CMemberVO vo) {
+		return mapper.challMemCheck(vo);
+	}
+
 }
