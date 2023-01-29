@@ -82,7 +82,7 @@ public class BandOptionController {
 	// 멤버 관리 페이지로 이동 - 전체 회원 목록
 	@GetMapping("/bandGroup/bandMemberManage")
 	public String bandMemberManage(Model model, BandMemberDetailVO vo, Paging paging) {
-	//	model.addAttribute("memberList", bandOptionService.bandOptionGetAllMemberList(vo, paging));
+	    model.addAttribute("memberList", bandOptionService.bandOptionGetAllMemberList(vo, paging));
 		return "content/band2/bandMemberManage";
 	}
 
