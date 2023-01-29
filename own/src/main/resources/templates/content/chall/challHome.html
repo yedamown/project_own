@@ -28,11 +28,80 @@
 	<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
 	<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
-    <!-- Contact Javascript File -->
-    <script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
-    <script src="/css/chall/mail/contact.js"></script>
-    <!-- Template Javascript -->
-    <script src="/css/chall/js/main.js"></script>
+	<!-- Contact Javascript File -->
+	<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
+	<script src="/css/chall/mail/contact.js"></script>
+	<!-- Template Javascript -->
+	<script src="/css/chall/js/main.js"></script>
+	<style>
+		.modal {
+			display: none;
+			/* Hidden by default */
+			position: fixed;
+			/* Stay in place */
+			z-index: 1;
+			/* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%;
+			/* Full width */
+			height: 100%;
+			/* Full height */
+			overflow: auto;
+			/* Enable scroll if needed */
+			background-color: rgb(0, 0, 0);
+			/* Fallback color */
+			background-color: rgba(0, 0, 0, 0.4);
+			/* Black w/ opacity */
+		}
+
+		/* Modal Content/Box */
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			/* 15% from the top and centered */
+			padding: 20px;
+			border: 1px solid #888;
+			width: 50%;
+			/* Could be more or less, depending on screen size */
+		}
+
+		/* The Close Button */
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
+	<script th:inline="javascript">
+		$(document).ready(function () {
+			//근데이거 좀따가 생각해서 홈페이지로 이동해야할듯
+			/*<![CDATA[*/
+			let joinChall = /*[[${joinChall}]]*/
+				//도전멤버정보가 없는 경우
+				console.log(joinChall);
+			if (joinChall != null) {
+				console.log('도전 회원 정보 등록하기~! 모달열리나요.');
+				$('#joinChall').trigger("click");
+			}
+			let result = /*[[${result}]]*/
+			console.log(result)
+			if (result == 1) {
+				alert("오운 도전에 오신 것을 환영합니다!");
+			} else if(result == 0){
+				alert("오류가 발생하였습니다.")
+			}	
+			/*]]>*/
+		})
+	</script>
 	<meta charset="utf-8">
 	<title>OWN _ 도전</title>
 </head>
@@ -82,19 +151,20 @@
 			</div>
 		</div>
 	</div>
+
 	<!-- Header End -->
 	<div>[[${paging}]]</div>
 	<div th:if="${session.loginUser}">
 		도전 홈 _ 로그인 중
 		<h1 th:text="${session.loginUser.userId}"></h1>
 		<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
+		<div th:if="${session.loginUser}">
+			<a href="/own/chall/mypage">마이페이지</a>
+			<a href="/own/chall/insertFormChall">도전만들러고고</a>
+			<a href="/own/chall/myChall">내가만든도전보기</a>
+		</div>
 	</div>
-	<div th:if="${session.loginUser} == null">로그인 안한 상태 로그인 하고 오시오.</div>
-	<div th:if="${session.loginUser}">
-		<a href="/own/chall/mypage">마이페이지</a>
-		<a href="/own/chall/insertFormChall">도전만들러고고</a>
-		<a href="/own/chall/myChall">내가만든도전보기</a>
-	</div>
+	<div th:if="${session.loginUser} == null">로그인 안한 상태 볼 순 있지만 등록이나 그런건불가능</div>
 
 	<!-- 검색  -->
 	<div class="container-fluid pt-4 mb-4" style="width: 650px">
@@ -167,95 +237,96 @@
 	</div>
 	<!-- 운동카테고리 끝 -->
 
-
-    <!-- Testimonial Start -->
-	<div class="container-fluid py-5">
-      <div class="container p-0">
-        <div class="text-center pb-2">
-          <p class="section-title px-5">
-            <span class="px-2">Testimonial</span>
-          </p>
-          <h1 class="mb-4">What Parents Say!</h1>
-        </div>
-      <!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
-        <div class="owl-carousel testimonial-carousel" >
-         <div class="testimonial-item px-3" >
-            <div class="bg-light shadow-sm rounded mb-4 p-4">
-              <h3 class="fas fa-quote-left text-primary mr-3">나의 도전 보러가기</h3>
-            </div>
-            <div class="d-flex align-items-center">
-              <img
-                class="rounded-circle"
-                src="img/testimonial-4.jpg"
-                style="width: 70px; height: 70px"
-                alt="Image"
-              />
-              <div class="pl-3">
-                <h5>77777777777</h5>
-                <i>Profession</i>
-              </div>
-            </div>
-          </div>
-          
-        <th:block th:each="my: ${myChall}">
-          <div class="testimonial-item px-3">
-            <div class="bg-light shadow-sm rounded mb-4 p-4">
-              <h3 class="fas fa-quote-left text-primary mr-3" th:text="${my.challTitle}"></h3>
-            </div>
-            <div class="d-flex align-items-center">
-              <img
-                class="rounded-circle" th:src="|/imgView/${my.firstImage}|" style="width: 70px; height: 70px"
-                alt="Image"
-              />
-              <div class="pl-3">
-                <h5  th:text="${my.challTitle}"></h5>
-                <a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-				class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
-              </div>
-            </div>
-          </div>
-          </th:block>
-        </div>
-      </div>
-    </div> 
-    <!-- Testimonial End -->
-    
-        <!-- Testimonial Start3333 -->
-	<div class="container-fluid py-5">
-      <div class="container p-0">
-        <div class="text-center pb-2">
-          <p class="section-title px-5">
-            <span class="px-2">Testimonial</span>
-          </p>
-          <h1 class="mb-4">What's New Challenges!</h1>
-        </div>
-
-        <div class="owl-carousel testimonial-carousel" >
-        <th:block th:each="my: ${myChall}">
-          <div class="testimonial-item col-lg-4 mb-4">
-						<div class="card border-0 shadow-sm mb-2" style="width: 300px">
-							<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt="도전사진"
-								style="height: 230px; object-fit: cover" />
-							<div class="card-body bg-light text-center p-4">
-								<input type="hidden" th:value="${my.challNo}" />
-								<h5 class="" th:text="${my.challTitle}"></h5>
-								<div class="d-flex justify-content-center mb-3">
-									<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
-									<small class="mr-3">[[${my.challDuration}]]주 동안</small> 
-									<small class="mr-3">주 [[${my.challFreq}]]회</small>
-								</div>
-								<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+	<!-- 도전페이징효과 테스트 -->
+	<!-- Testimonial Start -->
+	<div th:if="${myChall} !=null">
+		<div class="container-fluid py-5">
+			<div class="container p-0">
+				<div class="text-center pb-2">
+					<p class="section-title px-5">
+						<span class="px-2">Testimonial</span>
+					</p>
+					<h1 class="mb-4">What Parents Say!</h1>
+				</div>
+				<!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
+				<div class="owl-carousel testimonial-carousel">
+					<div class="testimonial-item px-3">
+						<div class="bg-light shadow-sm rounded mb-4 p-4">
+							<h3 class="fas fa-quote-left text-primary mr-3">나의 도전 보러가기</h3>
+						</div>
+						<div class="d-flex align-items-center">
+							<img class="rounded-circle" src="img/testimonial-4.jpg" style="width: 70px; height: 70px"
+								alt="Image" />
+							<div class="pl-3">
+								<h5>77777777777</h5>
+								<i>Profession</i>
 							</div>
 						</div>
-					
-          </div>
-          </th:block>
-        </div>
-      </div>
-    </div> 
-    <!-- Testimonial End -->
-    
+					</div>
+
+					<th:block th:each="my: ${myChall}">
+						<div class="testimonial-item px-3">
+							<div class="bg-light shadow-sm rounded mb-4 p-4">
+								<h3 class="fas fa-quote-left text-primary mr-3" th:text="${my.challTitle}"></h3>
+							</div>
+							<div class="d-flex align-items-center">
+								<img class="rounded-circle" th:src="|/imgView/${my.firstImage}|"
+									style="width: 70px; height: 70px" alt="Image" />
+								<div class="pl-3">
+									<h5 th:text="${my.challTitle}"></h5>
+									<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+				 					 class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+				</div>
+			  </div>
+			</div>
+			</th:block>
+		  </div>
+		</div>
+	</div>
+	</div> 
+	<!-- Testimonial End -->
+
+
+	 <!-- Testimonial Start3333 -->
+	 <div th:if="${myChall}">
+	 <div class="container-fluid py-5">
+		<div class="container p-0">
+		  <div class="text-center pb-2">
+			<p class="section-title px-5">
+			  <span class="px-2">Testimonial</span>
+			</p>
+			<h1 class="mb-4">What's New Challenges!</h1>
+		  </div>
+  
+		  <div class="owl-carousel testimonial-carousel" >
+		  <th:block th:each="my: ${myChall}">
+			<div class="testimonial-item col-lg-4 mb-4">
+						  <div class="card border-0 shadow-sm mb-2" style="width: 300px">
+							  <img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt="도전사진"
+								  style="height: 230px; object-fit: cover" />
+							  <div class="card-body bg-light text-center p-4">
+								  <input type="hidden" th:value="${my.challNo}" />
+								  <h5 class="" th:text="${my.challTitle}"></h5>
+								  <div class="d-flex justify-content-center mb-3">
+									  <small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
+									  <small class="mr-3">[[${my.challDuration}]]주 동안</small> 
+									  <small class="mr-3">주 [[${my.challFreq}]]회</small>
+								  </div>
+								  <a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+									  class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+							  </div>
+						  </div>
+					  
+			</div>
+			</th:block>
+		  </div>
+		</div>
+		</div>
+	  </div> 
+	  <!-- Testimonial End -->
+
+	<!-- 페이징효과 테스트끝 -->
+
 	<!-- 나의 도전 -->
 	<div class="container-fluid pt-3" th:if="${myChall}">
 		<div class="container">
@@ -290,7 +361,7 @@
 		</div>
 		<!-- 도전 6개 끝 -->
 
-		<!-- 페이징 -->
+		<!-- 나의도전 페이징 -->
 		<nav class="blog-pagination justify-content-center d-flex pageBtn"  th:if="${myChall}"
 			id="pageMyChall">
 			<!--================ 이전  =================-->
@@ -318,9 +389,7 @@
 				</li>
 			</ul>
 		</nav>
-		<!-- 페이징 -->
-
-
+		<!--나의도전 페이징 끝 -->
 	</div>
 
 	<!-- 나의도전 끝 -->
@@ -392,10 +461,8 @@
 				</th:block>
 			</div>
 		</div>
-
-		<!-- 페이징버튼 넣기 -->
-		<nav class="blog-pagination justify-content-center d-flex pageBtn"
-			id="pagePopChall">
+		<!-- 새로운 도전  페이징버튼 넣기 -->
+		<nav class="blog-pagination justify-content-center d-flex pageBtn" id="pagePopChall">
 			<!--================ 이전  =================-->
 			<ul class="pagination">
 				<li class="page-item" th:if="${popChall[0].paging.startPage>1}"><a
@@ -421,7 +488,7 @@
 				</li>
 			</ul>
 		</nav>
-		<!-- 페이징버튼 끝 -->
+		<!-- 새로운 도전 페이징버튼 끝 -->
 	</div>
 	<!-- 새로운 도전 끝 -->
 
@@ -532,6 +599,83 @@
 	<!-- Back to Top -->
     <a href="#" class="btn btn-primary p-3 back-to-top" >
     	<i class="fa fa-angle-double-up"></i></a>
+
+
+
+	<!-- 첫번째 modal 모달 버튼 -->
+	<h1 class="modalBtn" id="joinChall" style="display: none">MODAL_1</h1>
+	<!-- 첫 번째 Modal -->
+	<div class="modal">
+		<div th:if="${session.loginUser} != null">
+		<!-- 첫 번째 Modal의 내용 -->
+		<div class="modal-content bg-light p-5" style="width:700px;" >
+			<span class="close" style="display: none;">&times;</span>
+			<h3>오운 도전은 처음이신가요? </h3>
+			<form action="/own/chall/joinChall" method="post" enctype="multipart/form-data" onsubmit="return check()">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+				<input id="userId" type="hidden" name="userId" th:value="${session.loginUser.userId}">
+				<input id="memAccname" type="hidden" name="memAccname" th:value="${session.loginUser.userName}">
+				<div class="form-group">
+					<label for="memNick">도전 닉네임 NickName *</label>
+					<input type="text" class="form-control"st id="memNick" name="memNickname" required onchange="nickDouble()"
+						placeholder="1-8자의 한글, 영어만 이용가능합니다." />
+					<button type="button" id="idchk" style="WIDTH: 70pt; HEIGHT: 45px" value="0">중복체크</button>
+					<p class="help-block text-danger"></p>
+				</div>
+				<div class="form-group">
+					<label for="inputFile">도전 프로필 * </label>
+					<input name="uploadfile" type="file" id="btnAtt" />
+					<div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
+					<p class="help-block text-danger"></p>
+				</div>
+				<div class="form-group">
+					<label for="memBank">예치금 환금 은행 *</label>
+					<input type="text" class="form-control" id="memBank" name="memBank" style="width: 100px;"/>
+					<p class="help-block text-danger"></p>
+				</div>
+				<div class="form-group">
+					<label for="memACC">예치금 계좌번호 *</label>
+					<input type="text" class="form-control" id="memACC" name="memACC"  style="width: 400px;"
+					placeholder="회원정보의 이름과 동일한 예금주의 계좌를 입력해주세요." />
+					<p class="help-block text-danger"></p>
+				</div>
+				<div class="control-group">
+					<label for="memIntro">도전 다짐 *</label>
+					<textarea class="form-control" rows="6" placeholder="자신의 도전 다짐을 말해주세요." required="required"
+						id="memIntro" name="memIntro"></textarea>
+					<p class="help-block text-danger"></p>
+				</div>
+				<div>
+					<button class="btn btn-primary py-2 px-4" type="submit" id="addBtn"> 도전 등록하기 </button>
+				</div>
+			</form>
+		</div>
+	</div>
+	</div>
+
+		<hr>
+		<!-- 두 번째 Modal을 여는 클래스 -->
+		<h1 class="modalBtn">MODAL_2</h1>
+		<!-- 두 번째 Modal -->
+		<div class="modal">
+			<!-- 두 번째 Modal의 내용 -->
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<p>두 번째 Modal</p>
+			</div>
+		</div>
+
+		<hr>
+		<!-- 세 번째 Modal을 여는 클래스 -->
+		<h1 class="modalBtn">MODAL_3</h1>
+		<!-- 세 번째 Modal -->
+		<div class="modal">
+			<!-- 세 번째 Modal의 내용 -->
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<p>세 번째 Modal</p>
+			</div>
+
 	<script>
 	 //카테고리 그림 클릭 시 검색으로 이동
 	    $('#categoryBtn div img').click(function(){
@@ -541,31 +685,6 @@
 	    	//아작스로 이동
 	    	location.href = '/own/chall/applyForm?challNo=' + cNo
 	    })
-    
-	    //흑흑
-	    // Testimonials carousel
-    $(".testimonial-carousel").owlCarousel({
-        center: true,
-        autoplay: true,
-        smartSpeed: 2000,
-        dots: true,
-        loop: true,
-        responsive: {
-            0:{
-                items:1
-            },
-            576:{
-                items:1
-            },
-            768:{
-                items:2
-            },
-            992:{
-                items:3
-            }
-        }
-    });
-	    
  		//검색
  		$('#searchBtn').on('click', function(){
  			console.log("헐헐");
@@ -578,6 +697,122 @@
 				alert('검색어를 입력해주세요!');
 			}
  		})
+
+		//홈에서 옆으로 넘어가는 효과
+		 $(".testimonial-carousel").owlCarousel({
+				center: true,
+				autoplay: true,
+				smartSpeed: 2000,
+				dots: true,
+				loop: true,
+				responsive: {
+					0:{
+						items:1
+					},
+					576:{
+						items:1
+					},
+					768:{
+						items:2
+					},
+					992:{
+						items:3
+					}
+				}
+    	});
+
+		//아이디중복체크
+		$('#idchk').on('click',function(){
+        	let nick = $('#memNick').val();  
+            console.log(nick)
+        	var specialRule = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+        	var korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        	var capital = /[A-Z]/;
+        	if(nick.length>8 || nick.length<2){
+        		alert("2 - 8 자로 입력해주세요.");
+        		$('#memNick').val("");
+        		$('#memNick').focus();
+        		return
+        	}
+        	if(specialRule.test(nick)) {
+                alert("특수문자는 입력 불가합니다");
+				$('#memNick').val("");
+        		$('#memNick').focus();
+        		return
+        	}
+			$.ajax({
+				url: '/own/chall/nickCheck?nick='+nick,
+				method: 'get',
+				success: function(result){
+					if(result == 1){    	  
+						//$('#memNick').attr('value',0)
+						$("#idchk").attr('value',0)
+						alert('중복된 닉네임입니다.')
+					}
+					else{
+						//$('#memNick').attr('value',1)
+						$("#idchk").attr('value',1)
+						alert('사용 가능한 닉네임입니다.')
+					}
+				},
+				error : function(err){
+					console.log(err);
+				}
+			})
+		})
+
+		function nickDouble(){
+			$("#idchk").attr('value',0);
+		}
+
+		function check(){
+			//let idcheck = $("#idchk").val();
+            let nickcheck =  $("#idchk").val();
+			if( nickcheck == 1){
+				//true시 submit 된다.
+				return true;
+			} else {
+				alert('닉네임 중복체크가 누락되었습니다.');
+				return false;
+			}
+		}
+		//----------------------------- Modal -----------------------------------------------------
+
+		// Modal을 가져옵니다.
+		var modals = document.getElementsByClassName("modal");
+		// Modal을 띄우는 클래스 이름을 가져옵니다.
+		var btns = document.getElementsByClassName("modalBtn");
+		// Modal을 닫는 close 클래스를 가져옵니다.
+		var spanes = document.getElementsByClassName("close");
+		var funcs = [];
+		
+		// Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
+		function Modal(num) {
+		return function() {
+			// 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
+			btns[num].onclick =  function() {
+				modals[num].style.display = "block";
+				console.log(num);
+			};
+		
+			// <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
+			spanes[num].onclick = function() {
+				modals[num].style.display = "none";
+			};
+		};
+		}
+		
+		// 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
+		for(var i = 0; i < btns.length; i++) {
+		funcs[i] = Modal(i);
+		}
+		
+		// 원하는 Modal 수만큼 funcs 함수를 호출합니다.
+		for(var j = 0; j < btns.length; j++) {
+		funcs[j]();
+		}
+		
+		//------------------------------------페이징------------------------------------
 
 		// 인기 도전 페이징 처리..아작스
 		$('#pagePopChall').on('click', '.pagePort', function(){
@@ -718,7 +953,99 @@
 			let row = $(`#${rowname}`).append(div1);
 			// $('#rowPopChall').append(div1);
 		}
-			
+		
+		//----------------------------첨부파일 화면에 띄우기------------------------------------
+
+      	/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
+		  imageView = function imageView(att_zone, btn){
+					var attZone = document.getElementById(att_zone);
+					var btnAtt = document.getElementById(btn)
+					var sel_files = [];
+
+					// 이미지와 체크 박스를 감싸고 있는 div 속성
+					var div_style = 'display:inline-block;position:relative;'
+								+ 'width:500px;height:auto;margin:5px;z-index:1';
+					// 미리보기 이미지 속성
+					var img_style = 'width:100%;height:100%;z-index:none';
+					// 이미지안에 표시되는 체크박스의 속성
+					var chk_style = 'width:40px;height:40px;position:absolute;font-size:30px;'
+								+ 'right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:blue';
+
+					btnAtt.onchange = function(e){
+					var files = e.target.files;
+					var fileArr = Array.prototype.slice.call(files)
+					for(f of fileArr){
+						imageLoader(f);
+					}
+					}  
+
+					// 탐색기에서 드래그앤 드롭 사용
+					attZone.addEventListener('dragenter', function(e){
+					e.preventDefault();
+					e.stopPropagation();
+					}, false)
+
+					attZone.addEventListener('dragover', function(e){
+					e.preventDefault();
+					e.stopPropagation();
+
+					}, false)
+
+					attZone.addEventListener('drop', function(e){
+					var files = {};
+					e.preventDefault();
+					e.stopPropagation();
+					var dt = e.dataTransfer;
+					files = dt.files;
+					for(f of files){
+						imageLoader(f);
+					}
+					}, false)
+
+					/*첨부된 이미리즐을 배열에 넣고 미리보기 */
+					imageLoader = function(file){
+					sel_files.push(file);
+					var reader = new FileReader();
+					reader.onload = function(ee){
+						let img = document.createElement('img')
+						img.setAttribute('style', img_style)
+						img.src = ee.target.result;
+						attZone.appendChild(makeDiv(img, file));
+					}
+					reader.readAsDataURL(file);
+					}
+
+					/*첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
+					makeDiv = function(img, file){
+					var div = document.createElement('div')
+					div.setAttribute('style', div_style) 
+					var btn = document.createElement('input')
+					btn.setAttribute('type', 'button')
+					btn.setAttribute('value', 'x')
+					btn.setAttribute('delFile', file.name);
+					btn.setAttribute('style', chk_style);
+					btn.onclick = function(ev){
+						var ele = ev.srcElement;
+						var delFile = ele.getAttribute('delFile');
+						for(var i=0 ;i<sel_files.length; i++){
+						if(delFile== sel_files[i].name){
+							sel_files.splice(i, 1);      
+						}
+						}
+						dt = new DataTransfer();
+						for(f in sel_files) {
+						var file = sel_files[f];
+						dt.items.add(file);
+						}
+						btnAtt.files = dt.files;
+						var p = ele.parentNode;
+						attZone.removeChild(p)
+					}
+					div.appendChild(img)
+					div.appendChild(btn)
+					return div
+					}
+			}('att_zone', 'btnAtt')
 </script>
 </body>
 </html>

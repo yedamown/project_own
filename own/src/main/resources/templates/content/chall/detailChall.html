@@ -382,9 +382,13 @@
 
 					<!--멤버리스트 탭-->
 					<div style="display: none;" id="challMem">
-						<div style="width: 700px;">
+						<div style="width: 700px;" id="challMemList">
 							<input type="hidden" id="challMemCheck" value="false">
 							<h1>멤버 리스트 탭</h1>
+						</div>
+
+						<div>
+							<h3>인증신고내역</h3>
 						</div>
 					</div>
 					<!--멤버리스트 탭 끝-->
@@ -428,7 +432,6 @@
 											readonly />
 									</div>
 									<input name="uploadfile" type="file" id="btnAtt">
-									<!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
 									<div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
 									<br>
 									<div class="form-group mb-0">
@@ -866,12 +869,12 @@
       $("#challDetail").css('display', 'inline-block');
       $("#challVld").css('display', 'none');
       $("#challResult").css('display', 'none');
-      $("#challMem").css('display', 'none')
+      $("#challMem").css('display', 'none');
     })
 
     //--------------------------------인증하기-------------------------------------
     
-      /*인증하기 버튼*/
+    /*인증하기 버튼*/
     $('#vldBtn').on("click", function () {
       $("#challVld").css('display', "inline-block");
       $("#challDetail").css('display', 'none');
@@ -912,7 +915,6 @@
         success: function(result){
           if(result == "able"){
             console.log('인증가능 - 이번주 인증 덜채움');
-            alert('인증가능');
           } else if(result == "todaydone"){
             console.log("이미 오늘 인증 완료.")
             $('#vldAddModal').attr('type', 'button').val('오늘 인증 완료.');
@@ -1053,7 +1055,7 @@
 	  let duration = $('#challDur').val();
 	  let freq = $('#challFreq').val();
 	  let challVldCount = duration * freq;
-	  console.log(challVldCount);
+	  console.log("----도전 전체 인증횟수"+challVldCount);
 	  //내 인증횟수 카운트로 가져오기 ㅎ
 	  //현재 챌린지 회원들의 평균 인증 횟수..
 	  $.ajax({
@@ -1063,18 +1065,12 @@
 	        		console.log(result);
 					let myVld =  result.myVld;
 					let nowMem = $('#nowMem').val();
-					let memVldAvg = (result.memVldAvg)/nowMem;
-					console.log(myVld);
-					console.log(memVldAvg);
-					console.log(nowMem);
-					if(myVld == null){
-						myVld = 0;
-					}
-					if(memVldAvg == null){
-						memVldAvg = 0;
-					}
-					console.log(memVldAvg);
-					console.log(myVld);
+					console.log("----도전 현재멤버"+nowMem);
+					let memVld = (result.memVldAvg);
+					console.log("----내가한 인증횟수"+myVld);
+					console.log("----멤버 전체 횟수"+memVld);
+					let memVldAvg=memVld/nowMem;
+					console.log("----전체도전횟수/멤버수"+memVldAvg)
 					var myChart = new Chart(context, {
 						type: 'doughnut',
 						data: {
@@ -1143,7 +1139,7 @@
               ul.append($("<li />").text(mem.userId + mem.memStatus)
               .append($("<button />").text('승인').attr('onclick', 'authChange(this)'), $("<button />").text('거절').attr('onclick', 'authChange(this)')));
             })
-            $("#challMem").append(ul);
+            $("#challMemList").append(ul);
           },
           error: function (err) {
             console.log(err)
