@@ -29,4 +29,7 @@ public interface ValidationService {
 	
 	//오늘 인증 횟수
 	int todayVld(ValidationVO vo);
+	
+	//도전 멤버 평균 인증횟수
+	int memVldAvg(ValidationVO vo);
 }
