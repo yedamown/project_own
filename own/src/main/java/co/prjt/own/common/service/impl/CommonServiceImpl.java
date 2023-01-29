@@ -166,4 +166,10 @@ public class CommonServiceImpl implements CommonService {
 	public int deleteImg(List<String> name, String key) {
 		return commonMapper.deleteImg(name, key);
 	}
+
+	@Override
+	public int reportadd(ReportVO vo) {
+		// TODO Auto-generated method stub
+		return commonMapper.reportadd(vo);
+	}
 }

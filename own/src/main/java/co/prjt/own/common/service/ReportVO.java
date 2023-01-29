@@ -22,6 +22,10 @@ public class ReportVO {
 	Date reportDate;
 	public String status;
 	
+	public MultimediaVO uploadfile;
+	
+	String mediaServerFile;
+	
 	public Paging paging;
 	public int first;
 	public int last;

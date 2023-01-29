@@ -104,7 +104,12 @@ button:hover {
                       </div>
                     </div>
                     <button type="button" id="emailchk" style="WIDTH: 60pt; HEIGHT: 30px" value="0">인증</button>
-               
+               		
+               		<div class="col-md-6 mb-3" >                      
+                      <label for="email">인증번호</label>
+                      <input type="text" class="form-control" id="u_emailchk" placeholder="인증번호를 입력해주세요" required>
+                    </div>
+                    <button type="button" id="emailacc" style="WIDTH: 60pt; HEIGHT: 30px" value="0">인증번호 확인</button>
                   </div>
       			
                 <div class="mb-3">
@@ -152,6 +157,10 @@ button:hover {
     console.log(token);
 
   /*]]>*/
+	  $('#emailacc').on('click', function(){
+	   console.log($('#u_emailchk').val());
+		  
+	  })
 
     function pwCheck() {
     	var regExpPw = /(?=.*\d{1,20})(?=.*[~`!@#$%\^&*()-+=]{1,20})(?=.*[a-zA-Z]{1,20}).{8,20}$/;
@@ -251,7 +260,14 @@ button:hover {
 		
 
     $('#emailchk').on('click',function(){
-      console.log("ㅇㅇ");
+        let email = $('#u_email').val();
+       $.ajax({
+    				url : '/own/singin/emailacc',
+    				method : 'get',
+    				data : {email:email},
+    			}).then(res=>{
+					console.log(res);
+    			})
     })
         	
     		$('#btnsignin').on("click",function(){
