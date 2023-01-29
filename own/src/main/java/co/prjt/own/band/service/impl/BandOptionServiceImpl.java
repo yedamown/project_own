@@ -19,15 +19,6 @@ public class BandOptionServiceImpl implements BandOptionService {
 	BandOptionMapper bandOptionMapper;
 
 	@Override
-	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO bmdvo, BandVO vo, Paging paging) {
-		// 페이징 설정
-		//paging.setTotalRecord(bandOptionMapper.bandCount(vo));
-		// 가치 설정 - 멤버 관리 - 전체 멤버 리스트
-		return bandOptionMapper.bandOptionGetAllMemberList(bmdvo);
-		
-	}	
-
-	@Override
 	public List<BandMemberDetailVO> bandManageHome(BandMemberDetailVO vo) {
 		// TODO Auto-generated method stub
 		return bandOptionMapper.bandManageHome(vo);
@@ -75,11 +66,12 @@ public class BandOptionServiceImpl implements BandOptionService {
 		// 페이징 설정
 		vo.setBandMemberStatus("BA02"); // 조건 설정
 		paging.setTotalRecord(bandOptionMapper.bandCount(vo));
-		paging.setPageUnit(2); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
+		paging.setPageUnit(1); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
 		paging.setPageSize(5);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		vo.setPaging(paging);
+		
 		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetAllMemberList(vo);
 		list.get(0).setPaging(paging);
 		return list;
@@ -95,9 +87,12 @@ public class BandOptionServiceImpl implements BandOptionService {
 		paging.setPageSize(5);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
-
+		vo.setPaging(paging);
+		
 		// 가치 설정 - 멤버 관리 - 가입대기중 멤버 리스트
-		return bandOptionMapper.bandOptionGetWaitingMemberList(vo);
+		List<BandMemberDetailVO> list =  bandOptionMapper.bandOptionGetWaitingMemberList(vo);
+		list.get(0).setPaging(paging);
+		return list;
 	}
 
 	@Override
@@ -109,16 +104,13 @@ public class BandOptionServiceImpl implements BandOptionService {
 		paging.setPageSize(5);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
-
+		vo.setPaging(paging);
+		
 		// 가치 설정 - 멤버 관리 - 강퇴된 멤버 리스트
-		return bandOptionMapper.bandOptionGetkickedMemberList(vo);
+		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetkickedMemberList(vo);
+		list.get(0).setPaging(paging);
+		return list;
 	}
 
-	@Override
-	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO bmdvo, BandVO vo, Paging paging) {
-		// TODO Auto-generated method stub
-
-		return bandOptionMapper.bandOptionGetAllMemberList(bmdvo);
-	}
 
 }
