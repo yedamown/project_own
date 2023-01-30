@@ -104,7 +104,6 @@ button:hover {
                       </div>
                     </div>
                     <button type="button" id="emailchk" style="WIDTH: 60pt; HEIGHT: 30px" value="0">인증</button>
-               		
                		<div class="col-md-6 mb-3" >                      
                       <label for="email">인증번호</label>
                       <input type="text" class="form-control" id="u_emailchk" placeholder="인증번호를 입력해주세요" required>
@@ -157,10 +156,7 @@ button:hover {
     console.log(token);
 
   /*]]>*/
-	  $('#emailacc').on('click', function(){
-	   console.log($('#u_emailchk').val());
-		  
-	  })
+	 
 
     function pwCheck() {
     	var regExpPw = /(?=.*\d{1,20})(?=.*[~`!@#$%\^&*()-+=]{1,20})(?=.*[a-zA-Z]{1,20}).{8,20}$/;
@@ -267,15 +263,29 @@ button:hover {
     				data : {email:email},
     			}).then(res=>{
 					console.log(res);
+					$('#emailacc').on('click', function(){
+						   if($('#u_emailchk').val()==res){
+							   $('#emailacc').attr('value', 1);
+							   alert('인증완료')
+						   }
+						   else(alert('인증번호가 다릅니다'))
+					})
+					
+					
     			})
     })
         	
     		$('#btnsignin').on("click",function(){
               let idval = $('#idchk').attr('value')
+              let emailacc = $('#emailacc').attr('value');
               console.log(idval);
             if(idval==0){
               alert('중복체크를해주세요')
               return;
+            }
+            if(emailacc==0){
+            	alert('이메일인증을해주세요')
+            	return;
             }
             let id = $('#u_id').val();
                 let passwd = $('#u_pw').val();

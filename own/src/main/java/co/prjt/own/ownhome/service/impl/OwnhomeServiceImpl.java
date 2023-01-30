@@ -306,4 +306,10 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return ownhomeMapper.userPermUpdate(vo);
 	}
 
+	@Override
+	public List<SAccountVO> getSnsAccountList() {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.getSnsAccountList();
+	}
+
 }

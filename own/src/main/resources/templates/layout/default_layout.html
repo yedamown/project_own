@@ -2,12 +2,61 @@
 <html lagn="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-   
+<head>
+  <!-- header fragment 사용 -->
+    <th:block th:replace="fragments/header :: headerFragment"></th:block>
+</head>   
 <body>
-    <!-- header fragment 사용 -->
-    <th:block th:replace="fragments/header :: headerFragment">
-    
-    </th:block>
+
+<header class="header-area">
+        <!-- Navbar Start -->
+    <div class="container-fluid bg-light position-relative shadow">
+      <nav
+         class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
+         <a href="/" class="navbar-brand font-weight-bold text-secondary"
+            style="font-size: 50px"> <i class="flaticon-043-teddy-bear"></i>
+            <span class="text-primary">오늘의 운동</span>
+         </a>
+         <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse justify-content-between"
+            id="navbarCollapse">
+            <div class="navbar-nav font-weight-bold mx-auto py-0">
+               <a href="/" class="nav-item nav-link">Home</a> 
+               <div class="nav-item dropdown">
+                  <a href="/own/ownRecordForm" class="nav-link dropdown-toggle"
+                     data-toggle="dropdown">오운완</a>
+                  <div class="dropdown-menu rounded-0 m-0">
+                            <a href="/own/ownRecordForm" class="dropdown-item">운동기록 폼</a>
+                            <a href="/own/ownRecordList" class="dropdown-item">운동분석</a>
+                  </div>
+               </div>
+                    <a href="/own/sns" class="nav-item nav-link">SNS</a>
+                    <a href="/own/band" class="nav-item nav-link">밴드</a>
+                    <a href="/own/chall/home" class="nav-item nav-link">챌린저스</a>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                      <a href="/own/admin/userList" class="nav-item nav-link">관리페이지</a>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_USER')">
+                    <a href="/own/mypage" class="nav-item nav-link">마이페이지</a>
+                    </div>          
+                    <div sec:authorize="hasRole('ROLE_HU_USER')">
+                    <a href="/own/mypage" class="nav-item nav-link">마이페이지</a>
+                    </div>          
+                    <div th:if="${session.loginUser}"><a href="/own/logout" class="nav-item nav-link">로그아웃</a></div>
+                    <div th:unless="${session.loginUser}"><a href="/own/login" class="nav-item nav-link">로그인</a>
+                
+            </div>
+            <div th:unless="${session.loginUser}">
+                    <a href="/own/SigninForm" class="nav-item nav-link">회원가입</a>
+                    </div>
+         </div>
+      </nav>
+   </div>
+    </header>
+  
     <!-- content fragment 사용 -->
     <th:block layout:fragment="content"></th:block>
     <!-- footer fragment 사용 -->

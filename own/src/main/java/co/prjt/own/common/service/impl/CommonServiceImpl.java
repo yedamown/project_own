@@ -43,7 +43,7 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public String upload(MultipartFile[] uploadfile, String IndenfityId,  String INO ,String category){
 		List<FileDto> list = new ArrayList<>();
-		
+		MultimediaVO mvo = new MultimediaVO();
 		int result = 0;
 		
 		for(MultipartFile file : uploadfile) {
@@ -80,10 +80,10 @@ public class CommonServiceImpl implements CommonService {
 			//매퍼에서 db로 정보 insert
 			commonMapper.uploadImg(vo);
 			result++;
-
+			mvo.setMediaServerFile(vo.getMediaServerFile());
 			}
 		
-		return  Integer.toString(result)+"건 첨부파일 입력됨";
+		return Integer.toString(result)+"건 첨부파일 입력됨";
 	}
 
 	//DB에 넣기
@@ -172,4 +172,63 @@ public class CommonServiceImpl implements CommonService {
 		// TODO Auto-generated method stub
 		return commonMapper.reportadd(vo);
 	}
+
+	@Override
+	public int getreportSeq() {
+		// TODO Auto-generated method stub
+		return commonMapper.getreportSeq();
+	}
+
+	@Override
+	public int reportImgadd(ReportVO vo) {
+		// TODO Auto-generated method stub
+		return commonMapper.reportImgadd(vo);
+	}
+	
+	@Override
+	public MultimediaVO reportupload(MultipartFile[] uploadfile, String IndenfityId,  String INO ,String category){
+		List<FileDto> list = new ArrayList<>();
+		MultimediaVO mvo = new MultimediaVO();
+		int result = 0;
+		
+		for(MultipartFile file : uploadfile) {
+			MultimediaVO vo = new MultimediaVO();
+			
+			vo.setMediaFilePath(filePath);
+			vo.setIdentifyId(IndenfityId);
+			vo.setMediaCategory(category);
+			
+			//멀티미디어 이름 넣어주기
+			if(!file.isEmpty()) {
+				FileDto dto = new FileDto(UUID.randomUUID().toString(),
+											file.getOriginalFilename(),
+											file.getContentType());
+				list.add(dto);
+				File newFileName = new File(dto.getUuid()+"_"+dto.getFileName());
+			//리얼이름 설정
+			vo.setMediaRealFile(dto.getFileName());	
+			//서버이름 설정
+			vo.setMediaServerFile(dto.getUuid()+"_"+dto.getFileName());
+				try {
+					file.transferTo(newFileName);
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			//식별번호 알파벳 붙이기
+			vo.setIno(INO);
+
+			//매퍼에서 db로 정보 insert
+			commonMapper.uploadImg(vo);
+			result++;
+			mvo.setMediaServerFile(vo.getMediaServerFile());
+			}
+		
+		return mvo;
+	}
+	
 }

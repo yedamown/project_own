@@ -4,45 +4,39 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-
-.mymodal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	left: 0;
-	top: 0;
-	width: 500px;
-	height: 400px;
-	padding: 20px 60px;
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0, 0, 0); /* Fallback color */
-	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-/* Modal Content/Box */
-.mymodal .modal-content {
-	background-color: #fefefe;
-	margin: 15% auto; /* 15% from the top and centered */
-	padding: 20px;
-	border: 1px solid #888;
-	width: 20%; /* Could be more or less, depending on screen size */
-}
-/* The Close Button */
-.mymodal .close {
-	color: #aaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-}
-
-.mymodal .close:hover, .mymodal .close:focus {
-	color: black;
-	text-decoration: none;
-	cursor: pointer;
-}
-
-.mymodal .modalBtn {
-	font-size: 13px;
-}
+.importmodal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        /* Modal Content/Box */
+        .importmodal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Could be more or less, depending on screen size */
+        }
+        /* The Close Button */
+        .importmodal .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+       .importmodal .close:hover,
+       .importmodal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
 </style>
 </head>
 <body>
@@ -57,62 +51,90 @@
 	<option th:text="${list.userId}" th:value="${list.userId}"></option>
 	</th:block>
 	</select>
-	<button type="button" id="bandPassModal">
-  Launch demo modal
-</button>
-<a class="message modalBtn"> 모달버튼</a>
+	
+<a class="modalBtn">위임하기</a>
 </div>
 <div>
 <p>밴드 비활성화</p>
-<p>'밴드 삭제' 버튼 클릭 시 자동으로 비활성화되며 30일동안 유예기간이 주어집니다.</p>
-	<button type="button" id="bandDelModal">밴드 삭제</button>
-	<button type="button" id="bandDisModal">휴면 해제</button>
+<a class="modalBtn">밴드 비활성화하기</a>
+	
 </div>
-<div class="mymodal">
-			<form action="/searchId" method="get">
-				<!-- 첫 번째 Modal의 내용 -->
-				<div class="modal-content">
-					<span class="close">&times;</span>
-					<h1>아이디찾기</h1>
-					<ul>
-						<li><label>이메일 입력</label> <input id="email" name="email" type="text" placeholder="여백없이 입력"></li>
-					</ul>
-					<button type="submit">아이디찾기</button>
-				</div>
-			</form>
-		</div>
 
+
+<!-- 모달구간 -->
+	<div class="importmodal"> 
+      <!-- 첫 번째 Modal의 내용 -->
+      <div class="modal-content">
+        <span class="close">&times;</span>                         
+        <p id="modaltext">밴드장을 즉시 넘기게 됩니다. 그래도 넘기시려면 확인을 누르세요</p>
+        <button type="button" id="bandPassModal">
+  	밴드장 위임
+	</button>
+      </div>
+    </div>
+    
+    <div class="importmodal"> 
+      <!-- 첫 번째 Modal의 내용 -->
+      <div class="modal-content">
+        <span class="close">&times;</span>                         
+        <p id="modaltext">'밴드 삭제' 버튼 클릭 시 자동으로 비활성화되며 30일동안 유예기간이 주어집니다.</p>
+        <button type="button" id="bandDelModal">밴드 삭제</button>
+	<button type="button" id="bandDisModal">휴면 해제</button>
+	</button>
+      </div>
+    </div>
+	
 </body>
 <script th:inline="javascript">
 /*<![CDATA[*/
-var header = [[${_csrf.headerName}]];
-  var token = [[${_csrf.token}]];
+var header = '[[${_csrf.headerName}]]';
+  var token = '[[${_csrf.token}]]';
  console.log(header);
  console.log(token);
  /*]]>*/
+ //모달시작
+ // Modal을 가져옵니다.
+var modals = document.getElementsByClassName("importmodal");
+// Modal을 띄우는 클래스 이름을 가져옵니다.
+var btns = document.getElementsByClassName("modalBtn");
+// Modal을 닫는 close 클래스를 가져옵니다.
+var spanes = document.getElementsByClassName("close");
+var funcs = [];
  
- $('.btn-open').each(function() {
-    var modalID = $(this).attr('href');
-    var modalBg = $('.modal-bg');
-  
-    $(this).on('click', function(e) {
-      e.preventDefault();
-
-      modalBg.fadeIn();
-      
-      $(modalID).show();
-
-      $('html').css({overflow: 'hidden'});
-    });
-
-    $('.modal-bg, .modal-close').on('click', function() {
-      modalBg.fadeOut();
-      $(modalID).hide();
-      $(modalID).removeAttr('style');
-
-      $('html').removeAttr('style');
-    });
-  });
+// Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
+function Modal(num) {
+  return function() {
+    // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
+    btns[num].onclick =  function() {
+        modals[num].style.display = "block";
+        console.log(num);
+    };
+ 
+    // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
+    spanes[num].onclick = function() {
+        modals[num].style.display = "none";
+    };
+  };
+}
+ 
+// 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
+for(var i = 0; i < btns.length; i++) {
+  funcs[i] = Modal(i);
+}
+ 
+// 원하는 Modal 수만큼 funcs 함수를 호출합니다.
+for(var j = 0; j < btns.length; j++) {
+  funcs[j]();
+}
+ 
+// Modal 영역 밖을 클릭하면 Modal을 닫습니다.
+window.onclick = function(event) {
+  if (event.target.className == "importmodal") {
+      event.target.style.display = "none";
+  }
+};
+ //모달끝
+ 
 $("#bandPassModal").on("click",function(){
 	let bandLeaderid = $("#passid").val();
 	let bandNo = $("#bandNo").val();
@@ -161,52 +183,6 @@ $("#bandDisModal").on('click',function(){
 	})
 })
 
-const urlParams = new URL(location.href).searchParams;
-        const error = urlParams.get('error');
-        if(error){
-           let exception = urlParams.get('exception');
-           $('#exception').text(exception);
-        }
-   		// Modal을 가져옵니다.
-        var modals = document.getElementsByClassName("modal");
-        // Modal을 띄우는 클래스 이름을 가져옵니다.
-        var btns = document.getElementsByClassName("modalBtn");
-        // Modal을 닫는 close 클래스를 가져옵니다.
-        var spanes = document.getElementsByClassName("close");
-        var funcs = [];
-        
-        // Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
-        function Modal(num) {
-        return function() {
-            // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
-            btns[num].onclick =  function() {
-                modals[num].style.display = "block";
-                console.log(num);
-            };
-        
-            // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
-            spanes[num].onclick = function() {
-                modals[num].style.display = "none";
-            };
-        };
-        }
-            
-        // 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
-        for(var i = 0; i < btns.length; i++) {
-        funcs[i] = Modal(i);
-        }
-        
-        // 원하는 Modal 수만큼 funcs 함수를 호출합니다.
-        for(var j = 0; j < btns.length; j++) {
-        funcs[j]();
-        }
-        
-        // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
-        window.onclick = function(event) {
-        if (event.target.className == "modal") {
-            event.target.style.display = "none";
-        }
-        };
 
 		$('#searchpw').on('click',function(){
 			let id = $('#p_id').val();
@@ -243,11 +219,5 @@ const urlParams = new URL(location.href).searchParams;
 			})	
 			})
 			
-			$('.message a').click(function(){
-   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-});
-			
-			
-
 </script>
 </html>

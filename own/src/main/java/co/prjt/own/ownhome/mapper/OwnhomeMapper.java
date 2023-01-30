@@ -23,7 +23,8 @@ public interface OwnhomeMapper {
 	public int myupdate();
 	public List<ChallengeVO> Challenging(String id);
 	public List<BandMemberDetailVO> Banding(String id);
-
+	//sns계정체크
+		public List<SAccountVO> getSnsAccountList(); 	
 	//신고처리
 		public int reportUpdate(ReportVO vo);
 

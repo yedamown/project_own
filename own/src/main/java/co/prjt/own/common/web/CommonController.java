@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ExersubVO;
+import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.OwnLikeService;
 import co.prjt.own.common.service.OwnLikeVO;
 import co.prjt.own.common.service.ReportVO;
@@ -55,11 +56,25 @@ public class CommonController {
 	}
 	
 	
-	//신고적용시키기
+	//신고적용시키기(upload 반환값 multimedia로 바꿈) 머지 안헷갈리도록체크용
 	@PostMapping("/common/report")
 	@ResponseBody
-	public int Reporting(@RequestBody ReportVO vo) {
+	public int Reporting(@RequestParam MultipartFile[] uploadfile, ReportVO vo,MultimediaVO mvo) {
 		System.out.println(vo);
+		mvo.setMediaRealFile(uploadfile[0].getOriginalFilename());
+		System.out.println(mvo.getMediaRealFile());
+		System.out.println(mvo.getMediaServerFile());
+		//reporter..
+		//dereporter
+		commonService.reportadd(vo);
+		int number = commonService.getreportSeq();
+		String to = Integer.toString(number);
+		mvo = commonService.reportupload(uploadfile, to, "RNO_", "REPORT");
+		System.out.println(mvo.getMediaServerFile()+"서버파일명");
+		//신고에 다시넣어주기
+		vo.setMediaServerFile(mvo.getMediaServerFile());
+		vo.setReportNo("RNO_"+to);
+		commonService.reportImgadd(vo);
 		return 0;
 	}
 	

@@ -13,7 +13,7 @@ public interface CommonService {
 		
 		//이미지넣기
 		public List<MultimediaVO> fileUpload();
-		
+		public MultimediaVO reportupload(MultipartFile[] uploadfile, String IndenfityId,  String INO ,String category);
 		// 멀티미디어 파일변환하고, 이름값? 가져오는..?
 		public String upload(MultipartFile[] uploadfile,String IndenfityId, String INO, String category);
 		//추가하라고 빨간줄뜨길래 추가한것 mapper에서 insert해주는
@@ -44,4 +44,8 @@ public interface CommonService {
 		//신고테이블에 보내기
 		public int reportadd(ReportVO vo);
 		
+		//신고테이블 최근시퀀스 찾기
+		public int getreportSeq();
+		//신고 이미지 다시..
+		public int reportImgadd(ReportVO vo);
 }

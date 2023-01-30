@@ -58,8 +58,10 @@ public class OwnhomeController {
 // 검색테스트페이지====================================
 		@RequestMapping(value = "/searchtest", method = RequestMethod.GET)
 		public String test(Model model) { // 오운홈으로 가는 페이지이동
+			
 			return "content/own/searchTest";
 		}
+		
 		
 		@GetMapping("/own/sns/ListSearch")
 		@ResponseBody
@@ -162,8 +164,7 @@ public class OwnhomeController {
 		 @ResponseBody
 		 public String emailacc(@RequestParam String email) {
 			 System.out.println(email);
-			 ownService.sendMail("emailAcc", email);
-			 return "0";
+			 return ownService.sendMail("emailAcc", email);			 
 		 }
 		
 		// 등록
