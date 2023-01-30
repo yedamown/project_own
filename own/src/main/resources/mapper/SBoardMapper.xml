@@ -37,7 +37,7 @@
 		ORDER BY SNS_BOARD_NO DESC
 	</select>
 	
-	<!-- 최신 게시글 조회 -->
+	<!-- 팔로우 기반 최신 게시글 조회 -->
 	<select id="getNowBoardList" resultType="SBoardVO">
 		select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no, a.sns_account_no, 
 				(select media_server_file from multimedia where identify_id = 
@@ -50,6 +50,29 @@
 		AND rn = 1
 	</select>
 	
+	<!-- 최신게시글 랜덤뽑기 -->
+	<select id="getNewBoardList" resultType="SBoardVO">
+	
+	select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no, a.sns_account_no,
+            (select media_server_file
+                    from
+                    (select media_no, media_server_file, identify_id,
+                            ROW_NUMBER() OVER(PARTITION BY identify_id order by media_no desc) as rn
+                   	from multimedia)
+                    where rn=1 and identify_id = a.sns_board_no) as media_server_file
+		FROM (SELECT 
+		      SNS_NICKNAME, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_BOARD_NO, SNS_ACCOUNT_NO, 
+		      ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_board_no,5)) DESC) AS rn FROM sns_board
+		      order by DBMS_RANDOM.RANDOM) A
+		      where rn = 1
+	</select>
+	<!-- 내가 좋아요한 게시물 -->
+	<select id="snsBoardLikeList" resultType="SBoardVO">
+		select s.sns_board_no, s.sns_board_content, s.sns_board_date, s.sns_nickname
+			from sns_board s, own_like l
+			where l.user_id = #{userId}
+			and s.sns_board_no = l.category_no
+	</select>
 	<!-- 게시글 입력 -->
 	<insert id="insertSnsBoard" parameterType="SBoardVO">
 		<selectKey keyProperty="snsBoardNo" resultType="string" order="BEFORE">
@@ -57,15 +80,15 @@
 		</selectKey>
 		
 			INSERT INTO sns_board (sns_board_no, sns_board_content, sns_board_date, sns_nickname, sns_account_no)
-				VALUES ('SBN_'||#{snsBoardNo}, #{snsBoardContent}, current_date, 
-				       (SELECT sns_nickname
-				            FROM sns_account s, own_users o
-				            WHERE o.sns_account_no = #{snsAccountNo}
-				            AND s.sns_account_no = o.sns_account_no),
-				       (select s.sns_account_no
-				            FROM sns_account s, own_users o
-				            where s.sns_account_no = o.sns_account_no
-				            and o.sns_account_no = #{snsAccountNo}))
+			VALUES ('SBN_'||#{snsBoardNo}, #{snsBoardContent}, current_date, 
+			       (SELECT sns_nickname
+			            FROM sns_account s, own_users o
+			            WHERE o.sns_account_no = #{snsAccountNo}
+			            AND s.sns_account_no = o.sns_account_no),
+			       (select s.sns_account_no
+			            FROM sns_account s, own_users o
+			            where s.sns_account_no = o.sns_account_no
+			            and o.sns_account_no = #{snsAccountNo}))
 	</insert>
 	
 	<!-- 게시글 수정 -->
@@ -104,6 +127,11 @@
 		values ('SRE_'||#{replyNo}, #{replyContent}, current_date, #{userId}, #{categoryNo})
 	</insert>
 	
+	<!-- 댓글 수 조회 -->
+	<select id="snsReplyCount" resultType="int">
+		select count(*) from reply
+			where category_no = #{snsBoardNo}
+	</select>
 	<!-- 댓글 수정 -->
 	<!-- 댓글 삭제 -->
 	<delete id="deleteSnsReply">

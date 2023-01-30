@@ -12,8 +12,14 @@ public interface SBoardService {
 	 //sns 게시글 한건 조회
 	 SBoardVO getSnsBoard(String snsBoardNo);
 	
-	 //SNS 최신 게시글 조회
+	 //SNS 팔로우 최신 게시글 조회
 	 public List<SBoardVO> getNowBoardList(String id);
+	 
+	 //SNS 전체 최신 게시글 조회
+	 public List<SBoardVO> getNewBoardList();
+	 
+	 //SNS 좋아요 한 게시글 조회
+	 public List<SBoardVO> snsBoardLikeList(String id);
 	
 	 //게시글 갯수
 	 int countBoard(String id);
@@ -31,6 +37,9 @@ public interface SBoardService {
 	 
 	 //댓글 조회
 	 public List<ReplyVO> getBoardReplyList(String boardNo);
+	 
+	 //댓글 수 조회
+	 int snsReplyCount(String boardNo);
 	 //댓글 입력
 	 int insertSnsReply(ReplyVO vo);
 	 //댓글 삭제

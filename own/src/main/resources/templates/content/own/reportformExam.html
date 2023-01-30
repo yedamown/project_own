@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
+</head>
+<div layout:fragment="content">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <style>
+  button {
+  padding: 8px 14px;
+  margin: 20px 8px 0 0;
+  border-width: 0px;
+  border-radius: 5px;
+  color: white;
+  background-color: #b69269;
+  transition: 0.3s;
+  z-index: 1;
+	}
+
+button:hover {
+  color: rgb(60, 35, 153);
+  background-color: white;
+}
+  
+
+    .input-form {
+      max-width: 300px;
+
+      margin-top: 80px;
+      padding: 32px;
+
+      background: #fff;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+      -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+    }
+    .checkDone, .notYet, .finepw, .notpw .checkid{
+			display:none;
+		}
+  </style>
+<body>
+       <h2>신고폼</h2>
+       <div id = "container">
+       <form role="form"  autocomplete="off" style="width: 80%;"enctype="multipart/form-data" name="frm" id="frm">
+					         	<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
+
+        <input type="hidden" th:value="${session.loginUser.userId}" id="dereporter">
+        <div class="input-form-backgroud row">
+            <div class="input-form col-md-12 mx-auto">
+              <h4 class="mb-3">신고</h4>
+            	 <div class="col-md-7 mb-3">
+                    <label for="code">관심운동</label>
+                    <select id="reason" name="reason">
+                        <option value="RS_1" name="RS_1">욕설</option>
+                        <option value="RS_2" name="RS_2">광고</option>
+                        <option value="RS_3" name="RS_3">부적절한 아이디</option>
+                    </select>
+                  </div>
+                  <div class="col-md-7 mb-3">
+                    <label for="code">사유</label>
+                    <input name="uploadfile" type="file" id="uploadfile" multiple="multiple">
+                  </div>
+                <button type="button" id="btnreporting">신고</button>      
+                <button type="button" id="btnsignin">취소</button>              
+            </div>
+        </div>
+        </form>
+        </div>
+</body>
+<script th:inline="javascript">
+/*<![CDATA[*/
+var header = [[${_csrf.headerName}]];
+  var token = [[${_csrf.token}]];
+ console.log(header);
+ console.log(token);
+ /*]]>*/
+ 
+ 
+$('#btnreporting').on('click',function(){
+	
+	console.log($('#frm').serialize());
+	//console.log(new FormData(frm));
+	//console.log(JSON.stringify(new FormData(frm)));	
+	let form = $('#uploadfile')[0];
+	
+	let formData = new FormData();
+	let reason = $('#reason').val();
+	formData.append('reason',reason)
+	formData.append('uploadfile',form)
+	$.ajax({
+        url: '/common/report',
+        method: 'post',
+        data : formData,
+        beforeSend: function(xhr){
+          xhr.setRequestHeader(header,token);
+        }
+      }).then(res=>{
+          console.log(res)          
+      })	
+})
+
+
+</script>
+</html>

@@ -3,10 +3,8 @@ package co.prjt.own.band.mapper;
 import java.util.List;
 
 import co.prjt.own.band.service.BandMemberDetailVO;
-
 import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
-import co.prjt.own.ownhome.service.OwnUserVO;
 
 public interface BandOptionMapper {
 

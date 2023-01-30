@@ -40,7 +40,7 @@
 					#{challDuration},
 					#{challFreq},
 					#{challStartdate},
-					#{maxMember},
+					#{maxMem},
 					#{challIntro},
 					#{challPrice},
 					#{vldMethod},

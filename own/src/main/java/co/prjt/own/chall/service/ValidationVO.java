@@ -30,4 +30,9 @@ public class ValidationVO {
 	int beforeWeek;
 	int nowWeek;
 	
+	//인증횟수 카운트
+	int myVld;
+	int memVldAvg;
+	
+	
 }
