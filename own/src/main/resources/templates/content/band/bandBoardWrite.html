@@ -71,7 +71,10 @@
 				</div>
 				<div id="calVote"></div>
 				<input placeholder="태그" type="text" class="form-control" id="tag">
-				댓글 허용<input type="radio" class="form-group">
+				<div id="replyee" style="display: block">
+				댓글 허용<input type="radio" value="BH01" id="replyId" class="form-group" name="bandBoardTag">
+					    <input type="radio" value="BH02" id="replyId2" class="form-group" name="bandBoardTag">
+				</div>
 				<button type="button" id="writeBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white; float: right">등록</button>
 			</div>
 <!--==캘린더 모달창 ==-->
@@ -511,21 +514,23 @@ $(function(){
 	boardListSave.push(board);
 	/*[/]*/
 	console.log(boardListSave+"???");
-	//게시판 바꿀 때 말머리 셀렉트박스 달기
+	//게시판 바꿀 때 말머리 셀렉트박스 달기+ 댓글불능확인
 	$('#bandBoardOptionNo').on('change',function(){
 		let bandBoardOptionNo = $('#bandBoardOptionNo').val();
 		let bandBoardRemarks = '';
+		let bandLikeOption = '';
 		$(boardListSave).each(function(idx, ele){
 			if(ele.bandBoardOptionNo==bandBoardOptionNo){
 				bandBoardRemarks = ele.bandBoardRemarks;
+				bandLikeOption = ele.bandLikeOption;
 			}
 		})
-		makeSelectRe(bandBoardRemarks)
+		makeSelectRe(bandBoardRemarks, bandLikeOption)
 	})
-	//페이지 열릴때 1번게시판말머리로 초기화
-	makeSelectRe(boardListSave[0].bandBoardRemarks);
+	//페이지 열릴때 1번게시판말머리로 초기화 + 댓글불능확인
+	makeSelectRe(boardListSave[0].bandBoardRemarks, boardListSave[0].bandLikeOption);
 	//말머리 함수
-	function makeSelectRe(bandBoardRemarks){
+	function makeSelectRe(bandBoardRemarks, bandLikeOption){
 		//우선 비워주고
 		let bandRemarks = $('#bandRemarks').empty();
 		
@@ -540,6 +545,28 @@ $(function(){
 			}
 			console.log(arr);
 			
+		}
+		//라디오박스(댓글)
+		//$('input[value='+bandLikeOption+']').prop('disabled', true);
+		//$('input[value='+bandLikeOption+']').prop('chedked', true);
+		//만약 댓글작성불가면..
+		console.log(bandLikeOption)
+		if(bandLikeOption=='BH02'){
+			$('input[value=BH01]').prop('disabled', true);
+			
+			
+			$('#replyId2').attr('chedked', true);
+			$('#replyId').attr('chedked', false);
+			console.log($('input[value=BH01]').is(':checked'));
+			console.log($('input[value=BH02]').is(':checked'));
+		} else if(bandLikeOption=='BH01'){
+			$('input[value=BH02]').prop('disabled', false);
+			$('input[value="BH01"]').prop('disabled', false);
+			
+			$('#replyId').attr('chedked', true);
+			$('#replyId2').attr('chedked', false);
+			console.log($('input[value=BH01]').is(':checked'));
+			console.log($('input[value=BH02]').is(':checked'));
 		}
 	}
 })
