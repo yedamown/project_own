@@ -76,13 +76,10 @@ public class CommonServiceImpl implements CommonService {
 			}
 			//식별번호 알파벳 붙이기
 			vo.setIno(INO);
-
 			//매퍼에서 db로 정보 insert
 			commonMapper.uploadImg(vo);
 			result++;
-
 			}
-		
 		return  Integer.toString(result)+"건 첨부파일 입력됨";
 	}
 

@@ -40,6 +40,12 @@ import co.prjt.own.common.service.OwnLikeVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 
+/**
+ * 
+ * @author sujin
+ * 오운_도전 
+ *
+ */
 @Controller
 @RequestMapping("/own/chall")
 public class ChallController {
@@ -76,19 +82,16 @@ public class ChallController {
 		// session.setAttribute("loginUser", ownService.login("kjk"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		System.out.println("===================도전 홈" + user);
-		String userId = user.getUserId();
 		// 페이징정보담은
+		//보일갯수 설정하기
+		paging.setPageUnit(3);// 3개씩보기
+		paging.setPageSize(3); // 페이딩 동그라미 3개
 		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);
-		// 참여중인 회원 넣기
-		for (ChallengeVO i : cList) {
-			// 참여회원수 검색해서 넣기
-			int r = memberList.getChallMemNum(i.getChallNo());
-			i.setNowMem(r);
-		}
 		model.addAttribute("popChall", cList);
 		System.out.println("======popChall뉴리스트" + cList);
 		// 로그인 정보 있는 경우.
 		if (user != null) {
+			String userId = user.getUserId();
 			// 도전멤버 체크
 			cmb.setUserId(userId);
 			CMemberVO cmb2 = new CMemberVO();
@@ -110,12 +113,6 @@ public class ChallController {
 				paging2.setPageUnit(3);// 3개씩보기
 				paging2.setPageSize(3); // 페이딩 동그라미 3개
 				List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);
-				// 참여중 회원 담을 새로운 리스트
-				for (ChallengeVO i : myList) {
-					// 참여회원수 검색해서 넣기
-					int r = memberList.getChallMemNum(i.getChallNo());
-					i.setNowMem(r);
-				}
 				System.out.println("======마이뉴리스트====" + myList);
 				model.addAttribute("myChall", myList);
 			} else {
@@ -127,11 +124,11 @@ public class ChallController {
 
 	// 도전회원 가입..
 	@PostMapping("/joinChall")
-	public String joinChall(@RequestParam List<MultipartFile[]> uploadfile, CMemberVO vo, 
-			Model model, RedirectAttributes rttr) {
+	public String joinChall(@RequestParam List<MultipartFile[]> uploadfile, CMemberVO vo, Model model,
+			RedirectAttributes rttr) {
 		System.out.println(vo);
 		int rs = member.insertCMem(vo);
-		String memNo = vo.getMemNo();		
+		String memNo = vo.getMemNo();
 		rttr.addFlashAttribute("result", rs);
 		System.out.println(memNo);
 		if (rs == 1) {
@@ -149,51 +146,35 @@ public class ChallController {
 		int r = member.nickCheck(nickName);
 		return r;
 	}
-
-	// 홈페이지 페이징 아작스
+ 
+	//전체도전 페이징  - 데이터넘길때 페이지유닛 등 설정해서 보내기
 	@GetMapping("/popChallAjax")
 	@ResponseBody
 	public List<ChallengeVO> popChallAjax(Paging paging, ChallengeVO vo) {
 		List<ChallengeVO> cList = challenge.pageChallList(vo, paging);
-		// 페이징 담은 곳에다가 참여회원 담을 곳.
-		// 참여중인 회원 넣기
-		for (ChallengeVO i : cList) {
-			// 참여회원수 검색해서 넣기
-			int r = memberList.getChallMemNum(i.getChallNo());
-			i.setNowMem(r);
-		}
 		return cList;
 	}
 
-	// 내 도전 페이징 아작스
+	// 내 도전 페이징 아작스 - 데이터넘길때 페이지유닛 등 설정해서 보내기
 	@GetMapping("/myChallAjax")
 	@ResponseBody
 	public List<ChallengeVO> myChallAjax(HttpServletRequest request, Paging paging, ChallengeVO vo) {
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", ownService.login("kjk"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.userId;
 		vo.setUserId(id);
-		paging.setPageUnit(3);// 3개씩보기
-		paging.setPageSize(3); // 페이딩 동그라미 3개
 		List<ChallengeVO> cList = challenge.myPageChall(vo, paging);
-		for (ChallengeVO i : cList) {
-			// 참여회원수 검색해서 넣기
-			int r = memberList.getChallMemNum(i.getChallNo());
-			i.setNowMem(r);
-		}
 		return cList;
 	}
 
 	// 검색 후 결과페이지로 이동
 	@GetMapping("/searchChall")
-	public String searchChall(@RequestParam("searchWord") String values, Model model) {
-		String word = values;
-		List<ChallengeVO> list = challenge.searchChall(word);
-		for (ChallengeVO i : list) {
-			int r = memberList.getChallMemNum(i.getChallNo());
-			i.setNowMem(r);
-		}
+	public String searchChall(ChallengeVO vo, Model model, Paging paging) {
+		System.out.println(vo);
+		//보일갯수 설정하기
+		paging.setPageUnit(2);// 3개씩보기
+		paging.setPageSize(3); // 페이딩 동그라미 3개
+		List<ChallengeVO> list = challenge.pageChallList(vo, paging);
 		model.addAttribute("searchList", list);
 		return "content/chall/searchResult";
 	}
@@ -317,7 +298,6 @@ public class ChallController {
 	@PostMapping("/vldCheckAjax")
 	@ResponseBody
 	public String vldCheck(@RequestBody ValidationVO vo, ChallengeVO cvo) {
-		cvo.setChallNo(vo.getChallNo());
 		// 해당도전 도전횟수 계산하기
 		int challFreq = challenge.getChall(cvo).getChallFreq();
 		// 서비스 이번 주 인증횟수 계산하기
@@ -338,11 +318,7 @@ public class ChallController {
 	// 인증리스트 불러오기
 	@GetMapping("/vldList")
 	@ResponseBody
-	public List<ValidationVO> getVldList(@RequestParam("challNo") String challNo, @RequestParam("userId") String userId,
-			ValidationVO vo, MultimediaVO multi) {
-		System.out.println(challNo);
-		vo.setChallNo(challNo);
-		vo.setUserId(userId);
+	public List<ValidationVO> getVldList(ValidationVO vo, MultimediaVO multi) {
 		List<ValidationVO> list = validation.getChallVld(vo);
 		return list;
 	}
@@ -395,10 +371,7 @@ public class ChallController {
 	// 자기자신 도전횟수 , 도전평균 성공률
 	@GetMapping("/vldCountAvgAjax")
 	@ResponseBody
-
-	public ValidationVO vldAvgAjax(String userId, String challNo, ValidationVO vo, ValidationVO vo2) {
-		vo.setUserId(userId);
-		vo.setChallNo(challNo);
+	public ValidationVO vldAvgAjax(ValidationVO vo, ValidationVO vo2) {
 		vo2.setMyVld(validation.countVld(vo));
 		vo2.setMemVldAvg(validation.memVldAvg(vo));
 		return vo2;
@@ -503,19 +476,37 @@ public class ChallController {
 		return "content/chall/payForm";
 	}
 
-	// 마이페이지 - 예치금 결제
+	// 마이페이지 - 예치금 충전
 	@PostMapping("/payAjax")
 	@ResponseBody
-	public String payAjax(@RequestBody CAmountVO vo, Model model) {
-		// 결제내역 리스트에 insert하기
+	public String payAjax(@RequestBody CAmountVO vo, CMemberVO mem) {
+		// 결제내역 리스트에 insert하기 --여기오는 경우는 예치금 충전밖에없음
 		System.out.println("입력받은 vo--------------" + vo);
-		amount.insertAmount(vo);
+		vo.setAmtType("충전");
+		// d업데이트하는데 아이디랑 금액 필요함.
+		int r = amount.insertAmount(vo, mem);
 		System.out.println("인서트된..시퀀스값이 나왔나? vo--------------" + vo);
-		String amtNo = vo.getAmtListNo();
-		return amtNo;
+		if (r > 0) {
+			return "충전이 완료되었습니다.";
+		} else {
+			return "결제 과정에서 오류가 발생하였습니다.";
+		}
+	}
+	
+	// 출금 / 도전참가
+	@PostMapping("/refundAmt")
+	@ResponseBody
+	public String refundAmt(@RequestBody CAmountVO vo, CMemberVO mem) {
+		// amount_list 추가
+		int r = amount.insertAmount(vo, mem);
+		if (r > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
 	}
 
-	// 결제 결과아작스
+	// 결제 결과아작스 --> 우선 그냥적용안하고 바로 예치금창으로 이동하게함.
 	@GetMapping("/payResult")
 	public String payResult(@RequestParam("amtNo") String no, CAmountVO vo, Model model) {
 		System.out.println(no);

@@ -5,21 +5,23 @@
 		<selectKey resultType="String" keyProperty="resultNo" order="BEFORE">
 			SELECT CRS_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-			INSERT INTO CHALL_RESULT( RESULT_NO, 
-		                          USER_ID,
-		                          CHALL_NO,
-		                          CHALL_VLD )
-		VALUES('CRS_'|| #{resultNo},
-		       #{userId},
-		       #{challNo},
-		       (SELECT CHALL_DURATION * CHALL_FREQ FROM CHALLENGES WHERE CHALL_NO = #{challNo}) )
+				INSERT INTO CHALL_RESULT( RESULT_NO, 
+			                              USER_ID,
+			                              CHALL_NO,
+			                              CHALL_VLD )
+								VALUES ( 'CRS_'|| #{resultNo},
+								         #{userId},
+								         #{challNo},
+								       ( SELECT CHALL_DURATION * CHALL_FREQ 
+								           FROM CHALLENGES 
+								          WHERE CHALL_NO = #{challNo}) )
 	</insert>
 		
 	
 	<!--환급금 업뎃, 상금계산해서 업뎃  -->
 	<update id="updateReward">
 		UPDATE CHALL_RESULT
-        SET 	REFUND_PRICE = (SELECT SUCCESS_RATE * (SELECT CHALL_PRICE
+        SET    REFUND_PRICE = (SELECT SUCCESS_RATE * (SELECT CHALL_PRICE
                                            			   FROM CHALLENGES
                                             		   WHERE CHALL_NO = #{challNo})
                      			FROM CHALL_RESULT)             

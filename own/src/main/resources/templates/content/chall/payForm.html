@@ -112,18 +112,16 @@
 	<div>
 	<h3>예치금 충전하기</h3>
 			
-			
-			
 		<ul>
 			<li>아이디:<input id="userId" type="text" th:value="${session.loginUser.userId}"></li>
 			<li>전화번호:<input id="userPhone" type="text" th:value="${session.loginUser.userPhone}"></li>
 			<li>이름:<input id="userName" type="text" th:value="${session.loginUser.userName}"></li>
 			<li>이메일:<input id="userEmail" type="text" th:value="${session.loginUser.userEmail}"></li>
-			<li>결제방법:<select id="payMethod">
-				<option value="cardd">일반결제</option>
+			<li>결제방법:<select id="amtMethod">
+				<option value="carddd">일반결제</option>
 				<option value="kakaopayu">카카오페이</option>
 				</select>
-			<li>결제금액:<input type="number" min="1000" max="100000" required="required" id="payPrice"></li>
+			<li>결제금액:<input type="number" min="1000" max="300000" required="required" id="payPrice"></li>
 			<li><input type="button" value="충전하기" id=payBtn></li>
 		</ul>
 	</div>
@@ -141,12 +139,12 @@
 	let userPhone = $('#userPhone').val();
 	let userName = $('#userName').val();
 	let userEmail = $('#userEmail').val();
-	let amtType = '결제';
+	let amtType = '충전';
 	console.log(userId, userPhone, userName, userEmail);
 	//버튼눌러서 가져와야하는 거
 	$('#payBtn').on('click',function(){
-		let payMethod = $('#payMethod option:selected').text();
-		console.log(payMethod);
+		let amtMethod = $('#amtMethod option:selected').text();
+		console.log(amtMethod);
 		let payPrice = $('#payPrice').val();
 		  IMP.init('imp43120301'); //iamport 대신 자신의 "가맹점 식별코드"를 사용
 		  IMP.request_pay({
@@ -168,7 +166,7 @@
 		        	method: 'post',
 		        	data: JSON.stringify({ userId: userId,
 							        	   price: payPrice,
-							        	   payMethod: payMethod,
+							        	   amtMethod: amtMethod,
 							        	   amtType: amtType
 					}),
 					beforeSend : function(xhr){
@@ -176,8 +174,9 @@
 					},
 					contentType: "application/json",
 					success: function(res){
-						console.log(res)
-						location.href = '/own/chall/payResult?amtNo=' + res
+						alert(res);
+						console.log(res);
+						location.href = '/own/chall/myAmount'
 					},
 					error: function(err){
 						console.log(err)

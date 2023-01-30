@@ -913,6 +913,7 @@
         }, 
         contentType: "application/json",
         success: function(result){
+			console.log("인증확인");
           if(result == "able"){
             console.log('인증가능 - 이번주 인증 덜채움');
           } else if(result == "todaydone"){

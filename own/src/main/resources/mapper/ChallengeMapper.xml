@@ -3,17 +3,19 @@
 <mapper namespace="co.prjt.own.chall.mapper.ChallengeMapper">
 	<!-- 조건은 항상 위에 있어야함 -->
 	<sql id="condition">
-		<where>
 				<if test="challLeader !=null">
-					CHALL_LEADER = #{challLeader}			
+					AND	CHALL_LEADER = #{challLeader}			
 				</if>
 				<if test="challNo !=null">
-					CHALL_NO = #{challNo}
+					AND CHALL_NO = #{challNo}
 				</if>
 				<if test="challStatus !=null">
-					CHALL_STATUS = #{challStatus}		
+					AND CHALL_STATUS = #{challStatus}		
 				</if>
-		</where>
+				<if test="searchWord !=null and searchWord !='' ">
+					AND (CHALL_TITLE LIKE '%${searchWord}%' OR 
+					       CHALL_TAG LIKE '%${searchWord}%')
+				</if>
 	</sql>
 	
 	<insert id="insertChall">
@@ -50,20 +52,20 @@
 	
 	<!-- vo중 조건으로 조회 / 아마 여러개라서 list로 출력-->
 	<select id="getChallAll" resultType="co.prjt.own.chall.service.ChallengeVO">
-		SELECT * FROM ( SELECT ROWNUM RN, A.* 
-                 		FROM ( SELECT * 
-                        	   FROM (SELECT C.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
-                              		 FROM MULTIMEDIA M, CHALLENGES C
-                              		 WHERE  M.IDENTIFY_ID = C.CHALL_NO
-                              		 <include refid="condition"/>   
-                              		  AND MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
-                                         			   FROM CHALLENGES S, MULTIMEDIA M
-                                               		   WHERE S.CHALL_NO=M.IDENTIFY_ID
-                                              		   GROUP BY S.CHALL_NO )
-                                    ORDER BY to_number(substr(chall_no,5)))) A 
-                  <![CDATA[   
-						WHERE ROWNUM <= #{last} ) 
-		WHERE RN >= #{first}
+		SELECT * FROM ( SELECT ROWNUM RN, A.* 	  FROM ( 
+		
+          		SELECT C.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
+               	  FROM MULTIMEDIA M, CHALLENGES C
+               	 WHERE M.IDENTIFY_ID = C.CHALL_NO
+                  	<include refid="condition"/>   
+                    AND MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
+                             		   FROM CHALLENGES S, MULTIMEDIA M
+                                   	  WHERE S.CHALL_NO=M.IDENTIFY_ID
+                                       GROUP BY S.CHALL_NO )
+                 ORDER BY TO_NUMBER(SUBSTR(CHALL_NO,5))
+      
+         <![CDATA[   
+		) A WHERE ROWNUM <= #{last} ) 	WHERE RN >= #{first}
 		]]>
 	</select>
 	
@@ -74,30 +76,35 @@
 	</select>
 
 	<select id="getMyChall" resultType="co.prjt.own.chall.service.ChallengeVO">
-		SELECT * FROM ( SELECT ROWNUM RN, A.* 
-		                FROM ( SELECT C.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
-		                       FROM MULTIMEDIA M, (select * from challenges
-		                                           where chall_no in (  select chall_no from chall_mem_list
-		                                                                where user_id =  #{userId}
-		                                                                and mem_status = '승인')) C
-		                       WHERE  M.IDENTIFY_ID = C.CHALL_NO
-		                       AND MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
-		                                          FROM CHALLENGES S, MULTIMEDIA M
-		                                          WHERE S.CHALL_NO=M.IDENTIFY_ID
-		                                          GROUP BY S.CHALL_NO )) A 
-		                                          <![CDATA[  
-		                WHERE ROWNUM <= #{last} ) 
-		WHERE RN >= #{first}
+		SELECT * FROM ( SELECT ROWNUM RN, A.*  FROM ( 
+		
+					SELECT C.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
+		              FROM MULTIMEDIA M, (SELECT * 
+		                                    FROM CHALLENGES
+		                                   WHERE CHALL_NO IN ( SELECT CHALL_NO 
+		                                                         FROM CHALL_MEM_LIST
+		                                                        WHERE USER_ID =  #{userId}
+		                                                          AND MEM_STATUS = '승인')) C
+		            WHERE  M.IDENTIFY_ID = C.CHALL_NO
+		               AND MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
+		                                   FROM CHALLENGES S, MULTIMEDIA M
+		                                  WHERE S.CHALL_NO=M.IDENTIFY_ID
+		                                  GROUP BY S.CHALL_NO )                 
+		<![CDATA[  
+		) A WHERE ROWNUM <= #{last} )  WHERE RN >= #{first}
 		]]>
 	</select>
 	
+	<!-- 아무것도 없이 where만 붙일 때 1=1넣기~! -->
 	<select id="countChall" resultType="int">
 		SELECT count(*)
 		FROM CHALLENGES
+		WHERE 1=1 
+		<include refid="condition"/>   
 	</select>
 	
 	<select id="countMychall" resultType="int">
-		SELECT count(*)
+		SELECT COUNT(*)
 		FROM CHALL_MEM_LIST M, CHALLENGES C
 		WHERE M.CHALL_NO = C.CHALL_NO
 		AND M.USER_ID = #{value}
@@ -105,11 +112,13 @@
 	</select>
 	<!-- 나의 도전목록들 -->
 	
+	
+	<!-- 위에 전체로 사용. -->
 	<!-- 카테고리와 제목안에 있는 단어로 검색 -->
 	<select id="searchChall" resultType="co.prjt.own.chall.service.ChallengeVO">
 		SELECT C.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
-		FROM MULTIMEDIA M, CHALLENGES C
-		WHERE  M.IDENTIFY_ID = C.CHALL_NO
+		  FROM MULTIMEDIA M, CHALLENGES C
+		 WHERE M.IDENTIFY_ID = C.CHALL_NO
 		AND MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
 	                  FROM CHALLENGES S, MULTIMEDIA M
 	                  WHERE S.CHALL_NO=M.IDENTIFY_ID

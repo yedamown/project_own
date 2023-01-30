@@ -20,4 +20,9 @@ public interface CMemberMapper {
 	
 	//도전회원정보 전체조회
 	List<CMemberVO> getCMemAll(CMemberVO vo);
+	
+	// -----*** 매퍼에만 있음 쿼리문만 활용
+	//예치금 현황 업데이트
+	int plusAmt(CMemberVO vo);
+	int minusAmt(CMemberVO vo);
 }

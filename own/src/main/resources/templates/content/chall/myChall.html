@@ -110,6 +110,7 @@
 									<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
 								    <small class="mr-3">[[${my.challDuration}]]주 동안</small>
 								    <small class="mr-3">주 [[${my.challFreq}]]회</small>
+								    <small class="mr-3">[[${my.nowMem}]] 참여 중</small>
 								</div>
 								<a
 									th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
@@ -228,7 +229,8 @@ $('#pagegation').on('click', '.pagePort', function(){
 		let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
 		let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.challStartdate + '시작')),
 																					   ($('<small />').addClass("mr-3").text(cha.challDuration + '주 동안')),
-																					   ($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회'))
+																					   ($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회')),
+																					   ($('<small />').addClass("mr-3").text(cha.nowMem + '명 참여중'))
 																					  );
 		let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', 'detailChall?challNo=' + challNo); 
 		div1.append(div2.append(hiddenInput, img2_1, div2_2.append(h4_3, div_3, a_3)));

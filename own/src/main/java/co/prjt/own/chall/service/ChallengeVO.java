@@ -37,4 +37,7 @@ public class ChallengeVO {
 	int first;
 	int last;
 	Paging paging;
+	
+	//검색할 단어 담아둘 곳
+	String searchWord;
 }
