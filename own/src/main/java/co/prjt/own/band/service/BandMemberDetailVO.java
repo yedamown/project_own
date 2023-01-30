@@ -56,7 +56,7 @@ public class BandMemberDetailVO {
 	int boardCnt; // 회원의 밴드내 게시글 수 
 	int replyCnt; // 회원의 밴드내 댓글 수
 	int age; // 생년월일로 계산한 회원의 나이
-	String searchOption; // 정렬옵션
+	String selectOption; // 정렬옵션
 	  
     // 밴드멤버프로필이미지
    public String profileImg;

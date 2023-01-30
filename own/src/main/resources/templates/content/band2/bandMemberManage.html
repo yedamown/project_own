@@ -34,13 +34,14 @@
 	</div>
 	<div id="allBandMemberList" style="display:block">
 		<div>
-			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname"> <span
+			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" id="allNickname"> <span
 				class="input-group-btn">
-				<button class="btn btn-default searchBtn" type="button">
+				<button class="btn btn-default searchBtn" type="button" id="allSearch">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
-			</span> <select name="searchOption">
-				<option value="signupDate">가입일자 순</option>
+			</span>
+			<select id="selectOption" name="selectOption">
+				<option value="signupDate" selected="selected">가입일자 순</option>
 				<option value="name">이름 순</option>
 				<option value="accessDate">최종접속일 순</option>
 				<option value="boradCnt">게시글 순</option>
@@ -50,7 +51,7 @@
 				<option value="">20개씩 보기</option>
 				<option value="">50개씩 보기</option>
 			</select>
-			<span class=""> 전체 멤버 수 </span> <span th:text="${#lists.size(memberList)}"></span>
+			<span class=""> 전체 멤버 수 </span> <span id="allMemberCnt"></span>
 		</div>
 		<table>
 			<thead>
@@ -64,7 +65,7 @@
 				<th><input type="checkbox"></th>
 
 			</thead>
-			<tbody id="">
+			<tbody id="allBandMemberTable">
 				<tr th:each="list : ${memberList}">
 					<td><img th:src="|/imgView/${list.profileImg}|"
 							style="height: 30px; width: 30px; object-fit: cover" /></td>
@@ -79,19 +80,51 @@
 						<td th:text="여자"></td>
 					</span>
 					<td th:text="${list.age}"></td>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" id="kickCheck"></td>
+					<td>
+						<div class="kickedReason" style="display:none">
+							<textarea maxlength="20" class="reasoninput"></textarea>
+							<p class="textCount">0자</p>
+							<p class="textTotal">/20자</p>
+							<input type="checkbox" name="resign"><label for="resign">해당 멤버의 재가입을 막습니다.</label>
+						</div>
+					</td>
 				</tr>
+
 			</tbody>
 		</table>
 		<span>선택 멤버를</span> <button>강제탈퇴</button>
-		<div id="paging"></div>
+		<div id="allPaging">
+			<nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+				<!--================ 이전  =================-->
+				<ul class="pagination">
+					<li class="page-item" th:if="${paging.startPage>1}"><a class="page-link" aria-label="Previous"
+							th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+									class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+					<!--================ 페이지 이동 1_2_3_4_5  =================-->
+					<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+						<li class="page-item" th:if="${pag != paging.page}"><a class="page-link pagePort"
+								th:value="${pag}" th:text="${#numbers.formatInteger(pag,2)}"></a></li>
+						<li class="page-item active" th:if="${pag==paging.page}"><a class="page-link"
+								th:text="${#numbers.formatInteger(pag,2)}"></a>
+						</li>
+					</th:block>
+					<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+					<!--================ 이후  =================-->
+					<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+						<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}"> <span
+								aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
 	</div>
 
 	<div id="waitingBandMemberList" style="display:none">
 		<div>
-			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname"> <span
+			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" id="waitingNickname"> <span
 				class="input-group-btn">
-				<button class="btn btn-default searchBtn" type="button">
+				<button class="btn btn-default searchBtn" type="button" id="waitingSearch">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
 			</span> <select name="pagingOption">
@@ -114,14 +147,37 @@
 			</tbody>
 		</table>
 		<span>선택 멤버를</span> <button>멤버가입승인</button><button>멤버가입반려</button>
-		<div id="paging"></div>
+		<div id="waitingPaging">
+			<nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+				<!--================ 이전  =================-->
+				<ul class="pagination">
+					<li class="page-item" th:if="${paging.startPage>1}"><a class="page-link" aria-label="Previous"
+							th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+									class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+					<!--================ 페이지 이동 1_2_3_4_5  =================-->
+					<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+						<li class="page-item" th:if="${pag != paging.page}"><a class="page-link pagePort"
+								th:value="${pag}" th:text="${#numbers.formatInteger(pag,2)}"></a></li>
+						<li class="page-item active" th:if="${pag==paging.page}"><a class="page-link"
+								th:text="${#numbers.formatInteger(pag,2)}"></a>
+						</li>
+					</th:block>
+					<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+					<!--================ 이후  =================-->
+					<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+						<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}"> <span
+								aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
 	</div>
 
 	<div id="kickedBandMemberList" style="display:none">
 		<div>
-			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" name="bandNickname"> <span
+			<input type="text" class="form-control" placeholder="아이디 또는 별명 검색" id="kickedNickname"> <span
 				class="input-group-btn">
-				<button class="btn btn-default searchBtn" type="button">
+				<button class="btn btn-default searchBtn" type="button" id="kickedSearch">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
 			</span> <select name="pagingOption">
@@ -138,13 +194,35 @@
 				<th>처리일</th>
 				<th>가입불가여부</th>
 				<th><input type="checkbox"></th>
-
 			</thead>
 			<tbody id="kickedMemberTable">
 			</tbody>
 		</table>
 		<span>선택 멤버를</span> <button>가입불가</button><button>가입불가 해제</button>
-		<div id="paging"></div>
+		<div id="kickedPaging">
+			<nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+				<!--================ 이전  =================-->
+				<ul class="pagination">
+					<li class="page-item" th:if="${paging.startPage>1}"><a class="page-link" aria-label="Previous"
+							th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+									class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+					<!--================ 페이지 이동 1_2_3_4_5  =================-->
+					<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+						<li class="page-item" th:if="${pag != paging.page}"><a class="page-link pagePort"
+								th:value="${pag}" th:text="${#numbers.formatInteger(pag,2)}"></a></li>
+						<li class="page-item active" th:if="${pag==paging.page}"><a class="page-link"
+								th:text="${#numbers.formatInteger(pag,2)}"></a>
+						</li>
+					</th:block>
+					<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+					<!--================ 이후  =================-->
+					<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+						<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}"> <span
+								aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
 	</div>
 
 </body>
@@ -152,13 +230,119 @@
 	$(function () {
 		// 밴드 번호
 		let bandNo = $("#MybandNo").val();
+		// 전체 멤버 목록 정렬 셀렉트 박스 
+		$("#selectOption").change(function () {
+			let selectOption = $("#selectOption option:selected").val();
+			$.ajax({
+				url: '/own/band/bandGroup/GetAllMemberListAjax?bandNo=' + bandNo + '&selectOption=' + selectOption,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(result => {
+				$('#allBandMemberTable').empty();
+				$.each(result, function (i, e) {
+					var td = '<tr>';
+					td += '<td>' + '<img src="|/imgView/' + e.profileImg + '|"style="height: 30px; width: 30px; object-fit: cover"/>' + '</td>';
+					td += '<td>' + e.bandNickname + "(" + e.userId + ")" + '</td>';
+					td += '<td>' + e.bandAccessDate + '</td>';
+					td += '<td>' + e.boardCnt + '</td>';
+					td += '<td>' + e.replyCnt + '</td>';
+					if (e.bandGender == 'GD01') {
+						td += '<td>' + "남자" + '</td>';
+					} else {
+						td += '<td>' + "여자" + '</td>';
+					}
+					td += '<td>' + e.age + '</td>';
+					td += '<td>' + '<input type="checkbox">' + '</td>';
+					td += '<td>' +
+							'<div class="kickedReason" style="display:none">' +
+							'<textarea maxlength="20" class="reasoninput"/>' + 
+							'<p class="textCount">' + "0자" + '</p>' +
+							'<p class="textTotal">' + "/20자" + '</p>' +
+							'<input type="checkbox" name="resign">' + '<label for="resign">' + "해당 멤버의 재가입을 막습니다." + '</label>' +
+							'</div>' +
+							'</td>';
+					td += '</tr>';
+					$('#allBandMemberTable').append(td);
+				})
+			});
+		});// end of 정렬 셀렉트박스
 
-		// 전체 멤버 목록
 		$(".allBandMemberList").click(function () {
-			$("#allBandMemberList").show();
 			$("#waitingBandMemberList").hide();
+			$("#allBandMemberList").show();
 			$("#kickedBandMemberList").hide();
 		});
+
+		// 전체 멤버 목록 페이징
+		$('#allPaging #pagegation').on('click', '.pagePort', function () {
+			//페이지번호 + 밴드식별번호
+			let page = $(this).attr('value');
+			$.ajax({
+				url: '/own/band/bandGroup/GetAllMemberListAjax?bandNo=' + bandNo + '&page=' + page,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(result => {
+				$('#allBandMemberTable').empty();
+				$.each(result, function (i, e) {
+					var td = '<tr>';
+					td += '<td>' + '<img src="|/imgView/' + e.profileImg + '|"style="height: 30px; width: 30px; object-fit: cover"/>' + '</td>';
+					td += '<td>' + e.bandNickname + "(" + e.userId + ")" + '</td>';
+					td += '<td>' + e.bandAccessDate + '</td>';
+					td += '<td>' + e.boardCnt + '</td>';
+					td += '<td>' + e.replyCnt + '</td>';
+					if (e.bandGender == 'GD01') {
+						td += '<td>' + "남자" + '</td>';
+					} else {
+						td += '<td>' + "여자" + '</td>';
+					}
+					td += '<td>' + e.age + '</td>';
+					td += '<td>' + '<input type="checkbox">' + '</td>';
+					td += '</tr>';
+					$('#allBandMemberTable').append(td);
+				})
+				//페이지 버튼 만들기
+				$('#allPaging #pagegation').empty();
+				let pagingM = result[0].paging;
+				//시작 버튼
+				console.log(result[0]);
+				let startpageTag = $('<ul class="pagination" />');
+				$('#allPaging #pagegation').append(startpageTag);
+				//이전 버튼만들기
+				if (pagingM.startPage > 1) {
+					let pageBeforTag = `<li class="page-item">
+		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage - 1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           </li>`
+					startpageTag.append(pageBeforTag);
+				}
+				//페이지목록..
+				for (let pg = pagingM.startPage; pg <= pagingM.endPage; pg++) {
+					if (pg != pagingM.page) {
+						let pageTag = `<li class="page-item">
+		                           <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                           </li>`
+						startpageTag.append(pageTag);
+					} else if (pg == pagingM.page) {
+						let pageTag = `<li class="page-item active">
+		                           <a class="page-link" >${pg}</a>
+		                           </li>`
+						startpageTag.append(pageTag);
+					}
+				}
+				//이후 버튼만들기
+				if (pagingM.endPage < pagingM.lastPage) {
+					let pageAfterTag = `<li class="page-item">
+		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage + 1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           </li>`
+					startpageTag.append(pageAfterTag);
+				}
+				$('#allPaging #pagegation').append(startpageTag)
+			})
+		})// end of 전체 멤버 목록 페이징
+
 		// 가입대기중 멤버 목록
 		$(".waitingBandMemberList").click(function () {
 			$("#waitingBandMemberList").show();
@@ -171,7 +355,6 @@
 				dataType: 'json',
 				contentType: "application/json"
 			}).then(list => {
-				let memberCnt = 0;
 				// 기존 테이블 내용 삭제
 				$('#waitingMemberTable').empty();
 				$.each(list, function (i, e) {
@@ -189,13 +372,76 @@
 					td += '<td>' + '<input type="checkbox">' + '</td>';
 					td += '</tr>';
 					$('#waitingMemberTable').append(td);
-
-					// 데이터 개수 세기
-					memberCnt += 1;
 				})
-				$("#waitingMemberCnt").text(memberCnt);
 			})
-		});
+		}); // end of 가입대기중 멤버 목록
+
+		// 가입대기중 멤버 목록 페이징
+		$('#waitingPaging #pagegation').on('click', '.pagePort', function () {
+			//페이지번호 + 밴드식별번호
+			let page = $(this).attr('value');
+			$.ajax({
+				url: '/own/band/bandGroup/getWaitingMemberList?bandNo=' + bandNo + '&page=' + page,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(result => {
+				$('#waitingMemberTable').empty();
+				$.each(result, function (i, e) {
+					var td = '<tr>'
+					td += '<td>' + '<img src="|/imgView/' + e.profileImg + '|"style="height: 30px; width: 30px; object-fit: cover"/>' + '</td>';
+					td += '<td>' + e.bandNickname + "(" + e.userId + ")" + '</td>';
+					td += '<td>' + e.bandMemberIntro + '</td>';
+					if (e.bandGender == 'GD01') {
+						td += '<td>' + "남자" + '</td>';
+					} else {
+						td += '<td>' + "여자" + '</td>';
+					}
+					td += '<td>' + e.age + '</td>';
+					td += '<td>' + '<input type="checkbox">' + '</td>';
+					td += '</tr>';
+					$('#waitingMemberTable').append(td);
+				})
+				//페이지 버튼 만들기
+				$('#waitingPaging #pagegation').empty();
+				let pagingM = result[0].paging;
+				//시작 버튼
+				let startpageTag = $('<ul class="pagination" />');
+				$('#waitingPaging #pagegation').append(startpageTag);
+				//이전 버튼만들기
+				if (pagingM.startPage > 1) {
+					let pageBeforTag = `<li class="page-item">
+		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage - 1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           </li>`
+					startpageTag.append(pageBeforTag);
+				}
+				//페이지목록..
+				for (let pg = pagingM.startPage; pg <= pagingM.endPage; pg++) {
+					if (pg != pagingM.page) {
+						let pageTag = `<li class="page-item">
+		                           <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                           </li>`
+						startpageTag.append(pageTag);
+					} else if (pg == pagingM.page) {
+						let pageTag = `<li class="page-item active">
+		                           <a class="page-link" >${pg}</a>
+		                           </li>`
+						startpageTag.append(pageTag);
+					}
+				}
+				//이후 버튼만들기
+				if (pagingM.endPage < pagingM.lastPage) {
+					let pageAfterTag = `<li class="page-item">
+		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage + 1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           </li>`
+					startpageTag.append(pageAfterTag);
+				}
+				$('#waitingPaging #pagegation').append(startpageTag)
+			})
+		})// end of 가입대기중 멤버 목록 페이징
+
 		// 강퇴된 멤버 목록
 		$(".kickedBandMemberList").click(function () {
 			$("#kickedBandMemberList").show();
@@ -208,7 +454,6 @@
 				dataType: 'json',
 				contentType: "application/json"
 			}).then(list => {
-				let memberCnt = 0;
 				// 기존 테이블 내용 삭제
 				$('#kickedMemberTable').empty();
 				$.each(list, function (i, e) {
@@ -229,8 +474,200 @@
 					// 데이터 개수 세기
 					memberCnt += 1;
 				})
-				$("#kickedMemberCnt").text(memberCnt);
 			})
+		}); // end of 강퇴된 멤버 리스트 버튼
+
+		// 강퇴된 멤버 목록 페이징
+		$('#kickedPaging #pagegation').on('click', '.pagePort', function () {
+			//페이지번호 + 밴드식별번호
+			let page = $(this).attr('value');
+			$.ajax({
+				url: '/own/band/bandGroup/getkickedMemberList?bandNo=' + bandNo + '&page=' + page,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(result => {
+				$('#kickedMemberTable').empty();
+				$.each(result, function (i, e) {
+					var td = '<tr>'
+					td += '<td>' + '<img src="|/imgView/' + e.profileImg + '|"style="height: 30px; width: 30px; object-fit: cover"/>' + '</td>';
+					td += '<td>' + e.bandNickname + "(" + e.userId + ")" + '</td>';
+					td += '<td>' + e.bandMemberKickReason + '</td>';
+					td += '<td>' + e.bandKickDate + '</td>';
+					if (e.bandMemberRejoin == 'BL01') {
+						td += '<td>' + "가입불가" + '</td>';
+					} else {
+						td += '<td>' + "가입가능" + '</td>';
+					}
+					td += '<td>' + '<input type="checkbox">' + '</td>';
+					td += '</tr>';
+					$('#kickedMemberTable').append(td);
+				})
+				//페이지 버튼 만들기
+				$('#kickedPaging #pagegation').empty();
+				let pagingM = result[0].paging;
+				//시작 버튼
+				console.log(result[0]);
+				let startpageTag = $('<ul class="pagination" />');
+				$('#kickedPaging #pagegation').append(startpageTag);
+				//이전 버튼만들기
+				if (pagingM.startPage > 1) {
+					let pageBeforTag = `<li class="page-item">
+		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage - 1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           </li>`
+					startpageTag.append(pageBeforTag);
+				}
+				//페이지목록..
+				for (let pg = pagingM.startPage; pg <= pagingM.endPage; pg++) {
+					if (pg != pagingM.page) {
+						let pageTag = `<li class="page-item">
+		                           <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                           </li>`
+						startpageTag.append(pageTag);
+					} else if (pg == pagingM.page) {
+						let pageTag = `<li class="page-item active">
+		                           <a class="page-link" >${pg}</a>
+		                           </li>`
+						startpageTag.append(pageTag);
+					}
+				}
+				//이후 버튼만들기
+				if (pagingM.endPage < pagingM.lastPage) {
+					let pageAfterTag = `<li class="page-item">
+		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage + 1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           </li>`
+					startpageTag.append(pageAfterTag);
+				}
+				$('#kickedPaging #pagegation').append(startpageTag)
+			})
+		})// end of 강퇴된 멤버 목록 페이징
+
+		// 멤버수 세기
+		counting();
+		function counting() {
+			$.ajax({
+				url: '/own/band/bandGroup/memberCount?bandNo=' + bandNo + '&bandMemberStatus=' + 'BA02',
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(list => {
+				$("#allMemberCnt").text(list);
+			})
+			$.ajax({
+				url: '/own/band/bandGroup/memberCount?bandNo=' + bandNo + '&bandMemberStatus=' + 'BA01',
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(list => {
+				$("#waitingMemberCnt").text(list);
+			})
+			$.ajax({
+				url: '/own/band/bandGroup/memberCount?bandNo=' + bandNo + '&bandMemberStatus=' + 'BA03',
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(list => {
+				$("#kickedMemberCnt").text(list);
+			})
+		} // end of counting함수
+
+		// 검색
+		$('#allSearch').on('click', function () {
+			let inputval = $('#allNickname').val();
+			let page = 1;
+			$.ajax({
+				url: '/own/band/bandGroup/GetAllMemberListAjax?bandNo=' + bandNo + '&userId=' + inputval + '&page=' + page,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(result => {
+				$('#allBandMemberTable').empty();
+				$.each(result, function (i, e) {
+					var td = '<tr>';
+					td += '<td>' + '<img src="|/imgView/' + e.profileImg + '|"style="height: 30px; width: 30px; object-fit: cover"/>' + '</td>';
+					td += '<td>' + e.bandNickname + "(" + e.userId + ")" + '</td>';
+					td += '<td>' + e.bandAccessDate + '</td>';
+					td += '<td>' + e.boardCnt + '</td>';
+					td += '<td>' + e.replyCnt + '</td>';
+					if (e.bandGender == 'GD01') {
+						td += '<td>' + "남자" + '</td>';
+					} else {
+						td += '<td>' + "여자" + '</td>';
+					}
+					td += '<td>' + e.age + '</td>';
+					td += '<td>' + '<input type="checkbox">' + '</td>';
+					td += '</tr>';
+					$('#allBandMemberTable').append(td);
+				})
+				//페이지 버튼 만들기
+				$('#allPaging #pagegation').empty();
+				let pagingM = result[0].paging;
+				//시작 버튼
+				console.log(result[0]);
+				let startpageTag = $('<ul class="pagination" />');
+				$('#allPaging #pagegation').append(startpageTag);
+				//이전 버튼만들기
+				if (pagingM.startPage > 1) {
+					let pageBeforTag = `<li class="page-item">
+		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage - 1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           </li>`
+					startpageTag.append(pageBeforTag);
+				}
+				//페이지목록..
+				for (let pg = pagingM.startPage; pg <= pagingM.endPage; pg++) {
+					if (pg != pagingM.page) {
+						let pageTag = `<li class="page-item">
+		                           <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                           </li>`
+						startpageTag.append(pageTag);
+					} else if (pg == pagingM.page) {
+						let pageTag = `<li class="page-item active">
+		                           <a class="page-link" >${pg}</a>
+		                           </li>`
+						startpageTag.append(pageTag);
+					}
+				}
+				//이후 버튼만들기
+				if (pagingM.endPage < pagingM.lastPage) {
+					let pageAfterTag = `<li class="page-item">
+		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage + 1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           </li>`
+					startpageTag.append(pageAfterTag);
+				}
+				$('#allPaging #pagegation').append(startpageTag)
+			})
+
+		});// end of 검색
+
+		// 강퇴 사유
+		$('.reasoninput').keyup(function (e) {
+			let content = $(this).val();
+			// 글자수 세기
+			if (content.length == 0 || content == '') {
+				$('.textCount').text('0자');
+			} else {
+				$('.textCount').text(content.length + '자');
+			}
+			// 글자수 제한
+			if (content.length > 20) {
+				// 100자 부터는 타이핑 되지 않도록
+				$(this).val($(this).val().substring(0, 100));
+			};
 		});
-	})
+
+		$("#kickCheck").change(function () {
+			if ($(this).is(":checked")) {
+				$('.kickedReason').show();
+			} else {
+				$('.kickedReason').hide();
+			}
+		});
+
+	}) // end of function
+
+
 </script>
