@@ -3,12 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- 구글 웹폰트 -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css"> 
+
+        <!-- css, js, jquery -->
+        <link rel="stylesheet" type="text/css" href="style.css"> 
+        <script type="text/javascript" src="script.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 #ui-id-1{
 background-color: yellow
+}
+.profileImg{
+	width:100px;
+	height:50px;
 }
 </style>
 </head>
@@ -16,6 +24,8 @@ background-color: yellow
 <h2>자동완성 테스트</h2>
 <input type="text" id="schoolInput" placeholder="학교를 입력하세요"
                onkeyup="search(this);">
+               <div id="schoolList"></div>
+        <h1 id="selected"></h1>
 </body>
 <script>
 
@@ -26,59 +36,28 @@ function search(target){
 	    $.ajax({
 	        type: 'GET',
 	        dataType: 'JSON',
-	        url: `asset/${schoolType}_school.json`, 
+	        url: '/own/sns/ListSearch', 
 	        error: function(err){
 	            console.log(err);
 	        },
 	        success: function(data){
-	            var checkWord = $("#schoolInput").val();
-	            var schoolList = $("#schoolList");
-	            console.log(checkWord);
+	        	 var checkWord = $("#schoolInput").val();
+	             var schoolList = $("#schoolList");
+	             console.log(checkWord);
 
-	            schoolList.empty();
-	            data.forEach((school)=>{
-	                if(school['name'].includes(checkWord)){
-	                    schoolList.append(`<span style="cursor: pointer;" onclick="select(this);"> ${school['name']} </span> <br/>`);                
-	                }
-	            })
+	             schoolList.empty();
+	             console.log(data);
+	             data.forEach((school)=>{
+	                 if(school['snsNickname'].includes(checkWord)){
+	                     schoolList.append(`<img class="profileImg" src="/imgView/${school['mediaServerFile']}">
+	                    		 			<span style="cursor: pointer;" onclick="select(this);"> ${school['snsNickname']} </span> <br/>
+	                    		 			`	);                
+	                 }
+	             })
 	        }
 	    })
 	}    
 
-$(document).ready(function(){
-	
-	
-	$.ajax({
-	    url: '/own/sns/ListSearch',
-	    method: 'get',
-	  }).then(res=>{
-		  console.log(res)
-		  let array = new Array();
-		  for(key in res){
-			  array.push(res[key].snsNickname)
-		  }
-		  console.log(array)
-		  $('#inputBox').autocomplete({
-	          source : array,
-	          minLength : 1,
-	          scroll: true,
-	          response:function(event,ui){
-	        	  console.log(ui)
-	        	  
-	          },
-	          classes : { // 위젯 요소에 추가 할 클래스를 지정
-	              'ui-autocomplete' : 'highlight'
-	          },	          
-	  			select: function(event, ui) {	
-	  					
-				console.log(ui.item.value);
-				//location.href="/own/snsFeed?snsNickname="+ui.item.value;
-			}
-	      });
-		  }
-	  )
-	
-})  
       
 </script>
 </html>

@@ -11,4 +11,5 @@ public class SAccountVO {
 	String userId;
 	String follower;
 	String follow;
+	String mediaServerFile;
 }
