@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import co.prjt.own.common.Paging;
 import lombok.Data;
 
 @Data
@@ -34,5 +35,11 @@ public class ValidationVO {
 	int myVld;
 	int memVldAvg;
 	
+	//페이징 정보담을
+	int First;
+	int last;
+	Paging paging;
+	
+	//myALl페이징정보
 	
 }

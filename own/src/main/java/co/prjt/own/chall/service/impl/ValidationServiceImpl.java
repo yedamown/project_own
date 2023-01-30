@@ -9,6 +9,7 @@ import co.prjt.own.chall.mapper.ValidationMapper;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.chall.service.ValidationService;
 import co.prjt.own.chall.service.ValidationVO;
+import co.prjt.own.common.Paging;
 
 @Component
 public class ValidationServiceImpl implements ValidationService{
@@ -30,10 +31,11 @@ public class ValidationServiceImpl implements ValidationService{
 		return mapper.getVld(vo);
 	}
 
-	@Override
-	public List<ValidationVO> getChallVld(ValidationVO vo) {
-		return mapper.getChallVld(vo);
-	}
+	//페이징곁들인 매퍼..인데 이 서비스보다는 매퍼를 사용.
+//	@Override
+//	public List<ValidationVO> getChallVld(ValidationVO vo) {
+//		return mapper.getChallVld(vo);
+//	}
 
 	@Override
 	public List<ValidationVO> getMyVld(ValidationVO vo) {
@@ -78,6 +80,19 @@ public class ValidationServiceImpl implements ValidationService{
 	@Override
 	public int memVldAvg(ValidationVO vo) {
 		return mapper.memVldAvg(vo);
+	}
+	
+	//
+	@Override
+	public List<ValidationVO> getVldPageList(ValidationVO vo, Paging paging) {
+		System.out.println(vo);
+		paging.setTotalRecord(mapper.countVld(vo));
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		vo.setPaging(paging);
+		List<ValidationVO> list =  mapper.getChallVld(vo);
+		list.get(0).setPaging(paging);
+		return list;
 	}
 
 }
