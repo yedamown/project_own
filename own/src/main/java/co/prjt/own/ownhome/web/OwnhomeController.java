@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.common.Paging;
+import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
@@ -126,7 +126,7 @@ public class OwnhomeController {
 		      System.out.println("넘어오나요 이메일"+email);
 		      ownService.sendMail("id",email);
 		      return "redirect:/";
-		   }
+		}
 		
 		@GetMapping("/own/mypage")
 		public String myupdate(Model model) {
@@ -156,6 +156,15 @@ public class OwnhomeController {
 			 System.out.println(emailchk);
 		      return "1";
 		   }
+		 
+		 //이메일인증번호 보내기
+		 @GetMapping("/own/singin/emailacc")
+		 @ResponseBody
+		 public String emailacc(@RequestParam String email) {
+			 System.out.println(email);
+			 ownService.sendMail("emailAcc", email);
+			 return "0";
+		 }
 		
 		// 등록
 		@PostMapping("/own/userInfo")

@@ -41,4 +41,7 @@ public interface CommonService {
 		//밴드용 이미지 수정...삭제
 		public int deleteImg(List<String> name, String key);
 
+		//신고테이블에 보내기
+		public int reportadd(ReportVO vo);
+		
 }

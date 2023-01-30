@@ -34,6 +34,9 @@ public class CReportServiceImpl implements CReportService{
 		return mapper.getCReportAll(vo);
 	}
 
-
+	@Override
+	public int checkReport(CReportVO vo) {
+		return mapper.checkReport(vo);
+	}
 
 }
