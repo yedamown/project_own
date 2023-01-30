@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="/css/sns/css/animate.min.css">
     <!-- Custom styles for this template -->
     <link href="/css/sns/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <style>
         /* The Modal (background) */
@@ -194,7 +195,10 @@
     <script src="/css/sns/js/wow.min.js"></script>
     <!-- Custom js -->
     <script src="/css/sns/js/main.js"></script>
-
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+	
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
             $(document).ready(function(){
                 $(".blog_card .blog_card_top:first-child").addClass("active");
@@ -229,9 +233,13 @@
                     <div class="side_menu_section">
                         <ul class="menu_nav">
                             <li><a href="/own/home">Home</a></li>
-                            <li><a th:href="@{snsFeed(snsNickname=${snsInfo.snsNickname})}">나의 피드</a></li>
-                            <li><a href="/own/snsNewFeed">최신게시글</a></li>
                             <li class="active"><a href="/own/sns">sns메인</a></li>
+                            <span th:if="${snsInfo!=null}">
+                            <li><a th:href="@{snsFeed(snsNickname=${snsInfo.snsNickname})}">나의 피드</a></li></span>
+                            <span th:unless="${snsInfo!=null}">
+                                <li><a href="#">나의 피드</a></li></span>
+                            <li><a href="/own/snsNewFeed">최신게시글</a></li>
+
                   
                         </ul>
                     </div>
@@ -285,7 +293,8 @@
                 <!--=================== side menu end====================-->
 
                 <!--=================== content body 메인====================-->
-                <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
+
+                <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center"  th:if="${session.loginUser.snsAccountNo != null}">
                     <br>
                     <input type="text" id="inputBox">
                     <div id="snsprofilebox" class="modalBtn">
@@ -346,10 +355,11 @@
                                         <div class="blog_card_bottom">
 
                                             <div class="meta_data">
-                                                <span>좋아요 수</span>
-                                                <span>댓글 수 </span>
+                                                <span>좋아요 <span th:text="${now.likeCount}" style="font-size:16px; font-weight:500;"></span>개</span>
+                                                <span>댓글 <span th:text="${now.replyCount}" style="font-size:16px; font-weight:500;"></span>개</span>
                                                 <span th:text="${#dates.format(now.snsBoardDate, 'yyyy-MM-dd HH:mm:ss')}">
-                                                 [[${now.snsBoardDate}]] </span>
+                                                 </span>
+                                                 <input id="snsBoardDate" type="hidden" th:value="${now.snsBoardDate}">
                                             </div>
                                             <p>게시글내용 /
                                                 <p th:text="${now.snsBoardContent}"></p>
@@ -357,7 +367,7 @@
                                         </div>
                                     </article>
                                 </th:block>
-
+                                
 
                                 <article class="blog_card" th:if="${snsFollow == 0}">
                                     <div class="blog_card_top">
@@ -369,6 +379,10 @@
 
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center"  th:unless="${session.loginUser.snsAccountNo != null}">
+
+
                 </div>
                 <!--=================== content body end ====================-->
             </div>
@@ -418,9 +432,9 @@
         var header = /*[[${_csrf.headerName}]]*/ 'defalut';
         var token = /*[[${_csrf.token}]]*/ 'defalut';
         /*]]>*/
-            // jQuery(document).ready(function () {
-            //     $("#modal").show();
-            // });
+            jQuery(document).ready(function () {
+                $("#modal").show();
+            });
 
             function closeModal() {
                 $('.searchModal').hide();
@@ -451,11 +465,6 @@
                 }
             )
    
-
-      
-
-
-        
         //게시글 이미지 페이징
         $('.dot').each(function(){
             $(this).on("click", function(e){
@@ -471,6 +480,7 @@
 
             })
         })
+
         //스토리 상세보기 ajax
         $('.modalBtn').on("click",'.storyInfo', function (e) {      
             // console.log($(this).text());
@@ -525,8 +535,7 @@
                             "src": "/imgView/" + res.storyImg[i].mediaServerFile,
                             "class": "storyImg"
                         })
-                        let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i]
-                            .snsStoryDate))
+                        let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i].snsStoryDate))
                         storyProfileDate.attr('class', "storyProfileDate");
                         $('.storyProfile').append(storyProfileDate);
                         $('.storyContent').append(storyImg);
@@ -539,7 +548,14 @@
                 }
             })
         })
-
+        
+        window.onload = function(){
+            console.log($('#snsBoardDate').attr("value"))
+            $('#snsBoardDate').attr("value")
+           var snsBoardTest = elapsedText($('#snsBoardDate').attr("value"))
+           console.log(snsBoardTest)
+           $('#snsBoardDate').innerHTML = snsBoardTest;
+        }
 
             //시간계산 함수
             function elapsedText(date) {

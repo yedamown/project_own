@@ -123,6 +123,20 @@ body {
 	overflow: hidden;
 }
 
+.boardListContent{
+        position:absolute;
+        top:1px;
+        left:1px;
+        z-index:0;
+        opacity: 0;
+        width: 310px;
+        height: 250px;
+        text-align: center;
+        background-color: black;
+        padding-top: 110px;
+        font-size : 16px;
+    }
+
 .gallery-image {
 	display: block;
 	width: 320px;
@@ -133,7 +147,9 @@ body {
 
 .gallery-image:hover {
 	transform: scale(1.15);
+    opacity: 0.7;
 }
+
 
 
 
@@ -153,6 +169,59 @@ body {
         padding-left: 20px;
         cursor: pointer;
     }
+
+    .Feedmodal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 21; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        /* Modal Content/Box */
+        .Feedmodal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Could be more or less, depending on screen size */
+        }
+
+        li.dot{
+            background-color: lightgray;
+            margin-top: 20px;
+            margin-left: 10px;
+        }
+        li.dot:hover {
+            background-color: lightblue;
+        }
+        li.dot.active {
+            background-color: skyblue;
+        }
+
+        .boardImg{
+            opacity: 0;
+        }
+        .boardImg.active{
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+            z-index: 20;
+        }
+        .btnIcon{
+            width: 60px;
+            height: 39px;
+            float: right;     
+            margin-top: 20px;
+        }
+        #snsLikeBtn{
+            width: 30px;
+            height: 30px;
+        }
 
     </style>
 </head>
@@ -174,7 +243,7 @@ body {
             <!--logo -->
             <div class="logo_box">
                 <a href="#">
-                    <img src="/css/sns/css/assets/img/logo.png" alt="cocoon">
+                    <img src="/css/sns/img/logo.png" alt="cocoon">
                 </a>
             </div>
             <!--logo end-->
@@ -187,14 +256,18 @@ body {
                             Home
                         </a>
                     </li>
-                    <li><a th:href="@{snsFeed(snsNickname=${snsInfo.snsNickname})}">나의 피드</a></li>
-
-                        <li class="active"><a href="/own/snsNewFeed">최신게시글</a></li>
                     <li>
-                            <a href="/own/sns">
-                                sns메인
-                            </a>
-                        </li>
+                        <a href="/own/sns">
+                            sns메인
+                       </a>
+                    </li>
+                    <li>
+                        <a th:href="@{snsFeed(snsNickname=${snsInfo.snsNickname})}">나의 피드</a>
+                    </li>
+                    <li class="active">
+                        <a href="/own/snsNewFeed">최신게시글</a>
+                    </li>
+
                 </ul>
             </div>
             <!--main menu end -->
@@ -244,21 +317,52 @@ body {
 
         <!--=================== content body ====================-->
         <div class="col-lg-10 col-md-9 col-12 body_block align-content-center">
-            <div class="topContentBox" style="width:1200px; height:100px; border:1px solid black; text-align: center;">
-                <span id="snsNewList">최신게시글</span><span>|</span><span  id="snsLikeList">좋아요</span>
+            <div class="topContentBox" style="width:1550px; height:100px; border:1px solid black; text-align: center;">
+                <span id="snsNewList">최신게시글</span><span>|</span><span  id="snsLikeList" value="false">좋아요</span>
             </div>
             <hr>
            
             
             <div class="container" style="margin-top: 50px;">
-            <div id="ajaxNewList">
+            <div class="ajaxNewList">
 
             </div>
             <div id="modelBoardList">
                     <div class="gallery">
-                        <div class="gallery-item" th:each="board:${newBoard}">
+                        <div class="gallery-item" th:each="board:${newBoard}" style="position:relative">
+                            
                             <img class="gallery-image" th:src="|/imgView/${board.mediaServerFile}|" />
+                            <a th:href="@{snsFeed(snsNickname=${board.snsNickname})}">
+                            <span class="boardListContent" >사진 클릭 시 피드로 이동합니다.</span></a>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게시글 상세보기 Modal -->                  
+            <div class="Feedmodal">
+                <div class="Feedmodal-content" style="width: 1100px; height: 800px;">
+                    <span class="close"></span>
+                    <div class="boardContent" style="float: right; width: 500px;border-bottom: 1px lightgray solid; padding-bottom: 16px;">
+                        
+                    </div>
+                    <div class="snsLikeBox" style="width :100px">
+                    </div>
+                    <div class="snsReplyBox" style="width : 100px">
+                        <img id="snsReplyIcon" src="/css/sns/img/speechImg.png" style="width: 20px; height: 20px;" >
+                    </div>
+                    <div class="boardImgList" style="position:relative; width: 500px; height: 600px; float:left">
+                    </div>
+                    <div class="replyContent" style="width:500px; float: right; border-bottom: 1px lightgray solid; padding-top: 16px; padding-bottom: 16px; margin-bottom: 10px;">
+                    </div>   
+                    <div class="replyInsert" style="width:500px; height: 200px;float:right;">
+                        
+                        <div class="realReply"></div>
+                    </div>
+                    <div class="container-dots">
+                        <ul class="dots-parent" style="list-style: none; margin-left: 150px; width: 300px; height: 50px;">
+                            
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -273,51 +377,422 @@ body {
         var token = /*[[${_csrf.token}]]*/ 'defalut';
         /*]]>*/
 
+    
+    var loginUserId = "[(${userId.userId})]"
 
-        var loginUserId = "[(${userId.userId})]"
-
+    //좋아요 리스트 불러오기
         $('#snsLikeList').on("click", function(){
-            alert("좋아요 버튼 클릭")
             $('#modelBoardList').children().hide();
+            console.log($(this).attr("value"));
+            
+            if($(this).attr("value") =='false'){
+                $('#snsLikeList').attr("value", "true")
+                $('.ajaxNewList').children().remove();
+                    $.ajax({
+                        url : '/own/snsLikeList',
+                        method : 'post',
+                        data : {
+                            userId : loginUserId
+                        },
+                        beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                        },
+                        success : function(res){
+                            console.log(res)
 
-            $.ajax({
-                url : '/own/snsLikeList',
-                method : 'post',
-                data : {
-                    userId : loginUserId
-                },
-                beforeSend: function (xhr) {
-                         xhr.setRequestHeader(header, token);
-                },
-                success : function(res){
-                    console.log(res)
-                    console.log("좋아요 리스트 불러오기~");
+                            let gallery = $('<div>').attr("class", "gallery")
+                            let galleryItem;
+                            let galleryDiv;
 
-                    let gallery = $('<div>').attr("class", "gallery")
-                    let galleryItem = $('<div>').attr("class", "gallery-item")
-                        for(let i=res.newImgList.length-1; i>=0; i--){
-                            let galleryImg = $('<img>').attr({"src" : "/imgView/" + res.newImgList[i].mediaServerFile,
-                                                              "class" : "gallery-image"})
-                            galleryItem.append(galleryImg)
+                                for(let i=0; i<res.newImgList.length; i++){
+                                        galleryItem = $('<div>').attr("class", "gallery-item")
+                                    let galleryImg = $('<img>').attr({src : "/imgView/" + res.newImgList[i].mediaServerFile,
+                                                                     class : "gallery-image"})
+                                    let galleryNo = $('<input>').attr({"type":"hidden", "value" : res.newImgList[i].identifyId, "class" : "inputNo"})
+                                    galleryItem.append(galleryImg, galleryNo)
+                                    galleryDiv = gallery.append(galleryItem)
+                                            
+                                }
+
+
+
+                            $('.ajaxNewList').append(galleryDiv);                  
+                        },
+                        error : function(err){
+                            console.log(err)
                         }
-                    let galleryDiv =  gallery.append(galleryItem)
+                    })
+               }else{
+                    console.log("좋아요 사진 안불러옴")
+               }
+           })
 
-
-                    $('#ajaxNewList').append(galleryDiv);                  
-                },
-                error : function(err){
-                    console.log(err)
-                }
-            })
+        $('#snsNewList').on("click", function(){
+            $('#snsLikeList').attr("value", "false");
+            $('#modelBoardList').children().show();
+            $('.ajaxNewList').children().remove();
         })
 
-        
-        $('#snsNewList').on("click", function(){
-            alert("최신 게시글 클릭")
-            $('#modelBoardList').children().show();
+        $('.gallery').on("mouseover ", '.gallery-item', function(){
+            $(this).find('.boardListContent').css({"opacity" :"0.4", "color" : "white"});
+
+        })
+
+        $('.gallery').on("mouseout ", '.gallery-item', function(){
+            $(this).find('.boardListContent').css("opacity", "0");
+
+        })
+
+        $('.ajaxNewList').on("click", '.gallery-item', function(){
+            console.log("좋아요 게시물 클릭")
+            console.log($(this).children('.inputNo').val());
+            let boardNo = $(this).children('.inputNo').val()
+            if(boardNo != null){
+                    $(".Feedmodal").show();
+                    console.log("모달 아작스 보냅니다");
+                        $.ajax({
+                            url : '/own/snsFeed',
+                            method : 'post',
+                            data: {
+                                snsBoardNo : boardNo,
+                                userId : loginUserId
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success: function (res){
+                                console.log(res);
+                                let boardNo = $('<div>').attr({"value": res.svo.snsBoardNo,
+                                                               "class" : "boardNo"});
+                                let boardDate = $('<div>').text(res.svo.snsBoardDate);
+                                let boardContent = $('<div>').text(res.svo.snsBoardContent);
+                                     $('.boardContent').append(boardNo, boardDate, boardContent);
+                                
+                                for(let i=res.imgList.length-1; i>= 0; i--){
+                                    let boardImg = $('<img>').attr({
+                                        "src" : "/imgView/" + res.imgList[i].mediaServerFile,
+                                        "class": "boardImg",
+                                        "data-item" : i})
+                                        boardImg.css({"width":"500px", "height":"600px", "object-fit":"cover",
+                                                      "position" : "absolute"})
+                                    
+                                    $('.boardImgList').append(boardImg);  
+                                }
+                                for(let i=0; i<res.imgList.length; i++){
+                                    let liTag = $('<li>').attr({"data-item" : i,
+                                                                "class" : "dot"})
+                                        liTag.css({"width":"20px", "height" : "20px", 
+                                                   "border-radius":"50%","cursor" :"pointer",
+                                                   "float" : "left"})
+                                    $('.dots-parent').append(liTag);
+                                }
+
+                                $(".boardImgList .boardImg:last-child").addClass("active");
+                                $(".dots-parent .dot:first-child").addClass("active");
+
+                                if(res.reply.length != 0){
+                                    for(let i=0; i<res.reply.length; i++){
+                                        $('.replyContent').append(makeReply(res.reply[i]));
+                                    }
+
+                                }else{
+                                    console.log('여기까지오나요?')
+                                    let emptyReply = $('<div>').text("등록된 댓글이 없습니다.")
+                                        $('.replyContent').append(emptyReply);
+                                }
+
+                                    let replyInput = $('<div>').attr({"class" : "replyInput"})
+                                        replyInput.css({"cursor": "pointer"})
+                                        replyInput.text('댓글쓰기')
+                                        $('.replyInsert').append(replyInput);
+                                    categoryNo = boardNo.attr("value");
+
+                                if(res.snsLikeCheck != null){
+                                    let snsLikeImg = $('<img>').attr({"src" : "/css/sns/img/fullHeart.png",
+                                                                       "id" : "snsLikeBtn",
+                                                                       "value" : "Like"})
+                                        $('.snsLikeBox').append(snsLikeImg);
+                                }else {
+                                    let snsLikeImg = $('<img>').attr({"src" : "/css/sns/img/emptyHeart.png",
+                                                                       "id" : "snsLikeBtn",
+                                                                       "value" : "noLike"})
+                                        $('.snsLikeBox').append(snsLikeImg);
+                                }
+                                
+                                let snsLikeCount = $('<span>').text("좋아요 "+res.snsLikeCount+"개");
+                                    snsLikeCount.attr("id" , "snsLikeCount");
+
+                                let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                                    $('.snsLikeBox').append(snsLikeCount);
+                                    $('.snsReplyBox').append(snsReplyCount)
+                                
+                            },error: function (err){
+                                console.log(err)
+                            }
+                        })
+                }else{
+                    console.log("잘못클릭")
+                }
+        })
+
+        function makeReply(reply){
+            let Tag = ` <div class="replyIdDate">${reply.userId} | ${elapsedText(`${reply.replyDate}`)}
+                        <span class="snsReplyDelBtn" style="font-size:20px; padding-left:350px; cursor:pointer;">&times;</span>
+                        <input type="hidden" value="${reply.replyNo}" /></div> 
+                        <div style="padding-left:50px;">${reply.replyContent}</div>
+                        `
+            return Tag;
+        }
+
+         //좋아요 ajax
+         $('.snsLikeBox').on("click", '#snsLikeBtn', function(){
+            console.log("하트 클릭")
+            console.log($(this).attr("value"))
+            $('.snsLikeBox').children('#snsLikeCount').remove();
+                if($(this).attr("value") == 'noLike'){
+                    console.log('빈하트 클릭')
+                    $(this).attr("value", "Like");
+                    $(this).attr({"src" : "/css/sns/img/fullHeart.png"});
+                        $.ajax({
+                            url : '/own/snsLike' ,
+                            method : 'post',
+                            data : {
+                                snsBoardNo : categoryNo,
+                                userId : loginUserId
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success : function(res){
+                                console.log('좋아요 성공~!')
+                                let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
+                                    snsLikeCount.attr({"id" : "snsLikeCount"})
+                                    $('.snsLikeBox').eq(0).append(snsLikeCount)
+                            },
+                            error : function(err){
+                                console.log(err)
+                            }
+                        })
+                }else{
+                    console.log("하트 클릭")
+                    $(this).attr("value", "noLike");
+                    $(this).attr({"src": "/css/sns/img/emptyHeart.png"});
+                        $.ajax({
+                            url : '/own/snsLikeDel',
+                            method : 'post',
+                            data : {
+                                snsBoardNo : categoryNo,
+                                userId : loginUserId
+                            },
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                            },
+                            success : function(res){
+                                console.log('좋아요 취소~!')
+                                
+                                let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
+                                    snsLikeCount.attr({"id" : "snsLikeCount"})
+                                    $('.snsLikeBox').eq(0).append(snsLikeCount)
+                            },
+                            error : function(err){
+                                console.log(err)
+                            }
+
+                        })
+                }
+
+        })
+
+
+    //댓글 입력 창 생성
+    $('.replyInsert').on("click",'.replyInput', function(e){
+        console.log('댓글쓰기 버튼 클릭')
+
+        $(e.target).remove();
+            let replyArea = $('<textarea>').css({"width":"500px","height" : "200px"})
+                replyArea.attr({"class":"replyText"})
+            let insertBtn = $('<button>').text("입력")
+                insertBtn.attr({"class": "insertBtn"})
+            let delBtn = $('<button>').text("취소")
+                delBtn.attr({"class" : "delBtn"})
+
+            $('.realReply').append(replyArea, insertBtn, delBtn);
+
+    })
+    //댓글 입력
+        $('.realReply').on("click", '.insertBtn', function(){
+                let replyText = $('.realReply').children('.replyText').val();
+                $('.replyContent').children().remove();
+                $('.snsReplyBox').children().eq(1).remove();
+                $.ajax({
+                    url : '/own/snsReply',
+                    method : 'post',
+                    data: {
+                        replyContent : replyText,
+                        userId : loginUserId,
+                        categoryNo : categoryNo
+                    },  
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function(res){
+                        console.log(res)
+
+                          for(let i=0; i<res.reply.length; i++){
+                                $('.replyContent').append(makeReply(res.reply[i]));
+                          }
+                    let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                    $('.snsReplyBox').append(snsReplyCount)
+
+                    },
+                    error : function(err){
+                        console.log(err);
+                    }
+
+                })
+        })
+
+        //댓글취소
+        $('.realReply').on("click", '.delBtn', function(){
+            console.log("취소버튼 클릭")
+            $('.replyInsert').children('.realReply').children().remove();
+            $('.replyInsert').children('.replyInput').remove();
+            let replyInput = $('<div>').text('댓글쓰기');
+                replyInput.attr({"class" : "replyInput"})
+                replyInput.css({"cursor":"pointer",
+                                "font-size":"14px"});
+            $('.replyInsert').append(replyInput);
             
         })
 
+        //댓글 삭제
+        $('.replyContent').on("click", '.snsReplyDelBtn', function(e){
+                console.log($(e.target).next().attr("value"));
+                let replyNo = $(e.target).next().attr("value");
+                console.log(replyNo)
+                $('.replyContent').children().remove();
+                $('.snsReplyBox').children().eq(1).remove();
+                $.ajax({
+                    url : '/own/snsReplyDelete',
+                    method : 'post',
+                    data : {
+                           replyNo : replyNo,
+                           categoryNo : categoryNo
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                        success : function(res){
+                            console.log("삭제완료")
+                          for(let i=0; i<res.reply.length; i++){
+                                $('.replyContent').append(makeReply(res.reply[i]));
+                          }
+                          
+                          let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                          $('.snsReplyBox').append(snsReplyCount)
+
+                    }, 
+                        error : function(err){
+
+                    }
+
+                })
+        })
+
+            //게시글 상세보기 이미지 페이징
+            $('.dots-parent').on("click", '.dot', function(e){
+            let btnData = $(e.target).attr("data-item");
+            $('.dot').not(this).removeClass("active");
+            $(this).addClass("active");
+            $('.boardImg').not('[data-item="'+btnData+'"]').removeClass("active")
+            $('.boardImg[data-item="'+btnData+'"]').addClass("active")
+        })
+
+        window.onclick = function (event) {
+            if (event.target.className == "Feedmodal") {
+                event.target.style.display = "none";
+                $('.boardContent').children().remove();
+                $('.boardImgList').children().remove();
+                $('.dots-parent').children().remove();
+                $('.replyContent').children().remove();
+                $('.replyInsert').children().remove();
+
+                $('.snsReplyBox').children().eq(1).remove();
+                
+
+                if($('.snsLikeBox').children('#snsLikeBtn').attr("value") == 'noLike'){
+                    $('.ajaxNewList').children().remove();
+                    $.ajax({
+                        url : '/own/snsLikeList',
+                        method : 'post',
+                        data : {
+                            userId : loginUserId
+                        },
+                        beforeSend: function (xhr) {
+                                xhr.setRequestHeader(header, token);
+                        },
+                        success : function(res){
+                            console.log(res)
+                            let gallery = $('<div>').attr("class", "gallery")
+                            let galleryItem;
+                            let galleryDiv;
+                                for(let i=0; i<res.newImgList.length; i++){
+                                        galleryItem = $('<div>').attr("class", "gallery-item")
+                                    let galleryImg = $('<img>').attr({src : "/imgView/" + res.newImgList[i].mediaServerFile,
+                                                                     class : "gallery-image"})
+                                    let galleryNo = $('<input>').attr({"type":"hidden", "value" : res.newImgList[i].identifyId, "class" : "inputNo"})
+                                    galleryItem.append(galleryImg, galleryNo)
+                                    galleryDiv = gallery.append(galleryItem)
+                                            
+                                }
+                            $('.ajaxNewList').append(galleryDiv);
+                            $('.snsLikeBox').children().remove();                  
+                        },
+                        error : function(err){
+                            console.log(err)
+                        }
+                    })
+                }else{
+                    console.log("아무변화없음");
+                    $('.snsLikeBox').children().remove();
+                }
+                
+            }
+        };
+
+        //시간계산 함수
+        function elapsedText(date) {
+            console.log(date);
+            date = new Date(date);
+            // 초 (밀리초)
+            const seconds = 1;
+            // 분
+            const minute = seconds * 60;
+            // 시
+            const hour = minute * 60;
+            // 일
+            const day = hour * 24;
+
+            var today = new Date();
+            var elapsedTime = Math.trunc((today.getTime() - date.getTime()) / 1000);
+
+            var elapsedText = "";
+            if (elapsedTime < seconds) {
+                elapsedText = "방금 전";
+            } else if (elapsedTime < minute) {
+                elapsedText = elapsedTime + "초 전";
+            } else if (elapsedTime < hour) {
+                elapsedText = Math.trunc(elapsedTime / minute) + "분 전";
+            } else if (elapsedTime < day) {
+                elapsedText = Math.trunc(elapsedTime / hour) + "시간 전";
+            } else if (elapsedTime < (day * 3)) {
+                elapsedText = Math.trunc(elapsedTime / day) + "일 전";
+            } else {
+                elapsedText = SimpleDateTimeFormat(date, "yyyy-MM-dd");
+            }
+
+            return elapsedText;
+        }
 
     </script>
 </div>

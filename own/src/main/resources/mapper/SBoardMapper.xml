@@ -41,7 +41,9 @@
 	<select id="getNowBoardList" resultType="SBoardVO">
 		select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no, a.sns_account_no, 
 				(select media_server_file from multimedia where identify_id = 
-				(select sns_account_no from sns_account where sns_account_no= a.sns_account_no)) as media_server_file
+				(select sns_account_no from sns_account where sns_account_no= a.sns_account_no)) as media_server_file, 
+                (select count(*) from own_like where category_no = a.sns_board_no) as like_count,
+                (select count(*) from reply where category_no = a.sns_board_no) as reply_count
 		      FROM (SELECT 
 		               SNS_NICKNAME, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_BOARD_NO, SNS_ACCOUNT_NO, 
 		                  ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_board_no,5)) DESC) AS rn FROM sns_board) A,
@@ -68,10 +70,11 @@
 	</select>
 	<!-- 내가 좋아요한 게시물 -->
 	<select id="snsBoardLikeList" resultType="SBoardVO">
-		select s.sns_board_no, s.sns_board_content, s.sns_board_date, s.sns_nickname
+		select s.sns_board_no, s.sns_board_content, s.sns_board_date, s.sns_nickname, to_number(SUBSTR(l.like_no,5))
 			from sns_board s, own_like l
 			where l.user_id = #{userId}
 			and s.sns_board_no = l.category_no
+            order by like_no desc
 	</select>
 	<!-- 게시글 입력 -->
 	<insert id="insertSnsBoard" parameterType="SBoardVO">
