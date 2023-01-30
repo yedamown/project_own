@@ -4,9 +4,11 @@
 	<!-- 자주쓰는 쿼리 -->
 	<sql id="latestRecord">
 		SELECT *
-        FROM EXER_RECORD
-		WHERE TO_DATE(EXEREC_DATE, 'YYYY-MM-DD') = TO_DATE((	SELECT MAX(EXEREC_DATE)
-																FROM EXER_RECORD), 'YYYY-MM-DD') 
+          FROM EXER_RECORD
+		 WHERE TRUNC(EXEREC_DATE) = TRUNC((	SELECT MAX(EXEREC_DATE)
+											  FROM EXER_RECORD
+											 WHERE USER_ID = #{userId}))
+															 
 		ORDER BY EXEREC_DATE DESC
 	</sql>
 	
@@ -16,29 +18,45 @@
 			order="BEFORE">
 			SELECT EXER_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-		INSERT INTO EXER_RECORD (USER_ID, EXEREC_DATE, EXEREC_WEIGHT,
-		EXEREC_CONDITION, EXEREC_TIME, EXEREC_METER, EXEREC_ROUTIN,
-		EXEREC_FEEDBACK, EXEREC_NO, EXERSUB_NO )
+		INSERT INTO 
+		EXER_RECORD (USER_ID, 
+		             EXEREC_DATE, 
+		             EXEREC_WEIGHT,
+					 EXEREC_CONDITION, 
+					 EXEREC_TIME, 
+					 EXEREC_METER, 
+					 EXEREC_ROUTIN,
+					 EXEREC_FEEDBACK, 
+					 EXEREC_NO, 
+					 EXERSUB_NO 
+					 )
 		VALUES (#{userId},
-		CURRENT_DATE,
-		#{exerecWeight}, #{exerecCondition}, #{exerecTime},
-		#{exerecMeter},
-		#{exerecRoutin}, #{exerecFeedback}, 'EXR_'||#{eno},
-		#{exersubNo})
+				CURRENT_DATE,
+				#{exerecWeight}, 
+				#{exerecCondition}, 
+				#{exerecTime},
+				#{exerecMeter},
+				#{exerecRoutin}, 
+				#{exerecFeedback},
+				'EXR_'||#{eno},
+				#{exersubNo})
 	</insert>
 
 	<!-- 회원의 운동기록 중 가장 최신날짜의 데이터 조회 
 		 기록날짜, 기록식별번호, 운동식별번호, 운동명, 컨디션, 운동시간, 칼로리계산 출력 -->
 	<select id="LatestExerRecord" resultType="ExerRecordVO"
 		parameterType="string">
-		SELECT	R.EXEREC_DATE EXEREC_DATE, R.EXEREC_NO EXEREC_NO, R.EXERSUB_NO EXERSUB_NO, 
+		SELECT	R.EXEREC_DATE EXEREC_DATE, 
+				R.EXEREC_NO EXEREC_NO, R.EXERSUB_NO EXERSUB_NO, 
 				S.EXERSUB_NAME EXERSUB_NAME, R.EXEREC_CONDITION EXEREC_CONDITION, R.EXEREC_TIME EXEREC_TIME
 				, ROUND(SUM(R.EXEREC_TIME*S.KCAL)) KCALS
+		
 		FROM ( 
 			<include refid="latestRecord"/>
 			) R
 		JOIN EXER_SUB S
-		ON R.EXERSUB_NO = S.EXERSUB_NO
+		  ON R.EXERSUB_NO = S.EXERSUB_NO
+		
 		WHERE R.USER_ID = #{userId}
 		GROUP BY R.EXEREC_TIME, R.EXEREC_DATE, R.EXEREC_NO, R.EXERSUB_NO, S.EXERSUB_NAME, R.EXEREC_CONDITION, S.KCAL 
 	</select>
@@ -76,10 +94,11 @@
 			SELECT *
             FROM EXER_RECORD
 			WHERE EXEREC_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') 
-                            AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
+              AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
 			) R
 		JOIN EXER_SUB S
 		ON R.EXERSUB_NO = S.EXERSUB_NO
+		
 		WHERE R.USER_ID = #{userId}
 		GROUP BY R.EXEREC_TIME, R.EXEREC_DATE, R.EXEREC_NO, R.EXERSUB_NO, S.EXERSUB_NAME, R.EXEREC_CONDITION, S.KCAL, R.EXEREC_WEIGHT       
         ORDER BY EXEREC_DATE DESC
