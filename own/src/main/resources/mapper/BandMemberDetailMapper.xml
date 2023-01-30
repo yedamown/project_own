@@ -180,4 +180,53 @@
 			</if>
 		WHERE BAND_MEMBER_NO = #{bandMemberNo}
 	</update>
+	
+	<!-- 유저아이디로 닉네임과 사진 조회(다수) -->
+	<select id="getBandMemberNickProfile" resultType="BandMemberDetailVO">
+		 SELECT A.USER_ID,
+		        BAND_NICKNAME,
+		        BAND_NO,
+		        BAND_MEMBER_STATUS,
+		        BAND_KICK_STATUS,
+		        BAND_SIGNUP_DATE,
+		        BAND_ACCESS_DATE,
+		        BAND_KICK_DATE,
+		        BAND_MEMBER_NO,
+		        BAND_BIRTH,
+		        BAND_GENDER,
+		        BAND_MEMBER_INTRO,
+		        BAND_MEMBER_REJOIN,
+		        BAND_MEMBER_KICK_REASON,
+		        BAND_MEMBER_GENDER_OPEN,
+		        BAND_MEMBER_BIRTH_OPEN,
+		        BAND_MEMBER_AGE_OPEN,
+		        MEDIA_SERVER_FILE  AS "PROFILEIMG"
+		    FROM  (
+		            SELECT  USER_ID,
+		                    BAND_NICKNAME,
+		                    BAND_NO,
+		                    BAND_MEMBER_STATUS,
+		                    BAND_KICK_STATUS,
+		                    BAND_SIGNUP_DATE,
+		                    BAND_ACCESS_DATE,
+		                    BAND_KICK_DATE,
+		                    BAND_MEMBER_NO,
+		                    BAND_BIRTH,
+		                    BAND_GENDER,
+		                    BAND_MEMBER_INTRO,
+		                    BAND_MEMBER_REJOIN,
+		                    BAND_MEMBER_KICK_REASON,
+		                    BAND_MEMBER_GENDER_OPEN,
+		                    BAND_MEMBER_BIRTH_OPEN,
+		                    BAND_MEMBER_AGE_OPEN
+		             FROM BAND_MEMBER_DETAIL
+		             WHERE BAND_NO='BDU_1'
+		             AND USER_ID IN 
+	                                <foreach collection="userIds" item="u" separator="," open="(" close=")">
+	                                	#{u}
+	                                </foreach>
+		        	) A,
+		        	MULTIMEDIA B
+		    WHERE A.BAND_MEMBER_NO = B.IDENTIFY_ID	
+	</select>
 </mapper>

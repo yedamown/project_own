@@ -12,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.prjt.own.band.mapper.BandBoardDetailMapper;
+import co.prjt.own.band.mapper.BandMemberDetailMapper;
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
 import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.band.service.BandBoardOptionVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
+import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
@@ -28,6 +30,7 @@ import co.prjt.own.common.service.OwnLikeVO;
 public class BandBoardDetailImpl implements BandBoardDetailService{
 	@Autowired BandBoardDetailMapper bandBoardDetailMapper;
 	@Autowired CommonService common;
+	@Autowired BandMemberDetailMapper bandMemberDetailMapper;
 	
 	@Override
 	public int countBandBoard(String bandNo) { 
@@ -37,11 +40,15 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 	@Override
 	public List<BandBoardDetailSearchVO> getFiveBoard(BandBoardDetailSearchVO vo, String userId) {
 		//글 5개씩..+댓글 수 담기 (밴드식별+직전에 뿌린 마지막번호이용)..만약없다면..
+		//프로필이미지는 주소값으로 바로 넣어야겠음...조인고치려니까 안되겠음 그냥 for문
+		String bandNo = vo.getBandNo();
 		List<BandBoardDetailSearchVO> fiveboard = bandBoardDetailMapper.getFiveBoard(vo);
 		
 		List<String> categoryNos = new ArrayList<String>();
+		List<String> userIds = new ArrayList<String>();
 		for(BandBoardDetailSearchVO v : fiveboard) {
 			categoryNos.add(v.getBandBoardDetailNo());
+			userIds.add(v.getBandBoardWriter());
 		}
 		//찜 만약 내가 찍었다면 찍었다는 게 필요할 듯.. 단순 수량만 가져가면 안되겠음
 		if(categoryNos.size()>0) {
@@ -92,6 +99,25 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 							board.setBandCalendar(cal);
 							break;
 						}
+					}
+				}
+			}
+			//프로필이미지는 주소값으로 바로 넣어야겠음...조인고치려니까 안되겠음 그냥 for문..bandNo가져오기...option번호 하나 넣어서 검색해야겠음
+			List<BandMemberDetailVO> mems = new ArrayList<>();
+			if(fiveboard.size()>0) {
+				BandMemberDetailVO mem = new BandMemberDetailVO();
+				mem.setUserIds(userIds);
+				//bandNo도 넣어야 검색됨..위에서 저장해둔 매퍼돌리고나오면 사라지니까 미리저장해둠
+				mem.setBandNo(bandNo);
+				mems = bandMemberDetailMapper.getBandMemberNickProfile(mem);
+			}//bandNickName
+			for(BandBoardDetailSearchVO board : fiveboard) {
+				for(BandMemberDetailVO m : mems) {
+					if(m.getUserId().equals(board.getBandBoardWriter())){
+						//닉저장
+						board.setBandNickname(m.getBandNickname());
+						//프로필이미지저장
+						board.setMediaServerFile(m.getProfileImg());
 					}
 				}
 			}

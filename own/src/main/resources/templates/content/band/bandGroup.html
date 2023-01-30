@@ -21,6 +21,7 @@
         <!-- main css -->
         <link rel="stylesheet" href="/css/band/css/style.css">
         <link rel="stylesheet" href="/css/band/css/responsive.css">
+        <script src="/css/band/js/jquery-3.2.1.js"></script>
         <style type="text/css">
         	.modal {
 				display: none;
@@ -221,17 +222,15 @@
 	                    	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
 		  <!-- ================== 여기붙음================== -->                    	
 	                        <div id="mainTemplate">
-	                        	<div>
-		                            <article style="border: 1px solid #eeeeee;padding:30px; ">
-		                                <div class="input-group">
-		                                    <input type="text" class="form-control" placeholder="Search Posts">
-		                                    <span class="input-group-btn">
-		                                        <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
-		                                    </span>
-		                                </div>
-		                            </article>
-		                            <div id="articleArea">
-					               </div>
+	                            <article style="border: 1px solid #eeeeee;padding:30px; ">
+	                                <div class="input-group">
+	                                    <input type="text" class="form-control" placeholder="Search Posts">
+	                                    <span class="input-group-btn">
+	                                        <button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+	                                    </span>
+	                                </div>
+	                            </article>
+	                            <div id="articleArea" class="arty">
 				               </div>
 	                        </div>
 	                        <!-- <iframe id="ifr" onload="iframeHeight()" frameborder="0" scrolling="no"></iframe> -->
@@ -381,10 +380,10 @@
 							                    <div style="display: flex; flex-direction: column;">
 							                    <div>
 							                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-							                            <img class="rounded-circle" src="/css/band/image/blog/author.png" alt="" style="width: 70px; height: 70px;">
+							                            <img class="rounded-circle" src=/imgView/${ele.mediaServerFile} alt="" style="width: 70px; height: 70px;">
 							                            <div  style="display: block; width: 300px; padding: 10px;">
 							                                <ul class="blog_meta list_style" style="display: inline-block;">
-							                                    <li style="display: block;">${ele.bandBoardWriter}</li>
+							                                    <li style="display: block;">${ele.bandNickname}</li>
 							                                    <li style="display: block;">${ele.bandBoardDate}</li>
 							                                </ul>
 							                            </div>
@@ -396,13 +395,16 @@
 							                            <p>${newContent}</p>
 							                        </div>
 							                    </div>
-							                    <a href="#" class="view_btn button_hover">View More</a>
+							                    <a href="#" class="view_btn button_hover boardDett" id="${ele.bandBoardDetailNo}">View More</a>
 							                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-							                        <div>
+							                        <div id="heartClick">
 							                             ${likeTag}
-							                        	<span>${ele.likeList["likeCount"]}</span>
+							                        	<span id="${ele.bandBoardDetailNo}">${ele.likeList["likeCount"]}</span>
 							                        </div>
-							                        <div><i class="lnr lnr-bubble"></i><span></span>${ele.reply}</div>
+							                        <div class="boardDett" id="${ele.bandBoardDetailNo}">
+							                        	<i class="lnr lnr-bubble boardDett" id="${ele.bandBoardDetailNo}"></i>
+							                        	<span></span>${ele.reply}
+							                        </div>
 							                    </div>
 							                </div>
 							            </article>`;
@@ -625,6 +627,13 @@
         //게시판관리
         $('#bandOption9').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
+    	})
+    	//게시판상세로 이동
+    	$('.arty:eq(0)').on('click', $('.boardDett'), function(e){
+    		let BoardNo = $(e.target).attr('id');
+    		if(BoardNo!=null&&BoardNo.indexOf('BDD_')>=0){
+    			$('#mainTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+BoardNo);
+    		}
     	})
     	 function iframeHeight(){
 		    var frm = document.getElementById('ifr').contentDocument; 

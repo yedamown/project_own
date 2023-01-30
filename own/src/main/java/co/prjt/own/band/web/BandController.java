@@ -242,9 +242,8 @@ public class BandController {
 	//RestController..밴드 상세...글번호 5개 주면 최신글 5개씩 내보내기
 	@GetMapping("/bandGroup/fiveBoard")
 	@ResponseBody
-	public List<BandBoardDetailSearchVO> fiveBoard(BandBoardDetailSearchVO vo, HttpServletRequest request){
+	public List<BandBoardDetailSearchVO> fiveBoard(BandBoardDetailSearchVO vo, HttpSession session){
 		//좋아요 용으로 받아오는 세션
-		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		return bandBoardDetailService.getFiveBoard(vo ,user.userId);
 	}

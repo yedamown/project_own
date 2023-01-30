@@ -48,11 +48,14 @@
 <div id="template">    
 <div style="flex-grow:3; width: 740px">
 	<div>
+	<input type="hidden" id="bandLeaderid" th:value="${band.bandLeaderid}">
+	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
 		<article style="border: 1px solid #eeeeee;padding:30px; ">
 		<form name="frm" id="frm">
 			<input type="hidden" th:name="${_csrf.parameterName}" id="headers" th:value="${_csrf.token}">
 			<input type="hidden" id="bandboardwriter" name="bandBoardWriter" th:value="${session.loginUser.userId}">
 			<input type="hidden" id="userId" name="userId" th:value="${session.loginUser.userId}">
+			<input type="hidden" id="bandLeaderid" name="bandLeaderid" th:value="${band.bandLeaderid}">
 			<!-- 썸머노트를 통해 추가될 이미지 -->
 			<input type="hidden" id="bandBoardDetailNo" name="bandBoardDetailNo">
 			<input type="hidden" id="bandNo" name="bandNo" th:value=${band.bandNo}>
@@ -65,17 +68,17 @@
 				<option value="">::말머리 선택::</option>
 			</select>
 			<div class="form-group">
-				<input placeholder="타이틀" type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle"  required>
+				<input placeholder="타이틀" type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle"  required maxlength="30">
 				<div class="form-group">
 					<textarea id="summernote" name="bandBoardContent"></textarea>
 				</div>
 				<div id="calVote"></div>
-				<input placeholder="태그" type="text" class="form-control" id="tag">
 				<div id="replyee" style="display: block">
 				댓글 허용<input type="radio" value="BH01" id="replyId" class="form-group" name="bandBoardTag">
 					    <input type="radio" value="BH02" id="replyId2" class="form-group" name="bandBoardTag">
 				</div>
 				<button type="button" id="writeBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white; float: right">등록</button>
+				<b id="writeBtnAlert">가치장만 작성가능한 게시판입니다</b>
 			</div>
 <!--==캘린더 모달창 ==-->
 		<div id="my_calendar_modal">
@@ -156,21 +159,22 @@
 </div>
 <script th:inline="javascript">
 /*<![CDATA[*/
-/*var header = [[${_csrf.headerName}]];
-var token = [[${_csrf.token}]];
-   console.log(header);
-   console.log(token);
- /*]]>*/
- 
+var header = /*[[${_csrf.headerName}]]
+var token = [[${_csrf.token}]]*/
+/*]]>*/
+console.log(header);
+console.log(token);
  //보드옵션리스트 저장
  //초기 보드 저장
 $(function(){
+	var bandLeaderid = $('#bandLeaderid').val();
+	var userId = $('#userId').val();
 	$(document).ready(function() {
 		//여기 아래 부분
 		$('#summernote').summernote({
-			  height: 300,                 // 에디터 높이
+			  height: 330,                 // 에디터 높이
 			  minHeight: null,             // 최소 높이
-			  maxHeight: null,             // 최대 높이
+			  maxHeight: null,              // 최대 높이
 			  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
 			  lang: "ko-KR",					// 한글 설정
 			  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
@@ -216,6 +220,10 @@ $(function(){
 				fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
 		  });
 		function uploadSummernoteImageFile(file, el) {
+			//let header = $('#headers').attr('name');
+			//let token = $('#headers').val();
+			console.log(header);
+			console.log(token);
 	        var data = new FormData();	
 	        data.append("file",file);
 	            $.ajax({
@@ -244,6 +252,8 @@ $(function(){
 	                    }
 	                });
            }
+		//초기화
+		makeSelectRe(boardListSave[0].bandBoardRemarks, boardListSave[0].bandLikeOption, boardListSave[0].bandBoardAuth, boardListSave[0].bandContentOption);
 	});
 	function jsonFn(jsonArray){
 		console.log(jsonArray);
@@ -399,7 +409,7 @@ $(function(){
 						cal += `<p>${mon}</p></div>`
 						cal += `<div style="padding:10px;"><h5>${title}</h5>`
 						cal += `<p>${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
-						cal += `<div style="float:right; margin-top:30px;"><input type="button" value="수정"><input type="button" value="삭제"></div>`
+						cal += `<div style="float:right; margin-top:30px;"><input type="button"id="calDelBtn" value="삭제"></div>`
 					cal += `</div>`;
 			calVote.append(cal);
 			//밴드캘린더시작일 끝나는 날 히든 값 넣기
@@ -430,6 +440,9 @@ $(function(){
 			
 		})
     }
+		
+		
+////////////////////
 	 Element.prototype.setStyle = function(styles) {
          for (var k in styles) this.style[k] = styles[k];
          return this;
@@ -474,10 +487,14 @@ $(function(){
 	$('#bandCalendarLocation').on('click', function(){
 		window.open( "/own/band/map", "Child", "width=1000px, height=500px, top=50%, left=50% ,resizable = no, scrollbars = no" );
 	})
-	let header = $('#headers').attr('name');
-	let token = $('#headers').val();
+/* 	let header = $('#headers').attr('name');
+	let token = $('#headers').val(); */
 	//글쓰기
 	$('#writeBtn').on('click', function(){
+		if($('#bandBoardTitle').val()==null||($('#bandBoardTitle').val()).replace(/(\s*)/g, '')==''){
+			alert('제목은 비울 수 없습니다.');
+			return false;
+		}
 		console.log($('#frm').serializeObject());
 		$.ajax({
 			url : '/own/band/bandGroup/bandBoardInsert',
@@ -519,18 +536,20 @@ $(function(){
 		let bandBoardOptionNo = $('#bandBoardOptionNo').val();
 		let bandBoardRemarks = '';
 		let bandLikeOption = '';
+		let bandContentOption = '';
 		$(boardListSave).each(function(idx, ele){
 			if(ele.bandBoardOptionNo==bandBoardOptionNo){
 				bandBoardRemarks = ele.bandBoardRemarks;
 				bandLikeOption = ele.bandLikeOption;
+				bandBoardAuth = ele.bandBoardAuth;
+				bandContentOption = ele.bandContentOption;
 			}
 		})
-		makeSelectRe(bandBoardRemarks, bandLikeOption)
+		makeSelectRe(bandBoardRemarks, bandLikeOption, bandBoardAuth, bandContentOption)
 	})
 	//페이지 열릴때 1번게시판말머리로 초기화 + 댓글불능확인
-	makeSelectRe(boardListSave[0].bandBoardRemarks, boardListSave[0].bandLikeOption);
 	//말머리 함수
-	function makeSelectRe(bandBoardRemarks, bandLikeOption){
+	function makeSelectRe(bandBoardRemarks, bandLikeOption, bandBoardAuth, bandContentOption){
 		//우선 비워주고
 		let bandRemarks = $('#bandRemarks').empty();
 		
@@ -547,28 +566,58 @@ $(function(){
 			
 		}
 		//라디오박스(댓글)
-		//$('input[value='+bandLikeOption+']').prop('disabled', true);
-		//$('input[value='+bandLikeOption+']').prop('chedked', true);
 		//만약 댓글작성불가면..
 		console.log(bandLikeOption)
 		if(bandLikeOption=='BH02'){
 			$('input[value=BH01]').prop('disabled', true);
 			
 			
-			$('#replyId2').attr('chedked', true);
-			$('#replyId').attr('chedked', false);
+			$('#replyId2').prop('checked', true);
+			$('#replyId').prop('checked', false);
 			console.log($('input[value=BH01]').is(':checked'));
 			console.log($('input[value=BH02]').is(':checked'));
 		} else if(bandLikeOption=='BH01'){
-			$('input[value=BH02]').prop('disabled', false);
-			$('input[value="BH01"]').prop('disabled', false);
+			$('input[value=BH02]').attr('disabled', false);
+			$('input[value="BH01"]').attr('disabled', false);
 			
-			$('#replyId').attr('chedked', true);
-			$('#replyId2').attr('chedked', false);
+			$('#replyId').prop('checked', true);
+			$('#replyId2').prop('checked', false);
 			console.log($('input[value=BH01]').is(':checked'));
 			console.log($('input[value=BH02]').is(':checked'));
 		}
+		//밴드장만 작성가능하면...
+		let bandLeaderid = $('#bandLeaderid').val();
+		let userId = $('#userId').val();
+		console.log(bandLeaderid + userId)
+		console.log(bandBoardAuth + userId)
+		if((bandBoardAuth=='BG01'&&bandLeaderid==userId) || bandBoardAuth=='BG02'){
+			$('#writeBtn').show();
+			$('#writeBtnAlert').hide();
+		} else {
+			$('#writeBtn').hide();
+			$('#writeBtnAlert').show();
+		}
+		console.log(bandContentOption)
+		$('#summernote').summernote('code', '');
+		if(bandContentOption!=null){
+			$('#summernote').summernote('code', bandContentOption);
+		}
+		console.log($('.note-editable'));
+		console.log($('.note-editable:eq(0)'));
+		$('.note-editable:eq(0)').css('height', '330px');
 	}
+	//일정삭제
+	$('#calVote').on('click', $('#calDelBtn'), function(e){
+		if(e.target.id=='calDelBtn'){
+			$('#calVote').empty();
+		}
+	})
 })
+$(document).ready(function () {
+       $('html, body').animate({
+           scrollTop: $('#template').offset().top
+       }, 'slow'); //slow
+   });
 </script>
+
 </div>

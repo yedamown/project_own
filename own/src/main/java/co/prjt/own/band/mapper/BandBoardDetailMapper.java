@@ -9,6 +9,7 @@ import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.band.service.BandBoardOptionVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
+import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.service.OwnLikeVO;
 
@@ -59,4 +60,6 @@ public interface BandBoardDetailMapper {
 	public int deleteBandBoard(String bandBoardOptionNo);
 	//글번호 리스트로가져와서 삭제
 	public int BandBoardDeleteList(BandBoardDetailSearchVO vo);
+	//아이디로 가치별명과 프로필사진들을 가져옴(list<String>)
+	public List<BandMemberDetailVO> getBandMemberNickProfile(BandMemberDetailVO vo);
 }

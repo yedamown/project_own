@@ -147,7 +147,7 @@
 				Title <input type="text" class="form-control" id="title"
 					th:value="|[${board.bandRemarks }] ${board.bandBoardTitle }|" readonly> Writer <input
 					type="text" class="form-control" id="writer"
-					th:value="${board.bandNickName }" readonly> RegDate <input
+					th:value="${board.bandNickname }" readonly> RegDate <input
 					type="text" class="form-control" id="RegDate"
 					th:value="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"
 					readonly>
@@ -599,4 +599,9 @@ console.log(calendar);
 	//아래 코드는 지도 위의 마커를 제거하는 코드입니다
 	//marker.setMap(null);
 }
+$(document).ready(function () {
+       $('html, body').animate({
+           scrollTop: $('#template').offset().top
+       }, 'fast'); //slow
+   });
 </script>
