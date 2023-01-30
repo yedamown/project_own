@@ -59,12 +59,18 @@ UPDATE BAND SET BAND_NAME=#{bandName},
 
 <!-- 밴드에 가입된 전체 회원리스트, 정렬조건, 검색까지 -->
 <select id="bandOptionGetAllMemberList" resultType="co.prjt.own.band.service.BandMemberDetailVO" parameterType="string">
-	   SELECT * FROM ( SELECT ROWNUM RN, AN.* from (SELECT  M.USER_ID USER_ID , M.BAND_NICKNAME BAND_NICKNAME, M.BAND_NO BAND_NO, 
-         M.BAND_ACCESS_DATE BAND_ACCESS_DATE, M.BAND_BIRTH BAND_BIRTH,
-         M.BAND_GENDER BAND_GENDER, M.BAND_MEMBER_INTRO BAND_MEMBER_INTRO, 
-         M.BAND_SIGNUP_DATE BAND_SIGNUP_DATE, M.BAND_MEMBER_NO BAND_MEMBER_NO
-            , ( TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BAND_BIRTH) / 12 ) + 2 
-            ) AGE 
+	   SELECT * FROM ( SELECT ROWNUM RN, AN.* from (
+	   
+	   SELECT  M.USER_ID , 
+	           M.BAND_NICKNAME, 
+	           M.BAND_NO, 
+               M.BAND_ACCESS_DATE BAND_ACCESS_DATE, 
+               M.BAND_BIRTH BAND_BIRTH,
+         	   M.BAND_GENDER BAND_GENDER, 
+         	   M.BAND_MEMBER_INTRO BAND_MEMBER_INTRO, 
+               M.BAND_SIGNUP_DATE BAND_SIGNUP_DATE, 
+         	   M.BAND_MEMBER_NO BAND_MEMBER_NO , 
+              ( TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), M.BAND_BIRTH) / 12 ) + 2  ) AGE 
            , ( SELECT COUNT(*)  
                FROM BAND_BOARD_DETAIL A, BAND B, BAND_BOARD_OPTION C
                WHERE B.BAND_NO=C.BAND_NO
@@ -95,8 +101,8 @@ UPDATE BAND SET BAND_NAME=#{bandName},
    FROM BAND_MEMBER_DETAIL M
    WHERE BAND_MEMBER_STATUS = 'BA02'
 	 <if test="userId != null and userId !=''">
-	    AND USER_ID LIKE '%' || #{userId} || '%'
-		OR BAND_NICKNAME LIKE '%' || #{userId} || '%'
+	    AND (USER_ID LIKE '%' || #{userId} || '%'
+		OR BAND_NICKNAME LIKE '%' || #{userId} || '%')
 	 </if>
    AND BAND_NO = #{bandNo}
    ORDER BY
@@ -135,13 +141,15 @@ UPDATE BAND SET BAND_NAME=#{bandName},
 
 <!-- 밴드에서 탈퇴된 회원리스트, 검색까지 -->
 <select id="bandOptionGetkickedMemberList" resultType="co.prjt.own.band.service.BandMemberDetailVO" parameterType="string">
-	SELECT * FROM ( SELECT ROWNUM RN, AN.* FROM ( SELECT  USER_ID, BAND_NICKNAME, BAND_MEMBER_KICK_REASON, 
-			BAND_KICK_DATE, BAND_MEMBER_REJOIN
+	SELECT * FROM ( SELECT ROWNUM RN, AN.* FROM (
+	 
+	 	SELECT  USER_ID, BAND_NICKNAME, BAND_MEMBER_KICK_REASON, 
+		    	BAND_KICK_DATE, BAND_MEMBER_REJOIN
 			, ( SELECT A.MEDIA_SERVER_FILE
 	        	FROM MULTIMEDIA A
 	        	WHERE A.IDENTIFY_ID = BAND_MEMBER_NO
 	        ) PROFILE_IMG		
-	FROM BAND_MEMBER_DETAIL 
+		FROM BAND_MEMBER_DETAIL 
 	WHERE BAND_MEMBER_STATUS = 'BA03'
 	<if test="userId != null and userId !='' ">
 	    AND USER_ID LIKE '%' || #{userId} || '%'
@@ -149,6 +157,7 @@ UPDATE BAND SET BAND_NAME=#{bandName},
 	 </if>
 	AND BAND_NO = #{bandNo}
 	ORDER BY BAND_KICK_DATE 
+	
 	) AN WHERE ROWNUM <![CDATA[ <= #{last}) where RN>= #{first} ]]>
 </select>
 </mapper>

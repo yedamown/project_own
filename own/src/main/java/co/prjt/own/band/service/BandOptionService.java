@@ -28,12 +28,12 @@ public interface BandOptionService {
 	public int bandDisHuman(String bandNo);
   
 	// 밴드 가입한 멤버 리스트
-	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging);
+	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo);
 
 	// 밴드 가입대기중 멤버 리스트
-	public List<BandMemberDetailVO> bandOptionGetWaitingMemberList(BandMemberDetailVO vo, Paging paging);
+	public List<BandMemberDetailVO> bandOptionGetWaitingMemberList(BandMemberDetailVO vo);
 
 	// 밴드 강퇴된 회원리스트
-	public List<BandMemberDetailVO> bandOptionGetkickedMemberList(BandMemberDetailVO vo, Paging paging);
+	public List<BandMemberDetailVO> bandOptionGetkickedMemberList(BandMemberDetailVO vo);
 
 }

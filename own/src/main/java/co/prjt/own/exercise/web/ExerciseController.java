@@ -21,6 +21,12 @@ import co.prjt.own.exercise.service.ExerRecordService;
 import co.prjt.own.exercise.service.ExerRecordVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 
+/**
+ * 
+ * @author 남미주 
+ * 운동기록작성, 분석
+ *
+ */
 @Controller
 @RequestMapping("/own")
 public class ExerciseController {
@@ -34,10 +40,10 @@ public class ExerciseController {
 	}
 	
 	// 오운완(나의운동기록하기) 페이지 이동
-		@RequestMapping(value = "/ownRecordForm1", method = RequestMethod.GET)
-		public String ownRecordForm1() {
-			return "content/own/ownRecordForm1";
-		}
+	@RequestMapping(value = "/ownRecordForm1", method = RequestMethod.GET)
+	public String ownRecordForm1() {
+		return "content/own/ownRecordForm1";
+	}
 
 	// 오운완(나의운동기록) 등록
 	@PostMapping("/exerciseRecord")
@@ -53,8 +59,7 @@ public class ExerciseController {
 
 	// 오운완(나의운동기록보기) 페이지 이동
 	@RequestMapping(value = "/ownRecordList", method = RequestMethod.GET)
-	public String ownRecordList(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
+	public String ownRecordList(HttpSession session, Model model) {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		// 세션에 담긴 아이디로 해당 회원의 가장 최신날짜 운동기록 가져오기
 		model.addAttribute("lRecord", exerService.LatestExerRecord(user.getUserId()));

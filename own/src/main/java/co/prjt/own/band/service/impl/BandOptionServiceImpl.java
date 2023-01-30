@@ -63,58 +63,59 @@ public class BandOptionServiceImpl implements BandOptionService {
   
 
 	@Override
-	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging) {
+	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo) {
 		// 페이징 설정
 		vo.setBandMemberStatus("BA02"); // 조건 설정
-		paging.setTotalRecord(bandOptionMapper.bandCount(vo));
-		paging.setPageUnit(1); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
-		paging.setPageSize(5);
-		vo.setFirst(paging.getFirst());
-		vo.setLast(paging.getLast());
-		vo.setPaging(paging);
+		vo.getPaging().setTotalRecord(bandOptionMapper.bandCount(vo));
+		//paging.setPageUnit(1); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
+		//paging.setPageSize(5);
+		vo.setFirst(vo.getPaging().getFirst());
+		vo.setLast(vo.getPaging().getLast());
+		vo.setPaging(vo.getPaging());
 		
 		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetAllMemberList(vo);
-		list.get(0).setPaging(paging);
+		list.get(0).setPaging(vo.getPaging());
 		return list;
 	}
 
 
 
 	@Override
-	public List<BandMemberDetailVO> bandOptionGetWaitingMemberList(BandMemberDetailVO vo, Paging paging) {
+	public List<BandMemberDetailVO> bandOptionGetWaitingMemberList(BandMemberDetailVO vo) {
 		// 페이징 설정
 		vo.setBandMemberStatus("BA01"); // 조건 설정
-		// paging.setTotalRecord(bandOptionMapper.balist.get(0).setPaging(paging);ndCount(vo));
-		paging.setPageUnit(2); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
-		paging.setPageSize(5);
-		vo.setFirst(paging.getFirst());
-		vo.setLast(paging.getLast());
-		vo.setPaging(paging);
+		vo.getPaging().setTotalRecord(bandOptionMapper.bandCount(vo));
+		//paging.setPageUnit(1); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
+		//paging.setPageSize(5);
+		vo.setFirst(vo.getPaging().getFirst());
+		vo.setLast(vo.getPaging().getLast());
+		vo.setPaging(vo.getPaging());
 		
 		// 가치 설정 - 멤버 관리 - 가입대기중 멤버 리스트
 		List<BandMemberDetailVO> list =  bandOptionMapper.bandOptionGetWaitingMemberList(vo);
-		list.get(0).setPaging(paging);
+		list.get(0).setPaging(vo.getPaging());
 		return list;
 	}
 
 	@Override
-	public List<BandMemberDetailVO> bandOptionGetkickedMemberList(BandMemberDetailVO vo, Paging paging) {
+	public List<BandMemberDetailVO> bandOptionGetkickedMemberList(BandMemberDetailVO vo) {
 		// 페이징 설정
 		vo.setBandMemberStatus("BA03"); // 조건 설정
-		paging.setTotalRecord(bandOptionMapper.bandCount(vo));
-		paging.setPageUnit(2); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
-		paging.setPageSize(5);
-		vo.setFirst(paging.getFirst());
-		vo.setLast(paging.getLast());
-		vo.setPaging(paging);
+		vo.getPaging().setTotalRecord(bandOptionMapper.bandCount(vo));
+		//paging.setPageUnit(1); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
+		//paging.setPageSize(5);
+		vo.setFirst(vo.getPaging().getFirst());
+		vo.setLast(vo.getPaging().getLast());
+		vo.setPaging(vo.getPaging());
 		
 
 		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetkickedMemberList(vo);
-		list.get(0).setPaging(paging);
+		list.get(0).setPaging(vo.getPaging());
 		return list;
 	}
-
-
+	
+	
+	
 
 
 }
