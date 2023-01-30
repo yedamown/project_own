@@ -127,12 +127,17 @@
 			</div>
 		<div class="col-12" style="text-align: center; ">
 			<h3>
-				내 현재 보유예치금:<span th:text=${memInfo.memAmt}></span>
+				내 현재 보유예치금:<span th:text=${memInfo.memAmt} id="myNowAmt"></span>
 			</h3>
 			<p class="btn btn-outline-primary m-1"><a href="/own/chall/payAmount">충전하러가기</a></p>
 			<h3>
 				내 계좌정보:<span th:text=${memInfo.memAcc}></span> <span>[[${memInfo.memAccname}]]</span>
 			</h3>
+			<p>내 계좌로 환급하기</p>
+			<!-- 유저아이디 히든 -->
+			<input type="hidden" th:value="${memInfo.userId}" id="userId">
+			결제금액:<input type="number" min="1000" max="300000" required="required" id="refundPrice">
+			<p class="btn btn-outline-primary m-1" id="refundBtn">환급하기</div>
 			<table border="solid 1" style="text-align: center;">
 				<thead>
 					<tr>
@@ -258,6 +263,67 @@
 		</div>
 	</div>
 	<!-- Footer End -->
+	<script>
+		//토큰있어야 post가능~!
+		/*<![CDATA[*/
+		var header = '[[${_csrf.headerName}]]';
+		var token = '[[${_csrf.token}]]';
+		console.log(header);
+		console.log(token);
 
+	/*	let rfBtn = document.getElementById('refundBtn');
+		let rfPrice = document.getElementById("refundPrice");
+		rfBtn.addEventListener('click', function(){
+			console.log(rfPrice.value);
+		})
+		console.log(rfPrice); */
+		$('#refundBtn').on('click', function(){
+			let rfPrice = $('#refundPrice').val();
+			let myAmt = $('#myNowAmt').text();
+			let userId = $('#userId').val();
+			console.log(myAmt);
+			console.log(rfPrice);
+			if(rfPrice < 1000){
+				alert("1000원 이상 출금 가능합니다.");
+			}
+			if(Number(myAmt) < rfPrice){
+				alert("보유 예치금을 초과하여 출금할 수 없습니다.")
+			}
+			//둘다 해당될 경우 아작스 - 출금아작스
+			if( rfPrice> 1000 && Number(myAmt) > rfPrice){
+				console.log(userId);
+				console.log("출금가능");
+				//회원아이디, 금액, type -> 출금/ method -> 계좌환불
+				/*
+										userId: userId,
+							        	   price: payPrice,
+							        	   amtMethod: amtMethod,
+							        	   amtType: amtType
+				*/
+				$.ajax({
+					url:'/own/chall/refundAmt',
+					method:'post',
+					data:JSON.stringify({userId:userId,
+										 price: rfPrice,
+							        	 amtType: "출금",
+										 amtMethod: "계좌이체",
+					}),
+					beforeSend : function(xhr){
+						         xhr.setRequestHeader(header, token);
+					},
+					contentType:"application/json",
+					success:function(res){
+						console.log(res);
+						let changeAmt = Number(myAmt) - Number(rfPrice);
+						console.log(changeAmt);
+						location.href = '/own/chall/myAmount'
+					},
+					error: function(err){
+						console.log(err);
+					}
+				})
+			}
+		})
+	</script>
 </body>
 </html>

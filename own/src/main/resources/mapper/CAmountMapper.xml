@@ -10,12 +10,13 @@
 		<selectKey keyProperty="amtListNo" resultType="string" order="BEFORE">
 			SELECT CAL_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-		INSERT INTO CHALL_AMOUNT_LIST(AMT_LIST_NO, USER_ID, PRICE, AMT_TYPE, CHALL_NO)
-		VALUES('CAL_'||#{amtListNo},
-		       #{userId},
-		       #{price},
-		       #{amtType},
-		       #{challNo})
+		INSERT INTO CHALL_AMOUNT_LIST(AMT_LIST_NO, USER_ID, AMT_TYPE, AMT_METHOD, PRICE, CHALL_NO)
+		VALUES ('CAL_'||#{amtListNo},
+		        #{userId},
+		        #{amtType},
+		        #{amtMethod},
+		        #{price},
+		        #{challNo})
 	</insert>
 	
 	<select id="getAmt" resultType="co.prjt.own.chall.service.CAmountVO">

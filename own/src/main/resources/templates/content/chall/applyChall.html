@@ -48,7 +48,7 @@
 	<li>도전대표 이미지 <img th:src="|/imgView/${challImg[0].mediaServerFile}|" alt="" />
 	<li>도전카테고리: <span th:text="${detailChall.challCategory}"></span>
 	<input id ="challNo" type="hidden" th:value="${detailChall.challNo}" />
-
+	<input id ="challPrice" type="hidden" th:value="${detailChall.challPrice}" />	
 		<div th:if="${session.loginUser}">
 	안녕하세요 세션확인 
 	<span th:text="${session.loginUser}"> ${session.loginUser} </span>
@@ -82,6 +82,7 @@
 		$('#applyBtn').on("click", function(){
 			let userId = $('#userId').val();
 			let challNo =  $('#challNo').val();	
+			let challPrice = $('#challPrice').val();
 			let check1 = $('input:checkbox[id="check1"]').is(":checked")
 			let check2 = $('input:checkbox[id="check2"]').is(":checked")
 			console.log(check1)
@@ -98,7 +99,25 @@
  					contentType: "application/json",
  					success: function(res){
  						console.log(res)
-						alert('신청완료')
+						//성공시 예치금 - 시키기 
+						$.ajax({
+							url:'/own/chall/refundAmt',
+							method:'post',
+							data:JSON.stringify({userId:userId,
+												price: challPrice,
+												amtType: "도전참가"					
+							}),
+							beforeSend : function(xhr){
+										xhr.setRequestHeader(header, token);
+							},
+							contentType:"application/json",
+							success:function(res){
+								location.href = '/own/chall/detailChall?challNo=' + challNo
+							},
+							error: function(err){
+								console.log(err);
+							}
+						})
  					},
  					error: function(err){
  						console.log(err)

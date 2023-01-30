@@ -46,4 +46,16 @@
 		FROM CHALL_MEMBER
 		WHERE USER_ID = #{userId}
 	</select>
+	
+	<update id="plusAmt" parameterType="co.prjt.own.chall.service.CMemberVO">
+		UPDATE CHALL_MEMBER
+		SET MEM_AMT =  MEM_AMT + #{price}
+		WHERE USER_ID =  #{userId}
+	</update>
+	
+	<update id="minusAmt" parameterType="co.prjt.own.chall.service.CMemberVO">
+		UPDATE CHALL_MEMBER
+		SET MEM_AMT =  MEM_AMT - #{price}
+		WHERE USER_ID =  #{userId}
+	</update>
 </mapper>
