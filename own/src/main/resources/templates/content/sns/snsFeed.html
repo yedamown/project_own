@@ -193,6 +193,11 @@
             top: 0px;
             left: -20px;
             object-fit: cover;
+            opacity: 0;
+        }
+
+        .storyImg.active{
+            opacity: 1;
         }
 
         .storyProfileDate {
@@ -200,6 +205,11 @@
             top: 6px;
             right: 25px;
             font-size: 14px;
+            opacity: 0;
+        }
+
+        .storyProfileDate.active{
+            opacity: 1;
         }
 
         .Feedmodal {
@@ -253,6 +263,7 @@
             width: 30px;
             height: 30px;
         }
+        
 
     </style><!--스타일-->
     
@@ -413,14 +424,15 @@
                     </div>
                     <!-- 스토리 등록-->
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
-                        <div class="modal-content">
+                        <div class="modal-content"  style="width: 500px; height: 600px;">
                             <span class="close">&times;</span>
                             <p>스토리 등록</p>
                             <form action="/own/snsStory" method="post" enctype="multipart/form-data">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <img class="blah" style="width: 500px; height: 400px; object-fit: cover;"/>
                                 <input th:value="${userId.snsNickname}" name="snsNickname" type="hidden">
                                 <input th:value="${userId.snsAccountNo}" name="snsAccountNo" type="hidden">
-                                <input name="uploadStory" type="file" id="uploadStory">
+                                <input name="uploadStory" type="file" class="imgInp">
                                 <label for="uploadStory">사진첨부</label>
                                 <input type="submit" role="button" value="확인" />
                             </form>
@@ -433,7 +445,7 @@
                             <div class="storyProfile" style="position:relative; width: 450px; height: 60px;">
                                 <span class="close" style="padding-left: 16px; padding-top:2px;">&times;</span>
                             </div>
-                            <div class="storyContent" style="position:relative; width:498px;">
+                            <div class="storyContent" style="position:relative; width:498px; height: 500px;">
 
                             </div>
                             
@@ -447,11 +459,11 @@
                             <p>프로필 변경</p>
                             <form id="form1" action="/own/snsProfile" method="post" enctype="multipart/form-data">
                                 <div style="width: 300px; height: 300px; border-radius: 50%; border:1px #00f dotted;">
-                                <img id="blah" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover;"/></div>
+                                <img class="blah" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover;"/></div>
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                 <input th:value="${userId.snsAccountNo}" name="snsAccountNo" type="hidden">
                                 <input th:value="${userId.snsNickname}" name="snsNickname">
-                                <input name="uploadProfile" type="file" id="imgInp" />
+                                <input name="uploadProfile" type="file" class="imgInp" />
                                 <textarea style="width:400px; height:100px;" placeholder="프로필 소개글을 입력하세요."
                                     name="snsProfile" th:value="${snsInfo.snsProfile}">
 											</textarea>
@@ -513,12 +525,6 @@
                             </table>
                         </div>
                     </div>
-                    <img src="/css/sns/img/user.png" alt="author"> 하이라이트
-                    &nbsp;&nbsp;&nbsp;&nbsp; <img src="/css/sns/img/user.png" alt="author">
-                    하이라이트 &nbsp;&nbsp;&nbsp;&nbsp; <img src="/css/sns/img/user.png" alt="author"> 하이라이트
-                    &nbsp;&nbsp;&nbsp;&nbsp; <img src="/css/sns/img/user.png" alt="author"> 하이라이트
-                    &nbsp;&nbsp;&nbsp;&nbsp; <img src="/css/sns/img/user.png" alt="author">
-                    하이라이트 <br> <br>
                 </div>
                 <hr>
          
@@ -536,6 +542,7 @@
                                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                     <input name="uploadfile" type="file" id="btnAtt" multiple="multiple">
                                     <!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
+                                    <p id="demo"></p>
 
                                     <div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
                                     <br>
@@ -622,9 +629,11 @@
         var loginUserId = "[(${userId.userId})]"
         var categoryNo = '';
 
+    
+
         //이미지미리보기
         $(function() {
-            $("#imgInp").on('change', function(){
+            $(".imgInp").on('change', function(){
                 readURL(this);
             });
         });
@@ -634,14 +643,12 @@
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                    $('#blah').attr('src', e.target.result);
+                    $('.blah').attr('src', e.target.result);
                 }
 
               reader.readAsDataURL(input.files[0]);
             }
-        };
-        
-        
+        };      
     
     //좋아요 ajax
         $('.snsLikeBox').on("click", '#snsLikeBtn', function(){
@@ -932,22 +939,37 @@
                     $('.storyProfile').append(storyProfileImg);
                     $('.storyProfile').append(storyProfileName);
 
-                    for (let i = res.storyImg.length - 1; i >= 0; i--) {
+                    for (let i = 0;  i < res.storyImg.length; i++) {
                         let storyImg = $('<img>').attr({
                             "src": "/imgView/" + res.storyImg[i].mediaServerFile,
-                            "class": "storyImg"
+                            "class": "storyImg",
+                            "page-name": i
                         })
                         let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i].snsStoryDate));
-                        storyProfileDate.attr('class', "storyProfileDate");
-                        $('.storyProfile').append(storyProfileDate);
-                        $('.storyContent').append(storyImg);
-                    }
-                },
+                            storyProfileDate.attr({'class': "storyProfileDate",
+                                                  "page-name": i});
+                                                  $('.storyProfile').append(storyProfileDate);
+                                                  $('.storyContent').append(storyImg);
+                                                  
+                              }
+                            $('.storyProfile').children(".storyProfileDate").eq(0).addClass("active")
+                            $('.storyContent').children(".storyImg").eq(0).addClass("active")
+                        },
                 error: function (err) {
                     console.log(err)
                 }
             })
         })
+
+        //스토리 게시글 페이징
+        $('.storyContent').on("click",function(){
+            console.log("스토리 화면 클릭")
+
+            let i = 0;
+            
+
+        })
+
 
         //게시글 상세 보기 ajax
         $('.portfolio').on("click", '.grid-item', function(e){
@@ -1078,6 +1100,7 @@
                     modals[num].style.display = "none";
                     $('.storyContent').children('img').remove();
                     $('.storyProfile').children().not('.close').remove();
+                    $('.blah').attr('src', "");
                 };
             };
         }
@@ -1098,6 +1121,7 @@
                 event.target.style.display = "none";
                 $('.storyContent').children('img').remove();           
                 $('.storyProfile').children().remove();
+                $('.blah').attr('src', "");
             }
         };
 
@@ -1134,6 +1158,15 @@
                 btnAtt.onchange = function (e) {
                     var files = e.target.files;
                     var fileArr = Array.prototype.slice.call(files)
+                    var x = document.getElementById("btnAtt");
+                    var txt = "";
+                    if ('files' in x) {
+                        if (x.files.length > 6) {
+                            alert("파일 개수가 초과되었습니다.");
+                            document.getElementById("btnAtt").value = "";
+                            return;
+                        }
+                    }
                     for (f of fileArr) {
                         imageLoader(f);
                     }

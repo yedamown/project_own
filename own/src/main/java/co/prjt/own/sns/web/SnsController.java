@@ -59,7 +59,7 @@ public class SnsController {
 		//세션 담아주기
 		HttpSession session = request.getSession();
 		//세션에 강제로 로그인유저 저장하기
-		//session.setAttribute("loginUser", ownService.login("test02"));
+		session.setAttribute("loginUser", ownService.login("kyr"));
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
 		OwnUserVO snsIdCheck = ownService.login(ovo.getUserId());
 		String snsId = snsIdCheck.getSnsAccountNo(); 
@@ -116,7 +116,7 @@ public class SnsController {
 		HttpSession session = request.getSession();
 		
 		//세션에 강제로 로그인유저 저장하기
-		//session.setAttribute("loginUser", ownService.login("kyr"));
+		session.setAttribute("loginUser", ownService.login("kyr"));
 		OwnUserVO ovo = new OwnUserVO();
 		ovo =(OwnUserVO) session.getAttribute("loginUser");
 		SAccountVO userId = ownService.snsLogin(ovo.getUserId());
@@ -389,7 +389,7 @@ public class SnsController {
     @RequestMapping(value="/snsNewFeed", method=RequestMethod.GET)
     public String snsNewFeed(SBoardVO svo, Model model, HttpServletRequest request) {
     	HttpSession session = request.getSession();
-    	//session.setAttribute("loginUser", ownService.login("kyr"));
+    	session.setAttribute("loginUser", ownService.login("kyr"));
 		OwnUserVO ovo = new OwnUserVO();
 		ovo =(OwnUserVO) session.getAttribute("loginUser");
 		SAccountVO userId = ownService.snsLogin(ovo.getUserId());
