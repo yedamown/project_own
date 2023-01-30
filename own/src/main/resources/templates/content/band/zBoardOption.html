@@ -200,7 +200,7 @@
 							<div>
 								<h5 class="typo-list">양식 사용</h5>
 								<input type="checkbox" id="conOption" name="conOption" value="T">
-								<textarea rows="2" cols="30" id="bandContentOption" name="bandContentOption" style="display: none"></textarea>
+								<textarea rows="2" cols="30" id="bandContentOption" name="bandContentOption" style="display: none"  wrap="hard"></textarea>
 							</div>
 							<div>
 								<h5 class="typo-list">말머리</h5>
@@ -320,7 +320,10 @@ var token = /*[[${_csrf.token}]]*/
 			if(ele.bandContentOption!=null){
 				$('#conOption').prop('checked', true);
 				$('#bandContentOption').show();
-				$('#bandContentOption').val(ele.bandContentOption);
+				//html<br>태그 바꿔주기
+				let bandContentOption = ele.bandContentOption;
+				bandContentOption = bandContentOption.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+				$('#bandContentOption').val(bandContentOption);
 			} else {
 				$('#conOption').prop('checked', false);
 				$('#bandContentOption').hide();
@@ -480,13 +483,16 @@ var token = /*[[${_csrf.token}]]*/
 			let data = {bandNo, bandBoardLine, bandBoardName, bandBoardOptionNo, bandBoardOrder}
 			//게시판이면
 			if(bandBoardLine==1){
-				let bandLikeOption = $('input[name=bandLikeOption]').val();
+				let bandLikeOption = $('input[name=bandLikeOption]:checked').val()
+				console.log(bandLikeOption+"???")
 				let bandContentOption = $('#bandContentOption').val();
 				//trim 스페이만 입력됐을 경우
 				if(bandContentOption.replace(/\s/g, "").length==0){
 					bandContentOption = null;
 				}
-				let bandBoardAuth   = $('input[name=bandBoardAuth]').val();
+				//개행치환
+				bandContentOption = bandContentOption.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+				let bandBoardAuth   = $('#bandBoardAuth').val();
 					//aaa#bbb#ccc#이 형태로 저장해줘야하니...첫#자르고 마지막#붙이기..앞에 있다면 떼주기
 				let bandBoardRemarks  = $('#saveRemark').val();
 				if(bandBoardRemarks!=null){
@@ -625,24 +631,33 @@ var token = /*[[${_csrf.token}]]*/
 				}
 			})
 		})
-		//jquery sortable
-		$('#boardListArray').sortable({
-	        placeholder:"itemBoxHighlight", /* 이동할 위치 css 적용  */
-	        start:function(event,ui){
-	            // 드래그 시작 시 호출
-	        },
-	        stop:function(event,ui){
-	            // 드래그 종료 시 호출
-	            reorder();
-	        }
-	   });
-	    $("#boardListArray").disableSelection();
-	    /* 번호 재입력(내부적으로) */
-	    function reorder() {
-	        $("#sortable li").each(function(i, box) {
-	            $(box).val(i + 1);
-	        });
-	    }
+		
+		window.setTimeout(function(){
+			//jquery sortable
+			$('#boardListArray').sortable({
+		        placeholder:"itemBoxHighlight", /* 이동할 위치 css 적용  */
+		        start:function(event,ui){
+		            // 드래그 시작 시 호출
+		        },
+		        stop:function(event,ui){
+		            // 드래그 종료 시 호출
+		            reorder();
+		        }
+			})
+			
+	        $("#boardListArray").disableSelection();
+		    /* 번호 재입력(내부적으로) */
+		    function reorder() {
+		        $("#sortable li").each(function(i, box) {
+		            $(box).val(i + 1);
+		        });
+		    }
+		        
+		   },1000);	
+		
+		
+		
+	   
 	    //게시판 순서 초기화
 	    $('#boardSaveReset').on('click', function(){
 	    	$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);

@@ -29,7 +29,7 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	OwnLikeVO likeList;
 	//Reply
 	//별명
-	public String bandNickName;
+	public String bandNickname;
 	
 	public String bandNo;
 	public String bandBoardWriter;

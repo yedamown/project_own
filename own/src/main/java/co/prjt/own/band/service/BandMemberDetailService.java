@@ -27,4 +27,6 @@ public interface BandMemberDetailService {
 	public int duplicateChk(String bandNo, String nickName);
 	//밴드설정 업데이트
 	public int myOptionUpdate(BandMemberDetailVO vo);
+	//아이디로 가치별명과 프로필사진들을 가져옴(list<String>)
+	public List<BandMemberDetailVO> getBandMemberNickProfile(BandMemberDetailVO vo);
 }

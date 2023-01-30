@@ -64,4 +64,7 @@ public class BandMemberDetailVO {
    public List<MultimediaVO> detailImgs;
    //new FormData로 집어넣는 이미지(ajax)
    private MultipartFile attachFile;
+   
+   //검색용(이미지와 닉을 검색 리스트)
+   public List<String> userIds;
 }

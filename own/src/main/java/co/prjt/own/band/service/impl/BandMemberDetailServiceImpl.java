@@ -78,4 +78,9 @@ public class BandMemberDetailServiceImpl implements BandMemberDetailService{
 	public int myOptionUpdate(BandMemberDetailVO vo) {
 		return bandMemberDetailMapper.myOptionUpdate(vo);
 	}
+
+	@Override
+	public List<BandMemberDetailVO> getBandMemberNickProfile(BandMemberDetailVO vo) {
+		return bandMemberDetailMapper.getBandMemberNickProfile(vo);
+	}
 }
