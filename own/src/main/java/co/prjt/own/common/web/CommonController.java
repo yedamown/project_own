@@ -1,15 +1,11 @@
 package co.prjt.own.common.web;
 
-import java.io.File;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,18 +19,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import co.prjt.own.chall.service.ChallengeVO;
-import co.prjt.own.chall.service.ValidationVO;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ExersubVO;
-import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.OwnLikeService;
 import co.prjt.own.common.service.OwnLikeVO;
 import co.prjt.own.common.service.ReportVO;
@@ -60,6 +52,21 @@ public class CommonController {
 	@ResponseBody//데이터를 반환할때는 무조건 리스폰스바디 넣기
 	public List<ExersubVO> getListexersub(ExersubVO vo){
 		return commonService.getListExersub();
+	}
+	
+	
+	//신고적용시키기
+	@PostMapping("/common/report")
+	@ResponseBody
+	public int Reporting(@RequestBody ReportVO vo) {
+		System.out.println(vo);
+		return 0;
+	}
+	
+	//신고폼예시 이동
+	@GetMapping("/own/test/reportformExam")
+	public String moveReport() {
+		return "/content/own/reportformExam";
 	}
 	
 	//신고 폼 이동

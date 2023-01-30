@@ -71,10 +71,16 @@
 	</select>
 	
 	<select id="countVld" resultType="int">
-		select count(*)
-		from chall_validation
-		where user_id = #{userId}
-		and chall_no = #{challNo}
+		SELECT COUNT(*)
+		FROM CHALL_VALIDATION
+		WHERE USER_ID = #{userId}
+		AND CHALL_NO = #{challNo}
 	</select>
 	
+	<select id="memVldAvg" resultType="int">
+		SELECT COUNT(*)
+		FROM CHALL_VALIDATION
+		WHERE CHALL_NO = #{challNo}
+		AND VLD_STATUS = '승인'
+	</select>
 </mapper>

@@ -104,5 +104,4 @@ public class ChallengeServiceImpl implements ChallengeService{
 		return mapper.searchChall(words);
 	}
 
-
 }

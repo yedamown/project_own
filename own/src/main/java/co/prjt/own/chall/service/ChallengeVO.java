@@ -20,8 +20,8 @@ public class ChallengeVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date challStartdate;
 	
-	int nowMember;
-	int maxMember;
+	int nowMem;
+	int maxMem;
 	String challIntro;
 	String vldMethod;
 	String challPwd;

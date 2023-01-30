@@ -129,6 +129,14 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	           simpleMailMessage.setText(id);
 	           javaMailSender.send(simpleMailMessage);
 	           }
+	           else if(info.equals("emailAcc")) {
+	        	   simpleMailMessage.setTo(receiveList);
+		           // 2. 메일 제목 설정
+		           simpleMailMessage.setSubject("인증번호입니다");
+		           // 3. 메일 내용 설정
+		           simpleMailMessage.setText(appNo);
+		           javaMailSender.send(simpleMailMessage);
+	           }
 	           else
 	           {
 	              simpleMailMessage.setTo(receiveList);

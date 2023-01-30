@@ -2,6 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.chall.mapper.CMemberMapper">
 	<insert id="insertCMem">
+	<selectKey keyProperty="memNo" resultType="String" order="BEFORE">
+		SELECT CMB_SEQ.NEXTVAL FROM DUAL
+	</selectKey>
+		INSERT INTO CHALL_MEMBER(MEM_NO, 
+								 USER_ID, 
+								 MEM_NICKNAME, 
+								 MEM_ACC, 
+								 MEM_INTRO,
+								 MEM_BANK, 
+								 MEM_ACCNAME)
+		VALUES ('CMB_'||#{memNo},
+		       	 #{userId},
+		         #{memNickname},
+		         #{memAcc},
+		         #{memIntro},
+		         #{memBank},
+		         #{memAccname})
 	</insert>
 	
 	<select id="getCMem" resultType="co.prjt.own.chall.service.CMemberVO">
@@ -18,4 +35,15 @@
 		WHERE USER_ID = #{userId}
 	</update>
 	
+	<select id="nickCheck" resultType="int">
+		SELECT COUNT(*) 
+		FROM CHALL_MEMBER
+		WHERE MEM_NICKNAME = #{VALUE}
+	</select>
+	
+	<select id="challMemCheck" resultType="co.prjt.own.chall.service.CMemberVO">
+		SELECT * 
+		FROM CHALL_MEMBER
+		WHERE USER_ID = #{userId}
+	</select>
 </mapper>

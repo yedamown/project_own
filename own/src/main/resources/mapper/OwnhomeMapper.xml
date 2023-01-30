@@ -3,6 +3,10 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.ownhome.mapper.OwnhomeMapper">
 
+<select id="searchId" resultType="String">
+select user_id from own_users where user_email = #{email}
+</select>
+
 <select id="getEmpList" resultType="EmpVO">
 select * from employees
 </select>
