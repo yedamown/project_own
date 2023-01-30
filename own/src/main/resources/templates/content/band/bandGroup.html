@@ -107,6 +107,14 @@
 		.dropdown:hover .dropdown-content {
 		  display: block;
 		}
+		.clickBoard {
+			color : blue;
+			text-decoration : underline;
+		}
+		#ifr {
+			 width: 800px;
+			 height: 1000px;
+		}
         </style>
     </head>
     <body>
@@ -183,14 +191,14 @@
                             <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                            <aside class="single_sidebar_widget post_category_widget">
 	                                <h4 class="widget_title" id="writeBoard">글쓰기</h4>
-	                                <div class="d-flex justify-content-between" id="totalBoard">
-	                                    <p><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
+	                                <div class="d-flex justify-content-between smallBoard" id="totalBoard">
+	                                    <p name=""><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
 	                                    <p th:text="${boardCount}">2538</p>
 	                                </div>
 	                                <hr style="margin-bottom: 20px; margin-top: 0px;">
 	                                <ul class="list_style cat-list">
 	                                    <li th:each="board: ${boardList}">
-	                                    	<p th:if="${board.bandBoardLine}!=0"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
+	                                    	<p th:if="${board.bandBoardLine}!=0" class="smallBoard" th:name="${board.bandBoardOptionNo}"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
 	                                    	<b th:if="${board.bandBoardLine}==0" th:text="${board.bandBoardName}"></b>
 	                                    </li>											
 	                                </ul>
@@ -226,6 +234,7 @@
 					               </div>
 				               </div>
 	                        </div>
+	                        <!-- <iframe id="ifr" onload="iframeHeight()" frameborder="0" scrolling="no"></iframe> -->
 	      <!-- ================== 여기붙음================== -->
 	                    </div>
                     </div>
@@ -574,13 +583,16 @@
 			}, 200);
 		})
 		
-       	//페이지 이동
-    	$('#totalBoard').on('click', function(){
-    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo);
+       	//게시판이동
+    	$('.smallBoard').on('click', function(e){
+    		let bandBoardOptionNo = $(e.target).attr('name');
+    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo+"&bandBoardOptionNo="+bandBoardOptionNo);	
     	})
     	//글쓰기
     	$('#writeBoard').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandBoardWrite?bandNo="+bandNo);
+    		//$('#mainTemplate').empty();
+    		 // document.getElementById("ifr").src = "/own/band/bandGroup/bandBoardWrite?bandNo="+bandNo;
     	})
     	//내 정보수정으로 이동
     	$('#myOption').on('click', function(){
@@ -614,6 +626,13 @@
         $('#bandOption9').on('click', function(){
     		$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
     	})
+    	 function iframeHeight(){
+		    var frm = document.getElementById('ifr').contentDocument; 
+		    if (typeof frm == 'undefined') {//ie7이하 
+		        frm = window.frames['testframe'].document; 
+		    } 
+		    document.getElementById('testframe').height = frm.body.clientHeight + 'px';
+		}
     	</script>
     </div>
     </body>

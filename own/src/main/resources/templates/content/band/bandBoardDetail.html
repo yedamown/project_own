@@ -145,7 +145,7 @@
 				id="userId" th:value="${session.loginUser.userId}">
 			<div class="form-group">
 				Title <input type="text" class="form-control" id="title"
-					th:value="${board.bandBoardTitle }" readonly> Writer <input
+					th:value="|[${board.bandRemarks }] ${board.bandBoardTitle }|" readonly> Writer <input
 					type="text" class="form-control" id="writer"
 					th:value="${board.bandNickName }" readonly> RegDate <input
 					type="text" class="form-control" id="RegDate"

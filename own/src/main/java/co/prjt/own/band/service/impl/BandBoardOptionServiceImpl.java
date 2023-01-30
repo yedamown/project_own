@@ -65,4 +65,9 @@ public class BandBoardOptionServiceImpl implements BandBoardOptionService{
 		return r;
 	}
 
+	@Override
+	public BandBoardOptionVO getBandBoardOption(String bandBoardOptionNo) {
+		return bandBoardOptionMapper.getBandBoardOption(bandBoardOptionNo);
+	}
+
 }

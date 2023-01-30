@@ -193,7 +193,7 @@
 								</select>
 							</div>
 							<div>
-								<h5 class="typo-list">좋아요 기능</h5>
+								<h5 class="typo-list">댓글 기능</h5>
 								<input type="radio" id="bandLikeOption" name="bandLikeOption" value="BH01">
 								<input type="radio" id="bandLikeOption2" name="bandLikeOption" value="BH02">
 							</div>
@@ -308,7 +308,7 @@ var token = /*[[${_csrf.token}]]*/
 		function makeBoardOption(ele){
 			//권한설정
 			$('#bandBoardAuth option[value='+ele.bandBoardAuth+']').prop("selected",true);
-			//좋아요
+			//댓글
 			$('input[name=bandLikeOption]').each(function(idx, i){
 				if($(i).val()==ele.bandLikeOption){
 					$(i).prop('checked', true);

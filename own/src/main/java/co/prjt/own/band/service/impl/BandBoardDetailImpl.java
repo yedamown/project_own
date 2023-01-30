@@ -113,9 +113,11 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 		System.out.println(paging.toString());
 		//밴드번호가 매퍼돌리고오면 누락돼서 넣어줌
 		List<BandBoardDetailSearchVO> list = bandBoardDetailMapper.getBandBoard(vo);
-		list.get(0).setBandNo(vo.getBandNo());
+		if(list.size()>0) {
+			list.get(0).setBandNo(vo.getBandNo());
 		//paging객체도 돌려보내야 할 듯...
 		list.get(0).setPaging(paging);
+		}
 		return list;
 	}
 
@@ -309,5 +311,10 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 	@Override
 	public int deleteBandBoard(String bandBoardOptionNo) {
 		return bandBoardDetailMapper.deleteBandBoard(bandBoardOptionNo);
+	}
+
+	@Override
+	public int BandBoardDeleteList(BandBoardDetailSearchVO vo) {
+		return bandBoardDetailMapper.BandBoardDeleteList(vo);
 	}
 }

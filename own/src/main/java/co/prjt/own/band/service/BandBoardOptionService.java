@@ -20,4 +20,6 @@ public interface BandBoardOptionService {
 	public int insertBandBoardOptionLine(String bandNo);
 	//게시판 순서 변경
 	public int bandOption9LineUpdate(List<Map<String, String>> obj);
+	//게시판 단건조회
+	public BandBoardOptionVO getBandBoardOption(String bandBoardOptionNo);
 }
