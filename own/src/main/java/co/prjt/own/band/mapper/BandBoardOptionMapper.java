@@ -18,4 +18,6 @@ public interface BandBoardOptionMapper {
 	public int insertBandBoardOptionLine(BandBoardOptionVO bandNo);
 	//게시판 순서 변경
 	public int bandOption9LineUpdate(BandBoardOptionVO vo);
+	//게시판 단건조회
+	public BandBoardOptionVO getBandBoardOption(String bandBoardOptionNo);
 }

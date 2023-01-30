@@ -145,6 +145,9 @@ SELECT
         WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
         AND     B.BAND_NO = C.BAND_NO
         AND     C.BAND_NO = #{bandNo}
+        <if test="bandBoardOptionNo != null and bandBoardOptionNo !=''">
+			 AND	B.BAND_BOARD_OPTION_NO=#{bandBoardOptionNo}
+		</if>
         ))A, REPLY B
         WHERE A.BAND_BOARD_DETAIL_NO = B.CATEGORY_NO(+)
         GROUP BY  BAND_BOARD_DETAIL_NO) B
@@ -164,6 +167,9 @@ SELECT
         WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
         AND     B.BAND_NO = C.BAND_NO
         AND     C.BAND_NO = #{bandNo}
+        <if test="bandBoardOptionNo != null and bandBoardOptionNo !=''">
+			 AND	B.BAND_BOARD_OPTION_NO=#{bandBoardOptionNo}
+		</if>
         <include refid="condition" />
 	</select>
 	
@@ -395,8 +401,16 @@ SELECT
 	<delete id="deleteCalendar">
 		DELETE BAND_CALENDAR WHERE BAND_CALENDAR_NO = #{BANDCALENDARNO}
 	</delete>
+	
 	<!-- 게시글 삭제 게시판번호 혹은 게시글번호를 이용 deleteBandBoard(bandBoardOptionNo); -->
 	<delete id="deleteBandBoard">
-		DELETE BAND_BOARD_DETAIL WHERE BAND_BOARD_DETAIL_NO = #{bandBoardOptionNo} or BAND_BOARD_OPTION_NO = #{bandBoardOptionNo};
+		DELETE BAND_BOARD_DETAIL WHERE BAND_BOARD_DETAIL_NO = #{bandBoardOptionNo} or BAND_BOARD_OPTION_NO = #{bandBoardOptionNo}
+	</delete>
+	<!-- 게시글 다중 삭제???? -->
+	<delete id="BandBoardDeleteList">
+	DELETE BAND_BOARD_DETAIL WHERE BAND_BOARD_DETAIL_NO IN
+		<foreach collection="bandBoardDetailNos" item="b" separator="," open="(" close=")">
+        	#{b}
+        </foreach>
 	</delete>
 </mapper>

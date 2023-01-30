@@ -2,6 +2,7 @@ package co.prjt.own.band.service;
 
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,4 +70,9 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	String mediaCategory;
 	String mediaTurn;
 	String ino;
+	
+	//게시판페이징할때 가져올 게시판이름
+	public String bandBoardName;
+	//삭제용
+	public ArrayList<String> bandBoardDetailNos;
 }

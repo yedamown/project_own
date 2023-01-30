@@ -7,9 +7,16 @@
         <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
         <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-<input type="hidden" id="bandNo" th:value="${boardList[0].bandNo}">
+<input type="hidden" id="bandNo" th:value="${bandNo}">
 <div style="flex-grow:3; width: 740px" id="subTemplate">
 	<div>
+	<!-- ===========검색=========== -->
+	 <article style="border: 1px solid #eeeeee;padding:30px; ">
+		<div class="input-group">
+			<h3 th:if=${bandBoardOption} th:text="|${bandBoardOption.bandBoardName}>>|"></h3>
+			<h3 th:unless=${bandBoardOption}>자유게시판>></h3>
+		</div>
+	</article>
 	 <article style="border: 1px solid #eeeeee;padding:30px; ">
 		<div class="input-group">
 			<input type="text" class="form-control" placeholder="Search Posts">
@@ -19,18 +26,20 @@
 			</span>
 		</div>
 	</article>
+	<!-- ===========검색 끝=========== -->
 	<article style="border: 1px solid #eeeeee;padding:30px; ">
+	<input type="hidden" th:value=${bandBoardOptionNo} id="bandBoardOptionNo">
 		<!-- 목록 시작 -->
 		<table class="table">
 			<thead  class="thead-dark">
 				<tr>
-				<th><input type="checkbox"></th><th>글제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
+				<th><input type="checkbox" id="allChk"></th><th>글제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
 				</tr>
 			</thead>
 			<tbody id="tbodyBand">
-				 <tr th:each="board: ${boardList}">
-				 	<td><input type="checkbox"></td>
-					<td><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
+				<tr th:each="board: ${boardList}">
+				 	<td><input type="checkbox" class="minChk"></td>
+					<td><b th:if="${board.bandRemarks }" th:text="|[${board.bandRemarks }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
 					<td th:text="${board.bandBoardWriter}"></td>
 					<td class="timeCheck" th:text="${#dates.format(board.bandBoardDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
 					<td th:text="${board.bandBoardCnt}"></td>
@@ -41,21 +50,21 @@
 	</article>
 	</div>
 	<div style="float: right">
-		<a id="writeBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white;" >글쓰기</a>
-		<a id="deleteBtn" class="btn btn-primary mb-2"  style="background-color: #f3c300; color:white;">삭제</a>
-		<a id="deleteBtn" class="btn btn-primary mb-2"  style="background-color: #f3c300; color:white;">이동</a>
+		<div th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
+			<a id="deleteBtn" class="btn btn-primary mb-2"  style="background-color: #f3c300; color:white;">삭제</a>
+		</div>
 	</div>
 	 <!--================ 페이지 Area  =================-->
 	<nav class="blog-pagination justify-content-center d-flex" id="pagegation">
 	<!--================ 이전  =================-->
 		<ul class="pagination">
-			<li class="page-item" th:if="${paging.startPage>1}">
+			<li class="page-item" th:if="${paging.startPage>1}" th:value="${paging.startPage-1}">
 				<a class="page-link" aria-label="Previous" th:value="${paging.startPage-1}">
-				<span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+				<span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort" th:value="${paging.startPage-1}"></span></span></a>
 			</li>
 	<!--================ 페이지 이동 1_2_3_4_5  =================-->
 		<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
-		<li class="page-item" th:if="${pag != paging.page}" >
+		<li class="page-item" th:if="${pag != paging.page && 0!= paging.endPage}" >
 			<a class="page-link pagePort" th:value="${pag}" th:text ="${pag}"></a>
 		</li>
   		<li class="page-item active" th:if="${pag==paging.page}" >
@@ -64,28 +73,55 @@
        </th:block>
 	<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
 	<!--================ 이후  =================-->
-			<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+			<li class="page-item" th:if="${paging.endPage<paging.lastPage}"  th:value="${paging.endPage+1}">
 			<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}">
-				<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+				<span aria-hidden="true"><span class="lnr lnr-chevron-right" th:value="${paging.endPage+1}"></span></span></a>
 			</li>
 		</ul>
 	</nav>
  <!--================ 페이지 Area 끝  =================-->
 </div>
  <script src="/css/band/js/time.js"></script>
-<script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+var header = /*[[${_csrf.headerName}]]*/
+console.log(header);
+var token = /*[[${_csrf.token}]]*/
+console.log(token);
+/*]]>*/
 //시간 수정하기..
+$(function(){
+	//게시판번호
+	let bandBoardOptionNo = $('#bandBoardOptionNo').val();
+	let bandNo = $('#bandNo').val();
+	
 	$('.timeCheck').each(function(idx, ele){
 		let time = $(ele).text();
 		time = new Date(time);
 		$(this).text(elapsedText(time));
 	})
-//페이징+검색처리
-	$('#pagegation').on('click', '.pagePort', function(){
+	//전체체크박스
+	$('#allChk').on('click', function(){
+		if($('#allChk').is(':checked')){
+			$('tbody').find('.minChk').each(function(idx,ele){
+				$(ele).prop('checked', true);
+			})
+		}else {
+			$('tbody').find('.minChk').each(function(idx,ele){
+				$(ele).prop('checked', false);
+			})
+		}
+	})
+	//페이징+검색처리
+	$('#pagegation').on('click', '.pagePort', function(e){
+		console.log(e.target);
+		pageAjax(e.target);
+	})
+	//page ajax
+	function pageAjax(e){
 		//페이지번호 + 밴드식별번호
-		let page = $(this).attr('value');
-		let bandNo = $('#bandNo').val();
-		console.log($(this).attr('value'));
+		let page = $(e).attr('value');
+		console.log($(e).attr('value'));
 		console.log(bandNo);
 		$.ajax({
 			url: '/own/band/bandGroup/bandBoardListAjax?bandNo='+bandNo+'&page='+page,
@@ -97,65 +133,136 @@
 			let tbody = $('#tbodyBand');
 			$(tbody).empty();
 			$(result).each(function(idx, ele){
-				console.log(ele.bandBoardDate);
-				let time = ele.bandBoardDate;
-				time = new Date(time);
-				console.log(time);
-				time = elapsedText(time);
-				let tag = `<tr>
-							<td><input type="checkbox"></td>
-							<td id=${ele.bandBoardDetailNo}>${ele.bandBoardTitle} [${ele.reply}]</td>
-							<td>${ele.bandBoardWriter}</td>
-							<td>${time}</td>
-							<td>${ele.bandBoardCnt}</td>
-						</tr>`
-				tbody.append(tag);
+				tbody.append(makeBoards(ele));
 			})
 			//페이지 버튼 만들기
 			$('#pagegation').empty();
 			let pagingM = result[0].paging;
 			console.log(pagingM);
-			//시작 버튼
-			let startpageTag = $('<ul class="pagination" />');
-			$('#pagegation').append(startpageTag);
-			//이전 버튼만들기
-			if(pagingM.startPage>1){
-				let pageBeforTag = `<li class="page-item">
-									<a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
-									<span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
-									</li>`
-					startpageTag.append(pageBeforTag);					
-			}					
-			//페이지목록..
-			for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
-				if(pg != pagingM.page){
-					let pageTag = `<li class="page-item">
-									<a class="page-link pagePort" value=${pg}>${pg}</a>
-									</li>`
-					startpageTag.append(pageTag);
-				} else if(pg == pagingM.page ){
-					let pageTag =  `<li class="page-item active">
-									<a class="page-link" >${pg}</a>
-									</li>`
-					startpageTag.append(pageTag);
-				}
-			}					
-			//이후 버튼만들기
-			if(pagingM.endPage<pagingM.lastPage){
-				let pageAfterTag =`<li class="page-item">
-									<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
-									<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
-									</li>`
-				startpageTag.append(pageAfterTag);
-			}
-			$('#pagegation').append(startpageTag)
+			pagingFnc(pagingM)
+			//체크박스 체크삭제
+			$('#allChk').prop('checked', false);
 		})
-	})
-	//페이지 이동
-    	$('#tbodyBand').on('click', $('.detail'), function(e){
-    		//보드번호
-    		console.log(e.target.id);
-    		let boardNo = e.target.id;
-    		$('#subTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo);
-    	})
+	}
+	//makeboards
+	function makeBoards(ele){
+		console.log(ele.bandBoardDate);
+		let time = ele.bandBoardDate;
+		time = new Date(time);
+		console.log(time);
+		time = elapsedText(time);
+		let re = ''
+		if(ele.bandRemarks!=null){
+			re=`[${ele.bandRemarks}] `
+		}
+		
+		let tag = `<tr>
+					<td><input type="checkbox" class="minChk"></td>
+					<td><b>${re}</b><a id=${ele.bandBoardDetailNo} class="detail" >${ele.bandBoardTitle} [${ele.reply}]</a></td>
+					<td>${ele.bandBoardWriter}</td>
+					<td>${time}</td>
+					<td>${ele.bandBoardCnt}</td>
+				</tr>`
+		return tag;
+	}
+	//페이징
+	function pagingFnc(pagingM){
+		//시작 버튼
+		let startpageTag = $('<ul class="pagination" />');
+		$('#pagegation').append(startpageTag);
+		//이전 버튼만들기
+		if(pagingM.startPage>1){
+			let pageBeforTag = `<li class="page-item">
+								<a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+								<span aria-hidden="true" value=${pagingM.startPage-1}><span class="lnr lnr-chevron-left pagePort" value=${pagingM.startPage-1}></span></span></a>
+								</li>`
+				startpageTag.append(pageBeforTag);					
+		}					
+		//페이지목록..
+		for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+			if(pg != pagingM.page){
+				let pageTag = `<li class="page-item">
+								<a class="page-link pagePort" value=${pg}>${pg}</a>
+								</li>`
+				startpageTag.append(pageTag);
+			} else if(pg == pagingM.page ){
+				let pageTag =  `<li class="page-item active">
+								<a class="page-link" >${pg}</a>
+								</li>`
+				startpageTag.append(pageTag);
+			}
+		}					
+		//이후 버튼만들기
+		if(pagingM.endPage<pagingM.lastPage){
+			let pageAfterTag =`<li class="page-item">
+								<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+								<span aria-hidden="true" value=${pagingM.endPage+1}><span class="lnr lnr-chevron-right" value=${pagingM.endPage+1}></span></span></a>
+								</li>`
+			startpageTag.append(pageAfterTag);
+		}
+		$('#pagegation').append(startpageTag)
+	}
+	//게시판으로 이동
+   	$('#tbodyBand').on('click', $('.detail'), function(e){
+   		//보드번호
+   		console.log(e.target.id);
+   		let boardNo = e.target.id;
+   		if(boardNo != null){
+   			$('#subTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo);
+   		}
+   	})
+    //삭제deleteBtn""moveBtn"
+    $('#deleteBtn').on('click', function(){ //페이지정보랑이것저것보내..페이지-1시킨 거 받기
+    	//페이지
+    	let page = $('#pagegation').find('.active').children(':eq(0)').text();
+    	console.log(page);
+    	//
+    	console.log(bandBoardOptionNo)
+    	console.log(bandNo)
+    	let boardList = new Array();
+    	$('tbody').find('.minChk').each(function(idx, ele){
+    		let id = $(ele).parentsUntil('tbody').children(':eq(2)').children(':eq(0)').attr('id');
+			//console.log(id);
+			if($(ele).prop("checked")){
+				boardList.push(id);
+			}
+		})
+		console.log(boardList);
+    	//배열하나 더...
+    	let boardList2 = new Array();
+    	boardList2.push(boardList);
+    	boardList2.push(page);
+    	boardList2.push(bandBoardOptionNo);
+    	boardList2.push(bandNo);
+		console.log(JSON.stringify(boardList2));
+		$.ajax({
+				url : "/own/band/bandGroup/boardDelete",
+				method : "post",
+				data : JSON.stringify(boardList2),
+				contentType : "application/json;",
+				 beforeSend: function(xhr){
+	                  xhr.setRequestHeader(header, token);
+	                }
+			}).then( res =>{
+				console.log(res);
+				if(res!=null){
+					let tbody = $('#tbodyBand');
+					$(tbody).empty();
+					$(res).each(function(idx, ele){
+						tbody.append(makeBoards(ele));
+					})
+					//페이지 버튼 만들기
+					$('#pagegation').empty();
+					let pagingM = res[0].paging;
+					console.log(pagingM);
+					pagingFnc(pagingM)
+					//체크박스 체크삭제
+					$('#allChk').prop('checked', false);
+				} else {
+					alert('삭제 실패');
+				}
+			})
+    })
+    //이동
+})
 </script>

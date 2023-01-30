@@ -37,6 +37,12 @@ import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 
 
+/**
+ * 
+ * @author 허진주
+ * 밴드 총 컨트롤러
+ *
+ */
 @Controller
 @RequestMapping("/own/band")
 public class BandController {
@@ -47,6 +53,7 @@ public class BandController {
 	@Autowired BandBoardOptionService bandBoardOptionService;
 	@Autowired OwnhomeService ownService;
 	@Autowired BandBoardDetailService bandBoardDetailService;
+	
 	//밴드 홈으로 가기
 	@RequestMapping("")
 	public String bandHome(Model model, HttpServletRequest request) {
@@ -87,13 +94,13 @@ public class BandController {
 			return "content/band/defaultOption";
 		}
 	}
+	
+	
 	//내 가치 전부보기(페이징 임시로 3개...밴드VO에 개인의 아이디를 리더아이디로 담음..검색시사용)
 	//페이징처리(서비스랑 서비스임플까지..후로매퍼검색)
 	@RequestMapping("/myBand")
-	public String myBand(Model model, OwnUserVO vo, Paging paging, BandVO band, HttpServletRequest request) {
+	public String myBand(Model model, OwnUserVO vo, Paging paging, BandVO band, HttpSession session) {
 		//유저아이디를 가져와 밴드에 담음
-		System.out.println(paging.toString());
-		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		if(user==null) {
   			return "content/own/ownlogin";
@@ -106,6 +113,8 @@ public class BandController {
 		return "content/band/myBand";
 		
 	}
+	
+	
 	//RestController..최신글세개씩보내기
 	@GetMapping("/myBand/{threeBand}")
 	@ResponseBody
@@ -113,6 +122,8 @@ public class BandController {
 		//한문장으로 된 번호를 보냄..ex)BDU_17BDU_15BDU_14 
 		return bandService.threeBand(threeBand);
 	}
+	
+	
 	//추천밴드 가져오기(관심운동과 지역에 맞춰서)
 	@GetMapping("/recom/{userId}")
 	@ResponseBody
@@ -120,6 +131,8 @@ public class BandController {
 		//유저 아이디지만 스트링으로 여러가지 값이 담김
 		return bandService.recomBand(userId);
 	}
+	
+	
 	//밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용 밴드검색과 별개(옵션이 다름)
 	@RequestMapping("/bandRec")
 	public String bandRec(Model model, Paging paging, HttpServletRequest request, BandVO band) {
@@ -147,6 +160,8 @@ public class BandController {
 	//밴드생성
 	@RequestMapping("/bandCreate")
 	public String bandCreate(Model model, HttpServletRequest request) {
+		
+		///세션에서 바로쓰기###########
 		//유저아이디 가져오기
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
@@ -232,28 +247,6 @@ public class BandController {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		return bandBoardDetailService.getFiveBoard(vo ,user.userId);
-	}
-	
-	//밴드내 모든 게시판
-	@GetMapping("/bandGroup/bandBoardList")
-	public String bandMainGroup(Model model, HttpServletRequest request, @RequestParam String bandNo, Paging paging) {
-		//세션에 밴드저장해놓자..
-		
-		BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
-		vo.setBandNo(bandNo);
-		//System.out.println(vo.toString());
-		//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
-		model.addAttribute("boardList", bandBoardDetailService.getBandBoard(vo, paging));
-		return "content/band/bandBoardList";
-	}
-	//Ajax//밴드내 모든 게시판//위와 세트
-	@ResponseBody
-	@GetMapping("/bandGroup/bandBoardListAjax")
-	public List<BandBoardDetailSearchVO> bandMainGroupAjax(Model model, HttpServletRequest request, BandBoardDetailSearchVO vo, Paging paging) {
-		System.out.println(vo.toString());
-		System.out.println(paging.toString());
-		//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
-		return bandBoardDetailService.getBandBoard(vo, paging);
 	}
 	//밴드(내) 정보수정으로 이동 
 	@GetMapping("/bandGroup/myOption")

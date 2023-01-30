@@ -85,6 +85,10 @@ public class WebSecurityConfig {
 	        .invalidateHttpSession(true) //세션 삭제
 			//.passwordManagement();
 			;
+		http
+		// ...
+		.headers()
+			.frameOptions().sameOrigin();
 		return http.build();
 	}
 	

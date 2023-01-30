@@ -32,13 +32,19 @@ import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandService;
-import co.prjt.own.band.service.BandVO;
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.OwnLikeVO;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 
+/**
+ * 허진주
+ * 보드게시판
+ * @author admin
+ *
+ */
 @Controller
 @RequestMapping("/own/band")
 public class BandBoardDetailController {
@@ -52,17 +58,15 @@ public class BandBoardDetailController {
 	//밴드내 모든 게시판
 	//여기부터 별명 고려해서 매퍼쓰기 위에는 추후 수정(userId만 사용해왔음)
 	@GetMapping("/bandGroup/bandBoardDetail")
-	public String bandBoardDetail(Model model, HttpServletRequest request, @RequestParam String bandBoardDetailNo) {
+	public String bandBoardDetail(Model model, HttpSession session, BandBoardDetailSearchVO vo) {
 		//좋아요 용으로 받아오는 세션
-		HttpSession session = request.getSession();
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		//세션저장
-		session.setAttribute("loginUser", ownService.login("hjj"));
-		
-		
-		BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
-		vo.setBandBoardDetailNo(bandBoardDetailNo);
-		//글단건조회(글+이미지+유저별명) ... 좋아요랑 댓글은 json으로 구현 --> 이미지 뺌
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		/*
+		 * BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
+		 * vo.setBandBoardDetailNo(bandBoardDetailNo);
+		 */
+		 //글단건조회(글+이미지+유저별명) ... 좋아요랑 댓글은 json으로 구현 --> 이미지 뺌
 		model.addAttribute("board", bandBoardDetailService.getBandBoardDetail(vo));
 		//좋아요 내가 찍었다면 찍었다는 게 필요할 듯..
 		//일정있는지 검색해서 넣기(impl)
@@ -78,17 +82,16 @@ public class BandBoardDetailController {
 	}
 	//개인 글쓰기 창으로
 	@GetMapping("/bandGroup/bandBoardWrite")
-	public String bandBoardWrite(Model model, HttpServletRequest request, String bandNo){
+	public String bandBoardWrite(Model model, HttpSession session, String bandNo){
 		//좋아요 용으로 받아오는 세션
-		HttpSession session = request.getSession();
-		//세션저장
 		session.setAttribute("loginUser", ownService.login("hjj"));
 		//게시판목록
-		//밴드 게시판 조회
+		//밴드 게시판 조회 //말머리도 넣어야 함, 게시판 양식(추후추가)
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
 		//일정넣을 때 밴드번호 넣어야..하네 넣음
 		model.addAttribute("bandNo", bandNo);
-		//말머리도 넣어야 함, 게시판 양식(추후추가)
+		//밴드장확인......
+		model.addAttribute("band", bandService.getBand(bandNo));
 		return "content/band/bandBoardWrite";
 	}
 	//개인 글쓰기 창으로
@@ -253,5 +256,61 @@ public class BandBoardDetailController {
 	@PostMapping("/bandGroup/bandOption9")
 	public int bandOption9LineUpdate(@RequestBody List<Map<String, String>> obj) {
 		return bandBoardOptionService.bandOption9LineUpdate(obj);
+	}
+
+	//밴드내 게시판 이동
+	@GetMapping("/bandGroup/bandBoardList")
+	public String bandMainGroup(Model model, HttpServletRequest request, BandBoardDetailSearchVO vo, Paging paging) {
+		//세션에 밴드저장해놓자..
+		System.out.println(vo.toString());
+		//밴드번호+게시판번호를 가져오면 모든 글과...페이징처리해서보냄(1페이지만 페이지처리방식)
+		model.addAttribute("boardList", bandBoardDetailService.getBandBoard(vo, paging));
+		//전체게시판이면 all
+		model.addAttribute("bandBoardOptionNo", vo.getBandBoardOptionNo());
+		model.addAttribute("bandNo", vo.getBandNo());
+		//밴드장이면 삭제가 가능하니 밴드장확인
+		//밴드옵션가져오기
+		if(vo.getBandBoardOptionNo()!=null) {// null 은 모든게시판
+			model.addAttribute("bandBoardOption", bandBoardOptionService.getBandBoardOption(vo.getBandBoardOptionNo()));
+		}
+		//밴드장인지 확인(삭제게시판이동을위해)
+		model.addAttribute("band", bandService.getBand(vo.getBandNo()));
+		return "content/band/bandBoardList";
+	}
+	
+	//Ajax//밴드내 모든 게시판//위와 세트
+	@ResponseBody
+	@GetMapping("/bandGroup/bandBoardListAjax")
+	public List<BandBoardDetailSearchVO> bandMainGroupAjax(Model model, HttpServletRequest request, BandBoardDetailSearchVO vo, Paging paging) {
+		System.out.println(vo.toString());
+		System.out.println("도착");
+		System.out.println(paging.toString());
+		//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
+		return bandBoardDetailService.getBandBoard(vo, paging);
+	}
+	
+	// 밴드 글(리스트) 삭제
+	@ResponseBody
+	@PostMapping("/bandGroup/boardDelete")
+	public List<BandBoardDetailSearchVO> boardDelete(@RequestBody List<Object> obj) {
+		//obj[0]=글번호//obj[1]페이지//obj[2]게시판번호//bnadNo[3]
+		System.out.println(obj);
+		BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
+		System.out.println(obj.get(0));
+		ArrayList<String> bandBoardDetailNos = (ArrayList<String>) obj.get(0);
+		vo.setBandBoardDetailNos(bandBoardDetailNos);
+		int r = bandBoardDetailService.BandBoardDeleteList(vo);
+		if(r>0) {
+			//밴드번호를 가져오면 모든 글과...페이징처리해서보냄 paging번호받
+			Paging paging = new Paging();
+			Integer p = Integer.parseInt((String.valueOf(obj.get(1))));
+			paging.setPage(p);
+			String bandBoardOptionNo =  (String) obj.get(2);
+			vo.setBandBoardOptionNo(bandBoardOptionNo);
+			String bandNo =  (String) obj.get(3);
+			vo.setBandNo(bandNo);
+			return bandBoardDetailService.getBandBoard(vo, paging);
+		}
+		return null;
 	}
 }

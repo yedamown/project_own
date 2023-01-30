@@ -93,18 +93,25 @@
             A.BAND_GENDER_OPTION "bandGenderOption",
             A.BAND_MEMBERSHIP_OPTION "bandMembershipOption",
             D.LOC_CITY "bandLocation",
-            E.MEMCOUNT "memcount"
-        FROM BAND A, BAND_MEMBER_DETAIL B, EXER_SUB C, OWN_LOCATION D,
-                (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
-                    FROM BAND_MEMBER_DETAIL WHERE BAND_NO = #{bandNo}
-                    GROUP BY BAND_NO) E
-            WHERE A.BAND_NO = B.BAND_NO
-            AND A.BAND_NO = #{bandNo}
-            AND B.BAND_MEMBER_STATUS = 'BA02'
-            AND B.BAND_KICK_STATUS = 'BB01'
-            AND A.BAND_NO = E.BAND_NO
-            AND A.BAND_CATEGORY = C.EXERSUB_NO
-			AND A.BAND_LOCATION = D.LOC_CODE
+            E.MEMCOUNT "memcount",
+            A.BAND_LEADERID "bandLeaderid"
+            
+        FROM BAND A, 
+             BAND_MEMBER_DETAIL B,
+             EXER_SUB C,
+             OWN_LOCATION D,
+             (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
+                FROM BAND_MEMBER_DETAIL 
+               WHERE BAND_NO = #{bandNo}
+               GROUP BY BAND_NO) E
+                    
+       WHERE A.BAND_NO = B.BAND_NO
+         AND A.BAND_NO = #{bandNo}
+         AND B.BAND_MEMBER_STATUS = 'BA02'
+         AND B.BAND_KICK_STATUS = 'BB01'
+         AND A.BAND_NO = E.BAND_NO
+         AND A.BAND_CATEGORY = C.EXERSUB_NO
+		 AND A.BAND_LOCATION = D.LOC_CODE
 	</select>
 	<!-- <sql id="condition">
 		<if test="bandName != null and bandName !=''">
@@ -124,24 +131,24 @@
 	<!-- AS를 썼기 때문에 검색조건에... -->
 	<sql id="condition">
 		<if test="bandName != null and bandName !=''">
-			AND (BAND_NAME LIKE '%' || #{bandName} || '%'
-			OR BAND_KEYWORD LIKE '%' || #{bandName} || '%'
+			AND (BAND_NAME LIKE '%${bandName}%'
+			OR BAND_KEYWORD LIKE '%${bandName}%'
 			) 
 		</if>
 	</sql>
 	<!-- 검색...밴드이름으로 이름, 키워드 등등 으로 활용함 -->
 	<select id="getBandAll" resultType="map">
-		SELECT  BAND_NO "bandNo",
-				BAND_LEADERID "bandLeaderId",
-				BAND_NAME "bandName",
-		        BAND_INTRO "bandIntro",
-		        EXERSUB_NAME "bandCategory",
-		        BAND_OPEN_OPTION "bandOpenOption",
-		        BAND_AGE_OPTION "bandAgeOption",
+		SELECT  BAND_NO           "bandNo",
+				BAND_LEADERID     "bandLeaderId",
+				BAND_NAME         "bandName",
+		        BAND_INTRO        "bandIntro",
+		        EXERSUB_NAME      "bandCategory",
+		        BAND_OPEN_OPTION  "bandOpenOption",
+		        BAND_AGE_OPTION   "bandAgeOption",
 		        BAND_AGE_BEFOROPTION "bandAgeBeforoption",
 		        BAND_AGE_AFTEROPTION "bandAgeAfteroption",
-		        BAND_KEYWORD "bandKeyword",
-		        BAND_GENDER_OPTION "bandGenderOption",
+		        BAND_KEYWORD            "bandKeyword",
+		        BAND_GENDER_OPTION      "bandGenderOption",
 		        BAND_MEMBERSHIP_OPTION "bandMembershipOption",
 		        LOC_CITY "bandLocation",
 		        BAND_GENDER "bandGender"
@@ -176,44 +183,15 @@
 	</select>
 	<!-- 이거 검색조건으로 BandName을 써서 이것저것 조회하고 조인한 컬럼을 사용함(운동,지역) 혹시 이거 쓰는 매퍼는 조심할 것.. -->
 	<select id="count" resultType="int">
-		select count(*) from (SELECT BAND_NO "bandNo",
-				BAND_LEADERID "bandLeaderId",
-				BAND_NAME "bandName",
-		        BAND_INTRO "bandIntro",
-		        EXERSUB_NAME "bandCategory",
-		        BAND_OPEN_OPTION "bandOpenOption",
-		        BAND_AGE_OPTION "bandAgeOption",
-		        BAND_AGE_BEFOROPTION "bandAgeBeforoption",
-		        BAND_AGE_AFTEROPTION "bandAgeAfteroption",
-		        BAND_KEYWORD "bandKeyword",
-		        BAND_GENDER_OPTION "bandGenderOption",
-		        BAND_MEMBERSHIP_OPTION "bandMembershipOption",
-		        LOC_CITY "bandLocation",
-		        BAND_GENDER "bandGender"
-			 FROM (
-
-	                                    SELECT  BAND_NO,
-										        BAND_LEADERID,
-										        BAND_NAME,
-										        BAND_INTRO,
-										        EXERSUB_NAME,
-										        BAND_OPEN_OPTION,
-										        BAND_AGE_OPTION,
-										        BAND_AGE_BEFOROPTION,
-										        BAND_AGE_AFTEROPTION,
-										        BAND_CATEGORY,
-										        BAND_KEYWORD,
-										        BAND_GENDER_OPTION,
-										        BAND_MEMBERSHIP_OPTION,
-										        LOC_CITY,
-										        BAND_GENDER
-	                                    FROM BAND A, EXER_SUB B, OWN_LOCATION C
-										        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
-										        AND A.BAND_LOCATION=C.LOC_CODE
-	                                            AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
-											 <include refid="condition"></include>
-					)
-                )
+		select count(*) 
+          FROM BAND A, 
+               EXER_SUB B, 
+               OWN_LOCATION C
+         WHERE A.BAND_CATEGORY = B.EXERSUB_NO
+           AND A.BAND_LOCATION = C.LOC_CODE
+           AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+	 <include refid="condition"></include>
+				
 	</select>
 	<select id="getMemberBandAll" resultType="BandVO">
 		SELECT		A.BAND_NO,
@@ -237,6 +215,24 @@
 		        AND B.BAND_KICK_STATUS = 'BB01'
 	</select>
 	<select id="getBandRecentAll" resultType="map">
+	with xxx as
+ ( SELECT BAND_NO, 
+                      MAX(RECENTDAY) "RECENTDAY" 
+                 FROM ( SELECT  A.BAND_NO, B.RECENTDAY 
+                          FROM BAND_BOARD_OPTION A,
+		                       (SELECT MAX(BAND_BOARD_DATE) "RECENTDAY",
+		                               BAND_BOARD_OPTION_NO
+		                          FROM BAND_BOARD_DETAIL
+		                         GROUP BY BAND_BOARD_OPTION_NO) B 
+		                 WHERE A.BAND_BOARD_OPTION_NO=B.BAND_BOARD_OPTION_NO
+		               ) GROUP BY BAND_NO
+               ),
+   bbb as (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
+                 FROM BAND_MEMBER_DETAIL
+                GROUP BY BAND_NO
+              )         
+	
+	
 		SELECT distinct
             A.BAND_NO "bandNo",
             A.BAND_NAME "bandName",
@@ -252,22 +248,12 @@
             A.BAND_LOCATION "bandLocation",
             C.RECENTDAY "recentday",
             D.MEMCOUNT "memcount"
-        FROM BAND A, BAND_MEMBER_DETAIL B,(
-                    SELECT BAND_NO, MAX(RECENTDAY) "RECENTDAY" FROM
-                    (
-                    SELECT  A.BAND_NO, B.RECENTDAY FROM BAND_BOARD_OPTION A,
-                    (SELECT 
-                            MAX(BAND_BOARD_DATE) "RECENTDAY",
-                            BAND_BOARD_OPTION_NO
-                        FROM BAND_BOARD_DETAIL
-                        GROUP BY BAND_BOARD_OPTION_NO) B WHERE A.BAND_BOARD_OPTION_NO=B.BAND_BOARD_OPTION_NO
-                        ) GROUP BY BAND_NO
-                        )
-                    C,
-                (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
-                    FROM BAND_MEMBER_DETAIL
-                    GROUP BY BAND_NO) D
-            WHERE A.BAND_NO = B.BAND_NO
+        FROM BAND A, 
+             BAND_MEMBER_DETAIL B,
+             xxx C ,
+             bbb  D
+                    
+        WHERE A.BAND_NO = B.BAND_NO
             AND B.USER_ID = #{userId}
             AND B.BAND_MEMBER_STATUS = 'BA02'
             AND B.BAND_KICK_STATUS = 'BB01'
@@ -558,7 +544,7 @@
                                         (SELECT BAND_NO 
                                             FROM BAND_MEMBER_DETAIL
                                             WHERE BAND_MEMBER_STATUS in 'BA02'
-                                            AND USER_ID='hjj')
+                                            AND USER_ID=#{bandLeaderid})
 
                                     AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 
@@ -574,7 +560,7 @@
                                         (SELECT BAND_NO 
                                             FROM BAND_MEMBER_DETAIL
                                             WHERE BAND_MEMBER_STATUS = 'BA02'
-                                            AND USER_ID='hjj')
+                                            AND USER_ID=#{bandLeaderid})
 
                                     AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 
@@ -591,7 +577,7 @@
                                         (SELECT BAND_NO 
                                             FROM BAND_MEMBER_DETAIL
                                             WHERE BAND_MEMBER_STATUS = 'BA02'
-                                            AND USER_ID='hjj')
+                                            AND USER_ID=#{bandLeaderid})
 
                                     AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 

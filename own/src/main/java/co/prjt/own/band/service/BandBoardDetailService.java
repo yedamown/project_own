@@ -13,9 +13,9 @@ public interface BandBoardDetailService {
 	public List<BandBoardDetailSearchVO> getFiveBoard(BandBoardDetailSearchVO vo, String userId);
 	//내가 맘찍은거 가져오기+ 글 다섯개
 	public List<OwnLikeVO> getOwnLike(List<String> categoryNos, String userId);
-	//페이징 모든 글 보기
+	//페이징 게시판 글 보기
 	public List<BandBoardDetailSearchVO> getBandBoard(BandBoardDetailSearchVO vo, Paging paging);
-	//페이징 모든 글 개수
+	//페이징 게시판 글 개수
 	public int getBandBoardCount(BandBoardDetailSearchVO vo);
 	//보드 상세 조회
 	public BandBoardDetailSearchVO getBandBoardDetail(BandBoardDetailSearchVO vo);
@@ -47,6 +47,8 @@ public interface BandBoardDetailService {
 	public String deleteCalendar(String bandCalendarNo);
 	//게시판설정업데이트
 	public int updateBandBoardOption(BandBoardOptionVO vo);
-	//글삭제 글번호 혹은 게시판번호사용(다중)
+	//글삭제 글번호 혹은 게시판번호사용(다중)//옵션창용....no를 다른거 씀 주의
 	public int deleteBandBoard(String bandBoardOptionNo);
+	//글번호 리스트로가져와서 삭제
+	public int BandBoardDeleteList(BandBoardDetailSearchVO vo);
 }
