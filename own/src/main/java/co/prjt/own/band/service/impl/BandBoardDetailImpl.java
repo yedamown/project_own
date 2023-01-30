@@ -15,6 +15,7 @@ import co.prjt.own.band.mapper.BandBoardDetailMapper;
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
 import co.prjt.own.band.service.BandBoardDetailVO;
+import co.prjt.own.band.service.BandBoardOptionVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.common.Paging;
@@ -298,5 +299,15 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 			delete = "failure";
 		}
 		return delete;
+	}
+
+	@Override
+	public int updateBandBoardOption(BandBoardOptionVO vo) {
+		return bandBoardDetailMapper.updateBandBoardOption(vo);
+	}
+
+	@Override
+	public int deleteBandBoard(String bandBoardOptionNo) {
+		return bandBoardDetailMapper.deleteBandBoard(bandBoardOptionNo);
 	}
 }

@@ -66,6 +66,8 @@ public class BandController {
 		BandMemberDefaultVO def = new BandMemberDefaultVO();
 		def = bandMemberDefaultService.getBandMemberDefault(user.userId);
 		if(def!=null) {
+			//세션에 def저장
+			session.setAttribute("defUser", def);
 			model.addAttribute("user", def);
 			//가입한..최신글올라온 밴드 불러오기 DT : List<Map<String, Object>> Object:bandVO+mapper +impl에서 이미지도 넣음
 			BandMemberDetailVO vo = new BandMemberDetailVO();
@@ -98,7 +100,7 @@ public class BandController {
   		}
 		band.setBandLeaderid(user.userId);
 		//페이지 정보는 ajax로 받아오기 참고)내 밴드보기에서 검색용
-		model.addAttribute("bandName", band.getBandName());
+		//model.addAttribute("bandName", band.getBandName());?? 삭제해도 되나 추후 삭제
 		
 		model.addAttribute("myBand", bandService.getMyBandAll(band, paging));
 		return "content/band/myBand";
@@ -180,7 +182,7 @@ public class BandController {
 				sampleImgInput.setMediaTurn("band_sample");
 				bandService.bandSampleimg(sampleImgInput);
 			}
-			return "redirect:content/band/bandCreateComplete";
+			return "redirect:/own/band/bandGroup?bandNo=BDU_"+band.getBandNo();
 		}
 		return "redirect:content/band/bandCreateFail";
 	}
@@ -264,11 +266,18 @@ public class BandController {
 	}
 	//밴드 사진으로 이동 
 	@GetMapping("/bandGroup/bandPhoto")
-	public String bandPhoto(Model model,  BandVO vo) {
+	public String bandPhoto(Model model, String bandNo) {
 		//임시텍스트
-		model.addAttribute("imsi", "임시텍스트 밴드설정");
+		model.addAttribute("bandNo", bandNo);
 		return "content/band/bandPhoto";
 	}
+	//밴드 사진가져오기
+	@GetMapping("/bandGroup/bandPhotos")
+	@ResponseBody
+	public List<BandBoardDetailSearchVO> bandPhotos(String bandNo, String mediaNo){
+		return bandService.bandPhotos(bandNo, mediaNo);
+	}
+	
 	//밴드 메인에서 일정 아작스 가져오기 7/14/30
 	@ResponseBody
 	@GetMapping("/bandGroup/calendarDay")
@@ -306,5 +315,14 @@ public class BandController {
 		}
 		//처리가 됨..
 		return "redirect:/own/band/bandGroup?bandNo="+vo.getBandNo();
+	}
+	// 밴드 디폴트 마이옵션 /myBand
+	@GetMapping("/myBandOption")
+	public String myBand(Model model, HttpServletRequest request) {
+		//개인디폴트설정붙이기
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.getUserId()));
+		return "content/band/defalutOptionUp";
 	}
 }

@@ -45,4 +45,8 @@ public interface BandBoardDetailService {
 	public BandCalendarVO insertCalendarSingle(BandCalendarVO vo);
 	//일정삭제
 	public String deleteCalendar(String bandCalendarNo);
+	//게시판설정업데이트
+	public int updateBandBoardOption(BandBoardOptionVO vo);
+	//글삭제 글번호 혹은 게시판번호사용(다중)
+	public int deleteBandBoard(String bandBoardOptionNo);
 }

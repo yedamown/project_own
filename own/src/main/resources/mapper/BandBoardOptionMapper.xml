@@ -2,17 +2,71 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.band.mapper.BandBoardOptionMapper">
 	<select id="getBandBoardList" resultType="BandBoardOptionVO">
-		SELECT  BAND_NO,
-        BAND_BOARD_OPTION_NO,
-        BAND_BOARD_LINE,
-        BAND_BOARD_REMARKS,
-        BAND_CONTENT_OPTION,
-        BAND_LIKE_OPTION,
-        BAND_BOARD_AUTH,
-        BAND_BOARD_NAME,
-        BAND_BOARD_ORDER
-		    FROM BAND_BOARD_OPTION
-		    WHERE BAND_NO = #{bandNo}
-		    ORDER BY BAND_BOARD_ORDER
+			SELECT  BAND_NO,
+	        A.BAND_BOARD_OPTION_NO,
+	        BAND_BOARD_LINE,
+	        BAND_BOARD_REMARKS,
+	        BAND_CONTENT_OPTION,
+	        BAND_LIKE_OPTION,
+	        BAND_BOARD_AUTH,
+	        BAND_BOARD_NAME,
+	        BAND_BOARD_ORDER,
+	        COUNT "BOARDNUMBER"
+	    FROM BAND_BOARD_OPTION A, (SELECT COUNT(*) "COUNT", BAND_BOARD_OPTION_NO FROM BAND_BOARD_DETAIL GROUP BY BAND_BOARD_OPTION_NO) B
+	    WHERE A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO(+)
+	    AND   A.BAND_NO = #{bandNo}
+	    ORDER BY BAND_BOARD_ORDER 
 	</select>
+	<!-- 게시판설정업데이트 updateBandBoardOption -->
+	<update id="updateBandBoardOption">
+		UPDATE BAND_BOARD_OPTION SET
+		<if test="bandBoardLine != null and bandBoardLine !=''">	
+		        BAND_BOARD_LINE = #{bandBoardLine},
+		</if>
+		<if test="bandBoardRemarks != null and bandBoardRemarks !=''">	        
+		        BAND_BOARD_REMARKS = #{bandBoardRemarks},
+		</if>
+		        BAND_CONTENT_OPTION = #{bandContentOption},
+		<if test="bandLikeOption != null and bandLikeOption !=''">	      
+		        BAND_LIKE_OPTION = #{bandLikeOption},
+		</if>
+		<if test="bandBoardAuth != null and bandBoardAuth !=''">	       
+		        BAND_BOARD_AUTH = #{bandBoardAuth},
+		</if>
+		<if test="bandBoardName != null and bandBoardName !=''">	       
+		        BAND_BOARD_NAME = #{bandBoardName},
+		</if>
+		<if test="bandBoardOrder != null and bandBoardOrder !=''">	       
+		        BAND_BOARD_ORDER = #{bandBoardOrder}
+		</if>
+		WHERE BAND_BOARD_OPTION_NO =  #{bandBoardOptionNo}
+	</update>
+	<!-- 게시판 삭제 -->
+	<delete id="deleteBandBoardOption">
+		DELETE FROM BAND_BOARD_OPTION WHERE BAND_BOARD_OPTION_NO =  #{bandBoardOptionNo}
+	</delete>
+	<!-- 기본 게시판 생성 -->
+		<insert id="insertBandBoardOption">
+			<selectKey keyColumn="BAND_BOARD_ORDER" keyProperty="bandBoardOrder" resultType="int" order="BEFORE">
+				SELECT MAX(BAND_BOARD_ORDER)+1 FROM BAND_BOARD_OPTION WHERE BAND_NO =  #{bandNo}
+			</selectKey>
+		INSERT INTO BAND_BOARD_OPTION
+			VALUES(
+			 #{bandBoardOrder}, '게시판', 'BG02', 'BH01', '', '', 1, 'BDB_'||board_option_seq.nextval, #{bandNo}
+			 )
+		</insert>
+	<!-- 게시판 라인 생성 -->
+	<insert id="insertBandBoardOptionLine">
+		<selectKey keyColumn="BAND_BOARD_ORDER" keyProperty="bandBoardOrder" resultType="int" order="BEFORE">
+			SELECT MAX(BAND_BOARD_ORDER)+1 FROM BAND_BOARD_OPTION WHERE BAND_NO =  #{bandNo}
+		</selectKey>
+	INSERT INTO BAND_BOARD_OPTION
+		VALUES(
+		 #{bandBoardOrder}, '구분카테고리', 'BG02', 'BH01', '', '', 0, 'BDB_'||board_option_seq.nextval, #{bandNo}
+		 )
+	</insert>
+	<!-- 게시판 순서 변경 -->
+	<update id="bandOption9LineUpdate">
+		UPDATE BAND_BOARD_OPTION SET BAND_BOARD_ORDER = #{bandBoardOrder} WHERE BAND_BOARD_OPTION_NO = #{bandBoardOptionNo}
+	</update>
 </mapper>

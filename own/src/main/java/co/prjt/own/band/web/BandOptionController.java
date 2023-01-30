@@ -26,7 +26,6 @@ import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
-import co.prjt.own.ownhome.service.OwnUserVO;
 
 @Controller
 @RequestMapping("/own/band")
@@ -78,25 +77,40 @@ public class BandOptionController {
 	}
 
 	// 남미주
-	// 멤버 관리 페이지로 이동 - 전체 회원 목록
+	// 멤버 관리 페이지로 이동
 	@GetMapping("/bandGroup/bandMemberManage")
 	public String bandMemberManage(Model model, BandMemberDetailVO vo, Paging paging) {
-	    model.addAttribute("memberList", bandOptionService.bandOptionGetAllMemberList(vo, paging));
+	   // model.addAttribute("memberList", bandOptionService.bandOptionGetAllMemberList(vo, paging));
 		return "content/band2/bandMemberManage";
 	}
 
-	// 가입 대기 중 회원 목록
-	@GetMapping("/bandGroup/getWaitingMemberList")
+	// 전체 회원 목록 페이징
 	@ResponseBody
-	public List<BandMemberDetailVO> GetWaitingMemberList(BandMemberDetailVO vo, Paging paging) {
-		return bandOptionService.bandOptionGetWaitingMemberList(vo, paging);
+	@PostMapping("/bandGroup/GetAllMemberList")
+	public List<BandMemberDetailVO> GetAllMemberList(@RequestBody BandMemberDetailVO vo) {
+		return bandOptionService.bandOptionGetAllMemberList(vo);
+	}
+
+	// 가입 대기 중 회원 목록 페이징
+	@ResponseBody
+	@PostMapping("/bandGroup/getWaitingMemberList")
+	public List<BandMemberDetailVO> GetWaitingMemberList(@RequestBody BandMemberDetailVO vo) {
+		return bandOptionService.bandOptionGetWaitingMemberList(vo);
 	}
 
 	// 강퇴된 회원 목록
-	@GetMapping("/bandGroup/getkickedMemberList")
 	@ResponseBody
-	public List<BandMemberDetailVO> GetkickedMemberList(BandMemberDetailVO vo, Paging paging) {
-		return bandOptionService.bandOptionGetkickedMemberList(vo, paging);
+	@PostMapping("/bandGroup/getkickedMemberList")
+	public List<BandMemberDetailVO> GetkickedMemberList(@RequestBody BandMemberDetailVO vo) {
+		System.out.println(vo);
+		return bandOptionService.bandOptionGetkickedMemberList(vo);
+	}
+	
+	// 멤버 수 카운팅
+	@GetMapping("/bandGroup/memberCount")
+	@ResponseBody
+	public int memberCount(BandMemberDetailVO vo) {
+		return bandOptionService.bandCount(vo);
 	}
 
 	// 밴드수정 홈페이지 띄우기

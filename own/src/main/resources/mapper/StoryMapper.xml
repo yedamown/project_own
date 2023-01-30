@@ -11,6 +11,7 @@
 			   SNS_ACCOUNT_NO
 			FROM SNS_STORY
 			WHERE SNS_NICKNAME = #{snsNickname}
+			and sns_status = 'open'
 			ORDER BY SNS_STORY_NO DESC
 	</select>
 	

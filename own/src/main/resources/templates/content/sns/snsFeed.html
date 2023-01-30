@@ -129,21 +129,21 @@
         }
 
         #instaImg {
-            width: 130px;
-            height: 130px;
+            width: 146px;
+            height: 146px;
             border-radius: 50%;
             position: absolute;
             top: 1px;
-            left: 81px;
+            left: 61px;
         }
 
         .profileImg {
             position: absolute;
             top: 4px;
-            left: 84px;
+            left: 64px;
             border-radius: 50%;
-            width: 124px;
-            height: 124px;
+            width: 140px;
+            height: 140px;
             object-fit: cover;
         }
 
@@ -304,27 +304,18 @@
                 <div class="side_menu_section">
                     <ul class="menu_nav">
                         <li> <a href="/own/home">Home</a></li>
-
-                        <li class="active" th:if="${userId.snsNickname == snsInfo.snsNickname}">
-                            <a th:href="@{snsFeed(snsNickname=${userId.snsNickname})}">나의 피드</a>
-                        </li>
-                        <li th:if="${userId.snsNickname != snsInfo.snsNickname}">
-                            <a th:href="@{snsFeed(snsNickname=${userId.snsNickname})}">나의 피드</a></li>
-                        <li>
-                            <a href="services.html">
-                                Services
-                            </a>
-                        </li>
                         <li>
                             <a href="/own/sns">
                                 sns메인
                             </a>
                         </li>
-                        <li>
-                            <a href="contact.html">
-                                Contact
-                            </a>
+                        <li class="active" th:if="${userId.snsNickname == snsInfo.snsNickname}">
+                            <a th:href="@{snsFeed(snsNickname=${userId.snsNickname})}">나의 피드</a>
                         </li>
+                        <li th:if="${userId.snsNickname != snsInfo.snsNickname}">
+                            <a th:href="@{snsFeed(snsNickname=${userId.snsNickname})}">나의 피드</a></li>
+                   	    <li><a href="/own/snsNewFeed">최신게시글</a></li>
+
                     </ul>
                 </div>
                 <!--main menu end -->
@@ -383,12 +374,13 @@
                     <br>
                     <div class="profile">
                         <img id="instaImg" src="/css/sns/img/insta.png">
+                        <img th:if="${userId.snsNickname == snsInfo.snsNickname}" 
+                             src="/css/sns/img/plusIcon2.png" class="modalBtn" style="position:absolute;top:111px; left:191px; width:30px; height:30px; z-index: 1;">
                         <span class="modalBtn">
                             <img th:if="${profileImg == null}" class="profileImg" src="/css/sns/img/defaultUser.png">
                             <span th:unless="${profileImg == null}">
                                 <img class="profileImg" th:src="|/imgView/${profileImg.mediaServerFile}"></span>
                         </span>
-
                         <span id="snsNickname" th:text="${snsInfo.snsNickname}" th:value="${snsInfo.snsAccountNo}"
                             style="position: absolute; top:10px; left:300px; font-size:16px; font-weight:700;"></span>
 
@@ -398,6 +390,7 @@
                                 value="팔로우">팔로우</button>
                             <button th:unless="${isCheckFollow == 0}" class="followBtn" data-follow="1" value="팔로잉"
                                 style="background-color: white; color:black">팔로잉</button>
+                            <img class="modalBtn" src="/css/sns/img/moreIcon.png" style="position: absolute; top:6px; right: 193px; width:30px; height: 30px; cursor: pointer;">
                         </td>
                         <div id="feedCount">
                             <span style="font-size: 13px; color:black">게시글</span>
@@ -415,7 +408,7 @@
                             <div th:if="${snsInfo.snsWebsite != null}">
                                 <a th:href="${snsInfo.snsWebsite}" th:text="${snsInfo.snsWebsite}"
                                     style="color: skyblue;"></a></div>
-                            <div th:unless="${snsInfo.snsWebsite != null}">웹사이트 링크비어있음</div>
+                            <div th:unless="${snsInfo.snsWebsite != null}">///          </div>
                         </div>
                     </div>
                     <!-- 스토리 등록-->
@@ -434,7 +427,7 @@
                         </div>
                     </div>
                     <!-- 다른사람 스토리-->
-                    <div th:if="${userId.snsNickname != snsInfo.snsNickname}" class="modal">
+                    <div class="modal">
                         <div class="modal-content" style="width: 500px; height: 600px;">
                             
                             <div class="storyProfile" style="position:relative; width: 450px; height: 60px;">
@@ -469,6 +462,16 @@
                             </form>
                         </div>
                     </div>
+                    
+
+                    <!--신고모달-->
+                    <div th:if="${userId.snsNickname != snsInfo.snsNickname}" class="modal">
+                        <div class="modal-content" style="width: 300px; height: 200px;">
+                            <span class="close">&times;</span>
+                            <p>신고하기 모달</p>
+                            
+                        </div>
+                    </div>
 
 
                     <!-- 팔로우 Modal -->
@@ -484,7 +487,9 @@
                                 </thead>
                                 <tbody>
                                     <tr th:each="snsfol : ${snsFollowerList}">
-                                        <td th:text="${snsfol.follower}"></td>
+                                        <a th:href="@{snsFeed(snsNickname=${snsfol.follower})}">[[${snsfol.follower}]]</a>
+                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -502,7 +507,8 @@
                                 </thead>
                                 <tbody>
                                     <tr th:each="snsf : ${snsFollowList}">
-                                        <td th:text="${snsf.follow}"></td>
+                                        <a th:href="@{snsFeed(snsNickname=${snsf.follow})}"><td th:text="${snsf.follow}"></td></a>
+                                        </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -574,8 +580,10 @@
                                 <div class="boardContent" style="float: right; width: 500px;border-bottom: 1px lightgray solid; padding-bottom: 16px;">
                                   
                                 </div>
-                                <div class="snsLikeBox">
-                                   
+                                <div class="snsLikeBox" style="width :100px">
+                                </div>
+                                <div class="snsReplyBox" style="width : 100px">
+                                    <img id="snsReplyIcon" src="/css/sns/img/speechImg.png" style="width: 20px; height: 20px;" >
                                 </div>
                                 <div class="boardImgList" style="position:relative; width: 500px; height: 600px; float:left">
                                 </div>
@@ -632,29 +640,6 @@
               reader.readAsDataURL(input.files[0]);
             }
         };
-       
-        //검색기능
-            $.ajax({
-        url: '/own/sns/ListSearch',
-        method: 'get',
-        }).then(res=>{
-            console.log(res)
-            let array = new Array();
-            for(key in res){
-            array.push(res[key].snsNickname)
-            }
-            console.log(array)
-            $('#inputBox').autocomplete({
-                source : array,
-                minLength : 1,
-                scroll: true,
-                select: function(event, ui) {   
-                console.log(ui.item.value);
-                    location.href="/own/snsFeed?snsNickname="+ui.item.value;
-            }
-            });
-            }
-        )
         
         
     
@@ -681,7 +666,7 @@
                                 console.log('좋아요 성공~!')
                                 let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
                                     snsLikeCount.attr({"id" : "snsLikeCount"})
-                                    $('.snsLikeBox').append(snsLikeCount);
+                                    $('.snsLikeBox').eq(0).append(snsLikeCount)
                             },
                             error : function(err){
                                 console.log(err)
@@ -706,7 +691,7 @@
                                 
                                 let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
                                     snsLikeCount.attr({"id" : "snsLikeCount"})
-                                    $('.snsLikeBox').append(snsLikeCount);
+                                    $('.snsLikeBox').eq(0).append(snsLikeCount)
                             },
                             error : function(err){
                                 console.log(err)
@@ -735,13 +720,9 @@
     })
     //댓글 입력
         $('.realReply').on("click", '.insertBtn', function(){
-                console.log("입력버튼 클릭");
-                console.log(loginUserId);
-                console.log(categoryNo);
                 let replyText = $('.realReply').children('.replyText').val();
-                console.log(replyText);
-
                 $('.replyContent').children().remove();
+                $('.snsReplyBox').children().eq(1).remove();
                 $.ajax({
                     url : '/own/snsReply',
                     method : 'post',
@@ -756,9 +737,11 @@
                     success: function(res){
                         console.log(res)
 
-                          for(let i=0; i<res.length; i++){
-                                $('.replyContent').append(makeReply(res[i]));
+                          for(let i=0; i<res.reply.length; i++){
+                                $('.replyContent').append(makeReply(res.reply[i]));
                           }
+                    let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                    $('.snsReplyBox').append(snsReplyCount)
 
                     },
                     error : function(err){
@@ -787,6 +770,7 @@
                 let replyNo = $(e.target).next().attr("value");
                 console.log(replyNo)
                 $('.replyContent').children().remove();
+                $('.snsReplyBox').children().eq(1).remove();
                 $.ajax({
                     url : '/own/snsReplyDelete',
                     method : 'post',
@@ -799,9 +783,12 @@
                     },
                         success : function(res){
                             console.log("삭제완료")
-                          for(let i=0; i<res.length; i++){
-                                $('.replyContent').append(makeReply(res[i]));
+                          for(let i=0; i<res.reply.length; i++){
+                                $('.replyContent').append(makeReply(res.reply[i]));
                           }
+                          
+                          let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                          $('.snsReplyBox').append(snsReplyCount)
 
                     }, 
                         error : function(err){
@@ -854,14 +841,9 @@
     
     //게시글 상세보기 이미지 페이징
         $('.dots-parent').on("click", '.dot', function(e){
-            console.log("단추클릭")
             let btnData = $(e.target).attr("data-item");
-            console.log(this);
             $('.dot').not(this).removeClass("active");
             $(this).addClass("active");
-            console.log(this);
-            console.log('단추클릭');
-            console.log($(this).attr("data-item"));
             $('.boardImg').not('[data-item="'+btnData+'"]').removeClass("active")
             $('.boardImg[data-item="'+btnData+'"]').addClass("active")
         })
@@ -955,8 +937,7 @@
                             "src": "/imgView/" + res.storyImg[i].mediaServerFile,
                             "class": "storyImg"
                         })
-                        let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i]
-                            .snsStoryDate))
+                        let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i].snsStoryDate));
                         storyProfileDate.attr('class', "storyProfileDate");
                         $('.storyProfile').append(storyProfileDate);
                         $('.storyContent').append(storyImg);
@@ -1032,7 +1013,7 @@
                                         replyInput.css({"cursor": "pointer"})
                                         replyInput.text('댓글쓰기')
                                         $('.replyInsert').append(replyInput);
-                                categoryNo = boardNo.attr("value");
+                                    categoryNo = boardNo.attr("value");
 
                                 if(res.snsLikeCheck != null){
                                     let snsLikeImg = $('<img>').attr({"src" : "/css/sns/img/fullHeart.png",
@@ -1047,8 +1028,11 @@
                                 }
                                 
                                 let snsLikeCount = $('<span>').text("좋아요 "+res.snsLikeCount+"개");
-                                    snsLikeCount.attr({"id" : "snsLikeCount"})
+                                    snsLikeCount.attr("id" , "snsLikeCount");
+
+                                let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
                                     $('.snsLikeBox').append(snsLikeCount);
+                                    $('.snsReplyBox').append(snsReplyCount)
                                 
                             },error: function (err){
                                 console.log(err)
@@ -1060,7 +1044,7 @@
         })
         
         function makeReply(reply){
-            let Tag = ` <div class="replyIdDate">${reply.userId} | ${elapsedText(`${reply.replyDate}`)}
+            let Tag = ` <div class="replyIdDate">${reply.userId} |${reply.replyDate}
                         <span class="snsReplyDelBtn" style="font-size:20px; padding-left:350px; cursor:pointer;">&times;</span>
                         <input type="hidden" value="${reply.replyNo}" /></div> 
                         <div style="padding-left:50px;">${reply.replyContent}</div>
@@ -1126,6 +1110,7 @@
                 $('.replyContent').children().remove();
                 $('.replyInsert').children().remove();
                 $('.snsLikeBox').children().remove();
+                $('.snsReplyBox').children().eq(1).remove();
             }
         };
 

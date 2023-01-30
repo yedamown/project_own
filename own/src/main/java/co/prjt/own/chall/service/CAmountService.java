@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface CAmountService {
 	//결제 충전 및 환급 시 등록
-	int insertAmount(CAmountVO vo);
+	int insertAmount(CAmountVO vo, CMemberVO mem);
 	
 	//결제 후 단건조회
 	CAmountVO getAmt(CAmountVO vo);

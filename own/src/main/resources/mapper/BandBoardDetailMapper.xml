@@ -395,4 +395,8 @@ SELECT
 	<delete id="deleteCalendar">
 		DELETE BAND_CALENDAR WHERE BAND_CALENDAR_NO = #{BANDCALENDARNO}
 	</delete>
+	<!-- 게시글 삭제 게시판번호 혹은 게시글번호를 이용 deleteBandBoard(bandBoardOptionNo); -->
+	<delete id="deleteBandBoard">
+		DELETE BAND_BOARD_DETAIL WHERE BAND_BOARD_DETAIL_NO = #{bandBoardOptionNo} or BAND_BOARD_OPTION_NO = #{bandBoardOptionNo};
+	</delete>
 </mapper>

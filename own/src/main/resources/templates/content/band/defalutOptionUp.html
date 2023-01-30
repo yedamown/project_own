@@ -1,0 +1,179 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/band_layout}"
+      lang="ko">
+    <head>
+    	<!-- jquery -->
+    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
+        <title>Royal Hotel</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/css/band/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/css/band/css/style.css">
+        <link rel="stylesheet" href="/css/band/css/responsive.css">
+        <style>
+        	
+			.btn:hover{
+			    color:#fff;
+			}
+			
+			.input-text:focus{
+			    box-shadow: 0px 0px 0px;
+			    border-color:#f8c146;
+			    outline: 0px;
+			}
+			
+			.form-control {
+			    border: 1px solid #f8c146;
+			}
+			img {
+				border-radius: 10px;
+			}
+			img:hover{
+				border:#BFBFBF 2px solid;
+				cursor:pointer;
+			}
+			.aaimg {
+				padding: 5px;
+				border-radius: 10px;
+				height:100px;
+				width:100px;
+				border-radius: 15px;
+			}
+        </style>
+    </head>
+    <body>
+   	<div layout:fragment="content">
+        <!--================위에  Area =================-->
+        <section class="banner_area">
+            <div class="booking_table d_flex align-items-center" style="min-height: 200px;">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+            	<div><h2 class="typo-list" style="color:white">내 가치</h2></div>
+            </div>
+        </section>
+        <!--================위에 Area 끝=================-->
+        
+        <!--================ 폼 Area  =================-->
+		<div id="template">    
+			<article style="border: 1px solid #eeeeee;">
+				<div class="container">
+					디폴트옵션창
+					개인정보 생일,성별 현재..등등디폴트값
+					가입중인가치(대표이미지,별명)
+					가입신청중인밴드
+				</div>
+			</article>
+		</div>
+        <!--================ 밴드생성 끝 Area  =================-->
+        
+        <!-- Optional JavaScript -->
+        <script>
+        // 특수문자 정규식 변수(공백 미포함)
+        var replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
+ 		// 완성형 아닌 한글 정규식		
+        var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+        $(function(){
+            //별명 중복체크...
+            $('#bandNickname').on('change', function(){
+            	let nickName = $('#bandNickname').val();
+    			if(nickName == '') {
+    				$('#hiddenBoxText').text('닉네임을 입력해주세요.');
+    				$('#hiddenBox').show();
+    			} else if(nickName.match(replaceChar)||nickName.match(replaceNotFullKorean)){
+    				$('#hiddenBoxText').text('특수문자를 제외하고 올바른 문자를 입력해주십시오.');
+    				$('#hiddenBox').show();
+    			} else {
+    				$('#hiddenBoxText').text('사용가능한 닉네임입니다.');
+    				$('#hiddenBox').show();
+    			}
+            })
+            //닉네임 공백막기 글자수
+             $('#bandNickname').keyup(function(e){
+            	//닉네임 공백막기
+            	 if($(this).val().search(/\s/) != -1){ //공백이 있나 체크 후
+           			$(this).val( $(this).val().replace(/ /gi, '') );
+           			$('#hiddenBox').show();
+           			$('#hiddenBoxText').text('공백입력은 불가능합니다.');
+            	 }
+            	//글자수 체크
+            	 chkNickLength();
+            })
+          //닉네임 글자수 체크  
+        	function chkNickLength(){
+        		$('#nickNamelength').text($('#bandNickname').val().length+'/10');
+        	}
+          	//인트로  글자수
+            $('#bandMemberIntro').keyup(function(e){
+           	//글자수 체크
+           	 chkIntroLength();
+           })
+            //글자수체크
+            chkNickLength();
+        })
+        //이미지삽임
+            $('.imgss').on('click', '#inputImage', function(){
+            	$('#deImg').click();
+            })
+            //이미지첨부 눌렀을 때
+            function imgFnc(){
+            	//파일
+            	let imgFile = $('#deImg').val();
+            	//확장자제한
+            	let fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+            	//50mb로 제한
+            	let maxSize = 100 * 1024 * 1024;
+            	//특수문자 제한
+            	let pattern =  /[\{\}\/?,;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
+            	//파일크기제한
+            	let fileSize;
+    			
+            	if($('#deImg').val() == "") {
+            		alert("첨부파일은 필수!");
+            	    return;
+            	}
+            	//파일명과 사이즈를 뽑기위한..제이쿼리를 모르겠음 이건
+            	let fileName = document.getElementById("deImg").files[0]
+            	//파일이 비었다면
+            	if(imgFile != "" && imgFile != null) {
+            		//input=file의 files 속성가져와서...
+            		fileSize = fileName.size;
+            	    if(!imgFile.match(fileForm)) {
+            	    	alert("이미지 파일만 업로드 가능");
+            	        return;
+            	    } else if(fileSize > maxSize) {
+            	    	alert("파일 사이즈는 100MB까지 가능");
+            	        return;
+            	    } else if(pattern.test(fileName.name)){
+            	    	alert("파일 이름 특수문자 nono");
+            	        return;
+            	    }
+            	}
+            }
+            //이미지 업로드 시 미리보기createImage
+            $('#deImg').on('change', function(e){
+            	let file = e.target.files[0];
+            	let reader = new FileReader();
+            	reader.onload = function(e){
+            		$('#inputImage').attr('src', e.target.result);
+            		//기존이미지 누를시..
+            		$('input[name=mediaServerFile]').val('sample')
+            	}
+            	reader.readAsDataURL(file);
+            	
+            })
+        </script>
+    	</div>
+	</body>
+</html>

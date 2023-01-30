@@ -59,4 +59,14 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	
 	//캘린더용
 	public BandCalendarVO bandCalendar;
+	
+	//이미지포토용
+	String mediaNo;
+	String mediaRealFile;
+	String mediaServerFile;
+	String mediaFilePath;
+	String identifyId;
+	String mediaCategory;
+	String mediaTurn;
+	String ino;
 }

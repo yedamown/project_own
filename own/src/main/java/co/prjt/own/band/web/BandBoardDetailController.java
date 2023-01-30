@@ -1,8 +1,10 @@
 package co.prjt.own.band.web;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,7 +12,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +27,12 @@ import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
 import co.prjt.own.band.service.BandBoardDetailVO;
 import co.prjt.own.band.service.BandBoardOptionService;
+import co.prjt.own.band.service.BandBoardOptionVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandService;
+import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.OwnLikeVO;
@@ -157,9 +163,9 @@ public class BandBoardDetailController {
 		return bandBoardDetailService.updateBandBoard(vo);
 	}
 	//지도api
-		@GetMapping("/map")
-		public String bandMap(Model model) {
-			return "content/band/bandMap";
+	@GetMapping("/map")
+	public String bandMap(Model model) {
+		return "content/band/bandMap";
 	}
 	//일정
 	@ResponseBody
@@ -181,5 +187,71 @@ public class BandBoardDetailController {
 		model.addAttribute("bandAttend", bandAttend);
 		//후에 사진첨가
 		return "content/band/bandCalendarChk";
+	}
+	//게시판생성
+	@GetMapping("/bandGroup/bandOption9")
+	public String bandOption9(Model model, String bandNo) {
+		//밴드 게시판 조회
+		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
+		model.addAttribute("bandNo", bandNo);
+		return "content/band/zBoardOption";
+	}
+	//게시판 단건 수정
+	@ResponseBody
+	@PutMapping("/bandGroup/bandOption9")
+	public List<BandBoardOptionVO> bandOption9(@RequestBody BandBoardOptionVO vo) {
+		System.out.println(vo.toString());
+		//후에 게시판가져가기
+		List<BandBoardOptionVO> boardList = new ArrayList<BandBoardOptionVO>();
+		if(bandBoardOptionService.updateBandBoardOption(vo)>0) {
+			boardList = bandBoardOptionService.getBandBoardList(vo.getBandNo());
+		}
+		return boardList;
+	}
+	//게시판 단건 삭제
+	@ResponseBody
+	@DeleteMapping("/bandGroup/bandOption9/{bandBoardOptionNo}/{bandNo}")
+	public List<BandBoardOptionVO> bandOption9(@PathVariable String bandBoardOptionNo, @PathVariable String bandNo) {
+		System.out.println("도착"+bandBoardOptionNo);
+		System.out.println("도착"+bandNo);
+		int r = bandBoardOptionService.deleteBandBoardOption(bandBoardOptionNo);
+		//후에 게시판가져가기
+		List<BandBoardOptionVO> boardList = new ArrayList<BandBoardOptionVO>();
+		if(r>0) {
+			boardList = bandBoardOptionService.getBandBoardList(bandNo);
+		}
+		return boardList;
+	}
+	//게시판 구분 생성
+	@ResponseBody
+	@DeleteMapping("/bandGroup/bandOption9/insert/{bandNo}")
+	public List<BandBoardOptionVO> bandOption9Insert(@PathVariable String bandNo) {
+		System.out.println("도착"+bandNo);
+		int r = bandBoardOptionService.insertBandBoardOption(bandNo);
+		//후에 게시판가져가기
+		List<BandBoardOptionVO> boardList = new ArrayList<BandBoardOptionVO>();
+		if(r>0) {
+			boardList = bandBoardOptionService.getBandBoardList(bandNo);
+		}
+		return boardList;
+	}
+	//게시판 구분 생성 line
+	@ResponseBody
+	@DeleteMapping("/bandGroup/bandOption9/insertLine/{bandNo}")
+	public List<BandBoardOptionVO> bandOption9InsertLine(@PathVariable String bandNo) {
+		System.out.println("도착"+bandNo);
+		int r = bandBoardOptionService.insertBandBoardOptionLine(bandNo);
+		//후에 게시판가져가기
+		List<BandBoardOptionVO> boardList = new ArrayList<BandBoardOptionVO>();
+		if(r>0) {
+			boardList = bandBoardOptionService.getBandBoardList(bandNo);
+		}
+		return boardList;
+	}
+	//게시판순서변경
+	@ResponseBody
+	@PostMapping("/bandGroup/bandOption9")
+	public int bandOption9LineUpdate(@RequestBody List<Map<String, String>> obj) {
+		return bandBoardOptionService.bandOption9LineUpdate(obj);
 	}
 }

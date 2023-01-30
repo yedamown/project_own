@@ -1,11 +1,13 @@
 package co.prjt.own.chall.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import co.prjt.own.chall.mapper.CMemberListMapper;
 import co.prjt.own.chall.mapper.ChallengeMapper;
 import co.prjt.own.chall.service.CMemberListVO;
 import co.prjt.own.chall.service.ChallengeService;
@@ -16,6 +18,7 @@ import co.prjt.own.common.Paging;
 public class ChallengeServiceImpl implements ChallengeService{
 
 	@Autowired ChallengeMapper mapper;
+	@Autowired CMemberListMapper memberListMapper;
 
 	@Override
 	public int insertChall(ChallengeVO vo) {
@@ -39,15 +42,27 @@ public class ChallengeServiceImpl implements ChallengeService{
 	}
 
 	@Override
-	//내가 참여중인 도전 검색 - 페이징 갯수도 추가해서
+	//내가 참여중인 도전 검색
 	public List<ChallengeVO> getMyChall(ChallengeVO vo) {
-		return mapper.getMyChall(vo);
+		System.out.println(vo);
+		List<ChallengeVO> list = mapper.getMyChall(vo);
+		for (ChallengeVO i : list) {
+			int r = memberListMapper.getChallMemNum(i.getChallNo());
+			i.setNowMem(r);
+		}
+		return list;
 	}
 
 	@Override
 	//전체 도전검색 - 페이징 갯수도 추가해서
 	public List<ChallengeVO> getChallAll(ChallengeVO vo) {
-		return mapper.getChallAll(vo);
+		System.out.println(vo);
+		List<ChallengeVO> list = mapper.getChallAll(vo);
+		for (ChallengeVO i : list) {
+			int r = memberListMapper.getChallMemNum(i.getChallNo());
+			i.setNowMem(r);
+		}
+		return list;
 	}
 	
 	@Override
@@ -68,13 +83,18 @@ public class ChallengeServiceImpl implements ChallengeService{
 		//밖에서 하고오면 보는갯수 줄어들지않을까?
 		paging.setTotalRecord(mapper.countChall(vo));
 		System.out.println(mapper.countChall(vo));
-		paging.setPageUnit(3); //한페이지에 몇개
-		paging.setPageSize(4); //페이징 ? 갯수 몇번까지?
+//		paging.setPageUnit(3); //한페이지에 몇개
+//		paging.setPageSize(4); //페이징 ? 갯수 몇번까지?
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		vo.setPaging(paging);
 		System.out.println(vo);
 		List<ChallengeVO> list = mapper.getChallAll(vo);
+		//참여회원 수 넣기
+		for (ChallengeVO i : list) {
+			int r = memberListMapper.getChallMemNum(i.getChallNo());
+			i.setNowMem(r);
+		}
 		list.get(0).setPaging(paging);
 		return list;
 	}
@@ -95,6 +115,10 @@ public class ChallengeServiceImpl implements ChallengeService{
 		vo.setPaging(paging);
 		System.out.println(vo);
 		List<ChallengeVO> list = mapper.getMyChall(vo);
+		for (ChallengeVO i : list) {
+			int r = memberListMapper.getChallMemNum(i.getChallNo());
+			i.setNowMem(r);
+		}
 		list.get(0).setPaging(paging);
 		return list;
 	}

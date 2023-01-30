@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import co.prjt.own.band.mapper.BandMapper;
 import co.prjt.own.band.mapper.BandMemberDefaultMapper;
+import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
@@ -84,6 +85,9 @@ return bandList;
 		if(vo.get("bandGender")==null) {
 			vo.put("bandGender", "");
 		}
+		//이미지넣기
+		MultimediaVO mul = common.selectImg(bandNo);
+		vo.put("bandImg", mul);
 		return vo;
 	}
 
@@ -148,8 +152,9 @@ return bandList;
 			bandNoList.add((String) b.get("bandNo"));
 		}
 		//위에서 가져온 bandNoList리스트로 이미지 얻어오기
-		List<MultimediaVO> imglist = common.selectImgAllKey(bandNoList);
-		if(bandList.size()>1) {
+		List<MultimediaVO> imglist = new ArrayList<MultimediaVO>();
+		if(bandList.size()>0) {
+			imglist = common.selectImgAllKey(bandNoList);
 			for(Map<String, Object> b : bandList) {
 				System.out.println(b.toString());
 				for(MultimediaVO img : imglist) {
@@ -233,7 +238,7 @@ return bandList;
 		}
 		//위에서 가져온 list리스트로 이미지 얻어오기
 		List<MultimediaVO> imglist = null;
-		if(list.size()>1) {
+		if(list.size()>0) {
 			imglist = common.selectImgAllKey(bandNoList);
 			for(BandVO b : list) {
 				for(MultimediaVO img : imglist) {
@@ -278,4 +283,8 @@ return bandList;
 		}
 		return list;
 	}
+	//밴드 포토찾기
+	public List<BandBoardDetailSearchVO> bandPhotos(String bandNo, String mediaNo){
+		return bandMapper.bandPhotos(bandNo, mediaNo);
+	};
 }
