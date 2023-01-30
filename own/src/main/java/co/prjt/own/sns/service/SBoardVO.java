@@ -25,5 +25,6 @@ public class SBoardVO {
 	List<MultimediaVO> fileList;
 	String mediaServerFile;
 	String mediaNo;
-	
+	String likeCount;
+	String replyCount;
 }

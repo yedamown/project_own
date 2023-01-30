@@ -1989,7 +1989,8 @@ img {
 .project_box_one img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: 250px;
+  object-fit : cover;
   -webkit-transition: all ease-in-out 0.4s;
   transition: all ease-in-out 0.4s;
 }
@@ -2258,7 +2259,8 @@ img {
   color: #9c9ca9;
 }
 .blog_card .blog_card_bottom {
-  padding: 25px 0;
+  padding: 0px 0;
+  width : 800px;
 }
 .blog_card .blog_card_bottom h4 {
   margin-bottom: 5px;
