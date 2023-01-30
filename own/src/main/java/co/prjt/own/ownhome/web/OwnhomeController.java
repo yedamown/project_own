@@ -58,7 +58,6 @@ public class OwnhomeController {
 // 검색테스트페이지====================================
 		@RequestMapping(value = "/searchtest", method = RequestMethod.GET)
 		public String test(Model model) { // 오운홈으로 가는 페이지이동
-			
 			return "content/own/searchTest";
 		}
 		
@@ -66,7 +65,7 @@ public class OwnhomeController {
 		@GetMapping("/own/sns/ListSearch")
 		@ResponseBody
 		public List<SAccountVO> ListSearch(){
-			return SAccountService.getSnsUserList(null);
+			return ownService.getSnsAccountList();
 		}
 		
 //검색테스트=======================
