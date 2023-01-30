@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import co.prjt.own.band.service.BandBoardDetailSearchVO;
-import co.prjt.own.chall.service.ValidationVO;
 import co.prjt.own.common.service.ExersubVO;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.ReportVO;
@@ -13,10 +11,9 @@ import co.prjt.own.common.service.ReportVO;
 public interface CommonMapper {
 	//운동분류를 가져오는것.
 	public List<ExersubVO> getListExersub();
-	
 	//이미지넣기
-	public List<MultimediaVO> fileUpload();
-	
+	public List<MultimediaVO> fileUpload();	
+	public MultimediaVO reportupload(MultipartFile[] uploadfile, String IndenfityId,  String INO ,String category);
 	// 멀티미디어 파일변환하고, 이름값? 가져오는..?
 	public String upload(MultipartFile[] uploadfile,String IndenfityId, String INO, String category);
 	
@@ -47,4 +44,9 @@ public interface CommonMapper {
 	public int deleteImg(List<String> name, String key);
 	//신고테이블에 보내기
 	public int reportadd(ReportVO vo);
+	//신고테이블 시퀀스찾기
+
+	public int getreportSeq();
+	
+	public int reportImgadd(ReportVO vo);
 }

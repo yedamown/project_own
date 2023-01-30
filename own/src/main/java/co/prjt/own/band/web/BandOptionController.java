@@ -43,7 +43,7 @@ public class BandOptionController {
 	@GetMapping("/bandGroup/bandOptionMain")
 	public String bandOptionMain(Model model, BandVO vo, BandMemberDetailVO dvo) {
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
-
+		
 		model.addAttribute("count", bandOptionService.bandCount(dvo));
 
 		Map<String, Object> band = bandService.getBand(vo.getBandNo());
@@ -64,7 +64,6 @@ public class BandOptionController {
 
 		model.addAttribute("bandInfo", band);
 		model.addAttribute("count", bandOptionService.bandCount(dvo));
-		model.addAttribute("bandInfo", bandOptionService.bandInfo(vo));
 		return "/content/band2/bandOption";
 	}
 

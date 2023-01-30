@@ -2,6 +2,39 @@
 <!-- Bootstrap CSS -->
 <meta charset="utf-8">
 <style>
+			#container23{
+                padding: 10px;
+                width: 700px;
+                margin: 0 auto;
+                border: 1px solid black;
+            }
+            legend{
+                color:purple;
+                font-size: 20px;
+                font-weight: bold;
+            }
+            
+            ul{
+                list-style: none;
+                line-height: 30px;
+            }
+            #container23 form label{
+                width:200px;
+                margin-right: 20px;
+                float:left;
+                text-align: left;
+            }
+            textarea{
+                width: 400px;
+            }
+            footer{
+                padding:30px;
+                text-align: center;
+            }
+            #container23 label{
+                font-weight: bold;
+                font-size: 18px;
+            }
 .tab-wrap {
   transition: 0.3s box-shadow ease;
   border-radius: 6px;
@@ -117,6 +150,7 @@
   border-radius: 6px;
 }
 </style>
+<body>
 <h1>옵션</h1>
 <div style="flex-grow:3; width: 740px" id="subTemplate">
 <div class="tab-wrap">
@@ -135,31 +169,60 @@
 
     <input type="radio" id="tab8" name="tabGroup2" class="tab">
     <label for="tab8" id="bandPass">밴드위임</label>
-  </div>
+</div>
+
   <div id="manageTemplate">
+  <div id="container23">
+  
   <h1>밴드정보</h1>
-  <p>밴드정보�</p>
-  <p th:text="${bandInfo.bandName}"></p>
-  <p th:text="${bandInfo.bandLocation}"></p>
-  <p th:text="${bandInfo.bandCategory}"></p>
-  <th:block th:if="${bandInfo.bandKeyword != null}">
-  <p th:text="${bandInfo.bandKeyword}"></p>
-  </th:block>
-  <span th:if="${#strings.equals(bandInfo.bandMembershipOption, 'BF01')}">
-  가입인원
-  </span>
-  <span th:if="${#strings.equals(bandInfo.bandMembershipOption, 'BF02')}">
-  승인대기인원
-  </span> 
+  <fieldset>
+       <legend>밴드상세정보</legend>
+       <ul>
+                <li><label th:text="'밴드이름 '+${bandInfo.bandName}"></label>
+                <li><label th:text="'활동지역 '+${bandInfo.bandLocation}"></label>
+                <li><label th:text="'카테고리 ' + ${bandInfo.bandCategory}"></label>
+                <th:block th:if="${bandInfo.bandKeyword != null}">
+                <li><label th:text="'키워드 '+${bandInfo.bandKeyword}"></label>
+                </th:block>
+                <li><label th:text="'가입인원 '+${count}"></label> 
+       </ul>
+  </fieldset>
   <p th:text="${count}"></p>
   <p>가입인원</p>
+  <fieldset>
+  <legend>모든유저</legend>
   <span th:each="list : ${memList}">
   	<th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA02')}">
-	<p th:text="${list.userId}"></p>
+	<label><p th:text="${list.userId}"></p></label>
 	</th:block>
   </span>
+  </fieldset>
+  
+  <fieldset>
+  <legend>오늘 가입한 유저</legend>
+  <span th:each="list : ${memList}">
+	<label><p th:text="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}"></p></label>
+	<label><p th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"></p></label>
+	<th:block th:if="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}==${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
+		<label><p th:text="${list.userId}"></p></label>
+	</th:block>
+  </span>
+  </fieldset>
+  
+  <fieldset>
+  <legend>승인대기 유저</legend>
+  <span th:each="list : ${memList}">
+	<th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA01')}">
+		<label><p th:text="${list.userId}"></p></label>
+	</th:block>
+  </span>
+  </fieldset>
+  
+  
+  </div>
   </div>
 </div>
+</body>
 <script>
 $('#bandmanage').on('click', function(){
 	console.log('dd')
@@ -177,3 +240,4 @@ $('#bandPass').on('click', function(){
 	$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
 })
 </script>
+</html>

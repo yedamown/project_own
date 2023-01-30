@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.common.mapper.CommonMapper">
+	
+	<update id="reportImgadd">
+	update report set content = #{mediaServerFile} where report_no = #{reportNo} 
+	</update>
+
+
+	<select id="getreportSeq" resultType="int">
+	SELECT report_no.CURRVAL FROM DUAL
+	</select>
 
 	<insert id="reportadd">
 	insert into report 

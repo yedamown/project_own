@@ -11,6 +11,8 @@ import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.sns.service.SAccountVO;
 
 public interface OwnhomeService {
+	//sns계정체크
+	public List<SAccountVO> getSnsAccountList(); 	
 	//모든회원정보 페이징
 	public List<OwnUserVO> getPagingUserList(OwnUserVO vo, Paging paging);
 	//모든회원정보
