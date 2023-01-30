@@ -3,13 +3,13 @@
 <mapper namespace="co.prjt.own.chall.mapper.ChallengeMapper">
 	<!-- 조건은 항상 위에 있어야함 -->
 	<sql id="condition">
-				<if test="challLeader !=null">
+				<if test="challLeader !=null and challLeader !='' ">
 					AND	CHALL_LEADER = #{challLeader}			
 				</if>
-				<if test="challNo !=null">
+				<if test="challNo !=null and challNo !='' ">
 					AND CHALL_NO = #{challNo}
 				</if>
-				<if test="challStatus !=null">
+				<if test="challStatus !=null and challStatus !='' ">
 					AND CHALL_STATUS = #{challStatus}		
 				</if>
 				<if test="searchWord !=null and searchWord !='' ">

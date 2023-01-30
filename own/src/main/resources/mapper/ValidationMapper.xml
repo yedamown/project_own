@@ -16,20 +16,46 @@
 		#{userId})
 	</insert>
 
+		<sql id="condition">
+				<if test="challNo !=null and challNo !=''">
+					AND	CHALL_NO = #{challNo}
+				</if>
+				<if test="vldStatus !=null and vldStatus !='' ">
+					AND vld_status = #{vldStatus}
+				</if>
+				<if test="userId !=null and userId !='' ">
+					AND user_id = #{userId}
+				</if>
+		</sql>
+	
+	
+	
+	<!-- 페이징을 곁을인.. -->
 	<select id="getChallVld" resultType="co.prjt.own.chall.service.ValidationVO">
-		SELECT V.*, M.MEDIA_SERVER_FILE
-		FROM CHALL_VALIDATION V, MULTIMEDIA M
-		WHERE M.IDENTIFY_ID = V.VLD_NO
-		AND V.CHALL_NO = #{challNo}
-		ORDER BY V.VLD_DATE DESC
+		SELECT * FROM ( SELECT ROWNUM RN, A.* 	  FROM ( 
+		
+					SELECT V.*, M.MEDIA_SERVER_FILE
+					  FROM CHALL_VALIDATION V, MULTIMEDIA M
+					 WHERE M.IDENTIFY_ID = V.VLD_NO
+					 <include refid="condition"/>   
+	              ORDER BY V.VLD_DATE DESC
+	<![CDATA[   
+		) A WHERE ROWNUM <= #{last} ) 	WHERE RN >= #{first}
+	]]>	     
 	</select>
 	
 	<select id="getMyVld" resultType="co.prjt.own.chall.service.ValidationVO">
-		SELECT V.*, M.MEDIA_SERVER_FILE
-		FROM CHALL_VALIDATION V, MULTIMEDIA M
-		WHERE M.IDENTIFY_ID = V.VLD_NO
-		AND V.USER_ID = #{userId}
-		ORDER BY V.VLD_DATE DESC
+		SELECT * FROM ( SELECT ROWNUM RN, A.* 	  FROM (
+		
+					SELECT V.*, M.MEDIA_SERVER_FILE
+					  FROM CHALL_VALIDATION V, MULTIMEDIA M
+					 WHERE M.IDENTIFY_ID = V.VLD_NO
+					   AND V.USER_ID = #{userId}
+					 ORDER BY V.VLD_DATE DESC
+					 
+	<![CDATA[   
+		) A WHERE ROWNUM <= #{last} ) 	WHERE RN >= #{first}
+	]]>	   
 	</select>
 	
 	<select id="getMyChallVld" resultType="co.prjt.own.chall.service.ValidationVO">
@@ -73,8 +99,8 @@
 	<select id="countVld" resultType="int">
 		SELECT COUNT(*)
 		FROM CHALL_VALIDATION
-		WHERE USER_ID = #{userId}
-		AND CHALL_NO = #{challNo}
+		WHERE 1=1
+		<include refid="condition"/>   
 	</select>
 	
 	<select id="memVldAvg" resultType="int">

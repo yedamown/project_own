@@ -289,14 +289,13 @@
 									<li class="btn btn-outline-primary m-1 active" data-filter="*" id="detailBtn">상세보기
 									</li>
 									<th:block th:if="${myInfo}">
-										<li class="btn btn-outline-primary m-1" th:if="${memcheck !=null }"
-											data-filter=".first" id="vldBtn">
+										<li class="btn btn-outline-primary m-1" th:if="${memcheck !=null }" id="vldBtn"
+											val="1">
 											인증하기</li>
 										<li class="btn btn-outline-primary m-1" th:if="${memcheck !=null }"
-											data-filter=".second" id="resultBtn">도전 달성률</li>
+											id="resultBtn">도전 달성률</li>
 										<li class="btn btn-outline-primary m-1"
-											th:if="${leaderInfo.userId == myInfo.userId }" data-filter=".third"
-											id="memBtn">회원보기</li>
+											th:if="${leaderInfo.userId == myInfo.userId }" id="memBtn">회원보기</li>
 									</th:block>
 								</ul>
 							</div>
@@ -350,14 +349,19 @@
 							<!-- 인증 구분 라벨 -->
 							<div class="col-12 text-center mb-2">
 								<ul class="list-inline mb-4 mt-4">
-									<li class="btn btn-outline-primary m-1 active">MY</li>
-									<li class="btn btn-outline-primary m-1">ALL</li>
+									<li class="btn btn-outline-primary m-1 active vldPage" id="myVldPage">MY</li>
+									<li class="btn btn-outline-primary m-1" id="allVldPage">ALL</li>
 								</ul>
 							</div>
+
 							<!-- 두 번째 Modal을 여는 클래스 -->
 							<!--   <h1 class="modalBtn">MODAL_2 버튼</h1> -->
 							<div class="row portfolio-container modalBtn" id="vldImg"
-								style="width: 700px; height: fit-content; margin: 0; justify-content: center;"></div>
+								style="width: 700px; height: fit-content; margin: 0; justify-content: center;">\
+							</div>
+							<nav class="blog-pagination justify-content-center d-flex pageBtn" id="vldPaging">
+
+							</nav>
 						</div>
 
 					</div>
@@ -366,7 +370,7 @@
 					<!--달성률 시작-->
 					<div style="display: none;" id="challResult">
 						<div style="width: 700px; display: flex;justify-content: center;">
-							<div style="text-align: center;" >
+							<div style="text-align: center;">
 								<canvas id="myChart" style="width: 450px; height: 450px; "></canvas>
 								<p>나의 달성률</p>
 							</div>
@@ -884,56 +888,130 @@
       console.log(challNo, userId);
       console.log($("#resultCheck").val());
 
+	  //처음보여주는 아작스페이징!
       if($("#resultCheck").val() == "false"){
         console.log("인증하기")
-        //인증내역 불러오는 아작스
-        $.ajax({
-          url: '/own/chall/vldList?challNo='+ challNo + '&&userId='+ userId ,
+		//인증내역 페이징 아작스
+		$.ajax({
+          url: '/own/chall/vldPageListAjax',
           method: 'get',
+		  data: {page:1,
+				 pageUnit:4,
+			     pageSize:5,
+				 challNo: challNo},
           success: function(result){
             console.log(result);
-            $('#dataFilter').attr('data-filter', '.'+userId);
             result.forEach( vld => {
               makeVldForm(vld)
-            })
+            });
+			makePaging(result);
           },
           error: function(err){
             console.log(err);
           }
-        }),
+        })
         //인증횟수 확인하고 버튼 설정바꾸기
-        $.ajax({
-        url:'/own/chall/vldCheckAjax',
-        method: 'post',
-        data: JSON.stringify({userId: userId,
-                              challNo: challNo
-                            }),
-        beforeSend : function(xhr){
-                      xhr.setRequestHeader(header, token);
-        }, 
-        contentType: "application/json",
-        success: function(result){
-			console.log("인증확인");
-          if(result == "able"){
-            console.log('인증가능 - 이번주 인증 덜채움');
-          } else if(result == "todaydone"){
-            console.log("이미 오늘 인증 완료.")
-            $('#vldAddModal').attr('type', 'button').val('오늘 인증 완료.');
-          } else if(result == "thisweekDone"){
-            console.log("이번 주 인증완료.")
-            $('#vldAddModal').attr('type', 'button').val('이번주 인증 완료.');
-          } else{
-            console.log("모르겠노");
-          }
-        },
-        error: function(err){
-          console.log(err)
-        }
-      })
-      }
+    //     $.ajax({
+    //     url:'/own/chall/vldCheckAjax',
+    //     method: 'post',
+    //     data: JSON.stringify({userId: userId,
+    //                           challNo: challNo
+    //                         }),
+    //     beforeSend : function(xhr){
+    //                   xhr.setRequestHeader(header, token);
+    //     }, 
+    //     contentType: "application/json",
+    //     success: function(result){
+    //       if(result == "able"){
+    //         console.log('인증가능 - 이번주 인증 덜채움');
+    //       } else if(result == "todaydone"){
+    //         console.log("이미 오늘 인증 완료.")
+    //         $('#vldAddModal').attr('type', 'button').val('오늘 인증 완료.');
+    //       } else if(result == "thisweekDone"){
+    //         console.log("이번 주 인증완료.")
+    //         $('#vldAddModal').attr('type', 'button').val('이번주 인증 완료.');
+    //       } else{
+    //         console.log("모르겠노");
+    //       }
+    //     },
+    //     error: function(err){
+    //       console.log(err)
+    //     }
+    //   })
+		}
+		$("#resultCheck").val("true");
+	    // 이후 도전 페이징 처리..아작스
+		$('#vldPaging').on('click', '.pagePort', function(){
+		    //페이지번호 + 밴드식별번호
+		    let page = $(this).attr('value');
+			console.log(page)
+		    console.log($(this).attr('value'));
+		    $.ajax({
+		       url: '/own/chall/vldPageListAjax',
+		       method: 'get',
+			   data: {page: page,
+					  pageUnit:4,
+					  pageSize:5,
+					  challNo: challNo
+					}
+		    }).then(result => {
+		       console.log(result);
+				//형태만들기 이미있는애들 없애준다.. -> 도전폼
+				let Chall = $('#vldImg')
+				let rowname = "rowPopChall";
+				$('#vldImg').empty();
+				//다시 형태 붙이는애 만들어주기..
+				result.forEach( cha => {
+					makeVldForm(cha);
+		       	})
+				makePaging(result);
+				})
+		    })
+    	}); //인증하기 첫버튼 끝
 
-      $("#resultCheck").val("true");
-    }); //인증하기 첫버튼 끝
+	/* 아작스 페이징 버튼 */
+	function makePaging(result){
+			//버튼 다시초기화..비우기
+			$('#vldPaging').empty();
+		    let pagingM = result[0].paging;
+		    //시작 버튼
+		    console.log(result[0]); //첫번째? 가져오기..?
+		    let startpageTag = $('<ul class="pagination" />');
+		    $('#vldPaging').append(startpageTag);
+		    //이전 버튼만들기
+		    if(pagingM.startPage>1){
+			let pageBeforTag = `<li class="page-item">
+                                <a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+                                <span aria-hidden="true"> <-
+								<span class="lnr lnr-chevron-left pagePort"></span></span></a>
+                                </li>`
+            startpageTag.append(pageBeforTag); 
+		    }               
+			//페이지목록..
+		    for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		            if(pg != pagingM.page){
+		            	let pageTag = `<li class="page-item">
+		                               <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                               </li>`
+		                startpageTag.append(pageTag);
+		            } else if(pg == pagingM.page ){
+						 let pageTag =  `<li class="page-item active">
+							<a class="page-link" >${pg}</a>
+							</li>`
+							startpageTag.append(pageTag);
+					}
+			}               
+			//이후 버튼만들기
+			if(pagingM.endPage<pagingM.lastPage){
+						let pageAfterTag =`<li class="page-item">
+							<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+								<span aria-hidden="true"> ->
+								<span class="lnr lnr-chevron-right"></span></span></a>
+								</li>`
+								startpageTag.append(pageAfterTag);
+							}
+							$('#vldPaging').append(startpageTag);
+		}
 
     /* 인증내역 아작스로읽어와서 사진폼으로 만들기*/
     function makeVldForm(vld){
@@ -968,6 +1046,7 @@
 	})
 
 	//모달신고...정보빼오기..ㅎ -> 모달 두번째창에 띄우기!
+
 	$('#vldImg').on('click','.grid',function(e){
 		console.log(this); //이 창을.. 클릭하면 모달띄우기..
 		//gird에 아이디값으로 식별번호 넣어둔거 읽어오기
@@ -1196,6 +1275,7 @@
 
 
 	//----------------------------첨부파일 화면에 띄우기------------------------------------
+
       	/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
         imageView = function imageView(att_zone, btn){
 
