@@ -111,6 +111,4 @@ public class BandOptionServiceImpl implements BandOptionService {
 		list.get(0).setPaging(paging);
 		return list;
 	}
-
 }
-
