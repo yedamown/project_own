@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandVO;
@@ -51,4 +52,6 @@ public interface BandMapper {
 	//public List<BandVO> recomBandPage(BandVO vo, Paging paging);
 	//recomBand랑 세트 페이징카운트
 	public int recomBandCount(BandVO vo);
+	//사진뿌리기용
+	public List<BandBoardDetailSearchVO> bandPhotos(String bandNo, String mediaNo);
 }

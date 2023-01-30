@@ -47,4 +47,6 @@ public interface BandService {
 		public List<BandVO> recomBand(String userId);
 		//추천밴드 페이징용
 		public List<BandVO> recomBandPage(BandVO vo, Paging paging);
+		//밴드 포토찾기
+		public List<BandBoardDetailSearchVO> bandPhotos(String bandNo, String mediaNo);
 }

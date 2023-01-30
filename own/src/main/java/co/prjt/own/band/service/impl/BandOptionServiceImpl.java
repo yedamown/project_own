@@ -61,6 +61,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 		return bandOptionMapper.bandDisHuman(bandNo);
 	}
   
+
 	@Override
 	public List<BandMemberDetailVO> bandOptionGetAllMemberList(BandMemberDetailVO vo, Paging paging) {
 		// 페이징 설정
@@ -76,6 +77,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 		list.get(0).setPaging(paging);
 		return list;
 	}
+
 
 
 	@Override
@@ -106,9 +108,13 @@ public class BandOptionServiceImpl implements BandOptionService {
 		vo.setLast(paging.getLast());
 		vo.setPaging(paging);
 		
-		// 가치 설정 - 멤버 관리 - 강퇴된 멤버 리스트
+
 		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetkickedMemberList(vo);
 		list.get(0).setPaging(paging);
 		return list;
 	}
+
+
+
+
 }

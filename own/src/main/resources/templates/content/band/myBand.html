@@ -69,13 +69,18 @@
         <section class="accomodation_area section_gap" style="padding-bottom: 0px;">
             <div class="container">
         <!--================ 내 밴드 세개씩  ================-->
+        		<div th:if="${not #strings.isEmpty(myBand)}">
+        			<h3>검색된 밴드가 없습니다.</h3>
+        		</div>
                 <div style="margin-bottom: 50px;" th:each="band, bandStat :${myBand}">
                     <input class="bandnums" type="hidden" th:value="${band.bandNo}"/>
                     <div class="row mb_30">
                         <div class="col-lg-3 col-sm-6" style="float: left;">
                             <div class="accomodation_item text-center">
                                 <div class="hotel_img"style="height: 230px;">
-                                    <img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="" style="height: 340px; width:340px;">
+                                	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|">
+                                    	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="" style="height: 340px; width:340px;">
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +89,9 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <blockquote class="generic-blockquote"style="height:230px;">
-                                        <h4 class="mb-30 title_color" th:text="${band.bandName}" style="display: inline-block;">Block Quotes</h4>
+                                    	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|">
+                                        	<h4 class="mb-30 title_color" th:text="${band.bandName}" style="display: inline-block;">Block Quotes</h4>
+                                        </a>
                                         <p style="float: right;"><small>멤버 [[${band.memcount}]]</small></p>
                                             <div class="firstboard">
                                                 <a href="#">
@@ -117,9 +124,9 @@
             </div>
         </section>
         <!--================ 내 가치 끝 Area  =================-->
-        <!-- <!--================ 페이지 Area  =================-->
+        <!--================ 페이지 Area  =================-->
         <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
-        ================ 페이지 Area 끝  ================= -->
+        <!--================ 페이지 Area 끝  ================= -->
         <script src="/css/band/js/time.js"></script>
         <script>
       //페이징+검색처리
