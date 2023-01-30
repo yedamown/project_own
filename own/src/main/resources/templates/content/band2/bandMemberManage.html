@@ -130,7 +130,7 @@ li {
 			<tbody id="wBandMemberTable">
 			</tbody>
 		</table>
-		<button>가입 승인</button>
+		<button id="wSignBtn">가입 승인</button>
 		<div id="wPaging">
 			<nav class="blog-pagination justify-content-center d-flex"
 				id="pagegation">
@@ -279,6 +279,7 @@ var token = /*[[${_csrf.token}]]*/;
 		// 체크박스 전체선택 전체 해제 하기
 		$(document).on('click','#wCheckAll',function(){ 
 		    $('.wJoinCheck:not(:disabled)').not(this).prop('checked', this.checked);
+		    
 		});
 		// 체크박스 전체선택 전체 해제 하기
 		$(document).on('click','#kCheckAll',function(){ 
@@ -290,7 +291,7 @@ var token = /*[[${_csrf.token}]]*/;
 			aSelectOption = $("select[name=aSelectOption]").val();
 			aPagingOption = $("select[name=aPagingOption]").val();
 			aSearchVal = $("input[name=aSearchVal]").val();
-			let listOption = {bandNo: bandNo[0], selectOption: aSelectOption, paging:{pageUnit: aPagingOption, page: aPageNum}, userId: aSearchVal};
+			let listOption = {bandNo: bandNo[0], selectOption: aSelectOption, paging:{pageUnit: aPagingOption, page: aPageNum}, bandNickname: aSearchVal};
 			
 			$.ajax({
 				url: '/own/band/bandGroup/GetAllMemberList',
@@ -315,7 +316,7 @@ var token = /*[[${_csrf.token}]]*/;
 							td += '<td>' + "여자" + '</td>';
 						}
 						td += '<td>' + e.age + '</td>';
-						td += '<td >' + '<input type="checkbox" class="aKickCheck">' + '</td>';
+						td += '<td >' + '<input type="checkbox" class="aKickCheck" value='+ e.userId +'>' + '</td>';
 						td += '</tr>';
 						
 						var td2 = '<tr style="display:none">';
@@ -433,7 +434,7 @@ var token = /*[[${_csrf.token}]]*/;
 								td += '<td>' + "여자" + '</td>';
 							}
 							td += '<td>' + e.age + '</td>';
-							td += '<td>' + '<input type="checkbox" class="wJoinCheck">' + '</td>';
+							td += '<td>' + '<input type="checkbox" class="wJoinCheck" value='+ e.userId +'>' + '</td>';
 							td += '</tr>';
 						$('#wBandMemberTable').append(td);
 					})
@@ -502,6 +503,26 @@ var token = /*[[${_csrf.token}]]*/;
 			waitingBandMemberList();
 		}) // end of aPagingOption
 		
+		// 가입 대기 멤버 리스트 - 가입 승인 버튼
+		$('#wSignBtn').on('click', function(){
+			 const arr = [];
+			 const checked = $(".wJoinCheck");
+			 let data = [];
+			    // 버튼 개수만큼 반복
+			    for (let i = 0; i < checked.length; i++) {
+			      // 속성중에 체크 된 항목이 있을 경우
+			      if (checked[i].checked == true) {
+			      	arr.push(checked[i].value);
+			      }
+			    }
+			    for (let i = 0; i < arr.length; i++) {
+				      let userId = arr[i];
+				      let signData = {bandNo: bandNo[0], paging:{pageUnit: wPagingOption, page: wPageNum}, userId: userId};
+					  data.push(signData);
+					  //아작스 돌리기
+				    }
+			   
+		});
 		// 강퇴된 멤버 리스트 생성 함수
 		function kickedBandMemberList(){
 			kPagingOption = $("select[name=kPagingOption]").val();
@@ -529,7 +550,7 @@ var token = /*[[${_csrf.token}]]*/;
 							} else {
 								td += '<td>' + "가입가능" + '</td>';
 							}
-							td += '<td>' + '<input type="checkbox" class="kResignCheck">' + '</td>';
+							td += '<td>' + '<input type="checkbox" class="kResignCheck" value=' + e.userId +'>' + '</td>';
 							td += '</tr>';
 						$('#kBandMemberTable').append(td);
 					})
@@ -572,7 +593,9 @@ var token = /*[[${_csrf.token}]]*/;
 				$('#kPaging #pagegation').append(startpageTag)
 	            } //end of ajax
 			})
-		}; // end of waitingBandMemberList함수
+		}; // end of 강퇴된 멤버 리스트 함수
+		
+		
 		
 		// 강퇴된 멤버 목록 li 클릭
 		$(".kickedBandMemberLi").click(function () {
