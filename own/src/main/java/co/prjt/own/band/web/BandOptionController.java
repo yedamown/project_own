@@ -43,7 +43,7 @@ public class BandOptionController {
 	@GetMapping("/bandGroup/bandOptionMain")
 	public String bandOptionMain(Model model, BandVO vo, BandMemberDetailVO dvo) {
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
-		
+
 		model.addAttribute("count", bandOptionService.bandCount(dvo));
 
 		Map<String, Object> band = bandService.getBand(vo.getBandNo());
@@ -80,7 +80,8 @@ public class BandOptionController {
 	// 멤버 관리 페이지로 이동
 	@GetMapping("/bandGroup/bandMemberManage")
 	public String bandMemberManage(Model model, BandMemberDetailVO vo, Paging paging) {
-	   // model.addAttribute("memberList", bandOptionService.bandOptionGetAllMemberList(vo, paging));
+		// model.addAttribute("memberList",
+		// bandOptionService.bandOptionGetAllMemberList(vo, paging));
 		return "content/band2/bandMemberManage";
 	}
 
@@ -105,12 +106,26 @@ public class BandOptionController {
 		System.out.println(vo);
 		return bandOptionService.bandOptionGetkickedMemberList(vo);
 	}
-	
+
 	// 멤버 수 카운팅
 	@GetMapping("/bandGroup/memberCount")
 	@ResponseBody
 	public int memberCount(BandMemberDetailVO vo) {
 		return bandOptionService.bandCount(vo);
+	}
+
+	// 밴드 멤버 업데이트
+	@ResponseBody
+	@PostMapping("/bandGroup/updateBandMemberStatus")
+	public int updateBandMemberStatus(@RequestBody BandMemberDetailVO vo) {
+		return bandOptionService.updateBandMemberStatus(vo);
+	}
+
+	// 모달에 띄울 밴드 멤버 상세 정보
+	@GetMapping("/bandGroup/selectBandMemberInfo")
+	@ResponseBody
+	public List<BandMemberDetailVO> selectBandMemberInfo(BandMemberDetailVO vo) {
+		return bandOptionService.selectBandMemberInfo(vo);
 	}
 
 	// 밴드수정 홈페이지 띄우기
