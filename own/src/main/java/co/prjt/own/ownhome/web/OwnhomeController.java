@@ -117,8 +117,8 @@ public class OwnhomeController {
 		@PostMapping("/own/myinfoupdate")
 		@ResponseBody
 		public int myupdate(@RequestBody OwnUserVO vo) {
-			System.out.println(vo);
-			return 0;		
+			vo.setUserPasswd(passwordEncoder.encode(vo.getUserPasswd()));
+			return ownService.myinfoupdate(vo);
 		}
 			
 		//아이디 찾기
@@ -194,6 +194,15 @@ public class OwnhomeController {
 			vo.setUserId(ovo.getUserId());
 			return ownService.getPagingmyQuestlist(vo,paging);
 		}
+		
+		@PostMapping("/own/admin/myquestDelete")
+		@ResponseBody
+		public int myquestDelete(String rno) {
+			System.out.println(rno);
+			return ownService.myquestDelete(rno);
+		}
+		
+		
 		//=================================================관리자모드================================================
 		//질문목록 페이징처리
 		@ResponseBody		

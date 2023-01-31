@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
 import co.prjt.own.common.service.OwnLikeService;
@@ -68,7 +69,7 @@ public class SnsController {
 			SAccountVO snsInfo = ownService.snsLogin(ovo.getUserId());
 			if(boardService.getNowBoardList(snsInfo.getSnsAccountNo())!=null) {	
 		     	//팔로우 한 계정의 최신게시글 1개
-				List<SBoardVO> list = boardService.getNowBoardList(snsInfo.getSnsAccountNo()); 	
+				List<SBoardVO> list = boardService.getNowBoardList(snsInfo.getSnsAccountNo());
 				System.out.println("★★★★★리스트입니다"+list);
 				List<StoryVO> storyList = storyService.getNowStoryList(snsInfo.getSnsAccountNo());
 				
@@ -90,6 +91,45 @@ public class SnsController {
 		}
 		return "content/sns/snsHome"; 
 	}
+	
+//	//1. sns홈 페이징 할거면 ..합시다
+//		@RequestMapping(value = "/sns", method = RequestMethod.GET)
+//		public String getSnsUserList(HttpServletRequest request, Model model, SBoardVO svo, OwnUserVO ovo, OwnLikeVO like) {
+//			//세션 담아주기
+//			HttpSession session = request.getSession();
+//			//세션에 강제로 로그인유저 저장하기
+//			session.setAttribute("loginUser", ownService.login("kyr"));
+//			ovo = (OwnUserVO) session.getAttribute("loginUser");
+//			OwnUserVO snsIdCheck = ownService.login(ovo.getUserId());
+//			String snsId = snsIdCheck.getSnsAccountNo(); 
+//			System.out.println(snsId);
+//			if(snsId != null) {
+//				SAccountVO snsInfo = ownService.snsLogin(ovo.getUserId());
+//				if(boardService.getNowBoardList(snsInfo.getSnsAccountNo())!=null) {	
+//			     	//팔로우 한 계정의 최신게시글 1개
+//					List<SBoardVO> list = boardService.getNowBoardList(snsInfo.getSnsAccountNo());
+//
+//					System.out.println("★★★★★리스트입니다"+list);
+//					List<StoryVO> storyList = storyService.getNowStoryList(snsInfo.getSnsAccountNo());
+//					
+//					//이미지 담을 리스트
+//					List<MultimediaVO> imgList;
+//					for (SBoardVO i : list){
+//						imgList = common.selectImgAll(i.getSnsBoardNo());
+//						i.setFileList(imgList);
+//					}
+//					model.addAttribute("snsFollow", followService.followCount(snsInfo.getSnsNickname())); // sns 팔로우 수 
+//					model.addAttribute("snsInfo", snsInfo);
+//					model.addAttribute("nowFeed", list);
+//					model.addAttribute("storyInfo", storyList);
+//					System.out.println("받아온 스토리 정보 ----------"+storyList);
+//				}else {
+//					System.out.println("정보없음");
+//					model.addAttribute("snsInfo", snsInfo);
+//				}
+//			}
+//			return "content/sns/pagingTestHome"; 
+//		}
 	
 	
 	//1-1. sns 간편 회원 가입

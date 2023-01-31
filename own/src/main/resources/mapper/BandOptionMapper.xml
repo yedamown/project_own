@@ -166,10 +166,35 @@ UPDATE BAND SET BAND_NAME=#{bandName},
 	WHERE RN>= #{first} ]]>
 </select>
 
-<update id="updateWaitingMember" parameterType="string">
+<!-- 밴드 멤버 상태 수정 -->
+<update id="updateBandMemberStatus" parameterType="string">
 	UPDATE BAND_MEMBER_DETAIL 
-	   SET BAND_MEMBER_STATUS = 'BA01' 
+	   SET BAND_MEMBER_STATUS = #{bandMemberStatus} 
+	   <if test="bandMemberKickReason != null and bandMemberKickReason !='' and bandKickStatus != null and bandKickStatus != '' ">
+		    , BAND_MEMBER_KICK_REASON = #{bandMemberKickReason}
+		    , BAND_KICK_DATE = CURRENT_DATE
+		    , BAND_MEMBER_REJOIN = #{bandKickStatus}
+	   </if>
+	   <if test="bandMemberRejoin != null and bandMemberRejoin !='' ">
+		    , BAND_MEMBER_REJOIN = #{bandMemberRejoin}
+	   </if>
 	 WHERE BAND_NO = #{bandNo}
 	   AND USER_ID = #{userId}
 </update>
+
+<!-- 모달에 띄울 밴드회원의 상세정보 -->
+<select id="selectBandMemberInfo" resultType="co.prjt.own.band.service.BandMemberDetailVO" parameterType="string">
+	SELECT  USER_ID, 
+        	BAND_NICKNAME,  
+        	BAND_SIGNUP_DATE, 
+        	BAND_BIRTH,
+        	BAND_MEMBER_INTRO,
+        	( SELECT A.MEDIA_SERVER_FILE
+            	FROM MULTIMEDIA A
+           	   WHERE A.IDENTIFY_ID = BAND_MEMBER_NO
+        	) PROFILE_IMG		
+	  FROM BAND_MEMBER_DETAIL 
+	 WHERE BAND_NO = #{bandNo}
+	   AND USER_ID = #{userId}	 	
+</select>
 </mapper>

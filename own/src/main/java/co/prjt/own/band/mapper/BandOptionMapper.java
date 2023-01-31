@@ -38,4 +38,10 @@ public interface BandOptionMapper {
 	// 밴드 강퇴된 회원리스트
 	public List<BandMemberDetailVO> bandOptionGetkickedMemberList(BandMemberDetailVO vo);
 
+	// 밴드 멤버 상태 업데이트
+	public int updateBandMemberStatus(BandMemberDetailVO vo);
+	
+	// 모달에 띄울 밴드 멤버 상세 정보
+	public List<BandMemberDetailVO> selectBandMemberInfo(BandMemberDetailVO vo);
+
 }
