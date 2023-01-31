@@ -295,7 +295,9 @@
 										<li class="btn btn-outline-primary m-1" th:if="${memcheck !=null }"
 											id="resultBtn">도전 달성률</li>
 										<li class="btn btn-outline-primary m-1"
-											th:if="${leaderInfo.userId == myInfo.userId }" id="memBtn">회원보기</li>
+											th:if="${leaderInfo.userId == myInfo.userId }" id="memBtn">회원관리</li>
+										<li class="btn btn-outline-primary m-1"
+											th:if="${leaderInfo.userId == myInfo.userId }" id="vldRptBtn">인증 신고 관리</li>
 									</th:block>
 								</ul>
 							</div>
@@ -348,19 +350,22 @@
 
 							<!-- 인증 구분 라벨 -->
 							<div class="col-12 text-center mb-2">
-								<ul class="list-inline mb-4 mt-4">
-									<li class="btn btn-outline-primary m-1 active vldPage" id="myVldPage">MY</li>
-									<li class="btn btn-outline-primary m-1" id="allVldPage">ALL</li>
+								<ul class="list-inline mb-4 mt-4" id="myVldPage">
+									<li class="btn btn-outline-primary m-1 active" id="allVldPage"> ALL </li>
+									<li class="btn btn-outline-primary m-1" th:if="${session.loginUser}"
+									th:value="${session.loginUser.userId}"> MY
+									</li>
 								</ul>
 							</div>
 
 							<!-- 두 번째 Modal을 여는 클래스 -->
 							<!--   <h1 class="modalBtn">MODAL_2 버튼</h1> -->
 							<div class="row portfolio-container modalBtn" id="vldImg"
-								style="width: 700px; height: fit-content; margin: 0; justify-content: center;">\
+								style="width: 700px; height: fit-content; margin: 0; justify-content: center;">
 							</div>
 							<nav class="blog-pagination justify-content-center d-flex pageBtn" id="vldPaging">
-
+							</nav>
+							<nav class="blog-pagination justify-content-center d-flex pageBtn" id="myVldPaging">
 							</nav>
 						</div>
 
@@ -386,16 +391,26 @@
 
 					<!--멤버리스트 탭-->
 					<div style="display: none;" id="challMem">
-						<div style="width: 700px;" id="challMemList">
-							<input type="hidden" id="challMemCheck" value="false">
-							<h1>멤버 리스트 탭</h1>
+						<input type="hidden" id="challMemCheck" value="false">
+						<div style="width: 700px;" id="waitMemList">
+							<h1>멤버 대기 리스트 탭</h1>
 						</div>
-
+						<div id="nowMemList">
+							<h3>참여 중인 멤버 리스트</h3>
+						</div>
 						<div>
 							<h3>인증신고내역</h3>
 						</div>
 					</div>
 					<!--멤버리스트 탭 끝-->
+
+					<!-- 인증신고 관리..리더만 -->
+					<div id="vldRpt">
+						<h3>멤버 인증관리</h3>
+						<div id="vldRptList"></div>
+					</div>
+
+					<!--인증신고 관리 끝  -->
 
 				</div>
 				<!-- 도전정보 끝 -->
@@ -890,6 +905,8 @@
 
 	  //처음보여주는 아작스페이징!
       if($("#resultCheck").val() == "false"){
+		//네비 지우기
+		$('#myVldPaging').empty();
         console.log("인증하기")
 		//인증내역 페이징 아작스
 		$.ajax({
@@ -904,7 +921,8 @@
             result.forEach( vld => {
               makeVldForm(vld)
             });
-			makePaging(result);
+			let pagingName = 'vldPaging';
+			makePaging(result, pagingName);
           },
           error: function(err){
             console.log(err);
@@ -940,44 +958,115 @@
     //   })
 		}
 		$("#resultCheck").val("true");
-	    // 이후 도전 페이징 처리..아작스
+
+	    // 전체도전 아작스 번호이동.
 		$('#vldPaging').on('click', '.pagePort', function(){
 		    //페이지번호 + 밴드식별번호
 		    let page = $(this).attr('value');
 			console.log(page)
-		    console.log($(this).attr('value'));
+		    console.log($(this).attr('value')); 
 		    $.ajax({
 		       url: '/own/chall/vldPageListAjax',
 		       method: 'get',
-			   data: {page: page,
-					  pageUnit:4,
-					  pageSize:5,
-					  challNo: challNo
-					}
+			   data: {page:page, pageUnit:4, pageSize:5, challNo: challNo}
 		    }).then(result => {
 		       console.log(result);
 				//형태만들기 이미있는애들 없애준다.. -> 도전폼
-				let Chall = $('#vldImg')
-				let rowname = "rowPopChall";
+				let Chall = $('#vldImg');
 				$('#vldImg').empty();
 				//다시 형태 붙이는애 만들어주기..
-				result.forEach( cha => {
-					makeVldForm(cha);
+				result.forEach( vld => {
+					makeVldForm(vld);
 		       	})
-				makePaging(result);
+				let pagingName = 'vldPaging';
+				makePaging(result, pagingName);
 				})
 		    })
-    	}); //인증하기 첫버튼 끝
+		}); //인증하기 첫버튼 끝
 
-	/* 아작스 페이징 버튼 */
-	function makePaging(result){
-			//버튼 다시초기화..비우기
+		//인증버튼 메뉴 my/all 색깔 이벤트
+		$('#myVldPage li').click(function(){
+			$('#myVldPage li').removeClass('active');
+			$(this).addClass('active');
+    	})
+
+		//-----------------------------------내도전페이징--------------------------------------------- 
+		//점 어설프노..
+		//마이 눌렀을때 첫 페이지   --자꾸 위에 정의해놓은 userId 가져가노...ㅠㅠ
+		$('#myVldPage li').on('click', function(){
 			$('#vldPaging').empty();
+		    //페이지번호 + 밴드식별번호
+		    let myId = $(this).attr('value');
+			console.log(myId)
+		    $.ajax({
+				url: '/own/chall/vldPageListAjax',
+				method: 'get',
+				data: { page:1,
+						pageUnit:4,
+						pageSize:5,
+						challNo: challNo,
+						userId: myId},
+				success: function(result){
+					console.log(result);
+					//처음불러온애들
+					let Chall = $('#vldImg');
+					$('#vldImg').empty();
+					//다시 형태 붙이는애 만들어주기..
+					result.forEach( vld => {
+						makeVldForm(vld)
+					});
+					//페이징버튼...
+					let pagingName = 'myVldPaging';
+					makePaging(result, pagingName);
+				},
+				error: function(err){
+					console.log(err);
+				}
+        	})
+
+		// 내 인증 페이징 버튼 아작스.
+		$('#myVldPaging').on('click', '.pagePort', function(){
+		    //페이지번호 + 밴드식별번호
+		    let page = $(this).attr('value');
+			console.log(page)
+		    console.log($(this).attr('value')); 
+			console.log(myId);
+			console.log(userId);
+		    $.ajax({
+		       url: '/own/chall/vldPageListAjax',
+		       method: 'get',
+			   data: { page: page,
+					   pageUnit:4,
+					   pageSize:5,
+					   challNo: challNo,
+					   userId: myId}
+		    }).then(result => {
+		       console.log(result);
+				//형태만들기 이미있는애들 없애준다.. -> 도전폼
+				let Chall = $('#vldImg');
+				$('#vldImg').empty();
+				//다시 형태 붙이는애 만들어주기..
+				result.forEach( vld => {
+					makeVldForm(vld);
+		       	})
+				let pagingName = 'myVldPaging';
+				makePaging(result, pagingName);
+				})
+		    })
+
+		    });
+		
+
+		//버튼 초기화
+	/* 아작스 페이징 버튼 */
+	function makePaging(result, pagingName){
+			//버튼 다시초기화..비우기
+			$(`#${pagingName}`).empty();
 		    let pagingM = result[0].paging;
 		    //시작 버튼
 		    console.log(result[0]); //첫번째? 가져오기..?
 		    let startpageTag = $('<ul class="pagination" />');
-		    $('#vldPaging').append(startpageTag);
+		    $(`#${pagingName}`).append(startpageTag);
 		    //이전 버튼만들기
 		    if(pagingM.startPage>1){
 			let pageBeforTag = `<li class="page-item">
@@ -1010,7 +1099,7 @@
 								</li>`
 								startpageTag.append(pageAfterTag);
 							}
-							$('#vldPaging').append(startpageTag);
+							$(`#${pagingName}`).append(startpageTag);
 		}
 
     /* 인증내역 아작스로읽어와서 사진폼으로 만들기*/
@@ -1019,8 +1108,6 @@
       let mediaName = vld.mediaServerFile;
       let vldDate = (vld.vldDate);
       let vldNo = (vld.vldNo);
-      console.log(userId);
-      console.log(vldDate);
       let gridVld = `<div class="grid" style="padding: 10px" id=${vldNo}>
       					<div class="card card__one">
 							<figure class="card__img">
@@ -1048,6 +1135,7 @@
 	//모달신고...정보빼오기..ㅎ -> 모달 두번째창에 띄우기!
 
 	$('#vldImg').on('click','.grid',function(e){
+
 		console.log(this); //이 창을.. 클릭하면 모달띄우기..
 		//gird에 아이디값으로 식별번호 넣어둔거 읽어오기
 		let vldNo = $(this).attr('id'); //id에 넣어둔 인증식별번호
@@ -1060,6 +1148,11 @@
 		$('#vldReport h3').text(vldDtId);
 		//첫번째 p 바꾸기
 		$('#vldReport p').eq(0).text("날짜넣어야지 등록날짜 포맷해서");
+
+		//작성자와 내 아이디 같으면 신고버튼 X
+		if(userId == vldDtId){
+			$('#rptBtn').attr('style', 'display:none');
+		}
 
 		//아작스로 내가 신고했는지? 내꺼인지 확인하기
 		$.ajax({
@@ -1208,8 +1301,11 @@
       $("#challResult").css('display', 'none');
       console.log($("#challMemCheck").val());
       if($("#challMemCheck").val() == "false"){
+		  let memWait = "대기";
+		  let nowMem = "승인";
         $.ajax({
-          url: '/own/chall/challMemList?challNo=' + challNo,
+			//대기인원 검색.
+          url: '/own/chall/challMemList?challNo=' + challNo + '&&memStatus=' + memWait,
           method: 'get',
           success: function (result) {
             console.log(result)
@@ -1219,19 +1315,36 @@
               ul.append($("<li />").text(mem.userId + mem.memStatus)
               .append($("<button />").text('승인').attr('onclick', 'authChange(this)'), $("<button />").text('거절').attr('onclick', 'authChange(this)')));
             })
-            $("#challMemList").append(ul);
+            $("#waitMemList").append(ul);
           },
           error: function (err) {
             console.log(err)
           }
-        })
+        }),
+		$.ajax({
+			url: '/own/chall/challMemList?challNo=' + challNo + '&&memStatus=' + nowMem,
+			method: 'get',
+			success: function (result) {
+				console.log(result)
+				let ul = $("<ul />")
+				result.forEach(mem => {
+				console.log(mem.userId, mem.memStatus)
+				ul.append($("<li />").text(mem.userId + mem.memStatus)
+				.append($("<button />").text('승인').attr('onclick', 'authChange(this)'), $("<button />").text('거절').attr('onclick', 'authChange(this)')));
+				})
+				$("#nowMemList").append(ul);
+			},
+			error: function(err){
+				console.log(err);
+			}
+		})
       }
       $("#challMemCheck").val("true");
     })
     
      /* 멤버 승인, 거절 버튼 -> 권한변경*/
     function authChange(e){
-      console.log($(e).text());
+      console.log("이벤트 텍스트 "+$(e).text());
       let memId = $(e).parent().text().substring(0,3);
       let memStatus = $(e).text();
       $.ajax({
@@ -1247,6 +1360,7 @@
         contentType: "application/json",
         success: function(result){
           console.log(result)
+		  console.log($(e).parent().remove());
         },
         error: function(err){
           console.log(err)
@@ -1254,24 +1368,10 @@
       })
     }
  
-    //도전리더만 결과처리버튼
-    $("#resultProc").on("click", function(){
-      $.ajax({
-        url: '/own/chall/challResult',
-        method:'post',
-        data: JSON.stringify({challNo: challNo}),
-        beforeSend : function(xhr){
-                      xhr.setRequestHeader(header, token);
-        },
-        contentType: "application/json",
-        success: function(result) {
-          console.log(result)
-        },
-        error: function(err){
-          console.log(err)
-        }
-      })
-    })
+	//-----------------------------인증신고 관리 - 리더만 가능.--------------------------------
+	$('#vldRptBtn').on('click', function(){
+		console.log("인증신고 관리하는 곳.");
+	})
 
 
 	//----------------------------첨부파일 화면에 띄우기------------------------------------

@@ -84,8 +84,10 @@
 	</div>
 	<!-- Navbar End -->
 
+	<input id="userId" name="userId" type="hidden" th:if="${session.loginUser}" th:value="${session.loginUser.userId}" />
+
 	<!-- Blog Start -->
-	<div class="container-fluid pt-5">
+	<div class="container-fluid pt-5" id="myPageChallDiv">
 		<div class="container">
 			<div class="text-center pb-2">
 				<p class="section-title px-5">
@@ -93,7 +95,19 @@
 				</p>
 				<h1 class="mb-4">나의 도전</h1>
 			</div>
-			
+
+			<!-- 나의도전 한줄 메뉴바 -->
+			<div class="row" style="margin: auto;">
+				<div class="col-12 text-left mb-2" >
+					<ul class="list-inline mb-4" id="menu-filters" style="text-align: center;">
+						<li class="btn btn-outline-primary m-1 active" id="myChall" val="1"> 내가 참여 중인 도전</li>
+						<li class="btn btn-outline-primary m-1" id="likeChall" val="1">내가 북마크한 도전</li>
+						<li class="btn btn-outline-primary m-1" id="leaderChall" val="1">내가 만든</li>	
+					</ul>
+				</div>
+			</div>
+			<!-- 나의도전 한줄 메뉴바 끝 -->
+
 				<!-- 여기부터  6개 한블럭? -->
 			<div class="row pb-3" id="challRow">
 			
@@ -125,7 +139,7 @@
 
 		<!-- 페이징버튼 넣기 -->
 		<nav class="blog-pagination justify-content-center d-flex"
-			id="pagegation">
+			id="myChallPage">
 			<!--================ 이전  =================-->
 			<ul class="pagination">
 				<li class="page-item" th:if="${paging.startPage > 1}"><a
@@ -151,69 +165,136 @@
 				</li>
 			</ul>
 		</nav>
-
+		<nav class="blog-pagination justify-content-center d-flex"
+			id="myLikePage"></nav>
 		
 	</div>
 	<!-- Blog End -->
 
 <script>
-$('#pagegation').on('click', '.pagePort', function(){
-    //페이지번호 + 밴드식별번호
-    let page = $(this).attr('value');
-    console.log($(this).attr('value'));
-    $.ajax({
-       url: '/own/chall/myPageChallAjax?page='+page,
-       method: 'get',
-    }).then(result => {
-       console.log(result);
-		//형태만들기
-		let Chall = $('#ChallRow')
-		$('#challRow').empty();
-		result.forEach( cha => {
-			console.log(cha.challNo)
-			makeChallDiv(cha);
+	//토큰있어야 post가능~!
+    /*<![CDATA[*/
+    var header = '[[${_csrf.headerName}]]';
+     var token = '[[${_csrf.token}]]';
+       console.log(header);
+       console.log(token);
+     /*]]>*/
+	//
+	
+	//----자주쓰는애들 정의 지금 1. 로그인한 회원아이디
+	let userIdInfo = $('#userId').val();
+
+
+	//-------------------------//메뉴 클릭 색깔 변경 이벤트 --------------------------------------
+
+    $('#menu-filters li').click(function(){
+    	$('#menu-filters li').removeClass('active');
+    	$(this).addClass('active');
+    })
+
+	//처음 보여주는 참여중인 도전 페이징 버튼 -  
+	$('#myPageChallDiv').on('click', '.pagePort', function(){
+		console.log("왜안되노")
+		//페이지번호 + 밴드식별번호
+		let page = $(this).attr('value');
+		console.log($(this).attr('value'));
+		$.ajax({
+		url: '/own/chall/myPageChallAjax',
+		method: 'get',
+		data: { page:page,
+				pageUnit:6,
+				pageSize:3,
+				userId: userIdInfo},
+		}).then(result => {
+		console.log(result);
+			//형태만들기
+			//모델으로 가져온 도전 지우기.
+			let Chall = $('#ChallRow')
+			$('#challRow').empty();
+			result.forEach( cha => {
+				makeChallDiv(cha);
+			})
+		//페이징 버튼
+		let pagingName = 'myChallPage';
+		$('#myPageChallDiv nav').remove();
+		makePaging(result, pagingName);
+		})
+       });
+
+	   //-----------------------------------내가 좋아요한 도전--------------------------------------
+
+	   //좋아요한 도전
+	   $('#likeChall').on('click', function(){
+
+		$.ajax({
+          url: '/own/chall/myLikeChallAjax',
+          method: 'get',
+		  data: {page:1,
+				 pageUnit:1,
+			     pageSize:5,
+				 userId: userIdInfo},
+          success: function(result){
+			let Chall = $('#ChallRow')
+			$('#challRow').empty();
+            result.forEach( vld => {
+              makeChallDiv(vld);
+            });
+			let pagingName = 'leaderPageBtn';
+			$('#myPageChallDiv nav').remove();
+			makePaging(result, pagingName);
+          },
+          error: function(err){
+            console.log(err);
+          }
         })
-        
-       //페이지 버튼 만들기
-         $('#pagegation').empty();
-          let pagingM = result[0].paging;
-          //시작 버튼
-          console.log(result[0]);
-          let startpageTag = $('<ul class="pagination" />');
-          $('#pagegation').append(startpageTag);
-          //이전 버튼만들기
-          if(pagingM.startPage > 1){
-             let pageBeforTag = `<li class="page-item">
-                            <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
-                            <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
-                            </li>`
-                startpageTag.append(pageBeforTag);               
-          }               
-          //페이지목록..
-          for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
-             if(pg != pagingM.page){
-                let pageTag = `<li class="page-item">
-                            <a class="page-link pagePort" value=${pg}>${pg}</a>
-                            </li>`
-                startpageTag.append(pageTag);
-             } else if(pg == pagingM.page ){
-				 let pageTag =  `<li class="page-item active">
-					<a class="page-link" >${pg}</a>
-					</li>`
-					startpageTag.append(pageTag);
-				}
+	   })
+
+		/* 아작스 페이징 버튼 */
+		function makePaging(result, pagingName){
+			//마지막 요소 제거. nav제거..
+			let navTag = $(`<nav class="blog-pagination justify-content-center d-flex" id=${pagingName} />`);
+			//버튼 다시초기화..비우기
+			// $(`#${pagingName}`).empty();
+		    let pagingM = result[0].paging;
+		    //시작 버튼
+		    console.log(result[0]); //첫번째? 가져오기..?
+		    let startpageTag = $('<ul class="pagination" />');
+		    // $(`#${pagingName}`).append(startpageTag);
+			navTag.append(startpageTag);
+		    //이전 버튼만들기
+			if(pagingM.startPage>1){
+               let pageBeforTag = `<li class="page-item">
+                                 <a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+                                 <span aria-hidden="true"> <-
+                         <span class="lnr lnr-chevron-left pagePort"></span></span></a>
+                                 </li>`
+                    startpageTag.append(pageBeforTag); 
+                }                   
+			//페이지목록..
+		    for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		            if(pg != pagingM.page){
+		            	let pageTag = `<li class="page-item">
+		                               <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                               </li>`
+		                startpageTag.append(pageTag);
+		            } else if(pg == pagingM.page ){
+						 let pageTag =  `<li class="page-item active">
+							<a class="page-link" >${pg}</a>
+							</li>`
+							startpageTag.append(pageTag);
+					}
 			}               
 			//이후 버튼만들기
 			if(pagingM.endPage<pagingM.lastPage){
-				let pageAfterTag =`<li class="page-item">
-					<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
-						<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
-						</li>`
-						startpageTag.append(pageAfterTag);
-					}
-					$('#pagegation').append(startpageTag)
-				})
-       })
+						let pageAfterTag =`<li class="page-item">
+							<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+								<span aria-hidden="true"> ->
+								<span class="lnr lnr-chevron-right"></span></span></a>
+								</li>`
+								startpageTag.append(pageAfterTag);
+			}
+			$('#myPageChallDiv').append(navTag);
+		}
 
 
 	//챌린지 폼 만들기

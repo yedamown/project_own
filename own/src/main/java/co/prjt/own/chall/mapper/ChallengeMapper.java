@@ -33,9 +33,13 @@ public interface ChallengeMapper {
 	//멤버리스트와 조인 - 아이디로 검색
 	List<ChallengeVO> getMyChall(ChallengeVO vo);
  
+	//------------------------- 내가 북마크한 도전들에 대한.. 좋아요 테이블과 조인-----------
 	
-	/* ------------------------------  도전 검색 ------------------------------------------*/
+	//내가 좋아요한 도전 카운트
+	int countMyLike(ChallengeVO vo);
 	
-	List<ChallengeVO> searchChall(String words);
+	//내가 좋아요한 도전 정보들
+	List<ChallengeVO> getMyLike(ChallengeVO vo);
+	
 	
 }
