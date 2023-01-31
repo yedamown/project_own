@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.MultimediaVO;
 import lombok.Data;
 
@@ -27,4 +28,7 @@ public class SBoardVO {
 	String mediaNo;
 	String likeCount;
 	String replyCount;
+	int last;
+	int first;
+	public Paging paging;
 }

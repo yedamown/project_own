@@ -222,6 +222,13 @@ body {
             width: 30px;
             height: 30px;
         }
+        /*검색 프로필*/
+        .profileImg{
+            width:50px;
+            height:50px;
+            border-radius: 50%;
+            margin-bottom: 7px;
+        }
 
     </style>
 </head>
@@ -317,6 +324,11 @@ body {
 
         <!--=================== content body ====================-->
         <div class="col-lg-10 col-md-9 col-12 body_block align-content-center">
+            <div id="schoolLi" style="position:relative">
+                <input type="text" id="schoolInput" placeholder="검색어를 입력하세요"
+                            onkeyup="search(this);">
+                            <div id="schoolList" style="z-index:1; position: absolute;"></div>
+                </div>
             <div class="topContentBox" style="height:100px; border:1px solid black; text-align: center;">
                 <span id="snsNewList">최신게시글</span><span>|</span><span  id="snsLikeList" value="false">좋아요</span>
             </div>
@@ -331,7 +343,7 @@ body {
                     <div class="gallery">
                         <div class="gallery-item" th:each="board:${newBoard}" style="position:relative">
                             
-                            <img class="gallery-image" th:src="|/imgView/${board.mediaServerFile}|" />
+                            <img class="gallery-image" th:src="|/imgView/${board.mediaServerFile}|" onerror="this.src='/css/sns/img/feedDefaultImg.png'"/>
                             <a th:href="@{snsFeed(snsNickname=${board.snsNickname})}">
                             <span class="boardListContent" >사진 클릭 시 피드로 이동합니다.</span></a>
                         </div>
@@ -536,12 +548,18 @@ body {
         })
 
         function makeReply(reply){
-            let Tag = ` <div class="replyIdDate">${reply.userId} | ${elapsedText(`${reply.replyDate}`)}
-                        <span class="snsReplyDelBtn" style="font-size:20px; padding-left:350px; cursor:pointer;">&times;</span>
-                        <input type="hidden" value="${reply.replyNo}" /></div> 
-                        <div style="padding-left:50px;">${reply.replyContent}</div>
-                        `
-            return Tag;
+            let Tag = ` <div class="replyIdDate">${reply.snsNickname} |${reply.replyDate} 
+                        <input class="snsReplyNo" type="hidden" value="${reply.replyNo}" /></div> 
+                        <div style="padding-left:50px;">${reply.replyContent}</div>`
+            console.log(reply.snsNickname)
+            console.log(reply.userId)
+            
+            if(reply.userId == loginUserId){
+                console.log("x태그 생성")
+                let xTag = `<span class="snsReplyDelBtn" style="font-size:20px; padding-left:10px; cursor:pointer; position:absolute;">&times;</span>`
+                    Tag = Tag+xTag;
+            }
+                return Tag;
         }
 
          //좋아요 ajax
@@ -684,12 +702,18 @@ body {
                     },
                         success : function(res){
                             console.log("삭제완료")
+
+                        if(res.reply.length != 0 ){
                           for(let i=0; i<res.reply.length; i++){
                                 $('.replyContent').append(makeReply(res.reply[i]));
                           }
                           
                           let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
                           $('.snsReplyBox').append(snsReplyCount)
+                        }else{
+                            let emptyReply = $('<div>').text("등록된 댓글이 없습니다.")
+                                            $('.replyContent').append(emptyReply);
+                            }
 
                     }, 
                         error : function(err){
@@ -794,6 +818,42 @@ body {
             return elapsedText;
         }
 
+           //검색
+    function search(target){
+     // elementary, middle, high
+       var checkWord = $("#schoolInput").val();
+       var schoolList = $("#schoolList");
+       if(checkWord==""){
+           schoolList.empty();
+           return;
+        }
+       $.ajax({
+           type: 'GET',
+           dataType: 'JSON',
+           url: '/own/sns/ListSearch', 
+           error: function(err){
+               console.log(err);
+           },
+           success: function(data){
+              
+                console.log(checkWord);
+
+                schoolList.empty();
+                console.log(data);
+                data.forEach((school)=>{
+                    if(school['snsNickname'].includes(checkWord)){
+                        schoolList.append(`<img class="profileImg" src="/imgView/${school['mediaServerFile']}" onerror='this.src="/css/sns/img/defaultUser.png"'>
+                                       <span style="cursor: pointer;" onclick="select(this);"> ${school['snsNickname']} </span> <br/>
+                                       `   );                
+                    }
+                 })
+               
+                }
+            })
+        }    
+        function select(target){
+            location.href = '/own/snsFeed?snsNickname='+target.innerText
+        }
     </script>
 </div>
 
