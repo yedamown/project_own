@@ -11,19 +11,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReplyVO {
-	public String replyNo;
-	public String replyContent;
+public class ReReplyVO {
+	public String reReplyNo;
+	public String reReplyContent;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	Date replyDate;
+	Date reReplyDate;
 	public String userId;
-	public int replyLike;
-	public String categoryNo;
-	public String snsNickname;
-	
+	public String replyNo;
 	//hjj추가
 	public String nickName;
 	public String profileImg;
+	
 	List<ReReplyVO> reReplys;
 }

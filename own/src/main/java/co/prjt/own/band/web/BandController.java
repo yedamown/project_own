@@ -207,7 +207,7 @@ public class BandController {
 	public String bandGroup(Model model, HttpServletRequest request, @RequestParam String bandNo) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		//session.setAttribute("loginUser", ownService.login("hjj"));
+		session.setAttribute("loginUser", ownService.login("hjj"));
 		//적합한 이용자인지 조회
 		BandMemberDetailVO bandMember = BandMemberDetailVO.builder()
 											.bandNo(bandNo)

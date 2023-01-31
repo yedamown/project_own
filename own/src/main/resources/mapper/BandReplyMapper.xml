@@ -1,5 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.band.mapper.BandReplyMapper">
+	
+	<!-- 댓글조회 -->
+	<select id="getReply" resultType="ReplyVO">
+			SELECT REPLY_NO,
+			       CATEGORY_NO,
+			       REPLY_CONTENT,
+			       A.USER_ID,
+			       REPLY_DATE,
+			       REPLY_LIKE,
+			       BAND_NICKNAME "nickName",
+			       MEDIA_SERVER_FILE "profileImg" 
+			  FROM REPLY A,
+			       ( SELECT * FROM
+			            BAND_MEMBER_DETAIL S,
+			            MULTIMEDIA         T,
+			            BAND_BOARD_OPTION  U,
+			            BAND_BOARD_DETAIL  W
+			          WHERE S.BAND_MEMBER_NO = T.IDENTIFY_ID
+			            AND U.BAND_BOARD_OPTION_NO = W.BAND_BOARD_OPTION_NO
+			            AND U.BAND_NO = S.BAND_NO
+			            AND W.BAND_BOARD_DETAIL_NO = #{categoryNo}
+			        ) B
+			  WHERE CATEGORY_NO = #{categoryNo}
+			  ORDER BY TO_NUMBER(SUBSTR(REPLY_NO, 7))
+	</select>
+	
+	<!-- 댓글단건조회 -->
+	<select id="reply"  resultType="ReplyVO">
+		SELECT  A.REPLY_NO,
+        A.CATEGORY_NO,
+        A.REPLY_CONTENT,
+        A.USER_ID,
+        A.REPLY_DATE,
+        A.REPLY_LIKE,
+        B.BAND_NICKNAME "nickName",
+        B.MEDIA_SERVER_FILE "profileImg" 
+ FROM REPLY A,
+      ( SELECT * FROM
+            BAND_MEMBER_DETAIL S,
+            MULTIMEDIA         T,
+            BAND_BOARD_OPTION  U,
+            BAND_BOARD_DETAIL  W,
+            REPLY              Z
+          WHERE S.BAND_MEMBER_NO = T.IDENTIFY_ID
+            AND U.BAND_BOARD_OPTION_NO = W.BAND_BOARD_OPTION_NO
+            AND U.BAND_NO = S.BAND_NO
+            AND W.BAND_BOARD_DETAIL_NO = Z.CATEGORY_NO
+            AND Z.REPLY_NO = #{value}
+        ) B
+  WHERE A.REPLY_NO = #{value}
+	</select>
 
+	<!-- 댓글입력 -->
+	<insert id="insertReply">
+		<selectKey keyProperty="replyNo" resultType="string" order="BEFORE">
+			SELECT BAND_REPLY_SEQ.NEXTVAL FROM dual
+		</selectKey>
+		INSERT INTO REPLY ( 
+									REPLY_NO,
+									REPLY_CONTENT, 
+									REPLY_DATE, 
+									USER_ID, 
+									CATEGORY_NO
+				) VALUES (
+							'gachi_'||#{replyNo}, 
+							#{replyContent}, 
+							current_date, 
+							#{userId}, 
+							#{categoryNo}
+				)
+	</insert>
+	
+	<!-- 댓글삭제안씀 -->
+	<delete id="deleteReply">
+		DELETE FROM REPLY
+			WHERE REPLY_NO = #{replyNo}
+	</delete>
+	<!-- 찐 삭제 -->
+	<update id="deleteUpdateReply">
+		UPDATE REPLY 
+		   SET REPLY_CONTENT = '삭제된 댓글입니다.',
+		   USER_ID = '이름없음' 
+        WHERE REPLY_NO = #{replyNo}
+	</update>
+	
+	<!-- 댓글업데이트 -->
+	<update id="updateReply">
+		UPDATE REPLY 
+		   SET REPLY_CONTENT = #{replyContent} 
+        WHERE REPLY_NO = #{replyNo}
+	</update>
+	
+	<!-- 대댓글 조회 -->
+	<select id="getReReply" resultType="ReReplyVO">
+		SELECT * FROM
+	            BAND_MEMBER_DETAIL S,
+	            MULTIMEDIA         T,
+	            BAND_BOARD_OPTION  U,
+	            BAND_BOARD_DETAIL  W,
+	            REPLY              Z,
+	            RE_REPLY           V
+	          WHERE S.BAND_MEMBER_NO = T.IDENTIFY_ID
+	            AND U.BAND_BOARD_OPTION_NO = W.BAND_BOARD_OPTION_NO
+	            AND U.BAND_NO = S.BAND_NO
+	            AND W.BAND_BOARD_DETAIL_NO = Z.CATEGORY_NO
+	            AND Z.REPLY_NO = V.REPLY_NO
+	            AND Z.REPLY_NO IN 
+					<foreach collection="replyNos" item="r" separator="," open="(" close=")">
+                    	#{r}
+                    </foreach>
+               ORDER BY TO_NUMBER(SUBSTR(RE_REPLY_NO, 7))
+	</select>
+	<!-- 대대댓글 -->
+	<select id="getReReReply" resultType="ReReplyVO">
+		SELECT * FROM
+	            BAND_MEMBER_DETAIL S,
+	            MULTIMEDIA         T,
+	            BAND_BOARD_OPTION  U,
+	            BAND_BOARD_DETAIL  W,
+	            REPLY              Z,
+	            RE_REPLY           V,
+                RE_REPLY           P
+	          WHERE S.BAND_MEMBER_NO = T.IDENTIFY_ID
+	            AND U.BAND_BOARD_OPTION_NO = W.BAND_BOARD_OPTION_NO
+	            AND U.BAND_NO = S.BAND_NO
+	            AND W.BAND_BOARD_DETAIL_NO = Z.CATEGORY_NO
+	            AND Z.REPLY_NO = P.REPLY_NO
+                AND P.RE_REPLY_NO = V.RE_REPLY_NO
+	            AND V.RE_REPLY_NO IN 
+					 <foreach collection="rereplyNos" item="r" separator="," open="(" close=")">
+                    	#{r}
+                    </foreach>
+               ORDER BY TO_NUMBER(SUBSTR(V.RE_REPLY_NO, 7))
+	</select>
 </mapper>
