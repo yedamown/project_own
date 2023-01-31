@@ -18,6 +18,4 @@ public interface CReportMapper {
 	//	도전리더 처리상태(도전번호, 상태로검색)
 	List<CReportVO> getCReport(CReportVO vo);
 	
-	//전체신고내역
-	List<CReportVO> getCReportAll(CReportVO vo);
 }

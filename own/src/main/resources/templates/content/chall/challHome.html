@@ -93,12 +93,12 @@
 				$('#joinChall').trigger("click");
 			}
 			let result = /*[[${result}]]*/
-			console.log(result)
+				console.log(result)
 			if (result == 1) {
 				alert("오운 도전에 오신 것을 환영합니다!");
-			} else if(result == 0){
+			} else if (result == 0) {
 				alert("오류가 발생하였습니다.")
-			}	
+			}
 			/*]]>*/
 		})
 	</script>
@@ -250,7 +250,7 @@
 				</div>
 				<!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
 				<div class="owl-carousel testimonial-carousel">
-					<div class="testimonial-item px-3" >
+					<div class="testimonial-item px-3">
 						<div class="bg-light shadow-sm rounded mb-4 p-4">
 							<h3 class="fas fa-quote-left text-primary mr-3">나의 도전 보러가기</h3>
 						</div>
@@ -276,13 +276,13 @@
 									<h5 th:text="${my.challTitle}"></h5>
 									<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
 				 					 class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
-				</div>
-			  </div>
+								</div>
+			  				</div>
+						</div>
+					</th:block>
+		  		</div>
 			</div>
-			</th:block>
-		  </div>
 		</div>
-	</div>
 	</div> 
 	<!-- Testimonial End -->
 
@@ -893,61 +893,54 @@
 		    }).then(result => {
 		       console.log(result);
 				//형태만들기
-				let Chall = $('#rowMyChall')
+				let Chall = $('#rowMyChall');
 				let rowname = "rowMyChall";
 				$('#rowMyChall').empty();
 				result.forEach( cha => {
 					makeChallDiv(cha, rowname);
 		       	})
 				//페이지버튼 초기화
-				makePaging(result);
-				})
-		   })
-
-		   //버튼 함수
-		   /* 아작스 페이징 버튼 */
-			function makePaging(result){
-					//버튼 다시초기화..비우기
-					$('#pageMyChall').empty();
-					let pagingM = result[0].paging;
-					//시작 버튼
-					console.log(result[0]); //첫번째? 가져오기..?
-					let startpageTag = $('<ul class="pagination" />');
-					$('#pageMyChall').append(startpageTag);
-					//이전 버튼만들기
-					if(pagingM.startPage>1){
+				$('#pageMyChall').empty();
+		        let pagingM = result[0].paging;
+		         //시작 버튼
+		        console.log(result[0]); //첫번째? 가져오기..?
+		          let startpageTag = $('<ul class="pagination" />');
+		          $('#pageMyChall').append(startpageTag);
+		          //이전 버튼만들기
+		          if(pagingM.startPage>1){
 					let pageBeforTag = `<li class="page-item">
-										<a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
-										<span aria-hidden="true"> <-
-										<span class="lnr lnr-chevron-left pagePort"></span></span></a>
-										</li>`
-					startpageTag.append(pageBeforTag); 
-					}               
-					//페이지목록..
-					for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
-							if(pg != pagingM.page){
-								let pageTag = `<li class="page-item">
-											<a class="page-link pagePort" value=${pg}>${pg}</a>
-											</li>`
-								startpageTag.append(pageTag);
-							} else if(pg == pagingM.page ){
-								let pageTag =  `<li class="page-item active">
-									<a class="page-link" >${pg}</a>
-									</li>`
-									startpageTag.append(pageTag);
-							}
+                                 <a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+                                 <span aria-hidden="true"> <-
+								 <span class="lnr lnr-chevron-left pagePort"></span></span></a>
+                                 </li>`
+                    startpageTag.append(pageBeforTag); 
+		          }               
+		          //페이지목록..
+		          for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		             if(pg != pagingM.page){
+		                let pageTag = `<li class="page-item">
+		                            <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                            </li>`
+		                startpageTag.append(pageTag);
+		             } else if(pg == pagingM.page ){
+						 let pageTag =  `<li class="page-item active">
+							<a class="page-link" >${pg}</a>
+							</li>`
+							startpageTag.append(pageTag);
+						}
 					}               
 					//이후 버튼만들기
 					if(pagingM.endPage<pagingM.lastPage){
-								let pageAfterTag =`<li class="page-item">
-									<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
-										<span aria-hidden="true"> ->
-										<span class="lnr lnr-chevron-right"></span></span></a>
-										</li>`
-										startpageTag.append(pageAfterTag);
-									}
-									$('#pageMyChall').append(startpageTag);
-				}
+						let pageAfterTag =`<li class="page-item">
+							<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+								<span aria-hidden="true"> ->
+								<span class="lnr lnr-chevron-right"></span></span></a>
+								</li>`
+								startpageTag.append(pageAfterTag);
+							}
+							$('#pageMyChall').append(startpageTag);
+				})
+		   })
 
 		//챌린지 폼 만들기
 		function makeChallDiv(cha, rowname){
