@@ -900,47 +900,54 @@
 					makeChallDiv(cha, rowname);
 		       	})
 				//페이지버튼 초기화
-				$('#pageMyChall').empty();
-		        let pagingM = result[0].paging;
-		         //시작 버튼
-		        console.log(result[0]); //첫번째? 가져오기..?
-		          let startpageTag = $('<ul class="pagination" />');
-		          $('#pageMyChall').append(startpageTag);
-		          //이전 버튼만들기
-		          if(pagingM.startPage>1){
+				makePaging(result);
+				})
+		   })
+
+		   //버튼 함수
+		   /* 아작스 페이징 버튼 */
+			function makePaging(result){
+					//버튼 다시초기화..비우기
+					$('#pageMyChall').empty();
+					let pagingM = result[0].paging;
+					//시작 버튼
+					console.log(result[0]); //첫번째? 가져오기..?
+					let startpageTag = $('<ul class="pagination" />');
+					$('#pageMyChall').append(startpageTag);
+					//이전 버튼만들기
+					if(pagingM.startPage>1){
 					let pageBeforTag = `<li class="page-item">
-                                 <a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
-                                 <span aria-hidden="true"> <-
-								 <span class="lnr lnr-chevron-left pagePort"></span></span></a>
-                                 </li>`
-                    startpageTag.append(pageBeforTag); 
-		          }               
-		          //페이지목록..
-		          for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
-		             if(pg != pagingM.page){
-		                let pageTag = `<li class="page-item">
-		                            <a class="page-link pagePort" value=${pg}>${pg}</a>
-		                            </li>`
-		                startpageTag.append(pageTag);
-		             } else if(pg == pagingM.page ){
-						 let pageTag =  `<li class="page-item active">
-							<a class="page-link" >${pg}</a>
-							</li>`
-							startpageTag.append(pageTag);
-						}
+										<a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+										<span aria-hidden="true"> <-
+										<span class="lnr lnr-chevron-left pagePort"></span></span></a>
+										</li>`
+					startpageTag.append(pageBeforTag); 
+					}               
+					//페이지목록..
+					for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+							if(pg != pagingM.page){
+								let pageTag = `<li class="page-item">
+											<a class="page-link pagePort" value=${pg}>${pg}</a>
+											</li>`
+								startpageTag.append(pageTag);
+							} else if(pg == pagingM.page ){
+								let pageTag =  `<li class="page-item active">
+									<a class="page-link" >${pg}</a>
+									</li>`
+									startpageTag.append(pageTag);
+							}
 					}               
 					//이후 버튼만들기
 					if(pagingM.endPage<pagingM.lastPage){
-						let pageAfterTag =`<li class="page-item">
-							<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
-								<span aria-hidden="true"> ->
-								<span class="lnr lnr-chevron-right"></span></span></a>
-								</li>`
-								startpageTag.append(pageAfterTag);
-							}
-							$('#pageMyChall').append(startpageTag);
-				})
-		   })
+								let pageAfterTag =`<li class="page-item">
+									<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+										<span aria-hidden="true"> ->
+										<span class="lnr lnr-chevron-right"></span></span></a>
+										</li>`
+										startpageTag.append(pageAfterTag);
+									}
+									$('#pageMyChall').append(startpageTag);
+				}
 
 		//챌린지 폼 만들기
 		function makeChallDiv(cha, rowname){

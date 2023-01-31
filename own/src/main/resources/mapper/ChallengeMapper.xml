@@ -128,4 +128,22 @@
 		ORDER BY TO_NUMBER(SUBSTR(CHALL_NO,5))
 	</select>
 	
+	<select id="countMyLike" resultType="int">
+		SELECT COUNT(*)
+		FROM CHALLENGES C, ( SELECT * 
+							   FROM OWN_LIKE
+		                      WHERE CATEGORY = 'Chall' 
+		                        AND USER_ID = #{userId} ) OL
+		WHERE C.CHALL_NO =  OL.CATEGORY_NO
+	</select>
+	
+	<select id="getMyLike" resultType="co.prjt.own.chall.service.ChallengeVO">
+			SELECT *
+			FROM CHALLENGES C, ( SELECT * 
+								   FROM OWN_LIKE
+			                      WHERE CATEGORY = 'Chall' 
+			                        AND USER_ID = #{userId} ) OL
+			WHERE C.CHALL_NO =  OL.CATEGORY_NO
+	</select>
+	
 </mapper>

@@ -543,6 +543,8 @@ public class ChallController {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.userId;
 		vo.setUserId(id);
+		paging.setPageUnit(6); //내 도전이라 6개씩 보여줄 것
+		paging.setPageSize(3); //페이징 동그라미로 할 거라 4개
 		// 6개로 페이징
 		List<ChallengeVO> cList = challenge.myPageChall(vo, paging);
 		model.addAttribute("myChall", cList);
@@ -557,4 +559,11 @@ public class ChallController {
 		return challenge.myPageChall(vo, paging);
 	}
 
+	//마이페이지 - 내가 좋아요한 도전
+	// 마이페이지 도전 페이징 아작스
+	@GetMapping("/myLikeChallAjax")
+	@ResponseBody
+	public List<ChallengeVO> myLikeChallAjax(Model model, Paging paging, ChallengeVO vo) {
+		return challenge.likeChallPage(vo, paging);
+	}
 }

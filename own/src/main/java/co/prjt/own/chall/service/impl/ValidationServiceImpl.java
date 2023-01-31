@@ -85,7 +85,7 @@ public class ValidationServiceImpl implements ValidationService{
 	//
 	@Override
 	public List<ValidationVO> getVldPageList(ValidationVO vo, Paging paging) {
-		System.out.println(vo);
+		System.out.println("---------------------인증"+vo);
 		paging.setTotalRecord(mapper.countVld(vo));
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
