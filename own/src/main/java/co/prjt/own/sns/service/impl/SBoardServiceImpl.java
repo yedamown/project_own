@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.ReplyVO;
 import co.prjt.own.sns.mapper.SBoardMapper;
 import co.prjt.own.sns.service.SBoardService;
@@ -88,6 +89,16 @@ public class SBoardServiceImpl implements SBoardService {
 	@Override
 	public List<SBoardVO> snsBoardLikeList(String id) {
 		return sBoardMapper.snsBoardLikeList(id);
+	}
+
+	@Override
+	public List<SBoardVO> getNowBoardListPaging(String id, Paging paging) {
+		return sBoardMapper.getNowBoardListPaging(id, paging);
+	}
+
+	@Override
+	public int getNowBoardListCount(String id) {
+		return sBoardMapper.getNowBoardListCount(id);
 	}
 
 

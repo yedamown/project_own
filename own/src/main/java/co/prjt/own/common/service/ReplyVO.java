@@ -19,5 +19,5 @@ public class ReplyVO {
 	public String userId;
 	public int replyLike;
 	public String categoryNo;
-
+	public String snsNickname;
 }

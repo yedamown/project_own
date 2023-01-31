@@ -8,7 +8,9 @@
 		       SNS_BOARD_CONTENT,
 		       SNS_BOARD_DATE,
 		       SNS_NICKNAME,
-		       SNS_ACCOUNT_NO
+		       SNS_ACCOUNT_NO,
+		       (select count(*) from own_like where category_no = sns_board_no) as like_count,
+               (select count(*) from reply where category_no = sns_board_no) as reply_count
 		FROM SNS_BOARD
 		WHERE SNS_NICKNAME =
 						(SELECT S.SNS_NICKNAME 
@@ -37,19 +39,52 @@
 		ORDER BY SNS_BOARD_NO DESC
 	</select>
 	
-	<!-- 팔로우 기반 최신 게시글 조회 -->
-	<select id="getNowBoardList" resultType="SBoardVO">
-		select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no, a.sns_account_no, 
-				(select media_server_file from multimedia where identify_id = 
-				(select sns_account_no from sns_account where sns_account_no= a.sns_account_no)) as media_server_file, 
+	<!-- 팔로우 기반 최신 게시글 조회 페이징용-->
+	<select id="getNowBoardListPaging" resultType="SBoardVO">
+		select * from (select rownum rn, a.* from (select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no, a.sns_account_no, 
+            (select media_server_file from multimedia where identify_id = 
+            (select sns_account_no from sns_account where sns_account_no= a.sns_account_no)) as media_server_file, 
                 (select count(*) from own_like where category_no = a.sns_board_no) as like_count,
                 (select count(*) from reply where category_no = a.sns_board_no) as reply_count
-		      FROM (SELECT 
-		               SNS_NICKNAME, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_BOARD_NO, SNS_ACCOUNT_NO, 
-		                  ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_board_no,5)) DESC) AS rn FROM sns_board) A,
-		                  (SELECT SNS_FOLLOW_ID FROM SNS_FOLLOW WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
-		      WHERE A.SNS_ACCOUNT_NO = B.SNS_Follow_id
-		AND rn = 1
+            FROM (SELECT 
+                     SNS_NICKNAME, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_BOARD_NO, SNS_ACCOUNT_NO, 
+                        ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_board_no,5)) DESC) AS rn FROM sns_board) A,
+                        (SELECT SNS_FOLLOW_ID FROM SNS_FOLLOW WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
+            WHERE A.SNS_ACCOUNT_NO = B.SNS_Follow_id AND rn = 1)  
+            <![CDATA[
+            a where rownum <=#{last}  ) where rn>=#{first}
+            ]]>
+	</select>
+	
+	<!-- 팔로우 기반 게시글 조회 -->
+	<select id="getNowBoardList" resultType="SBoardVO">
+	select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no, a.sns_account_no, 
+            (select media_server_file from multimedia where identify_id = 
+            (select sns_account_no from sns_account where sns_account_no= a.sns_account_no)) as media_server_file, 
+                (select count(*) from own_like where category_no = a.sns_board_no) as like_count,
+                (select count(*) from reply where category_no = a.sns_board_no) as reply_count
+            FROM (SELECT 
+                     SNS_NICKNAME, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_BOARD_NO, SNS_ACCOUNT_NO, 
+                        ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_board_no,5)) DESC) AS rn FROM sns_board) A,
+                        (SELECT SNS_FOLLOW_ID FROM SNS_FOLLOW WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
+            WHERE A.SNS_ACCOUNT_NO = B.SNS_Follow_id
+			AND rn = 1
+	</select>
+	
+	<select id="getNowBoardListCount" resultType="int">
+	select count(*) from (select rownum rn, a.* from (select A.sns_nickname, A.sns_board_content, A.sns_board_date, A.sns_board_no, a.sns_account_no, 
+            (select media_server_file from multimedia where identify_id = 
+            (select sns_account_no from sns_account where sns_account_no= a.sns_account_no)) as media_server_file, 
+                (select count(*) from own_like where category_no = a.sns_board_no) as like_count,
+                (select count(*) from reply where category_no = a.sns_board_no) as reply_count
+            FROM (SELECT 
+                     SNS_NICKNAME, SNS_BOARD_CONTENT, SNS_BOARD_DATE, SNS_BOARD_NO, SNS_ACCOUNT_NO, 
+                        ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_board_no,5)) DESC) AS rn FROM sns_board) A,
+                        (SELECT SNS_FOLLOW_ID FROM SNS_FOLLOW WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
+            WHERE A.SNS_ACCOUNT_NO = B.SNS_Follow_id AND rn = 1)  
+            <![CDATA[
+            a where rownum <=#{last}  ) where rn>=#{first}
+            ]]>
 	</select>
 	
 	<!-- 최신게시글 랜덤뽑기 -->
@@ -113,7 +148,8 @@
 		select TO_NUMBER(SUBSTR(R.REPLY_NO, 5)) AS REPLY_NO,
 			       R.REPLY_CONTENT,
 			       R.REPLY_DATE,
-			       S.SNS_NICKNAME AS userId
+			       S.SNS_NICKNAME AS snsNickname,
+			       R.USER_ID
 			FROM SNS_ACCOUNT S, OWN_USERS O, REPLY R
 			WHERE R.USER_ID = O.USER_ID
 			AND O.SNS_ACCOUNT_NO = S.SNS_ACCOUNT_NO
