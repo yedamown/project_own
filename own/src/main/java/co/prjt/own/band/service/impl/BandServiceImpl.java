@@ -286,5 +286,10 @@ return bandList;
 	//밴드 포토찾기
 	public List<BandBoardDetailSearchVO> bandPhotos(String bandNo, String mediaNo){
 		return bandMapper.bandPhotos(bandNo, mediaNo);
+	}
+
+	@Override
+	public BandVO getBandByBoardOptionNo(String value) {
+		return bandMapper.getBandByBoardOptionNo(value);
 	};
 }

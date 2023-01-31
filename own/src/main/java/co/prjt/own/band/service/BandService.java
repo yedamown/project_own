@@ -49,4 +49,6 @@ public interface BandService {
 		public List<BandVO> recomBandPage(BandVO vo, Paging paging);
 		//밴드 포토찾기
 		public List<BandBoardDetailSearchVO> bandPhotos(String bandNo, String mediaNo);
+		//게시물 삭제시 사용 보드번호로 밴드번호조회
+		public BandVO getBandByBoardOptionNo(String value);
 }

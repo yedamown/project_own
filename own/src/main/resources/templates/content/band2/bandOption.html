@@ -2,7 +2,7 @@
 <!-- Bootstrap CSS -->
 <meta charset="utf-8">
 <style>
-			#container23{
+         #container23{
                 padding: 10px;
                 width: 700px;
                 margin: 0 auto;
@@ -192,29 +192,29 @@
   <fieldset>
   <legend>모든유저</legend>
   <span th:each="list : ${memList}">
-  	<th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA02')}">
-	<label><p th:text="${list.userId}"></p></label>
-	</th:block>
+     <th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA02')}">
+   <label><p th:text="${list.userId}"></p></label>
+   </th:block>
   </span>
   </fieldset>
   
   <fieldset>
   <legend>오늘 가입한 유저</legend>
   <span th:each="list : ${memList}">
-	<label><p th:text="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}"></p></label>
-	<label><p th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"></p></label>
-	<th:block th:if="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}==${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
-		<label><p th:text="${list.userId}"></p></label>
-	</th:block>
+   <label><p th:text="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}"></p></label>
+   <label><p th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"></p></label>
+   <th:block th:if="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}==${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
+      <label><p th:text="${list.userId}"></p></label>
+   </th:block>
   </span>
   </fieldset>
   
   <fieldset>
   <legend>승인대기 유저</legend>
   <span th:each="list : ${memList}">
-	<th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA01')}">
-		<label><p th:text="${list.userId}"></p></label>
-	</th:block>
+   <th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA01')}">
+      <label><p th:text="${list.userId}"></p></label>
+   </th:block>
   </span>
   </fieldset>
   
@@ -225,19 +225,17 @@
 </body>
 <script>
 $('#bandmanage').on('click', function(){
-	console.log('dd')
-	$('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
+   $('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
 });
 
-// 硫ㅻ쾭 愿�由� �꺆
+// 硫ㅻ쾭 愿 由   꺆
 $('#memberManage').on('click', function(){
-	$('#manageTemplate').load("/own/band/bandGroup/bandMemberManage?bandNo="+bandNo);
+   $('#manageTemplate').load("/own/band/bandGroup/bandMemberManage?bandNo="+bandNo);
 });
 
 
 $('#bandPass').on('click', function(){
-	console.log('dd')
-	$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
+   $('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
 })
 </script>
 </html>

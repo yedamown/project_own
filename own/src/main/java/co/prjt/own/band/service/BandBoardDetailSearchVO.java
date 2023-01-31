@@ -75,4 +75,9 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	public String bandBoardName;
 	//삭제용
 	public ArrayList<String> bandBoardDetailNos;
+	
+	//검색용
+	public String searchValue;
+	//검색조건용
+	public String searchKeyword;
 }

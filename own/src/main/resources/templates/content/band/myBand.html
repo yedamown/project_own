@@ -27,6 +27,9 @@
         <link rel="stylesheet" href="/css/band/2nd/css/flaticon.css">
         <link rel="stylesheet" href="/css/band/2nd/css/icomoon.css">
         <link rel="stylesheet" href="/css/band/2nd/css/style.css">
+        <style type="text/css">
+        	.boards:hover   { text-decoration:underline; color:#FF0000 }
+        </style>
     </head>
     <body>
     <div layout:fragment="content">
@@ -73,7 +76,7 @@
         			<h3>검색된 밴드가 없습니다.</h3>
         		</div>
                 <div style="margin-bottom: 50px;" th:each="band, bandStat :${myBand}">
-                    <input class="bandnums" type="hidden" th:value="${band.bandNo}"/>
+                    <input class="bandnums" type="hidden" id="bandNo" th:value="${band.bandNo}"/>
                     <div class="row mb_30">
                         <div class="col-lg-3 col-sm-6" style="float: left;">
                             <div class="accomodation_item text-center">
@@ -93,22 +96,23 @@
                                         	<h4 class="mb-30 title_color" th:text="${band.bandName}" style="display: inline-block;">Block Quotes</h4>
                                         </a>
                                         <p style="float: right;"><small>멤버 [[${band.memcount}]]</small></p>
-                                            <div class="firstboard">
-                                                <a href="#">
+                                            <div class="firstboard boards">
+                                            <!-- r reply t time 약자 -->
+                                                <a>
                                                     <b th:class="${band.bandNo}"></b>
                                                     <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
                                                     <b th:class="${band.bandNo}+t" style="float: right;"></b>
                                                 </a>
                                             </div>
-                                            <div>
-                                                <a href="#">
+                                            <div class="boards">
+                                                <a>
                                                     <b th:class="${band.bandNo}"></b>
                                                     <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
                                                     <b th:class="${band.bandNo}+t" style="float: right;"></b>
                                                 </a>
                                             </div>
-                                            <div>
-                                                <a href="#">
+                                            <div  class="boards">
+                                                <a>
                                                     <b th:class="${band.bandNo}"></b>
                                                     <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
                                                     <b th:class="${band.bandNo}+t" style="float: right;"></b>
@@ -175,13 +179,24 @@
                             $('.'+bandnum+'t').eq(0).text(elapsedText(element.bandBoardDate));
                             
                             //다음순회를 위해 클래스명바꾸기
-                            $('.'+bandnum).eq(0).attr("class",bandnum+'_ok');
-                            $('.'+bandnum+'r').eq(0).attr("class",bandnum+'_okr');
+                            $('.'+bandnum).eq(0).attr({"class":bandnum+'_ok', "id": element.bandBoardDetailNo});
+                            $('.'+bandnum+'r').eq(0).attr({"class":bandnum+'_okr', "id": element.bandBoardDetailNo});
                             $('.'+bandnum+'t').eq(0).attr("class",bandnum+'_okt');
                         }
                     })
                     
                 });
+                //게시판이동..
+                $('.boards').on('click', function(e){
+                	console.log(e.target);
+                	let boardNo = $(e.target).attr('id');
+                	let bandNo = $('#bandNo').val();
+                	if(boardNo!=null){
+                		//window.location.href('/own/band/redirection?bandBoardDetailNo='+boardNo+"?bandNo="+bandNo);
+                		window.location.replace('/own/band/redirection?bandBoardDetailNo='+boardNo+"&bandNo="+bandNo);
+                		//window.location.assign('/own/band/redirection?bandBoardDetailNo='+boardNo+"?bandNo="+bandNo);
+                	}
+                })
                 //만약 게시글이 하나도 없다면
                     console.log($('.firstboard').eq(0))
                     $('.firstboard').each(function(idx, ele){

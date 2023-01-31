@@ -135,12 +135,14 @@
     </head>
     <body>
     <div layout:fragment="content">
-    <input type="hidden" th:value="${band.bandNo}" 				id="bandNumber" >
+    <!-- <input type="hidden" th:value="${band.bandNo}" 				id="bandNumber" > -->
     <input type="hidden" th:value="${band.bandNo}" 				id="bandNo" >
    	<input type="hidden" th:value="${session.loginUser.userId}" id="userId" >
    	<input type="hidden" th:value="${band.bandLeaderid}" id="bandLeaderid" >
     <input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">
+	<!-- 게시판 넘기기용 -->
+	<input type="hidden" th:value="${bandBoardDetailNo}" id="bandBoardDetailNo" >
         <!--================Header Area =================-->
         <header><aside class="single_sidebar_widget search_widget">
             <div class="br"></div>
@@ -342,9 +344,11 @@
         var token = /*[[${_csrf.token}]]*/
            console.log(token);
         var bandNo= $('#bandNo').val();
-        var bandLeaderid = $('#bandLeaderid').val();
-        console.log(bandLeaderid)
-        $(function(){  
+        $(function(){
+        	let bandBoardDetailNo = $('#bandBoardDetailNo').val();
+        	console.log(bandBoardDetailNo+'??왜 안가져');
+        	$('#mainTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+bandBoardDetailNo);
+        	
         	//더보기 페이지용
          	//1페이지
 	        let bandNo = $('#bandNo').val();

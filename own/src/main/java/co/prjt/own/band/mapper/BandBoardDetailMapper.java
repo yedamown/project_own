@@ -1,6 +1,5 @@
 package co.prjt.own.band.mapper;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import co.prjt.own.band.service.BandBoardOptionVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
-import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.service.OwnLikeVO;
 
 public interface BandBoardDetailMapper {
@@ -62,4 +60,6 @@ public interface BandBoardDetailMapper {
 	public int BandBoardDeleteList(BandBoardDetailSearchVO vo);
 	//아이디로 가치별명과 프로필사진들을 가져옴(list<String>)
 	public List<BandMemberDetailVO> getBandMemberNickProfile(BandMemberDetailVO vo);
+	//글 조회수증가
+	public int updateViews(String bandBoardDetailNo);
 }
