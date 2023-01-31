@@ -9,8 +9,10 @@
 	
 	<!-- SNS 회원 한건 조회 -->
 	<select id="getSnsUser" resultType="SAccountVO">
-		SELECT * FROM SNS_ACCOUNT
-		WHERE SNS_NICKNAME = #{snsNickname}
+		SELECT a.*, o.user_id
+			FROM SNS_ACCOUNT a , own_users o
+			WHERE SNS_NICKNAME = #{snsNickname}
+			and a.sns_account_no = o.sns_account_no
 	</select>
 	
 	<!-- SNS 회원 가입 -->

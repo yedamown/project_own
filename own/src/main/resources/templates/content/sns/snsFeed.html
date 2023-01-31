@@ -266,7 +266,13 @@
             height: 30px;
             cursor: pointer;
         }
-        
+        .snsStoryDel{
+            position: absolute;
+            font-size: 11px;
+            color: lightblue;
+            top: 42px;
+            right: -25px;
+        }
 
     </style><!--스타일-->
     
@@ -393,7 +399,7 @@
                         <span class="modalBtn">
                             <img th:if="${profileImg == null}" class="profileImg" src="/css/sns/img/defaultUser.png">
                             <span th:unless="${profileImg == null}">
-                                <img class="profileImg" th:src="|/imgView/${profileImg.mediaServerFile}"></span>
+                                <img class="profileImg" th:src="|/imgView/${profileImg.mediaServerFile}" onerror='this.src="/css/sns/img/defaultUser.png"'></span>
                         </span>
                         <span id="snsNickname" th:text="${snsInfo.snsNickname}" th:value="${snsInfo.snsAccountNo}"
                             style="position: absolute; top:10px; left:300px; font-size:16px; font-weight:700;"></span>
@@ -481,9 +487,35 @@
 
                     <!--신고모달-->
                     <div th:if="${userId.snsNickname != snsInfo.snsNickname}" class="modal">
-                        <div class="modal-content" style="width: 300px; height: 200px;">
+                        <div class="modal-content" style="width: 300px; height: 400px;">
                             <span class="close">&times;</span>
-                            <p>신고하기 모달</p>
+                            <h2>신고폼</h2>
+                            <div id = "container">
+                            <form role="form"  autocomplete="off" style="width: 80%;"enctype="multipart/form-data" name="frm" id="frm">
+                             <input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
+                             <input type="hidden" th:value="${session.loginUser.userId}" id="reporter" name="reporter">
+                             <input type="hidden" th:value="${snsInfo.userId}" id="dereporter" name="dereporter">
+                             <div class="input-form-backgroud row">
+                                 <div class="input-form col-md-12 mx-auto">
+                                   <h4 class="mb-3">신고</h4>
+                                      <div class="col-md-7 mb-3">
+                                         <label for="code">관심운동</label>
+                                         <select id="reason" name="reason">
+                                             <option value="욕설">욕설</option>
+                                             <option value="광고">광고</option>
+                                             <option value="부적절한 아이디">부적절한 아이디</option>
+                                         </select>
+                                       </div>
+                                       <div class="col-md-7 mb-3">
+                                         <label for="code">사유</label>
+                                         <input name="uploadfile" type="file" id="uploadfile" multiple="multiple">
+                                       </div>
+                                     <button type="button" id="btnreporting">신고</button>      
+                                     <button type="button" id="btnsignin">취소</button>              
+                                 </div>
+                             </div>
+                             </form>
+                             </div>
                             
                         </div>
                     </div>
@@ -491,45 +523,26 @@
 
                     <!-- 팔로우 Modal -->
                     <div class="modal">
-                        <div class="modal-content">
+                        <div class="modal-content" style="width:400px;">
                             <span class="close">&times;</span>
-                            <p>내가 팔로우 한 사람</p>
-                            <table border="1px">
-                                <thead>
-                                    <tr>
-                                        <th>팔로우 목록</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="snsfol : ${snsFollowerList}">
+                            <p>팔로우 목록</p>
+                                    <td th:each="snsfol : ${snsFollowerList}">
                                         <a th:href="@{snsFeed(snsNickname=${snsfol.follower})}">[[${snsfol.follower}]]</a>
-                                    </tr>
-
-                                </tbody>
-                            </table>
+                                    </td>
                         </div>
                     </div>
                     <!-- 팔로워 Modal -->
                     <div class="modal">
-                        <div class="modal-content">
+                        <div class="modal-content" style="width:400px;">
                             <span class="close">&times;</span>
-                            <p>나를 팔로우 한 사람</p>
-                            <table border="1px">
-                                <thead>
-                                    <tr>
-                                        <th>팔로워 목록</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="snsf : ${snsFollowList}">
-                                        <a th:href="@{snsFeed(snsNickname=${snsf.follow})}"><td th:text="${snsf.follow}"></td></a>
-                                        </tr>
-                                </tbody>
-                            </table>
+                            <p>팔로워 목록</p>
+                                    <td th:each="snsf : ${snsFollowList}">
+                                        <a th:href="@{snsFeed(snsNickname=${snsf.follow})}">[[${snsf.follow}]]</a>
+                                    </td>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <hr>
+                    <hr>
          
                 <!-- 글작성 모달을 여는 클래스 -->
                 <h1 th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="text-align: right; cursor:pointer;">
@@ -637,22 +650,49 @@
         /*]]>*/
 
         
+        //로그인 정보 유저 id
         var loginUserId = "[(${userId.userId})]"
+        //로그인 정보 sns 닉네임
+        var loginNickname = "[(${userId.snsNickname})]"
         var categoryNo = '';
 
-        var filecheck = document.getElementById('btnAtt').value;
-        var textcheck = document.getElementById('textBox').textContent;
-        function feedFormCheck(){  
-            if(!filecheck){
-                alert("사진을 첨부해주세요.")
-                return false;
-            }else if(textcheck == ""){
-                alert("내용을 입력하세요.")
-                return false;
-            }
-            return true;
+        //신고
+        $('#btnsignin').on('click',function(){
+                console.log('취소');
+            })
 
-        }
+        $('#btnreporting').on('click',function(){   
+            let formData = new FormData(document.frm);
+
+            $.ajax({
+                url: '/common/report',
+                method: 'post',
+                data : formData,
+                cache: false,
+                    contentType: false,
+                    processData: false,
+                beforeSend: function(xhr){
+                xhr.setRequestHeader(header,token);
+                }
+            }).then(res=>{
+                console.log(res)          
+            })	
+        })
+    //폼체크
+        // var filecheck = $('#att_zone').children().length
+        // var textcheck = $('#textBox').val().length;
+        // function feedFormCheck(){  
+        //     if($('#att_zone').children().length == 0){
+        //         alert("사진을 첨부해주세요.")
+        //         return false;
+        //     }else if($('#textBox').val() = ''){
+        //         alert("내용을 입력하세요.")
+        //         return false;
+        //     }else{
+        //         return true;
+        //     }
+
+        // }
         //게시글 글자수
 
         $('#textBox').keydown(function (e) {
@@ -863,12 +903,12 @@
                                 $('.replyContent').append(makeReply(res.reply[i]));
                           }
                           
-                          let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
-                          $('.snsReplyBox').append(snsReplyCount)
                         }else{
                             let emptyReply = $('<div>').text("등록된 댓글이 없습니다.")
-                                            $('.replyContent').append(emptyReply);
+                                $('.replyContent').append(emptyReply);
                             }
+                            let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                            $('.snsReplyBox').append(snsReplyCount)
 
                     }, 
                         error : function(err){
@@ -1015,20 +1055,31 @@
                         storyProfileName.attr('class', "storyProfileName")
 
                         $('.storyProfile').append(storyProfileImg, storyProfileName);
-
+                            
                         for (let i = 0;  i < res.storyImg.length; i++) {
                             let storyImg = $('<img>').attr({
                                 "src": "/imgView/" + res.storyImg[i].mediaServerFile,
                                 "class": "storyImg",
                                 "page-name": i
                             })
+                            let storyNo = $('<input>').attr({"type" :"hidden",
+                                                             "value" : res.storyInfo.snsStoryNo})
                             let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i].snsStoryDate));
                                 storyProfileDate.attr({'class': "storyProfileDate",
                                                     "page-name": i});
-                                                    $('.storyProfile').append(storyProfileDate);
+                                                    $('.storyProfile').append(storyProfileDate, storyNo);
                                                     $('.storyContent').append(storyImg);
                                                     
+                                if(loginNickname == res.storyInfo[0].snsNickname){
+                                    console.log("스토리 작성자 입니다.")
+                                    let snsStoryDel = $('<span>').text("스토리 삭제")
+                                        snsStoryDel.attr({"class" : "snsStoryDel",
+                                                          "page-name" : i})
+                                        $('.storyProfile').append(snsStoryDel);
+    
+                                    }
                                 }
+
                                 $('.storyProfile').children(".storyProfileDate").eq(0).addClass("active")
                                 $('.storyContent').children(".storyImg").eq(0).addClass("active")
 
@@ -1078,6 +1129,8 @@
             }
 
         })
+        
+        //스토리 삭제
 
 
         //게시글 상세 보기 ajax
@@ -1232,15 +1285,15 @@
             funcs[j]();
         }
 
-        // // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
-        window.onclick = function (event) {
-            if (event.target.className == "modal" ) {
-                event.target.style.display = "none";
-                $('.storyContent').children('img').remove();           
-                $('.storyProfile').children().remove();
-                $('.blah').attr('src', "");
-            }
-        };
+        // // // Modal 영역 밖을 클릭하면 Modal을 닫습니다.
+        // window.onclick = function (event) {
+        //     if (event.target.className == "modal" ) {
+        //         event.target.style.display = "none";
+        //         $('.storyContent').children('img').remove();           
+        //         $('.storyProfile').children().remove();
+        //         $('.blah').attr('src', "");
+        //     }
+        // };
 
         window.onclick = function (event) {
             if (event.target.className == "Feedmodal") {
@@ -1252,6 +1305,7 @@
                 $('.realReply').children().remove();
                 $('.snsLikeBox').children().remove();
                 $('.snsReplyBox').children().eq(1).remove();
+                
             }
         };
 
