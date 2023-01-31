@@ -31,7 +31,7 @@ public interface OwnhomeService {
 	//이메일보내기
 	public String sendMail(String info, String email);
 	//내정보 수정
-	public int myupdate();
+	public int myinfoupdate(OwnUserVO vo);
 	//비밀번호 체크
 	public int pwcheck(String pw, String newpw);
 	//비밀번호 재설정
@@ -50,6 +50,9 @@ public interface OwnhomeService {
 	public List<QuestionVO> getPagingAdQuestlist(QuestionVO vo, Paging paging);
 	//제목 선택시 제목에 맞는 질문 가져오기
 	public QuestionVO selectQuest(String qno);
+	//내질문삭제
+	public int myquestDelete(String rno);
+	
 	
 	//질문 답변등록
 	public int questionUpdate(QuestionVO vo);

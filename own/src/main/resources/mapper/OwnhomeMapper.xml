@@ -51,7 +51,13 @@ select * from own_users where user_id= #{userId}
 <select id="ownUsercount" resultType="int">
 SELECT COUNT(*) FROM OWN_USERS
 </select>
-
+<!-- 내정보수정 -->
+<update id="myinfoupdate">
+UPDATE OWN_USERS SET USER_PASSWD = #{userPasswd},
+                     USER_PHONE = #{userPhone},
+                     USER_HOBBY = #{userHobby}
+                     WHERE USER_ID = #{userId}
+</update>
 
 <select id="getUserList" resultType="OwnUserVO">
 SELECT * FROM (
@@ -68,6 +74,11 @@ ORDER BY OWN_USERS_NO)
 A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 ]]>
 </select>
+
+<delete id="myquestDelete">
+delete from question where quest_no = #{rno}
+</delete>
+
 
 <select id="adQuestionCount" resultType="int">
 select count(*) from question

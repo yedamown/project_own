@@ -130,7 +130,7 @@ div.tblcontainer {
 				<span th:unless="${quest.answer==null}">
 					<td th:text="${quest.answer}"></td>
 				</span>
-				<td th:text="${quest.questDate}"></td>
+				<td th:text="${#dates.format(quest.questDate, 'yyyy-MM-dd')}"></td>				
 				<td th:text="${quest.header}"></td>
 				<td th:text="${quest.status}"></td>
 				</tr>

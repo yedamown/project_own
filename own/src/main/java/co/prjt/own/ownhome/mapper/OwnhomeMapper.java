@@ -20,14 +20,15 @@ public interface OwnhomeMapper {
 	public SAccountVO snsLogin(String id);
 	public String setPassword(String appNo, String id);
 	public int idcheck(String id);	
-	public int myupdate();
+	public int myinfoupdate(OwnUserVO vo);
 	public List<ChallengeVO> Challenging(String id);
 	public List<BandMemberDetailVO> Banding(String id);
 	//sns계정체크
 		public List<SAccountVO> getSnsAccountList(); 	
 	//신고처리
 		public int reportUpdate(ReportVO vo);
-
+		//내질문삭제
+		public int myquestDelete(String rno);
 		public int userPermUpdate(OwnUserVO vo);
 		public int ReportCountup(OwnUserVO vo);
 	public int adQuestionCount();

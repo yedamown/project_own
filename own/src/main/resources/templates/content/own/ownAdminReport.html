@@ -110,7 +110,7 @@ div.tblcontainer {
 				<td th:text="${report.reporter}"></td>
 				<td th:text="${report.dereporter}"></td>
 				<td th:text="${report.reason}"></td>
-				<td th:text="${report.reportDate}"></td>
+				<td th:text="${#dates.format(report.reportDate, 'yyyy-MM-dd')}"></td>
 				<td th:text="${report.status}"></td>
 			</tr>
 		</tbody>
