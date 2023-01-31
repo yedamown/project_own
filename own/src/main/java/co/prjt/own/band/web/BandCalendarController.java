@@ -45,6 +45,7 @@ public class BandCalendarController {
 	//밴드 캘린더으로 이동 ..여기선 커런트데이트로 세팅 다른 곳에선 년도.달로 세팅
 	@GetMapping("/bandGroup/bandCalendar")
 	public String bandCalendar(Model model, BandVO vo) {
+		System.out.println(vo.toString());
 		model.addAttribute("bandNo", vo.getBandNo());
 		return "content/band/bandCalendar";
 	}

@@ -143,14 +143,12 @@
 				th:value="${board.BandBoardDetailNo}"> <input type="hidden"
 				id="bandNo" th:value="${board.bandNo}"> <input type="hidden"
 				id="userId" th:value="${session.loginUser.userId}">
+				<input type="hidden" th:value="${board.bandBoardOptionNo}" id="bandBoardOptionNo">
 			<div class="form-group">
-				Title <input type="text" class="form-control" id="title"
-					th:value="|[${board.bandRemarks }] ${board.bandBoardTitle }|" readonly> Writer <input
-					type="text" class="form-control" id="writer"
-					th:value="${board.bandNickname }" readonly> RegDate <input
-					type="text" class="form-control" id="RegDate"
-					th:value="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"
-					readonly>
+				<h4 class="form-control" id="title" th:text="|[${board.bandRemarks }] ${board.bandBoardTitle }|"></h4>
+				<h4 class="form-control" id="writer" th:text="${board.bandNickname }"></h4>
+				<h4 class="form-control" id="RegDate" th:text="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"></h4>
+				<h4 class="form-control" id="cnt" th:text="${board.bandBoardCnt}"></h4>
 				<div class="form-group">
 					<label for="comment">Content:</label>
 					<div id="bCalendar"></div>
@@ -163,31 +161,37 @@
 				</div>
 			</div>
 			<div>
-				<button type="button" id="btnUpdate" class="btn btn-primary mb-2">수정</button>
-				<button type="button" id="btnDelete" class="btn btn-primary mb-2">삭제</button>
+				<button type="button" id="btnUpdate" class="btn btn-primary mb-2"
+				th:if="${#strings.equals(session.loginUser.userId, 'board.bandBoardWriter')}"
+				>수정</button>
+				<button type="button" id="btnDelete" class="btn btn-primary mb-2"
+				th:if="${#strings.equals(session.loginUser.userId, 'board.bandBoardWriter')}"
+				>삭제</button>
 			</div>
 			<div>
 				<article id="bandReply"></article>
 				<article id="bandLike"></article>
 			</div>
-			<h3>댓글</h3>
-			<table class="table" id="replybody">
-				<!-- <%-- <tr>
-					<td>${reply.replyer}</td>
-					<td>${reply.reply}</td>
-					<td><c:if test="${reply.replyDate>=reply.updateDate}">${reply.replyDate}</c:if></td>
-					<td><c:if test="${reply.replyDate<reply.updateDate}">${reply.updateDate}</c:if></td>
-				</tr> --%> -->
-			</table>
-			<form id="frmRe">
-				<div class="form-group">
-					<label for="reply">Content:</label>
-					<textarea class="form-control" rows="5" id="reply"></textarea>
-					replyer <input type="text" class="form-control" id="replyer">
-					<button type="button" id="btnReployInsert"
-						class="btn btn-primary mb-2">댓글작성</button>
-				</div>
-			</form>
+			<div id=repp th:if="${#strings.equals(board.bandBoardTag, 'BH01')}">
+				<h3>댓글</h3>
+				<table class="table" id="replybody">
+					<tr>
+						<td>reply.replyer</td>
+						<td>reply.reply</td>
+						<td>reply.replyDate</td>
+						<td>reply.updateDat}</td>
+					</tr>
+				</table>
+				<form id="frmRe">
+					<div class="form-group">
+						<label for="reply">Content:</label>
+						<textarea class="form-control" rows="5" id="reply"></textarea>
+						replyer <input type="text" class="form-control" id="replyer">
+						<button type="button" id="btnReployInsert"
+							class="btn btn-primary mb-2">댓글작성</button>
+					</div>
+				</form>
+			</div>
 		</article>
 	</div>
 	<!-- ========이미지 팝업 될 곳======== -->
@@ -256,7 +260,17 @@
 </div>
 
 <script th:inline="javascript">
+        var header = /*[[${_csrf.headerName}]]*/
+        	console.log(header);
+        var token = /*[[${_csrf.token}]]*/
+           console.log(token);
+        console.log(bandLeaderid);
 $(function(){
+	//밴드장이면(전역변수사용) 마크달아주기
+	if(bandLeaderid=$('#userId')){
+		let val = $('#writer').text()+'🎁';
+		$('#writer').text(val);
+	}
 	//일정추가하기....
 	/*<![CDATA[*/
 	var calendar = /*[[${board.bandCalendar}]]*/
@@ -324,30 +338,62 @@ $(function(){
 	console.log(userId);
 	//좋아요리스트..댓글리스트
 	let DetailNo = $('#bandBoardDetailNo').val();
-	$.ajax({
-		url: '/own/band/bandGroup/bandBoardDetailLike?bandBoardDetailNo='+DetailNo,
-		dataType: 'json',
-		method: 'get',
-		contentType : "application/text; charset=utf-8;"
-	}).then(result => {
-		console.log(result);
-		let likeTag = '';
-		$(result).each(function(idx, ele){
-        	//likeTAG
-        	if(ele.userId==userId){
-        		likeTag = '♥'
-       			return false;
-        	}
+	//좋아요함수
+	function heartIt(){
+		$.ajax({
+			url: '/own/band/bandGroup/bandBoardDetailLike?bandBoardDetailNo='+DetailNo,
+			dataType: 'json',
+			method: 'get',
+			contentType : "application/text; charset=utf-8;"
+		}).then(result => {
+			console.log(result);
+			let likeTag = '';
+			$(result).each(function(idx, ele){
+	        	//likeTAG
+	        	if(ele.userId==userId){
+	        		likeTag = '♥'
+	       			return false;
+	        	}
+			})
+			if(likeTag == ''){
+				likeTag = '♡'
+			}
+			//좋아요 수
+			let r = result.length;
+			if(r == null){
+				r = 0;
+			}
+			$('#bandLike').append('<span class="likeIt">'+likeTag+'</span><span class="likeIt">'+r+'</span>');
 		})
-		if(likeTag == ''){
-			likeTag = '♡'
-		}
-		//좋아요 수
-		let r = result.length;
-		if(r == null){
-			r = 0;
-		}
-		$('#bandLike').append(likeTag, r);
+	}
+	heartIt();
+	//클릭이벤트
+	$('#bandLike').on('click', $('.likeIt'), function(){
+		let bandBoardDetailNo = $('#bandBoardDetailNo').val();
+		console.log(bandBoardDetailNo);
+		
+		let userId = $('#userId').val();
+   		let categoryNo = bandBoardDetailNo;
+   		let category = 'Band';
+   		data={userId, categoryNo, category}
+
+   		$.ajax({
+            url:'/own/likeAjax',
+            data: JSON.stringify(data),
+            contentType : "application/json;",
+            method: 'post',
+              beforeSend: function(xhr){
+                  xhr.setRequestHeader(header,token);
+                }
+        }).then(result => {
+        	console.log(result);
+        	if(result == 'add'||result == 'del'){
+        		$('#bandLike').empty();
+        		heartIt();
+        	} else if(result == 'del'){
+        		alert('좋아요실패');
+        	}
+        })
 	})
 	//
 // 	이미지 클릭시 해당 이미지 모달
@@ -388,7 +434,28 @@ $(function(){
 	$('#btnUpdate').on('click', function(){
     		$('#template').load("/own/band/bandGroup/bandBoardUpdate?BandBoardDetailNo="+DetailNo+'&bandNo='+bandNo);
 	})
-	
+	//삭제
+   $('#btnDelete').on('click', function(){
+      //삭제매크로를 옵션번호로 만들어놔서 글번호지만 이걸로 보내겠음
+      let bandBoardOptionNo = $('#bandBoardDetailNo').val();
+      console.log('?')
+      if(confirm('글을 삭제합니다.')){
+         $.ajax({
+               url:'/own/band/bandGroup/bandBoardDeleteEach?bandBoardOptionNo='+bandBoardOptionNo,
+               dataType: 'json',
+               method: 'get',
+               contentType : "application/text; charset=utf-8;"
+           }).then(result => {
+              console.log(result);
+              if(result>0){
+                 bandBoardOptionNo = $('#bandBoardOptionNo').val();
+                 $('#template').load("/own/band/bandGroup/bandBoardList?bandBoardOptionNo="+bandBoardOptionNo);
+              } else {
+                 alert('삭제 실패');
+              }
+           })
+      }
+   })
 	//모달
 	function calModal(id) {
         var cModal = document.getElementById(id);
@@ -558,6 +625,12 @@ $(function(){
 	$('#calendarModal').on('click', function(){
 		calModal('my_calendar_modal');
 	})
+	
+	//여기부터 댓글
+	
+	//여기까지 댓글
+	
+	
 })	
 </script>
 <script th:inline="javascript">

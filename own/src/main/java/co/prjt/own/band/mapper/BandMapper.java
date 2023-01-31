@@ -54,4 +54,6 @@ public interface BandMapper {
 	public int recomBandCount(BandVO vo);
 	//사진뿌리기용
 	public List<BandBoardDetailSearchVO> bandPhotos(String bandNo, String mediaNo);
+	//게시물 삭제시 사용 보드번호로 밴드번호조회
+	public BandVO getBandByBoardOptionNo(String value);
 }

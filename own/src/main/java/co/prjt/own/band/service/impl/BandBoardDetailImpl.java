@@ -154,6 +154,8 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 
 	@Override
 	public BandBoardDetailSearchVO getBandBoardDetail(BandBoardDetailSearchVO vo) {
+		// 조회수증가
+		bandBoardDetailMapper.updateViews(vo.getBandBoardDetailNo());
 		// 글단건조회(글+유저별명)
 		BandBoardDetailSearchVO board = bandBoardDetailMapper.getBandBoardDetail(vo);
 		//일정있는지 검색해서 넣기(impl)

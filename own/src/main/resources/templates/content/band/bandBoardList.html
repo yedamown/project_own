@@ -7,8 +7,27 @@
         <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
         <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+        
+   <style>
+   	select {
+		width: 150px; 
+		padding: .8em .5em; 
+		border: 1px solid #999;
+		font-family: inherit;  
+		background: url('arrow.jpg') no-repeat 95% 50%; 
+		border-radius: 0px; 
+		-webkit-appearance: none; 
+		-moz-appearance: none;
+		appearance: none;
+	}
+	select::-ms-expand {
+		display: none;
+	}
+   </style>     
   <div id="template">
 	<input type="hidden" id="bandNo" th:value="${bandNo}">
+	<input type="hidden" id="bandLeaderid" th:value="${band.bandLeaderid}">
 	<div style="flex-grow:3; width: 740px" id="subTemplate">
 		<div>
 		<!-- ===========검색=========== -->
@@ -20,9 +39,16 @@
 		</article>
 		 <article style="border: 1px solid #eeeeee;padding:30px; ">
 			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search Posts">
+				<select id="searchKeyword">
+				    <option value="">전체</option>
+				    <option value="s1">제목+내용</option>
+				    <option value="s2">제목</option>
+				    <option value="s3">내용</option>
+				    <option value="s4">글쓴이</option>
+				</select>
+				<input type="text" class="form-control" placeholder="Search Posts" id="searchBox" th:value="${searchValue}">
 				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="lnr lnr-magnifier"></i></button>
+					<button class="btn btn-default" type="button" id="searchBoxBtn" value="1"><i class="lnr lnr-magnifier"></i></button>
 					<input type="hidden" name="page" value="1">
 				</span>
 			</div>
@@ -41,7 +67,7 @@
 					<tr th:each="board: ${boardList}">
 					 	<td><input type="checkbox" class="minChk"></td>
 						<td><b th:if="${board.bandRemarks }" th:text="|[${board.bandRemarks }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
-						<td th:text="${board.bandNickname}" th:id="${board.bandBoardWriter}"></td>
+						<td th:id="${board.bandBoardWriter}">${board.bandNickname}<b th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}"><i class="fa fa-solid fa-crown"></i></b></td>
 						<td class="timeCheck" th:text="${#dates.format(board.bandBoardDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
 						<td th:text="${board.bandBoardCnt}"></td>
 					</tr>
@@ -114,6 +140,10 @@ $(function(){
 			})
 		}
 	})
+	//검색버튼 눌림
+	$('#searchBoxBtn').on('click', function(){
+		pageAjax(this);
+	})
 	//페이징+검색처리
 	$('#pagegation').on('click', '.pagePort', function(e){
 		console.log(e.target);
@@ -125,8 +155,20 @@ $(function(){
 		let page = $(e).attr('value');
 		console.log($(e).attr('value'));
 		console.log(bandNo);
+		//검색키워드(셀렉트박스랑 검색어searchValue)
+		let searchValue = $('#searchBox').val();
+		let searchKeyword = $("#searchKeyword option:selected").val();
+		
+		//검색어가 공백뿐이라면 널로만들어주기..
+		if(searchValue.replace(/\s/g, '')==''){
+			searchValue = '';
+		}
+		console.log("검색어"+searchValue);
+		console.log("검색조건"+searchKeyword);
+		//보드번호 넣어주기.. 안넣어주니 전체로 검색됨
+		let bandBoardOption = $('bandBoardOption').val();
 		$.ajax({
-			url: '/own/band/bandGroup/bandBoardListAjax?bandNo='+bandNo+'&page='+page,
+			url: '/own/band/bandGroup/bandBoardListAjax?bandNo='+bandNo+'&page='+page+'&searchValue='+searchValue+'&searchKeyword='+searchKeyword+'&bandBoardOption='+bandBoardOption,
 			dataType: 'json',
 			method: 'get',
 			contentType : "application/text; charset=utf-8;"
@@ -158,10 +200,18 @@ $(function(){
 			re=`[${ele.bandRemarks}] `
 		}
 		
+		//밴드장이면...<b><i class="fa fa-solid fa-crown"></i></b>
+    	let bandNickname = ele.bandNickname;
+    	let bandLeaderid = $('#bandLeaderid').val();
+    	let userId = $('#userId').val();
+    	if(bandLeaderid == userId){
+    		bandNickname += '<b><i class="fa fa-solid fa-crown"></i></b>'
+    	}
+		
 		let tag = `<tr>
 					<td><input type="checkbox" class="minChk"></td>
 					<td><b>${re}</b><a id=${ele.bandBoardDetailNo} class="detail" >${ele.bandBoardTitle} [${ele.reply}]</a></td>
-					<td id=${ele.bandBoardWriter}>${ele.bandNickname}</td>
+					<td id=${ele.bandBoardWriter}>${bandNickname}</td>
 					<td>${time}</td>
 					<td>${ele.bandBoardCnt}</td>
 				</tr>`
@@ -260,16 +310,16 @@ $(function(){
 					pagingFnc(pagingM)
 					//체크박스 체크삭제
 					$('#allChk').prop('checked', false);
+					
+					
 				} else {
 					alert('삭제 실패');
 				}
 			})
     })
+	    
     //이동
 })
-$(document).ready(function () {
-       $('html, body').animate({
-           scrollTop: $('#template').offset().top
-       }, 'slow'); //slow
-   });
+//앵커
+location.href="#template";
 </script>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
@@ -31,7 +33,11 @@ import co.prjt.own.band.service.BandBoardOptionVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandMemberDefaultService;
+import co.prjt.own.band.service.BandMemberDefaultVO;
+import co.prjt.own.band.service.BandMemberDetailService;
+import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
+import co.prjt.own.band.service.BandVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.MultimediaVO;
@@ -54,6 +60,7 @@ public class BandBoardDetailController {
 	@Autowired BandBoardOptionService bandBoardOptionService;
 	@Autowired OwnhomeService ownService;
 	@Autowired BandBoardDetailService bandBoardDetailService;
+	@Autowired BandMemberDetailService bandMemberDetailService;
 	
 	//밴드내 모든 게시판
 	//여기부터 별명 고려해서 매퍼쓰기 위에는 추후 수정(userId만 사용해왔음)
@@ -261,7 +268,20 @@ public class BandBoardDetailController {
 	//밴드내 게시판 이동
 	@GetMapping("/bandGroup/bandBoardList")
 	public String bandMainGroup(Model model, HttpServletRequest request, BandBoardDetailSearchVO vo, Paging paging) {
+		//검색어가 있다면 저장해놓기searchValue
+		model.addAttribute("searchValue", vo.getSearchValue());
 		//세션에 밴드저장해놓자..
+		if(vo.getBandNo()!=null) {
+			Map<String,Object> band =  bandService.getBand(vo.getBandNo());
+			model.addAttribute("band", band);
+			vo.setBandNo((String) band.get("bandNo"));
+		}
+		if(vo.getBandNo()==null||vo.getBandNo().equals("")) {
+			//단건 삭제후 바로 이동하려니 밴드번호를 못 가져오네... 글번호로 검색하기
+			BandVO band2 =  bandService.getBandByBoardOptionNo(vo.getBandBoardOptionNo());
+			model.addAttribute("band", band2);
+			vo.setBandNo(band2.getBandNo());
+		}
 		System.out.println(vo.toString());
 		//밴드번호+게시판번호를 가져오면 모든 글과...페이징처리해서보냄(1페이지만 페이지처리방식)
 		model.addAttribute("boardList", bandBoardDetailService.getBandBoard(vo, paging));
@@ -274,7 +294,6 @@ public class BandBoardDetailController {
 			model.addAttribute("bandBoardOption", bandBoardOptionService.getBandBoardOption(vo.getBandBoardOptionNo()));
 		}
 		//밴드장인지 확인(삭제게시판이동을위해)
-		model.addAttribute("band", bandService.getBand(vo.getBandNo()));
 		return "content/band/bandBoardList";
 	}
 	
@@ -313,4 +332,55 @@ public class BandBoardDetailController {
 		}
 		return null;
 	}
+	//밴드 글 단건삭제
+	//주의 bandBoardOptionNo로 오지만 사실 banbBoardDetailNo임
+	@ResponseBody
+	@GetMapping("/bandGroup/bandBoardDeleteEach")
+	public int bandBoardDeleteEach(HttpSession session, String bandBoardOptionNo) {
+		session.setAttribute("loginUser", ownService.login("hjj"));
+		//return "redirect:/own/band/bandGroup?bandNo=BDU_"+band.getBandNo();
+		return bandBoardDetailService.deleteBandBoard(bandBoardOptionNo);
+	}
+	
+	//myband에서 바로 상세보기..redirection을 이용
+	//밴드 홈으로 가기
+	//가입된 개별 밴드 들어가기
+		@GetMapping("/redirection")
+		public String bandGroup(Model model, HttpServletRequest request, @RequestParam String bandNo, String bandBoardDetailNo) {
+			HttpSession session = request.getSession();
+			OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+			session.setAttribute("loginUser", ownService.login("hjj"));
+			//적합한 이용자인지 조회
+			BandMemberDetailVO bandMember = BandMemberDetailVO.builder()
+												.bandNo(bandNo)
+												.userId(user.getUserId())
+												.build();
+			bandMember = bandMemberDetailService.getBandMemberDetail(bandMember);
+			model.addAttribute("BandMemberDetail", bandMember);
+			//밴드+밴드인원수 조회
+			Map<String, Object> band = bandService.getBand(bandNo);
+			//밴드키워드 자르기
+			ArrayList<String> keyword = new ArrayList<String>();
+			if(band.get("bandKeyword")!=null) {
+				StringTokenizer st = new StringTokenizer((String) band.get("bandKeyword"),"#");
+				//처음은 공백이 나와서.. 하나 버리고 감
+				st.nextToken();
+				while(st.hasMoreTokens()) {
+					keyword.add("#"+st.nextToken());
+				}
+				model.addAttribute("keyword", keyword);
+			} else {
+		         band.put("bandKeyword","");
+			}
+			model.addAttribute("band", band);
+			//밴드 게시판 조회
+			model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
+			//밴드의 총 글 수
+			model.addAttribute("boardCount", bandBoardDetailService.countBandBoard(bandNo));
+			//일정보내기(기본 7일)
+			model.addAttribute("calendar", bandBoardDetailService.selectCalendarNum(bandNo, "7"));
+			//페이징
+			model.addAttribute("bandBoardDetailNo", bandBoardDetailNo);
+			return "content/band/bandGroupRedirection";
+		}
 }

@@ -627,4 +627,8 @@
                 WHERE ROWNUM <=9
   ]]>
 	</select>
+	<!-- 게시판번호로 밴드조회 -->
+	<select id="getBandByBoardOptionNo" resultType="BandVO">
+		SELECT * FROM BAND WHERE BAND_NO = (SELECT BAND_NO FROM BAND_BOARD_OPTION  WHERE BAND_BOARD_OPTION_NO=#{getBandByBoardOptionNo})
+	</select>
 </mapper>

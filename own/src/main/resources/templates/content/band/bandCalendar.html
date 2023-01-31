@@ -198,7 +198,7 @@
                 	<!--================ 일정명 =================-->
                 	<div>
 	                  <h6 class="typo-list">일정만들기</h6>
-	                  <input type="hidden" th:value="${bandNo}" th:name="bandNo">
+	                  <input type="hidden" th:value="${bandNo}" th:name="bandNo" id="bandNo">
 	                  <div>
 	                    <input type="text" name="bandCalendarTitle" id="bandCalendarTitle" placeholder="일정 제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '일정 제목을 입력해주세요'" required>
 	                  </div>
@@ -269,6 +269,7 @@
 	   console.log(token);
 	 /*]]>*/
 	$(function(){ //2023-03-23타입의 string으로 고쳐서 보냄..DB에서 1일과 마지막날을 구해서 보낼 것..
+		let bandNo = $('#bandNo').val();
 		//me 한달일정가져오기
 		var calendarEl = document.getElementById('calendar');
 	    var calendar = new FullCalendar.Calendar(calendarEl, {
