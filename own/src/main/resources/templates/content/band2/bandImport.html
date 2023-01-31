@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.importmodal {
+			.importmodal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            z-index: 80; /* Sit on top */
             left: 0;
             top: 0;
             width: 100%; /* Full width */
@@ -22,7 +22,8 @@
             margin: 15% auto; /* 15% from the top and centered */
             padding: 20px;
             border: 1px solid #888;
-            width: 50%; /* Could be more or less, depending on screen size */
+            width: 25%; /* Could be more or less, depending on screen size */
+            height: 300px;
         }
         /* The Close Button */
         .importmodal .close {
@@ -36,6 +37,9 @@
             color: black;
             text-decoration: none;
             cursor: pointer;
+        }
+        .importmodal button{
+        width:120px;
         }
 </style>
 </head>
@@ -66,7 +70,7 @@
       <!-- 첫 번째 Modal의 내용 -->
       <div class="modal-content">
         <span class="close">&times;</span>                         
-        <p id="modaltext">밴드장을 즉시 넘기게 됩니다. 그래도 넘기시려면 확인을 누르세요</p>
+        <p id="modaltext"></p>
         <button type="button" id="bandPassModal">
   	밴드장 위임
 	</button>
@@ -108,6 +112,11 @@ function Modal(num) {
     btns[num].onclick =  function() {
         modals[num].style.display = "block";
         console.log(num);
+		let id = $('#passid').val();
+		let tag = `<p>${id}님에게 밴드장을 위임하려고 합니다. 위임 후 번복할수 없습니다</p>`;
+		if(modals[1]){
+			$('#modaltext').append(tag)
+		}
     };
  
     // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.

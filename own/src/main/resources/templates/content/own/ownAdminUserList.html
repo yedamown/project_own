@@ -103,7 +103,7 @@ div.tblcontainer {
 					</thead>
 					<tbody id="userList">
 						<tr th:each="user ,userStat : ${OList}"th:value="${user.userId}">
-							<td th:text="${#strings.substring(user.ownUsersNo,4)}"></td>
+							<td th:text="${user.rn}"></td>
 							<td th:text="${user.userId}" th:class="test2" ></td>
 							<td th:text="${user.userName}"></td>
 							<span th:if="${user.snsAccountNo==null}">
@@ -114,7 +114,9 @@ div.tblcontainer {
 							</span>
 							<td th:text="${user.challcount}+'개 진행중..'"></td>
 							<td th:text="${user.bandcount}+'개 가입중..'"></td>
-							<td th:text="${user.userPerm}"></td>
+							<td th:text="${user.userPerm}"></td>							
+							</select>
+						</td>
 					</tbody>
 				</table>
 			</div>
@@ -165,14 +167,22 @@ div.tblcontainer {
 				let tbody = $('#userList');
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
-					console.log(ele.userId);
+					let snsAccountNo = "";
+					
+					if(ele.snsAccountNo==null){
+						snsAccountNo='미등록'
+					}else{
+						snsAccountNo = ele.snsAccountNo
+					}
+
 					let tag = `<tr>
-								<td>idx</td>
+								<td>${ele.rn}</td>
 								<td>${ele.userId}</td>
 								<td>${ele.userName}</td>
-								<td>${ele.snsAccountNo}</td>
-								<td>${ele.userName}</td>
-								<td>${ele.userName}</td>
+								<td>${snsAccountNo}</td>
+								<td>${ele.challcount}개 진행중..</td>
+								<td>${ele.bandcount}개 가입중..</td>
+								<td>${ele.userPerm}</td>
 							</tr>`
 					tbody.append(tag);
 				})

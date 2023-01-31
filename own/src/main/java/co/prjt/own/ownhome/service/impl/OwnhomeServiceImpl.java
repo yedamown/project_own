@@ -160,12 +160,6 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	}
 
 	@Override
-	public int myupdate() {
-		// TODO Auto-generated method stub
-		return ownhomeMapper.myupdate();
-	}
-
-	@Override
 	public int pwcheck(String pw, String newpw) {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.pwcheck(pw, newpw);
@@ -310,6 +304,18 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	public List<SAccountVO> getSnsAccountList() {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.getSnsAccountList();
+	}
+
+	@Override
+	public int myquestDelete(String rno) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.myquestDelete(rno);
+	}
+
+	@Override
+	public int myinfoupdate(OwnUserVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.myinfoupdate(vo);
 	}
 
 }

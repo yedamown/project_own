@@ -149,6 +149,8 @@ public class BandOptionController {
 	// 밴드위임페이지 이동
 	@GetMapping("/bandGroup/bandPass")
 	public String bandPass(Model model, BandMemberDetailVO dvo) {
+		System.out.println("밴드위임페이지이동"+dvo);
+		model.addAttribute("bandInfo", bandService.getBand(dvo.getBandNo()));
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
 		return "/content/band2/bandImport";
 	}

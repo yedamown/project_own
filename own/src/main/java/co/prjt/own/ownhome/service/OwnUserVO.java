@@ -30,7 +30,7 @@ public class OwnUserVO {
 	public String snsNickname;
 	public String challcount;
 	public String bandcount;
-	
+	public int rn;
 	public Paging paging;
 	public int first = 1;
 	public int last = 10;

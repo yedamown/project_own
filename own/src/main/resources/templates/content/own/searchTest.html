@@ -31,8 +31,12 @@ background-color: yellow
 
 function search(target){
 	  // elementary, middle, high
-	    var schoolType = $('input[name="schoolType"]:checked').val(); 
-
+	    var checkWord = $("#schoolInput").val();
+	    var schoolList = $("#schoolList");
+	    if(checkWord==""){
+       	 schoolList.empty();
+       	 return;
+        }
 	    $.ajax({
 	        type: 'GET',
 	        dataType: 'JSON',
@@ -41,8 +45,7 @@ function search(target){
 	            console.log(err);
 	        },
 	        success: function(data){
-	        	 var checkWord = $("#schoolInput").val();
-	             var schoolList = $("#schoolList");
+	        	
 	             console.log(checkWord);
 
 	             schoolList.empty();
@@ -54,6 +57,7 @@ function search(target){
 	                    		 			`	);                
 	                 }
 	             })
+	            
 	        }
 	    })
 	}    

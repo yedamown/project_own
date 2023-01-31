@@ -224,6 +224,7 @@
 </div>
 </body>
 <script>
+$(function(){
 $('#bandmanage').on('click', function(){
 	console.log('dd')
 	$('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
@@ -238,6 +239,7 @@ $('#memberManage').on('click', function(){
 $('#bandPass').on('click', function(){
 	console.log('dd')
 	$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
+})
 })
 </script>
 </html>

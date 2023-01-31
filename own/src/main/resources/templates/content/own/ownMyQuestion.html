@@ -178,11 +178,38 @@ div.tblcontainer {
 						id="modalanswer"></span>
 				</div>
                 <button type="submit">전송</button>
+				<button type="button" id="qCancel">취소</button>
 			</form>
 			<a class="modal_close_btn">닫기</a>
 		</div>
     
 		<script th:inline="javascript">
+		 /*<![CDATA[*/
+		var header = [[${_csrf.headerName}]];
+		 var token = [[${_csrf.token}]];
+	   console.log(header);
+	   console.log(token);
+		/*]]>*/
+			$('#qCancel').on('click',function(){
+				let rno = $('input[name="questNo"]').val();
+				console.log('취소함')
+
+				$.ajax({
+				url : '/own/admin/myquestDelete',
+				method : 'post',
+				data : {rno},
+				beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+				},		
+				}).then(res=>{			
+					console.log(res);
+					location.replace('http://localhost/own/mypage/question');
+				})
+
+			})
+
+
+
 		function modal(id) {
 	        var zIndex = 9999;
 	        var modal = document.getElementById(id);
@@ -204,6 +231,7 @@ div.tblcontainer {
 
 	        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
 	        modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+				$('input[name="questNo"]').remove();
 	            bg.remove();
 	            modal.style.display = 'none';
 	        });
@@ -274,8 +302,8 @@ div.tblcontainer {
 					title = `<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>`
 							}
 					else{
-					answer = `<td>처리</td>`
-					title = `<td>${ele.title}</td>`
+					answer = `<td>${ele.answer}</td>`
+					title = `<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>`
 					}
 
 					let tag = `<tr>
