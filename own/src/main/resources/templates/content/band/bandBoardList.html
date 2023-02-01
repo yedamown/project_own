@@ -67,7 +67,7 @@
 					<tr th:each="board: ${boardList}">
 					 	<td><input type="checkbox" class="minChk"></td>
 						<td><b th:if="${board.bandRemarks }" th:text="|[${board.bandRemarks }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
-						<td th:id="${board.bandBoardWriter}">${board.bandNickname}<b th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}"><i class="fa fa-solid fa-crown"></i></b></td>
+						<td th:id="${board.bandBoardWriter}">[[${board.bandNickname}]]<b th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}"><i class="fa fa-solid fa-crown"></i></b></td>
 						<td class="timeCheck" th:text="${#dates.format(board.bandBoardDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
 						<td th:text="${board.bandBoardCnt}"></td>
 					</tr>

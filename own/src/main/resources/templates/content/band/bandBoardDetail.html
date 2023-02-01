@@ -3,6 +3,10 @@
 <script src="/css/band/js/json.min.js"></script>
 
 <style>
+ 	.decoLine {
+ 		text-decoration-line: underline;
+  		text-decoration-color: f3c300;
+ 	}
 	/*지도*/
 	.map_wrap {
 		position: relative;
@@ -144,6 +148,7 @@
 				id="bandNo" th:value="${board.bandNo}"> <input type="hidden"
 				id="userId" th:value="${session.loginUser.userId}">
 				<input type="hidden" th:value="${board.bandBoardOptionNo}" id="bandBoardOptionNo">
+				<h4 class="form-control" id="writerId" th:text="${board.bandBoardWriter }"></h4>
 			<div class="form-group">
 				<h4 class="form-control" id="title" th:text="|[${board.bandRemarks }] ${board.bandBoardTitle }|"></h4>
 				<h4 class="form-control" id="writer" th:text="${board.bandNickname }"></h4>
@@ -162,10 +167,10 @@
 			</div>
 			<div>
 				<button type="button" id="btnUpdate" class="btn btn-primary mb-2"
-				th:if="${#strings.equals(session.loginUser.userId, 'board.bandBoardWriter')}"
+				th:if="${#strings.equals(session.loginUser.userId, board.bandBoardWriter)}"
 				>수정</button>
 				<button type="button" id="btnDelete" class="btn btn-primary mb-2"
-				th:if="${#strings.equals(session.loginUser.userId, 'board.bandBoardWriter')}"
+				th:if="${#strings.equals(session.loginUser.userId, board.bandBoardWriter)}"
 				>삭제</button>
 			</div>
 			<div>
@@ -175,20 +180,19 @@
 			<div id=repp th:if="${#strings.equals(board.bandBoardTag, 'BH01')}">
 				<h3>댓글</h3>
 				<table class="table" id="replybody">
-					<tr>
+					<!-- <tr>
 						<td>reply.replyer</td>
 						<td>reply.reply</td>
 						<td>reply.replyDate</td>
 						<td>reply.updateDat}</td>
-					</tr>
+					</tr> -->
 				</table>
 				<form id="frmRe">
 					<div class="form-group">
 						<label for="reply">Content:</label>
 						<textarea class="form-control" rows="5" id="reply"></textarea>
-						replyer <input type="text" class="form-control" id="replyer">
-						<button type="button" id="btnReployInsert"
-							class="btn btn-primary mb-2">댓글작성</button>
+						<input type="hidden" class="form-control" id="replyer" th:value="${session.loginUser.userId}">
+						<button type="button" id="btnReployInsert"class="btn btn-primary mb-2">댓글작성</button>
 					</div>
 				</form>
 			</div>
@@ -259,6 +263,7 @@
 	<!--==캘린더 모달창 ==-->
 </div>
 
+<script src="/css/band/js/time.js"></script>
 <script th:inline="javascript">
         var header = /*[[${_csrf.headerName}]]*/
         	console.log(header);
@@ -430,7 +435,7 @@ $(function(){
     }
 	
   });
-	//글 수정
+	//글 삭제
 	$('#btnUpdate').on('click', function(){
     		$('#template').load("/own/band/bandGroup/bandBoardUpdate?BandBoardDetailNo="+DetailNo+'&bandNo='+bandNo);
 	})
@@ -672,9 +677,184 @@ console.log(calendar);
 	//아래 코드는 지도 위의 마커를 제거하는 코드입니다
 	//marker.setMap(null);
 }
-$(document).ready(function () {
+/* $(document).ready(function () {
        $('html, body').animate({
            scrollTop: $('#template').offset().top
        }, 'fast'); //slow
-   });
+   }); */
+ //앵커
+   location.href="#template";
+</script>
+<script th:inline="javascript">
+//댓글
+/*<![CDATA[*/
+var header = /*[[${_csrf.headerName}]]
+var token = [[${_csrf.token}]]*/
+/*]]>*/$(function(){
+		
+		replyList();
+		replyInsert();
+		replySelect();
+		replyUpdate();
+		replyDelete();
+	
+		
+		function replyInsert(){
+			$("#btnReployInsert").on("click", function(){
+				
+				let categoryNo = $('#bandBoardDetailNo').val()
+				let reply = $("#reply").val();
+				let userId = $("#replyer").val();
+				let replyContent = $("#reply").val();
+				console.log("categoryNo"+categoryNo);
+				console.log(reply);
+				console.log(userId);
+				
+				$.ajax({
+					url : "/own/band/reply",
+					method: "post",
+					data : {categoryNo, reply, userId, replyContent},
+					dataType : "json",
+	              	beforeSend: function(xhr){
+	                  xhr.setRequestHeader(header,token);
+	                }
+				}).then( res=> {
+					console.log(res)
+					$("#replybody").append(makeTr(res));
+				})
+			})
+		}
+		
+		//댓글리스트
+		function replyList(){
+			let categoryNo = $('#bandBoardDetailNo').val()
+			
+			$.ajax({
+				url : '/own/band/reply',
+				data : { categoryNo:categoryNo }
+			}).then( res => {
+				console.log(res);
+				for(reply of res){
+					let tag = makeTr(reply);
+					$("#replybody").append(tag);						
+				}
+			}) 
+		}
+		
+		//댓글 확인
+		function replySelect(){
+			$("table").on("click", "#btnSelect", function(){
+				console.log($(this).closest("tr").data("id"));
+				let replyNo = $(this).closest("tr").data("id");
+				let tr = $(this).closest("tr");
+				
+				$.ajax({
+					url: "/own/band/reply/"+replyNo,
+					method: "get",
+				}).then( res => {
+					console.log(res);
+					//삭제버튼 만들고 조회버튼(실제로는 삭제적혀있음)숨기기
+					$(tr).find('#btnReployUpdate').show();
+					$(tr).find('#btnSelect').hide();
+					//인펏박스달아주기
+					$(tr).find('.con').text('');
+					$(tr).find('.con').append('<input class="inputBox" type="text" value='+res.replyContent+'/>');
+				})
+			})
+		}
+		
+		//댓글 수정
+		function replyUpdate(){
+			$("table").on("click", "#btnReployUpdate", function(){
+				let replyNo = $(this).closest("tr").data("id");
+				let tr = $('[data-id='+replyNo+']');
+				let replyContent = $(this).closest("tr").find('input').val();
+				console.log(replyContent);
+				let userId = $("#replyer").val();
+				$.ajax({
+					url : "/own/band/reply",
+					method: "put",
+					data : JSON.stringify({ replyNo, replyContent, userId}),
+					contentType : "application/json;",
+	              	beforeSend: function(xhr){
+		                  xhr.setRequestHeader(header,token);
+		                }
+				}).then( res=> {
+					//삭제버튼 만들고 조회버튼(실제로는 삭제적혀있음)숨기기
+					$(tr).find('#btnReployUpdate').hide();
+					$(tr).find('#btnSelect').show();
+					//인펏박스달아주기
+					$(tr).find('.con').text(replyContent);
+				})
+			})
+		}
+		
+		//댓글 찐삭제(문구수정)
+		function replyDelete() {
+			$("table").on("click", "#btnDelete", function(){
+				let replyNo = $(this).closest("tr").data("id");
+				let tr = $(this).closest("tr");
+				console.log(replyNo);
+				$.ajax({
+					url :  "/own/band/reply/" + replyNo,
+					method : "delete",
+	              	beforeSend: function(xhr){
+		                  xhr.setRequestHeader(header,token);
+		                }
+				}).then( res => {
+					if(res>0){
+						$(tr).find('.pho').html('<img class="rounded-circle" src=/imgView/bandprofilnull.png alt="" style="width: 70px; height: 70px;">');
+						$(tr).find('.name').text('이름없음');
+						$(tr).find('.con').text('삭제된 댓글입니다.');
+						$(tr).find('#btnDelete').hide();
+						$(tr).find('#btnSelect').hide();
+					}
+				})
+			})
+		}
+		//makeTr
+		function makeTr(reply){
+			//만약 리더라면...왕관달기 없으면 없다고 표시
+			let bandLeaderid = $('#bandLeaderid').val();
+			console.log("makeTr 리더"+bandLeaderid);
+			let nick = reply.nickName;
+			if(reply.userId==bandLeaderid){
+				nick += '<i class="fa fa-solid fa-crown"></i>';
+			} else if (reply.userId == '이름없음'){
+				//삭제한 경우
+				nick = '이름없음';
+			}
+			//만약 삭제한 거라면 프로필사진..기본으로
+			//만약 삭제 수정된 버튼이면 안보이게..
+			let profileImg = reply.profileImg;
+			let btnTag = `<td><b class="decoLine">답글</b></td>
+						  <td><button type="button" id="btnDelete" class="btn btn-primary mb-2">삭제</button></td>
+						  <td><button type="button" id="btnSelect" class="btn btn-primary mb-2">수정</button>
+						  <button type="button" id="btnReployUpdate" class="btn btn-primary mb-2" style="display:none">수정</button></td>`;	
+			if(reply.userId=='이름없음'){
+				profileImg = 'bandprofilnull.png';
+				btnTag = `<td></td>
+						  <td></td>
+						  <td></td>`;	
+			}
+			//<img class="rounded-circle" src=/imgView/${profileImg} alt="" style="width: 70px; height: 70px;">
+			//작성자면 표시 writerId
+			if(reply.userId==$('#writerId').val()){
+				nick += '<br>작성자</br>'
+			}
+			
+			let tag = `<tr data-id="${reply.replyNo}">
+				<td class="pho"><img class="rounded-circle" src=/imgView/${profileImg} alt="" style="width: 70px; height: 70px;"></td>
+				<td class="name">${nick}</td>
+				<td class="con">${reply.replyContent}</td>
+				<td>${elapsedText(reply.replyDate)}</td>
+				${btnTag}
+			</tr>`;
+			return tag;
+		}
+		
+		
+		
+		
+	})
 </script>
