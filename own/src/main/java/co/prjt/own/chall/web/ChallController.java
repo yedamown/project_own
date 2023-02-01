@@ -314,11 +314,20 @@ public class ChallController {
 		}
 	}
 
+	//인증내역 아작스하기
+	@GetMapping("/vldPageListAjax")
+	@ResponseBody
+	public List<ValidationVO> vldPagingAjax(ValidationVO vo, Paging paging){
+		List<ValidationVO> list = validation.getVldPageList(vo, paging);
+		return list;
+	}
+	
+	//-----------------------  신 고 -------------------------------------
 	// 인증 신고 등록 아작스
 	@PostMapping("/addRptAjax")
 	@ResponseBody
 	public int addRptAjax(@RequestBody CReportVO vo) {
-		System.out.println(vo);
+		System.out.println("===================인증신고===================="+vo);
 		int r = report.insertCReport(vo);
 		return r;
 	}
@@ -332,36 +341,15 @@ public class ChallController {
 		int r = report.checkReport(vo);
 		return r;
 	}
-	//List<ChallengeVO> list = challenge.pageChallList(vo, paging);
-	/*// 내 도전 페이징 아작스 - 데이터넘길때 페이지유닛 등 설정해서 보내기
-	@GetMapping("/myChallAjax")
+
+	// 신고리스트 보기
+	@GetMapping("/reportListAjax")
 	@ResponseBody
-	public List<ChallengeVO> myChallAjax(HttpServletRequest request, Paging paging, ChallengeVO vo) {
-		HttpSession session = request.getSession();
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		String id = user.userId;
-		vo.setUserId(id);
-		List<ChallengeVO> cList = challenge.myPageChall(vo, paging);
-		return cList;
-	}
-	 * 
-	 * */
-	//인증내역 아작스하기
-	@GetMapping("/vldPageListAjax")
-	@ResponseBody
-	public List<ValidationVO> vldPagingAjax(ValidationVO vo, Paging paging){
-		List<ValidationVO> list = validation.getVldPageList(vo, paging);
+	public List<CReportVO> reportListAjax(CReportVO vo) {
+		List<CReportVO> list = report.getCReport(vo);
 		return list;
 	}
 
-//	// 인증리스트 불러오기
-//	@GetMapping("/vldList")
-//	@ResponseBody
-//	public List<ValidationVO> getVldList(ValidationVO vo, MultimediaVO multi) {
-//		List<ValidationVO> list = validation.getChallVld(vo);
-//		return list;
-//	}
-	
 //---------------------------------- 멤버관리관련 -----------------------------------------------------------
 	// 도전리더 - 멤버리스트 출력
 	@GetMapping("/challMemList")

@@ -353,7 +353,7 @@
 								<ul class="list-inline mb-4 mt-4" id="myVldPage">
 									<li class="btn btn-outline-primary m-1 active" id="allVldPage"> ALL </li>
 									<li class="btn btn-outline-primary m-1" th:if="${session.loginUser}"
-									th:value="${session.loginUser.userId}"> MY
+										th:value="${session.loginUser.userId}" id="onlyMyVldPage"> MY
 									</li>
 								</ul>
 							</div>
@@ -400,6 +400,7 @@
 						</div>
 						<div>
 							<h3>인증신고내역</h3>
+							
 						</div>
 					</div>
 					<!--멤버리스트 탭 끝-->
@@ -407,7 +408,8 @@
 					<!-- 인증신고 관리..리더만 -->
 					<div id="vldRpt">
 						<h3>멤버 인증관리</h3>
-						<div id="vldRptList"></div>
+						<div class="row portfolio-container" id="vldRptList">
+						</div>
 					</div>
 
 					<!--인증신고 관리 끝  -->
@@ -905,8 +907,6 @@
 
 	  //처음보여주는 아작스페이징!
       if($("#resultCheck").val() == "false"){
-		//네비 지우기
-		$('#myVldPaging').empty();
         console.log("인증하기")
 		//인증내역 페이징 아작스
 		$.ajax({
@@ -958,9 +958,11 @@
     //   })
 		}
 		$("#resultCheck").val("true");
+	}); //인증하기 첫버튼 끝
 
 	    // 전체도전 아작스 번호이동.
 		$('#vldPaging').on('click', '.pagePort', function(){
+			$('#myVldPaging').empty();
 		    //페이지번호 + 밴드식별번호
 		    let page = $(this).attr('value');
 			console.log(page)
@@ -982,7 +984,44 @@
 				makePaging(result, pagingName);
 				})
 		    })
-		}); //인증하기 첫버튼 끝
+
+
+		//all페이지 불러오는 아작스 함수..
+		function allVldAjax(){
+			//페이징없애기..
+			//$('#myVldPaging').empty();
+			console.log("인증하기")
+			//인증내역 페이징 아작스
+			$.ajax({
+			url: '/own/chall/vldPageListAjax',
+			method: 'get',
+			data: {page:1,
+					pageUnit:4,
+					pageSize:5,
+					challNo: challNo},
+			success: function(result){
+				console.log(result);
+				result.forEach( vld => {
+				makeVldForm(vld)
+				});
+				let pagingName = 'vldPaging';
+				makePaging(result, pagingName);
+			},
+			error: function(err){
+				console.log(err);
+			}
+			})
+		}
+
+		//올 버튼 누를때 전체불러오는 아작스..
+		$('#allVldPage').on('click', function(){
+			console.log($('#myVldPaging'));
+			$('#myVldPaging').empty();
+			let Chall = $('#vldImg');
+			$('#vldImg').empty();
+			console.log("불러올까요? 아작스?");
+			allVldAjax()
+		});
 
 		//인증버튼 메뉴 my/all 색깔 이벤트
 		$('#myVldPage li').click(function(){
@@ -990,14 +1029,13 @@
 			$(this).addClass('active');
     	})
 
-		//-----------------------------------내도전페이징--------------------------------------------- 
+	//-----------------------------------내도전페이징--------------------------------------------- 
 		//점 어설프노..
 		//마이 눌렀을때 첫 페이지   --자꾸 위에 정의해놓은 userId 가져가노...ㅠㅠ
-		$('#myVldPage li').on('click', function(){
+		$('#onlyMyVldPage').on('click', function(){
 			$('#vldPaging').empty();
 		    //페이지번호 + 밴드식별번호
 		    let myId = $(this).attr('value');
-			console.log(myId)
 		    $.ajax({
 				url: '/own/chall/vldPageListAjax',
 				method: 'get',
@@ -1030,8 +1068,8 @@
 		    let page = $(this).attr('value');
 			console.log(page)
 		    console.log($(this).attr('value')); 
-			console.log(myId);
-			console.log(userId);
+			console.log("디스................아이디....... "+myId);
+			console.log("유저 아이디..위에 선언한거...."+userId);
 		    $.ajax({
 		       url: '/own/chall/vldPageListAjax',
 		       method: 'get',
@@ -1046,7 +1084,7 @@
 				let Chall = $('#vldImg');
 				$('#vldImg').empty();
 				//다시 형태 붙이는애 만들어주기..
-				result.forEach( vld => {
+				result.forEach(vld => {
 					makeVldForm(vld);
 		       	})
 				let pagingName = 'myVldPaging';
@@ -1055,9 +1093,8 @@
 		    })
 
 		    });
-		
 
-		//버튼 초기화
+	//버튼 초기화
 	/* 아작스 페이징 버튼 */
 	function makePaging(result, pagingName){
 			//버튼 다시초기화..비우기
@@ -1135,9 +1172,11 @@
 	//모달신고...정보빼오기..ㅎ -> 모달 두번째창에 띄우기!
 
 	$('#vldImg').on('click','.grid',function(e){
-
+		e.stopPropagation();
 		console.log(this); //이 창을.. 클릭하면 모달띄우기..
 		//gird에 아이디값으로 식별번호 넣어둔거 읽어오기
+		console.log("=========================");
+		console.log($(this).attr('id'));
 		let vldNo = $(this).attr('id'); //id에 넣어둔 인증식별번호
 		let vldDtImg = $(this).find('img').attr('src'); //이미지 경로 읽어오기
 		let vldDtId = $(this).find('p').text(); //p 안에 넣어둔 값 읽어오기 - 아이디
@@ -1150,22 +1189,19 @@
 		$('#vldReport p').eq(0).text("날짜넣어야지 등록날짜 포맷해서");
 
 		//작성자와 내 아이디 같으면 신고버튼 X
-		if(userId == vldDtId){
-			$('#rptBtn').attr('style', 'display:none');
-		}
 
 		//아작스로 내가 신고했는지? 내꺼인지 확인하기
 		$.ajax({
 	        url:'/own/chall/checkRptAjax?vldNo='+ vldNo + '&&reporter=' + userId,
 	        method: 'get',
 	        success: function(result){
-	        		if(result > 0){
+	        		if(result > 0 || userId == vldDtId){
 		          		console.log(result);
 						$('#rptBtn').attr('style', 'display:none');
-
 						//$('#rptBtn').replaceWith('<p>이미 신고한 인증입니다.</p>');
 	        		}else {
-	        			console.log('신고신청가능');
+						$('#rptBtn').attr('style', 'display:block');
+	        			console.log('신고신청 가능 or s내 아이디 신고불가 ');
 	        		}
 	        },
 	        error: function(err){
@@ -1174,8 +1210,11 @@
       	})		
 
 		//신고하기 누르면 나오는 신고내역부분~! 수정해야함 ㅠㅠ
-		$('#rptBtn').on('click', function(){
+		$('#rptBtn').on('click', function(e){
+			e.stopPropagation();
 			$('#reportArea').attr('style', 'display:block');
+			console.log("================이 인증번호"+vldNo);
+			console.log("==============인풋에넣어놓은 이건어떤가요" +  vldDtNo);
 		});
 
 		$('#rptAddBtn').on('click', function(){
@@ -1184,7 +1223,7 @@
 			console.log($('#rptReason').val());
 			console.log("---------지금도전번호----" + challNo);
 			console.log("---------지금로그인아이디 신고하는 사람----" + userId);
-			console.log("---------신고할인증식별번호----" + vldDtNo);
+			console.log("---------신고할인증식별번호----" + vldNo);
 			console.log("---------신고당하는사람 =인증올린----" + vldDtId);
 			let rptReason = $('#rptReason').val();
 			let cutChallNo  = challNo.substr(4);
@@ -1192,7 +1231,7 @@
 	        $.ajax({
 	            url:'/own/chall/addRptAjax',
 	            method: 'post',
-	            data: JSON.stringify({vldNo: vldDtNo,
+	            data: JSON.stringify({vldNo: vldNo,
 	                                  reporter: userId,
 	                                  reportReason: rptReason
 	                                }),
@@ -1201,6 +1240,7 @@
 	            }, 
 	            contentType: "application/json",
 	            success: function(result){
+					console.log(result);
 	              if(result > 0){
 	                console.log('신고 처리완.');
 	                alert('신고가 완료되었습니다.');
@@ -1371,9 +1411,60 @@
 	//-----------------------------인증신고 관리 - 리더만 가능.--------------------------------
 	$('#vldRptBtn').on('click', function(){
 		console.log("인증신고 관리하는 곳.");
+		let reportState = "처리 중";
+		$.ajax({
+			url:'/own/chall/reportListAjax',
+			method:'get',
+			data: { challNo: challNo,
+					reportState: reportState},
+			success: function(res){
+				console.log(res);
+				res.forEach( result => {
+					console.log(result);
+					console.log("신고번호==" + result.vldNo);
+					console.log(result.reportReason);
+					makeRptVldForm(result);
+				})
+			},
+			error: function(err){
+				console.log(err);
+			}
+		})
 	})
 
+		function makeRptVldForm(vld){
+		let userId = vld.userId;
+		let mediaName = vld.vldImg;
+		let vldDate = (vld.vldDate);
+		let vldNo = (vld.vldNo);
+		let reportRs = vld.reportReason;
+		let reported = vld.reported;
+		console.log(mediaName);
+		console.log(reported);
+		let gridVld = `<div class="grid" style="padding: 10px" id=${vldNo}>
+							<div class="card card__one" style="width: 330px; height:350px;" >
+								<figure class="card__img">
+									<img src=/imgView/${mediaName} 
+									style="object-fit: cover"/>
+								</figure>
+							<div class="card__desc vldno">
+									<input class="vldNum" type="hidden" value=${vldNo}>
+									<p>${reportRs}</p>
+									<p>신고당한 사람: ${reported}</p>
+									<button onclick="vldProcess(this)">신고 승인</button>
+									<button onclick="vldProcess(this)">신고 반려</button>
+								</div>
+							</div>
+						</div>`		
+		$('#vldRptList').append(gridVld);				
+		/*   $('#vldImg').append(firstdiv.append(secondDiv.append(imgDiv, hTag))) */ 
+		}
 
+
+		function vldProcess(e){
+			console.log($(e));
+			console.log($(e).text());
+		}
 	//----------------------------첨부파일 화면에 띄우기------------------------------------
 
       	/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */

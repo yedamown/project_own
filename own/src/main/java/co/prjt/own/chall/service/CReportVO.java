@@ -20,4 +20,11 @@ public class CReportVO {
 	String reportResult;
 	
 	String challNo;
+	String vldImg;
+	
+	//신고당한 유저아이디
+	String reported;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	Date vldDate;
 }

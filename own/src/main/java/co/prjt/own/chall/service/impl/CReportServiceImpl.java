@@ -30,13 +30,14 @@ public class CReportServiceImpl implements CReportService{
 	}
 
 	@Override
-	public List<CReportVO> getCReportAll(CReportVO vo) {
-		return mapper.getCReportAll(vo);
+	public int checkReport(CReportVO vo) {
+		return mapper.checkReport(vo);
 	}
 
 	@Override
-	public int checkReport(CReportVO vo) {
-		return mapper.checkReport(vo);
+	public List<CReportVO> getCReportAll(CReportVO vo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

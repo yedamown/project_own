@@ -1,79 +1,66 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
+
 <head>
-<!-- jquery -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-<meta content="Free HTML Templates" name="keywords" />
-<!-- Favicon -->
-<link href="/css/chall/img/favicon.ico" rel="icon" />
-<!-- Google Web Fonts -->
-<link rel="preconnect" href="https://fonts.gstatic.com" />
-<link
-	href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap"
-	rel="stylesheet" />
-<!-- Font Awesome -->
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-	rel="stylesheet" />
-<!-- Flaticon Font -->
-<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
-<!-- Libraries Stylesheet -->
-<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css"
-	rel="stylesheet" />
-<link href="/css/chall/lib/lightbox/css/lightbox.min.css"
-	rel="stylesheet" />
-<!-- Customized Bootstrap Stylesheet -->
-<link href="/css/chall/css/style.css" rel="stylesheet" />
-<!-- JavaScript Libraries -->
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="/css/chall/lib/easing/easing.min.js"></script>
-<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
-<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
-<!-- Contact Javascript File -->
-<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
-<script src="/css/chall/mail/contact.js"></script>
-<!-- Template Javascript -->
-<script src="/css/chall/js/main.js"></script>
-<!-- google chart -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-<meta charset="utf-8">
-<title>도전_마이페이지_내 도전</title>
+	<!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="Free HTML Templates" name="keywords" />
+	<!-- Favicon -->
+	<link href="/css/chall/img/favicon.ico" rel="icon" />
+	<!-- Google Web Fonts -->
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet" />
+	<!-- Font Awesome -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+	<!-- Flaticon Font -->
+	<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+	<!-- Libraries Stylesheet -->
+	<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+	<link href="/css/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
+	<!-- Customized Bootstrap Stylesheet -->
+	<link href="/css/chall/css/style.css" rel="stylesheet" />
+	<!-- JavaScript Libraries -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+	<script src="/css/chall/lib/easing/easing.min.js"></script>
+	<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
+	<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
+	<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
+	<!-- Contact Javascript File -->
+	<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
+	<script src="/css/chall/mail/contact.js"></script>
+	<!-- Template Javascript -->
+	<script src="/css/chall/js/main.js"></script>
+	<!-- google chart -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	<meta charset="utf-8">
+	<title>도전_마이페이지_내 도전</title>
 </head>
+
 <body>
 
 	<!-- Navbar Start -->
 	<div class="container-fluid bg-light position-relative shadow">
-		<nav
-			class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
-			<a href="" class="navbar-brand font-weight-bold text-secondary"
-				style="font-size: 50px"> <i class="flaticon-043-teddy-bear"></i>
+		<nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
+			<a href="" class="navbar-brand font-weight-bold text-secondary" style="font-size: 50px"> <i
+					class="flaticon-043-teddy-bear"></i>
 				<span class="text-primary">OWN_Challenges</span>
 			</a>
-			<button type="button" class="navbar-toggler" data-toggle="collapse"
-				data-target="#navbarCollapse">
+			<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse justify-content-between"
-				id="navbarCollapse">
+			<div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
 				<div class="navbar-nav font-weight-bold mx-auto py-0">
-					<a href="index.html" class="nav-item nav-link">Home</a> <a
-						href="about.html" class="nav-item nav-link">About</a> <a
-						href="class.html" class="nav-item nav-link">Classes</a> <a
-						href="team.html" class="nav-item nav-link">Teachers</a> <a
-						href="gallery.html" class="nav-item nav-link">Gallery</a>
+					<a href="index.html" class="nav-item nav-link">Home</a> <a href="about.html"
+						class="nav-item nav-link">About</a> <a href="class.html" class="nav-item nav-link">Classes</a>
+					<a href="team.html" class="nav-item nav-link">Teachers</a> <a href="gallery.html"
+						class="nav-item nav-link">Gallery</a>
 					<div class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle"
-							data-toggle="dropdown">Pages</a>
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
 						<div class="dropdown-menu rounded-0 m-0">
-							<a href="blog.html" class="dropdown-item">Blog Grid</a> <a
-								href="single.html" class="dropdown-item">Blog Detail</a>
+							<a href="blog.html" class="dropdown-item">Blog Grid</a> <a href="single.html"
+								class="dropdown-item">Blog Detail</a>
 						</div>
 					</div>
 					<a href="contact.html" class="nav-item nav-link active">Contact</a>
@@ -84,11 +71,13 @@
 	</div>
 	<!-- Navbar End -->
 
-	<input id="userId" name="userId" type="hidden" th:if="${session.loginUser}" th:value="${session.loginUser.userId}" />
+	<input id="userId" name="userId" type="hidden" th:if="${session.loginUser}"
+		th:value="${session.loginUser.userId}" />
 
 	<!-- Blog Start -->
 	<div class="container-fluid pt-5" id="myPageChallDiv">
-		<div class="container">
+		<div class="container"> 
+
 			<div class="text-center pb-2">
 				<p class="section-title px-5">
 					<span class="px-2">My Page</span>
@@ -98,76 +87,75 @@
 
 			<!-- 나의도전 한줄 메뉴바 -->
 			<div class="row" style="margin: auto;">
-				<div class="col-12 text-left mb-2" >
+				<div class="col-12 text-left mb-2">
 					<ul class="list-inline mb-4" id="menu-filters" style="text-align: center;">
 						<li class="btn btn-outline-primary m-1 active" id="myChall" val="1"> 내가 참여 중인 도전</li>
 						<li class="btn btn-outline-primary m-1" id="likeChall" val="1">내가 북마크한 도전</li>
-						<li class="btn btn-outline-primary m-1" id="leaderChall" val="1">내가 만든</li>	
+						<li class="btn btn-outline-primary m-1" id="leaderChall" val="1">내가 만든</li>
 					</ul>
 				</div>
 			</div>
 			<!-- 나의도전 한줄 메뉴바 끝 -->
 
-				<!-- 여기부터  6개 한블럭? -->
-			<div class="row pb-3" id="challRow">
-			
-				<th:block th:each="my: ${myChall}">
-					<div class="col-lg-4 mb-4" >
-						<div class="card border-0 shadow-sm mb-2">
-							<img class="card-img-top mb-2"
-								th:src="|/imgView/${my.firstImage}|" alt=""
-								style="height:240px; object-fit: cover" />
-							<div class="card-body bg-light text-center p-4">
-								<input type="hidden" th:value="${my.challNo}" />
-								<h4 class="" th:text="${my.challTitle}"></h4>
-								<div class="d-flex justify-content-center mb-3">
-									<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
-								    <small class="mr-3">[[${my.challDuration}]]주 동안</small>
-								    <small class="mr-3">주 [[${my.challFreq}]]회</small>
-								    <small class="mr-3">[[${my.nowMem}]] 참여 중</small>
+			<!-- 여기부터  6개 한블럭? -->
+			<div th:if=" ${myChall} !=null ">
+
+				<div class="row pb-3" id="challRow">
+					<th:block th:each="my: ${myChall}">
+						<div class="col-lg-4 mb-4">
+							<div class="card border-0 shadow-sm mb-2">
+								<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt=""
+									style="height:240px; object-fit: cover" />
+								<div class="card-body bg-light text-center p-4">
+									<input type="hidden" th:value="${my.challNo}" />
+									<h4 class="" th:text="${my.challTitle}"></h4>
+									<div class="d-flex justify-content-center mb-3">
+										<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
+										<small class="mr-3">[[${my.challDuration}]]주 동안</small>
+										<small class="mr-3">주 [[${my.challFreq}]]회</small>
+										<small class="mr-3">[[${my.nowMem}]] 참여 중</small>
+									</div>
+									<a
+										th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+										class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
 								</div>
-								<a
-									th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
 							</div>
 						</div>
-					</div>
-				</th:block>
-			</div>
-		</div>	
+					</th:block>
+				</div>
+		
 	<!-- 도전 6개 끝 -->
 
-		<!-- 페이징버튼 넣기 -->
-		<nav class="blog-pagination justify-content-center d-flex"
-			id="myChallPage">
-			<!--================ 이전  =================-->
-			<ul class="pagination">
-				<li class="page-item" th:if="${paging.startPage > 1}"><a
-					class="page-link" aria-label="Previous"
-					th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
-							class="lnr lnr-chevron-left pagePort"></span></span></a></li>
-				<!--================ 페이지 이동 1_2_3_4_5  =================-->
-				<th:block
-					th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
-					<li class="page-item" th:if="${pag != paging.page}"><a
-						class="page-link pagePort" th:value="${pag}"
-						th:text="${#numbers.formatInteger(pag,2)}"></a></li>
-					<li class="page-item active" th:if="${pag==paging.page}"><a
-						class="page-link" th:text="${#numbers.formatInteger(pag,2)}"></a>
+			<!-- 페이징버튼 넣기 -->
+			<nav class="blog-pagination justify-content-center d-flex" id="myChallPage">
+				<!--================ 이전  =================-->
+				<ul class="pagination">
+					<li class="page-item" th:if="${paging.startPage > 1}"><a
+						class="page-link" aria-label="Previous"
+						th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+								class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+					<!--================ 페이지 이동 1_2_3_4_5  =================-->
+					<th:block
+						th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+						<li class="page-item" th:if="${pag != paging.page}"><a
+							class="page-link pagePort" th:value="${pag}"
+							th:text="${#numbers.formatInteger(pag,2)}"></a></li>
+						<li class="page-item active" th:if="${pag==paging.page}"><a
+							class="page-link" th:text="${#numbers.formatInteger(pag,2)}"></a>
+						</li>
+					</th:block>
+					<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+					<!--================ 이후  =================-->
+					<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+						<a class="page-link pagePort" aria-label="Next"
+						th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
+								class="lnr lnr-chevron-right"></span></span></a>
 					</li>
-				</th:block>
-				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
-				<!--================ 이후  =================-->
-				<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
-					<a class="page-link pagePort" aria-label="Next"
-					th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
-							class="lnr lnr-chevron-right"></span></span></a>
-				</li>
-			</ul>
-		</nav>
-		<nav class="blog-pagination justify-content-center d-flex"
-			id="myLikePage"></nav>
-		
+				</ul>
+			</nav>
+				<nav class="blog-pagination justify-content-center d-flex" id="myLikePage"></nav>
+		</div>
+		</div>	
 	</div>
 	<!-- Blog End -->
 

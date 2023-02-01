@@ -18,4 +18,5 @@ public interface CReportService {
 	
 	//전체신고내역
 	List<CReportVO> getCReportAll(CReportVO vo);
+	
 }
