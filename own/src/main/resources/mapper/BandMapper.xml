@@ -17,7 +17,7 @@
 				AND band_category = #{bandCategory}
 			</if>
 	</sql>
-	<!-- <sql id="recom">
+	<!-- <sql id="recom">  
 		<if test="bandName != null and bandName !=''">
 			WHERE EXERSUB_NAME LIKE '%' || #{bandName} || '%'
 			OR LOC_CITY  LIKE '%' || #{bandName} || '%'

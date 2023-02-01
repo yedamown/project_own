@@ -16,7 +16,7 @@
 	<!-- 가치 디폴트 조회 -->
 	<select id="getBandMemberDefault" resultType="BandMemberDefaultVO">
 		SELECT 	*
-			<!-- 	 USER_ID,
+			<!-- 	 USER_ID, 
 				BAND_NICKNAME,
 				BAND_GENDER,
 				BAND_LOCATION,
