@@ -23,4 +23,7 @@ public interface SAccountService {
 	//SNS계정 탈퇴
 	int deleteSnsUser(String snsNickname);
 	
+	//SNS 계정 중복체크
+	int nicknameCheck(SAccountVO vo);
+	
 }

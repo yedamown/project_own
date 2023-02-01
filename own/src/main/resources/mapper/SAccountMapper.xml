@@ -15,6 +15,12 @@
 			and a.sns_account_no = o.sns_account_no
 	</select>
 	
+	<!-- SNS 계정 중복체크 -->
+	<select id="nicknameCheck" resultType="int">
+	SELECT count(*) FROM SNS_ACCOUNT
+	WHERE SNS_NICKNAME = #{snsNickname}
+	</select>
+	
 	<!-- SNS 회원 가입 -->
 	<insert id="insertSnsUser" parameterType="SAccountVO">
 		<selectKey keyProperty="snsAccountNo" resultType="string" order="BEFORE">

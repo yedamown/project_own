@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
@@ -213,6 +213,21 @@
         .storyProfileDate.active{
             opacity: 1;
         }
+        .snsStoryDel{
+            position: absolute;
+            font-size: 11px;
+            color: lightblue;
+            top: 60px;
+            right: 4px;
+            opacity: 0;
+            z-index: 22;
+        }
+        
+        .snsStoryDel.active{
+            opacity: 1;
+
+        }
+        
 
         .Feedmodal {
             display: none; /* Hidden by default */
@@ -266,12 +281,24 @@
             height: 30px;
             cursor: pointer;
         }
-        .snsStoryDel{
-            position: absolute;
-            font-size: 11px;
-            color: lightblue;
-            top: 42px;
-            right: -25px;
+
+        /*게시글 더보기*/
+        .feed-content {
+            display: inline-block;
+            width: 230px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+        .feed-content.more {
+            display: inline;
+            white-space: normal;
+        }
+        .btn-more{
+            color:lightgray;
+            font-size: 12px;
         }
 
     </style><!--스타일-->
@@ -422,7 +449,9 @@
                         </div>
                         <div id="profileContent">
                             <div th:if="${snsInfo.snsProfile != null}">
-                                <span th:text="${snsInfo.snsProfile}"></span></div>
+                                <span class="feed-content" th:text="${snsInfo.snsProfile}" value="summary"></span>
+                                <a href="#" class="btn-more">더보기</a>
+                            </div>
                             <div th:unless="${snsInfo.snsProfile != null}">프로필 소개글을입력하세요.</div>
 
                             <div th:if="${snsInfo.snsWebsite != null}">
@@ -450,6 +479,9 @@
                     <!-- 다른사람 스토리-->
                     <div class="modal">
                         <div class="modal-content" style="width: 500px; height: 600px;">
+                            <div class="storyDelBox">
+
+                            </div>
                             
                             <div class="storyProfile" style="position:relative; width: 450px; height: 60px;">
                                 <span class="close" style="padding-left: 16px; padding-top:2px;">&times;</span>
@@ -457,8 +489,6 @@
                             <div class="storyContent" style="position:relative; width:498px; height: 500px;">
 
                             </div>
-                            
-
                         </div>
                     </div>
                     <!-- 프로필 -->
@@ -556,10 +586,9 @@
                                 <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm"
                                     enctype="multipart/form-data" onsubmit="return feedFormCheck()">
                                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                    <input name="uploadfile" type="file" id="btnAtt" multiple="multiple">
+                                    <input name="uploadfile" type="file" id="btnAtt" multiple="multiple" required>
                                     <!--<label for="btnAtt">이미지 첨부</label> 라벨이 안먹혀요 ㅠㅠ 도와주실분-->
                                     <p id="demo"></p>
-
                                     <div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
                                     <br>
                                     <div class="textLengthWarp">
@@ -567,7 +596,7 @@
                                         <p id="textTotal">/500자</p>
                                     </div>
                                     <textarea style="width: 600px; height: 200px;" name="snsBoardContent"
-                                        id="textBox" placeholder="내용을 입력하세요."></textarea>
+                                        id="textBox" placeholder="내용을 입력하세요." required></textarea>
                                     <input th:value="${userId.snsAccountNo}" name="snsAccountNo" type="hidden"></input>
                                     <input th:value="${userId.snsNickname}" type="hidden" name="snsNickname" />
                                     <input type="submit" role="button" value="글쓰기" />
@@ -630,7 +659,7 @@
                                     </ul>
                                 </div>
 
-                                <div class="btnIcon">
+                                <div class="btnIcon" th:if="${userId.snsNickname == snsInfo.snsNickname}">
                                     <img src="/css/sns/img/update.png" id="updateBtn" style="width: 20px; height: 20px; cursor: pointer;">
                                     <img src="/css/sns/img/trash.png" id="trashBtn" style="width: 20px; height: 20px; cursor: pointer;" >
                                 </div>
@@ -656,6 +685,20 @@
         var loginNickname = "[(${userId.snsNickname})]"
         var categoryNo = '';
 
+        //게시글 더보기
+        $('.btn-more').on("click",function(){
+            console.log("더보기 버튼 클릭")
+            if($('.feed-content').attr("value")=="summary"){
+                $('.feed-content').addClass("more");
+                $('.feed-content').attr("value", "more")
+                $('.btn-more').text("접기");
+            }else{
+                $('.feed-content').removeClass("more");
+                $('.feed-content').attr("value", "summary")
+                $('.btn-more').text("더보기");
+
+            }
+        })
         //신고
         $('#btnsignin').on('click',function(){
                 console.log('취소');
@@ -1053,7 +1096,6 @@
                     if(res.storyInfo.length != 0){
                         let storyProfileName = $('<span>').text(res.storyInfo[0].snsNickname)
                         storyProfileName.attr('class', "storyProfileName")
-
                         $('.storyProfile').append(storyProfileImg, storyProfileName);
                             
                         for (let i = 0;  i < res.storyImg.length; i++) {
@@ -1062,26 +1104,27 @@
                                 "class": "storyImg",
                                 "page-name": i
                             })
-                            let storyNo = $('<input>').attr({"type" :"hidden",
-                                                             "value" : res.storyInfo.snsStoryNo})
+                            console.log("스토리번호"+ res.storyInfo[i].snsStoryNo)
                             let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i].snsStoryDate));
                                 storyProfileDate.attr({'class': "storyProfileDate",
                                                     "page-name": i});
-                                                    $('.storyProfile').append(storyProfileDate, storyNo);
+                                                    $('.storyProfile').append(storyProfileDate);
                                                     $('.storyContent').append(storyImg);
                                                     
                                 if(loginNickname == res.storyInfo[0].snsNickname){
-                                    console.log("스토리 작성자 입니다.")
                                     let snsStoryDel = $('<span>').text("스토리 삭제")
                                         snsStoryDel.attr({"class" : "snsStoryDel",
-                                                          "page-name" : i})
-                                        $('.storyProfile').append(snsStoryDel);
+                                                          "page-name" : i,
+                                                          "value" : res.storyInfo[i].snsStoryNo})
+                                        snsStoryDel.css("cursor", "pointer");
+                                        $('.storyDelBox').append(snsStoryDel);
     
                                     }
                                 }
 
                                 $('.storyProfile').children(".storyProfileDate").eq(0).addClass("active")
                                 $('.storyContent').children(".storyImg").eq(0).addClass("active")
+                                $('.storyDelBox').children(".snsStoryDel").eq(0).addClass("active")
 
                         }else{
                             let defaultImg = $('<img>').attr({"src" : "/css/sns/img/feedDefaultImg.png"})
@@ -1099,8 +1142,95 @@
                 }
             })
         })
+    
+        //스토리 삭제 후 조회 
+        $('.storyDelBox').on("click", '.snsStoryDel', function(){
+                console.log("스토리 삭제입니다");
+                let snsStoryNo = $('.storyDelBox').children('.snsStoryDel.active').attr("value")
+                console.log(snsStoryNo);
+            if(window.confirm("정말 삭제하시겠습니까?")){
+                $('.sotryDelBox').children().remove();
 
+                $.ajax({
+                url: '/own/snsStoryDel',
+                method: 'post',
+                data: {
+                    snsNickname: followNickname,
+                    snsStoryNo : snsStoryNo
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (res) {
+                    alert("스토리 삭제가 완료되었습니다.")
+                    $('.storyProfile').children('.storyProfileDate').remove();
+                    $('.storyProfile').children('.storyProfileImg').remove();
+                    $('.storyProfile').children('.storyProfileName').remove();
+                    $('.storyContent').children().remove();
+                    console.log(res);
+                    console.log(res.storyInfo)
+                    let storyProfileImg="";
+                    
+                    if(res.profileImg != null){
+                        storyProfileImg = $('<img>').attr({
+                        "src": "/imgView/" + res.profileImg.mediaServerFile,
+                        "class": "storyProfileImg"})
+                    }else{
+                        storyProfileImg = $('<img>').attr({
+                            "src": "/css/sns/img/defaultUser.png",
+                            "class": "storyProfileImg"})
+                    }
+                    if(res.storyInfo.length != 0){
+                        let storyProfileName = $('<span>').text(res.storyInfo[0].snsNickname)
+                        storyProfileName.attr('class', "storyProfileName")
+                        $('.storyProfile').append(storyProfileImg, storyProfileName);
+                            
+                        for (let i = 0;  i < res.storyImg.length; i++) {
+                            let storyImg = $('<img>').attr({
+                                "src": "/imgView/" + res.storyImg[i].mediaServerFile,
+                                "class": "storyImg",
+                                "page-name": i
+                            })
+                            console.log("스토리번호"+ res.storyInfo[i].snsStoryNo)
+                            let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i].snsStoryDate));
+                                storyProfileDate.attr({'class': "storyProfileDate",
+                                                    "page-name": i});
+                                                    $('.storyProfile').append(storyProfileDate);
+                                                    $('.storyContent').append(storyImg);
+                                                    
+                                if(loginNickname == res.storyInfo[0].snsNickname){
+                                    let snsStoryDel = $('<span>').text("스토리 삭제")
+                                        snsStoryDel.attr({"class" : "snsStoryDel",
+                                                          "page-name" : i,
+                                                          "value" : res.storyInfo[i].snsStoryNo})
+                                        snsStoryDel.css("cursor", "pointer");
+                                        $('.storyDelBox').append(snsStoryDel);
+    
+                                    }
+                                }
 
+                                $('.storyProfile').children(".storyProfileDate").eq(0).addClass("active")
+                                $('.storyContent').children(".storyImg").eq(0).addClass("active")
+                                $('.storyDelBox').children(".snsStoryDel").eq(0).addClass("active")
+
+                        }else{
+                            let defaultImg = $('<img>').attr({"src" : "/css/sns/img/feedDefaultImg.png"})
+                                defaultImg.css({"width":"300px",
+                                                "position": "absolute",
+                                                "left" : "79px"});
+                                $('.storyContent').append(defaultImg);
+                            console.log('등록된 스토리가 없습니다.');
+
+                        }
+
+                        },
+                error: function (err) {
+                    console.log(err)
+                }
+             })
+          }
+                
+        })
         //스토리 게시글 페이징
         $('.storyContent').on("click",function(){
             console.log("스토리 화면 클릭")
@@ -1108,29 +1238,34 @@
             //$('.storyContent').children().length 받아온 사진의 갯수 3개 0,1,2이기 때문에 작다고 비교
             //$('.storyContent').children('.storyImg.active').attr("page-name") 현재 active상태인 이미지의 번호
             let allImgLength = $('.storyContent').children().length;
-            let activeImg = $('.storyContent').children('.storyImg.active');
             let activeImgNum = $('.storyContent').children('.storyImg.active').attr("page-name");
+            let activeImg = $('.storyContent').children('.storyImg.active');
             let activeDate =$('.storyProfile').children('.storyProfileDate.active');
+            let activeDel = $('.storyDelBox').children('.snsStoryDel.active');
             console.log(activeImg)
             console.log(activeImgNum)
             if(activeImgNum < allImgLength - 1){
                 console.log("총 이미지 갯수보다 수가 적음")
                 activeImg.next().addClass("active");
                 activeDate.next().addClass("active");
+                activeDel.next().addClass("active");
                 activeDate.removeClass("active");
                 activeImg.removeClass("active");
+                activeDel.removeClass("active");
 
             }else{
                 console.log("첫번째 이미지 active 상태로 하기.")
                 $('.storyProfile').children(".storyProfileDate").last().removeClass("active")
                 $('.storyContent').children(".storyImg").last().removeClass("active")
+                $('.storyDelBox').children('.snsStoryDel').last().removeClass("active")
                 $('.storyProfile').children(".storyProfileDate").first().addClass("active")
                 $('.storyContent').children(".storyImg").first().addClass("active")
+                $('.storyDelBox').children('.snsStoryDel').first().addClass("active")
+
             }
 
         })
-        
-        //스토리 삭제
+    
 
 
         //게시글 상세 보기 ajax
