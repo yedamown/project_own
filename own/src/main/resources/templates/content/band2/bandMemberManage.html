@@ -146,7 +146,19 @@
 	<div class="modal_bandMemberInfo">
 		<div class="modal-content">
 			<span class="closeBtn">&times;</span>
-			<p>Modal</p>
+			<div id="modal_profileImg"></div>
+			<div class="modal_nickname"><h3 id="modal_nickname"></h3></div>
+			<div id="modal_info">
+				<span><i class="fa fa-regular fa-cake-candles"></i></span>
+				<span id="modal_birtyday"></span> <br>
+				<span><i class="fa fa-regular fa-calendar-days"></i></span>
+				<span id="modal_signupDate"></span>
+			</div>
+			<input type="text" id="modal_intro" readonly>
+			<div id="modal_btn">
+				<span><i class="fa fa-regular fa-message-dots">1:1 채팅</i><span>
+				<span><i class="fa fa-regular fa-file">작성글 보기</i><span>
+			</div>
 		</div>
 	</div>
 
@@ -431,7 +443,22 @@
 				dataType: 'json',
 				contentType: "application/json"
 			}).then(res => {
-				console.log(res) // 모달에 붙이기
+				$("#modal_profileImg").empty();
+				$("#modal_info").empty();
+				$("#modal_birtyday").empty();
+				$("#modal_signupDate").empty();
+				// 프로필이미지
+				let modal_profileImg="";
+				modal_profileImg = $('<img>').attr({
+                    "src": "/imgView/" + res[0].profileImg, "class": "modal_profileImg"})
+                $('#modal_profileImg').append(modal_profileImg);
+				// 닉네임
+				$('#modal_nickname').text(res[0].bandNickname);
+				// 생일, 가입날짜
+				$('#modal_signupDate').text(res[0].bandSignupDate);
+				$('#modal_birtyday').text(res[0].bandBirth);
+				// 소개글
+				$('#modal_intro').val(res[0].bandMemberIntro);
 			}) 
 		});
 	
