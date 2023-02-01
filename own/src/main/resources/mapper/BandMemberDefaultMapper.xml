@@ -13,25 +13,27 @@
 			BAND_INTEREST = #{bandInterest}
 		</if>
 	</sql>
-	
+	<!-- 가치 디폴트 조회 -->
 	<select id="getBandMemberDefault" resultType="BandMemberDefaultVO">
-		SELECT 	USER_ID,
+		SELECT 	*
+			<!-- 	USER_ID,
 				BAND_NICKNAME,
 				BAND_GENDER,
 				BAND_LOCATION,
 				BAND_INTEREST,
-				BAND_BIRTH
-		 FROM BAND_MEMBER_DEFAULT
-		  WHERE USER_ID = #{userId}
+				BAND_BIRTH -->
+		 FROM BAND_MEMBER_DEFAULT A, MULTIMEDIA C
+		 WHERE USER_ID = #{userId}
+		 AND 'BandDef_'||A.USER_ID = C.IDENTIFY_ID
 	</select>
-	
+	<!-- 가치 디폴트 업데이트 -->
 	<update id="updateMemberDf">
 		update BAND_MEMBER_DEFAULT
 		    set
 		        <include refid="condition" />
 		    where user_id = #{userId}
 	</update>
-	
+	<!-- 가치 디폴트 가입 -->
 	<insert id="insertDefault">
 		<selectKey keyColumn="USER_BIRTHDAY,USER_GENDER" keyProperty="bandBirth,bandGender" resultType="hashmap" order="BEFORE">
 			SELECT USER_BIRTHDAY, USER_GENDER FROM OWN_USERS WHERE USER_ID = #{userId}
@@ -52,4 +54,13 @@
 					#{bandBirth}
 					)
 	</insert>
+	<!-- 가치 디폴트 가입중인 밴드구하기 -->
+		<select id="getMyBandOption" resultType="BandMemberDetailVO">
+			SELECT * 
+			    FROM BAND_MEMBER_DETAIL A, BAND B, MULTIMEDIA C
+			    WHERE A.BAND_NO = B.BAND_NO
+			    AND A.BAND_MEMBER_NO = C.IDENTIFY_ID
+			    AND BAND_STATUS IN ('BS_1', NULL)
+			    AND USER_ID = #{userId}
+		</select>
 </mapper>

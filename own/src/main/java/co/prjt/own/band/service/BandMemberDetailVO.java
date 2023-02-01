@@ -64,7 +64,10 @@ public class BandMemberDetailVO {
    public List<MultimediaVO> detailImgs;
    //new FormData로 집어넣는 이미지(ajax)
    private MultipartFile attachFile;
+   private String mediaServerFile;
    
    //검색용(이미지와 닉을 검색 리스트)
    public List<String> userIds;
+   //내가 가치장인지 확인할 때 사용(디폴트옵션에서..)
+   public String bandLeaderid;
 }

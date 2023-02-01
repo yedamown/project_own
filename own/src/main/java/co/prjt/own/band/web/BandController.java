@@ -308,13 +308,4 @@ public class BandController {
 		//처리가 됨..
 		return "redirect:/own/band/bandGroup?bandNo="+vo.getBandNo();
 	}
-	// 밴드 디폴트 마이옵션 /myBand
-	@GetMapping("/myBandOption")
-	public String myBand(Model model, HttpServletRequest request) {
-		//개인디폴트설정붙이기
-		HttpSession session = request.getSession();
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.getUserId()));
-		return "content/band/defalutOptionUp";
-	}
 }
