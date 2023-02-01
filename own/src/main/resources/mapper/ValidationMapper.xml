@@ -67,10 +67,11 @@
 		ORDER BY V.VLD_DATE DESC
 	</select>
 	
-	<select id="startToToday" resultType="int">
-		SELECT (TO_DATE(TO_CHAR(CURRENT_DATE)) - ( SELECT CHALL_STARTDATE
-		                                          FROM CHALLENGES
-		                                          WHERE CHALL_NO = #{challNo})) AS START_TO_TODAY
+	<select id="whatWeekToday" resultType="int">
+		SELECT CEIL (( SELECT (TO_DATE(CURRENT_DATE, 'yy/mm/dd')) - (( SELECT TO_DATE(CHALL_STARTDATE, 'yy/mm/dd')
+		 				 FROM CHALLENGES
+						WHERE CHALL_NO = #{challNo} ) -1 )  AS START_TO_TODAY
+						FROM DUAL ) / 7 )  AS HOWLONG
 		FROM DUAL
 	</select>
 	
@@ -80,12 +81,12 @@
 		WHERE CHALL_NO = #{challNo}
 		AND VLD_STATUS = '승인'
 		AND USER_ID = #{userId}
- 		AND VLD_DATE >= ( SELECT CHALL_STARTDATE
-                  		  FROM CHALLENGES
-                  		  WHERE CHALL_NO = #{challNo} ) +  7 * #{beforeWeek}
-		AND ( SELECT CHALL_STARTDATE
-              FROM CHALLENGES
-              WHERE CHALL_NO = #{challNo} ) + 7 * #{nowWeek}  > VLD_DATE 
+		AND TO_DATE(VLD_DATE, 'yy/mm/dd') >= ( SELECT TO_DATE(CHALL_STARTDATE, 'yy/mm/dd')
+		                                         FROM CHALLENGES
+		                                        WHERE CHALL_NO = #{challNo} ) +  7 * #{beforeWeek}
+		AND (( SELECT TO_DATE(CHALL_STARTDATE, 'yy/mm/dd')
+		         FROM CHALLENGES
+		        WHERE CHALL_NO = #{challNo}) + 7 * #{nowWeek} ) - 1  > TO_DATE(VLD_DATE, 'yy/mm/dd')
 	</select>
 	
 	<select id="todayVld" resultType="int">

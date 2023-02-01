@@ -3,11 +3,11 @@
 <mapper namespace="co.prjt.own.chall.mapper.ChallengeMapper">
 	<!-- 조건은 항상 위에 있어야함 -->
 	<sql id="condition">
-				<if test="challLeader !=null and challLeader !='' ">
-					AND	CHALL_LEADER = #{challLeader}			
-				</if>
 				<if test="challNo !=null and challNo !='' ">
 					AND CHALL_NO = #{challNo}
+				</if>
+				<if test="challLeader !=null and challLeader !='' ">
+					AND	CHALL_LEADER = #{challLeader}			
 				</if>
 				<if test="challStatus !=null and challStatus !='' ">
 					AND CHALL_STATUS = #{challStatus}		
@@ -72,7 +72,8 @@
 	<!-- 단건조회 -->
 	<select id="getChall" resultType="co.prjt.own.chall.service.ChallengeVO">
 		SELECT * FROM CHALLENGES
-		WHERE CHALL_NO = #{challNo}
+		WHERE 1=1
+		<include refid="condition"/>   
 	</select>
 
 	<select id="getMyChall" resultType="co.prjt.own.chall.service.ChallengeVO">

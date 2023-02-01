@@ -23,8 +23,6 @@ public interface ValidationService {
 	//내 도전조회(도전번호 & 아이디)
 	List<ValidationVO> getMyChallVld(ValidationVO vo);
 	
-	//각 도전 한주 인증횟수 카운트 
-	int countWeekVld(ValidationVO vo);
 	
 	//각 도전별 총 인증횟수 카운트
 	int countVld(ValidationVO vo);
@@ -34,6 +32,15 @@ public interface ValidationService {
 	
 	//도전 멤버 평균 인증횟수
 	int memVldAvg(ValidationVO vo);
+	
+	//각 도전 한주 인증횟수 카운트  --> 지워도될지도 
+	int countWeekVld(ValidationVO vo);
+	
+	//이번주 인증 가능한지 체크
+	int vldWeekCheck(ValidationVO vo);
+	
+	//오늘 인증 가능한지 체크
+	
 	
 	//-----------------인증페이징---------------------
 	//페이징넣은...
