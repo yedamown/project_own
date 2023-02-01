@@ -91,16 +91,4 @@ public class SBoardServiceImpl implements SBoardService {
 		return sBoardMapper.snsBoardLikeList(id);
 	}
 
-	@Override
-	public List<SBoardVO> getNowBoardListPaging(String id, Paging paging) {
-		return sBoardMapper.getNowBoardListPaging(id, paging);
-	}
-
-	@Override
-	public int getNowBoardListCount(String id) {
-		return sBoardMapper.getNowBoardListCount(id);
-	}
-
-
-
 }

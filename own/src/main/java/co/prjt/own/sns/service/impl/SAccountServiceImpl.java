@@ -44,4 +44,10 @@ public class SAccountServiceImpl implements SAccountService {
 		return sAccountMapper.snsImgCount(id);
 	}
 
+	@Override
+	public int nicknameCheck(SAccountVO vo) {
+		// TODO Auto-generated method stub
+		return sAccountMapper.nicknameCheck(vo);
+	}
+
 }

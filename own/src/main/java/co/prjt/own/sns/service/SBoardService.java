@@ -16,12 +16,6 @@ public interface SBoardService {
 	 //SNS 팔로우 최신 게시글 조회
 	 public List<SBoardVO> getNowBoardList(String id);
 	 
-	 //SNS 팔로우 최신 게시글 조회 페이징용
-	 public List<SBoardVO> getNowBoardListPaging(String id, Paging paging);
-	 
-	 //SNS 최신게시글 카운트
-	 int getNowBoardListCount(String id);
-	 
 	 //SNS 전체 최신 게시글 조회
 	 public List<SBoardVO> getNewBoardList();
 	 

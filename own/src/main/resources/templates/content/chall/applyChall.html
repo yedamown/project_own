@@ -57,6 +57,15 @@
     <input id ="userId" type="hidden" th:value="${session.loginUser.userId}">
 	<h3>도전 신청 페이지</h3>
 	<!-- 상세보기 설명 살짝 -->
+	<div>
+		<h3 th:text="${myInfo.memAmt}"></h3>
+		<h3 th:text="${detailChall.challPrice}"></h3>
+		<h3>나의 보유 예치금 : [[${myInfo.memAmt}]]</h3>
+		<h3>도전 예치금 : [[${detailChall.challPrice}]]</h3>
+		<input type="hidden" id= myAmt th:value="${myInfo.memAmt}" />
+		<input type="hidden" id= amtCheck value="0" />
+	</div>
+
 	<ul>
 		<li>나의 도전다짐:</li>
 		<li><textarea placeholder="나의 도전 다짐을 적어주세요." id="myIntro"></textarea></li>
@@ -82,12 +91,14 @@
 		$('#applyBtn').on("click", function(){
 			let userId = $('#userId').val();
 			let challNo =  $('#challNo').val();	
+			let cutChallNo  = challNo.substr(4);
 			let challPrice = $('#challPrice').val();
 			let check1 = $('input:checkbox[id="check1"]').is(":checked")
 			let check2 = $('input:checkbox[id="check2"]').is(":checked")
+			let myAmt = $('#myAmt').val()
 			console.log(check1)
 			console.log(challNo, userId);
-			if(check1 == true && check2 == true){
+			if( (check1 == true && check2 == true) && myAmt > challPrice){
 				$.ajax({
 					url: '/own/chall/applyChall',
 					method: 'post',
@@ -103,16 +114,17 @@
 						$.ajax({
 							url:'/own/chall/refundAmt',
 							method:'post',
-							data:JSON.stringify({userId:userId,
+							data:JSON.stringify({userId: userId,
 												price: challPrice,
-												amtType: "도전참가"					
+												amtType: "도전참가",
+												challNo: challNo				
 							}),
 							beforeSend : function(xhr){
 										xhr.setRequestHeader(header, token);
 							},
 							contentType:"application/json",
 							success:function(res){
-								location.href = '/own/chall/detailChall?challNo=' + challNo
+								location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
 							},
 							error: function(err){
 								console.log(err);
@@ -123,8 +135,10 @@
  						console.log(err)
  					}
  				})
-			} else{
-				alert('모든 안내사항을 확인하고, 동의란에 체크 해 주세요.')
+			} else if( myAmt < challPrice ){
+				alert('예치금이 부족합니다. 마이페이지에서 충전 후 참여바랍니다.');
+			} else {
+				alert('모든 안내사항을 확인하고, 동의란에 체크 해 주세요.');
 			}
 		})
 	</script>

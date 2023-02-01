@@ -264,11 +264,11 @@
 							<a th:if="${memcheck !=null }" class="btn btn-primary mt-2 py-2 px-4">이미 참여중인 도전</a> <a
 								th:if="${memcheck ==null }" class="btn btn-primary mt-2 py-2 px-4" id="applyBtn">도전
 								신청하기</a>
-							<div th:if="${myInfo}">
+							<!-- <div th:if="${myInfo}">
 								<a th:if="${leaderInfo.userId == myInfo.userId }" class="btn btn-primary mt-2 py-2 px-4"
 									id="resultProc">도전
 									결과처리하기</a>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
@@ -346,8 +346,8 @@
 					<div style="display: none;" id="challVld">
 						<div style="width: 700px; text-align: center;">
 							<!-- 첫 번째 Modal을 여는 클래스 -->
-							<p class="modalBtn btn btn-primary px-3" id="vldAddModal">MODAL_1 인증하기</p>
-
+							<button class="modalBtn btn btn-primary px-3" id="vldAddModal">MODAL_1 인증하기</button>
+							<h1>종료되면 .... 등록 및 신고불가능.. 리스트 불러오기만 가능</h1>
 							<!-- 인증 구분 라벨 -->
 							<div class="col-12 text-center mb-2">
 								<ul class="list-inline mb-4 mt-4" id="myVldPage">
@@ -368,12 +368,12 @@
 							<nav class="blog-pagination justify-content-center d-flex pageBtn" id="myVldPaging">
 							</nav>
 						</div>
-
 					</div>
 					<!-- 인증탭 끝  -->
 
 					<!--달성률 시작-->
 					<div style="display: none;" id="challResult">
+						<input type="hidden" id="resultCheck" value="false">
 						<div style="width: 700px; display: flex;justify-content: center;">
 							<div style="text-align: center;">
 								<canvas id="myChart" style="width: 450px; height: 450px; "></canvas>
@@ -383,7 +383,10 @@
 								<canvas id="memChart" style="width: 200px; height: 200px;"></canvas>
 								<p>멤버 달성률</p>
 							</div>
-							<input type="hidden" id="resultCheck" value="false">
+						</div>
+						<div>
+							<h3>완료 결과.. div 환급금액 확인.</h3>
+
 						</div>
 					</div>
 					<!--달성률 탭 끝-->
@@ -400,13 +403,14 @@
 						</div>
 						<div>
 							<h3>인증신고내역</h3>
-							
+
 						</div>
 					</div>
 					<!--멤버리스트 탭 끝-->
 
 					<!-- 인증신고 관리..리더만 -->
 					<div id="vldRpt">
+						<input type="hidden" id="reportCheck" value="false">
 						<h3>멤버 인증관리</h3>
 						<div class="row portfolio-container" id="vldRptList">
 						</div>
@@ -476,6 +480,7 @@
         <img src="" style="width: 700px; margin: auto"/>
         <h3></h3>
         <p>두 번째 Modal</p>
+		<input type="hidden" />
         <button class="btn btn-primary px-3" id="rptBtn">신고</button>
     		<div style="display: none" id="reportArea">
 				<textarea style="width:95%; margin:10px" id="rptReason"></textarea>
@@ -875,8 +880,9 @@
 
     //도전 신청으로 이동하기   --> 여유가되면 모달로 띄우기...^^;
     $('#applyBtn').on("click", function () {
-      location.href = '/own/chall/applyForm?challNo=' + challNo
-    })
+		console.log("도전신청");
+     	location.href = '/own/chall/applyForm?challNo=' + challNo + '&&userId=' + userId;
+    });
     
     //메뉴 클릭 색깔 변경 이벤트
     $('#menu-filters li').click(function(){
@@ -891,6 +897,7 @@
       $("#challVld").css('display', 'none');
       $("#challResult").css('display', 'none');
       $("#challMem").css('display', 'none');
+	  $("#vldRpt").css('display', 'none');
     })
 
     //--------------------------------인증하기-------------------------------------
@@ -901,13 +908,14 @@
       $("#challDetail").css('display', 'none');
       $("#challResult").css('display', 'none');
       $("#challMem").css('display', 'none');
+	  $("#vldRpt").css('display', 'none');
+
       let vldButton = $('#vldFormSubmit');
       console.log(challNo, userId);
       console.log($("#resultCheck").val());
 
 	  //처음보여주는 아작스페이징!
       if($("#resultCheck").val() == "false"){
-        console.log("인증하기")
 		//인증내역 페이징 아작스
 		$.ajax({
           url: '/own/chall/vldPageListAjax',
@@ -927,35 +935,38 @@
           error: function(err){
             console.log(err);
           }
-        })
+        });
         //인증횟수 확인하고 버튼 설정바꾸기
-    //     $.ajax({
-    //     url:'/own/chall/vldCheckAjax',
-    //     method: 'post',
-    //     data: JSON.stringify({userId: userId,
-    //                           challNo: challNo
-    //                         }),
-    //     beforeSend : function(xhr){
-    //                   xhr.setRequestHeader(header, token);
-    //     }, 
-    //     contentType: "application/json",
-    //     success: function(result){
-    //       if(result == "able"){
-    //         console.log('인증가능 - 이번주 인증 덜채움');
-    //       } else if(result == "todaydone"){
-    //         console.log("이미 오늘 인증 완료.")
-    //         $('#vldAddModal').attr('type', 'button').val('오늘 인증 완료.');
-    //       } else if(result == "thisweekDone"){
-    //         console.log("이번 주 인증완료.")
-    //         $('#vldAddModal').attr('type', 'button').val('이번주 인증 완료.');
-    //       } else{
-    //         console.log("모르겠노");
-    //       }
-    //     },
-    //     error: function(err){
-    //       console.log(err)
-    //     }
-    //   })
+			$.ajax({
+			url:'/own/chall/vldCheckAjax',
+			method: 'post',
+			data: JSON.stringify({ userId: userId,
+								  challNo: challNo
+								 }),
+			beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token);
+			}, 
+			contentType: "application/json",
+			success: function(result){
+			if(result == 1){
+				console.log('인증가능');
+			} else if(result == 2){
+				console.log("이미 오늘 인증 완료.")
+				// $('#vldAddModal').removeClass('modalBtn').text('오늘 인증 완료.');
+				$('#vldAddModal').attr('style', 'display:none').text('오늘 인증 완료.');
+			} else if(result == 3 ){
+				console.log("이번 주 인증완료.")
+				$('#vldAddModal').attr('style', 'display:none').text('오늘 인증 완료.');
+			} else{
+				console.log("오류가 발생하였습니다.");
+				alert('오류가 발생하였습니다.');
+				$('#vldAddModal').attr('style', 'display:none').text('오늘 인증 완료.');
+			}
+			},
+			error: function(err){
+				console.log(err)
+			}
+		});
 		}
 		$("#resultCheck").val("true");
 	}); //인증하기 첫버튼 끝
@@ -1148,8 +1159,7 @@
       let gridVld = `<div class="grid" style="padding: 10px" id=${vldNo}>
       					<div class="card card__one">
 							<figure class="card__img">
-								<img src=/imgView/${mediaName} 
-								 style="width: 320px; height:230px ; object-fit: cover"/>
+								<img src=/imgView/${mediaName} style="width: 320px; height:230px ; object-fit: cover"/>
 							</figure>
 						<div class="card__desc vldno">
 								<input class="vldNum" type="hidden" value=${vldNo}>
@@ -1167,12 +1177,12 @@
 		console.log($('#rptReason').val(""));
 		$('#rptBtn').attr('style', 'display:block');
 		console.log('왜안되나'); 
-	})
+	});
 
-	//모달신고...정보빼오기..ㅎ -> 모달 두번째창에 띄우기!
+	//모달 인증신고 인증 신고 -------------------------------------------------------------------------
 
+	//인증이미지 클릭 시 모달 띄우기
 	$('#vldImg').on('click','.grid',function(e){
-		e.stopPropagation();
 		console.log(this); //이 창을.. 클릭하면 모달띄우기..
 		//gird에 아이디값으로 식별번호 넣어둔거 읽어오기
 		console.log("=========================");
@@ -1185,12 +1195,10 @@
 		$('#vldReport h1').text("오 성공");
 		$('#vldReport img').attr('src', vldDtImg);
 		$('#vldReport h3').text(vldDtId);
-		//첫번째 p 바꾸기
-		$('#vldReport p').eq(0).text("날짜넣어야지 등록날짜 포맷해서");
+		//첫번째 인풋값에 인증번호 넣기.
+		$('#vldReport input').eq(0).val(vldNo);
 
-		//작성자와 내 아이디 같으면 신고버튼 X
-
-		//아작스로 내가 신고했는지? 내꺼인지 확인하기
+		//신고여부 확인.
 		$.ajax({
 	        url:'/own/chall/checkRptAjax?vldNo='+ vldNo + '&&reporter=' + userId,
 	        method: 'get',
@@ -1205,33 +1213,37 @@
 	        		}
 	        },
 	        error: function(err){
-	          	console.log(err)
+	          	console.log(err);
 	        }
       	})		
+	});
 
-		//신고하기 누르면 나오는 신고내역부분~! 수정해야함 ㅠㅠ
-		$('#rptBtn').on('click', function(e){
-			e.stopPropagation();
-			$('#reportArea').attr('style', 'display:block');
-			console.log("================이 인증번호"+vldNo);
-			console.log("==============인풋에넣어놓은 이건어떤가요" +  vldDtNo);
-		});
+	//신고하기 누르면 신고폼 display block
+	$('#rptBtn').on('click', function(e){
+		console.log(e);
+		console.log($(e).parent());
+		// console.log(this.parent());
+		console.log($(this).parent().find('input').val());
+		$('#reportArea').attr('style', 'display:block');
+	});
 
-		$('#rptAddBtn').on('click', function(){
-			console.log('신고하기');
+	//신고제출 버튼...
+	$('#rptAddBtn').on('click', function(){
+			console.log('신고제출 버튼');
+			let vldRealNo = $(this).parent().parent().find('input').val();
+			console.log(vldRealNo);
+			// console.log($(this).parent().find('input').val());
 			//신고사유
 			console.log($('#rptReason').val());
 			console.log("---------지금도전번호----" + challNo);
 			console.log("---------지금로그인아이디 신고하는 사람----" + userId);
-			console.log("---------신고할인증식별번호----" + vldNo);
-			console.log("---------신고당하는사람 =인증올린----" + vldDtId);
 			let rptReason = $('#rptReason').val();
 			let cutChallNo  = challNo.substr(4);
 			console.log(cutChallNo);
 	        $.ajax({
 	            url:'/own/chall/addRptAjax',
 	            method: 'post',
-	            data: JSON.stringify({vldNo: vldNo,
+	            data: JSON.stringify({vldNo: vldRealNo,
 	                                  reporter: userId,
 	                                  reportReason: rptReason
 	                                }),
@@ -1253,8 +1265,7 @@
 	              console.log(err)
 	            }
 	          })
-		})
-	})
+		});
     
     //--------------------------------달성률-------------------------------------
 
@@ -1264,6 +1275,7 @@
       $("#challVld").css('display', 'none');
       $("#challDetail").css('display', 'none');
       $("#challMem").css('display', 'none')
+	  $("#vldRpt").css('display', 'none');
 
 	  let duration = $('#challDur').val();
 	  let freq = $('#challFreq').val();
@@ -1339,6 +1351,7 @@
       $("#challDetail").css('display', 'none');
       $("#challVld").css('display', 'none');
       $("#challResult").css('display', 'none');
+	  $("#vldRpt").css('display', 'none');
       console.log($("#challMemCheck").val());
       if($("#challMemCheck").val() == "false"){
 		  let memWait = "대기";
@@ -1409,27 +1422,37 @@
     }
  
 	//-----------------------------인증신고 관리 - 리더만 가능.--------------------------------
+
 	$('#vldRptBtn').on('click', function(){
-		console.log("인증신고 관리하는 곳.");
-		let reportState = "처리 중";
-		$.ajax({
-			url:'/own/chall/reportListAjax',
-			method:'get',
-			data: { challNo: challNo,
-					reportState: reportState},
-			success: function(res){
-				console.log(res);
-				res.forEach( result => {
-					console.log(result);
-					console.log("신고번호==" + result.vldNo);
-					console.log(result.reportReason);
-					makeRptVldForm(result);
-				})
-			},
-			error: function(err){
-				console.log(err);
-			}
-		})
+		$("#challVld").css('display', 'none');
+      	$("#challDetail").css('display', 'none');
+      	$("#challResult").css('display', 'none');
+      	$("#challMem").css('display', 'none');
+		$("#vldRpt").css('display', 'inline-block');
+
+		if($("#reportCheck").val() == "false"){
+			console.log("인증신고 관리하는 곳.");
+			let reportState = "처리 중";
+			$.ajax({
+				url:'/own/chall/reportListAjax',
+				method:'get',
+				data: { challNo: challNo,
+						reportState: reportState},
+				success: function(res){
+					console.log(res);
+					res.forEach( result => {
+						console.log(result);
+						console.log("신고번호==" + result.vldNo);
+						console.log(result.reportReason);
+						makeRptVldForm(result);
+					})
+				},
+				error: function(err){
+					console.log(err);
+				}
+			})
+		}
+		$("#reportCheck").val("true");
 	})
 
 		function makeRptVldForm(vld){
