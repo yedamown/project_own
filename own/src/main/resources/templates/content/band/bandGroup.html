@@ -139,8 +139,8 @@
     <input type="hidden" th:value="${band.bandNo}" 				id="bandNo" >
    	<input type="hidden" th:value="${session.loginUser.userId}" id="userId" >
    	<input type="hidden" th:value="${band.bandLeaderid}" id="bandLeaderid" >
-    <input type="hidden" th:name="${_csrf.parameterName}"
-					th:value="${_csrf.token}">
+   	<input type="hidden" th:value="${BandMemberDetail.bandNickname}" id="bandNickname" >
+    <input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
         <!--================Header Area =================-->
         <header><aside class="single_sidebar_widget search_widget">
             <div class="br"></div>
@@ -606,20 +606,29 @@
 					$('.dropdown-content').css('display','block');
 				}, 200);
 			})
-			
+			//###################################################$().load()
 	       	//게시판이동
 	    	$('.smallBoard').on('click', function(e){
 	    		let bandBoardOptionNo = $(e.target).attr('name');
-	    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo+"&bandBoardOptionNo="+bandBoardOptionNo);	
+	    		
+	    		//history.pushState(null, null, "/own/band/bandGroup/bandBoardList?bandNo="+bandNo+"&bandBoardOptionNo="+bandBoardOptionNo)
+	    		
+	    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo+"&bandBoardOptionNo="+bandBoardOptionNo);
 	    	})
 	    	//글쓰기
 	    	$('#writeBoard').on('click', function(){
+	    		
+	    		//history.pushState(null, null, "?id=bandBoardWrite")
+	    		
 	    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardWrite?bandNo="+bandNo);
 	    		//$('#mainTemplate').empty();
 	    		 // document.getElementById("ifr").src = "/own/band/bandGroup/bandBoardWrite?bandNo="+bandNo;
 	    	})
 	    	//내 정보수정으로 이동
 	    	$('#myOption').on('click', function(){
+	    		
+	    		history.pushState(null, null, "?id=bandBoardList")
+	    		
 	    		$('#mainTemplate').load("/own/band/bandGroup/myOption?bandNo="+bandNo);
 	    	})
 	    	//가치 설정으로 이동
@@ -705,6 +714,10 @@
 		        })
 	    	})
        })
+       //뒤로가기 실험
+			/* window.onpopstate = function(event) {
+				history.go(0);
+			} */
     	</script>
     </div>
     </body>
