@@ -61,6 +61,11 @@ public class OwnhomeController {
 			return "content/own/searchTest";
 		}
 		
+		@GetMapping("/own/questform")
+		public String questform() {
+			return "content/own/ownQuest";
+		}
+		
 		
 		@GetMapping("/own/sns/ListSearch")
 		@ResponseBody
@@ -185,6 +190,14 @@ public class OwnhomeController {
 			model.addAttribute("OList", ownService.getPagingmyQuestlist(vo, paging));
 			return "content/own/ownMyQuestion";
 		}
+		
+		@PostMapping("/own/QuestADD")
+		public String questAdd(QuestionVO vo) {
+			System.out.println(vo);
+			ownService.questAdd(vo);
+			return "redirect:/own/mypage/question";
+		}
+		
 		
 		@ResponseBody		
 		@GetMapping("/own/mypage/myquestionAjax")

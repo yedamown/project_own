@@ -12,7 +12,6 @@ body {
 	background-color: #f0f0f0;
 	font: 12px Arial, Helvetica, sans-serif;
 	color: #2e2e2e;
-	padding-top: 42px;
 }
 
 div.layout-978 { width: 978px; margin: 0px auto; }
@@ -29,7 +28,11 @@ div.tblcontainer {
 	width: 93%;	
 }
 
-
+table {
+    width: 100%;
+    border-top: 1px solid #444444;
+    border-collapse: collapse;
+  }
 
 .datagrid {
 	border-collapse: collapse;
@@ -55,6 +58,7 @@ div.tblcontainer {
 .datagrid tbody tr td {
 	padding: 6px 8px;
 	border: 1px solid #c9c9c9;
+
 }
 
 .datagrid tbody tr td.cash {
@@ -76,6 +80,11 @@ div.tblcontainer {
 	top: 10px;
 	right: 10px;
 }
+.contentLength{
+text-overflow:ellipsis; 
+overflow:hidden;
+}
+
 </style>
 </head>
 
@@ -104,15 +113,13 @@ div.tblcontainer {
 	  <th>질문번호</th>
 				<th>질문자ID</th>
 				<th>제목</th>
-				<th>내용</th>
-				<th>답변</th>
 				<th>질문날짜</th>
 				<th>머리말</th>
 				<th>상태</th>
 		</thead>
     <tbody id="userList">
 			<tr th:each="quest : ${OList}">
-				<td th:text="${quest.questNo}"></td>
+				<td th:text="${quest.rn}"></td>
 				<td th:text="${quest.userId}"></td>
                 <span th:if="${quest.answer==null}">
 				<td class="titlemodal" th:text="${quest.title}"
@@ -122,14 +129,6 @@ div.tblcontainer {
                     <td th:text="${quest.title}"
                         th:id="${quest.questNo}"></td>
                 </span>
-
-				<td th:text="${quest.content}"></td>
-				<span th:if="${quest.answer==null}">
-					<td>미처리 상태</td>
-				</span>
-				<span th:unless="${quest.answer==null}">
-					<td th:text="${quest.answer}"></td>
-				</span>
 				<td th:text="${#dates.format(quest.questDate, 'yyyy-MM-dd')}"></td>				
 				<td th:text="${quest.header}"></td>
 				<td th:text="${quest.status}"></td>
@@ -247,9 +246,25 @@ div.tblcontainer {
 			}).then(res=>{
                 $('#modalform').append(`<input type="hidden" value="${res.questNo}" name="questNo">`)
                 $('#modaltitle').html(res.title);
+				$('#modalcontent').html(res.content);
 				console.log(res);
 			})		
 		})
+
+		function leftPad(value) {
+    if (value >= 10) {
+        return value;
+    }
+
+    return `0${value}`;
+}
+function toStringByFormatting(source, delimiter = '-') {
+    const year = source.getFullYear();
+    const month = leftPad(source.getMonth() + 1);
+    const day = leftPad(source.getDate());
+
+    return [year, month, day].join(delimiter);
+}
 
 		$('#pagegation').on('click', '.pagePort', function(){
 			//페이지번호 + 밴드식별번호
@@ -274,14 +289,13 @@ div.tblcontainer {
 						answer = `<td>미처리상태</td>`
 						title = `<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>`;
 					}
+					let date = toStringByFormatting(new Date(ele.questDate));
 
 					let tag = `<tr>
-								<td>${ele.questNo}</td>
+								<td>${ele.rn}</td>
 								<td>${ele.userId}</td>
 								${title}
-								<td>${ele.content}</td>
-								${answer}
-								<td>${ele.questDate}</td>
+								<td>${date}</td>
 								<td>${ele.header}</td>
 								<td>${ele.status}</td>
 								</tr>`

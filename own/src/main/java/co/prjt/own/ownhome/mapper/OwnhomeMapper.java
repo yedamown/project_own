@@ -58,5 +58,7 @@ public interface OwnhomeMapper {
 	//신고 갯수갖고오기
 	public int reportCount();
 	//========================마이페이지
+	//질문하기
+		public int questAdd(QuestionVO vo);
 	
 }
