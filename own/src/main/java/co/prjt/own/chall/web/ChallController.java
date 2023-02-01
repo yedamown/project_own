@@ -249,11 +249,12 @@ public class ChallController {
 
 	// 도전 신청페이지로 이동
 	@GetMapping("/applyForm") // 등록 폼으로 이동
-	public String applyFormChall(@RequestParam("challNo") String no, ChallengeVO vo, Model model) {
-		System.out.println(no);
-		vo.setChallNo(no);
+	public String applyFormChall(CMemberVO mem, ChallengeVO vo, Model model) {
+		System.out.println("도전 정보 가져왔나요" + vo);
+		System.out.println("멤버인포" + mem);
 		model.addAttribute("detailChall", challenge.getChall(vo));
-		model.addAttribute("challImg", common.selectImgAll(no));
+		model.addAttribute("challImg", common.selectImgAll(vo.getChallNo()));
+		model.addAttribute("myInfo", member.getCMem(mem));
 		return "content/chall/applyChall";
 	}
 
@@ -296,21 +297,24 @@ public class ChallController {
 	// 오늘 인증횟수+ 이번 주인증횟수 체크
 	@PostMapping("/vldCheckAjax")
 	@ResponseBody
-	public String vldCheck(@RequestBody ValidationVO vo, ChallengeVO cvo) {
-		// 해당도전 도전횟수 계산하기
-		int challFreq = challenge.getChall(cvo).getChallFreq();
-		// 서비스 이번 주 인증횟수 계산하기
-		int thisWeekCheck = validation.countWeekVld(vo);
+	public int vldCheck(@RequestBody ValidationVO vo, ChallengeVO cvo) {
+		System.out.println("인증vo에 도전번호 아이디 왔나요 ---------"+vo);
+		System.out.println("도전vo에 도전번호 왔나요 ---------"+ vo);
+		//이번주 인증체크 가능 1 불가능 0
+		int weekcheck = validation.vldWeekCheck(vo);
 		// 오늘 인증횟수 체크
 		int todayVldcheck = validation.todayVld(vo);
-		if (thisWeekCheck < challFreq && todayVldcheck < 1) {
-			return "able";
-		} else if (todayVldcheck > 1) {
-			return "todaydone";
-		} else if (todayVldcheck < 1 && thisWeekCheck > challFreq) {
-			return "thisweekDone";
+		if(weekcheck == 1 && todayVldcheck == 0) {
+			//인증가능
+			System.out.println("-------------인증가능-----------");
+			return 1;
+		} else if (todayVldcheck > 0){
+			//오늘 완료. 오늘완료랑 이번주완료 동시인경우 오늘완료로 뜨게.
+			System.out.println("-------------오늘완-----------");
+			return 2;
 		} else {
-			return "etc";
+			System.out.println("-------------이번 주 끝-----------");
+			return 3;
 		}
 	}
 
