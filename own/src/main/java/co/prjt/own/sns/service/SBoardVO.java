@@ -28,7 +28,4 @@ public class SBoardVO {
 	String mediaNo;
 	String likeCount;
 	String replyCount;
-	int last;
-	int first;
-	public Paging paging;
 }

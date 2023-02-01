@@ -94,52 +94,15 @@ public class SnsController {
 		return "content/sns/snsHome"; 
 	}
 	
-//	//1. sns홈 페이징 할거면 ..합시다
-//		@RequestMapping(value = "/sns", method = RequestMethod.GET)
-//		public String getSnsUserList(HttpServletRequest request, Model model, SBoardVO svo, OwnUserVO ovo, OwnLikeVO like) {
-//			//세션 담아주기
-//			HttpSession session = request.getSession();
-//			//세션에 강제로 로그인유저 저장하기
-//			session.setAttribute("loginUser", ownService.login("kyr"));
-//			ovo = (OwnUserVO) session.getAttribute("loginUser");
-//			OwnUserVO snsIdCheck = ownService.login(ovo.getUserId());
-//			String snsId = snsIdCheck.getSnsAccountNo(); 
-//			System.out.println(snsId);
-//			if(snsId != null) {
-//				SAccountVO snsInfo = ownService.snsLogin(ovo.getUserId());
-//				if(boardService.getNowBoardList(snsInfo.getSnsAccountNo())!=null) {	
-//			     	//팔로우 한 계정의 최신게시글 1개
-//					List<SBoardVO> list = boardService.getNowBoardList(snsInfo.getSnsAccountNo());
-//
-//					System.out.println("★★★★★리스트입니다"+list);
-//					List<StoryVO> storyList = storyService.getNowStoryList(snsInfo.getSnsAccountNo());
-//					
-//					//이미지 담을 리스트
-//					List<MultimediaVO> imgList;
-//					for (SBoardVO i : list){
-//						imgList = common.selectImgAll(i.getSnsBoardNo());
-//						i.setFileList(imgList);
-//					}
-//					model.addAttribute("snsFollow", followService.followCount(snsInfo.getSnsNickname())); // sns 팔로우 수 
-//					model.addAttribute("snsInfo", snsInfo);
-//					model.addAttribute("nowFeed", list);
-//					model.addAttribute("storyInfo", storyList);
-//					System.out.println("받아온 스토리 정보 ----------"+storyList);
-//				}else {
-//					System.out.println("정보없음");
-//					model.addAttribute("snsInfo", snsInfo);
-//				}
-//			}
-//			return "content/sns/pagingTestHome"; 
-//		}
-	
-	
 	//1-1. sns 간편 회원 가입
 	@PostMapping("/snsAccount")
 	public String insertSnsUser(HttpServletRequest request, OwnUserVO ovo, SAccountVO svo, 
 								@RequestParam("snsNickname")String snsNickname, @RequestParam("userId")String id) {
 		HttpSession session = request.getSession();
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
+		
+		//중복체크 넣어줘야함..	
+		
 		svo.setSnsNickname(snsNickname);
 		snsService.insertSnsUser(svo);
 		ownService.updateSnsUser(snsNickname, ovo.getUserId());
@@ -149,7 +112,12 @@ public class SnsController {
 		session.setAttribute("loginUser", updateLogin);
 		return "redirect:/own/snsNewFeed";
 	}
-	
+	//1-2 sns 회원가입 중복값 체크
+	@GetMapping("/nicknameChk")
+	@ResponseBody
+	public int nicknameChk(SAccountVO svo) {
+		return snsService.nicknameCheck(svo);
+	}
 	
 	//2. 개인피드	
 	@RequestMapping(value = "/snsFeed", method = RequestMethod.GET)
@@ -159,7 +127,7 @@ public class SnsController {
 		
 		//세션에 강제로 로그인유저 저장하기
 
-		//session.setAttribute("loginUser", ownService.login("kyr"));
+		session.setAttribute("loginUser", ownService.login("kyr"));
 
 		OwnUserVO ovo = new OwnUserVO();
 		ovo =(OwnUserVO) session.getAttribute("loginUser");
@@ -346,7 +314,32 @@ public class SnsController {
 		return map;
 	}
 	
-	//10. 댓글 입력
+	//10. 스토리 삭제
+	@PostMapping("/snsStoryDel")
+	@ResponseBody
+	public Map<String, Object> deleteSnsStory(String snsStoryNo, String snsNickname){
+		Map<String, Object> map = new HashMap<>();
+		System.out.println("@@@@@@@@@@@@@@@스토리 삭제 컨트롤 도착@@@@@@@@@@@@@@@@@");
+		storyService.deleteStory(snsStoryNo);
+		List<StoryVO> list = storyService.getStoryList(snsNickname);
+		List<MultimediaVO> storyImgList = new ArrayList<>();
+		String youId= snsService.getSnsUser(snsNickname).getSnsAccountNo();
+		MultimediaVO imgList = new MultimediaVO();
+		MultimediaVO profileImg = common.selectImg(youId);
+			for (StoryVO i : list) {
+				if(common.selectImg(i.getSnsStoryNo()) != null){
+					imgList = common.selectImg(i.getSnsStoryNo());
+					System.out.println(imgList);
+					storyImgList.add(imgList);
+			  }
+		}
+		map.put("storyImg", storyImgList);
+		map.put("profileImg", profileImg);
+		map.put("storyInfo", list);
+		return map;
+	}
+	
+	//11. 댓글 입력
 	@PostMapping("/snsReply")
 	@ResponseBody
 	public Map<String, Object> insertSnsReply(ReplyVO rvo, String replyContent, String userId, String categoryNo) {
@@ -365,7 +358,7 @@ public class SnsController {
 		return map;
 	}
 	
-	//11. 댓글 삭제
+	//12. 댓글 삭제
 	@PostMapping("/snsReplyDelete")
 	@ResponseBody
 	public Map<String, Object> deleteSnsReply(ReplyVO rvo, String replyNo, String categoryNo) {
@@ -383,7 +376,7 @@ public class SnsController {
 		
 	}
 	
-	//12. sns 좋아요
+	//13. sns 좋아요
 	@PostMapping("/snsLike")
 	@ResponseBody
 	public int addLike(OwnLikeVO like, String snsBoardNo, String userId) {
@@ -403,7 +396,7 @@ public class SnsController {
 		
 	}
 	
-	//12-1. 좋아요 취소
+	//13-1. 좋아요 취소
 	@PostMapping("/snsLikeDel")
 	@ResponseBody
 	public int delLike(OwnLikeVO like, String snsBoardNo, String userId) {
@@ -421,7 +414,7 @@ public class SnsController {
 		
 	}
 	
-	//13. 검색
+	//14. 검색
     @GetMapping("/snsListSearch")
     @ResponseBody
     public List<SAccountVO> ListSearch(){
@@ -429,7 +422,7 @@ public class SnsController {
        return snsService.getSnsUserList(null);
     }
     
-    //14. 최신 피드
+    //15. 최신 피드
     @RequestMapping(value="/snsNewFeed", method=RequestMethod.GET)
     public String snsNewFeed(SBoardVO svo, Model model, HttpServletRequest request) {
     	HttpSession session = request.getSession();
@@ -449,7 +442,7 @@ public class SnsController {
     	return "/content/sns/snsNewLikeFeed";
     }
     
-    //15. 좋아요 한 피드
+    //16. 좋아요 한 피드
     @PostMapping("/snsLikeList")
     @ResponseBody
     public Map<String, Object> snsLikeList(HttpServletRequest request, String userId){
@@ -475,4 +468,6 @@ public class SnsController {
     	map.put("newList", list);
     	return map;
     }
+    
+    
 }

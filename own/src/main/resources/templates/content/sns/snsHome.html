@@ -29,7 +29,7 @@
     <!-- Custom styles for this template -->
     <link href="/css/sns/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
     <style>
         /* The Modal (background) */
         .searchModal {
@@ -192,6 +192,25 @@
             margin-bottom: 7px;
         }
 
+         /*게시글 더보기*/
+         .feed-content {
+            display: inline-block;
+            width: 800px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+
+        .feed-content.more {
+            display: inline;
+            white-space: normal;
+        }
+        .btn-more{
+            color:lightgray;
+            font-size: 12px;
+        }
+
     </style>
 
     
@@ -214,7 +233,7 @@
     <!-- Custom js -->
     <script src="/css/sns/js/main.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-	
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
@@ -222,6 +241,10 @@
                 $(".blog_card .blog_card_top:first-child").addClass("active");
                 $(".blog_card .dot:first-child").addClass("active");
 
+            });
+
+            window.addEventListener('scroll', function(){
+            console.log( window.scrollY )
             });
     </script>
 </head>
@@ -354,7 +377,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-8 col-md-12 col-12" style="padding-left: 70px;">
                                 <th:block th:each="now, stat : ${nowFeed}">
-                                    <article class="blog_card" th:if="${snsFollow != 0}">
+                                    <article class="blog_card" th:if="${snsFollow != 0}" data-aos="fade-down">
                                         <div class="homeProfile">
                                             <img th:src="|/imgView/${now.mediaServerFile}"
                                                 style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
@@ -376,7 +399,6 @@
                                             </ul>
                                         </div>
                                         <div class="blog_card_bottom">
-
                                             <div class="meta_data">
                                                 <span>좋아요 <span th:text="${now.likeCount}" style="font-size:16px; font-weight:500;"></span>개</span>
                                                 <span>댓글 <span th:text="${now.replyCount}" style="font-size:16px; font-weight:500;"></span>개</span>
@@ -385,9 +407,10 @@
                                                  <input id="snsBoardDate" type="hidden" th:value="${now.snsBoardDate}">
                                             </div>
                                             <p>게시글내용 /
-                                                <p th:text="${now.snsBoardContent}"></p>
+                                                <p th:text="${now.snsBoardContent}" class="feed-content" value="summary"></p>
                                             </p>
                                         </div>
+                                        <p class="btn-more">더보기</p>
                                     </article>
                                 </th:block>
                                 
@@ -423,7 +446,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <h2>SNS 간편가입이 필요한 페이지입니다. 회원 가입을 하시겠습니까?</h2>
-                                    <form action="/own/snsAccount" method="post">
+                                    <form action="/own/snsAccount" method="post" name="snsForm">
                                         <label>ID정보</label>
                                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                         <div th:text="${session.loginUser.userId}"></div>
@@ -433,7 +456,8 @@
                                         <div th:text="${session.loginUser.userEmail}"></div>
                                         <label>SNS 닉네임</label>
                                         <input type="text" name="snsNickname" placeholder="SNS에서 사용할 닉네임 입력">
-                                        <input type="submit" role="button" value="SNS 가입" />
+                                        <input type="button" onclick="snscheck()" role="button" value="SNS 가입" />
+                                        
                                     </form>
                                 </div>
                             </div>
@@ -464,7 +488,43 @@
                 alert("메인페이지로 이동합니다.")
                 location.href = "/own/home"
             };
-   
+                        
+            //회원가입 중복체크
+            function snscheck(){
+            	let snsNickname = $('input[name="snsNickname"]').val();
+            	console.log(snsNickname)
+            	$.ajax({
+            		url: '/own/nicknameChk',
+            		async: false,
+            		data: {snsNickname}
+            	}).then(res=>{
+            		console.log(res)
+            		if(res==0){
+            			snsForm.submit();            		
+            		}else{
+            			alert('중복된 아이디입니다')
+            			return false;
+            		}
+            	})
+            }
+            
+            //게시글 더보기
+            $('.col-lg-8').on("click",'.btn-more',function(){
+            		console.log($(this).parent())
+            		let more = $(this).siblings('.blog_card_bottom').children().siblings('.feed-content').attr("value")
+                    console.log("더보기 버튼 클릭")
+                    
+                    if(more=="summary"){
+                    	$(this).siblings('.blog_card_bottom').children().siblings('.feed-content').addClass("more");
+                    	$(this).siblings('.blog_card_bottom').children().siblings('.feed-content').attr("value", "more")
+                        $(this).siblings('.blog_card_bottom').siblings('.btn-more').text("접기");
+                    }else{
+                    	$(this).siblings('.blog_card_bottom').children().siblings('.feed-content').removeClass("more");
+                    	$(this).siblings('.blog_card_bottom').children().siblings('.feed-content').attr("value", "summary")
+                        $(this).siblings('.blog_card_bottom').siblings('.btn-more').text("더보기");
+
+                    }
+                })
    
         //게시글 이미지 페이징
         $('.dot').each(function(){
@@ -676,6 +736,13 @@
 
 
     </div>
+ <script>
+        AOS.init({
+            easing: 'ease-out-back',
+            duration: 1000
+        });
+     
+</script>
 </body>
 
 </html>
