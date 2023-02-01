@@ -29,7 +29,7 @@ public class BandMemberDefaultVO {
 	Integer first = 1;
 	Integer last = 10;
 
-	//이미지
+	//이미지 
 	public MultimediaVO defaultImg;
 	public String defImg;
 	//new FormData로 집어넣는 이미지(ajax)

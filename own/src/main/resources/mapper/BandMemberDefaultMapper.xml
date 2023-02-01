@@ -16,7 +16,7 @@
 	<!-- 가치 디폴트 조회 -->
 	<select id="getBandMemberDefault" resultType="BandMemberDefaultVO">
 		SELECT 	*
-			<!-- 	USER_ID,
+			<!-- 	 USER_ID,
 				BAND_NICKNAME,
 				BAND_GENDER,
 				BAND_LOCATION,
@@ -25,7 +25,7 @@
 		 FROM BAND_MEMBER_DEFAULT A, MULTIMEDIA C
 		 WHERE USER_ID = #{userId}
 		 AND 'BandDef_'||A.USER_ID = C.IDENTIFY_ID
-	</select>
+	</select> 
 	<!-- 가치 디폴트 업데이트 -->
 	<update id="updateMemberDf">
 		update BAND_MEMBER_DEFAULT

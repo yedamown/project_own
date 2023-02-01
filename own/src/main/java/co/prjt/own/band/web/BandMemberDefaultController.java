@@ -88,7 +88,7 @@ public class BandMemberDefaultController {
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		//카운트 된 숫자로 보냄...0이 검색되면 중복되지 않음
 		return bandMemberDefaultService.getMyBandOption(user.getUserId());
-	}
+	} 
 	@RequestMapping("/myBandOption/location")
 	@ResponseBody
 	public List<Map<String, String>> myBandOptionLocation() {

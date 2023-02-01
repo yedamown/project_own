@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class BandMemberDetailVO {
-
+ 
 	public String userId;
 	public String bandNickname;
 	public String bandNo;
@@ -58,7 +58,7 @@ public class BandMemberDetailVO {
 	int age; // 생년월일로 계산한 회원의 나이
 	String selectOption; // 정렬옵션
 	  
-    // 밴드멤버프로필이미지
+    // 밴드멤버프로필이미지 
    public String profileImg;
    public MultimediaVO detailImg;
    public List<MultimediaVO> detailImgs;

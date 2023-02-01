@@ -15,7 +15,7 @@
 	    FROM BAND_BOARD_OPTION A, (SELECT COUNT(*) "COUNT", BAND_BOARD_OPTION_NO FROM BAND_BOARD_DETAIL GROUP BY BAND_BOARD_OPTION_NO) B
 	    WHERE A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO(+)
 	    AND   A.BAND_NO = #{bandNo}
-	    ORDER BY BAND_BOARD_ORDER 
+	    ORDER  BY BAND_BOARD_ORDER 
 	</select>
 	<!-- 게시판설정업데이트 updateBandBoardOption -->
 	<update id="updateBandBoardOption">

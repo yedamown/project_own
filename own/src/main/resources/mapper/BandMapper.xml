@@ -14,7 +14,7 @@
 				AND BAND_LOCATION = #{bandLocation}
 			</if>
 			<if test="bandCategory != null and bandCategory !=''">
-				AND band_category  = #{bandCategory}
+				AND band_category = #{bandCategory}
 			</if>
 	</sql>
 	<!-- <sql id="recom">
