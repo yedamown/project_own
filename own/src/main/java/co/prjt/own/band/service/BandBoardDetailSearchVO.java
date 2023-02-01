@@ -80,4 +80,6 @@ public class BandBoardDetailSearchVO extends BandBoardDetailVO{
 	public String searchValue;
 	//검색조건용
 	public String searchKeyword;
+	//게시판이름
+	public String bandBoardNames;
 }

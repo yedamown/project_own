@@ -28,6 +28,10 @@
   <div id="template">
 	<input type="hidden" id="bandNo" th:value="${bandNo}">
 	<input type="hidden" id="bandLeaderid" th:value="${band.bandLeaderid}">
+	<input type="hidden" th:value=${bandBoardOptionNo} id="bandBoardOptionNo">
+	<div th:if="${not #strings.isEmpty(bandBoardOption)}" >
+		<input type="hidden" th:value=${bandBoardOption.bandBoardOptionNo} id="bandBoardOptionNo">
+	</div>
 	<div style="flex-grow:3; width: 740px" id="subTemplate">
 		<div>
 		<!-- ===========검색=========== -->
@@ -55,7 +59,6 @@
 		</article>
 		<!-- ===========검색 끝=========== -->
 		<article style="border: 1px solid #eeeeee;padding:30px; ">
-		<input type="hidden" th:value=${bandBoardOptionNo} id="bandBoardOptionNo">
 			<!-- 목록 시작 -->
 			<table class="table">
 				<thead  class="thead-dark">
@@ -66,7 +69,13 @@
 				<tbody id="tbodyBand">
 					<tr th:each="board: ${boardList}">
 					 	<td><input type="checkbox" class="minChk"></td>
-						<td><b th:if="${board.bandRemarks }" th:text="|[${board.bandRemarks }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
+					 	<!-- 만약자유게시판이아니면 -->
+					 	<th:block th:if="${not #strings.isEmpty(bandBoardOption)}" >
+							<td><b th:if="${board.bandRemarks }" th:text="|[${board.bandRemarks }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
+						</th:block>
+						<th:block th:unless="${not #strings.isEmpty(bandBoardOption)}">
+							<td><b th:text="|[${board.bandBoardNames }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
+						</th:block>
 						<td th:id="${board.bandBoardWriter}">[[${board.bandNickname}]]<b th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}"><i class="fa fa-solid fa-crown"></i></b></td>
 						<td class="timeCheck" th:text="${#dates.format(board.bandBoardDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
 						<td th:text="${board.bandBoardCnt}"></td>
@@ -163,12 +172,15 @@ $(function(){
 		if(searchValue.replace(/\s/g, '')==''){
 			searchValue = '';
 		}
+		//게시판번호
+		
 		console.log("검색어"+searchValue);
 		console.log("검색조건"+searchKeyword);
 		//보드번호 넣어주기.. 안넣어주니 전체로 검색됨
-		let bandBoardOption = $('bandBoardOption').val();
+		let bandBoardOptionNo = $('#bandBoardOptionNo').val();
+		console.log(bandBoardOptionNo);
 		$.ajax({
-			url: '/own/band/bandGroup/bandBoardListAjax?bandNo='+bandNo+'&page='+page+'&searchValue='+searchValue+'&searchKeyword='+searchKeyword+'&bandBoardOption='+bandBoardOption,
+			url: '/own/band/bandGroup/bandBoardListAjax?bandNo='+bandNo+'&page='+page+'&searchValue='+searchValue+'&searchKeyword='+searchKeyword+'&bandBoardOptionNo='+bandBoardOptionNo,
 			dataType: 'json',
 			method: 'get',
 			contentType : "application/text; charset=utf-8;"
@@ -197,7 +209,7 @@ $(function(){
 		time = elapsedText(time);
 		let re = ''
 		if(ele.bandRemarks!=null){
-			re=`[${ele.bandRemarks}] `
+			re = `[${ele.bandRemarks}] `
 		}
 		
 		//밴드장이면...<b><i class="fa fa-solid fa-crown"></i></b>
@@ -207,7 +219,13 @@ $(function(){
     	if(bandLeaderid == userId){
     		bandNickname += '<b><i class="fa fa-solid fa-crown"></i></b>'
     	}
-		
+		//종합게시판이면...
+		if($('#bandBoardOptionNo').val()==null||$('#bandBoardOptionNo').val()==''){
+			re = `[${ele.bandBoardNames}] `;
+			console.log('종합')
+		}
+		//종합게시판아니면...
+		//re그대로 사용
 		let tag = `<tr>
 					<td><input type="checkbox" class="minChk"></td>
 					<td><b>${re}</b><a id=${ele.bandBoardDetailNo} class="detail" >${ele.bandBoardTitle} [${ele.reply}]</a></td>
@@ -217,7 +235,7 @@ $(function(){
 				</tr>`
 		return tag;
 	}
-	//페이징
+	//페이징33
 	function pagingFnc(pagingM){
 		//시작 버튼
 		let startpageTag = $('<ul class="pagination" />');

@@ -5,6 +5,9 @@
 <mapper namespace="co.prjt.own.band.mapper.BandBoardDetailMapper">
 	
 	<sql id="condition">
+		<if test="bandBoardOptionNo != null and bandBoardOptionNo !='' and bandBoardOptionNo !='undefined'">
+			AND   A.BAND_BOARD_OPTION_NO = #{bandBoardOptionNo}
+		</if>
 		<!-- 제목+내용 -->
 		<if test="searchKeyword == 's1'">
 			AND	(BAND_BOARD_TITLE LIKE '%${searchValue}%'
@@ -122,57 +125,71 @@
 			            BAND_BOARD_UPDATE 		"bandBoardUpdate",
 			            BAND_BOARD_TAG 			"bandBoardTag",
 			            REPLY      				"reply",
-			            Band_Nickname			"BandNickname"
+			            Band_Nickname			"BandNickname",
+                        band_board_name       "bandBoardNames"
 		 		FROM ( 
 		 				SELECT ROWNUM RN, A.*
 		 					FROM (
 									SELECT *
-										FROM (	SELECT * FROM
-													 (	SELECT 	A.BAND_BOARD_DETAIL_NO,
-													            A.BAND_BOARD_OPTION_NO,
-													            A.BAND_BOARD_CONTENT,
-													            A.BAND_BOARD_CNT,
-													            A.BAND_BOARD_TITLE,
-													            A.BAND_BOARD_WRITER,
-													            A.BAND_REMARKS,
-													            A.BAND_BOARD_DATE,
-													            A.BAND_BOARD_UPDATE,
-													            A.BAND_BOARD_TAG,
-													            B.REPLY
-		     											 FROM 
-		     											 	  BAND_BOARD_DETAIL A,
-		     											 	  
-		     											 	  (SELECT  BAND_BOARD_DETAIL_NO,
-		       												   		   COUNT(REPLY_NO) "REPLY"
-		        												FROM (	SELECT 	A.BAND_BOARD_DETAIL_NO,
+										FROM (	SELECT 	B.BAND_BOARD_DETAIL_NO,
+                                                        B.BAND_BOARD_OPTION_NO,
+                                                        B.BAND_BOARD_CONTENT,
+                                                        B.BAND_BOARD_CNT,
+                                                        B.BAND_BOARD_TITLE,
+                                                        B.BAND_BOARD_WRITER,
+                                                        B.BAND_REMARKS,
+                                                        B.BAND_BOARD_DATE,
+                                                        B.BAND_BOARD_UPDATE,
+                                                        B.BAND_BOARD_TAG,
+                                                        B.band_nickname,
+                                                        B.REPLY,
+                                                        A.BAND_BOARD_NAME FROM
+													 (	SELECT * FROM  (SELECT 	A.BAND_BOARD_DETAIL_NO,
 																	            A.BAND_BOARD_OPTION_NO,
+																	            A.BAND_BOARD_CONTENT,
 																	            A.BAND_BOARD_CNT,
-																	            A.BAND_BOARD_WRITER, 
+																	            A.BAND_BOARD_TITLE,
+																	            A.BAND_BOARD_WRITER,
 																	            A.BAND_REMARKS,
 																	            A.BAND_BOARD_DATE,
 																	            A.BAND_BOARD_UPDATE,
-																	            A.BAND_BOARD_TAG
-																	        FROM BAND_BOARD_DETAIL A,
-																	             BAND_BOARD_OPTION B,
-																	             BAND C
-																	        WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
-																	        AND     B.BAND_NO = C.BAND_NO
-																	        AND     C.BAND_NO = #{bandNo}
-																	        <if test="bandBoardOptionNo != null and bandBoardOptionNo !=''">
-																			AND	B.BAND_BOARD_OPTION_NO=#{bandBoardOptionNo}
-																		</if>
-		  																)A,
-		  																REPLY B
-			       												 WHERE A.BAND_BOARD_DETAIL_NO = B.CATEGORY_NO(+)
-		        												 GROUP BY  BAND_BOARD_DETAIL_NO) B
-		        												 
-														        WHERE A.BAND_BOARD_DETAIL_NO=B.BAND_BOARD_DETAIL_NO
-														        ORDER BY to_number(SUBSTR(A.BAND_BOARD_DETAIL_NO, 5,5)) DESC
-														) A,
-														  BAND_MEMBER_DETAIL B
+																	            A.BAND_BOARD_TAG,
+																	            B.REPLY
+								     											 FROM 
+								     											 	  BAND_BOARD_DETAIL A,
+								     											 	  (SELECT  BAND_BOARD_DETAIL_NO,
+								       												   		   COUNT(REPLY_NO) "REPLY"
+									        												FROM (	SELECT 	A.BAND_BOARD_DETAIL_NO,
+																								            A.BAND_BOARD_OPTION_NO,
+																								            A.BAND_BOARD_CNT,
+																								            A.BAND_BOARD_WRITER, 
+																								            A.BAND_REMARKS,
+																								            A.BAND_BOARD_DATE,
+																								            A.BAND_BOARD_UPDATE,
+																								            A.BAND_BOARD_TAG
+																								        FROM BAND_BOARD_DETAIL A,
+																								             BAND_BOARD_OPTION B,
+																								             BAND C
+																								        WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
+																								        AND     B.BAND_NO = C.BAND_NO
+																								        AND     C.BAND_NO = #{bandNo}
+							
+									  																)A,
+			  																							REPLY B
+										       												 WHERE A.BAND_BOARD_DETAIL_NO = B.CATEGORY_NO(+)
+									        												 GROUP BY  BAND_BOARD_DETAIL_NO) B
+
+												        							WHERE A.BAND_BOARD_DETAIL_NO = B.BAND_BOARD_DETAIL_NO
+														        					ORDER BY TO_NUMBER(SUBSTR(A.BAND_BOARD_DETAIL_NO, 5,5)) DESC
+																		) A,
+																		BAND_MEMBER_DETAIL B
 													WHERE A.BAND_BOARD_WRITER=B.USER_ID
 													AND   BAND_NO = #{bandNo}
-													<!-- 검색어 -->
+													<if test="bandBoardOptionNo != null and bandBoardOptionNo !=''and bandBoardOptionNo !='undefined'">
+													AND   BAND_BOARD_OPTION_NO = #{bandBoardOptionNo}
+													</if>
+													  )B, BAND_BOARD_OPTION A        WHERE A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
+													  <!-- 검색어 -->
 													  <include refid="searchCondition" />
 													<!-- 검색조건 -->  
 													  <include refid="condition" />
@@ -189,9 +206,6 @@
         WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
         AND     B.BAND_NO = C.BAND_NO
         AND     C.BAND_NO = #{bandNo}
-        <if test="bandBoardOptionNo != null and bandBoardOptionNo !=''">
-			 AND	B.BAND_BOARD_OPTION_NO=#{bandBoardOptionNo}
-		</if>
 		<!-- 검색조건 -->
 	    <include refid="searchCondition" />
         <include refid="condition" />
@@ -269,7 +283,6 @@
 		UPDATE BAND_BOARD_DETAIL SET
                     BAND_BOARD_CONTENT = #{bandBoardContent},
                     BAND_REMARKS = #{bandRemarks},
-                    BAND_BOARD_UPDATE = current_date,
                     BAND_BOARD_TAG = #{bandBoardTag},
                     BAND_BOARD_OPTION_NO = #{bandBoardOptionNo},
                     BAND_BOARD_TITLE = #{bandBoardTitle}

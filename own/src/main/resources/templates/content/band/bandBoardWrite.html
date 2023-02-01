@@ -349,6 +349,7 @@ $(function(){
         document.body.append(bg);
 
         // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+        //한번 지워주지 않으면 계속 실행됨
         modal.querySelector('.modal_close_btn').addEventListener('click', function() {
             bg.remove();
             modal.style.display = 'none';
@@ -440,6 +441,7 @@ $(function(){
 			
 		})
     }
+		
 		
 		
 ////////////////////
@@ -606,11 +608,20 @@ $(function(){
 		console.log($('.note-editable:eq(0)'));
 		$('.note-editable:eq(0)').css('height', '330px');
 	}
+	//일정수정
+	$('#calVote').on('click', $('#upDelBtn'), function(e){
+		if(e.target.id=='upDelBtn'){
+			$('#calVote').empty();
+		}
+	})
 	//일정삭제
 	$('#calVote').on('click', $('#calDelBtn'), function(e){
 		if(e.target.id=='calDelBtn'){
 			$('#calVote').empty();
 		}
+		$('#modalform').find('input').each(function(){
+			$(this).val('');
+		})
 	})
 })
 $(document).ready(function () {

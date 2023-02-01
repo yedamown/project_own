@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
 import co.prjt.own.band.service.BandBoardDetailService;
@@ -33,7 +32,6 @@ import co.prjt.own.band.service.BandBoardOptionVO;
 import co.prjt.own.band.service.BandCalendarDetailVO;
 import co.prjt.own.band.service.BandCalendarVO;
 import co.prjt.own.band.service.BandMemberDefaultService;
-import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailService;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
@@ -78,6 +76,8 @@ public class BandBoardDetailController {
 		//좋아요 내가 찍었다면 찍었다는 게 필요할 듯..
 		//일정있는지 검색해서 넣기(impl)
 		//리스트로 만들어서 검색할 수 있는게 있기에 그걸 사용하겠음
+		//게시판 단건조회 getBandBoardOption
+		model.addAttribute("bandBoardOption", bandBoardOptionService.getBandBoardOption(vo.getBandBoardOptionNo()));
 		return "content/band/bandBoardDetail";
 	}
 	//좋아요
@@ -161,6 +161,7 @@ public class BandBoardDetailController {
 		model.addAttribute("board", vo);
 		//게시판목록
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(vo.getBandNo()));
+		
 		return "content/band/bandBoardUpdate";
 	}
 	//

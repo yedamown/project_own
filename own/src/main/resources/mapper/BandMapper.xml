@@ -81,20 +81,20 @@
 	</update>
 	<select id="getBand" resultType="map">
 		SELECT  DISTINCT
-            A.BAND_NO "bandNo",
-            A.BAND_NAME "bandName",
-            A.BAND_INTRO "bandIntro",
-            A.BAND_KEYWORD "bandKeyword",
-            A.BAND_OPEN_OPTION "bandOpenOption",
-            A.BAND_AGE_OPTION "bandAgeOption",
-            A.BAND_AGE_BEFOROPTION "bandAgeBeforoption",
-            A.BAND_AGE_AFTEROPTION "bandAgeafteroption",
-            C.EXERSUB_NAME "bandCategory",
-            A.BAND_GENDER_OPTION "bandGenderOption",
-            A.BAND_MEMBERSHIP_OPTION "bandMembershipOption",
-            D.LOC_CITY "bandLocation",
-            E.MEMCOUNT "memcount",
-            A.BAND_LEADERID "bandLeaderid"
+	            A.BAND_NO 			"bandNo",
+	            A.BAND_NAME 		"bandName",
+	            A.BAND_INTRO 		"bandIntro",
+	            A.BAND_KEYWORD 		"bandKeyword",
+	            A.BAND_OPEN_OPTION "bandOpenOption",
+	            A.BAND_AGE_OPTION "bandAgeOption",
+	            A.BAND_AGE_BEFOROPTION "bandAgeBeforoption",
+	            A.BAND_AGE_AFTEROPTION "bandAgeafteroption",
+	            C.EXERSUB_NAME "bandCategory",
+	            A.BAND_GENDER_OPTION "bandGenderOption",
+	            A.BAND_MEMBERSHIP_OPTION "bandMembershipOption",
+	            D.LOC_CITY "bandLocation",
+	            E.MEMCOUNT "memcount",
+	            A.BAND_LEADERID "bandLeaderid"
             
         FROM BAND A, 
              BAND_MEMBER_DETAIL B,

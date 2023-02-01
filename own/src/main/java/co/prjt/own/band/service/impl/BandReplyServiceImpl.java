@@ -30,26 +30,26 @@ public class BandReplyServiceImpl implements BandReplyService{
 			List<ReReplyVO> rere = bandReplyMapper.getReReply(replyNos);
 			
 			///대대댓글리스트???
-			List<String> rereplyNos = new ArrayList<String>();
-			if(rere.size()>0) {
-				for(int i=0; i<voList.size(); i++) {
-					rereplyNos.add(rere.get(i).getReReplyNo());
-				}
-			}
-			
-			List<ReReplyVO> rerere = bandReplyMapper.getReReReply(rereplyNos);
-			
-			//개별대댓글에 대대댓글리스트넣기
-			for(int i=0; i<rere.size(); i++) {
-				List<ReReplyVO> imsi = new ArrayList<ReReplyVO>();
-				for(int j=0; j<rerere.size(); j++) {
-					if(rerere.get(i).getReplyNo().equals(rerere.get(j).getReplyNo())) {
-						imsi.add(rerere.get(j));
-					}
-				}
-				rere.get(i).setReReplys(imsi);
-			}
-			
+			//List<String> rereplyNos = new ArrayList<String>();
+			//if(rere.size()>0) {
+			//	for(int i=0; i<voList.size(); i++) {
+			//		rereplyNos.add(rere.get(i).getReReplyNo());
+			//	}
+			//}
+			//if(rereplyNos.size()>0) {
+			//	List<ReReplyVO> rerere = bandReplyMapper.getReReReply(rereplyNos);
+			//
+			//	//개별대댓글에 대대댓글리스트넣기
+			//	for(int i=0; i<rere.size(); i++) {
+			//		List<ReReplyVO> imsi = new ArrayList<ReReplyVO>();
+			//		for(int j=0; j<rerere.size(); j++) {
+			//			if(rerere.get(i).getReplyNo().equals(rerere.get(j).getReReplyNo())) {
+			//				imsi.add(rerere.get(j));
+			//			}
+			//		}
+			//		rere.get(i).setReReplys(imsi);
+			//	}
+			//}
 			//개별댓글에 대댓글리스트넣기
 			for(int i=0; i<voList.size(); i++) {
 				List<ReReplyVO> imsi = new ArrayList<ReReplyVO>();
