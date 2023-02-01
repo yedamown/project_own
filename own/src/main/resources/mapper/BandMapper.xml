@@ -95,6 +95,7 @@
 	            D.LOC_CITY "bandLocation",
 	            E.MEMCOUNT "memcount",
 	            A.BAND_LEADERID "bandLeaderid"
+	            
             
         FROM BAND A, 
              BAND_MEMBER_DETAIL B,
