@@ -1,5 +1,6 @@
  <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  >
 
 <head>
 
@@ -68,6 +69,7 @@
             border: 1px solid black;
             text-align: center;
             padding: 20px;
+            margin-top: 70px;
         }
 
         .homeProfile {
@@ -190,6 +192,7 @@
             height:50px;
             border-radius: 50%;
             margin-bottom: 7px;
+            object-fit: cover;
         }
 
          /*게시글 더보기*/
@@ -209,8 +212,18 @@
         .btn-more{
             color:lightgray;
             font-size: 12px;
+            cursor: pointer;
         }
 
+        #schoolInput{
+            width: 260px;
+            height: 50px;
+            border: 2px solid lightblue;
+            border-radius: 20px;
+            margin-top: 30px;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
     </style>
 
     
@@ -249,8 +262,8 @@
     </script>
 </head>
 
+<div layout:fragment="content">
 <body>
-    <div layout:fragment="content">
         <div class="loader">
             <div class="loader-outter"></div>
             <div class="loader-inner"></div>
@@ -270,6 +283,11 @@
                     </div>
                     <!--logo end-->
 
+                    <div id="schoolLi" style="position:relative">
+                        <input type="text" id="schoolInput" placeholder="검색" onkeyup="search(this);">
+                            <div id="schoolList" style="z-index:1; position: absolute; margin-left: 20px;"></div>
+                    </div>
+
                     <!--main menu -->
                     <div class="side_menu_section">
                         <ul class="menu_nav">
@@ -279,27 +297,10 @@
                             <li><a th:href="@{snsFeed(snsNickname=${snsInfo.snsNickname})}">나의 피드</a></li></span>
                             <span th:unless="${snsInfo!=null}">
                                 <li><a href="#">나의 피드</a></li></span>
-                            <li><a href="/own/snsNewFeed">최신게시글</a></li>
-
-                  
+                            <li><a href="/own/snsNewFeed">최신게시글</a></li>                  
                         </ul>
                     </div>
                     <!--main menu end -->
-
-                    <!--filter menu -->
-                    <div class="side_menu_section">
-                        <h4 class="side_title">filter by:</h4>
-                        <ul id="filtr-container" class="filter_nav">
-                            <li data-filter="*" class="active"><a href="javascript:void(0)">all</a></li>
-                            <li data-filter=".branding"> <a href="javascript:void(0)">branding</a></li>
-                            <li data-filter=".design"><a href="javascript:void(0)">design</a></li>
-                            <li data-filter=".photography"><a href="javascript:void(0)">photography</a></li>
-                            <li data-filter=".architecture"><a href="javascript:void(0)">architecture</a></li>
-                        </ul>
-                    </div>
-                    <!--filter menu end -->
-
-
                     <!--social and copyright -->
                     <div class="side_menu_bottom">
                         <div class="side_menu_bottom_inner">
@@ -337,11 +338,6 @@
 
                 <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center"  th:if="${session.loginUser.snsAccountNo != null}">
                     <br>
-                    <div id="schoolLi" style="position:relative">
-                    <input type="text" id="schoolInput" placeholder="검색어를 입력하세요"
-                                onkeyup="search(this);">
-                                <div id="schoolList" style="z-index:1; position: absolute;"></div>
-                    </div>
 
                     <div id="snsprofilebox" class="modalBtn">
                         <span class="storyInfo" th:each="story : ${storyInfo}">
@@ -354,7 +350,7 @@
                                     style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                             </span>
                             <span class="storyNickname" th:text="${story.snsNickname}" 
-                            	  style="font-size:16px; padding-right:30px; cursor: pointer;"></span>
+                            	  style="font-size:17px; padding-right:30px; cursor: pointer; font-weight: 500;"></span>
                         </span>
                     </div>
 
@@ -735,7 +731,6 @@
 
 
 
-    </div>
  <script>
         AOS.init({
             easing: 'ease-out-back',
@@ -744,5 +739,6 @@
      
 </script>
 </body>
+    </div>
 
 </html>
