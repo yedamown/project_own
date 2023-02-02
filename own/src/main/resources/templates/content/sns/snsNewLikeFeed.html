@@ -169,6 +169,8 @@ body {
     .topContentBox>span{
         padding-left: 20px;
         cursor: pointer;
+        font-weight: 600;
+        font-size: 50px;
     }
 
     .Feedmodal {
@@ -231,6 +233,16 @@ body {
             margin-bottom: 7px;
         }
 
+        #schoolInput{
+            width: 260px;
+            height: 50px;
+            border: 2px solid lightblue;
+            border-radius: 20px;
+            margin-top: 30px;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -256,6 +268,11 @@ body {
             </div>
             <!--logo end-->
 
+            <div id="schoolLi" style="position:relative">
+                <input type="text" id="schoolInput" placeholder="검색" onkeyup="search(this);">
+                    <div id="schoolList" style="z-index:1; position: absolute; margin-left: 20px;"></div>
+            </div>
+
             <!--main menu -->
             <div class="side_menu_section">
                 <ul class="menu_nav">
@@ -279,20 +296,6 @@ body {
                 </ul>
             </div>
             <!--main menu end -->
-
-            <!--filter menu -->
-            <div class="side_menu_section">
-                <h4 class="side_title">filter by:</h4>
-                <ul  id="filtr-container"  class="filter_nav">
-                    <li  data-filter="*" class="active"><a href="javascript:void(0)" >all</a></li>
-                    <li data-filter=".branding"> <a href="javascript:void(0)">branding</a></li>
-                    <li data-filter=".design"><a href="javascript:void(0)">design</a></li>
-                    <li data-filter=".photography"><a href="javascript:void(0)">photography</a></li>
-                    <li data-filter=".architecture"><a href="javascript:void(0)">architecture</a></li>
-                </ul>
-            </div>
-            <!--filter menu end -->
-
 
             <!--social and copyright -->
             <div class="side_menu_bottom">
@@ -325,11 +328,6 @@ body {
 
         <!--=================== content body ====================-->
         <div class="col-lg-10 col-md-9 col-12 body_block align-content-center">
-            <div id="schoolLi" style="position:relative">
-                <input type="text" id="schoolInput" placeholder="검색어를 입력하세요"
-                            onkeyup="search(this);">
-                            <div id="schoolList" style="z-index:1; position: absolute;"></div>
-                </div>
             <div class="topContentBox" style="height:100px; border:1px solid black; text-align: center;">
                 <span id="snsNewList">최신게시글</span><span>|</span><span  id="snsLikeList" value="false">좋아요</span>
             </div>

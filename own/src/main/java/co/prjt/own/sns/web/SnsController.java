@@ -61,7 +61,7 @@ public class SnsController {
 		HttpSession session = request.getSession();
 		//세션에 강제로 로그인유저 저장하기
 
-		//session.setAttribute("loginUser", ownService.login("kyr"));
+		session.setAttribute("loginUser", ownService.login("kyr"));
 
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
 		OwnUserVO snsIdCheck = ownService.login(ovo.getUserId());

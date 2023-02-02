@@ -25,7 +25,144 @@
 			align-items: center;
 			flex-direction: column;
 		}
-		
+
+		.item {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.item-row {
+			margin-top: 10px;
+			margin-bottom: 20px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.formbold-btn {
+			display: inline-block;
+			font-weight: 400;
+			color: #666666;
+			text-align: center;
+			vertical-align: middle;
+			user-select: none;
+			background-color: transparent;
+			border: 1px solid transparent;
+			padding: 0.375rem 0.75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			border-radius: 30px;
+			width: 100%;
+			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+				border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+
+		.formbold-btn:hover {
+			color: #666666;
+			text-decoration: none;
+		}
+
+		.formbold-btn-primary {
+			color: #fff;
+			background-color: #17a2b8;
+			border-color: #17a2b8;
+		}
+
+		.formbold-btn-primary:hover {
+			color: #fff;
+			background-color: #138496;
+			border-color: #117a8b;
+		}
+
+		/* 운동시간, 칼로리 계산 부분 */
+
+		.col_half {
+			width: 49%;
+		}
+
+		.col_third {
+			width: 32%;
+		}
+
+		.col_fourth {
+			width: 23.5%;
+		}
+
+		.col_fifth {
+			width: 18.4%;
+		}
+
+		.col_sixth {
+			width: 15%;
+		}
+
+		.col_three_fourth {
+			width: 74.5%;
+		}
+
+		.col_twothird {
+			width: 66%;
+		}
+
+		.col_half,
+		.col_third,
+		.col_twothird,
+		.col_fourth,
+		.col_three_fourth,
+		.col_fifth {
+			position: relative;
+			display: inline;
+			display: inline-block;
+			margin-right: 2%;
+			margin-bottom: 20px;
+		}
+
+		.end {
+			margin-right: 0 !important;
+		}
+
+		/* Column Grids End */
+
+		.wrapper {
+			width: 980px;
+			margin: 30px auto;
+			position: relative;
+		}
+
+		.counter {
+			background-color: #ffffff;
+			padding: 20px 0;
+			border-radius: 5px;
+		}
+
+		.count-title {
+			font-size: 40px;
+			font-weight: normal;
+			margin-top: 10px;
+			margin-bottom: 0;
+			text-align: center;
+		}
+
+		.count-text {
+			font-size: 13px;
+			font-weight: normal;
+			margin-top: 10px;
+			margin-bottom: 0;
+			text-align: center;
+		}
+
+		.font_awesome {
+			font-size: 35px;
+			margin: 0 auto;
+			float: none;
+			display: table;
+			color: #4ad1e5;
+		}
 	</style>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
@@ -42,13 +179,15 @@
 			dayChart();
 			weightChart();
 			calTime();
+			numberCount();
 		});
 
 		// 시간계산 함수
 		function calTime() {
 			var totalTime = $jQ("#calData1").find("h3").eq(0).text();
 			console.log(totalTime)
-			$jQ("#calData1").find("h3").eq(1).text("당신은 총 " + Math.floor(totalTime / 60) + "시간 " + totalTime % 60 + "분 운동하셨습니다.");
+			$jQ("#calData1").find("div").find("h2").eq(0).attr('data-to', totalTime);
+			//.text("당신은 총 " + Math.floor(totalTime / 60) + "시간 " + totalTime % 60 + "분 운동하셨습니다.");
 		}
 
 		// datepicker 라이브러리 옵션
@@ -133,6 +272,7 @@
 						data: valueList
 					}],
 					options: {
+						responsive: false,
 						title: {
 							display: true,
 							text: '운동 구성비'
@@ -173,20 +313,30 @@
 
 				for (var i = 0; i < res.length; i++) {
 					var d = res[i];
-					labelList.push(d.exerecDate);
+
+					var formattedDate = "20" + d.exerecDate.substr(2, 8);
+
+					labelList.push(formattedDate);
 					valueList.push(d.exerecWeight);
 					colorList.push(colorize());
 				}
 				var data = {
 					labels: labelList,
 					datasets: [{
+						label: '몸무게',
 						backgroundColor: colorList,
 						data: valueList
 					}],
 					options: {
-						title: {
-							display: true,
-							text: '몸무게'
+						plugins: {
+							responsive: false,
+							legend: {
+								display: false
+							},
+							title: {
+								display: true,
+								text: '몸무게'
+							}
 						}
 					}
 				};
@@ -199,11 +349,23 @@
 			})
 		}
 
+
 		// 화면 캡쳐
 		function captureImage() {
-			html2canvas(document.querySelector("#chart")).then(canvas => {
+			html2canvas(document.querySelector(".dayRecord")).then(canvas => {
+				// 파일명을 위한 랜덤 문자열 생성
+				const generateRandomString = (num) => {
+					const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+					let result = '';
+					const charactersLength = characters.length;
+					for (let i = 0; i < num; i++) {
+						result += characters.charAt(Math.floor(Math.random() * charactersLength));
+					}
+					return result;
+				}
+
 				var img = canvas.toDataURL();
-				var fileNm = "파일명";
+				var fileNm = generateRandomString(6);
 				saveImage(img, fileNm + ".jpg") // 다운로드 되는 이미지파일의 이름 지정
 			});
 		}
@@ -222,8 +384,8 @@
 			//기존 차트 삭제
 			$jQ('#dayChart').remove(); //기존차트 삭제하고
 			$jQ('#weightChart').remove();
-			$jQ('#div_myChartArea').append('<canvas id="dayChart"><canvas>'); //새로운 차트 캔버스 append
-			$jQ('#div_myChartArea').append('<canvas id="weightChart"><canvas>');
+			$jQ('#div_dayChartArea').append('<canvas id="dayChart"><canvas>'); //새로운 차트 캔버스 append
+			$jQ('#div_weightChartArea').append('<canvas id="weightChart"><canvas>');
 
 			let id = $jQ('#userId').val();
 			let startDate = $jQ("#datepicker1").val();
@@ -266,12 +428,14 @@
 						colorList.push(colorize());
 					}
 					var data = {
+
 						labels: labelList,
 						datasets: [{
 							backgroundColor: colorList,
 							data: valueList
 						}],
 						options: {
+							responsive: false,
 							title: {
 								display: true,
 								text: '운동 구성비'
@@ -311,20 +475,28 @@
 
 					for (var i = 0; i < res.length; i++) {
 						var d = res[i];
-						labelList.push(d.exerecDate);
+						var formattedDate = "20" + d.exerecDate.substr(2, 8);
+						labelList.push(formattedDate);
 						valueList.push(d.exerecWeight);
 						colorList.push(colorize());
 					}
 					var data = {
 						labels: labelList,
 						datasets: [{
+							label: '몸무게',
 							backgroundColor: colorList,
 							data: valueList
 						}],
 						options: {
-							title: {
-								display: true,
-								text: '몸무게'
+							plugins: {
+								responsive: false,
+								legend: {
+									display: false
+								},
+								title: {
+									display: true,
+									text: '몸무게'
+								}
 							}
 						}
 					};
@@ -356,18 +528,122 @@
 						totalTime += item.exerecTime;
 						totalKcals += item.kcals;
 					})
-
+					//$jQ("#calData1").find("div").find("h2").eq(0).attr('data-to', totalTime);
 					$jQ("#calData2")
-						.find("h3")
+						.find("div")
 						.eq(0)
-						.text("당신은 총 " + Math.floor(totalTime / 60) + "시간 " + totalTime % 60 + "분 운동하셨습니다.")
+						.find("h2")
+						.attr('data-to', totalTime)
 						.end()
+						.find("div")
 						.eq(1)
-						.text("총 " + totalKcals + "칼로리 소모.");
+						.find("h2")
+						.attr('data-to', totalKcals);
+					numberCount();
 				}
-			})//
+			})
 		}// selectPeriod() 함수 끝
 
+		// 칼로리, 운동시간
+		(function ($) {
+			$jQ.fn.countTo = function (options) {
+				options = options || {};
+
+				return $jQ(this).each(function () {
+					// set options for current element
+					var settings = $jQ.extend({}, $jQ.fn.countTo.defaults, {
+						from: $jQ(this).data('from'),
+						to: $jQ(this).data('to'),
+						speed: $jQ(this).data('speed'),
+						refreshInterval: $jQ(this).data('refresh-interval'),
+						decimals: $jQ(this).data('decimals')
+					}, options);
+
+					// how many times to update the value, and how much to increment the value on each update
+					var loops = Math.ceil(settings.speed / settings.refreshInterval),
+						increment = (settings.to - settings.from) / loops;
+
+					// references & variables that will change with each update
+					var self = this,
+						$jQself = $jQ(this),
+						loopCount = 0,
+						value = settings.from,
+						data = $jQself.data('countTo') || {};
+
+					$jQself.data('countTo', data);
+
+					// if an existing interval can be found, clear it first
+					if (data.interval) {
+						clearInterval(data.interval);
+					}
+					data.interval = setInterval(updateTimer, settings.refreshInterval);
+
+					// initialize the element with the starting value
+					render(value);
+
+					function updateTimer() {
+						value += increment;
+						loopCount++;
+
+						render(value);
+
+						if (typeof (settings.onUpdate) == 'function') {
+							settings.onUpdate.call(self, value);
+						}
+
+						if (loopCount >= loops) {
+							// remove the interval
+							$jQself.removeData('countTo');
+							clearInterval(data.interval);
+							value = settings.to;
+
+							if (typeof (settings.onComplete) == 'function') {
+								settings.onComplete.call(self, value);
+							}
+						}
+					}
+
+					function render(value) {
+						var formattedValue = settings.formatter.call(self, value, settings);
+						$jQself.html(formattedValue);
+					}
+				});
+			};
+
+			$jQ.fn.countTo.defaults = {
+				from: 0,               // the number the element should start at
+				to: 0,                 // the number the element should end at
+				speed: 1000,           // how long it should take to count between the target numbers
+				refreshInterval: 100,  // how often the element should be updated
+				decimals: 0,           // the number of decimal places to show
+				formatter: formatter,  // handler for formatting the value before rendering
+				onUpdate: null,        // callback method for every time the element is updated
+				onComplete: null       // callback method for when the element finishes updating
+			};
+
+			function formatter(value, settings) {
+				return value.toFixed(settings.decimals);
+			}
+		}(jQuery));
+
+		function numberCount() {
+			// custom formatting example
+			$jQ('.count-number').data('countToOptions', {
+				formatter: function (value, options) {
+					return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
+				}
+			});
+
+			// start all the timers
+			$jQ('.timer').each(count);
+
+			function count(options) {
+				var $jQthis = $jQ(this);
+				options = $jQ.extend({}, options || {}, $jQthis.data('countToOptions') || {});
+				$jQthis.countTo(options);
+			}
+		};
+	
 	</script>
 
 </head>
@@ -376,15 +652,17 @@
 	<body>
 		<div class="container">
 			<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
-			<h2 th:text="${session.loginUser.userName}"></h2>
-			<h4>회원님의 운동 기록 보기</h4>
-			<div id="calendar">
+			<div class="item">
+				<h2 th:text="${session.loginUser.userName}"></h2>
+				<h4>회원님의 운동 기록 보기</h4>
+			</div>
+			<div class="item" id="calendar">
 				<p>
 					조회기간을 선택해주세요 <input type="text" id="datepicker1"> <input type="text" id="datepicker2">
 					<button id="selectPeriodBtn" onclick="selectPeriod()">조회</button>
 				</p>
 			</div>
-			<div class="dayRecord">
+			<div class="item dayRecord">
 				<div id="defaultDate">
 					<span th:text="${#dates.format(lRecord[0].exerecDate, 'yyyy년 MM월 dd일')}+ '이 가장 최근 운동데이터임'"></span>
 				</div>
@@ -394,33 +672,59 @@
 				<!--====================== 운동시간 계산 div ======================-->
 				<div id="calData1">
 					<h3 th:text="${(#aggregates.sum(lRecord.![exerecTime]))}" hidden></h3>
-					<h3></h3>
-					<h3 th:text="'총 ' + ${#aggregates.sum(lRecord.![kcals])} + '칼로리 소모.'"></h3>
+					<div class="wrapper">
+						<div class="counter col_fourth">
+							<i class="fa fa-regular fa-clock font_awesome"></i>
+							<h2 class="timer count-title count-number" data-speed="1500"></h2>
+							<p class="count-text ">운동 시간(단위: 분)</p>
+						</div>
+						<div class="counter col_fourth">
+							<i class="fa fa-solid fa-person-walking font_awesome"></i>
+							<h2 class="timer count-title count-number" th:data-to=${#aggregates.sum(lRecord.![kcals])}
+								data-speed="1500"></h2>
+							<p class="count-text">칼로리 소모량(단위: kcal)</p>
+						</div>
+					</div>
 				</div>
 				<div id="calData2" style="display: none;">
-					<h3></h3>
-					<h3></h3>
+					<div class="wrapper">
+						<div class="counter col_fourth">
+							<i class="fa fa-regular fa-clock font_awesome"></i>
+							<h2 class="timer count-title count-number" data-speed="1500"></h2>
+							<p class="count-text ">운동 시간(단위: 분)</p>
+						</div>
+						<div class="counter col_fourth">
+							<i class="fa fa-solid fa-person-walking font_awesome"></i>
+							<h2 class="timer count-title count-number" data-speed="1500"></h2>
+							<p class="count-text">칼로리 소모량(단위: kcal)</p>
+						</div>
+					</div>
 				</div>
 				<!--====================== 차트 div ======================-->
-				<div id="div_myChartArea" style="width: 900px; height: 900px;">
-					<canvas id="dayChart" align="center"></canvas>
-					<canvas id="weightChart" align="center"></canvas>
-				</div>
-				<!--====================== 사진으로 저장하기, 공유 버튼 div ======================-->
-				<div id="shareBtn">
-					<button onclick="captureImage()">
-						<i class="fas fa-light fa-floppy-disk" id="saveBtn" style="font-size: 50px" /></i>
-					</button>
-					<button onclick="captureImage()">
-						<i class="fa-brands fa-blogger" id="bandBtn" style="font-size: 50px"></i>
-					</button>
-					<button onclick="captureImage()">
-						<i class="fa-brands fa-instagram" id="snsBtn" style="font-size: 50px"></i>
-					</button>
+				<div class="item-row" id="div_myChartArea">
+					<div id="div_dayChartArea" style="height:30vh; width:30vw">
+						<canvas id="dayChart" align="center"></canvas>
+					</div>
+					<div id="div_weightChartArea" style="height:30vh; width:30vw">
+						<canvas id="weightChart" align="center"></canvas>
+					</div>
 				</div>
 			</div>
+			<!--====================== 사진으로 저장하기, 공유 버튼 div ======================-->
+			<div class="item-row" id="shareBtn">
+				<button onclick="captureImage()">
+					<i class="fas fa-light fa-floppy-disk" id="saveBtn" style="font-size: 50px" /></i>
+				</button>
+				<button onclick="captureImage()">
+					<i class="fa-brands fa-blogger" id="bandBtn" style="font-size: 50px"></i>
+				</button>
+				<button onclick="captureImage()">
+					<i class="fa-brands fa-instagram" id="snsBtn" style="font-size: 50px"></i>
+				</button>
+			</div>
 		</div>
-	</body>
+</div>
+</body>
 </div>
 
 </html>
