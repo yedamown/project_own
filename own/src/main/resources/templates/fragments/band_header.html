@@ -8,8 +8,8 @@
 <title>오늘의 운동 가치</title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta content="Free HTML Templates" name="keywords" />
-<meta content="Free HTML Templates" name="description" />
-   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+   <script src="/css/band/js/json.min.js"></script>
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="/css/chall/lib/easing/easing.min.js"></script>
     <script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
@@ -89,7 +89,7 @@
 						<a href="/own/band" class="nav-item nav-link" style="padding: 30px 20px; margin-top:6px;">HOME</a>
 						<a href="/own/band" class="nav-item nav-link" style="padding: 30px 20px 30px 10px"><i class="fa-solid fa-comment-dots fa-2x"></i></a>
 						<div class="nav-item dropdown droMom">
-						<th:block th:if="${session.defUser.defaultImg}">
+						<th:block th:if="${session.defUser}">
 							<a href="/own/band/myBandOption" class="nav-link dropdown-toggle bBox" data-toggle="dropdown" style="margin-top:7px;">
 								<img th:src="|/imgView/${session.defUser.defaultImg.mediaServerFile}|" alt="" class="bProfile">
 							</a>

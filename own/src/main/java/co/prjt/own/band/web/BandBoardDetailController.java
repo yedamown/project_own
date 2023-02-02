@@ -91,7 +91,7 @@ public class BandBoardDetailController {
 	@GetMapping("/bandGroup/bandBoardWrite")
 	public String bandBoardWrite(Model model, HttpSession session, String bandNo){
 		//좋아요 용으로 받아오는 세션
-		session.setAttribute("loginUser", ownService.login("hjj"));
+		//session.setAttribute("loginUser", ownService.login("hjj"));
 		//게시판목록
 		//밴드 게시판 조회 //말머리도 넣어야 함, 게시판 양식(추후추가)
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
@@ -338,7 +338,7 @@ public class BandBoardDetailController {
 	@ResponseBody
 	@GetMapping("/bandGroup/bandBoardDeleteEach")
 	public int bandBoardDeleteEach(HttpSession session, String bandBoardOptionNo) {
-		session.setAttribute("loginUser", ownService.login("hjj"));
+		//session.setAttribute("loginUser", ownService.login("hjj"));
 		//return "redirect:/own/band/bandGroup?bandNo=BDU_"+band.getBandNo();
 		return bandBoardDetailService.deleteBandBoard(bandBoardOptionNo);
 	}
@@ -350,7 +350,7 @@ public class BandBoardDetailController {
 		public String bandGroup(Model model, HttpServletRequest request, @RequestParam String bandNo, String bandBoardDetailNo) {
 			HttpSession session = request.getSession();
 			OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-			session.setAttribute("loginUser", ownService.login("hjj"));
+			//session.setAttribute("loginUser", ownService.login("hjj"));
 			//적합한 이용자인지 조회
 			BandMemberDetailVO bandMember = BandMemberDetailVO.builder()
 												.bandNo(bandNo)
