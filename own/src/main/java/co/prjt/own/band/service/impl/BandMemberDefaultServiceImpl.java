@@ -1,11 +1,14 @@
 package co.prjt.own.band.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.prjt.own.band.mapper.BandMemberDefaultMapper;
 import co.prjt.own.band.service.BandMemberDefaultService;
 import co.prjt.own.band.service.BandMemberDefaultVO;
+import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.common.mapper.CommonMapper;
 
 @Service
@@ -32,6 +35,11 @@ public class BandMemberDefaultServiceImpl implements BandMemberDefaultService{
 	@Override
 	public int insertDefault(BandMemberDefaultVO vo) {
 		return bandMemberDefaultMapper.insertDefault(vo);
+	}
+
+	@Override
+	public List<BandMemberDetailVO> getMyBandOption(String userId) {
+		return bandMemberDefaultMapper.getMyBandOption(userId);
 	}
 	
 }

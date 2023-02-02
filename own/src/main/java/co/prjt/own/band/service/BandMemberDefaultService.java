@@ -1,5 +1,7 @@
 package co.prjt.own.band.service;
 
+import java.util.List;
+
 public interface BandMemberDefaultService {
 	//오운아이디로 밴드 디폴트 유저 검색	
 	public BandMemberDefaultVO getBandMemberDefault(String userId);
@@ -7,4 +9,6 @@ public interface BandMemberDefaultService {
 	public int updateMemberDf(BandMemberDefaultVO vo);
 	//입력
 	public int insertDefault(BandMemberDefaultVO vo);
+	//내 밴드들 조회
+	public List<BandMemberDetailVO> getMyBandOption(String userId);
 }

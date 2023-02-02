@@ -15,7 +15,7 @@
 		</if>
 		<!-- 제목 -->
 		<if test="searchKeyword == 's2'">
-			AND	BAND_BOARD_TITLE LIKE '%${searchValue}%'
+			AND	BAND_BOARD_TITLE LIKE '%${searchValue}%'  
 		</if>
 		<!-- 내용 -->
 		<if test="searchKeyword == 's3'">
