@@ -16,6 +16,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 	<!-- 화면캡쳐 cdn -->
 	<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+	<!-- 카카오톡 공유 -->
+	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<style>
 		.container {
 			width: 900px;
@@ -57,7 +59,7 @@
 			font-size: 1rem;
 			line-height: 1.5;
 			border-radius: 30px;
-			width: 100%;
+			width: 60px;
 			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
 				border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 		}
@@ -79,6 +81,20 @@
 			border-color: #117a8b;
 		}
 
+		#shareBtn button {
+			border: none;
+			background-color: transparent;
+			width: 65px;
+			height: 65px;
+			margin: 20px;
+		}
+
+		#shareBtn button img{
+			border: none;
+			background-color: transparent;
+			width: 65px;
+			height: 65px;
+		}
 		/* 운동시간, 칼로리 계산 부분 */
 
 		.col_half {
@@ -115,11 +131,11 @@
 		.col_fourth,
 		.col_three_fourth,
 		.col_fifth {
-			position: relative;
+
 			display: inline;
 			display: inline-block;
-			margin-right: 2%;
-			margin-bottom: 20px;
+
+
 		}
 
 		.end {
@@ -129,13 +145,12 @@
 		/* Column Grids End */
 
 		.wrapper {
-			width: 980px;
-			margin: 30px auto;
-			position: relative;
+			width: 900px;
+
 		}
 
 		.counter {
-			background-color: #ffffff;
+			background-color: #eee;
 			padding: 20px 0;
 			border-radius: 5px;
 		}
@@ -163,6 +178,194 @@
 			display: table;
 			color: #4ad1e5;
 		}
+
+		/* datepicker */
+		.ui-widget-header {
+			border: 0px solid #dddddd;
+			background: #fff;
+		}
+
+		.ui-datepicker-calendar>thead>tr>th {
+			font-size: 14px !important;
+		}
+
+		.ui-datepicker .ui-datepicker-header {
+			position: relative;
+			padding: 10px 0;
+		}
+
+		.ui-datepicker select.ui-datepicker-month,
+		.ui-datepicker select.ui-datepicker-year {
+			width: 35%;
+		}
+
+		.ui-state-default,
+		.ui-widget-content .ui-state-default,
+		.ui-widget-header .ui-state-default,
+		.ui-button,
+		html .ui-button.ui-state-disabled:hover,
+		html .ui-button.ui-state-disabled:active {
+			border: 0px solid #c5c5c5;
+			background-color: transparent;
+			font-weight: normal;
+			color: #454545;
+			text-align: center;
+		}
+
+		.ui-datepicker .ui-datepicker-title {
+			margin: 0 0em;
+			line-height: 16px;
+			text-align: center;
+			font-size: 14px;
+			padding: 0px;
+			font-weight: bold;
+		}
+
+		.ui-datepicker {
+			display: none;
+			background-color: #fff;
+			border-radius: 4px;
+			margin-top: 10px;
+			margin-left: 0px;
+			margin-right: 0px;
+			padding: 20px;
+			padding-bottom: 10px;
+			width: 300px;
+			box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.1);
+		}
+
+		.ui-widget.ui-widget-content {
+			border: 1px solid #eee;
+		}
+
+		#datepicker:focus>.ui-datepicker {
+			display: block;
+		}
+
+		.ui-datepicker-prev,
+		.ui-datepicker-next {
+			cursor: pointer;
+		}
+
+		.ui-datepicker-next {
+			float: right;
+		}
+
+		.ui-state-disabled {
+			cursor: auto;
+			color: hsla(0, 0%, 80%, 1);
+		}
+
+		.ui-datepicker-title {
+			text-align: center;
+			padding: 10px;
+			font-weight: 100;
+			font-size: 20px;
+		}
+
+		.ui-datepicker-calendar {
+			width: 100%;
+		}
+
+		.ui-datepicker-calendar>thead>tr>th {
+			padding: 5px;
+			font-size: 20px;
+			font-weight: 400;
+		}
+
+		.ui-datepicker-calendar>tbody>tr>td>a {
+			color: #000;
+			font-size: 12px !important;
+			font-weight: bold !important;
+			text-decoration: none;
+		}
+
+		.ui-datepicker-calendar>tbody>tr>.ui-state-disabled:hover {
+			cursor: auto;
+			background-color: #fff;
+		}
+
+		.ui-datepicker-calendar>tbody>tr>td {
+			border-radius: 100%;
+			width: 44px;
+			height: 30px;
+			cursor: pointer;
+			padding: 5px;
+			font-weight: 100;
+			text-align: center;
+			font-size: 12px;
+		}
+
+		.ui-datepicker-calendar>tbody>tr>td:hover {
+			background-color: transparent;
+			opacity: 0.6;
+		}
+
+		.ui-state-hover,
+		.ui-widget-content .ui-state-hover,
+		.ui-widget-header .ui-state-hover,
+		.ui-state-focus,
+		.ui-widget-content .ui-state-focus,
+		.ui-widget-header .ui-state-focus,
+		.ui-button:hover,
+		.ui-button:focus {
+			border: 0px solid #cccccc;
+			background-color: transparent;
+			font-weight: normal;
+			color: #2b2b2b;
+		}
+
+		.ui-widget-header .ui-icon {
+			background-image: url('/css/own/common_img/btns.png');
+		}
+
+		.ui-icon-circle-triangle-e {
+			background-position: -20px 0px;
+			background-size: 36px;
+		}
+
+		.ui-icon-circle-triangle-w {
+			background-position: -0px -0px;
+			background-size: 36px;
+		}
+
+		.ui-datepicker-calendar>tbody>tr>td:first-child a {
+			color: red !important;
+		}
+
+		.ui-datepicker-calendar>tbody>tr>td:last-child a {
+			color: #0099ff !important;
+		}
+
+		.ui-datepicker-calendar>thead>tr>th:first-child {
+			color: red !important;
+		}
+
+		.ui-datepicker-calendar>thead>tr>th:last-child {
+			color: #0099ff !important;
+		}
+
+		.ui-state-highlight,
+		.ui-widget-content .ui-state-highlight,
+		.ui-widget-header .ui-state-highlight {
+			border: 0px;
+			background: #f1f1f1;
+			border-radius: 50%;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+
+		.inp {
+			padding: 10px 10px;
+			background-color: #f1f1f1;
+			border-radius: 4px;
+			border: 0px;
+		}
+
+		.inp:focus {
+			outline: none;
+			background-color: #eee;
+		}
 	</style>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
@@ -173,6 +376,30 @@
 		/*]]>*/
 		// 제이쿼리 충돌 방지 처리
 		var $jQ = jQuery.noConflict(); // ${}대신에 쓸 변수 설정해줌.
+
+		//카톡 공유
+
+		// init 체크
+		if (!Kakao.isInitialized()) {
+			Kakao.init('4e5fbb7325e2827493f15e9d210652ca');
+		}
+		// 카톡 공유 함수
+		function shareKakao() {
+			Kakao.Link.sendDefault({
+				objectType: 'feed',
+				content: {
+					title: '나의 운동 분석',
+					description: 'OWN 홈페이지가 제공하는 나의 운동 분석 페이지입니다.',
+					imageUrl: '카카오공유하기 시 썸네일 이미지 경로',
+					link: {
+						webUrl: 'http://localhost/own/ownRecordList/'
+					},
+				},
+				// 카카오톡 미설치 시 카카오톡 설치 경로이동
+				installTalk: true,
+			})
+		}
+
 
 		// 함수 실행
 		$jQ(document).ready(function () {
@@ -643,7 +870,7 @@
 				$jQthis.countTo(options);
 			}
 		};
-	
+
 	</script>
 
 </head>
@@ -652,25 +879,28 @@
 	<body>
 		<div class="container">
 			<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
-			<div class="item">
-				<h2 th:text="${session.loginUser.userName}"></h2>
-				<h4>회원님의 운동 기록 보기</h4>
+			<div class="item-row">
+				<p>
+				<h1 th:text="${session.loginUser.userName}"></h1>
+				<h2>회원님의 운동 기록</h2>
+				</p>
 			</div>
 			<div class="item" id="calendar">
 				<p>
-					조회기간을 선택해주세요 <input type="text" id="datepicker1"> <input type="text" id="datepicker2">
-					<button id="selectPeriodBtn" onclick="selectPeriod()">조회</button>
+					<input type="text" id="datepicker1"> <input type="text" id="datepicker2">
+					<button class="formbold-btn formbold-btn-primary" id="selectPeriodBtn"
+						onclick="selectPeriod()">조회</button>
 				</p>
 			</div>
 			<div class="item dayRecord">
 				<div id="defaultDate">
-					<span th:text="${#dates.format(lRecord[0].exerecDate, 'yyyy년 MM월 dd일')}+ '이 가장 최근 운동데이터임'"></span>
+					<span th:text="${#dates.format(lRecord[0].exerecDate, 'yyyy년 MM월 dd일')}"></span>
 				</div>
 				<div id="selectDate">
 					<span></span>
 				</div>
 				<!--====================== 운동시간 계산 div ======================-->
-				<div id="calData1">
+				<div class="item-row2" id="calData1" align="center">
 					<h3 th:text="${(#aggregates.sum(lRecord.![exerecTime]))}" hidden></h3>
 					<div class="wrapper">
 						<div class="counter col_fourth">
@@ -686,7 +916,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="calData2" style="display: none;">
+				<div class="item-row2" id="calData2" style="display: none;" align="center">
 					<div class="wrapper">
 						<div class="counter col_fourth">
 							<i class="fa fa-regular fa-clock font_awesome"></i>
@@ -713,13 +943,10 @@
 			<!--====================== 사진으로 저장하기, 공유 버튼 div ======================-->
 			<div class="item-row" id="shareBtn">
 				<button onclick="captureImage()">
-					<i class="fas fa-light fa-floppy-disk" id="saveBtn" style="font-size: 50px" /></i>
+					<img src="/css/own/common_img/save_btn.png" alt="파일로저장" />
 				</button>
-				<button onclick="captureImage()">
-					<i class="fa-brands fa-blogger" id="bandBtn" style="font-size: 50px"></i>
-				</button>
-				<button onclick="captureImage()">
-					<i class="fa-brands fa-instagram" id="snsBtn" style="font-size: 50px"></i>
+				<button onclick="shareKakao()">
+					<img src="/css/own/common_img/kakaotalk_sharing_btn.png" alt="카카오톡 공유" />
 				</button>
 			</div>
 		</div>
