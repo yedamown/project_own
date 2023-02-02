@@ -1,6 +1,7 @@
  <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+     
 
 <head>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>-->
@@ -299,6 +300,40 @@
         .btn-more{
             color:lightgray;
             font-size: 12px;
+            cursor: pointer;
+        }
+
+        #fileLabel{
+            position: absolute;
+            top: 310px;
+            left: 100px;
+            background-color: #6ab0cd;
+            border-radius: 20px;
+            width: 100px;
+            height: 30px;
+            color: white;
+            font-size: 14px;
+        }
+        .nicknameBox{
+            position: absolute;
+            top:35px;
+            right: 205px;
+            color: white;
+        }
+
+        #profileTextBox{
+            position: absolute;
+            top: 90px;
+            right: -10px;
+            width:400px; 
+            height:100px;
+        }
+
+        #websiteLink{
+            position: absolute;
+            top: 200px;
+            right: -10px;
+            width: 400px;
         }
 
     </style><!--스타일-->
@@ -324,7 +359,7 @@
     <script src="/css/sns/js/main.js"></script>
 
 </head>
-
+<div layout:fragment="content">
 <body>
     <div class="loader">
         <div class="loader-outter"></div>
@@ -366,20 +401,6 @@
                     </ul>
                 </div>
                 <!--main menu end -->
-
-                <!--filter menu -->
-                <div class="side_menu_section">
-                    <h4 class="side_title">filter by:</h4>
-                    <ul id="filtr-container" class="filter_nav">
-                        <li data-filter="*" class="active"><a href="javascript:void(0)">all</a></li>
-                        <li data-filter=".branding"> <a href="javascript:void(0)">branding</a></li>
-                        <li data-filter=".design"><a href="javascript:void(0)">design</a></li>
-                        <li data-filter=".photography"><a href="javascript:void(0)">photography</a></li>
-                        <li data-filter=".architecture"><a href="javascript:void(0)">architecture</a></li>
-                    </ul>
-                </div>
-                <!--filter menu end -->
-
 
                 <!--social and copyright -->
                 <div class="side_menu_bottom">
@@ -493,22 +514,26 @@
                     </div>
                     <!-- 프로필 -->
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
-                        <div class="modal-content" style="width: 800px; height: 700px;">
+                        <div class="modal-content" style="width: 800px; height: 700px; background-color: lightblue;">
                             <span class="close">&times;</span>
-                            <p>프로필 변경</p>
-                            <form id="form1" action="/own/snsProfile" method="post" enctype="multipart/form-data">
-                                <div style="width: 300px; height: 300px; border-radius: 50%; border:1px #00f dotted;">
-                                <img class="blah" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover;"/></div>
+                            <form id="form1" action="/own/snsProfile" method="post" enctype="multipart/form-data"  style="position:relative;">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                 <input th:value="${userId.snsAccountNo}" name="snsAccountNo" type="hidden">
-                                <input th:value="${userId.snsNickname}" name="snsNickname">
-                                <input name="uploadProfile" type="file" class="imgInp" />
-                                    <div class="textLengthWarp">
-                                        <p id="profileTextCount">0</p>
-                                        <p id="profileTextTotal">/100</p>
-                                    </div>
-                                <textarea id="profileTextBox" style="width:400px; height:100px;" placeholder="프로필 소개글을 입력하세요."name="snsProfile" th:value="${snsInfo.snsProfile}"></textarea>
-                                <textarea stlye="width:500px; height:80px;" placeholder="웹사이트링크를 입력하세요" name="snsWebsite" th:value="${snsInfo.snsWebsite}"></textarea>
+
+                                <div style="width: 300px; height: 300px; border-radius: 50%; border:1px white dotted;" >
+                                <img class="blah" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover; "/></div>
+                                <input name="uploadProfile" type="file" class="imgInp" id="uploadProfile" style="display: none;"/>
+                                    <label id="fileLabel" for="uploadProfile">이미지 첨부</label>
+                                
+                                <div class="nicknameBox" >
+                                <label>닉네임:</label><input th:value="${userId.snsNickname}" name="snsNickname">
+                                </div>
+                            <textarea id="profileTextBox" placeholder="프로필 소개글을 입력하세요."name="snsProfile" th:value="${snsInfo.snsProfile}"></textarea>
+                                <div class="textLengthWarp">
+                                    <p id="profileTextCount">0</p>
+                                    <p id="profileTextTotal">/100</p>
+                                </div>
+                                <textarea id="websiteLink" stlye="width:500px; height:80px;" placeholder="웹사이트링크를 입력하세요" name="snsWebsite" th:value="${snsInfo.snsWebsite}"></textarea>
                                 <input type="submit" role="button" value="확인" />
                             </form>
                         </div>
@@ -1593,5 +1618,5 @@
 
 
 </body>
-
+</div>
 </html>
