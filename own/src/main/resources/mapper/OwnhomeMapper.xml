@@ -12,6 +12,10 @@ WHERE S.SNS_ACCOUNT_NO = M.IDENTIFY_ID(+)
 select user_id from own_users where user_email = #{email}
 </select>
 
+<update id="searchPw">
+update own_users set user_passwd = #{userPasswd} where user_email = #{userEmail}
+</update>
+
 <select id="getEmpList" resultType="EmpVO">
 select * from employees
 </select>
@@ -74,6 +78,11 @@ ORDER BY OWN_USERS_NO)
 A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 ]]>
 </select>
+
+<insert id="questAdd">
+INSERT INTO QUESTION
+VALUES('QNO_'||quest_no.nextval ,#{userId},#{title},#{content},null ,sysdate, #{header},'처리중')
+</insert>
 
 <delete id="myquestDelete">
 delete from question where quest_no = #{rno}

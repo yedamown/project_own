@@ -36,6 +36,8 @@ public interface OwnhomeMapper {
 	public String searchId(String email);
 	//이메일보내기
 	public String sendMail(String info, String email);
+	//비밀번호 찾기
+	public int searchPw(OwnUserVO vo);
 	public int pwcheck(String pw, String newpw);
 	//sns 유저 회원가입
 	public int updateSnsUser(@Param ("snsNickname") String nickname, @Param ("userId") String id);
@@ -58,5 +60,7 @@ public interface OwnhomeMapper {
 	//신고 갯수갖고오기
 	public int reportCount();
 	//========================마이페이지
+	//질문하기
+	public int questAdd(QuestionVO vo);
 	
 }

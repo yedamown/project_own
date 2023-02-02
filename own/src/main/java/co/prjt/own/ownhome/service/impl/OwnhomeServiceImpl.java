@@ -318,4 +318,16 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		return ownhomeMapper.myinfoupdate(vo);
 	}
 
+	@Override
+	public int questAdd(QuestionVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.questAdd(vo);
+	}
+
+	@Override
+	public int searchPw(OwnUserVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.searchPw(vo);
+	}
+
 }
