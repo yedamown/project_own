@@ -11,4 +11,11 @@ public interface CResultMapper {
 	
 	//상금계산해서 업뎃
 	int updateReward(CResultVO vo);
+	
+	//단건조회
+	CResultVO getResult(CResultVO vo);
+		
+	//달성률 평균 구하기
+	double avgSuccessRate(CResultVO vo);
+	
 }

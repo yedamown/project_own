@@ -27,5 +27,16 @@ public class CResultServiceImpl implements CResultService{
 		return mapper.updateReward(vo);
 	}
 
+//	결과 단건조회
+	@Override
+	public CResultVO getResult(CResultVO vo) {
+		return mapper.getResult(vo);
+	}
+
+	//결과 성공률 평균구하기
+	@Override
+	public double avgSuccessRate(CResultVO vo) {
+		return mapper.avgSuccessRate(vo);
+	}
 
 }
