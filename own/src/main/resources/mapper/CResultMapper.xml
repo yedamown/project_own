@@ -17,7 +17,7 @@
 								          WHERE CHALL_NO = #{challNo}) )
 	</insert>
 		
-	
+	<!-- 프로시저가 업데이트 -->
 	<!--환급금 업뎃, 상금계산해서 업뎃  -->
 	<update id="updateReward">
 		UPDATE CHALL_RESULT
@@ -28,4 +28,16 @@
     	WHERE CHALL_NO = #{challNo}
         AND USER_ID = #{userId}
 	</update>
+	
+	<select id="getResult" resultType="co.prjt.own.chall.service.CResultVO">
+		SELECT * FROM CHALL_RESULT
+		 WHERE CHALL_NO = #{challNo}
+		   AND USER_ID = #{userId}
+	</select>
+	
+	<select id="avgSuccessRate" resultType="double">
+		SELECT ROUND(AVG(SUCCESS_RATE),2)
+          FROM CHALL_RESULT
+         WHERE USER_ID = #{userId}
+	</select>
 </mapper>
