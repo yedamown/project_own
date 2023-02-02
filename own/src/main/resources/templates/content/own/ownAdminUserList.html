@@ -8,10 +8,8 @@
 <title>Insert title here</title>
 <style>
 body {
-	background-color: #f0f0f0;
 	font: 12px Arial, Helvetica, sans-serif;
 	color: #2e2e2e;
-	padding-top: 42px;
 }
 
 div.layout-978 { width: 978px; margin: 0px auto; }
@@ -27,6 +25,13 @@ div.tblcontainer {
 	-khtml-border-radius: 4px; /* for old Konqueror browsers */
 	width: 93%;	
 }
+
+table {
+    width: 100%;
+    border-top: 1px solid #444444;
+    border-collapse: collapse;
+  }
+
 .datagrid {
 	border-collapse: collapse;
 }
@@ -52,7 +57,6 @@ div.tblcontainer {
 	padding: 6px 8px;
 	border: 1px solid #c9c9c9;
 }
-
 
 .datagrid tbody tr td.cash {
 	text-align: right;
@@ -174,10 +178,12 @@ div.tblcontainer {
 					}else{
 						snsAccountNo = ele.snsAccountNo
 					}
+					
+					let id = `<td class="test2">${ele.userId}</td>`
 
 					let tag = `<tr>
 								<td>${ele.rn}</td>
-								<td>${ele.userId}</td>
+								${id}
 								<td>${ele.userName}</td>
 								<td>${snsAccountNo}</td>
 								<td>${ele.challcount}개 진행중..</td>
@@ -227,7 +233,7 @@ div.tblcontainer {
 		      })
 		})
 		//페이지 이동
-    	$('.test2').on('click', function(e){
+    	$('#userList').on('click','.test2', function(e){
     		let id = $(this).text()
     		event.preventDefault()
     		$('#mainTemplate').empty();

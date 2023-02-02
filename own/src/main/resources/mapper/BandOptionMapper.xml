@@ -42,7 +42,7 @@ UPDATE BAND SET BAND_STATUS = 'BS_1',
 </update>
 
 <update id="bandUpdate">
-UPDATE BAND SET BAND_NAME=#{bandName},
+UPDATE BAND SET BAND_NAME = #{bandName},   
 	          BAND_INTRO=#{bandIntro},
  		BAND_KEYWORD=#{bandKeyword},
 		BAND_OPEN_OPTION=#{bandOpenOption},

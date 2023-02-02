@@ -84,5 +84,7 @@ public interface OwnhomeService {
 	public int myquestionCount(QuestionVO VO);
 	//내 질문 페이징처리
 	public List<QuestionVO> getPagingmyQuestlist(QuestionVO vo, Paging paging);
+	//질문하기
+		public int questAdd(QuestionVO vo);
 	
 }

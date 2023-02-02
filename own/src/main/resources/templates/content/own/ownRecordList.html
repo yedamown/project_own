@@ -1,426 +1,426 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/default_layout}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Exercise Record List</title>
-<link rel="stylesheet"
-	href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<!-- 폰트어썸 cdn -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<!-- chart.js cdn -->
-<script
-	src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-<!-- 화면캡쳐 cdn -->
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<script th:inline="javascript">
-/*<![CDATA[*/
-var header = /*[[${_csrf.headerName}]]*/;
-var token = /*[[${_csrf.token}]]*/;
-  console.log(header);
-  console.log(token);
-/*]]>*/
-	// 제이쿼리 충돌 방지 처리
-	var $jQ = jQuery.noConflict(); // ${}대신에 쓸 변수 설정해줌.
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>My Exercise Record List</title>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<!-- 폰트어썸 cdn -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	<!-- chart.js cdn -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+	<!-- 화면캡쳐 cdn -->
+	<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+	<style>
+		.container {
+			width: 900px;
+			margin-top: 50px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+		
+	</style>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var header = /*[[${_csrf.headerName}]]*/;
+		var token = /*[[${_csrf.token}]]*/;
+		console.log(header);
+		console.log(token);
+		/*]]>*/
+		// 제이쿼리 충돌 방지 처리
+		var $jQ = jQuery.noConflict(); // ${}대신에 쓸 변수 설정해줌.
 
-	// 함수 실행
-	  $jQ(document).ready(function(){ 
-		  dayChart();
-		  weightChart();
-		  calTime();
-    	});
-	
-	// 시간계산 함수
-	function calTime(){
-		var totalTime = $jQ("#calData1").find("h3").eq(0).text();
-		console.log(totalTime)
-		$jQ("#calData1").find("h3").eq(1).text("당신은 총 " + Math.floor(totalTime/60) + "시간 " + totalTime%60 + "분 운동하셨습니다.");
-	}
-	
-	// datepicker 라이브러리 옵션
-	$jQ(function() {
-		//input을 datepicker로 선언
-		$jQ("#datepicker1, #datepicker2")
-			.datepicker(
-				{
-					dateFormat : 'yy-mm-dd' //달력 날짜 형태
-					,
-					showOtherMonths : true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-					,
-					showMonthAfterYear : true // 월- 년 순서가아닌 년도 - 월 순서
-					,
-					changeYear : true //option값 년 선택 가능
-					,
-					changeMonth : true //option값 월 선택 가능                
-					,
-					showOn : "button" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-					,
-					buttonImage : "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-					,
-					buttonImageOnly : true //버튼 이미지만 깔끔하게 보이게함
-					,
-					buttonText : "선택" //버튼 호버 텍스트              
-					,
-					yearSuffix : "년" //달력의 년도 부분 뒤 텍스트
-					,
-					monthNamesShort : [ '1월', '2월', '3월', '4월', '5월',
-							'6월', '7월', '8월', '9월', '10월', '11월', '12월' ] //달력의 월 부분 텍스트
-					,
-					monthNames : [ '1월', '2월', '3월', '4월', '5월', '6월',
-							'7월', '8월', '9월', '10월', '11월', '12월' ] //달력의 월 부분 Tooltip
-					,
-					dayNamesMin : [ '일', '월', '화', '수', '목', '금', '토' ] //달력의 요일 텍스트
-					,
-					dayNames : [ '일요일', '월요일', '화요일', '수요일', '목요일',
-							'금요일', '토요일' ] //달력의 요일 Tooltip
-					,
-					minDate : "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-					,
-					maxDate : "+0D" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
-				});
+		// 함수 실행
+		$jQ(document).ready(function () {
+			dayChart();
+			weightChart();
+			calTime();
+		});
 
-		//초기값을 오늘 날짜로 설정해줘야 합니다.
-		$jQ('#datepicker1, #datepicker2').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
-	});
-	
-	// 운동 비율 차트만들기
-	function dayChart() {
-		// 운동 카운트 데이터 받아옴
-		let id = $jQ('#userId').val();
-		$jQ.ajax({
-			url : '/own/dayChart?userId=' + id,
-			method : 'get',
-			dataType : 'json',
-			contentType : "application/json"
-		}).then(res => {
+		// 시간계산 함수
+		function calTime() {
+			var totalTime = $jQ("#calData1").find("h3").eq(0).text();
+			console.log(totalTime)
+			$jQ("#calData1").find("h3").eq(1).text("당신은 총 " + Math.floor(totalTime / 60) + "시간 " + totalTime % 60 + "분 운동하셨습니다.");
+		}
+
+		// datepicker 라이브러리 옵션
+		$jQ(function () {
+			//input을 datepicker로 선언
+			$jQ("#datepicker1, #datepicker2")
+				.datepicker(
+					{
+						dateFormat: 'yy-mm-dd' //달력 날짜 형태
+						,
+						showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+						,
+						showMonthAfterYear: true // 월- 년 순서가아닌 년도 - 월 순서
+						,
+						changeYear: true //option값 년 선택 가능
+						,
+						changeMonth: true //option값 월 선택 가능                
+						,
+						showOn: "button" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+						,
+						buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+						,
+						buttonImageOnly: true //버튼 이미지만 깔끔하게 보이게함
+						,
+						buttonText: "선택" //버튼 호버 텍스트              
+						,
+						yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+						,
+						monthNamesShort: ['1월', '2월', '3월', '4월', '5월',
+							'6월', '7월', '8월', '9월', '10월', '11월', '12월'] //달력의 월 부분 텍스트
+						,
+						monthNames: ['1월', '2월', '3월', '4월', '5월', '6월',
+							'7월', '8월', '9월', '10월', '11월', '12월'] //달력의 월 부분 Tooltip
+						,
+						dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'] //달력의 요일 텍스트
+						,
+						dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일',
+							'금요일', '토요일'] //달력의 요일 Tooltip
+						,
+						minDate: "-5Y" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+						,
+						maxDate: "+0D" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+					});
+
+			//초기값을 오늘 날짜로 설정해줘야 합니다.
+			$jQ('#datepicker1, #datepicker2').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+		});
+
+		// 운동 비율 차트만들기
+		function dayChart() {
+			// 운동 카운트 데이터 받아옴
+			let id = $jQ('#userId').val();
+			$jQ.ajax({
+				url: '/own/dayChart?userId=' + id,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(res => {
 				// 랜덤으로 차트 색상 생성
 				function colorize() {
-				var r = Math.floor(Math.random()*200);
-				var g = Math.floor(Math.random()*200);
-				var b = Math.floor(Math.random()*200);
-				var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-				return color;
+					var r = Math.floor(Math.random() * 200);
+					var g = Math.floor(Math.random() * 200);
+					var b = Math.floor(Math.random() * 200);
+					var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
+					return color;
 				}
-				
+
 				var labelList = new Array();
 				var valueList = new Array();
 				var colorList = new Array();
-						
-				for(var i = 0; i<res.length; i++) {
+
+				for (var i = 0; i < res.length; i++) {
 					var d = res[i];
 					labelList.push(d.exersubName);
 					valueList.push(d.ecount);
 					colorList.push(colorize());
-				}	
+				}
 				var data = {
-						labels: labelList,
-						datasets: [{
-								backgroundColor: colorList,
-								data : valueList
-						}],
-						options : {
-								title : {
-								display : true,
-								text: '운동 구성비'
-								}
-						}
-				};
-		
-			var ctx1 = document.getElementById('dayChart').getContext('2d');
-			new Chart(ctx1, {
-				      type: 'pie',
-					  data: data
-			});
-		})
-	}
-	
-	// 몸무게 변화 차트만들기
-	function weightChart(){
-		// 몸무게 데이터 받아오기
-		let id = $jQ('#userId').val();
-		$jQ.ajax({
-			url : '/own/getWeight?userId=' + id,
-			method : 'get',
-			dataType : 'json',
-			contentType : "application/json"
-		}).then(res => {
-			// 랜덤으로 차트 색상 생성
-			function colorize() {
-			var r = Math.floor(Math.random()*200);
-			var g = Math.floor(Math.random()*200);
-			var b = Math.floor(Math.random()*200);
-			var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-			return color;
-			}
-			
-			var labelList = new Array();
-			var valueList = new Array();
-			var colorList = new Array();
-					
-			for(var i = 0; i<res.length; i++) {
-				var d = res[i];
-				labelList.push(d.exerecDate);
-				valueList.push(d.exerecWeight);
-				colorList.push(colorize());
-			}	
-			var data = {
 					labels: labelList,
 					datasets: [{
-							backgroundColor: colorList,
-							data : valueList
+						backgroundColor: colorList,
+						data: valueList
 					}],
-					options : {
-							title : {
-							display : true,
-							text: '몸무게'
-							}
+					options: {
+						title: {
+							display: true,
+							text: '운동 구성비'
+						}
 					}
-			};
-		
-			var ctx1 = document.getElementById('weightChart').getContext('2d');
-			new Chart(ctx1, {
-				      type: 'line',
-					  data: data
+				};
+
+				var ctx1 = document.getElementById('dayChart').getContext('2d');
+				new Chart(ctx1, {
+					type: 'pie',
+					data: data
+				});
+			})
+		}
+
+		// 몸무게 변화 차트만들기
+		function weightChart() {
+			// 몸무게 데이터 받아오기
+			let id = $jQ('#userId').val();
+			$jQ.ajax({
+				url: '/own/getWeight?userId=' + id,
+				method: 'get',
+				dataType: 'json',
+				contentType: "application/json"
+			}).then(res => {
+				// 랜덤으로 차트 색상 생성
+				function colorize() {
+					var r = Math.floor(Math.random() * 200);
+					var g = Math.floor(Math.random() * 200);
+					var b = Math.floor(Math.random() * 200);
+					var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
+					return color;
+				}
+
+				var labelList = new Array();
+				var valueList = new Array();
+				var colorList = new Array();
+
+				for (var i = 0; i < res.length; i++) {
+					var d = res[i];
+					labelList.push(d.exerecDate);
+					valueList.push(d.exerecWeight);
+					colorList.push(colorize());
+				}
+				var data = {
+					labels: labelList,
+					datasets: [{
+						backgroundColor: colorList,
+						data: valueList
+					}],
+					options: {
+						title: {
+							display: true,
+							text: '몸무게'
+						}
+					}
+				};
+
+				var ctx1 = document.getElementById('weightChart').getContext('2d');
+				new Chart(ctx1, {
+					type: 'line',
+					data: data
+				});
+			})
+		}
+
+		// 화면 캡쳐
+		function captureImage() {
+			html2canvas(document.querySelector("#chart")).then(canvas => {
+				var img = canvas.toDataURL();
+				var fileNm = "파일명";
+				saveImage(img, fileNm + ".jpg") // 다운로드 되는 이미지파일의 이름 지정
 			});
-		})
-	}
-	
-	// 화면 캡쳐
-	function captureImage(){
-		html2canvas(document.querySelector("#chart")).then(canvas => {
-			var img = canvas.toDataURL();
-	        var fileNm = "파일명";
-	        saveImage(img, fileNm + ".jpg") // 다운로드 되는 이미지파일의 이름 지정
-		});
-	}
-	
-	function saveImage(uri, filename) {
-		// 캡쳐된 파일을 이미지 파일로 내보냄
-		 var link = document.createElement("a")
-	      link.download = filename;
-	      link.href = uri;
-	      document.body.appendChild(link);
-	      link.click();
-	}
+		}
 
-	// 지정한 기간으로 데이터 받아오기, 차트 출력
-	function selectPeriod() {
-		//기존 차트 삭제
-		$jQ('#dayChart').remove(); //기존차트 삭제하고
-		$jQ('#weightChart').remove();
-  		$jQ('#div_myChartArea').append('<canvas id="dayChart"><canvas>'); //새로운 차트 캔버스 append
-  		$jQ('#div_myChartArea').append('<canvas id="weightChart"><canvas>');
-		
-		let id = $jQ('#userId').val();
-		let startDate = $jQ("#datepicker1").val();
-		let endDate = $jQ("#datepicker2").val();
-		
-		//날짜 바꿔서 출력
-		document.getElementById("defaultDate").style.display="none";
-		document.getElementById("selectDate").style.display="";
-		$jQ("#selectDate span").text(startDate + "~" + endDate + "조회");
-		
-		//아작스에서 계속 넣을 data 선언
-		var ajaxDate = {userId: id, startDate: startDate, endDate: endDate};
-		
-		//운동데이터 소환
-		$jQ.ajax({
-			url : '/own/selectCounting',
-			method : 'POST',
-			data: JSON.stringify(ajaxDate),  			
-			contentType: "application/json",
-			beforeSend: function(xhr){
-                xhr.setRequestHeader(header,token);
-             },
-            success: function (res) {
-            	// 랜덤으로 차트 색상 생성
- 				function colorize() {
- 				var r = Math.floor(Math.random()*200);
- 				var g = Math.floor(Math.random()*200);
- 				var b = Math.floor(Math.random()*200);
- 				var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
- 				return color;
- 				}	
- 				var labelList = new Array();
- 				var valueList = new Array();
- 				var colorList = new Array();
- 				
- 				for(var i = 0; i<res.length; i++) {
- 					var d = res[i];
- 					labelList.push(d.exersubName);
- 					valueList.push(d.ecount);
- 					colorList.push(colorize());
- 				}
- 				var data = {
- 						labels: labelList,
- 						datasets: [{
- 								backgroundColor: colorList,
- 								data : valueList
- 						}],
- 						options : {
- 								title : {
- 								display : true,
- 								text: '운동 구성비'
- 								}
- 						}
-                }
- 				var ctx1 = document.getElementById('dayChart').getContext('2d');
- 	 			new Chart(ctx1, {
- 	 				      type: 'pie',
- 	 					  data: data
- 	 					});
-            } // success: function (res) 끝
-		})// 운동데이터 아작스 끝
-		
-		// 몸무게 데이터로 차트 작성
-		$jQ.ajax({
-			url : '/own/selectWeight',
- 			method : 'POST',
- 			data: JSON.stringify(ajaxDate),     			
- 			contentType: "application/json",
- 			beforeSend: function(xhr){
-                    xhr.setRequestHeader(header,token);
-                  },
-            success: function (res) {
-            	// 랜덤으로 차트 색상 생성
-     			function colorize() {
-     			var r = Math.floor(Math.random()*200);
-     			var g = Math.floor(Math.random()*200);
-     			var b = Math.floor(Math.random()*200);
-     			var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-     			return color;
-     			}
-     			
-     			var labelList = new Array();
-     			var valueList = new Array();
-     			var colorList = new Array();
-     					
-     			for(var i = 0; i<res.length; i++) {
-     				var d = res[i];
-     				labelList.push(d.exerecDate);
-     				valueList.push(d.exerecWeight);
-     				colorList.push(colorize());
-     			}	
-     			var data = {
-     					labels: labelList,
-     					datasets: [{
-     							backgroundColor: colorList,
-     							data : valueList
-     					}],
-     					options : {
-     							title : {
-     							display : true,
-     							text: '몸무게'
-     							}
-     					}
-     			};
-     			var ctx1 = document.getElementById('weightChart').getContext('2d');
-     			new Chart(ctx1, {
-     				      type: 'line',
-     					  data: data
-     			})
-            }
-		})// 몸무게 아작스 끝
-		
-		//
-		$jQ.ajax({
-			url : '/own/selectRecord',
- 			method : 'POST',
- 			data: JSON.stringify(ajaxDate),     			
- 			contentType: "application/json",
- 			beforeSend: function(xhr){
-                    xhr.setRequestHeader(header,token);
-                  },
-            success: function (res) {
-            	//새로운 날짜를 담을 div로 교체
-            	document.getElementById("calData1").style.display="none";
-            	document.getElementById("calData2").style.display="block";
-            	//운동 시간, 분 - 계산
-           		let totalTime = 0;
-           		let totalKcals = 0;
-            	$.each(res, function(index, item) {
-            		totalTime += item.exerecTime;
-            		totalKcals += item.kcals;
-            	})
-            	
-            	$jQ("#calData2")
-           		.find("h3")
-           		.eq(0) 
-           			.text("당신은 총 " + Math.floor(totalTime/60) + "시간 " + totalTime%60 + "분 운동하셨습니다.")
-          			.end()
-           		.eq(1)
-           			.text("총 " + totalKcals + "칼로리 소모.");
-            }
-		})//
-	}// selectPeriod() 함수 끝
+		function saveImage(uri, filename) {
+			// 캡쳐된 파일을 이미지 파일로 내보냄
+			var link = document.createElement("a")
+			link.download = filename;
+			link.href = uri;
+			document.body.appendChild(link);
+			link.click();
+		}
 
-</script>
+		// 지정한 기간으로 데이터 받아오기, 차트 출력
+		function selectPeriod() {
+			//기존 차트 삭제
+			$jQ('#dayChart').remove(); //기존차트 삭제하고
+			$jQ('#weightChart').remove();
+			$jQ('#div_myChartArea').append('<canvas id="dayChart"><canvas>'); //새로운 차트 캔버스 append
+			$jQ('#div_myChartArea').append('<canvas id="weightChart"><canvas>');
+
+			let id = $jQ('#userId').val();
+			let startDate = $jQ("#datepicker1").val();
+			let endDate = $jQ("#datepicker2").val();
+
+			//날짜 바꿔서 출력
+			document.getElementById("defaultDate").style.display = "none";
+			document.getElementById("selectDate").style.display = "";
+			$jQ("#selectDate span").text(startDate + "~" + endDate + "조회");
+
+			//아작스에서 계속 넣을 data 선언
+			var ajaxDate = { userId: id, startDate: startDate, endDate: endDate };
+
+			//운동데이터 소환
+			$jQ.ajax({
+				url: '/own/selectCounting',
+				method: 'POST',
+				data: JSON.stringify(ajaxDate),
+				contentType: "application/json",
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success: function (res) {
+					// 랜덤으로 차트 색상 생성
+					function colorize() {
+						var r = Math.floor(Math.random() * 200);
+						var g = Math.floor(Math.random() * 200);
+						var b = Math.floor(Math.random() * 200);
+						var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
+						return color;
+					}
+					var labelList = new Array();
+					var valueList = new Array();
+					var colorList = new Array();
+
+					for (var i = 0; i < res.length; i++) {
+						var d = res[i];
+						labelList.push(d.exersubName);
+						valueList.push(d.ecount);
+						colorList.push(colorize());
+					}
+					var data = {
+						labels: labelList,
+						datasets: [{
+							backgroundColor: colorList,
+							data: valueList
+						}],
+						options: {
+							title: {
+								display: true,
+								text: '운동 구성비'
+							}
+						}
+					}
+					var ctx1 = document.getElementById('dayChart').getContext('2d');
+					new Chart(ctx1, {
+						type: 'pie',
+						data: data
+					});
+				} // success: function (res) 끝
+			})// 운동데이터 아작스 끝
+
+			// 몸무게 데이터로 차트 작성
+			$jQ.ajax({
+				url: '/own/selectWeight',
+				method: 'POST',
+				data: JSON.stringify(ajaxDate),
+				contentType: "application/json",
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success: function (res) {
+					// 랜덤으로 차트 색상 생성
+					function colorize() {
+						var r = Math.floor(Math.random() * 200);
+						var g = Math.floor(Math.random() * 200);
+						var b = Math.floor(Math.random() * 200);
+						var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
+						return color;
+					}
+
+					var labelList = new Array();
+					var valueList = new Array();
+					var colorList = new Array();
+
+					for (var i = 0; i < res.length; i++) {
+						var d = res[i];
+						labelList.push(d.exerecDate);
+						valueList.push(d.exerecWeight);
+						colorList.push(colorize());
+					}
+					var data = {
+						labels: labelList,
+						datasets: [{
+							backgroundColor: colorList,
+							data: valueList
+						}],
+						options: {
+							title: {
+								display: true,
+								text: '몸무게'
+							}
+						}
+					};
+					var ctx1 = document.getElementById('weightChart').getContext('2d');
+					new Chart(ctx1, {
+						type: 'line',
+						data: data
+					})
+				}
+			})// 몸무게 아작스 끝
+
+			//
+			$jQ.ajax({
+				url: '/own/selectRecord',
+				method: 'POST',
+				data: JSON.stringify(ajaxDate),
+				contentType: "application/json",
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success: function (res) {
+					//새로운 날짜를 담을 div로 교체
+					document.getElementById("calData1").style.display = "none";
+					document.getElementById("calData2").style.display = "block";
+					//운동 시간, 분 - 계산
+					let totalTime = 0;
+					let totalKcals = 0;
+					$.each(res, function (index, item) {
+						totalTime += item.exerecTime;
+						totalKcals += item.kcals;
+					})
+
+					$jQ("#calData2")
+						.find("h3")
+						.eq(0)
+						.text("당신은 총 " + Math.floor(totalTime / 60) + "시간 " + totalTime % 60 + "분 운동하셨습니다.")
+						.end()
+						.eq(1)
+						.text("총 " + totalKcals + "칼로리 소모.");
+				}
+			})//
+		}// selectPeriod() 함수 끝
+
+	</script>
 
 </head>
 <div layout:fragment="content">
-	<body>
-		<input id="userId" type="hidden"
-			th:value="${session.loginUser.userId}">
-		<h2 th:text="${session.loginUser.userName}"></h2>
-		<h4>회원님의 운동 기록 보기</h4>
-		<div id="calendar">
-			<p>
-				조회기간을 선택해주세요 <input type="text" id="datepicker1"> <input
-					type="text" id="datepicker2">
-				<button id="selectPeriodBtn" onclick="selectPeriod()">조회</button>
-			</p>
-		</div>
-		<div class="dayRecord">
-			<div id="defaultDate">
-				<span
-					th:text="${#dates.format(lRecord[0].exerecDate, 'yyyy년 MM월 dd일')}+ '이 가장 최근 운동데이터임'"></span>
-			</div>
-			<div id="selectDate">
-				<span></span>
-			</div>
-			<!--====================== 운동시간 계산 div ======================-->
-			<div id="calData1">
-				<h3
-					th:text="${(#aggregates.sum(lRecord.![exerecTime]))}" hidden></h3>
-				<h3></h3>
-				<h3
-					th:text="'총 ' + ${#aggregates.sum(lRecord.![kcals])} + '칼로리 소모.'"></h3>
-			</div>
-			<div id="calData2" style="display: none;">
-				<h3></h3>
-				<h3></h3>
-			</div>
-			<!--====================== 차트 div ======================-->
-			<div id="div_myChartArea" style="width: 900px; height: 900px;">
-				<canvas id="dayChart" align="center"></canvas>
-				<canvas id="weightChart" align="center"></canvas>
-			</div>
-			<!--====================== 사진으로 저장하기, 공유 버튼 div ======================-->
-			<div id="shareBtn">
-				<button onclick="captureImage()">
-					<i class="fas fa-light fa-floppy-disk" id="saveBtn"
-						style="font-size: 50px" /></i>
-				</button>
-				<button onclick="captureImage()">
-					<i class="fa-brands fa-blogger" id="bandBtn"
-						style="font-size: 50px"></i>
-				</button>
-				<button onclick="captureImage()">
-					<i class="fa-brands fa-instagram" id="snsBtn"
-						style="font-size: 50px"></i>
-				</button>
-			</div>
-		</div>
 
+	<body>
+		<div class="container">
+			<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
+			<h2 th:text="${session.loginUser.userName}"></h2>
+			<h4>회원님의 운동 기록 보기</h4>
+			<div id="calendar">
+				<p>
+					조회기간을 선택해주세요 <input type="text" id="datepicker1"> <input type="text" id="datepicker2">
+					<button id="selectPeriodBtn" onclick="selectPeriod()">조회</button>
+				</p>
+			</div>
+			<div class="dayRecord">
+				<div id="defaultDate">
+					<span th:text="${#dates.format(lRecord[0].exerecDate, 'yyyy년 MM월 dd일')}+ '이 가장 최근 운동데이터임'"></span>
+				</div>
+				<div id="selectDate">
+					<span></span>
+				</div>
+				<!--====================== 운동시간 계산 div ======================-->
+				<div id="calData1">
+					<h3 th:text="${(#aggregates.sum(lRecord.![exerecTime]))}" hidden></h3>
+					<h3></h3>
+					<h3 th:text="'총 ' + ${#aggregates.sum(lRecord.![kcals])} + '칼로리 소모.'"></h3>
+				</div>
+				<div id="calData2" style="display: none;">
+					<h3></h3>
+					<h3></h3>
+				</div>
+				<!--====================== 차트 div ======================-->
+				<div id="div_myChartArea" style="width: 900px; height: 900px;">
+					<canvas id="dayChart" align="center"></canvas>
+					<canvas id="weightChart" align="center"></canvas>
+				</div>
+				<!--====================== 사진으로 저장하기, 공유 버튼 div ======================-->
+				<div id="shareBtn">
+					<button onclick="captureImage()">
+						<i class="fas fa-light fa-floppy-disk" id="saveBtn" style="font-size: 50px" /></i>
+					</button>
+					<button onclick="captureImage()">
+						<i class="fa-brands fa-blogger" id="bandBtn" style="font-size: 50px"></i>
+					</button>
+					<button onclick="captureImage()">
+						<i class="fa-brands fa-instagram" id="snsBtn" style="font-size: 50px"></i>
+					</button>
+				</div>
+			</div>
+		</div>
 	</body>
 </div>
+
 </html>

@@ -49,7 +49,7 @@
 		<div id="template">    
 			<div style="flex-grow:3; width: 740px">
 				<article style="border: 1px solid #eeeeee;padding:20px 0px 50px 70px; ">
-					<div class="container">
+					<div class="container"><input type="hidden" th:value="${member.bandNickname}" id="hiddenNickname">
 					<!--================폼 시작 Area =================-->      
 	        			<form role="form"  autocomplete="off" style="width: 80%;"enctype="multipart/form-data" name="frm" id="frm">
 					         	<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
@@ -69,7 +69,7 @@
 								                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">
 								                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 활동명</h6>
 								                  <div class="mt-10">
-								                    <input type="text" th:value="${member.bandNickname}" id="bandNickname" name="bandNickname" maxlength="10" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
+								                    <input type="text" th:value="${member.bandNickname}" id="bandNicknames" name="bandNickname" maxlength="10" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
 								                  </div>
 								                  <b><small style="display:inline; width: 10%; float: right" id="nickNamelength">4/10</small></b>
 								                  <div id="hiddenBox" style="display: none"><b style="padding-left: 10px;" id="hiddenBoxText">가입가능한 닉네임입니다</b></div>
@@ -175,11 +175,12 @@
 	            }
 	        })
             //별명 중복체크...
-            $('#bandNickname').on('change', function(){
+            $('#bandNicknames').on('change', function(){
             	nickNameChk();
             })
             //닉네임 공백막기 글자수
-             $('#bandNickname').keyup(function(e){
+             $('#bandNicknames').keyup(function(e){
+            	 console.log('왜 안됨ㅜㅜ');
             	//닉네임 공백막기
             	 if($(this).val().search(/\s/) != -1){ //공백이 있나 체크 후
            			$(this).val( $(this).val().replace(/ /gi, '') );
@@ -191,7 +192,7 @@
             })
           //닉네임 글자수 체크  
         	function chkNickLength(){
-        		$('#nickNamelength').text($('#bandNickname').val().length+'/10');
+        		$('#nickNamelength').text($('#bandNicknames').val().length+'/10');
         	}
           //인트로  글자수
             $('#bandMemberIntro').keyup(function(e){
@@ -204,13 +205,14 @@
         	}
             //별명 중복체크(자동)
             function nickNameChk(){
-            	let nickName = $('#bandNickname').val();
+            	let nickName = $('#bandNicknames').val();
             	$.ajax({
         			url : '/own/band/bandGroup/duplicateChk?bandNo='+bandNo+'&nickName='+nickName,
         			method : 'get',
         		}).then( res =>{
         			console.log(res);
-        			if(res>0){
+        			//기존 사용하던 닉네임은 괜찮음
+        			if(res>0&&$('#hiddenNickname').val()!=nickName){
         				$('#hiddenBoxText').text('중복된 닉네임입니다. 다른 닉네임을 사용해주십시오.');
         				$('#hiddenBox').show();
         				$('#submitBtn').prop('disabled', true);
@@ -234,7 +236,7 @@
         		})
             }
             //디폴트닉네임체크
-            nickNameChk();
+            //nickNameChk();
             //글자수체크
             chkNickLength();
             //인트로 글자수 체크

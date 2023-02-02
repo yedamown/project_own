@@ -171,6 +171,11 @@ and m.mem_status = '승인'
 and m.user_id = #{id}
  </select>
  
+ <insert id="questAdd">
+INSERT INTO QUESTION
+VALUES('QNO_'||quest_no.nextval ,#{userId},#{title},#{content},null ,sysdate, #{header},'처리중')
+</insert>
+
  <select id="Banding" resultType="co.prjt.own.band.service.BandMemberDetailVO">
 SELECT BMD.*,B.BAND_NAME FROM 
 BAND_MEMBER_DETAIL BMD , BAND B

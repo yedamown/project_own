@@ -206,7 +206,7 @@ public class BandBoardDetailController {
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
 		model.addAttribute("bandNo", bandNo);
 		return "content/band/zBoardOption";
-	}
+	} 
 	//게시판 단건 수정
 	@ResponseBody
 	@PutMapping("/bandGroup/bandOption9")

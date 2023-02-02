@@ -13,10 +13,10 @@
 												WHERE BAND_MEMBER_NO = #{bandMemberNo} )
 						AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
 						AND BAND_MEMBER_NO = B.BAND_MEMBER_NO
-					) CHAT_CHECK
+					) CHAT_CHECK  
 		FROM BAND_MEMBER_DETAIL B
 		WHERE BAND_NO = #{bandNo}
-		<!-- and USER_ID <![CDATA[ <> #{userId}]]> -->
+		<!-- and USER_ID <![CDATA[  <> #{userId}]]> -->
 	</select>
 
 	<!-- 밴드식별번호랑 유저아이디로 밴드멤버식별번호 가져오기 -->

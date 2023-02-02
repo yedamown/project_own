@@ -17,7 +17,7 @@ public interface BandService {
 		//밴드 없으면 그냥?
 		public List<Map<String, Object>> getBandAll(BandVO vo, Paging paging);
 		//밴드 리스트 전체 + 검색 카운트..위와세트
-		public int count(BandVO vo);
+		public int count(BandVO vo); 
 		
 		//밴드 단건조회
 		public Map<String, Object> getBand(String bandNo);

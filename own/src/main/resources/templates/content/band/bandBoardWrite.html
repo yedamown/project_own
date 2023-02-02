@@ -347,14 +347,14 @@ $(function(){
             backgroundColor: 'rgba(0,0,0,0.4)'
         });
         document.body.append(bg);
-
         // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
         //한번 지워주지 않으면 계속 실행됨
-        modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+        modal.querySelector('.modal_close_btn').removeEventListener('click', bgRe)
+        modal.querySelector('.modal_close_btn').addEventListener('click', bgRe);
+        function bgRe() {
             bg.remove();
             modal.style.display = 'none';
-        });
-
+        }
         modal.setStyle({
             position: 'fixed',
             display: 'block',
@@ -373,7 +373,15 @@ $(function(){
       //일정넣기(모달의)버튼 누름
 		$('#calBtn').on('click', function(){
 			let calVote = $('#calVote');
-			console.log(calVote);
+			console.log(calVote.children());
+			console.log('1') 
+			console.log(calVote.children().length)
+			if(calVote.children().length>0){
+				console.log(' 빠짐');
+				bgRe();
+				return false;
+			}
+			console.log('3')
             modal.style.display = 'none';
 			bg.remove();
 			//제목
@@ -410,6 +418,7 @@ $(function(){
 						cal += `<p>${mon}</p></div>`
 						cal += `<div style="padding:10px;"><h5>${title}</h5>`
 						cal += `<p>${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
+						cal += `<div style="float:right; margin-top:30px;"><input type="button"id="calUpBtn" value="수정"></div>`
 						cal += `<div style="float:right; margin-top:30px;"><input type="button"id="calDelBtn" value="삭제"></div>`
 					cal += `</div>`;
 			calVote.append(cal);
@@ -609,19 +618,21 @@ $(function(){
 		$('.note-editable:eq(0)').css('height', '330px');
 	}
 	//일정수정
-	$('#calVote').on('click', $('#upDelBtn'), function(e){
-		if(e.target.id=='upDelBtn'){
+	$('#calVote').on('click', $('#calUpBtn'), function(e){
+		if(e.target.id=='calUpBtn'){
 			$('#calVote').empty();
+			//우선 모달창띄우기
+	    	modal('my_calendar_modal');
 		}
 	})
 	//일정삭제
 	$('#calVote').on('click', $('#calDelBtn'), function(e){
 		if(e.target.id=='calDelBtn'){
 			$('#calVote').empty();
+			$('#modalform').find('input').each(function(){
+				$(this).val('');
+			})
 		}
-		$('#modalform').find('input').each(function(){
-			$(this).val('');
-		})
 	})
 })
 $(document).ready(function () {

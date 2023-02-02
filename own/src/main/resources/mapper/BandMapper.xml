@@ -14,10 +14,10 @@
 				AND BAND_LOCATION = #{bandLocation}
 			</if>
 			<if test="bandCategory != null and bandCategory !=''">
-				AND band_category  = #{bandCategory}
+				AND band_category = #{bandCategory}
 			</if>
 	</sql>
-	<!-- <sql id="recom">
+	<!-- <sql id="recom">  
 		<if test="bandName != null and bandName !=''">
 			WHERE EXERSUB_NAME LIKE '%' || #{bandName} || '%'
 			OR LOC_CITY  LIKE '%' || #{bandName} || '%'
@@ -104,6 +104,7 @@
              (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
                 FROM BAND_MEMBER_DETAIL 
                WHERE BAND_NO = #{bandNo}
+               and band_member_status = 'BA02'
                GROUP BY BAND_NO) E
                     
        WHERE A.BAND_NO = B.BAND_NO
@@ -230,6 +231,7 @@
                ),
    bbb as (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
                  FROM BAND_MEMBER_DETAIL
+                 where band_member_status = 'BA02'
                 GROUP BY BAND_NO
               )         
 	
@@ -311,6 +313,7 @@
 																                        ) D,
                                                                                 (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
                                                                                     FROM BAND_MEMBER_DETAIL
+                                                                                    where band_member_status = 'BA02'
                                                                                     GROUP BY BAND_NO) E
                                                                             WHERE A.BAND_NO = B.BAND_NO
                                                                             <!-- leaderid로 검색하지만 실제로는 유저아이디..검색용도 -->
