@@ -110,4 +110,10 @@
 		WHERE CHALL_NO = #{challNo}
 		AND VLD_STATUS = '승인'
 	</select>
+	
+	<update id="updateVld">
+		UPDATE CHALL_VALIDATION
+		SET VLD_STATUS = #{vldStatus}
+		WHERE VLD_NO = #{vldNo}
+	</update>
 </mapper>
