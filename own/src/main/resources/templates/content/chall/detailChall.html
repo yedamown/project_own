@@ -180,9 +180,6 @@
 		</div>
 	</nav>
 
-
-
-
 	<!-- Header Start -->
 	<div class="container-fluid bg-primary mb-5">
 		<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
@@ -994,10 +991,9 @@
 				let pagingName = 'vldPaging';
 				makePaging(result, pagingName);
 				})
-		    })
+		});
 
-
-		//all페이지 불러오는 아작스 함수..
+		//첫 all페이지 불러오는 아작스 함수..
 		function allVldAjax(){
 			//페이징없애기..
 			//$('#myVldPaging').empty();
@@ -1027,6 +1023,7 @@
 		//올 버튼 누를때 전체불러오는 아작스..
 		$('#allVldPage').on('click', function(){
 			console.log($('#myVldPaging'));
+			//페이징지우고, 내용칸 지우기.
 			$('#myVldPaging').empty();
 			let Chall = $('#vldImg');
 			$('#vldImg').empty();
@@ -1041,9 +1038,10 @@
     	})
 
 	//-----------------------------------내도전페이징--------------------------------------------- 
+
 		//점 어설프노..
 		//마이 눌렀을때 첫 페이지   --자꾸 위에 정의해놓은 userId 가져가노...ㅠㅠ
-		$('#onlyMyVldPage').on('click', function(){
+		$('#onlyMyVldPage').on('click', function() {
 			$('#vldPaging').empty();
 		    //페이지번호 + 밴드식별번호
 		    let myId = $(this).attr('value');
@@ -1071,7 +1069,8 @@
 				error: function(err){
 					console.log(err);
 				}
-        	})
+        	})    
+		});
 
 		// 내 인증 페이징 버튼 아작스.
 		$('#myVldPaging').on('click', '.pagePort', function(){
@@ -1079,7 +1078,6 @@
 		    let page = $(this).attr('value');
 			console.log(page)
 		    console.log($(this).attr('value')); 
-			console.log("디스................아이디....... "+myId);
 			console.log("유저 아이디..위에 선언한거...."+userId);
 		    $.ajax({
 		       url: '/own/chall/vldPageListAjax',
@@ -1088,7 +1086,7 @@
 					   pageUnit:4,
 					   pageSize:5,
 					   challNo: challNo,
-					   userId: myId}
+					   userId: userId}
 		    }).then(result => {
 		       console.log(result);
 				//형태만들기 이미있는애들 없애준다.. -> 도전폼
@@ -1101,9 +1099,8 @@
 				let pagingName = 'myVldPaging';
 				makePaging(result, pagingName);
 				})
-		    })
-
 		    });
+
 
 	//버튼 초기화
 	/* 아작스 페이징 버튼 */
@@ -1148,7 +1145,7 @@
 								startpageTag.append(pageAfterTag);
 							}
 							$(`#${pagingName}`).append(startpageTag);
-		}
+		};
 
     /* 인증내역 아작스로읽어와서 사진폼으로 만들기*/
     function makeVldForm(vld){

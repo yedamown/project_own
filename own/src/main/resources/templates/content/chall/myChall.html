@@ -75,7 +75,7 @@
 		th:value="${session.loginUser.userId}" />
 
 	<!-- Blog Start -->
-	<div class="container-fluid pt-5" id="myPageChallDiv">
+	<div class="container-fluid pt-5" style="height: 1300px;" id="myPageChallDiv">
 		<div class="container"> 
 
 			<div class="text-center pb-2">
@@ -89,10 +89,10 @@
 			<div class="row" style="margin: auto;">
 				<div class="col-12 text-left mb-2">
 					<ul class="list-inline mb-4" id="menu-filters" style="text-align: center;">
-						<li class="btn btn-outline-primary m-1 active" id="myChall" val="1"> 내가 참여 중인 도전</li>
+						<li class="btn btn-outline-primary m-1 active" id="nowChall" val="1"> 내가 참여 중인 도전</li>
 						<li class="btn btn-outline-primary m-1" id="likeChall" val="1">내가 북마크한 도전</li>
 						<li class="btn btn-outline-primary m-1" id="leaderChall" val="1">내가 만든</li>
-						<li class="btn btn-outline-primary m-1" id="leaderChall" val="1">완료된 도전</li>
+						<li class="btn btn-outline-primary m-1" id="doneChall" val="1">완료된 도전</li>
 					</ul>
 				</div>
 			</div>
@@ -128,37 +128,142 @@
 	<!-- 도전 6개 끝 -->
 
 			<!-- 페이징버튼 넣기 -->
-			<nav class="blog-pagination justify-content-center d-flex" id="myChallPage">
-				<!--================ 이전  =================-->
-				<ul class="pagination">
-					<li class="page-item" th:if="${paging.startPage > 1}"><a
-						class="page-link" aria-label="Previous"
-						th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
-								class="lnr lnr-chevron-left pagePort"></span></span></a></li>
-					<!--================ 페이지 이동 1_2_3_4_5  =================-->
-					<th:block
-						th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
-						<li class="page-item" th:if="${pag != paging.page}"><a
-							class="page-link pagePort" th:value="${pag}"
-							th:text="${#numbers.formatInteger(pag,2)}"></a></li>
-						<li class="page-item active" th:if="${pag==paging.page}"><a
-							class="page-link" th:text="${#numbers.formatInteger(pag,2)}"></a>
+			<div id="navPaging">
+				<nav class="blog-pagination justify-content-center d-flex" id="nowChallPaging">
+					<!--================ 이전  =================-->
+					<ul class="pagination">
+						<li class="page-item" th:if="${paging.startPage > 1}"><a
+							class="page-link" aria-label="Previous"
+							th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+									class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+						<!--================ 페이지 이동 1_2_3_4_5  =================-->
+						<th:block
+							th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+							<li class="page-item" th:if="${pag != paging.page}"><a
+								class="page-link pagePort" th:value="${pag}"
+								th:text="${#numbers.formatInteger(pag,1)}"></a></li>
+							<li class="page-item active" th:if="${pag==paging.page}"><a
+								class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+							</li>
+						</th:block>
+						<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+						<!--================ 이후  =================-->
+						<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+							<a class="page-link pagePort" aria-label="Next"
+							th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
+									class="lnr lnr-chevron-right"></span></span></a>
 						</li>
-					</th:block>
-					<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
-					<!--================ 이후  =================-->
-					<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
-						<a class="page-link pagePort" aria-label="Next"
-						th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
-								class="lnr lnr-chevron-right"></span></span></a>
-					</li>
-				</ul>
-			</nav>
-				<nav class="blog-pagination justify-content-center d-flex" id="myLikePage"></nav>
+					</ul>
+				</nav>
+					<nav class="blog-pagination justify-content-center d-flex" id="likeChallPaging"></nav>
+					<nav class="blog-pagination justify-content-center d-flex" id="leaderChallPaging"></nav>
+					<nav class="blog-pagination justify-content-center d-flex" id="doneChallPaging"></nav>
+			</div>
 		</div>
 		</div>	
 	</div>
 	<!-- Blog End -->
+
+	<!-- Footer Start -->
+	<div
+		class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
+		<div class="row pt-5">
+			<div class="col-lg-3 col-md-6 mb-5">
+				<a href=""
+					class="navbar-brand font-weight-bold text-primary m-0 mb-4 p-0"
+					style="font-size: 40px; line-height: 40px"> <i
+					class="flaticon-043-teddy-bear"></i> <span class="text-white">KidKinder</span>
+				</a>
+				<p>Labore dolor amet ipsum ea, erat sit ipsum duo eos. Volup
+					amet ea dolor et magna dolor, elitr rebum duo est sed diam elitr.
+					Stet elitr stet diam duo eos rebum ipsum diam ipsum elitr.</p>
+				<div class="d-flex justify-content-start mt-4">
+					<a
+						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+						style="width: 38px; height: 38px" href="#"><i
+						class="fab fa-twitter"></i></a> <a
+						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+						style="width: 38px; height: 38px" href="#"><i
+						class="fab fa-facebook-f"></i></a> <a
+						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+						style="width: 38px; height: 38px" href="#"><i
+						class="fab fa-linkedin-in"></i></a> <a
+						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+						style="width: 38px; height: 38px" href="#"><i
+						class="fab fa-instagram"></i></a>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 mb-5">
+				<h3 class="text-primary mb-4">Get In Touch</h3>
+				<div class="d-flex">
+					<h4 class="fa fa-map-marker-alt text-primary"></h4>
+					<div class="pl-3">
+						<h5 class="text-white">Address</h5>
+						<p>123 Street, New York, USA</p>
+					</div>
+				</div>
+				<div class="d-flex">
+					<h4 class="fa fa-envelope text-primary"></h4>
+					<div class="pl-3">
+						<h5 class="text-white">Email</h5>
+						<p>info@example.com</p>
+					</div>
+				</div>
+				<div class="d-flex">
+					<h4 class="fa fa-phone-alt text-primary"></h4>
+					<div class="pl-3">
+						<h5 class="text-white">Phone</h5>
+						<p>+012 345 67890</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 mb-5">
+				<h3 class="text-primary mb-4">Quick Links</h3>
+				<div class="d-flex flex-column justify-content-start">
+					<a class="text-white mb-2" href="#"><i
+						class="fa fa-angle-right mr-2"></i>Home</a> <a class="text-white mb-2"
+						href="#"><i class="fa fa-angle-right mr-2"></i>About Us</a> <a
+						class="text-white mb-2" href="#"><i
+						class="fa fa-angle-right mr-2"></i>Our Classes</a> <a
+						class="text-white mb-2" href="#"><i
+						class="fa fa-angle-right mr-2"></i>Our Teachers</a> <a
+						class="text-white mb-2" href="#"><i
+						class="fa fa-angle-right mr-2"></i>Our Blog</a> <a class="text-white"
+						href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 mb-5">
+				<h3 class="text-primary mb-4">Newsletter</h3>
+				<form action="">
+					<div class="form-group">
+						<input type="text" class="form-control border-0 py-4"
+							placeholder="Your Name" required="required" />
+					</div>
+					<div class="form-group">
+						<input type="email" class="form-control border-0 py-4"
+							placeholder="Your Email" required="required" />
+					</div>
+					<div>
+						<button class="btn btn-primary btn-block border-0 py-3"
+							type="submit">Submit Now</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="container-fluid pt-5"
+			style="border-top: 1px solid rgba(23, 162, 184, 0.2);">
+			<p class="m-0 text-center text-white">
+				&copy; <a class="text-primary font-weight-bold" href="#">Your
+					Site Name</a>. All Rights Reserved.
+
+				<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+				Designed by <a class="text-primary font-weight-bold"
+					href="https://htmlcodex.com">HTML Codex</a> <br />Distributed By:
+				<a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+			</p>
+		</div>
+	</div>
+	<!-- Footer End -->
 
 <script>
 	//토큰있어야 post가능~!
@@ -181,131 +286,274 @@
     	$(this).addClass('active');
     })
 
-	//처음 보여주는 참여중인 도전 페이징 버튼 -  
-	$('#myPageChallDiv').on('click', '.pagePort', function(){
-		console.log("왜안되노")
-		//페이지번호 + 밴드식별번호
-		let page = $(this).attr('value');
-		console.log($(this).attr('value'));
-		$.ajax({
-		url: '/own/chall/myPageChallAjax',
-		method: 'get',
-		data: { page:page,
-				pageUnit:6,
-				pageSize:3,
-				userId: userIdInfo},
-		}).then(result => {
-		console.log(result);
-			//형태만들기
-			//모델으로 가져온 도전 지우기.
-			let Chall = $('#ChallRow')
-			$('#challRow').empty();
-			result.forEach( cha => {
-				makeChallDiv(cha);
-			})
-		//페이징 버튼
-		let pagingName = 'myChallPage';
-		$('#myPageChallDiv nav').remove();
-		makePaging(result, pagingName);
-		})
-       });
+	// //처음 보여주는 참여중인 도전 페이징 버튼 -  
+	// 	$('#nowChallPaging').on('click', '.pagePort', function(){
+	// 		let page = $(this).attr('value');
+	// 		console.log($(this).attr('value'));
+	// 		$.ajax({
+	// 		url: '/own/chall/myPageChallAjax',
+	// 		method: 'get',
+	// 		data: { page:page,
+	// 				pageUnit:6,
+	// 				pageSize:3,
+	// 				userId: userIdInfo},
+	// 		}).then(result => {
+	// 		console.log(result);
+	// 			//형태만들기
+	// 			//모델으로 가져온 도전 지우기.
+	// 			let Chall = $('#ChallRow')
+	// 			$('#challRow').empty();
+	// 			result.forEach( cha => {
+	// 				makeChallDiv(cha);
+	// 			})
+	// 		//페이징 버튼
+	// 		let pagingName = 'myChallPage';
+	// 		$('#myPageChallDiv nav').remove();
+	// 		makePaging(result, pagingName);
+	// 		})
+	// 	});
+
+		//내가참여중인 도전 페이징 버튼 아작스
+	   $('#nowChallPaging').on('click', '.pagePort', function(){
+			$('#navPaging').children().empty();
+			let page = $(this).attr('value');
+			console.log(page);
+			let data = { page: page, 
+						 pageUnit: 6, 
+				   		 pageSize: 5,
+				 		 userId: userIdInfo };
+			let pagingName = 'nowChallPaging';
+			pagingAjaxBtn(data, pagingName);
+	   });
+
+	   $('#nowChall').on('click', function(){
+			$('#navPaging nav').empty();
+			console.log($('#navPaging').children());
+			let data = { page:1, 
+						 pageUnit:6, 
+				   		 pageSize:5,
+				 		 userId: userIdInfo };
+			let pagingName = 'nowChallPaging';
+			firstPageAjax(data, pagingName);
+	   });
+
 
 	   //-----------------------------------내가 좋아요한 도전--------------------------------------
 
-	   //좋아요한 도전
+	   //좋아요한 도전 첫 페이지
 	   $('#likeChall').on('click', function(){
-
 		$.ajax({
           url: '/own/chall/myLikeChallAjax',
           method: 'get',
 		  data: {page:1,
-				 pageUnit:1,
-			     pageSize:5,
-				 userId: userIdInfo},
+				 pageUnit: 6,
+			     pageSize: 5,
+				 userId: userIdInfo },
           success: function(result){
-			let Chall = $('#ChallRow')
-			$('#challRow').empty();
-            result.forEach( vld => {
-              makeChallDiv(vld);
-            });
-			let pagingName = 'leaderPageBtn';
-			$('#myPageChallDiv nav').remove();
-			makePaging(result, pagingName);
+				let Chall = $('#ChallRow')
+				$('#challRow').empty();
+				result.forEach( vld => {
+				makeChallDiv(vld);
+				});
+				let pagingName = 'likeChallPaging';
+				$('#navPaging').children().empty();
+				makePaging(result, pagingName);
           },
           error: function(err){
             console.log(err);
           }
         })
-	   })
+	   });
+	   
+	   //좋아요 페이징버튼 아작스
+	   $('#likeChallPaging').on('click', '.pagePort', function(){
+			let page = $(this).attr('value');
+			console.log(page);
+			let data = { page: page, 
+						 pageUnit: 6, 
+				   		 pageSize: 5,
+				 		 userId: userIdInfo };
+			$.ajax({
+				url: '/own/chall/myLikeChallAjax',
+				method: 'get',
+				data: data,
+				success: function(result){
+					let Chall = $('#ChallRow')
+					$('#challRow').empty();
+					result.forEach( vld => {
+					makeChallDiv(vld);
+					});
+					let pagingName = 'likeChallPaging';
+					$('#navPaging').children().empty();
+					makePaging(result, pagingName);
+				},
+				error: function(err){
+					console.log(err);
+				}
+        })
+	   });
+
+	   //-------------------------내가 리더인 도전----------------------------------------
+
+	   //리더아작스 첫페이지 호출
+		$('#leaderChall').on('click', function(){
+			$('#navPaging').children().empty();
+			console.log($('#navPaging').children());
+			let data = { page:1, 
+						 pageUnit:6, 
+				   		 pageSize:5,
+				 		 userId: userIdInfo,
+						 challLeader: userIdInfo };
+			let pagingName = 'leaderChallPaging';
+			firstPageAjax(data, pagingName);
+	   });
+
+	   //리더 페이징 아작스 버튼 시 
+	   $('#leaderChallPaging').on('click', '.pagePort', function(){
+		   let page = $(this).attr('value');
+			console.log(page);
+			let data = { page: page, 
+						 pageUnit: 6, 
+				   		 pageSize: 5,
+				 		 userId: userIdInfo,
+						 challLeader: userIdInfo };
+			let pagingName = 'leaderChallPaging';
+			pagingAjaxBtn(data, pagingName);
+	   });
+
+	   //완료된 도전
+	   $('#doneChall').on('click', function(){
+		$('#navPaging').children().empty();
+		console.log("삭제되었나요..");
+		let data = { page:1, 
+						 pageUnit:6, 
+				   		 pageSize:5,
+				 		 userId: userIdInfo,
+						 challStatus: "종료" };
+			let pagingName = 'doneChallPaging';
+		firstPageAjax(data, pagingName);
+	   });
+
+	   //-------------------------처음페이지 호출 아작스(좋아요빼고), 버튼 아작스 호출 함수 ------------------------
+
+	   //처음 페이지 호출..아작스 -> 좋아요 빼고, 
+	   function firstPageAjax(data, pagingName) {
+			console.log(data);
+			console.log("붙일 곳----------------"+pagingName);
+			let pagingNm = pagingName;
+			//도전목록 비우기..
+			let Chall = $('#ChallRow');
+			$('#challRow').empty();
+			$.ajax({
+				url: '/own/chall/myPageChallAjax',
+				method: 'get',
+				data: data,
+				success: function(result){
+					console.log(result);
+					result.forEach( vld => {
+						makeChallDiv(vld)
+					});
+					console.log(pagingNm);
+					console.log(pagingName);
+					$('#navPaging').children().empty();
+					makePaging(result, pagingNm);
+				},
+				error: function(err){
+					console.log(err);
+				}
+			});
+	   };
+
+	   //페이징 버튼 호출 아작스 -> 좋아요 빼고
+	   function pagingAjaxBtn(data, pagingName){
+			console.log(data);
+			console.log("---------버튼붙일곳"+pagingName);
+			$.ajax({
+				url: '/own/chall/myPageChallAjax',
+				method: 'get',
+				data: data,
+				success: function(result){
+					let Chall = $('#ChallRow')
+					$('#challRow').empty();
+					result.forEach( vld => {
+					makeChallDiv(vld);
+					});
+					$('#navPaging').children().empty();
+					makePaging(result, pagingName);
+				},
+				error: function(err){
+					console.log(err);
+				}
+        	});
+	   };
 
 		/* 아작스 페이징 버튼 */
 		function makePaging(result, pagingName){
-			//마지막 요소 제거. nav제거..
-			let navTag = $(`<nav class="blog-pagination justify-content-center d-flex" id=${pagingName} />`);
+			console.log("페이징버튼 만들기로 옴");
 			//버튼 다시초기화..비우기
-			// $(`#${pagingName}`).empty();
+			$('#navPaging').children().empty();
+			console.log(result);
 		    let pagingM = result[0].paging;
+			console.log(pagingM);
 		    //시작 버튼
 		    console.log(result[0]); //첫번째? 가져오기..?
 		    let startpageTag = $('<ul class="pagination" />');
-		    // $(`#${pagingName}`).append(startpageTag);
-			navTag.append(startpageTag);
 		    //이전 버튼만들기
-			if(pagingM.startPage>1){
-               let pageBeforTag = `<li class="page-item">
-                                 <a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
-                                 <span aria-hidden="true"> <-
-                         <span class="lnr lnr-chevron-left pagePort"></span></span></a>
-                                 </li>`
-                    startpageTag.append(pageBeforTag); 
-                }                   
+		    if(pagingM.startPage > 1){
+				let pageBeforTag = `<li class="page-item">
+							<a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+							<span aria-hidden="true"> <-
+							<span class="lnr lnr-chevron-left pagePort"></span></span></a>
+							</li>`
+			startpageTag.append(pageBeforTag); 
+		    }               
 			//페이지목록..
-		    for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		    for(let pg = pagingM.startPage; pg <= pagingM.endPage; pg++){
 		            if(pg != pagingM.page){
 		            	let pageTag = `<li class="page-item">
-		                               <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                               <a class="page-link pagePort" value= ${pg}>${pg}</a>
 		                               </li>`
-		                startpageTag.append(pageTag);
+		            startpageTag.append(pageTag);
 		            } else if(pg == pagingM.page ){
 						 let pageTag =  `<li class="page-item active">
-							<a class="page-link" >${pg}</a>
-							</li>`
-							startpageTag.append(pageTag);
+										<a class="page-link" >${pg}</a>
+										</li>`
+						startpageTag.append(pageTag);
 					}
 			}               
 			//이후 버튼만들기
 			if(pagingM.endPage<pagingM.lastPage){
-						let pageAfterTag =`<li class="page-item">
-							<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+				let pageAfterTag =`<li class="page-item">
+								<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
 								<span aria-hidden="true"> ->
 								<span class="lnr lnr-chevron-right"></span></span></a>
 								</li>`
 								startpageTag.append(pageAfterTag);
-			}
-			$('#myPageChallDiv').append(navTag);
+							}
+			$(`#${pagingName}`).append(startpageTag);
+			
+			};
+
+		//챌린지 폼 만들기
+		function makeChallDiv(cha){
+			console.log(cha.challLeader);
+			let challNo = cha.challNo.substr(4);
+			console.log(challNo);
+			let div1 = $('<div />').addClass("col-lg-4 mb-4");
+			let div2 = $('<div />').addClass("card border-0 shadow-sm mb-2");
+			let hiddenInput = $('<input />').attr('type', 'hidden').val(cha.challNo);
+			let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage).attr('style', 'height:230px; object-fit: cover')
+			let div2_2 = $('<div />').addClass("card-body bg-light text-center p-4")
+			let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
+			let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.challStartdate + '시작')),
+																						($('<small />').addClass("mr-3").text(cha.challDuration + '주 동안')),
+																						($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회')),
+																						($('<small />').addClass("mr-3").text(cha.nowMem + '명 참여중'))
+																						);
+			let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', 'detailChall?challNo=' + challNo); 
+			div1.append(div2.append(hiddenInput, img2_1, div2_2.append(h4_3, div_3, a_3)));
+			$('#challRow').append(div1);
 		}
-
-
-	//챌린지 폼 만들기
-	function makeChallDiv(cha){
-		console.log(cha.challLeader);
-		let challNo = cha.challNo.substr(4);
-		console.log(challNo);
-		let div1 = $('<div />').addClass("col-lg-4 mb-4");
-		let div2 = $('<div />').addClass("card border-0 shadow-sm mb-2");
-		let hiddenInput = $('<input />').attr('type', 'hidden').val(cha.challNo);
-		let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage).attr('style', 'height:230px; object-fit: cover')
-		let div2_2 = $('<div />').addClass("card-body bg-light text-center p-4")
-		let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
-		let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.challStartdate + '시작')),
-																					   ($('<small />').addClass("mr-3").text(cha.challDuration + '주 동안')),
-																					   ($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회')),
-																					   ($('<small />').addClass("mr-3").text(cha.nowMem + '명 참여중'))
-																					  );
-		let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', 'detailChall?challNo=' + challNo); 
-		div1.append(div2.append(hiddenInput, img2_1, div2_2.append(h4_3, div_3, a_3)));
-		$('#challRow').append(div1);
-	}
 	
 </script>
 </body>
