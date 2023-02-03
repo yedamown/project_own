@@ -80,13 +80,13 @@ ul{
    font-size:25px;
    color: white;
    }
-.bBox {
+.bandBox {
 		    width: 60px;
 		    height: 60px; 
 		    border-radius: 30%;
 		    overflow: hidden;
 		}   
-.bProfile {
+.bandProfileImg {
 		    width: 100%;
 		    height: 100%;
 		    object-fit: cover;
@@ -134,7 +134,7 @@ ul{
 									style="flex-grow: 3; display: flex; justify-content: space-between;"
 									class="imgss">
 									<div style="flex-grow: 1; width: 150x; height: 150px;">
-										<img th:src="|/imgView/${user.mediaServerFile}|"
+										<img th:src="|/imgView/${uesries.mediaServerFile}|"
 											id="inputImage" name="inputImage" alt=""
 											style="flex-grow: 1; width: 150x; height: 150px;">
 									</div>
@@ -144,7 +144,7 @@ ul{
 										<h6 class="typo-list" style="float: left; padding-left: 10px;">가치
 											활동명</h6>
 										<div class="mt-10">
-											<input type="text" th:value="${user.bandNickname}"
+											<input type="text" th:value="${uesries.bandNickname}"
 												id="bandNickname" name="bandNickname" maxlength="10"
 												placeholder="가치 활동명 입력" onfocus="this.placeholder = ''"
 												onblur="this.placeholder = '가치 활동명'" required
@@ -179,7 +179,7 @@ ul{
 														<option value="">관심운동..전체</option>
 														<option th:each="exe : ${exercise}"
 															th:value="${exe.exersubNo}" th:text="${exe.exersubName}"
-															th:selected="${#strings.equals(exe.exersubNo, user.bandInterest)}"></option>
+															th:selected="${#strings.equals(exe.exersubNo, uesries.bandInterest)}"></option>
 													</select>
 												</div>
 											</div>
@@ -190,7 +190,7 @@ ul{
 														<option value="">관심지역..전체</option>
 														<option th:each="loc : ${location}"
 															th:value="${loc.locCode}" th:text="${loc.locCity}"
-															th:selected="${#strings.equals(loc.locCode, user.bandLocation)}"></option>
+															th:selected="${#strings.equals(loc.locCode, uesries.bandLocation)}"></option>
 													</select>
 												</div>
 											</div>
@@ -228,11 +228,11 @@ ul{
                         <table>
                            <thead><td></td><td>가치명</td><td>닉네임</td><td>가입일</td><td>탈퇴</td></thead>
                            <tbody>
-								<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"th:each="b : ${band}">
+								<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"th:each="b : ${bandies}">
 									<td th:if="${b.bandMemberStatus=='BA02'}">
-										<div class="bBox">
+										<div class="bandBoxImg">
 											<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bProfile">
+												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
 											</a>
 										</div>
 									</td>
@@ -250,11 +250,11 @@ ul{
                         <table>
                            <thead><td></td><td>가치명</td><td>닉네임</td><td>가입일</td><td></td></thead>
                            <tbody>
-								<tr th:if="${#strings.equals(b.bandLeaderid,b.userId)}" th:each="b : ${band}">
+								<tr th:if="${#strings.equals(b.bandLeaderid,b.userId)}" th:each="b : ${bandies}">
 									<td th:if="${b.bandMemberStatus=='BA02'}">
-										<div class="bBox">
+										<div class="bandBoxImg">
 											<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bProfile">
+												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
 											</a>
 										</div>
 									</td>
@@ -271,11 +271,11 @@ ul{
                   <div  class="container cont">
                          <thead><td></td><td>가치명</td><td>닉네임</td><td>가입신청일</td><td>취소</td></thead>
                            <tbody>
-								<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"th:each="b : ${band}">
+								<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"th:each="b : ${bandies}">
 									<td th:if="${b.bandMemberStatus=='BA01'}">
-										<div class="bBox">
+										<div class="bandBoxImg">
 											<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bProfile">
+												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
 											</a>
 										</div>
 									</td>

@@ -85,6 +85,12 @@ public class BandController {
 			model.addAttribute("exercise", bandService.allExcersie());
 			//인기글 세개 싣기
 			
+			//밴드들 정보
+			//내 디폴트정보
+			model.addAttribute("useries", bandMemberDefaultService.getBandMemberDefault(user.getUserId()));
+			//내 디테일정보+밴드조인
+			model.addAttribute("bandies", bandMemberDefaultService.getMyBandOption(user.getUserId()));
+			
 			return "content/band/bandHome";
 		} else {
 			//디폴트설정이 없으니 디폴트설정만들러 보냄

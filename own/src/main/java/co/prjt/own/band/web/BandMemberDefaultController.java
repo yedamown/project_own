@@ -69,9 +69,9 @@ public class BandMemberDefaultController {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		//내 디폴트정보
-		model.addAttribute("user", bandMemberDefaultService.getBandMemberDefault(user.getUserId()));
+		model.addAttribute("useries", bandMemberDefaultService.getBandMemberDefault(user.getUserId()));
 		//내 디테일정보+밴드조인
-		model.addAttribute("band", bandMemberDefaultService.getMyBandOption(user.getUserId()));
+		model.addAttribute("bandies", bandMemberDefaultService.getMyBandOption(user.getUserId()));
 		//운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());
 		model.addAttribute("exercise", bandService.allExcersie());
