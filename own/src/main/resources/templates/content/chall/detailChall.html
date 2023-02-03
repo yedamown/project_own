@@ -143,7 +143,7 @@
 <div layout:fragment="content">
 <body>
 	<!-- Header Start -->
-	<div class="container-fluid bg-primary mb-5" style="padding: 0">
+	<div class="container-fluid bg-primary" style="padding: 0; ">
 		<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px; background-image: url(/img/chall/category/swim_main.jpg);
 			background-size: contain">
 			<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
@@ -181,6 +181,8 @@
 
 					<!--대표사진 및 설명 + 신청 -->
 					<div class="mb-5">
+						<!-- 숨김.숨겨놓은 도전정보 / 유저정보-->
+						<input id="challNo" name="challNo" type="hidden" th:value="${detailChall.challNo}" />
 						<img th:src="|/imgView/${challImg[0].mediaServerFile}|" class="img-fluid rounded w-100 mb-4"
 							alt="대표사진" />
 						<div class="row pt-2 pb-4" style="justify-content: center;">
@@ -237,19 +239,18 @@
 							<div class="col-12 text-left mb-2">
 								<ul class="list-inline mb-4" id="menu-filters">
 									<li class="btn btn-outline-primary m-1 active" id="detailBtn">상세보기</li>
-									<th:block th:if="${myInfo} and (${#strings.equals(detailChall.challStatus, '진행 중')} or ${#strings.equals(detailChall.challStatus, '종료')})">
+									<!-- <th:block th:if="${myInfo} and (${#strings.equals(detailChall.challStatus, '진행 중')} or ${#strings.equals(detailChall.challStatus, '종료')})"> -->
 										<li class="btn btn-outline-primary m-1" th:if="${memcheck !=null}" id="vldBtn">인증하기</li>
 										<li class="btn btn-outline-primary m-1" th:if="${memcheck !=null }" id="resultBtn">도전 달성률</li>
 										<li class="btn btn-outline-primary m-1" th:if="${leaderInfo.userId == myInfo.userId }" id="memBtn">회원관리</li>
 										<li class="btn btn-outline-primary m-1" th:if="${leaderInfo.userId == myInfo.userId }" id="vldRptBtn">인증 신고 관리</li>
-									</th:block>
+									<!-- </th:block> -->
 								</ul>
 							</div>
 						</div>
 					</div>
 					<!-- 메뉴 한줄 바 end -->
 	
-
 				<!--도전정보시작-->
 				<div id="challContent" style="width: 700px">
 					<!--여기는 상세정보 탭-->
@@ -272,126 +273,123 @@
 						</div>
 					<!--여기는 상세정보 끝-->
 					<!--상세정보 끝-->
-
 					</div>
 
 				</div> <!-- 상세보기 왼쪽 내용부분 end -->
 				<!-- 도전정보 끝 -->
 
-			</div><!-- 교체할 부분 끝 -->
-
-			<!-- 상세보기 오른쪽 부분 시작-->
-			<div class="col-lg-4 mt-5 mt-lg-0">
-				<!-- 도전리더 프로필 -->
-				<div
-					class="d-flex flex-column text-center bg-primary rounded mb-5 py-5 px-4">
-					<div th:if="${leaderInfo.memImage}">
-					<p class="text-white">CHALLL LEADER</p>
-						<!-- 도전리더 프로필 있는 경우-->
-						<img th:src="|/imgView/${leaderInfo.memImage}|"
-							class="img-fluid rounded-circle mx-auto mb-4"
-							style="width: 200px; height:200px ; object-fit: cover" />
-					</div>
-					<h3 class="text-secondary mb-3" th:text="${leaderInfo.memNickname}"></h3>
-					<p class="text-white m-0" th:text="${leaderInfo.memIntro}"></p>
-				</div>
-
-				<!-- Search Form -->
-				<div class="mb-5">
-					<form action="">
-						<div class="input-group">
-							<input type="text" class="form-control form-control-lg"
-								placeholder="Keyword" />
-							<div class="input-group-append">
-								<span class="input-group-text bg-transparent text-primary"><i
-									class="fa fa-search"></i></span>
-							</div>
-						</div>
-					</form>
-				</div>
-
-				<!-- Single Image -->
-				<div class="mb-5">
-					<img src="img/blog-1.jpg" alt="" class="img-fluid rounded" />
-				</div>
-
-				<!-- Recent Post -->
-				<div class="mb-5">
-					<h2 class="mb-4">Recent Post</h2>
+				<div class="col-lg-4 mt-5 mt-lg-0">
+					<!-- 도전리더 프로필 -->
 					<div
-						class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
-						<img class="img-fluid" src="img/post-1.jpg"
-							style="width: 80px; height: 80px" />
-						<div class="pl-3">
-							<h5 class="">Diam amet eos at no eos</h5>
-							<div class="d-flex">
-								<small class="mr-3"><i class="fa fa-user text-primary"></i>
-									Admin</small> <small class="mr-3"><i
-									class="fa fa-folder text-primary"></i> Web Design</small> <small
-									class="mr-3"><i class="fa fa-comments text-primary"></i>
-									15</small>
+						class="d-flex flex-column text-center bg-primary rounded mb-5 py-5 px-4">
+						<div th:if="${leaderInfo.memImage}">
+						<p class="text-white">CHALLL LEADER</p>
+							<!-- 도전리더 프로필 있는 경우-->
+							<img th:src="|/imgView/${leaderInfo.memImage}|"
+								class="img-fluid rounded-circle mx-auto mb-4"
+								style="width: 200px; height:200px ; object-fit: cover" />
+						</div>
+						<h3 class="text-secondary mb-3" th:text="${leaderInfo.memNickname}"></h3>
+						<p class="text-white m-0" th:text="${leaderInfo.memIntro}"></p>
+					</div>
+	
+					<!-- Search Form -->
+					<div class="mb-5">
+						<form action="">
+							<div class="input-group">
+								<input type="text" class="form-control form-control-lg"
+									placeholder="Keyword" />
+								<div class="input-group-append">
+									<span class="input-group-text bg-transparent text-primary"><i
+										class="fa fa-search"></i></span>
+								</div>
+							</div>
+						</form>
+					</div>
+	
+					<!-- Single Image -->
+					<div class="mb-5">
+						<img src="img/blog-1.jpg" alt="" class="img-fluid rounded" />
+					</div>
+	
+					<!-- Recent Post -->
+					<div class="mb-5">
+						<h2 class="mb-4">Recent Post</h2>
+						<div
+							class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
+							<img class="img-fluid" src="img/post-1.jpg"
+								style="width: 80px; height: 80px" />
+							<div class="pl-3">
+								<h5 class="">Diam amet eos at no eos</h5>
+								<div class="d-flex">
+									<small class="mr-3"><i class="fa fa-user text-primary"></i>
+										Admin</small> <small class="mr-3"><i
+										class="fa fa-folder text-primary"></i> Web Design</small> <small
+										class="mr-3"><i class="fa fa-comments text-primary"></i>
+										15</small>
+								</div>
+							</div>
+						</div>
+						<div
+							class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
+							<img class="img-fluid" src="img/post-2.jpg"
+								style="width: 80px; height: 80px" />
+							<div class="pl-3">
+								<h5 class="">Diam amet eos at no eos</h5>
+								<div class="d-flex">
+									<small class="mr-3"><i class="fa fa-user text-primary"></i>
+										Admin</small> <small class="mr-3"><i
+										class="fa fa-folder text-primary"></i> Web Design</small> <small
+										class="mr-3"><i class="fa fa-comments text-primary"></i>
+										15</small>
+								</div>
+							</div>
+						</div>
+						<div
+							class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
+							<img class="img-fluid" src="img/post-3.jpg"
+								style="width: 80px; height: 80px" />
+							<div class="pl-3">
+								<h5 class="">Diam amet eos at no eos</h5>
+								<div class="d-flex">
+									<small class="mr-3"><i class="fa fa-user text-primary"></i>
+										Admin</small> <small class="mr-3"><i
+										class="fa fa-folder text-primary"></i> Web Design</small> <small
+										class="mr-3"><i class="fa fa-comments text-primary"></i>
+										15</small>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div
-						class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
-						<img class="img-fluid" src="img/post-2.jpg"
-							style="width: 80px; height: 80px" />
-						<div class="pl-3">
-							<h5 class="">Diam amet eos at no eos</h5>
-							<div class="d-flex">
-								<small class="mr-3"><i class="fa fa-user text-primary"></i>
-									Admin</small> <small class="mr-3"><i
-									class="fa fa-folder text-primary"></i> Web Design</small> <small
-									class="mr-3"><i class="fa fa-comments text-primary"></i>
-									15</small>
-							</div>
+	
+					<!-- Single Image -->
+					<div class="mb-5">
+						<img src="img/blog-2.jpg" alt="" class="img-fluid rounded" />
+					</div>
+	
+					<!-- Tag Cloud -->
+					<div class="mb-5">
+						<h2 class="mb-4">Tag Cloud</h2>
+						<div class="d-flex flex-wrap m-n1">
+							<a href="" class="btn btn-outline-primary m-1">Design</a> <a
+								href="" class="btn btn-outline-primary m-1">Development</a> <a
+								href="" class="btn btn-outline-primary m-1">Marketing</a> <a
+								href="" class="btn btn-outline-primary m-1">SEO</a> <a href=""
+								class="btn btn-outline-primary m-1">Writing</a> <a href=""
+								class="btn btn-outline-primary m-1">Consulting</a>
 						</div>
 					</div>
-					<div
-						class="d-flex align-items-center bg-light shadow-sm rounded overflow-hidden mb-3">
-						<img class="img-fluid" src="img/post-3.jpg"
-							style="width: 80px; height: 80px" />
-						<div class="pl-3">
-							<h5 class="">Diam amet eos at no eos</h5>
-							<div class="d-flex">
-								<small class="mr-3"><i class="fa fa-user text-primary"></i>
-									Admin</small> <small class="mr-3"><i
-									class="fa fa-folder text-primary"></i> Web Design</small> <small
-									class="mr-3"><i class="fa fa-comments text-primary"></i>
-									15</small>
-							</div>
-						</div>
+	
+					<!-- Single Image -->
+					<div class="mb-5">
+						<img src="img/blog-3.jpg" alt="" class="img-fluid rounded" />
 					</div>
-				</div>
-
-				<!-- Single Image -->
-				<div class="mb-5">
-					<img src="img/blog-2.jpg" alt="" class="img-fluid rounded" />
-				</div>
-
-				<!-- Tag Cloud -->
-				<div class="mb-5">
-					<h2 class="mb-4">Tag Cloud</h2>
-					<div class="d-flex flex-wrap m-n1">
-						<a href="" class="btn btn-outline-primary m-1">Design</a> <a
-							href="" class="btn btn-outline-primary m-1">Development</a> <a
-							href="" class="btn btn-outline-primary m-1">Marketing</a> <a
-							href="" class="btn btn-outline-primary m-1">SEO</a> <a href=""
-							class="btn btn-outline-primary m-1">Writing</a> <a href=""
-							class="btn btn-outline-primary m-1">Consulting</a>
+	
+					<!-- Plain Text -->
+					<div>
+						<h2 class="mb-4">Plain Text</h2>
+						Aliquyam sed lorem stet diam dolor sed ut sit. Ut sanctus erat ea
 					</div>
-				</div>
-
-				<!-- Single Image -->
-				<div class="mb-5">
-					<img src="img/blog-3.jpg" alt="" class="img-fluid rounded" />
-				</div>
-
-				<!-- Plain Text -->
-				<div>
-					<h2 class="mb-4">Plain Text</h2>
-					Aliquyam sed lorem stet diam dolor sed ut sit. Ut sanctus erat ea
 				</div>
 			</div>
 		</div>
