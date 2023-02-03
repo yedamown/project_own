@@ -147,16 +147,18 @@ public class OwnhomeController {
 		      System.out.println("넘어오나요 이메일"+email);
 		      System.out.println("넘어온 아이디"+id);
 		      vo = ownService.login(id);
-		     
+		      vo.setUserEmail(email);
 		      if(vo.getUserEmail().equals(email)) {
 		      System.out.println("아이디 같음");
-		     // String appNo = ownService.sendMail("PassWord",email);
-		      return "1";
+		      String appNo = ownService.sendMail("PassWord",email);
+		      vo.setUserPasswd(passwordEncoder.encode(appNo));
+		      ownService.searchPw(vo);
+		      return appNo;
 		      }
 		      return null;
 		   }
 		//임시비밀번호 전송
-		 @GetMapping("/updatepw")
+		 @PostMapping("/updatepw")
 		 @ResponseBody
 		   public String updatepw(String emailchk) {
 			 System.out.println(emailchk);

@@ -22,6 +22,8 @@ public interface OwnhomeMapper {
 	public int idcheck(String id);	
 	public int myinfoupdate(OwnUserVO vo);
 	public List<ChallengeVO> Challenging(String id);
+	//비밀번호 찾기
+	public int searchPw(OwnUserVO vo);
 	public List<BandMemberDetailVO> Banding(String id);
 	//sns계정체크
 		public List<SAccountVO> getSnsAccountList(); 	

@@ -12,11 +12,11 @@ body {
 	font: 12px Arial, Helvetica, sans-serif;
 	color: #2e2e2e;
 }
-table {
-    width: 100%;
-    border-top: 1px solid #444444;
-    border-collapse: collapse;
-  }
+
+table{
+width:100%;
+}
+
 div.layout-978 { width: 978px; margin: 0px auto; }
 
 div.tblcontainer {
@@ -78,8 +78,8 @@ div.tblcontainer {
 </style>
 </head>
 
-<body>
 <div layout:fragment="content">
+	<body>
 		<div class="container py-5">
         <h1>신고목록</h1>
         </div>
@@ -167,6 +167,9 @@ div.tblcontainer {
                 <button type="button" id="modalBtn">처리</button>
 			<a class="modal_close_btn">닫기</a>
 		</div>
+
+
+	</body>
 	<script th:inline="javascript">
 		    /*<![CDATA[*/
 			var header = '[[${_csrf.headerName}]]';
@@ -263,23 +266,6 @@ div.tblcontainer {
 			})	
 		})
 
-	function leftPad(value) {
-    if (value >= 10) {
-        return value;
-    }
-
-    return `0${value}`;
-}
-function toStringByFormatting(source, delimiter = '-') {
-    const year = source.getFullYear();
-    const month = leftPad(source.getMonth() + 1);
-    const day = leftPad(source.getDate());
-
-    return [year, month, day].join(delimiter);
-}	
-		
-		
-		
 		$('#pagegation').on('click', '.pagePort', function(){
 			//페이지번호 + 밴드식별번호
 			let page = $(this).attr('value');
@@ -293,14 +279,13 @@ function toStringByFormatting(source, delimiter = '-') {
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
 					let rno = ele.reportNo;
-					let date = toStringByFormatting(new Date(ele.reportDate));
-					rno = rno.substr(4);	
+					rno = rno.substr(4);					
 					let tag = `<tr class="titlemodal">
 					<td name="${ele.reportNo}">${rno}</td>
 					<td>${ele.reporter}</td>
 					<td>${ele.dereporter}</td>
 					<td>${ele.reason}</td>
-					<td>${date}</td>
+					<td>${ele.reportDate}</td>
 					<td>${ele.status}</td>
 					</tr>`
 					tbody.append(tag);
@@ -349,5 +334,4 @@ function toStringByFormatting(source, delimiter = '-') {
 
 	</script>
 </div>
-	</body>
 </html>

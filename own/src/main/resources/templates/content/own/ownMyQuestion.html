@@ -105,8 +105,8 @@ div.tblcontainer {
                 </div>
             </div>
              <h4 class="mb-4">
-                     <a href="/own/mypage/question" style="text-decoration:none">QNA</a>&nbsp;&nbsp;&nbsp; 
-                     <a id="ownQuest" style="text-decoration:none">질문하기</a>
+                     <a href="/own/mypage/question" style="text-decoration:none">내질문보기</a>&nbsp;&nbsp;&nbsp; 
+                     <a href='javascript:void(0)'; onclick="ownQuest()" style="text-decoration:none">질문하기</a>
                     </h4>
         </div>
 <div id="subtemplate">
@@ -378,10 +378,9 @@ div.tblcontainer {
 		      })
 		})
 		
-		
-		$('#ownQuest').on('click', function(){
-  		 $('#subtemplate').load("/own/questform");
-		});
+		function ownQuest(){
+			$('#subtemplate').load("/own/questform");		
+		}
 		
 		
         </script>

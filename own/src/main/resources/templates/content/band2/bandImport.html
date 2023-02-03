@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style>
 			.importmodal {
             display: none; /* Hidden by default */
@@ -47,8 +48,8 @@
 <body>
 <h1>주요기능</h1>
 <div>
-<p>밴드장 위임</p>
-<p>밴드장 위임할 멤버</p>
+	<h3>가치 위임</h3>
+	<p>아이디 해킹이나 가치 매매 등 비정상적, 불법으로 위임된 가치는 위임이 취소되거나, OWN활동에 제재를 받으실 수 있습니다.</p>
 	<input type="hidden" th:value="${memList[0].bandNo}" id="bandNo">
 	<select id="passid">
 	<option>===============</option>
@@ -58,9 +59,13 @@
 	</select>
 	
 <a class="modalBtn">위임하기</a>
+<hr>
 </div>
 <div>
-<p>밴드 비활성화</p>
+<h3>밴드 비활성화</h3>
+<p>폐쇄신청 이후 절차 안내<br>
+멤버가 탈퇴 후 가치를 폐쇄하시면 30일간의 보류기간을 거치며, 그 이후에는 가치의 모든 정보가 삭제됩니다.
+보류 기간 중에는 가치 폐쇄를 취소하실 수 있습니다.</p>
 <a class="modalBtn">밴드 비활성화하기</a>
 	
 </div>
@@ -77,7 +82,6 @@
 	</button>
       </div>
     </div>
-    
     <div class="importmodal"> 
       <!-- 첫 번째 Modal의 내용 -->
       <div class="modal-content">
@@ -115,14 +119,16 @@ function Modal(num) {
         console.log(num);
 		let id = $('#passid').val();
 		let tag = `<p>${id}님에게 밴드장을 위임하려고 합니다. 위임 후 번복할수 없습니다</p>`;
-		if(modals[1]){
+		if(modals[0]){
 			$('#modaltext').append(tag)
 		}
+		
     };
  
     // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
     spanes[num].onclick = function() {
         modals[num].style.display = "none";
+        $('#modaltext').innerHTML="";
     };
   };
 }

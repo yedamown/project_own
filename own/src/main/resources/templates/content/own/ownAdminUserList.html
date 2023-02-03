@@ -8,8 +8,13 @@
 <title>Insert title here</title>
 <style>
 body {
+	background-color: #f0f0f0;
 	font: 12px Arial, Helvetica, sans-serif;
 	color: #2e2e2e;
+}
+
+table{
+width:100%;
 }
 
 div.layout-978 { width: 978px; margin: 0px auto; }
@@ -25,13 +30,6 @@ div.tblcontainer {
 	-khtml-border-radius: 4px; /* for old Konqueror browsers */
 	width: 93%;	
 }
-
-table {
-    width: 100%;
-    border-top: 1px solid #444444;
-    border-collapse: collapse;
-  }
-
 .datagrid {
 	border-collapse: collapse;
 }
@@ -58,17 +56,13 @@ table {
 	border: 1px solid #c9c9c9;
 }
 
+
 .datagrid tbody tr td.cash {
 	text-align: right;
 }
 </style>
 </head>
 <div layout:fragment="content">
-	<link rel="stylesheet"
-		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-		crossorigin="anonymous">
-
 	<body>
 		<div class="container py-5">
 			<h1>회원목록</h1>
@@ -178,12 +172,10 @@ table {
 					}else{
 						snsAccountNo = ele.snsAccountNo
 					}
-					
-					let id = `<td class="test2">${ele.userId}</td>`
 
 					let tag = `<tr>
 								<td>${ele.rn}</td>
-								${id}
+								<td>${ele.userId}</td>
 								<td>${ele.userName}</td>
 								<td>${snsAccountNo}</td>
 								<td>${ele.challcount}개 진행중..</td>
@@ -233,7 +225,7 @@ table {
 		      })
 		})
 		//페이지 이동
-    	$('#userList').on('click','.test2', function(e){
+    	$('.test2').on('click', function(e){
     		let id = $(this).text()
     		event.preventDefault()
     		$('#mainTemplate').empty();
