@@ -8,8 +8,6 @@
 <title>Insert title here</title>
 <style>
 body {
-	background-color: #f0f0f0;
-	font: 12px Arial, Helvetica, sans-serif;
 	color: #2e2e2e;
 }
 
@@ -175,7 +173,7 @@ div.tblcontainer {
 
 					let tag = `<tr>
 								<td>${ele.rn}</td>
-								<td>${ele.userId}</td>
+								<td class="test2" >${ele.userId} </td>
 								<td>${ele.userName}</td>
 								<td>${snsAccountNo}</td>
 								<td>${ele.challcount}개 진행중..</td>
@@ -225,7 +223,7 @@ div.tblcontainer {
 		      })
 		})
 		//페이지 이동
-    	$('.test2').on('click', function(e){
+    	$('tbody').on('click', '.test2',function(e){
     		let id = $(this).text()
     		event.preventDefault()
     		$('#mainTemplate').empty();

@@ -122,7 +122,9 @@ public class ChallengeServiceImpl implements ChallengeService {
 			int r = memberListMapper.getChallMemNum(i.getChallNo());
 			i.setNowMem(r);
 		}
+		if(list!=null && list.size()>0) {
 		list.get(0).setPaging(paging);
+		}
 		return list;
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.prjt.own.band.service.BandService;
+import co.prjt.own.band.service.BandVO;
+import co.prjt.own.chall.service.ChallengeService;
+import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.Paging;
-import co.prjt.own.common.service.CommonService;
 import co.prjt.own.common.service.ReportVO;
 import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
@@ -36,6 +40,10 @@ public class OwnhomeController {
 	OwnhomeService ownService;
 	@Autowired
 	ExerRecordMapper exerMapper;
+	@Autowired
+	ChallengeService challenge;
+	@Autowired
+	BandService bandService; 
 //검색기능 테스트
 	@Autowired
 	SAccountService SAccountService;
@@ -325,10 +333,22 @@ public class OwnhomeController {
 		//테스트 페이지 이동
 		//상세보기로..
 		@GetMapping("/own/admin/test")
-		public String test(Model model, @RequestParam String id) {
+		public String test(Model model, @RequestParam String id,@ModelAttribute("paging1") Paging paging,
+				@ModelAttribute("paging2") Paging paging2) {
 			System.out.println("===아이디가넘어올까요="+id);
 			ownService.Challenging(id);
-			model.addAttribute("CList",	ownService.Challenging(id));
+			ChallengeVO vo2 = new ChallengeVO();
+			vo2.setUserId(id);
+			// 6개로 페이징
+			BandVO band = new BandVO();
+			
+			
+			paging2.setPageUnit(3);// 3개씩보기
+			paging2.setPageSize(3); // 페이딩 동그라미 3개
+			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);
+			
+			
+			model.addAttribute("CList",	myList);
 			model.addAttribute("BList", ownService.Banding(id));
 			return "/content/own/test";
 		}

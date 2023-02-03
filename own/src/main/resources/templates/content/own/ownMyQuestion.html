@@ -5,16 +5,15 @@
       layout:decorate="~{layout/default_layout}">
 <head>
 <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
+</head>
+<div layout:fragment="content">
 <style>
-
 body {
-	font: 12px Arial, Helvetica, sans-serif;
 	color: #2e2e2e;
 }
-
 div.layout-978 { width: 978px; margin: 0px auto; }
-
 div.tblcontainer {
 	padding: 18px;
 	border: 1px solid #c0c0c0;
@@ -26,13 +25,9 @@ div.tblcontainer {
 	-khtml-border-radius: 4px; /* for old Konqueror browsers */
 	width: 93%;	
 }
-
-
-
 .datagrid {
 	border-collapse: collapse;
 }
-
 .datagrid thead tr th {
 	color: #949494;
 	font-size: 11px;
@@ -84,10 +79,9 @@ div.tblcontainer {
     padding: 10px;
   }
 </style>
-</head>
- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<div layout:fragment="content">
+
+
+
 <body>
         <div class="container py-5">
         <h1>회원목록</h1>
@@ -136,7 +130,8 @@ div.tblcontainer {
 </div>
 </div>    
         
-        <nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+       <nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+       <th:block th:if="${#lists.size(OList)!=0}">
 	<!--================ 이전  =================-->
 		<ul class="pagination">
 			<li class="page-item" th:if="${paging.startPage>1}">
@@ -159,6 +154,7 @@ div.tblcontainer {
 				<span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
 			</li>
 		</ul>
+       </th:block>
 	</nav>
     <!-- 모달창 -->
     <div id="my_modal">
@@ -204,10 +200,7 @@ div.tblcontainer {
 </div>
 
 </div>    
-
-
-    
-		<script th:inline="javascript">
+<script th:inline="javascript">
 		 /*<![CDATA[*/
 		var header = '[[${_csrf.headerName}]]';
 		 var token = '[[${_csrf.token}]]';
