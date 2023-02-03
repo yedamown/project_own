@@ -6,17 +6,15 @@
       lang="ko">
     <head>
     	<!-- jquery -->
-    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
         <title>오늘의 운동 가치</title>
-        <!-- main css -->
-        <link rel="stylesheet" href="/css/band/css/style.css">
-        <link rel="stylesheet" href="/css/band/css/responsive.css">
         <style>
-        	
+       		body {
+       			background-color: #EFFBFB;
+       		}
 			.btn:hover{
 			    color:#fff;
 			}
@@ -30,13 +28,54 @@
 			.form-control {
 			    border: 1px solid #f8c146;
 			}
-        </style>
+			.bandBox {
+			    width: 260px;
+			    height: 270px; 
+			    border-radius: 30%;
+			    overflow: hidden;
+			}
+			.bandProfile {
+			    width: 260px;
+			    height: 270px;
+			    object-fit: cover;
+			    
+		}
+         </style>
     </head>
-    <body>
+   	<body>
    	<div layout:fragment="content">
+    <div class="backgroundy">
+    	<!--================Banner Area =================-->
+        <section class="banner_area">
+            <div class="booking_table d_flex align-items-center">
+            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+				<div class="container">
+					<div class="banner_content text-center">
+						<h4 style="color: white;">오늘의운동</h4>
+						<h2 style="color: white;">GACHI</h2>
+					</div>
+				</div>
+            </div>
+            <div class="hotel_booking_area position">
+                <div class="container">
+                    <div class="hotel_booking_table">
+                        <div class="col-md-3">
+                            <h2>가치해요</h2>
+                        </div>
+                        <div class="input-group mb-3">
+						  <input type="text" class="form-control input-text" name="bandName" placeholder="가치 운동 지역 검색" aria-label="Recipient's username" aria-describedby="basic-addon2">
+						  <div class="input-group-append">
+						    <button class="btn btn-outline-warning btn-lg searchBtn" type="button"><i class="fa fa-search"></i></button>
+						  </div>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--================Banner Area =================-->
         <!--================ 배너=================-->
         <section class="banner_area">
-            <div class="booking_table  "  style="min-height: 300px;">
+            <div class="booking_table"  style="min-height: 300px;">
             	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
 				<div class="container">
 							<div class="hotel_booking_area position" >
@@ -70,13 +109,13 @@
                 <div class="row mb_30">
         <!--================ 가치생성버튼  =================-->
                     <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                            	<a href="/own/band/bandCreate">
+                        <div class="accomodation_item text-center" >
+                            <div class="hotel_img" >
+                            	<a href="/own/band/bandCreate"  class="bandBox" style="box-sizing: border-box;">
                                 	<img src="/css/band/image/room1.jpg" alt="">
                                 </a>
                             </div>
-                            <h4 class="sec_h4"><a href="/own/band/bandCreate">가치생성</a></h4>
+                            <h4 class="sec_h4"><a href="/own/band/bandCreate" class="bandProfile">가치생성</a></h4>
                             <h5><small></small></h5>
                         </div>
                     </div>
@@ -85,11 +124,11 @@
                     <div class="col-lg-3 col-sm-6" th:each="band, bandStat :${bandList}" th:if="${bandStat.index<3}">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                            	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|">
-                                	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="">
+                            	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|" class="bandBox">
+                                	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="" class="bandProfile">
                                 </a>
                             </div>
-                            <h4 class="sec_h4"><a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|"th:text="${band.bandName}"></a></h4>
+                            <h4 class="sec_h4"><a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|"th:text="${band.bandName}" class="bandProfile"></a></h4>
                             <h5><small>멤버 [[${band.memcount}]]</small></h5>
                         </div>
                     </div>
@@ -256,16 +295,7 @@
             	window.location = '/own/band/bandSearch?bandName='+$('input[name="bandName"]').val();
             })
         </script>
-        <!-- <script src="/css/band/js/popper.js"></script>
-        <script src="/css/band/js/bootstrap.min.js"></script> -->
-        <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
-       <!--  <script src="/css/band/js/jquery.ajaxchimp.min.js"></script> -->
-        <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-        <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
-        <script src="/css/band/js/mail-script.js"></script>
-        <script src="/css/band/js/stellar.js"></script>
-        <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
-        <script src="/css/band/js/custom.js"></script>
+    </div>
     </div>
     </body>
 </html>

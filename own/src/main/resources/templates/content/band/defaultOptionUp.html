@@ -282,7 +282,7 @@ ul{
 									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
 									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}" th:text="${b.bandNickname}"></td>
 									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}" th:text="${b.bandSignupDateCha}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><button type="button2" class="delBtn" th:name="${b.bandNo}">취소</button></td>
+									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><button type="button" class="buttonRe" th:name="${b.bandNo}">철회</button></td>
 								</tr>
                            </tbody>
                         </table>
@@ -469,9 +469,9 @@ ul{
         	                    });
         	   }
 	//취소
-		 $('button2').on('click', function(e){
+		 $('button').on('click', function(e){
         	   let bandNo = $(e.target).attr('name');
-        	   if(confirm('가치 신청을 철회합니다.')){
+        	   if($(e.target).attr('class')=='buttonRe' && confirm('가치 신청을 철회합니다.')){
         	   $.ajax({
         	         url: '/own/band/myBandOption/leave2?bandNo='+bandNo,
         	            type: "get",
