@@ -206,7 +206,9 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		vo.setPaging(paging);
 		System.out.println("=====페이징하고싶어요======"+paging.toString());
 		List<QuestionVO> list = ownhomeMapper.myQuestion(vo);
-		list.get(0).setPaging(paging);
+		if(list!=null && list.size()>0) {
+			list.get(0).setPaging(paging);
+		}
 		return list;
 	}
 

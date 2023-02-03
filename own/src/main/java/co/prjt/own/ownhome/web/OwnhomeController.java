@@ -186,8 +186,9 @@ public class OwnhomeController {
 		//내질문 폼
 		@GetMapping("/own/mypage/question")
 		public String myquestionForm(HttpServletRequest request, Model model, Paging paging, QuestionVO vo) {
+			System.out.println("내질문 폼");
 			HttpSession session = request.getSession();
-			OwnUserVO ovo = (OwnUserVO) session.getAttribute("loginUser");
+			OwnUserVO ovo = (OwnUserVO) session.getAttribute("loginUser");		
 			vo.setUserId(ovo.getUserId());
 			model.addAttribute("OList", ownService.getPagingmyQuestlist(vo, paging));
 			return "content/own/ownMyQuestion";
