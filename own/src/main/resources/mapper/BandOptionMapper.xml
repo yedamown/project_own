@@ -121,22 +121,28 @@ UPDATE BAND SET BAND_NAME = #{bandName},
 
 <!-- 밴드에 가입신청 한 회원리스트, 검색까지 -->
 <select id="bandOptionGetWaitingMemberList" resultType="co.prjt.own.band.service.BandMemberDetailVO" parameterType="string">
-	SELECT * FROM ( SELECT ROWNUM RN, AN.* FROM ( SELECT  USER_ID, BAND_NICKNAME, BAND_MEMBER_INTRO, BAND_GENDER
-			, ( TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), BAND_BIRTH) / 12 ) + 2 
-            ) AGE
-            , ( SELECT A.MEDIA_SERVER_FILE
-	        	FROM MULTIMEDIA A
-	        	WHERE A.IDENTIFY_ID = BAND_MEMBER_NO
-	        ) PROFILE_IMG
-	FROM BAND_MEMBER_DETAIL 
-	WHERE BAND_MEMBER_STATUS = 'BA01'
-	<if test="userId != null and userId !='' ">
-	    AND USER_ID LIKE '%' || #{userId} || '%'
-		OR BAND_NICKNAME LIKE '%' || #{userId} || '%'
-	 </if>
-	AND BAND_NO = #{bandNo}
-	ORDER BY BAND_SIGNUP_DATE 
-	) AN WHERE ROWNUM <![CDATA[ <= #{last}) where RN>= #{first} ]]>
+	SELECT * FROM ( SELECT ROWNUM RN, 
+								  AN.* 
+				      FROM ( SELECT  USER_ID, 
+				      				 BAND_NICKNAME, 
+				      				 BAND_MEMBER_INTRO, 
+				      				 BAND_GENDER, 
+				      				 ( TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), BAND_BIRTH) / 12 ) + 2 
+            						 ) AGE, 
+            						 ( SELECT A.MEDIA_SERVER_FILE
+	        						     FROM MULTIMEDIA A
+	        						    WHERE A.IDENTIFY_ID = BAND_MEMBER_NO
+	        						 ) PROFILE_IMG
+					   	 	   FROM BAND_MEMBER_DETAIL 
+							  WHERE BAND_MEMBER_STATUS = 'BA01'
+							<if test="userId != null and userId !='' ">
+							    AND USER_ID LIKE '%' || #{userId} || '%'
+								OR BAND_NICKNAME LIKE '%' || #{userId} || '%'
+							</if>
+							AND BAND_NO = #{bandNo}
+							ORDER BY BAND_SIGNUP_DATE 
+							) AN WHERE ROWNUM <![CDATA[ <= #{last}) 
+					 WHERE RN>= #{first} ]]>
 </select>
 
 <!-- 밴드에서 탈퇴된 회원리스트, 검색까지 -->

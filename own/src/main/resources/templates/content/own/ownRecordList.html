@@ -89,12 +89,13 @@
 			margin: 20px;
 		}
 
-		#shareBtn button img{
+		#shareBtn button img {
 			border: none;
 			background-color: transparent;
 			width: 65px;
 			height: 65px;
 		}
+
 		/* 운동시간, 칼로리 계산 부분 */
 
 		.col_half {
@@ -735,7 +736,7 @@
 				}
 			})// 몸무게 아작스 끝
 
-			//
+			// 시간, 칼로리 계산
 			$jQ.ajax({
 				url: '/own/selectRecord',
 				method: 'POST',
@@ -745,17 +746,17 @@
 					xhr.setRequestHeader(header, token);
 				},
 				success: function (res) {
+					
 					//새로운 날짜를 담을 div로 교체
 					document.getElementById("calData1").style.display = "none";
 					document.getElementById("calData2").style.display = "block";
 					//운동 시간, 분 - 계산
 					let totalTime = 0;
 					let totalKcals = 0;
-					$.each(res, function (index, item) {
-						totalTime += item.exerecTime;
-						totalKcals += item.kcals;
-					})
-					//$jQ("#calData1").find("div").find("h2").eq(0).attr('data-to', totalTime);
+					for (let i = 0; i < res.length; i++) {
+						totalTime += res[i].exerecTime;
+						totalKcals += res[i].kcals;
+					}
 					$jQ("#calData2")
 						.find("div")
 						.eq(0)

@@ -96,7 +96,16 @@
 				<div class="navbar-collapse" style="justify-content: end;">
 					<div class="navbar-nav font-weight-bold py-0">
 						<a href="/own/band" class="nav-item nav-link" style="padding: 30px 20px; margin-top:6px;">가치HOME</a>
-						<a href="/own/band" class="nav-item nav-link" style="padding: 30px 20px 30px 10px"><i class="fa-solid fa-comment-dots fa-2x"></i></a>
+						<div class="nav-item dropdown droMom">
+							<a href="/own/band" class="nav-item nav-link" data-toggle="dropdown" style="padding: 30px 20px 30px 10px">
+								<i class="fa-solid fa-comment-dots fa-2x"></i>
+							</a>
+							<div class="dropdown-menu rounded-0 m-0">
+								<a href="/own/band/myBandOption" class="dropdown-item">채팅목록</a>
+								<a th:if="${session.loginUser}" href="/own/logout" class="dropdown-item">채팅목록</a>
+								<a th:unless="${session.loginUser}" href="/own/login" class="dropdown-item">채팅목록</a>
+							</div>
+						</div>
 						<div class="nav-item dropdown droMom">
 						<th:block th:if="${session.defUser}">
 							<a href="/own/band/myBandOption" class="nav-link bBox" data-toggle="dropdown" style="margin-top:7px;">
