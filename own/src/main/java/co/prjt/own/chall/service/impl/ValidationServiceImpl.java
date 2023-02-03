@@ -2,6 +2,7 @@ package co.prjt.own.chall.service.impl;
 
 import java.util.List;
 
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -133,6 +134,12 @@ public class ValidationServiceImpl implements ValidationService {
 		} else {
 			return 0;			
 		}
+	}
+
+	//페이징 정보없는 매퍼적용하는 서비스..
+	@Override
+	public List<ValidationVO> getVldList(ValidationVO vo) {
+		return validation.getVldList(vo);
 	}
 
 }
