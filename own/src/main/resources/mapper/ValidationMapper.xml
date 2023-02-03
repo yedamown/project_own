@@ -116,4 +116,12 @@
 		SET VLD_STATUS = #{vldStatus}
 		WHERE VLD_NO = #{vldNo}
 	</update>
+	
+	<select id="getVldList" resultType="co.prjt.own.chall.service.ValidationVO">
+			SELECT V.*, M.MEDIA_SERVER_FILE
+		      FROM CHALL_VALIDATION V, MULTIMEDIA M
+			 WHERE M.IDENTIFY_ID = V.VLD_NO
+			 <include refid="condition"/>   
+	         ORDER BY V.VLD_DATE DESC
+	</select>
 </mapper>

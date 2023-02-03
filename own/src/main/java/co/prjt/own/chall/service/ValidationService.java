@@ -13,10 +13,7 @@ public interface ValidationService {
 	
 	//인증조회
 	ValidationVO getVld(ValidationVO vo);
-	
-	//전체조회 (도전번호로 조회)
-//	List<ValidationVO> getChallVld(ValidationVO vo);
-		
+			
 	//내 인증리스트(아이디로 조회)
 	List<ValidationVO> getMyVld(ValidationVO vo);
 		
@@ -39,12 +36,12 @@ public interface ValidationService {
 	//이번주 인증 가능한지 체크
 	int vldWeekCheck(ValidationVO vo);
 	
-	//오늘 인증 가능한지 체크
-	
 	
 	//-----------------인증페이징---------------------
 	//페이징넣은...
 	List<ValidationVO> getVldPageList(ValidationVO vo, Paging paging);
-	
+
+	//인증리스트 페이징 X
+	List<ValidationVO> getVldList(ValidationVO vo);
 	
 }
