@@ -12,14 +12,60 @@
 <body>
 <h1>테스트페이지</h1>
 <h1>참여중인 챌린저스명</h1>
-<span th:each="chall : ${CList}">
-<p th:text="${chall.challNo}"></p>
-<p th:text="${chall.challTitle}"></p>
-</span>
+<div class="row pb-3" id="rowMyChall">
+				<th:block th:each="my: ${CList}">
+					<div class="col-lg-4 mb-4">
+						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
+							<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt="도전사진"
+								style="height: 230px;"/>
+							<div class="card-body bg-light text-center p-4" style="width: 300px">
+								<input type="hidden" th:value="${my.challNo}" />
+								<h4 class="" th:text="${my.challTitle}"></h4>
+								<div class="d-flex justify-content-center mb-3">
+									<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
+									<small class="mr-3">[[${my.challDuration}]]주 동안</small> 
+									<small class="mr-3">주 [[${my.challFreq}]]회</small>
+									<small class="mr-3">[[${my.nowMem}]]참여중</small>
+								</div>
+								<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+							</div>
+						</div>
+					</div>
+				</th:block>
+				
+				
+			</div>
+			<nav class="blog-pagination justify-content-center d-flex pageBtn"  th:if="${!#lists.isEmpty(CList)}"
+			id="pageMyChall">
+			<!--================ 이전  =================-->
+			<ul class="pagination">
+				<li class="page-item" th:if="${CList[0].paging.startPage>1}"><a
+					class="page-link" aria-label="Previous"
+					th:value="${myChall[0].paging.startPage-1}"> <span aria-hidden="true"><span
+							class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+				<!--================ 페이지 이동 1_2_3_4_5  =================-->
+				<th:block
+					th:each="pag:${#numbers.sequence(CList[0].paging.startPage,CList[0].paging.endPage)}">
+					<li class="page-item" th:if="${pag != CList[0].paging.page}"><a
+						class="page-link pagePort" th:value="${pag}"
+						th:text="${#numbers.formatInteger(pag,1)}"></a></li>
+					<li class="page-item active" th:if="${pag==CList[0].paging.page}"><a
+						class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+					</li>
+				</th:block>
+				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+				<!--================ 이후  =================-->
+				<li class="page-item" th:if="${CList[0].paging.endPage<CList[0].paging.lastPage}">
+					<a class="page-link pagePort" aria-label="Next"
+					th:value="${CList[0].paging.endPage+1}"> <span aria-hidden="true"><span
+							class="lnr lnr-chevron-right"></span></span></a>
+				</li>
+			</ul>
+		</nav>
 <h1>참여중인 밴드명</h1>
-<span th:each="band : ${BList}">
-<p th:text="${band.bandNo}"></p>
+<!-- <span th:each="band : ${BList}">
 <p th:text="${band.bandName}"></p>
-</span>
+</span> -->
 </body>
 </html>

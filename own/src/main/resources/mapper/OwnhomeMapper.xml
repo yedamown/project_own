@@ -65,7 +65,10 @@ UPDATE OWN_USERS SET USER_PASSWD = #{userPasswd},
 
 <select id="getUserList" resultType="OwnUserVO">
 SELECT * FROM (
-SELECT ROWNUM RN, A.*,(SELECT COUNT(*) AS COUNT
+SELECT ROWNUM RN, A.USER_ID, A.USER_NAME,A.USER_EMAIL, A.USER_PHONE, A.USER_BIRTHDAY, A.USER_GENDER,
+A.USER_PERM, A.USER_STATUS, A.USER_HOBBY, (SELECT SNS_NICKNAME FROM SNS_ACCOUNT WHERE
+SNS_ACCOUNT_NO = A.SNS_ACCOUNT_NO) AS SNS_ACCOUNT_NO, A.OWN_USERS_NO
+,(SELECT COUNT(*) AS COUNT
 FROM CHALLENGES C, CHALL_MEM_LIST M
 WHERE C.CHALL_NO = M.CHALL_NO
 AND C.CHALL_STATUS = '진행 중'
@@ -121,6 +124,7 @@ select count(*) from question
 	<![CDATA[	
 	) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 	]]>
+   ORDER BY QUEST_DATE desc
    </select>
    
    <select id="myquestionCount" resultType="int">
@@ -143,6 +147,7 @@ select count(*) from question
 	<![CDATA[	
 ) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 ]]>
+
  </select>
 <update id="ReportCountup">
 update own_users set user_status = user_status+1 where user_id = #{userId}
@@ -161,6 +166,8 @@ update own_users set user_status = user_status+1 where user_id = #{userId}
 	<![CDATA[	
 ) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 ]]>
+
+   ORDER BY QUEST_DATE desc
  </select>
  
  <select id="selectQuest" resultType="co.prjt.own.ownhome.service.QuestionVO">
@@ -185,5 +192,5 @@ SELECT BMD.*,B.BAND_NAME FROM
 BAND_MEMBER_DETAIL BMD , BAND B
 WHERE BMD.USER_ID=#{ID}
 AND BMD.BAND_NO = B.BAND_NO
- </select>
+ </select> 
 </mapper>

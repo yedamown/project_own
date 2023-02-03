@@ -78,19 +78,22 @@
 
 	<select id="getMyChall" resultType="co.prjt.own.chall.service.ChallengeVO">
 		SELECT * FROM ( SELECT ROWNUM RN, A.*  FROM ( 
-		
+
 					SELECT C.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
 		              FROM MULTIMEDIA M, (SELECT * 
 		                                    FROM CHALLENGES
-		                                   WHERE CHALL_NO IN ( SELECT CHALL_NO 
-		                                                         FROM CHALL_MEM_LIST
-		                                                        WHERE USER_ID =  #{userId}
-		                                                          AND MEM_STATUS = '승인')) C
+		                                   WHERE CHALL_NO IN ( SELECT c.chall_no AS COUNT
+FROM CHALLENGES C, CHALL_MEM_LIST M
+WHERE C.CHALL_NO = M.CHALL_NO
+AND C.CHALL_STATUS = '진행 중'
+AND M.MEM_STATUS = '승인'
+AND M.USER_ID=#{userId})) C
 		            WHERE  M.IDENTIFY_ID = C.CHALL_NO
 		               AND MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
 		                                   FROM CHALLENGES S, MULTIMEDIA M
 		                                  WHERE S.CHALL_NO=M.IDENTIFY_ID
 		                                  GROUP BY S.CHALL_NO )                 
+
 		<![CDATA[  
 		) A WHERE ROWNUM <= #{last} )  WHERE RN >= #{first}
 		]]>
@@ -110,6 +113,7 @@
 		WHERE M.CHALL_NO = C.CHALL_NO
 		AND M.USER_ID = #{value}
 		AND M.MEM_STATUS = '승인'
+		AND C.CHALL_STATUS = '진행 중'
 	</select>
 	<!-- 나의 도전목록들 -->
 	
