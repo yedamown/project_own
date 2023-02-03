@@ -28,6 +28,8 @@ public interface OwnhomeService {
 	public OwnUserVO login(String id);
 	//아이디찾기
 	public String searchId(String email);
+	//비밀번호 찾기
+	public int searchPw(OwnUserVO vo);
 	//이메일보내기
 	public String sendMail(String info, String email);
 	//내정보 수정
@@ -36,6 +38,7 @@ public interface OwnhomeService {
 	public int pwcheck(String pw, String newpw);
 	//비밀번호 재설정
 	public String setPassword(String appNo, String id);
+	
 	
 	//=====================SNS=================
 	public SAccountVO snsLogin(String id);
@@ -85,6 +88,6 @@ public interface OwnhomeService {
 	//내 질문 페이징처리
 	public List<QuestionVO> getPagingmyQuestlist(QuestionVO vo, Paging paging);
 	//질문하기
-		public int questAdd(QuestionVO vo);
+	public int questAdd(QuestionVO vo);
 	
 }

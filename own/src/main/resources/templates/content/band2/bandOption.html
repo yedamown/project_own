@@ -172,8 +172,8 @@
 </div>
 
   <div id="manageTemplate">
-  <div id="container23">
   
+  <div id="container23">  
   <h1>밴드정보</h1>
   <fieldset>
        <legend>밴드상세정보</legend>
@@ -187,22 +187,18 @@
                 <li><label th:text="'가입인원 '+${count}"></label> 
        </ul>
   </fieldset>
-  <p th:text="${count}"></p>
-  <p>가입인원</p>
-  <fieldset>
+<!--   <fieldset>
   <legend>모든유저</legend>
   <span th:each="list : ${memList}">
      <th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA02')}">
    <label><p th:text="${list.userId}"></p></label>
    </th:block>
   </span>
-  </fieldset>
+  </fieldset> -->
   
   <fieldset>
   <legend>오늘 가입한 유저</legend>
   <span th:each="list : ${memList}">
-   <label><p th:text="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}"></p></label>
-   <label><p th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"></p></label>
    <th:block th:if="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}==${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
       <label><p th:text="${list.userId}"></p></label>
    </th:block>

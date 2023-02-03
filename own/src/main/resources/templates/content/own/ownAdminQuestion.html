@@ -13,6 +13,9 @@ body {
 	font: 12px Arial, Helvetica, sans-serif;
 	color: #2e2e2e;
 }
+table{
+width:100%;
+}
 
 div.layout-978 { width: 978px; margin: 0px auto; }
 
@@ -28,11 +31,7 @@ div.tblcontainer {
 	width: 93%;	
 }
 
-table {
-    width: 100%;
-    border-top: 1px solid #444444;
-    border-collapse: collapse;
-  }
+
 
 .datagrid {
 	border-collapse: collapse;
@@ -58,7 +57,6 @@ table {
 .datagrid tbody tr td {
 	padding: 6px 8px;
 	border: 1px solid #c9c9c9;
-
 }
 
 .datagrid tbody tr td.cash {
@@ -80,11 +78,6 @@ table {
 	top: 10px;
 	right: 10px;
 }
-.contentLength{
-text-overflow:ellipsis; 
-overflow:hidden;
-}
-
 </style>
 </head>
 
@@ -129,6 +122,7 @@ overflow:hidden;
                     <td th:text="${quest.title}"
                         th:id="${quest.questNo}"></td>
                 </span>
+
 				<td th:text="${#dates.format(quest.questDate, 'yyyy-MM-dd')}"></td>				
 				<td th:text="${quest.header}"></td>
 				<td th:text="${quest.status}"></td>
@@ -235,6 +229,7 @@ overflow:hidden;
          return this;
      };
 
+    	    
 			$('#userList').on('click','.titlemodal',function(){
 			modal('my_modal');
 			let qno = $(this).attr('id')
@@ -246,11 +241,12 @@ overflow:hidden;
 			}).then(res=>{
                 $('#modalform').append(`<input type="hidden" value="${res.questNo}" name="questNo">`)
                 $('#modaltitle').html(res.title);
-				$('#modalcontent').html(res.content);
+                $('#modalcontent').html(res.content);
 				console.log(res);
 			})		
 		})
-
+		
+		
 		function leftPad(value) {
     if (value >= 10) {
         return value;
@@ -258,6 +254,7 @@ overflow:hidden;
 
     return `0${value}`;
 }
+
 function toStringByFormatting(source, delimiter = '-') {
     const year = source.getFullYear();
     const month = leftPad(source.getMonth() + 1);
@@ -265,7 +262,7 @@ function toStringByFormatting(source, delimiter = '-') {
 
     return [year, month, day].join(delimiter);
 }
-
+		
 		$('#pagegation').on('click', '.pagePort', function(){
 			//페이지번호 + 밴드식별번호
 			let page = $(this).attr('value');
@@ -278,8 +275,7 @@ function toStringByFormatting(source, delimiter = '-') {
 				let tbody = $('#userList');
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
-					console.log(ele.userId);
-					console.log(ele.answer);
+					let newdate = toStringByFormatting(new Date(ele.questDate));
 					let answer = "";
 					let title = "";
 					if(ele.answer){
@@ -289,13 +285,12 @@ function toStringByFormatting(source, delimiter = '-') {
 						answer = `<td>미처리상태</td>`
 						title = `<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>`;
 					}
-					let date = toStringByFormatting(new Date(ele.questDate));
 
 					let tag = `<tr>
 								<td>${ele.rn}</td>
 								<td>${ele.userId}</td>
 								${title}
-								<td>${date}</td>
+								<td>${newdate}</td>
 								<td>${ele.header}</td>
 								<td>${ele.status}</td>
 								</tr>`
