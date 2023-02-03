@@ -3,15 +3,17 @@
 <mapper namespace="co.prjt.own.band.mapper.BandMemberDefaultMapper">
 	
 	<sql id="condition">
-		<if test="bandNickname != null and bandNickname !=''">
-			BAND_NICKNAME = #{bandNickname}
-		</if>
-		<if test="bandLocation != null and bandLocation !=''">
-			BAND_LOCATION = #{bandLocation}
-		</if>
-		<if test="bandInterest != null and bandInterest !=''">
-			BAND_INTEREST = #{bandInterest}
-		</if>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="bandNickname != null and bandNickname !=''">
+				BAND_NICKNAME = #{bandNickname},
+			</if>
+			<if test="bandLocation != null and bandLocation !=''">
+				BAND_LOCATION = #{bandLocation},
+			</if>
+			<if test="bandInterest != null and bandInterest !=''">
+				BAND_INTEREST = #{bandInterest},
+			</if>
+		</trim>
 	</sql>
 	<!-- 가치 디폴트 조회 -->
 	<select id="getBandMemberDefault" resultType="BandMemberDefaultVO">
@@ -28,10 +30,9 @@
 	</select> 
 	<!-- 가치 디폴트 업데이트 -->
 	<update id="updateMemberDf">
-		update BAND_MEMBER_DEFAULT
-		    set
+		UPDATE BAND_MEMBER_DEFAULT
 		        <include refid="condition" />
-		    where user_id = #{userId}
+		    WHERE USER_ID = #{userId}
 	</update>
 	<!-- 가치 디폴트 가입 -->
 	<insert id="insertDefault">
@@ -56,11 +57,57 @@
 	</insert>
 	<!-- 가치 디폴트 가입중인 밴드구하기 -->
 		<select id="getMyBandOption" resultType="BandMemberDetailVO">
-			SELECT * 
+			SELECT  A.USER_ID,
+					A.BAND_NICKNAME,
+					A.BAND_NO,
+					A.BAND_MEMBER_STATUS,
+					A.BAND_KICK_STATUS,
+					TO_CHAR(A.BAND_SIGNUP_DATE, 'YYYY-MM-DD') "bandSignupDateCha",
+					A.BAND_ACCESS_DATE,
+					A.BAND_KICK_DATE,
+					A.BAND_MEMBER_NO,
+					A.BAND_BIRTH,
+					A.BAND_GENDER,
+					A.BAND_MEMBER_INTRO,
+					A.BAND_MEMBER_REJOIN,
+					A.BAND_MEMBER_KICK_REASON,
+					A.BAND_MEMBER_GENDER_OPEN,
+					A.BAND_MEMBER_BIRTH_OPEN, 
+					A.BAND_MEMBER_AGE_OPEN, 
+					B.BAND_NO,
+					B.BAND_LEADERID,
+					B.BAND_NAME,
+			        B.BAND_INTRO,
+			        B.BAND_KEYWORD,
+			        B.BAND_OPEN_OPTION,
+			        B.BAND_AGE_OPTION,
+			        B.BAND_AGE_BEFOROPTION,
+			        B.BAND_AGE_AFTEROPTION,
+			        B.BAND_CATEGORY,
+			        B.BAND_GENDER_OPTION,
+			        B.BAND_MEMBERSHIP_OPTION,
+			        B.BAND_LOCATION,
+			        B.BAND_GENDER,
+					C.MEDIA_SERVER_FILE,
+					C.MEDIA_SERVER_FILE "profileImg"
 			    FROM BAND_MEMBER_DETAIL A, BAND B, MULTIMEDIA C
 			    WHERE A.BAND_NO = B.BAND_NO
 			    AND A.BAND_MEMBER_NO = C.IDENTIFY_ID
 			    AND BAND_STATUS IN ('BS_1', NULL)
-			    AND USER_ID = #{userId}
+			    AND A.USER_ID = #{userId}
 		</select>
+		<!-- 탈퇴 -->
+		<update id="myBandLeave">
+			UPDATE BAND_MEMBER_DETAIL SET
+                    BAND_MEMBER_STATUS = 'BA04'
+           WHERE USER_ID = #{userId}
+             AND BAND_NO = #{bandNo}
+		</update>
+		<!-- 가입신청철회 -->
+		<!-- 탈퇴 -->
+		<update id="myBandLeave2">
+			DELETE FROM BAND_MEMBER_DETAIL 
+           		WHERE USER_ID = #{userId}
+             	AND BAND_NO = #{bandNo}
+		</update>
 </mapper>

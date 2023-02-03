@@ -70,4 +70,6 @@ public class BandMemberDetailVO {
    public List<String> userIds;
    //내가 가치장인지 확인할 때 사용(디폴트옵션에서..)
    public String bandLeaderid;
+   //밴드가입일보기용
+   public String bandSignupDateCha;
 }

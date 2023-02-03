@@ -41,5 +41,13 @@ public class BandMemberDefaultServiceImpl implements BandMemberDefaultService{
 	public List<BandMemberDetailVO> getMyBandOption(String userId) {
 		return bandMemberDefaultMapper.getMyBandOption(userId);
 	}
-	
+	//가치 탈퇴
+		public int myBandLeave(String userId, String bandNo) {
+			return bandMemberDefaultMapper.myBandLeave(userId, bandNo);
+		}
+
+		@Override
+		public int myBandLeave2(String userId, String bandNo) {
+			return bandMemberDefaultMapper.myBandLeave2(userId, bandNo);
+		};
 }

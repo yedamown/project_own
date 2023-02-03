@@ -159,7 +159,10 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 		// 글단건조회(글+유저별명)
 		BandBoardDetailSearchVO board = bandBoardDetailMapper.getBandBoardDetail(vo);
 		//일정있는지 검색해서 넣기(impl)
-		board.setBandCalendar(bandBoardDetailMapper.selectCalendar(vo.getBandBoardDetailNo()));
+		BandCalendarVO v = bandBoardDetailMapper.selectCalendar(vo.getBandBoardDetailNo());
+		if(v!=null) {
+			board.setBandCalendar(v);
+		}
 		return board;
 	}
 

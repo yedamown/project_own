@@ -37,4 +37,5 @@ public class BandBoardDetailVO {
 	//캘린더 업데이트용
 	public String bandCalendarNo;
 	
+	
 }
