@@ -33,7 +33,8 @@
 	<update id="updateCReport">
 		UPDATE CHALL_REPORT
 		SET REPORT_STATE = #{reportState}
-		WHERE REPORT_NO = #{reportNo}
+		WHERE VLD_NO =  #{vldNo}
+		AND REPORTER = #{reporter}
 	</update>
 	
 	<!-- 인증, 신고, 멀티미디어 연결함..리포트에 담기 -->

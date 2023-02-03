@@ -404,7 +404,7 @@
 					<!-- 인증신고 관리..리더만 -->
 					<div id="vldRpt">
 						<input type="hidden" id="reportCheck" value="false">
-						<h3>멤버 인증관리</h3>
+						<h3>멤버 인증 신고 관리</h3>
 						<div class="row portfolio-container" id="vldRptList">
 						</div>
 					</div>
@@ -1446,6 +1446,7 @@
         contentType: "application/json",
         success: function(result){
           console.log(result)
+		  alert(result);
 		  console.log($(e).parent().remove());
         },
         error: function(err){
@@ -1489,12 +1490,15 @@
 	})
 
 		function makeRptVldForm(vld){
+		console.log(vld);
 		let userId = vld.userId;
 		let mediaName = vld.vldImg;
 		let vldDate = (vld.vldDate);
-		let vldNo = (vld.vldNo);
+		let vldNo = vld.vldNo;
 		let reportRs = vld.reportReason;
+		//신고당한사람
 		let reported = vld.reported;
+		let reporter = vld.reporter;
 		console.log(mediaName);
 		console.log(reported);
 		let gridVld = `<div class="grid" style="padding: 10px" id=${vldNo}>
@@ -1504,7 +1508,8 @@
 									style="object-fit: cover"/>
 								</figure>
 							<div class="card__desc vldno">
-									<input class="vldNum" type="hidden" value=${vldNo}>
+									<input type="hidden" value=${vldNo}>
+									<input type="hidden" value=${reporter}>
 									<p>${reportRs}</p>
 									<p>신고당한 사람: ${reported}</p>
 									<button onclick="vldProcess(this)">신고 승인</button>
@@ -1516,11 +1521,40 @@
 		/*   $('#vldImg').append(firstdiv.append(secondDiv.append(imgDiv, hTag))) */ 
 		}
 
-
 		function vldProcess(e){
-			console.log($(e));
+			console.log($(e).parent().parent().parent());
+			let girdRpt = $(e).parent().parent().parent();
 			console.log($(e).text());
-		}
+			console.log($(e).parent().find('input').eq(0).val());
+			console.log($(e).parent().find('input').eq(1).val());
+			let vldNo = $(e).parent().find('input').eq(0).val();
+			let reporter = $(e).parent().find('input').eq(1).val();
+			let rptAuth = $(e).text();
+			console.log(vldNo);
+			console.log(reporter);
+			console.log(rptAuth);
+				$.ajax({
+				url: '/own/chall/reportProcess',
+				method: 'post',
+				data: JSON.stringify({ vldNo: vldNo,
+									   reporter: reporter,
+									   reportState: rptAuth
+									}),
+				beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token);
+				}, 
+				contentType: "application/json",
+				success: function(result){
+					alert(result);
+					console.log(result)
+					console.log($(e).parent().parent().parent().remove());
+				},
+				error: function(err){
+					console.log(err)
+				}
+      		});
+		};
+
 	//----------------------------첨부파일 화면에 띄우기------------------------------------
 
       	/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
