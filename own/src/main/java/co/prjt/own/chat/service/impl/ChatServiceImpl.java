@@ -16,7 +16,7 @@ public class ChatServiceImpl implements ChatService {
 	ChatMapper chatMapper;
 
 	@Override
-	public List<ChatroomVO> chatroomList(String bandMemberNo) {
+	public List<ChatroomVO> myChatroomList(String bandMemberNo) {
 		// 전체 채팅방 목록 중 해당 식별번호로 개설된 채팅방 목록 출력 
 		return chatMapper.chatroomList(bandMemberNo);
 	}
