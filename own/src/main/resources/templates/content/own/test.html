@@ -12,7 +12,8 @@
 <body>
 <h1>테스트페이지</h1>
 <h1>참여중인 챌린저스명</h1>
-<div class="row pb-3" id="rowMyChall">
+<input type="hidden" th:value="${userId}" th:id="userIdchk">
+			<div class="row pb-3" id="rowMyChall">
 				<th:block th:each="my: ${CList}">
 					<div class="col-lg-4 mb-4">
 						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
@@ -32,9 +33,7 @@
 							</div>
 						</div>
 					</div>
-				</th:block>
-				
-				
+				</th:block>				
 			</div>
 			<nav class="blog-pagination justify-content-center d-flex pageBtn"  th:if="${!#lists.isEmpty(CList)}"
 			id="pageMyChall">
@@ -64,8 +63,218 @@
 			</ul>
 		</nav>
 <h1>참여중인 밴드명</h1>
-<!-- <span th:each="band : ${BList}">
-<p th:text="${band.bandName}"></p>
-</span> -->
+
+<div class="row pb-3" id="rowMyBand">
+				<th:block th:each="my: ${BList}">
+					<div class="col-lg-4 mb-4">
+						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
+							<img class="card-img-top mb-2" th:src="|/imgView/${my.mediaServerFile}|" alt="도전사진"
+								style="height: 230px;"/>
+							<div class="card-body bg-light text-center p-4" style="width: 300px">
+								<input type="hidden" th:value="${my.bandName}" />
+								<h4 class="" th:text="${my.bandName}"></h4>
+								<div class="d-flex justify-content-center mb-3">
+									<small class="mr-3">[[${my.memcount}]]명 참여중</small> 
+								</div>
+							</div>
+						</div>
+					</div>
+				</th:block>				
+			</div>
+			
+
+
+<nav class="blog-pagination justify-content-center d-flex pageBtn"  th:if="${!#lists.isEmpty(BList)}"
+			id="pageMyBand">
+			<!--================ 이전  =================-->
+			<ul class="pagination">
+				<li class="page-item" th:if="${BList[0].paging.startPage>1}"><a
+					class="page-link" aria-label="Previous"
+					th:value="${BList[0].paging.startPage-1}"> <span aria-hidden="true"><span
+							class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+				<!--================ 페이지 이동 1_2_3_4_5  =================-->
+				<th:block
+					th:each="pag:${#numbers.sequence(BList[0].paging.startPage,BList[0].paging.endPage)}">
+					<li class="page-item" th:if="${pag != BList[0].paging.page}"><a
+						class="page-link pagePort" th:value="${pag}"
+						th:text="${#numbers.formatInteger(pag,1)}"></a></li>
+					<li class="page-item active" th:if="${pag==BList[0].paging.page}"><a
+						class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+					</li>
+				</th:block>
+				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+				<!--================ 이후  =================-->
+				<li class="page-item" th:if="${BList[0].paging.endPage<BList[0].paging.lastPage}">
+					<a class="page-link pagePort" aria-label="Next"
+					th:value="${BList[0].paging.endPage+1}"> <span aria-hidden="true"><span
+							class="lnr lnr-chevron-right"></span></span></a>
+				</li>
+			</ul>
+		</nav>
+
+
+		<script>
+
+//마이챌 페이징
+		$('#pageMyChall').on('click', '.pagePort', function(){
+			//페이지번호 + 밴드식별번호
+			let userId = $('#userIdchk').val();
+			let page = $(this).attr('value');
+			console.log($(this).attr('value'));
+			$.ajax({
+				url: '/own/admin/myChallPaging?page='+page+'&userId='+userId,
+				method: 'get'
+			}).then(result => {
+
+				$('#rowMyChall').empty();
+				console.log(result);
+				//페이지 버튼 만들기
+				
+
+				$(result).each(function(idx, my){
+					console.log(idx)
+
+					let tag = `
+					<div class="col-lg-4 mb-4">
+						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
+							<img class="card-img-top mb-2" src="/imgView/${my.firstImage}" alt="도전사진"
+								style="height: 230px;"/>
+							<div class="card-body bg-light text-center p-4" style="width: 300px">
+								<input type="hidden" value="${my.challNo}" />
+								<h4 class="" text="${my.challTitle}"></h4>
+								<div class="d-flex justify-content-center mb-3">
+									<small class="mr-3">${my.challStartdate}시작</small>
+									<small class="mr-3">${my.challDuration}주 동안</small> 
+									<small class="mr-3">주 ${my.challFreq}회</small>
+									<small class="mr-3">${my.nowMem}참여중</small>
+								</div>
+								<a href="/own/chall/detailChall?challNo=${my.challNo})}"
+									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+							</div>
+						</div>
+					</div>`;
+					
+				$('#rowMyChall').append(tag);		
+				})
+
+				$('#pageMyChall').empty();
+		         let pagingM = result[0].paging;
+		         //시작 버튼
+				 console.log(result[0]);
+		         let startpageTag = $('<ul class="pagination" />');
+				 $('#pageMyChall').append(startpageTag);
+		         //이전 버튼만들기
+		         if(pagingM.startPage>1){
+		            let pageBeforTag = `<li class="page-item">
+		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           </li>`
+		               startpageTag.append(pageBeforTag);               
+		         }               
+		         //페이지목록..
+		         for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		            if(pg != pagingM.page){
+		               let pageTag = `<li class="page-item">
+		                           <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                           </li>`
+		               startpageTag.append(pageTag);
+		            } else if(pg == pagingM.page ){
+		               let pageTag =  `<li class="page-item active">
+		                           <a class="page-link" >${pg}</a>
+		                           </li>`
+		               startpageTag.append(pageTag);
+		            }
+		         }               
+		         //이후 버튼만들기
+		         if(pagingM.endPage<pagingM.lastPage){
+		            let pageAfterTag =`<li class="page-item">
+		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           </li>`
+		            startpageTag.append(pageAfterTag);
+		         }
+		         $('#pageMyChall').append(startpageTag)
+		      })
+		})
+//마이밴드 페이징
+		$('#pageMyBand').on('click', '.pagePort', function(){
+			//페이지번호 + 밴드식별번호
+			let userId = $('#userIdchk').val();
+			console.log(userId);
+			let page = $(this).attr('value');
+			console.log($(this).attr('value'));
+			$.ajax({
+				url: '/own/admin/myBandPaging?page='+page+'&userId='+userId,
+				method: 'get'
+			}).then(result => {
+				console.log(result);
+
+
+				$('#rowMyBand').empty();				
+				//이미지 만들기
+				$(result).each(function(idx, ele){
+					console.log(idx)
+					console.log(ele)
+
+					let tag = `
+					<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
+							<img class="card-img-top mb-2" src="/imgView/${ele.mediaServerFile}" alt="도전사진"
+								style="height: 230px;"/>
+							<div class="card-body bg-light text-center p-4" style="width: 300px">
+								<input type="hidden" "${ele.bandName}" />
+								<h4>"${ele.bandName}"</h4>
+								<div class="d-flex justify-content-center mb-3">
+									<small class="mr-3">${ele.memcount}명 참여중</small> 
+								</div>
+							</div>
+					</div>`;
+					
+				$('#rowMyBand').append(tag);		
+				})
+
+
+				//페이지 버튼 만들기			
+				$('#pageMyBand').empty()
+		         let pagingM = result[0].paging;
+		         //시작 버튼
+				 console.log(result[0]);
+		         let startpageTag = $('<ul class="pagination" />');
+		         $('#pageMyBand').append(startpageTag);
+		         //이전 버튼만들기
+		         if(pagingM.startPage>1){
+		            let pageBeforTag = `<li class="page-item">
+		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           </li>`
+		               startpageTag.append(pageBeforTag);               
+		         }               
+		         //페이지목록..
+		         for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+		            if(pg != pagingM.page){
+		               let pageTag = `<li class="page-item">
+		                           <a class="page-link pagePort" value=${pg}>${pg}</a>
+		                           </li>`
+		               startpageTag.append(pageTag);
+		            } else if(pg == pagingM.page ){
+		               let pageTag =  `<li class="page-item active">
+		                           <a class="page-link" >${pg}</a>
+		                           </li>`
+		               startpageTag.append(pageTag);
+		            }
+		         }               
+		         //이후 버튼만들기
+		         if(pagingM.endPage<pagingM.lastPage){
+		            let pageAfterTag =`<li class="page-item">
+		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           </li>`
+		            startpageTag.append(pageAfterTag);
+		         }
+		         $('#pageMyBand').append(startpageTag)
+		      })
+		})
+
+
+		</script>
 </body>
 </html>

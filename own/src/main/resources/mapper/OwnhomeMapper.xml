@@ -131,6 +131,8 @@ select count(*) from question
    SELECT COUNT(*) FROM QUESTION WHERE USER_ID = #{userId}
    </select>
    
+
+   
    
  <!-- 관리자 -->
  <select id="selectReport" resultType="co.prjt.own.common.service.ReportVO">
@@ -192,5 +194,31 @@ SELECT BMD.*,B.BAND_NAME FROM
 BAND_MEMBER_DETAIL BMD , BAND B
 WHERE BMD.USER_ID=#{ID}
 AND BMD.BAND_NO = B.BAND_NO
- </select> 
+ </select>
+ 
+ <select id="adminBandCheck" resultType="co.prjt.own.band.service.BandVO">
+ SELECT * FROM ( SELECT ROWNUM RN, 
+A.* FROM(
+SELECT B.BAND_NAME, C.EXERSUB_NAME BAND_CATEGORY, M.MEDIA_SERVER_FILE , E.MEMCOUNT FROM 
+BAND_MEMBER_DETAIL BMD , BAND B, MULTIMEDIA M, EXER_SUB C , (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
+                FROM BAND_MEMBER_DETAIL 
+               WHERE BAND_NO = BAND_NO
+               AND BAND_MEMBER_STATUS = 'BA02'
+               GROUP BY BAND_NO) E
+WHERE BMD.USER_ID=#{userId}
+AND BMD.BAND_NO = B.BAND_NO
+AND m.identify_id = b.band_no
+AND BMD.BAND_MEMBER_STATUS = 'BA02'
+AND BMD.BAND_KICK_STATUS = 'BB01'
+AND B.BAND_CATEGORY = C.EXERSUB_NO
+AND E.BAND_NO = B.BAND_NO
+	<![CDATA[	
+) A WHERE ROWNUM <=#{last}) WHERE RN >=#{first}
+]]>
+ </select>
+ <select id="bandCounting" resultType="int">
+SELECT COUNT(*) FROM BAND B, BAND_MEMBER_DETAIL BMD
+    WHERE B.BAND_NO=BMD.BAND_NO
+    AND BMD.USER_ID=#{userId}
+ </select>
 </mapper>

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import co.prjt.own.band.service.BandMemberDetailVO;
+import co.prjt.own.band.service.BandVO;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.ReportVO;
@@ -330,6 +331,28 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	public int searchPw(OwnUserVO vo) {
 		// TODO Auto-generated method stub
 		return ownhomeMapper.searchPw(vo);
+	}
+
+	@Override
+	public List<BandVO> adminBandCheck(BandMemberDetailVO vo, Paging paging) {
+		paging.setTotalRecord(ownhomeMapper.bandCounting(vo)); // start end		
+		paging.setPageUnit(3);
+		paging.setPageSize(3);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		System.out.println(paging);
+		vo.setPaging(paging);
+		System.out.println("=====페이징하고싶어요======"+paging.toString());
+		List<BandVO> list = ownhomeMapper.adminBandCheck(vo);
+		list.get(0).setPaging(paging);
+		return list;
+		
+	}
+
+	@Override
+	public int bandCounting(BandMemberDetailVO vo) {
+		// TODO Auto-generated method stub
+		return ownhomeMapper.bandCounting(vo);
 	}
 
 }
