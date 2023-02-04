@@ -746,25 +746,26 @@
 					xhr.setRequestHeader(header, token);
 				},
 				success: function (res) {
-					
+
 					//새로운 날짜를 담을 div로 교체
 					document.getElementById("calData1").style.display = "none";
 					document.getElementById("calData2").style.display = "block";
 					//운동 시간, 분 - 계산
 					let totalTime = 0;
 					let totalKcals = 0;
+					let totalMeter = 0;
 					for (let i = 0; i < res.length; i++) {
 						totalTime += res[i].exerecTime;
+						totalMeter += res[i].exerecMeter;
 						totalKcals += res[i].kcals;
 					}
-					$jQ("#calData2")
-						.find("div")
-						.eq(0)
+					$jQ("#selectDate1")
 						.find("h2")
-						.attr('data-to', totalTime)
-						.end()
-						.find("div")
-						.eq(1)
+						.attr('data-to', totalTime);
+					$jQ("#selectDate2")
+						.find("h2")
+						.attr('data-to', totalMeter);
+					$jQ("#selectDate3")
 						.find("h2")
 						.attr('data-to', totalKcals);
 					numberCount();
@@ -907,10 +908,16 @@
 						<div class="counter col_fourth">
 							<i class="fa fa-regular fa-clock font_awesome"></i>
 							<h2 class="timer count-title count-number" data-speed="1500"></h2>
-							<p class="count-text ">운동 시간(단위: 분)</p>
+							<p class="count-text ">활동 시간(단위: 분)</p>
 						</div>
 						<div class="counter col_fourth">
 							<i class="fa fa-solid fa-person-walking font_awesome"></i>
+							<h2 class="timer count-title count-number"
+								th:data-to=${#aggregates.sum(lRecord.![exerecMeter])} data-speed="1500"></h2>
+							<p class="count-text">활동 거리(단위: m)</p>
+						</div>
+						<div class="counter col_fourth">
+							<i class="fa fa-solid fa-fire font_awesome"></i>
 							<h2 class="timer count-title count-number" th:data-to=${#aggregates.sum(lRecord.![kcals])}
 								data-speed="1500"></h2>
 							<p class="count-text">칼로리 소모량(단위: kcal)</p>
@@ -919,24 +926,29 @@
 				</div>
 				<div class="item-row2" id="calData2" style="display: none;" align="center">
 					<div class="wrapper">
-						<div class="counter col_fourth">
+						<div class="counter col_fourth" id="selectDate1">
 							<i class="fa fa-regular fa-clock font_awesome"></i>
 							<h2 class="timer count-title count-number" data-speed="1500"></h2>
-							<p class="count-text ">운동 시간(단위: 분)</p>
+							<p class="count-text ">활동 시간(단위: 분)</p>
 						</div>
-						<div class="counter col_fourth">
+						<div class="counter col_fourth" id="selectDate2">
 							<i class="fa fa-solid fa-person-walking font_awesome"></i>
+							<h2 class="timer count-title count-number" data-speed="1500"></h2>
+							<p class="count-text">활동 거리(단위: m)</p>
+						</div>
+						<div class="counter col_fourth" id="selectDate3">
+							<i class="fa fa-solid fa-fire font_awesome"></i>
 							<h2 class="timer count-title count-number" data-speed="1500"></h2>
 							<p class="count-text">칼로리 소모량(단위: kcal)</p>
 						</div>
 					</div>
 				</div>
 				<!--====================== 차트 div ======================-->
-				<div class="item-row" id="div_myChartArea">
-					<div id="div_dayChartArea" style="height:30vh; width:30vw">
+				<div class="item" id="div_myChartArea">
+					<div class="item" id="div_dayChartArea" style="height:30vh; width:30vw">
 						<canvas id="dayChart" align="center"></canvas>
 					</div>
-					<div id="div_weightChartArea" style="height:30vh; width:30vw">
+					<div class="item" id="div_weightChartArea" style="height:30vh; width:30vw">
 						<canvas id="weightChart" align="center"></canvas>
 					</div>
 				</div>
@@ -944,10 +956,10 @@
 			<!--====================== 사진으로 저장하기, 공유 버튼 div ======================-->
 			<div class="item-row" id="shareBtn">
 				<button onclick="captureImage()">
-					<img src="/css/own/common_img/save_btn.png" alt="파일로저장" />
+					<img src="/css/own/common_img/list.png" alt="파일로저장" />
 				</button>
 				<button onclick="shareKakao()">
-					<img src="/css/own/common_img/kakaotalk_sharing_btn.png" alt="카카오톡 공유" />
+					<img src="/css/own/common_img/kakaoBtn1.png" alt="카카오톡 공유" />
 				</button>
 			</div>
 		</div>

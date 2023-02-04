@@ -8,7 +8,7 @@ import co.prjt.own.band.service.BandMemberDetailVO;
 
 public interface ChatService {
 	// 전체 채팅방 목록 중 해당 식별번호로 개설된 채팅방 목록 출력 
-	List<ChatroomVO> chatroomList(String bandMemberNo);
+	List<ChatroomVO> myChatroomList(String bandMemberNo);
 	
 	/* 신규 채팅방 개설(1:1)
 	 */

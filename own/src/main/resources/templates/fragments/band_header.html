@@ -128,4 +128,19 @@
 		</div>
 	</header>
 </th:block>
+<script th:inline="javascript">
+	var header = /*[[${_csrf.headerName}]]*/;
+	var token = /*[[${_csrf.token}]]*/;
+
+	$(function () {
+		/*<![CDATA[*/
+		let loginUser = /*[[ ${session.loginUser} ]]*/;
+		let loginUserId = loginUser.userId
+		/*]]*/
+		
+		/* $.ajax({
+			url: 'own/band/ba'
+		}) */
+	});
+	</script>
 </html>
