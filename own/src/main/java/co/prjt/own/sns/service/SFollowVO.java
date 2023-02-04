@@ -8,4 +8,5 @@ public class SFollowVO {
 	String snsFollowId;
 	String snsFollowerId;
 	int count;
+	String mediaServerFile;
 }
