@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.MultimediaVO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +36,11 @@ public class BandVO {
 	String bandGender;
 	//밴드이미지주소
 	String mediaServerFile;
-	
 	//밴드 대표이미지 주소
 	MultimediaVO bandMainImg;
-	
+	//임시로추가했습니다..
+	Paging Paging;
+	String memcount;
 	//bandNo의 집합
 	List<String> bandNos;
 	
