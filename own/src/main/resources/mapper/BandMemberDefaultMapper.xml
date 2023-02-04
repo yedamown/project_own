@@ -93,7 +93,7 @@
 			    FROM BAND_MEMBER_DETAIL A, BAND B, MULTIMEDIA C
 			    WHERE A.BAND_NO = B.BAND_NO
 			    AND A.BAND_MEMBER_NO = C.IDENTIFY_ID
-			    AND BAND_STATUS IN ('BS_1', NULL)
+			    AND (BAND_STATUS = 'BS_1' OR BAND_STATUS IS NULL)
 			    AND A.USER_ID = #{userId}
 		</select>
 		<!-- 탈퇴 -->

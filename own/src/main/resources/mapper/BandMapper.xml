@@ -44,7 +44,8 @@
 	        BAND_GENDER_OPTION,
 	        BAND_MEMBERSHIP_OPTION,
 	        BAND_LOCATION,
-	        BAND_GENDER
+	        BAND_GENDER,
+	        BAND_STATUS
 			)
 			VALUES(
 					'BDU_'||#{bandNo},
@@ -60,7 +61,8 @@
                     #{bandGenderOption},
                     #{bandMembershipOption},
                     #{bandLocation},
-                    #{bandGender}
+                    #{bandGender},
+                    'BS_1'
                   )
 	</insert>
 	<update id="updateBand">
@@ -84,6 +86,7 @@
 	            A.BAND_NO 			"bandNo",
 	            A.BAND_NAME 		"bandName",
 	            A.BAND_INTRO 		"bandIntro",
+	            A.BAND_GENDER 		"bandGender",
 	            A.BAND_KEYWORD 		"bandKeyword",
 	            A.BAND_OPEN_OPTION "bandOpenOption",
 	            A.BAND_AGE_OPTION "bandAgeOption",
@@ -466,53 +469,26 @@
 									        BAND_GENDER
 									FROM(
 									    SELECT *
-									        FROM BAND
-									        WHERE BAND_NO NOT IN
-									        <!-- HJJ가 가입되어있는 밴드목록 -->
-									            (SELECT BAND_NO 
-									                FROM BAND_MEMBER_DETAIL
-									                WHERE USER_ID=#{bandLeaderid})
-									        <!-- 추가조건오픈 -->
-									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
-									        <!-- 성별제한없음 -->
-									        AND BAND_GENDER_OPTION = 'BE02'
-									        <!-- 나이제한없음 -->
-									        AND BAND_AGE_OPTION = 'BD02'
-									    UNION    
-									    <!-- 가입되어있지 않으면서 성별제한이 남자 -->
-									    SELECT *
-									        FROM BAND
-									        WHERE BAND_NO NOT IN
-									        <!-- hjj가 가입되어있는 밴드목록 -->
-									            (SELECT BAND_NO 
-									                FROM BAND_MEMBER_DETAIL
-									                WHERE USER_ID=#{bandLeaderid})
-									        <!-- 추가조건오픈 -->
-									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
-									        <!-- 나이제한없음 -->
-									        AND BAND_AGE_OPTION = 'BD02'
-									        <!-- 성별제한있음(남) -->
-									        AND BAND_GENDER_OPTION = 'BE01'
-									        AND BAND_GENDER = #{bandGender}
-									    UNION    
-									    <!-- 가입되어있지 않으면서 나이제한  -->
-									    SELECT *
-									        FROM BAND
-									        WHERE BAND_NO NOT IN
-									        <!-- HJJ가 가입되어있는 밴드목록 -->
-									            (SELECT BAND_NO 
-									                FROM BAND_MEMBER_DETAIL
-									                WHERE USER_ID=#{bandLeaderid})
-									        <!-- 추가조건오픈 -->
-									        AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
-									        <!-- 나이제한있음 -->
-									        AND BAND_AGE_OPTION = 'BD01'
-									        <!-- 성별제한없음 -->
-									        AND BAND_GENDER_OPTION = 'BE02'
-									        AND #{bandAgeAfteroption} BETWEEN BAND_AGE_BEFOROPTION AND BAND_AGE_AFTEROPTION
-									        ) A, EXER_SUB B, OWN_LOCATION C
-									        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
-									        AND A.BAND_LOCATION=C.LOC_CODE
+						                    FROM BAND
+						                    WHERE BAND_NO NOT IN
+						                        (SELECT BAND_NO 
+						                            FROM BAND_MEMBER_DETAIL
+						                            WHERE USER_ID = #{bandLeaderid})
+						                    <!-- 공개 -->
+						                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+						                    <!-- 성별 -->
+						                    AND BAND_GENDER_OPTION = 'BE02' 
+						                    OR (BAND_GENDER_OPTION = 'BE01' AND BAND_GENDER ='BE01')
+						                    AND (BAND_AGE_OPTION = 'BD02')
+						                    OR (BAND_AGE_OPTION = 'BD01'
+						                    <![CDATA[                                  
+						                    	AND TO_CHAR(BAND_AGE_BEFOROPTION, 'yyyy')<=TO_CHAR(#{bandAgeBeforoption}, 'yyyy') 
+						                    	AND TO_CHAR(BAND_AGE_AFTEROPTION, 'yyyy')>=TO_CHAR(#{bandAgeBeforoption}, 'yyyy'))) A,
+						                    ]]> 	
+						                    EXER_SUB B,
+						                    OWN_LOCATION C
+									WHERE A.BAND_CATEGORY = B.EXERSUB_NO
+									AND A.BAND_LOCATION=C.LOC_CODE
              <include refid="recom2"></include>                         
                                    ) 
                     <!-- 통 문장 끝 -->
@@ -541,54 +517,23 @@
                                     LOC_CITY,
                                     BAND_GENDER
                             FROM(
-                                SELECT *
-                                    FROM BAND
-                                    WHERE BAND_NO NOT IN
-
-                                        (SELECT BAND_NO 
-                                            FROM BAND_MEMBER_DETAIL
-                                            WHERE BAND_MEMBER_STATUS in 'BA02'
-                                            AND USER_ID=#{bandLeaderid})
-
-                                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
-
-                                    AND BAND_GENDER_OPTION = 'BE02'
-
-                                    AND BAND_AGE_OPTION = 'BD02'
-                                UNION    
-
-                                SELECT *
-                                    FROM BAND
-                                    WHERE BAND_NO NOT IN
-
-                                        (SELECT BAND_NO 
-                                            FROM BAND_MEMBER_DETAIL
-                                            WHERE BAND_MEMBER_STATUS = 'BA02'
-                                            AND USER_ID=#{bandLeaderid})
-
-                                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
-
-                                    AND BAND_AGE_OPTION = 'BD02'
-
-                                    AND BAND_GENDER_OPTION = 'BE01'
-                                    AND BAND_GENDER = NULL
-                                UNION    
-
-                                SELECT *
-                                    FROM BAND
-                                    WHERE BAND_NO NOT IN
-
-                                        (SELECT BAND_NO 
-                                            FROM BAND_MEMBER_DETAIL
-                                            WHERE BAND_MEMBER_STATUS = 'BA02'
-                                            AND USER_ID=#{bandLeaderid})
-
-                                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
-
-                                    AND BAND_AGE_OPTION = 'BD01'
-
-                                    AND BAND_GENDER_OPTION = 'BE02'
-                                    AND NULL BETWEEN BAND_AGE_BEFOROPTION AND BAND_AGE_AFTEROPTION
+                                	SELECT *
+				                    FROM BAND
+				                    WHERE BAND_NO NOT IN
+				                        (SELECT BAND_NO 
+				                            FROM BAND_MEMBER_DETAIL
+				                            WHERE USER_ID = #{bandLeaderid})
+				                    <!-- 공개 -->
+				                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+				                    <!-- 성별 -->
+				                    AND BAND_GENDER_OPTION = 'BE02' 
+				                    OR (BAND_GENDER_OPTION = 'BE01' AND BAND_GENDER ='BE01')
+				                    AND (BAND_AGE_OPTION = 'BD02')
+				                    OR (BAND_AGE_OPTION = 'BD01'
+				                    <![CDATA[                                  
+				                    	AND TO_CHAR(BAND_AGE_BEFOROPTION, 'yyyy')<=TO_CHAR(#{bandAgeBeforoption}, 'yyyy') 
+				                    	AND TO_CHAR(BAND_AGE_AFTEROPTION, 'yyyy')>=TO_CHAR(#{bandAgeBeforoption}, 'yyyy'))) A,
+				                    ]]> 	
                                     ) A, EXER_SUB B, OWN_LOCATION C
                                     WHERE A.BAND_CATEGORY = B.EXERSUB_NO
                                     AND A.BAND_LOCATION=C.LOC_CODE
