@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import co.prjt.own.band.mapper.BandMapper;
 import co.prjt.own.band.mapper.BandMemberDefaultMapper;
 import co.prjt.own.band.service.BandBoardDetailSearchVO;
+import co.prjt.own.band.service.BandMemberDefaultVO;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
@@ -225,6 +226,10 @@ return bandList;
 		//밴드멤버의 설정을 밴드에 담아서 추천을가져옴..
 		//가입된 밴드는 제외하기위에 유저명담음
 		band.setBandLeaderid(arr[0]);
+		//생일하고 성별설정가져오기
+		BandMemberDefaultVO defVo = bandMemberDefaultMapper.getBandMemberDefault(arr[0]);
+		band.setBandAgeBeforoption(defVo.getBandBirth());
+		band.setBandGender(defVo.getBandGender());
 		//설정으로 추천리스트받아옴
 		List<BandVO> list = bandMapper.recomBand(band);
 		//4개만 남기고 자르기

@@ -4,152 +4,177 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/band_layout}" lang="ko">
 <head>
-<!-- jquery -->
-<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
-<!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-<title>Royal Hotel</title>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="/css/band/css/bootstrap.css">
-<link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-<link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-<link rel="stylesheet"
-	href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-<link rel="stylesheet"
-	href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-<link rel="stylesheet"
-	href="/css/band/vendors/nice-select/css/nice-select.css">
-<link rel="stylesheet"
-	href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-<!-- main css -->
-<link rel="stylesheet" href="/css/band/css/style.css">
-<link rel="stylesheet" href="/css/band/css/responsive.css">
+<title>오늘의운동 가치</title>
 <style>
-.btn:hover {
-	color: #fff;
-}
+	.btn:hover {
+		color: #fff;
+	}
+	
+	.input-text:focus {
+		box-shadow: 0px 0px 0px;
+		border-color: #f8c146;
+		outline: 0px;
+	}
+	
+	.form-control {
+		border: 1px solid #f8c146;
+	}
+	
+	img {
+		border-radius: 10px;
+		width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	    border-radius: 20%;
+    	border: 3px solid #00394F;
+	}
+	
+	img:hover {
+		border: #BFBFBF 2px solid;
+		cursor: pointer;
+	}
+	
+	.aaimg {
+		padding: 5px;
+		border-radius: 10px;
+		height: 100px;
+		width: 100px;
+		border-radius: 15px;
+	}
+	.bandBox {
+			    width: 150px;
+			    height: 150px; 
+			    border-radius: 30%;
+			    overflow: hidden;
+			    border: 3px solid white;
+			}   
+		/* 셀렉트박스 */
+       		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
-.input-text:focus {
-	box-shadow: 0px 0px 0px;
-	border-color: #f8c146;
-	outline: 0px;
-}
-
-.form-control {
-	border: 1px solid #f8c146;
-}
-
-img {
-	border-radius: 10px;
-}
-
-img:hover {
-	border: #BFBFBF 2px solid;
-	cursor: pointer;
-}
-
-.aaimg {
-	padding: 5px;
-	border-radius: 10px;
-	height: 100px;
-	width: 100px;
-	border-radius: 15px;
-}
-ul{
-   list-style:none;
-   }
-.wrap{
-   padding:15px;
-   letter-spacing:-0.5px;
-   }
-.tab_menu{
-   position:relative;
-   }
-.tab_menu .list{
-   overflow:hidden;
-   background-color:#333;
-   }
-.tab_menu .list li{
-   float:left;
-   margin-right:20px;
-   }
-.tab_menu .list .btns{
-   font-size:25px;
-   color: white;
-   }
-.bandBox {
-		    width: 60px;
-		    height: 60px; 
-		    border-radius: 30%;
-		    overflow: hidden;
-		}   
-.bandProfileImg {
-		    width: 100%;
-		    height: 100%;
-		    object-fit: cover;
-		    border-radius: 30%;
-		    border: 3px solid #00394F;
-		}
+			select {
+			  -moz-appearance: none;
+			  -webkit-appearance: none;
+			  appearance: none;
+			  
+			  font-family: "Noto Sansf KR", sans-serif;
+			  font-size: 1rem;
+			  font-weight: 400;
+			  line-height: 1.5;
+			  
+			  color: #444;
+			  background-color: #fff;
+			  
+			  padding: .6em 1.4em .5em .8em;
+			  margin: 0;
+			  
+			  border: 1px solid #aaa;
+			  border-radius: .5em;
+			  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+			}
+			
+			select:hover {
+			  border-color: #888;
+			}
+			
+			select:focus {
+			  border-color: #aaa;
+			  box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+			  box-shadow: 0 0 0 3px -moz-mac-focusring;
+			  color: #222;
+			  outline: none;
+			}
+			
+			select:disabled {
+			  opacity: 0.5;
+			}
+			select {
+			  -moz-appearance: none;
+			  -webkit-appearance: none;
+			  appearance: none;
+			}
+			label {
+				  font-family: "Noto Sans KR", sans-serif;
+				  font-size: 1rem;
+				  font-weight: 600;
+				  line-height: 1.3;
+				  
+				  color: white;
+				  
+				  margin-right: 0.5em;
+				}
+       		/* 셀렉트박스 */
 </style>
 </head>
 <body>
 	<div layout:fragment="content">
 		<!--================위에  Area =================-->
-		<section class="banner_area">
-			<div class="booking_table d_flex align-items-center"
-				style="min-height: 200px;">
-				<div class="overlay bg-parallax" data-stellar-ratio="0.9"
-					data-stellar-vertical-offset="0" data-background=""></div>
-				<div>
-					<h2 class="typo-list" style="color: white">내 가치</h2>
+        <section class="banner_area"style="height: 300px; background-color: #17a2b8">
+            <div class=" d_flex align-items-center">
+            	<div class="bg-parallax"></div>
+				<div class="container">
+					<div class="banner_content text-center"style="height: 150px; background-color: #17a2b8">
+						<h4 class="hoverCursor" style="color: white; margin-top: 30px">오늘의 운동</h4>
+						<h2 class="hoverCursor" style="color: white;">GACHI</h2>
+					</div>
 				</div>
-			</div>
-		</section>
+            </div>
+            <div class="hotel_booking_area position">
+                <div class="container">
+                    <div class="hotel_booking_table" style="background-color: #00394f; border-top-left-radius: 30px; border-top-right-radius: 30px;">
+                        <!--================ 검색================ -->
+                        <div class="input-group mb-3" style="margin-top: 10px;">
+						  <input type="text" style="height:54px;" class="form-control input-text" name="bandName" placeholder="가치 운동 지역 검색" aria-label="Recipient's username" aria-describedby="basic-addon2">
+						  <div class="input-group-append">
+						    <button class="btn btn-outline-warning btn-lg searchBtn" type="button"><i class="fa fa-search"></i></button>
+						  </div>
+						</div>
+						<!-- ================검색 끝================ -->
+                    </div>
+                </div>
+            </div>
+        </section>
 		<!--================위에 Area 끝=================-->
-
-		<!--================ 폼 Area  =================-->
-		<div id="template">
-			<article style="border: 1px solid #eeeeee;">
-				<div class="container" style="border: 1px solid #eeeeee;">
-					<h3>내 가치 설정변경</h3>
-				</div>
-				<div class="container" style="border: 1px solid #eeeeee;">
+		
+		 <!--================ 가치 추천 Area  =================-->
+        <section class="facilities_area section_gap">
+            <div class="overlay bg-parallax" style="opacity: 1" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
+            </div>
+            <div class="container" style="background-color:rgba(0, 0, 0, 0.5); width: 1110px; padding: 50px 15px; border-radius: 30px;">
+                <div class="section_title text-center">
+                    <h2 class="title_w">마이페이지</h2>
+                    <p style="visibility: hidden;">Who are in extremely love with eco friendly system.</p>
+                    <div class="hotel_booking_area position" >
+	                    <div class="container" style="padding-left: 190px;">
 					<!--================폼 시작 Area =================-->
-					<form role="form" id="frm" name="frm"
-						action="/own/band/insertDefault" method="post" autocomplete="off"
-						style="width: 80%;" enctype="multipart/form-data">
-						<input type="hidden" th:name="${_csrf.parameterName}"
-							th:value="${_csrf.token}"> <input type="hidden"
-							th:value="${session.userId}" name="userId" id="userId" />
-						<div class="imgArea">
-							<!--================이미지 Area =================-->
-							<div>
-								<h4 class="typo-list" style="padding-bottom: 15px">대표 이미지</h4>
-							</div>
-							<div>
-								<div
-									style="flex-grow: 3; display: flex; justify-content: space-between;"
-									class="imgss">
-									<div style="flex-grow: 1; width: 150x; height: 150px;">
-										<img th:src="|/imgView/${uesries.mediaServerFile}|"
+							<form role="form" id="frm" name="frm" action="/own/band/insertDefault" method="post" autocomplete="off" style="width: 80%;" enctype="multipart/form-data">
+								<input type="hidden" th:name="${_csrf.parameterName}"
+									th:value="${_csrf.token}"> <input type="hidden"
+									th:value="${session.userId}" name="userId" id="userId" />
+								<div class="imgArea">
+					<!--================이미지 Area =================-->
+								<div>
+								<div style="flex-grow: 3; display: flex; justify-content: space-between; position: relative;" class="imgss">
+									<div style="flex-grow: 1; width: 150x; height: 150px;" class="bandBox">
+										<img th:src="|/imgView/${useries.mediaServerFile}|"
 											id="inputImage" name="inputImage" alt=""
 											style="flex-grow: 1; width: 150x; height: 150px;">
 									</div>
+									<p><i class="fa-regular fa-images fa-2x" style="color: black; background:#f3f3f3; border-radius:20px; position: absolute; bottom:10px; left: 130px;"></i></p>
 									<!--================ 이름 =================-->
-									<div
-										style="display: inline-block; width: 70%; padding: 10px 0px 0px 50px; flex-grow: 3; display: flex; flex-direction: column;">
-										<h6 class="typo-list" style="float: left; padding-left: 10px;">가치
-											활동명</h6>
+									<div style="display: inline-block; width: 70%; padding: 10px 0px 0px 50px; flex-grow: 3; display: flex; flex-direction: column;">
+										<h6 class="typo-list" style="float: left; padding-left: 10px; color:white; padding: 0px 380px 0px 0px;">
+										가치 활동명</h6>
 										<div class="mt-10">
-											<input type="text" th:value="${uesries.bandNickname}"
+											<input type="text" th:value="${useries.bandNickname}"
 												id="bandNickname" name="bandNickname" maxlength="10"
 												placeholder="가치 활동명 입력" onfocus="this.placeholder = ''"
 												onblur="this.placeholder = '가치 활동명'" required
 												class="single-input"
-												style="height: 50px; font-size: 20px; width: 88%; display: block; float: left;">
+												style="height: 50px; font-size: 20px; width: 88%; display: block; float: left; border-radius: 10px">
 										</div>
 										<b><small
 											style="display: inline; width: 10%; float: right"
@@ -161,139 +186,50 @@ ul{
 									</div>
 									<!--================ 이름 끝 =================-->
 								</div>
+								<div class="insertArea"
+								style="margin: 0px auto; width: 100%; position: relative;">
+								<!--================ 셀렉트박스  =================-->
+										<div class="col-md-5">
+											<div class="input-group">
+											<label for="exe"> 관심 운동 </label>
+												<select class="exercise  form-select" id="exe"
+													th:value="*{exercise}" name="bandInterest">
+													<option value="">전체</option>
+													<option th:each="exe : ${exercise}"
+														th:value="${exe.exersubNo}" th:text="${exe.exersubName}"
+														th:selected="${#strings.equals(exe.exersubNo, useries.bandInterest)}"></option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-5">
+											<div class="input-group">
+											<label for="lo"> 관심 지역 </label>
+												<select class="location  form-select" id="lo"
+													th:value="*{location}" name="bandLocation">
+													<option value="">전체</option>
+													<option th:each="loc : ${location}"
+														th:value="${loc.locCode}" th:text="${loc.locCity}"
+														th:selected="${#strings.equals(loc.locCode, useries.bandLocation)}"></option>
+												</select>
+											</div>
+										</div>
+								<!--================ 셀렉트박스  =================-->
 							</div>
+							</div>
+							<!--================이미지 Area 끝 =================-->
 							<input type="file" id="attachFile" multiple="multiple"
 								name="attachFile" style="display: none" onchange="imgFnc()"
 								accept="image/gif, image/jpeg, image/png">
-							<div class="insertArea"
-								style="margin: 0px auto; width: 110%; position: relative; padding: 10px 15px 80px">
-								<!--================ 셀렉트박스  =================-->
-								<div class="col-md-9"
-									style="position: absolute; right: 150px; top: 20px;">
-									<div class="boking_table">
-										<div class="row">
-											<div class="col-md-4">
-												<div class="input-group">
-													<select class="exercise  form-select"
-														th:value="*{exercise}" name="bandInterest">
-														<option value="">관심운동..전체</option>
-														<option th:each="exe : ${exercise}"
-															th:value="${exe.exersubNo}" th:text="${exe.exersubName}"
-															th:selected="${#strings.equals(exe.exersubNo, uesries.bandInterest)}"></option>
-													</select>
-												</div>
-											</div>
-											<div class="col-md-5">
-												<div class="input-group">
-													<select class="location  form-select"
-														th:value="*{location}" name="bandLocation">
-														<option value="">관심지역..전체</option>
-														<option th:each="loc : ${location}"
-															th:value="${loc.locCode}" th:text="${loc.locCity}"
-															th:selected="${#strings.equals(loc.locCode, uesries.bandLocation)}"></option>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!--================ 셀렉트박스  =================-->
-								<button type="button" id="submitBtn"
-									class="genric-btn primary circle arrow"
-									style="position: absolute; right: 150px; top: 20px; font-size: 20px; margin: 0 auto; display: flex">수정</button>
-							</div>
-							<!--================이미지 Area 끝 =================-->
+							<button type="button" id="submitBtn" class="genric-btn primary circle arrow"
+									style="position: absolute; right: 150px; top: 20px; font-size: 20px; margin: 0 auto; display: flex;">수정</button>
 						</div>
 						<!-- 이미지끝남 -->
 					</form>
 				</div>
-			</article>
-			<!--================폼 끝 Area =================-->
-			<!--================밴드  Area =================-->
-				<div class="wrap container" style="border: 1px solid #eeeeee;">
-            <div class="tab_menu">
-               <ul class="list">
-                  <li>
-                     <a id="myBandyIngB" class="btns">가입 가치<b id="BK01num"></b></a>         
-                  </li>
-                  <li>
-                     <a id="myBandyIngRe" class="btns">운영 가치</h3>   <b id="BK02num"></b></a>
-                  </li>
-                  <li>
-                     <a id="myBandyIngYe" class="btns">가입 신청중<b id="BK03num"></b></a>
-                  </li>
-               </ul>
-               <article id="myBandyIng" style="border: 1px solid #eeeeee;  display: none">
-                  <div class="container cont">
-                        <table>
-                           <thead><td></td><td>가치명</td><td>닉네임</td><td>가입일</td><td>탈퇴</td></thead>
-                           <tbody>
-								<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"th:each="b : ${bandies}">
-									<td th:if="${b.bandMemberStatus=='BA02'}">
-										<div class="bandBoxImg">
-											<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
-											</a>
-										</div>
-									</td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandNickname}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandSignupDateCha}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><button th:unless="${#strings.equals(b.bandLeaderid,b.userId)}" type="button" class="delBtn" th:name="${b.bandNo}">탈퇴</button></td>
-								</tr>
-                           </tbody>
-                        </table>
-                     </div>
-               </article>
-               <article id="myBandyRe" style="border: 1px solid #eeeeee;  display: none">
-                  <div class="container cont">
-                        <table>
-                           <thead><td></td><td>가치명</td><td>닉네임</td><td>가입일</td><td></td></thead>
-                           <tbody>
-								<tr th:if="${#strings.equals(b.bandLeaderid,b.userId)}" th:each="b : ${bandies}">
-									<td th:if="${b.bandMemberStatus=='BA02'}">
-										<div class="bandBoxImg">
-											<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
-											</a>
-										</div>
-									</td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandNickname}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandSignupDateCha}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"></td>
-								</tr>
-                           </tbody>
-                        </table>
-                     </div>
-               </article>
-               <article id="myBandyYe" style="border: 1px solid #eeeeee; display: none">
-                  <div  class="container cont">
-                         <thead><td></td><td>가치명</td><td>닉네임</td><td>가입신청일</td><td>취소</td></thead>
-                           <tbody>
-								<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"th:each="b : ${bandies}">
-									<td th:if="${b.bandMemberStatus=='BA01'}">
-										<div class="bandBoxImg">
-											<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
-											</a>
-										</div>
-									</td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}" th:text="${b.bandNickname}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}" th:text="${b.bandSignupDateCha}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><button type="button" class="buttonRe" th:name="${b.bandNo}">철회</button></td>
-								</tr>
-                           </tbody>
-                        </table>
-                     </div>
-               </article>
             </div>
+                </div>
             </div>
-			<!--================밴드 끝 Area =================-->
-		</div>
-
-		<!-- Optional JavaScript -->
+        </section>
 		<script>
 			/*<![CDATA[*/
 			var header = '[[${_csrf.headerName}]]';
@@ -429,70 +365,10 @@ ul{
 					}
 				});
 			})
-			$('#myBandyIngB').on('click', function(){
-					console.log('1')
-					console.log($('#myBandyIng'))
-                  $('#myBandyIng').show();
-                  $('#myBandyRe').hide();
-                  $('#myBandyYe').hide();
-               })
-               $('#myBandyIngRe').on('click', function(){
-            	   console.log('1')
-                  $('#myBandyIng').hide();
-                  $('#myBandyRe').show();
-                  $('#myBandyYe').hide();
-               })
-               $('#myBandyIngYe').on('click', function(){
-                  $('#myBandyIng').hide();
-                  $('#myBandyRe').hide();
-                  $('#myBandyYe').show();
-               })
-           $('button').on('click', function(e){
-        	   let bandNo = $(e.target).attr('name');
-        	   if(confirm('선택한 가치를 탈퇴합니다.')){
-        	   $.ajax({
-        	         url: '/own/band/myBandOption/leave?bandNo='+bandNo,
-        	            type: "get",
-        	         dataType:'json',
-        	         method: 'get',
-        	         contentType : "application/text; charset=utf-8;",
-        	                  success : function(data) { //data는 url을 가져옴
-        	                	  console.log(data);
-        	                          if(data>0){
-        	                        	  alert('탈퇴가 완료되었습니다.')
-        	                        	  $(e.target).closest("tr").remove();
-        	                          }
-        	                        },
-        	                        error : function(e) {
-        	                            console.log(e);
-        	                        }
-        	                    });
-        	   }
-	//취소
-		 $('button').on('click', function(e){
-        	   let bandNo = $(e.target).attr('name');
-        	   if($(e.target).attr('class')=='buttonRe' && confirm('가치 신청을 철회합니다.')){
-        	   $.ajax({
-        	         url: '/own/band/myBandOption/leave2?bandNo='+bandNo,
-        	            type: "get",
-        	         dataType:'json',
-        	         method: 'get',
-        	         contentType : "application/text; charset=utf-8;",
-        	                  success : function(data) { //data는 url을 가져옴
-        	                	  console.log(data);
-        	                          if(data>0){
-        	                        	  alert('신청이 철회되었습니다.')
-        	                        	  $(e.target).closest("tr").remove();
-        	                          }
-        	                        },
-        	                        error : function(e) {
-        	                            console.log(e);
-        	                        }
-        	                    });
-        	   }
-
-           })
-           })
+			//검색버튼
+            $('.searchBtn').on('click', function(){
+            	window.location = '/own/band/bandSearch?bandName='+$('input[name="bandName"]').val();
+            })
 		</script>
 	</div>
 </body>

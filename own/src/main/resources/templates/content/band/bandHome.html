@@ -10,11 +10,51 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-        <title>오늘의 운동 가치</title>
+        <title>오늘의운동 가치</title>
         <style>
        		body {
        			background-color: #EFFBFB;
        		}
+       		/* 셀렉트박스 */
+       		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+			select {
+			  -moz-appearance: none;
+			  -webkit-appearance: none;
+			  appearance: none;
+			  
+			  font-family: "Noto Sansf KR", sans-serif;
+			  font-size: 1rem;
+			  font-weight: 400;
+			  line-height: 1.5;
+			  
+			  color: #444;
+			  background-color: #fff;
+			  
+			  padding: .6em 1.4em .5em .8em;
+			  margin: 0;
+			  
+			  border: 1px solid #aaa;
+			  border-radius: .5em;
+			  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+			}
+			
+			select:hover {
+			  border-color: #888;
+			}
+			
+			select:focus {
+			  border-color: #aaa;
+			  box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+			  box-shadow: 0 0 0 3px -moz-mac-focusring;
+			  color: #222;
+			  outline: none;
+			}
+			
+			select:disabled {
+			  opacity: 0.5;
+			}
+       		/* 셀렉트박스 */
 			.btn:hover{
 			    color:#fff;
 			}
@@ -43,7 +83,7 @@
 			.button_hover:hover {
 				cursor: Default;
 			}
-			.btnChall {
+			.btnChall, .delBtn, .buttonRe{
 			  display: inline-block;
 			  font-weight: 400;
 			  color: #666666;
@@ -59,18 +99,18 @@
 			  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 			}
 		
-		.btnChall:hover {
+		.btnChall:hover, .delBtn:hover, .buttonRe:hover{
 		  color: #666666;
 		  text-decoration: none;
 		}
 		
-		.btnChall-primary {
+		.btnChall-primary, .delBtn{
 		  color: #fff;
 		  background-color: #17a2b8;
 		  border-color: #17a2b8;
 		}
 		
-		.btnChall-primary:hover {
+		.btnChall-primary:hover, .delBtn:hover, .buttonRe:hover{
 		  color: #fff;
 		  background-color: #138496;
 		  border-color: #117a8b;
@@ -88,16 +128,34 @@
 		   }
 		.tab_menu .list{
 		   overflow:hidden;
-		   background-color:#333;
+		   /* background-color:#117a8b; */
 		   }
+		.list {
+			height: 35px;
+			border-bottom: 1px solid #eeeeee; 
+			border-top: 1px solid #eeeeee; 
+		}
 		.tab_menu .list li{
 		   float:left;
-		   margin-right:20px;
+		   
 		   }
 		.tab_menu .list .btns{
 		   font-size:25px;
-		   color: white;
 		   }
+		.liClick {
+			color: #117a8b;
+		}
+		.deClick {
+			color: #A4A4A4; 
+		}   
+		.list {
+			display: flex;
+			justify-content: center;
+		} 
+		li {
+			 margin: 0px 30px;
+			 font-weight: 500;
+		}
 		.bandBoxImg {
 		    width: 60px;
 		    height: 60px; 
@@ -111,26 +169,30 @@
 		    border-radius: 30%;
 		    border: 3px solid #00394F;
 		}
-		/* //페이징 버튼 */
+		/* //페이징 버튼 1*/
 		.pageNum .clickable{
 		  display: inline-block;
 		  padding: 3px 5px;
 		  margin-right: 10px;
 		  font-family:Tahoma;
 		  background: #ccc;
-		  color: #000;
+		  color: #17a2b8;
 		  text-decoration: none;
+		  cursor:pointer;
 		}
 		.pageNum active {
-		  background: #333;
+		  background: #00394f;
 		  color: #fff;
+		  cursor:pointer;
 		}
 		.off-screen {
 		  display: none;
+		  cursor:pointer;
 		}
 		.replyPagination1  {
 		  width: 500px;
 		  text-align: center;
+		  cursor:pointer;
 		}
 		.replyPagination1  .pageNum {
 		  display: inline-block;
@@ -138,26 +200,115 @@
 		  margin-right: 10px;
 		  font-family:Tahoma;
 		  background: #ccc;
-		  color: #000;
+		  color: #fff;
 		  text-decoration: none;
+		  cursor:pointer;
+		  border-radius: 10px;
 		}
 		.replyPagination1 .pageNum.active {
-		  background: #333;
+		  background: #17a2b8;
 		  color: #fff;
+		}
+		/* 페이징 버튼 2*/
+		.pageNum2 .clickable2{
+		  display: inline-block;
+		  padding: 3px 5px;
+		  margin-right: 10px;
+		  font-family:Tahoma;
+		  background: #ccc;
+		  color: #17a2b8;
+		  text-decoration: none;
+		  cursor:pointer;
+		}
+		.pageNum2 active2 {
+		  background: #00394f;
+		  color: #fff;
+		  cursor:pointer;
+		}
+		.off-screen2 {
+		  display: none;
+		  cursor:pointer;
+		}
+		.replyPagination2  {
+		  width: 500px;
+		  text-align: center;
+		}
+		.replyPagination2  .pageNum2 {
+		  display: inline-block;
+		  padding: 3px 5px;
+		  margin-right: 10px;
+		  font-family:Tahoma;
+		  background: #ccc;
+		  color: #fff;
+		  text-decoration: none;
+		  cursor:pointer;
+		  border-radius: 10px;
+		}
+		.replyPagination2 .pageNum2.active2 {
+		  background: #17a2b8;
+		  color: #fff;
+		}
+		/* //페이징 버튼 3*/
+		.pageNum3 .clickable3{
+		  display: inline-block;
+		  padding: 3px 5px;
+		  margin-right: 10px;
+		  font-family:Tahoma;
+		  background: #ccc;
+		  color: #17a2b8;
+		  text-decoration: none;
+		  cursor:pointer;
+		}
+		.pageNum3 active3 {
+		  background: #00394f;
+		  color: #fff;
+		  cursor:pointer;
+		}
+		.off-screen3 {
+		  display: none;
+		  cursor:pointer;
+		}
+		.replyPagination3  {
+		  width: 500px;
+		  text-align: center;
+		}
+		.replyPagination3  .pageNum3 {
+		  display: inline-block;
+		  padding: 3px 5px;
+		  margin-right: 10px;
+		  font-family:Tahoma;
+		  background: #ccc;
+		  color: #fff;
+		  text-decoration: none;
+		  cursor:pointer;
+		  border-radius: 10px;
+		}
+		.replyPagination3 .pageNum3.active3 {
+		  background: #17a2b8;
+		  color: #fff;
+		}
+		table{
+			text-align: center;
+		}
+		.flexCenter {
+			display: flex;
+			justify-content: center;
 		}
          </style>
     </head>
-   	<body>
    	<div layout:fragment="content">
+   	<body>
     <div class="backgroundy">
+    <input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}">
     	<!--================Banner Area =================-->
         <section class="banner_area"style="height: 300px; background-color: #17a2b8">
             <div class=" d_flex align-items-center">
             	<div class="bg-parallax"></div>
 				<div class="container">
 					<div class="banner_content text-center"style="height: 150px; background-color: #17a2b8">
-						<h4 style="color: white; margin-top: 30px">오늘의 운동</h4>
-						<h2 style="color: white;">GACHI</h2>
+						<h4 class="hoverCursor" style="color: white; margin-top: 30px">오늘의 운동</h4>
+						<h2 class="hoverCursor" style="color: white;">GACHI</h2>
 					</div>
 				</div>
             </div>
@@ -165,7 +316,7 @@
                 <div class="container">
                     <div class="hotel_booking_table" style="background-color: #00394f; border-top-left-radius: 30px; border-top-right-radius: 30px;">
                         <!--================ 검색================ -->
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3" style="margin-top: 10px;">
 						  <input type="text" style="height:54px;" class="form-control input-text" name="bandName" placeholder="가치 운동 지역 검색" aria-label="Recipient's username" aria-describedby="basic-addon2">
 						  <div class="input-group-append">
 						    <button class="btn btn-outline-warning btn-lg searchBtn" type="button"><i class="fa fa-search"></i></button>
@@ -178,20 +329,20 @@
         </section>
         <!--================================= 유저아이디 히든  ==================================-->
         <input type="hidden" class="hiddenUser" th:value="${session.loginUser.userId}">
-        <section class="accomodation_area section_gap"  style="padding-top: 0px; background-color: #f1f1f1">
+        <section class="accomodation_area section_gap"  style="padding: 0px; background-color: #f1f1f1">
          <!--================ 내 가치 Area  =================-->
-            <div class="container myHomeBand" style="background-color: white; width: 1110px;">
+            <div class="container" id="myHomeBand" style="background-color: white; width: 1110px; display: block; height: 620px;">
                 <div class="section_title text-center" style="padding-top: 30px;">
-                    <h2 class="title_color" style="padding:30px 0px 0px;">My 가치</h2>
-                    <h4 class="hoverBtn myBandies" style="float: right; margin-right: 10px;"><i class="fa-solid fa-gear"></i></h4>
+                    <h2 class="title_color hoverCursor" style="padding:30px 0px 0px;">My 가치</h2>
+                    <h4 class="hoverBtn myBandies" style="float: right; margin-right: 10px;"><i id="myBandies" class="fa-solid fa-gear"></i></h4>
                 </div>
-                <div class="row mb_30" style="justify-content: flex-end; ">
+                <div class="row mb_30" style="position: relative;">
         <!--================ 가치생성버튼  =================-->
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center" >
-                            <div class="hotel_img" >
+                            <div class="hotel_img">
                             	<a href="/own/band/bandCreate"  class="bandBox" style="box-sizing: border-box;">
-                                	<img src="/css/band/image/room1.jpg" alt="">
+                                	<img src="/css/band/zbandImage/createGachi.jpg" alt="" class="bandProfile">
                                 </a>
                             </div>
                             <h4 class="sec_h4"><a href="/own/band/bandCreate" class="bandProfile">가치생성</a></h4>
@@ -211,7 +362,7 @@
                             	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|"th:text="${band.bandName}" class="bandProfile">
                             	</a>
                             	<div class="tags" style="display: inline-block; padding: 0px 3px;">
-                                <a class="button_hover tag_btn" style="color: white;background-color: #f3c300; font-weight: 700; padding: 0px 3px; ">new!</a>
+                                <a class="button_hover tag_btn hoverCursor" style="color: white;background-color: #f3c300; font-weight: 700; padding: 0px 3px; text-decoration-line: none;">new!</a>
                             </div>
                             </h4>
                             <h5><small>멤버 [[${band.memcount}]]</small></h5>
@@ -219,125 +370,125 @@
                     </div>
         <!--================ 가입중인 가치 중 최신글 있는 가치 3개 끝=================-->
         		 <div style="float: right; display: block; margin: 0px 30px 30px 30px;">
-                    <button type="button" class="btnChall-primary btnChall" th:if="${!#lists.isEmpty(bandList)}" onclick="location.href='/own/band/myBand'">내 가치 더보기<i class="fa-solid fa-arrow-right"></i></button>
-                    <button type="button" class="btnChall-primary btnChall"  th:if="${#lists.isEmpty(bandList)}" onclick="location.href='/own/band/bandCreate'">지금 당장 시작하세요<i class="fa-solid fa-arrow-right"></i></button>
+                    <button type="button" class="btnChall-primary btnChall" style="position: absolute; right: 50px; bottom: 10px;" th:if="${!#lists.isEmpty(bandList)}" onclick="location.href='/own/band/myBand'">  더보기<i class="fa-solid fa-arrow-right"></i></button>
                 </div>
                 </div>
             </div>
 <!--================ 여기부터 옵션임 =================-->            
-            <div class="container myHomeBand" style="background-color: white; width: 1110px;">
+            <div class="container" id="myHomeBand2" style="background-color: white; width: 1110px; display: none;">
+            	<div class="section_title text-center" style="padding-top: 30px;">
+                    <h2 class="title_color" style="padding:30px 0px 0px;">My 가치</h2>
+                    <h4 class="hoverBtn myBandies" style="float: right; margin-right: 10px;"><i id="myBandies2" class="fa-solid fa-gear"></i></h4>
+                </div>
                 <!--================밴드  Area =================-->
-				<div class="wrap container" style="border: 1px solid #eeeeee;">
-            <div class="tab_menu">
-               <ul class="list" style="list-style: none;">
-                  <li>
-                     <a id="myBandyIngB" class="btns">가입 가치<b id="BK01num"></b></a>         
-                  </li>
-                  <li>
-                     <a id="myBandyIngRe" class="btns">운영 가치</h3>   <b id="BK02num"></b></a>
-                  </li>
-                  <li>
-                     <a id="myBandyIngYe" class="btns">가입 신청중<b id="BK03num"></b></a>
-                  </li>
-               </ul>
-               <article id="myBandyIng" style="border: 1px solid #eeeeee;  display: none">
-                  <div class="container cont">
-                  		<table>
-                           <thead><td></td><td>가치명</td><td>닉네임</td><td>가입일</td><td>탈퇴</td></thead>
-                        	<tbody id="tband1">
-                        	<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"th:each="b : ${bandies}">
-								<td th:if="${b.bandMemberStatus=='BA02'}">
-									<div class="bandBoxImg">
-										<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-											<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
-										</a>
-									</div>
-								</td>
-								<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
-								<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandNickname}"></td>
-								<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandSignupDateCha}"></td>
-								<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><button th:unless="${#strings.equals(b.bandLeaderid,b.userId)}" type="button" class="delBtn" th:name="${b.bandNo}">탈퇴</button></td>
-							</tr>
-							</tbody>	
-                        </table>
-                        <div class="btnContent1">
-							<div class="replyPagination1" id="replyPagination1">페이지 영역</div>
-						</div>
-                     </div>
-               </article>
-               <article id="myBandyRe" style="border: 1px solid #eeeeee;  display: none">
-                  <div class="container cont">
-                        <table>
-                           <thead><td></td><td>가치명</td><td>닉네임</td><td>가입일</td><td>탈퇴</td></thead>
-                        	<tbody id="tband2">
-								<tr th:if="${#strings.equals(b.bandLeaderid,b.userId)}" th:each="b : ${bandies}">
-									<td th:if="${b.bandMemberStatus=='BA02'}">
-										<div class="bandBoxImg">
-											<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
-											</a>
-										</div>
-									</td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandNickname}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandSignupDateCha}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"></td>
-								</tr>
-							</tbody>	
-                        </table>
-                        <div class="btnContent2">
-							<div class="replyPagination2" id="replyPagination2">페이지 영역</div>
-						</div>
-                     </div>
-               </article>
-               <article id="myBandyYe" style="border: 1px solid #eeeeee; display: none">
-                  <div  class="container cont">
-                  		<table>
-                           <thead><td></td><td>가치명</td><td>닉네임</td><td>가입일</td><td>탈퇴</td></thead>
-                        	<tbody id="tband3">
-								<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"th:each="b : ${bandies}">
-									<td th:if="${b.bandMemberStatus=='BA01'}">
-										<div class="bandBoxImg">
-											<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
-												<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
-											</a>
-										</div>
-									</td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}" th:text="${b.bandNickname}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}" th:text="${b.bandSignupDateCha}"></td>
-									<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><button type="button" class="buttonRe" th:name="${b.bandNo}">철회</button></td>
-								</tr>
-							</tbody>	
-                        </table>
-                        <div class="btnContent3">
-							<div class="replyPagination3" id="replyPagination3">페이지 영역</div>
-						</div>
-                     </div>
-               </article>
-            </div>
+				<div class="wrap container">
+		            <div class="tab_menu">
+		               <ul class="list" style="list-style: none;">
+		                  <li>
+		                     <a id="myBandyIngB" class="btns hoverBtn" style="text-decoration-line: none;">가입 가치<b id="BK01num"></b></a>         
+		                  </li>
+		                  <li>
+		                     <a id="myBandyIngRe" class="btns hoverBtn" style="text-decoration-line: none;">운영 가치</h3>   <b id="BK02num"></b></a>
+		                  </li>
+		                  <li>
+		                     <a id="myBandyIngYe" class="btns hoverBtn" style="text-decoration-line: none;">가입 신청중<b id="BK03num"></b></a>
+		                  </li>
+		               </ul>
+		               <article id="myBandyIng">
+		                  <div class="container cont">
+		                  		<table class="table table-hover">
+		                           <thead><td></td><td>가치명</td><td>닉네임</td><td>가입일</td><td>탈퇴</td></thead>
+		                        	<tbody id="tband1">
+		                        	<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"th:each="b : ${bandies}">
+										<td th:if="${b.bandMemberStatus=='BA02'}">
+											<div class="bandBoxImg">
+												<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
+													<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
+												</a>
+											</div>
+										</td>
+										<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
+										<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandNickname}"></td>
+										<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandSignupDateCha}"></td>
+										<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><button th:unless="${#strings.equals(b.bandLeaderid,b.userId)}" type="button" class="delBtn" th:name="${b.bandNo}">탈퇴</button></td>
+									</tr>
+									</tbody>	
+		                        </table>
+		                        <div class="btnContent1 flexCenter">
+									<div class="replyPagination1" id="replyPagination1">페이지 영역</div>
+								</div>
+		                     </div>
+		               </article>
+		               <article id="myBandyRe">
+		                  <div class="container cont">
+		                        <table class="table table-hover">
+		                           <thead><td></td><td>가치명</td><td>닉네임</td><td>생성일</td><td></td></thead>
+		                        	<tbody id="tband2">
+										<tr th:if="${#strings.equals(b.bandLeaderid,b.userId)}" th:each="b : ${bandies}">
+											<td th:if="${b.bandMemberStatus=='BA02'}">
+												<div class="bandBoxImg">
+													<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
+														<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
+													</a>
+												</div>
+											</td>
+											<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
+											<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandNickname}"></td>
+											<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}" th:text="${b.bandSignupDateCha}"></td>
+											<td th:if="${#strings.equals(b.bandMemberStatus, 'BA02')}"></td>
+										</tr>
+									</tbody>	
+		                        </table>
+		                        <div class="btnContent2 flexCenter">
+									<div class="replyPagination2" id="replyPagination2">페이지 영역</div>
+								</div>
+		                     </div>
+		               </article>
+		               <article id="myBandyYe">
+		                  <div  class="container cont">
+		                  		<table class="table table-hover">
+		                           <thead><td></td><td>가치명</td><td>닉네임</td><td>신청일</td><td>철회</td></thead>
+		                        	<tbody id="tband3">
+										<tr th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"th:each="b : ${bandies}">
+											<td th:if="${b.bandMemberStatus=='BA01'}">
+												<div class="bandBoxImg">
+													<a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">
+														<img th:src="|/imgView/${b.mediaServerFile}|" alt="" class="bandProfileImg">
+													</a>
+												</div>
+											</td>
+											<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><a th:href="|/own/band/bandGroup?bandNo=${b.bandNo}|"style="margin-top:7px;">[[${b.bandName}]]</a></td>
+											<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}" th:text="${b.bandNickname}"></td>
+											<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}" th:text="${b.bandSignupDateCha}"></td>
+											<td th:if="${#strings.equals(b.bandMemberStatus, 'BA01')}"><button type="button" class="buttonRe" th:name="${b.bandNo}">철회</button></td>
+										</tr>
+									</tbody>	
+		                        </table>
+		                        <div class="btnContent3 flexCenter">
+									<div class="replyPagination3" id="replyPagination3">페이지 영역</div>
+								</div>
+		                     </div>
+		               </article>
+		            </div>
             </div>
 			<!--================밴드 끝 Area =================-->
 		</div>
             </div>
 <!--================ 여기부터 옵션 끝 =================-->
         </section>
-        
         <!--================ 가치 추천 Area  =================-->
         <section class="facilities_area section_gap">
-            <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
+            <div class="overlay bg-parallax" style="opacity: 1" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
             </div>
-            <div class="container">
+            <div class="container" style="background-color:rgba(0, 0, 0, 0.5); width: 1110px; padding: 50px 15px; border-radius: 30px;">
                 <div class="section_title text-center">
                     <h2 class="title_w">이런 가치는 어떤가요</h2>
                     <p style="visibility: hidden;">Who are in extremely love with eco friendly system.</p>
                     <div class="hotel_booking_area position" >
                 <div class="container">
-                    <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.3);">
-                        <div class="col-md-3" style="visibility: hidden;">
-                            <h2>운동 종목</h2>
-                        </div>
-                        <div class="col-md-9" >
+                    <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.5); border-radius: 30px; justify-content: center;">
+                    	<div style="width: 60px"></div>
+                        <div class="col-md-9">
                             <div class="boking_table">
                                 <div class="row">
                                 	<div class="col-md-4">
@@ -358,7 +509,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="book_tabel_item">
-                                            <button type="button" class="book_now_btn button_hover">추천 위치 설정</button>
+                                            <button type="button" class="book_now_btn button_hover" style="background-color: #1792b8">추천 위치 설정</button>
                                         </div>
                                     </div>
                                 </div>
@@ -383,12 +534,17 @@
                         </div> -->
                     </div>
                 <div style="margin-top: 30px;color: white;">
-                    <a href="/own/band/bandRec"><h4 style="color: white;">추천 더보기>></h4></h4></a>
+                    <button style="position: absolute; right: 320px; bottom: 140px;" class="btnChall-primary btnChall">  추천 더보기<i class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </div>
         </section>
         <!--================ 가치 추천 끝 Area  =================-->
-        <script>
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+        var header = /*[[${_csrf.headerName}]]
+        var token = [[${_csrf.token}]]*/
+        /*]]>*/
+        console.log('11');
             //밴드추천붙이기
             //운동추천붙이기
             //지역설정붙이기
@@ -418,8 +574,18 @@
                         });
                         //만약 결과값이 없으면...
                         if(result.length==0){
-                            let element = {bandCategory:'',bandLocation:'',bandName:'검색되는 값이없어요..<br>가치만들기>></br>'};
-                            $(div).append(maketag(element));
+                        	console.log('??????')
+                            let element = `<div class="col-lg-3 col-sm-6">
+					                                <div class="accomodation_item text-center"style="width:1100px; ">
+					                                <div class="hotel_img" class="bandBox"style="width:1100px;">
+					                                	<a href="/own/band/bandCreate"  class="bandBox" style="box-sizing: border-box;width:1100px;">
+					                                    	<img src="/css/band/zbandImage/createGachi.jpg" alt="" class="bandProfile" style="border-radius:30px;">
+					                                    </a>
+					                                </div>
+					                                <h4 class="sec_h4"><a href="/own/band/bandCreate" style="color:white;" class="bandProfile">검색된 가치가 없어요 <br>가치만들기<i class="fa-solid fa-arrow-right"></i></br></a></h4>
+					                            </div>
+					                        </div>`;
+                            $(div).append(element);
                             //태그지우기
                             $('.recomTag').remove();
                         }
@@ -430,15 +596,15 @@
                 let tag = `<div class="col-lg-3 col-sm-6">
                                 <div class="accomodation_item text-center">
                                     <div class="hotel_img">
-                                    	<a href="/own/band/bandGroup?bandNo=${element.bandNo}">
-                                    		<img src="/imgView/${element.bandMainImg.mediaServerFile}"alt="">
+                                    	<a href="/own/band/bandGroup?bandNo=${element.bandNo}" class="bandBox">
+                                    		<img src="/imgView/${element.bandMainImg.mediaServerFile}"alt=""  class="bandProfile">
                                     	</a>
                                     </div>
                                     <div class="tags recomTag" >
-                                        <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandCategory}</a>
-                                        <a href="#" class="button_hover tag_btn" style="color: wheat;">${element.bandLocation}</a>
+                                        <a href="#" class="button_hover tag_btn" style="color: white; text-decoration-line:none;">${element.bandCategory}</a>
+                                        <a href="#" class="button_hover tag_btn" style="color: white; text-decoration-line:none;">${element.bandLocation}</a>
                                     </div>
-                                    <a href="/own/band/bandGroup?bandNo=${element.bandNo}"><h4 class="sec_h4" style="color: white;">${element.bandName}</h4></a>
+                                    <a href="/own/band/bandGroup?bandNo=${element.bandNo}" style="color: 00394f; text-decoration-line:none;"><h4 class="sec_h4" style="color: white;">${element.bandName}</h4></a>
                                     <h5><small></small></h5>
                                 </div>
                             </div>`
@@ -464,7 +630,10 @@
                     url:'/own/band/up',
                     method: 'put',
                     data: JSON.stringify({bandLocation, userId}),
-                    contentType: "application/json;"
+                    contentType: "application/json;",
+	              beforeSend: function(xhr){
+	                  xhr.setRequestHeader(header,token);
+	                }
                 }).then( res => {
                     console.log(res);
                     alert('지역설정변경')
@@ -475,75 +644,114 @@
             $('.searchBtn').on('click', function(){
             	window.location = '/own/band/bandSearch?bandName='+$('input[name="bandName"]').val();
             })
+            
+            //홈의 페이지전환
+            $('#myBandies').on('click', function(){
+            	if($('#myHomeBand').css('display')=='block'){
+            		$('#myHomeBand').hide();
+            		$('#myHomeBand2').show();
+            		$('#myBandyIngB').click();
+            	}
+            })
+             //홈의 페이지전환
+            $('#myBandies2').on('click', function(){
+            	if($('#myHomeBand2').css('display')=='block'){
+            		$('#myHomeBand2').hide();
+            		$('#myHomeBand').show();
+            	}
+            })
         </script>
     	<script>
 			$('#myBandyIngB').on('click', function(){
-					console.log('1')
 					console.log($('#myBandyIng'))
+				  //버튼색
+				  $('#myBandyIngB').addClass('liClick');
+				  $('#myBandyIngB').removeClass('deClick');
+			      $('#myBandyIngRe').removeClass('liClick');
+			      $('#myBandyIngRe').addClass('deClick');
+			      $('#myBandyIngYe').removeClass('liClick');
+			      $('#myBandyIngYe').addClass('deClick');
+			      
                   $('#myBandyIng').show();
                   $('#myBandyRe').hide();
                   $('#myBandyYe').hide();
                })
                $('#myBandyIngRe').on('click', function(){
-            	   console.log('1')
+            	   //버튼색
+ 				  $('#myBandyIngB').removeClass('liClick');
+ 				  $('#myBandyIngB').addClass('deClick'); 
+ 			      $('#myBandyIngRe').addClass('liClick');
+ 			      $('#myBandyIngRe').removeClass('deClick');
+ 			      $('#myBandyIngYe').removeClass('liClick');
+ 			      $('#myBandyIngYe').addClass('deClick');
+ 			      
                   $('#myBandyIng').hide();
                   $('#myBandyRe').show();
                   $('#myBandyYe').hide();
                })
                $('#myBandyIngYe').on('click', function(){
+            	   //버튼색
+  				  $('#myBandyIngB').removeClass('liClick');
+  				  $('#myBandyIngB').addClass('deClick');
+  			      $('#myBandyIngRe').removeClass('liClick');	
+  			      $('#myBandyIngRe').addClass('deClick');	
+  			      $('#myBandyIngYe').addClass('liClick');
+  			      $('#myBandyIngYe').removeClass('deClick');
+            	   
                   $('#myBandyIng').hide();
                   $('#myBandyRe').hide();
                   $('#myBandyYe').show();
                })
            $('button').on('click', function(e){
+        	   console.log('11');
+        	 //취소
         	   let bandNo = $(e.target).attr('name');
-        	   if(confirm('선택한 가치를 탈퇴합니다.')){
-        	   $.ajax({
-        	         url: '/own/band/myBandOption/leave?bandNo='+bandNo,
-        	            type: "get",
-        	         dataType:'json',
-        	         method: 'get',
-        	         contentType : "application/text; charset=utf-8;",
-        	                  success : function(data) { //data는 url을 가져옴
-        	                	  console.log(data);
-        	                          if(data>0){
-        	                        	  alert('탈퇴가 완료되었습니다.')
-        	                        	  $(e.target).closest("tr").remove();
-        	                          }
-        	                        },
-        	                        error : function(e) {
-        	                            console.log(e);
-        	                        }
-        	                    });
+        	   if($(e.target).attr('class')=='delBtn'){
+	        	   if(confirm('선택한 가치를 탈퇴합니다.')){
+	        	   $.ajax({
+	        	         url: '/own/band/myBandOption/leave?bandNo='+bandNo,
+	        	            type: "get",
+	        	         dataType:'json',
+	        	         method: 'get',
+	        	         contentType : "application/text; charset=utf-8;",
+	        	                  success : function(data) { //data는 url을 가져옴
+	        	                	  console.log(data);
+	        	                          if(data>0){
+	        	                        	  alert('탈퇴가 완료되었습니다.')
+	        	                        	  $(e.target).closest("tr").remove();
+	        	                          }
+	        	                        },
+	        	                        error : function(e) {
+	        	                            console.log(e);
+	        	                        }
+	        	                    });
+	        	   }
         	   }
-	//취소
-		 $('button').on('click', function(e){
-        	   let bandNo = $(e.target).attr('name');
-        	   if($(e.target).attr('class')=='buttonRe' && confirm('가치 신청을 철회합니다.')){
-        	   $.ajax({
-        	         url: '/own/band/myBandOption/leave2?bandNo='+bandNo,
-        	            type: "get",
-        	         dataType:'json',
-        	         method: 'get',
-        	         contentType : "application/text; charset=utf-8;",
-        	                  success : function(data) { //data는 url을 가져옴
-        	                	  console.log(data);
-        	                          if(data>0){
-        	                        	  alert('신청이 철회되었습니다.')
-        	                        	  $(e.target).closest("tr").remove();
-        	                          }
-        	                        },
-        	                        error : function(e) {
-        	                            console.log(e);
-        	                        }
-        	                    });
+	        	   if($(e.target).attr('class')=='buttonRe'){
+	        		   if(confirm('가치 신청을 철회합니다.')){
+		        	   $.ajax({
+		        	         url: '/own/band/myBandOption/leave2?bandNo='+bandNo,
+		        	            type: "get",
+		        	         dataType:'json',
+		        	         method: 'get',
+		        	         contentType : "application/text; charset=utf-8;",
+		        	                  success : function(data) { //data는 url을 가져옴
+		        	                	  console.log(data);
+		        	                          if(data>0){
+		        	                        	  alert('신청이 철회되었습니다.')
+		        	                        	  $(e.target).closest("tr").remove();
+		        	                          }
+		        	                        },
+		        	                        error : function(e) {
+		        	                            console.log(e);
+		        	                        }
+		        	                    });
+        		   }
         	   }
-
-           })
            })
 		</script>
 		<script>
-		window.setTimeout(function(){page1();},500);
+		window.setTimeout(function(){page1(); page2(); page3();},500);
 		function page1(){ 
 			console.log('111');
 			$('#tband1').each(function() {
@@ -551,7 +759,7 @@
 			
 			var pagesu = 10;  //페이지 번호 갯수
 			var currentPage = 0;
-			var numPerPage = 2;  //목록의 수
+			var numPerPage = 5;  //목록의 수
 			var $table = $(this);    
 			var replyPagination1 = $("#replyPagination1");
 			//length로 원래 리스트의 전체길이구함
@@ -592,13 +800,13 @@
 				endp = numPages;
 			}
 			// [처음]
-			$('<span class="pageNum first">처음</span>').bind('click', {newPage: page},function(event) {
+			$('<span class="pageNum first"><i class="fa-solid fa-angles-left"></i></span>').bind('click', {newPage: page},function(event) {
 				currentPage = 0;   
 				$table.trigger('repaginate');  
 				$($(".pageNum")[2]).addClass('active').siblings().removeClass('active');
 			}).appendTo(replyPagination1).addClass('clickable');
 			// [이전]
-			$('<span class="pageNum back">이전</span>').bind('click', {newPage: page},function(event) {
+			$('<span class="pageNum back"><i class="fa-solid fa-angle-left"></i></span>').bind('click', {newPage: page},function(event) {
 			if(currentPage == 0) return; 
 				currentPage = currentPage-1;
 				$table.trigger('repaginate'); 
@@ -613,14 +821,14 @@
 			}).appendTo(replyPagination1).addClass('clickable');
 			} 
 			// [다음]
-			$('<span class="pageNum next">다음</span>').bind('click', {newPage: page},function(event) {
+			$('<span class="pageNum next"><i class="fa-solid fa-angle-right"></i></span>').bind('click', {newPage: page},function(event) {
 				if(currentPage == numPages-1) return;
 				currentPage = currentPage+1;
 				$table.trigger('repaginate'); 
 				$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
 			}).appendTo(replyPagination1).addClass('clickable');
 			// [끝]
-			$('<span class="pageNum last">끝</span>').bind('click', {newPage: page},function(event) {
+			$('<span class="pageNum last"><i class="fa-solid fa-angles-right"></i></span>').bind('click', {newPage: page},function(event) {
 			currentPage = numPages-1;
 				$table.trigger('repaginate');
 				$($(".pageNum")[endp-nowp+1]).addClass('active').siblings().removeClass('active');
@@ -631,10 +839,189 @@
 				$pager.appendTo(replyPagination1);
 				$table.trigger('repaginate');
 			});
+			
 		}
+		//p2
+			function page2(){ 
+			console.log('111');
+			$('#tband2').each(function() {
+			var $tband2 = $('#tband2');
+			
+			var pagesu = 10;  //페이지 번호 갯수
+			var currentPage = 0;
+			var numPerPage = 5;  //목록의 수
+			var $table = $(this);    
+			var replyPagination1 = $("#replyPagination2");
+			//length로 원래 리스트의 전체길이구함
+			var numRows = $($tband2).children().length;
+			console.log(numRows+"???");
+			//Math.ceil를 이용하여 반올림
+			var numPages = Math.ceil(numRows / numPerPage);
+			//리스트가 없으면 종료
+			if (numPages==0) return;
+			//pager라는 클래스의 div엘리먼트 작성
+			var $pager = $('<div class="pager navvyBtn"></div>');
+			var nowp = currentPage;
+			var endp = nowp+10;
+	
+			//페이지를 클릭하면 다시 셋팅
+			$table.bind('repaginate', function() {
+			//기본적으로 모두 감춘다, 현재페이지+1 곱하기 현재페이지까지 보여준다
+			$($tband2).children().hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+			$("#replyPagination2").html("");
+			if (numPages > 1) {     // 한페이지 이상이면
+			if (currentPage < 5 && numPages-currentPage >= 5) {   // 현재 5p 이하이면
+				nowp = 0;     // 1부터 
+				endp = pagesu;    // 10까지
+			}else{
+				nowp = currentPage -5;  // 6넘어가면 2부터 찍고
+				endp = nowp+pagesu;   // 10까지
+			pi = 1;
+			}
+			if (numPages < endp) {   // 10페이지가 안되면
+				endp = numPages;   // 마지막페이지를 갯수 만큼
+				nowp = numPages-pagesu;  // 시작페이지를   갯수 -10
+			}
+			if (nowp < 1) {     // 시작이 음수 or 0 이면
+				nowp = 0;     // 1페이지부터 시작
+			}
+			}else{       // 한페이지 이하이면
+				nowp = 0;      // 한번만 페이징 생성
+				endp = numPages;
+			}
+			// [처음]
+			$('<span class="pageNum2 first"><i class="fa-solid fa-angles-left"></i></span>').bind('click', {newPage: page},function(event) {
+				currentPage = 0;   
+				$table.trigger('repaginate');  
+				$($(".pageNum2")[2]).addClass('active2').siblings().removeClass('active2');
+			}).appendTo(replyPagination2).addClass('clickable2');
+			// [이전]
+			$('<span class="pageNum2 back"><i class="fa-solid fa-angle-left"></i></span>').bind('click', {newPage: page},function(event) {
+			if(currentPage == 0) return; 
+				currentPage = currentPage-1;
+				$table.trigger('repaginate'); 
+				$($(".pageNum2")[(currentPage-nowp)+2]).addClass('active2').siblings().removeClass('active2');
+			}).appendTo(replyPagination2).addClass('clickable2');
+			// [1,2,3,4,5,6,7,8]
+			for (var page = nowp ; page < endp; page++) {
+				$('<span class="pageNum2"></span>').text(page + 1).bind('click', {newPage: page}, function(event) {
+				currentPage = event.data['newPage'];
+				$table.trigger('repaginate');
+				$($(".pageNum2")[(currentPage-nowp)+2]).addClass('active2').siblings().removeClass('active2');
+			}).appendTo(replyPagination2).addClass('clickable2');
+			} 
+			// [다음]
+			$('<span class="pageNum2 next"><i class="fa-solid fa-angle-right"></i></span>').bind('click', {newPage: page},function(event) {
+				if(currentPage == numPages-1) return;
+				currentPage = currentPage+1;
+				$table.trigger('repaginate'); 
+				$($(".pageNum2")[(currentPage-nowp)+2]).addClass('active2').siblings().removeClass('active2');
+			}).appendTo(replyPagination2).addClass('clickable2');
+			// [끝]
+			$('<span class="pageNum2 last"><i class="fa-solid fa-angles-right"></i></span>').bind('click', {newPage: page},function(event) {
+			currentPage = numPages-1;
+				$table.trigger('repaginate');
+				$($(".pageNum2")[endp-nowp+1]).addClass('active2').siblings().removeClass('active2');
+			}).appendTo(replyPagination2).addClass('clickable');
+				$($(".pageNum2")[2]).addClass('active2');
+			});
+				$pager.insertAfter($table).find('span.pageNum2:first').next().next().addClass('active2');   
+				$pager.appendTo(replyPagination2);
+				$table.trigger('repaginate');
+			});
+			
+		}
+		//p3
+			function page3(){ 
+				console.log('111');
+				$('#tband3').each(function() {
+				var $tband3 = $('#tband3');
+				
+				var pagesu = 10;  //페이지 번호 갯수
+				var currentPage = 0;
+				var numPerPage = 5;  //목록의 수
+				var $table = $(this);    
+				var replyPagination3 = $("#replyPagination3");
+				//length로 원래 리스트의 전체길이구함
+				var numRows = $($tband3).children().length;
+				console.log(numRows+"???");
+				//Math.ceil를 이용하여 반올림
+				var numPages = Math.ceil(numRows / numPerPage);
+				//리스트가 없으면 종료
+				if (numPages==0) return;
+				//pager라는 클래스의 div엘리먼트 작성
+				var $pager = $('<div class="pager navvyBtn"></div>');
+				var nowp = currentPage;
+				var endp = nowp+10;
 		
+				//페이지를 클릭하면 다시 셋팅
+				$table.bind('repaginate', function() {
+				//기본적으로 모두 감춘다, 현재페이지+1 곱하기 현재페이지까지 보여준다
+				$($tband3).children().hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+				$("#replyPagination3").html("");
+				if (numPages > 1) {     // 한페이지 이상이면
+				if (currentPage < 5 && numPages-currentPage >= 5) {   // 현재 5p 이하이면
+					nowp = 0;     // 1부터 
+					endp = pagesu;    // 10까지
+				}else{
+					nowp = currentPage -5;  // 6넘어가면 2부터 찍고
+					endp = nowp+pagesu;   // 10까지
+				pi = 1;
+				}
+				if (numPages < endp) {   // 10페이지가 안되면
+					endp = numPages;   // 마지막페이지를 갯수 만큼
+					nowp = numPages-pagesu;  // 시작페이지를   갯수 -10
+				}
+				if (nowp < 1) {     // 시작이 음수 or 0 이면
+					nowp = 0;     // 1페이지부터 시작
+				}
+				}else{       // 한페이지 이하이면
+					nowp = 0;      // 한번만 페이징 생성
+					endp = numPages;
+				}
+				// [처음]
+				$('<span class="pageNum3 first"><i class="fa-solid fa-angles-left"></i></span>').bind('click', {newPage: page},function(event) {
+					currentPage = 0;   
+					$table.trigger('repaginate');  
+					$($(".pageNum3")[2]).addClass('active3').siblings().removeClass('active3');
+				}).appendTo(replyPagination3).addClass('clickable3');
+				// [이전]
+				$('<span class="pageNum3 back"><i class="fa-solid fa-angle-left"></i></span>').bind('click', {newPage: page},function(event) {
+				if(currentPage == 0) return; 
+					currentPage = currentPage-1;
+					$table.trigger('repaginate'); 
+					$($(".pageNum3")[(currentPage-nowp)+2]).addClass('active3').siblings().removeClass('active3');
+				}).appendTo(replyPagination3).addClass('clickable3');
+				// [1,2,3,4,5,6,7,8]
+				for (var page = nowp ; page < endp; page++) {
+					$('<span class="pageNum3"></span>').text(page + 1).bind('click', {newPage: page}, function(event) {
+					currentPage = event.data['newPage'];
+					$table.trigger('repaginate');
+					$($(".pageNum3")[(currentPage-nowp)+2]).addClass('active3').siblings().removeClass('active3');
+				}).appendTo(replyPagination3).addClass('clickable3');
+				} 
+				// [다음]
+				$('<span class="pageNum3 next"><i class="fa-solid fa-angle-right"></i></span>').bind('click', {newPage: page},function(event) {
+					if(currentPage == numPages-1) return;
+					currentPage = currentPage+1;
+					$table.trigger('repaginate'); 
+					$($(".pageNum3")[(currentPage-nowp)+2]).addClass('active3').siblings().removeClass('active3');
+				}).appendTo(replyPagination3).addClass('clickable3');
+				// [끝]
+				$('<span class="pageNum3 last"><i class="fa-solid fa-angles-right"></i></span>').bind('click', {newPage: page},function(event) {
+				currentPage = numPages-1;
+					$table.trigger('repaginate');
+					$($(".pageNum3")[endp-nowp+1]).addClass('active3').siblings().removeClass('active3');
+				}).appendTo(replyPagination3).addClass('clickable');
+					$($(".pageNum3")[2]).addClass('active3');
+				});
+					$pager.insertAfter($table).find('span.pageNum3:first').next().next().addClass('active3');   
+					$pager.appendTo(replyPagination3);
+					$table.trigger('repaginate');
+				});
+		}
 		</script>
     </div>
-    </div>
     </body>
+    </div>
 </html>
