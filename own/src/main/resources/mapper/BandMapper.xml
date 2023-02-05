@@ -5,8 +5,8 @@
 <mapper namespace="co.prjt.own.band.mapper.BandMapper">
 	<sql id="recom">
 			<if test="bandName != null and bandName !=''">
-				WHERE BAND_NAME LIKE '%' || #{bandName} || '%'
-				AND BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
+				WHERE LOWER(BAND_NAMELOWER) LIKE '%'||LOWER(#{bandName})||'%'
+				AND LOWER(BAND_KEYWORD) LIKE '%'||LOWER(#{bandKeyword})||'%'
 			</if>
 	</sql>
 	<sql id="recom2">
@@ -136,9 +136,15 @@
 	<!-- AS를 썼기 때문에 검색조건에... -->
 	<sql id="condition">
 		<if test="bandName != null and bandName !=''">
-			AND (BAND_NAME LIKE '%${bandName}%'
-			OR BAND_KEYWORD LIKE '%${bandName}%'
-			) 
+			AND (LOWER(BAND_NAME) LIKE '%'||LOWER(#{bandName})||'%'
+			OR LOWER(BAND_KEYWORD) LIKE '%'||LOWER(#{bandName})||'%'
+			)
+			<if test="bandLocation != null and bandLocation !=''">
+				AND BAND_LOCATION = #{bandLocation}
+			</if>
+			<if test="bandCategory != null and bandCategory !=''">
+				AND band_category = #{bandCategory}
+			</if> 
 		</if>
 	</sql>
 	<!-- 검색...밴드이름으로 이름, 키워드 등등 으로 활용함 -->
@@ -178,6 +184,7 @@
 									        WHERE A.BAND_CATEGORY = B.EXERSUB_NO
 									        AND A.BAND_LOCATION=C.LOC_CODE
                                             AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
+                                            AND BAND_STATUS IN ('BS_1')
 											 <include refid="condition"></include>
 				) A 
 		<![CDATA[
@@ -329,7 +336,7 @@
                            
 							
 									<if test="bandName != null and bandName !=''">
-										AND BAND_NAME LIKE '%' || #{bandName} || '%'
+										AND LOWER(BAND_NAME) LIKE '%'||LOWER(#{bandName})||'%'
 									</if>
                                                                             ORDER BY D.RECENTDAY DESC nulls last
 <![CDATA[            
@@ -356,7 +363,7 @@
         AND B.BAND_MEMBER_STATUS = 'BA02'
         AND B.BAND_KICK_STATUS = 'BB01'
         <if test="bandName != null and bandName !=''">
-			AND BAND_NAME LIKE '%' || #{bandName} || '%'
+			AND LOWER(BAND_NAME) LIKE '%' || LOWER(#{bandName}) || '%'
 		</if>
 		)
 	</select>

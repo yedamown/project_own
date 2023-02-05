@@ -5,132 +5,133 @@
       layout:decorate="~{layout/band_layout}"
       lang="ko">
     <head>
-   		<!-- jquery -->
-    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
-        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-        <title>Royal Hotel</title>
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="/css/band/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        <!-- main css -->
-        <link rel="stylesheet" href="/css/band/css/style.css">
-        <link rel="stylesheet" href="/css/band/css/responsive.css">
-        <!--여기부터 이어붙임-->
-        <link rel="stylesheet" href="/css/band/2nd/css/flaticon.css">
-        <link rel="stylesheet" href="/css/band/2nd/css/icomoon.css">
-        <link rel="stylesheet" href="/css/band/2nd/css/style.css">
+        <link rel="icon" href="/css/band/gachi/own.png" type="image/png">
+        <title>오늘의운동 가치</title>
         <style type="text/css">
         	.boards:hover   { text-decoration:underline; color:#FF0000 }
+        	/* 나이스셀렉트 */
+			.list li {
+				width: 155px;
+			}
+			.list {
+				max-height: 145px;
+  				overflow-y: scroll !important;
+			}
+			/* 밴드프로필 */
+			.bandBox {
+			    width: 260px;
+			    height: 270px; 
+			    border-radius: 30%;
+			    overflow: hidden;
+			}  
+			.bandProfile {
+			    width: 260px;
+			    height: 270px;
+			    object-fit: cover;
+			}
+			/* 밴드프로필 */
         </style>
     </head>
     <body>
     <div layout:fragment="content">
-        <!--================MY 가치 중 검색 Area =================-->
-        <section class="banner_area">
-            <div class="booking_table d_flex align-items-center"  style="min-height: 300px;">
-            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+    	
+    	<!--================Banner Area =================-->
+        <section class="banner_area"style="height: 220px; background-color: #17a2b8">
+            <div class=" d_flex align-items-center">
+            	<div class="bg-parallax"></div>
 				<div class="container">
-					<div class="banner_content text-center">
-						<!-- <h6>Today's Exercise together</h6> -->
-						<h2>MY 가치</h2>
-						<!-- <p>Exercise to stimulate, not to annihilate. The world wasn't formed in a day, and neither were we. Set small goals and build upon them</p> -->
-						<!-- <a href="#" class="btn theme_btn button_hover">Get Started</a> -->
+					<div class="banner_content text-center"style="height: 150px; background-color: #17a2b8">
+						<h3 class="hoverCursor" style="color: white; margin-top: 30px">내 GACHI</h3>
 					</div>
 				</div>
             </div>
-            
-        <!--================ input-group ================-->
-            <form name="searchFrm">
-                <div class="hotel_booking_area position" >
-                    <div class="container">
-                        <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.3);">
-                            <div class="input-group">
-                                
-                                    <input type="text" class="form-control" placeholder="오운 가치이름 검색"style="text-align: center;" name="bandName" th:value="${bandVO.bandName}">
-                                    <input type="hidden" name="page" value="1">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default"><i class="lnr lnr-magnifier"></i></button>
-                                    </span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="hotel_booking_area position">
+                <div class="container">
+                	<form name="searchFrm">
+	                    <div class="hotel_booking_table" style="background-color: #00394f; border-top-left-radius: 30px; border-top-right-radius: 30px;">
+	                        <!--================ 검색================ -->
+	                        <div class="input-group mb-3" style="margin-top: 10px;">
+							  <input type="text" style="height:54px;" class="form-control input-text" th:value="${bandVO.bandName}" name="bandName" placeholder="내 가치 검색" aria-label="Recipient's username" aria-describedby="basic-addon2">
+							  <input type="hidden" name="page" value="1">
+							  <div class="input-group-append">
+							    <button class="btn btn-outline-warning btn-lg searchBtn"><i class="fa fa-search"></i></button>
+							  </div>
+							</div>
+							<!-- ================검색 끝================ -->
+	                    </div>
+                	</form>    
                 </div>
-            </form>
-        <!--================ input-group ================-->
-        </section>
-        <!--================MY 가치 중 검색 Area 끝=================-->
-        
-        <!--================ 내 가치 Area  =================-->
-        <section class="accomodation_area section_gap" style="padding-bottom: 0px;">
-            <div class="container">
-        <!--================ 내 밴드 세개씩  ================-->
-        		<div th:if="${not #strings.isEmpty(myBand)}">
-        			<h3>검색된 밴드가 없습니다.</h3>
-        		</div>
-                <div style="margin-bottom: 50px;" th:each="band, bandStat :${myBand}">
-                    <input class="bandnums" type="hidden" id="bandNo" th:value="${band.bandNo}"/>
-                    <div class="row mb_30">
-                        <div class="col-lg-3 col-sm-6" style="float: left;">
-                            <div class="accomodation_item text-center">
-                                <div class="hotel_img"style="height: 230px;">
-                                	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|">
-                                    	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="" style="height: 340px; width:340px;">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="section-top-border" style="float: right; width: 70%; padding: 0; height:230px;">
-                            
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <blockquote class="generic-blockquote"style="height:230px;">
-                                    	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|">
-                                        	<h4 class="mb-30 title_color" th:text="${band.bandName}" style="display: inline-block;">Block Quotes</h4>
-                                        </a>
-                                        <p style="float: right;"><small>멤버 [[${band.memcount}]]</small></p>
-                                            <div class="firstboard boards">
-                                            <!-- r reply t time 약자 -->
-                                                <a>
-                                                    <b th:class="${band.bandNo}"></b>
-                                                    <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
-                                                    <b th:class="${band.bandNo}+t" style="float: right;"></b>
-                                                </a>
-                                            </div>
-                                            <div class="boards">
-                                                <a>
-                                                    <b th:class="${band.bandNo}"></b>
-                                                    <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
-                                                    <b th:class="${band.bandNo}+t" style="float: right;"></b>
-                                                </a>
-                                            </div>
-                                            <div  class="boards">
-                                                <a>
-                                                    <b th:class="${band.bandNo}"></b>
-                                                    <b th:class="${band.bandNo}+r" style="color: rgb(155, 165, 144);"></b>
-                                                    <b th:class="${band.bandNo}+t" style="float: right;"></b>
-                                                </a>
-                                            </div>
-                                    </blockquote>
-                                </div>
-                            </div>
-					    </div>
-                    </div>
-                </div>
-        <!--================ 내 밴드 세개씩 끝 ================-->
             </div>
         </section>
-        <!--================ 내 가치 끝 Area  =================-->
-        <!--================ 페이지 Area  =================-->
-        <nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
-        <!--================ 페이지 Area 끝  ================= -->
+        <!--================Banner Area =================-->
+        
+        <section class="accomodation_area section_gap"  style="padding: 0px; background-color: #f1f1f1;">
+            <div class="container" id="myHomeBand" style="background-color: white; width: 1110px; display: block; height: 100%;">
+               	<div class="container" style="padding: 50px 0px 0px 90px;">
+    <!--================ 내 밴드 세개씩  ================-->
+       				<div th:if="${#lists.isEmpty(myBand)}">
+       					<h3>검색된 밴드가 없습니다.</h3>
+       				</div>
+           			<div style="margin-bottom: 50px;" th:each="band, bandStat :${myBand}">
+                  		<input class="bandnums" type="hidden" id="bandNo" th:value="${band.bandNo}"/>
+						<div class="row mb_30">
+	                       <div class="col-lg-3 col-sm-6" style="float: left;">
+	                           <div class="accomodation_item text-center">
+	                               <div class="hotel_img"style="height: 230px;">
+	                               	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|" class="bandBoxImg">
+	                                   	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="" class="bandProfileImg">
+	                                   </a>
+	                               </div>
+	                           </div>
+	                       </div>
+	                       <div class="section-top-border" style="float: right; width: 70%; padding: 0px 0px 0px 20px; height:230px;">
+	                           <div class="row">
+	                               <div class="col-lg-12">
+                                   		<blockquote class="generic-blockquote"style="height:230px; border-left: 2px solid #1792b8;">
+		                                   	  <a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|">
+		                                      	<h4 class="mb-30 title_color" th:text="${band.bandName}" style="display: inline-block;">Block Quotes</h4>
+		                                      </a>
+	                                    	  <p style="float: right;"><small>멤버 [[${band.memcount}]]</small></p>
+	                                          <div class="firstboard boards">
+	                                          <!-- r reply t time 약자 -->
+	                                              <a class="hoverBtn">
+	                                                  <b th:class="${band.bandNo}"   style="color:#1792b8;"></b>
+	                                                  <b th:class="${band.bandNo}+r" style="color: #f8b600;"></b>
+	                                                  <b th:class="${band.bandNo}+t" style="float: right;  font-weight:100; color:#1792b8;"></b>
+	                                              </a>
+	                                          </div>
+	                                          <div class="boards">
+	                                              <a class="hoverBtn">
+	                                                  <b th:class="${band.bandNo}" style="color:#1792b8;"></b>
+	                                                  <b th:class="${band.bandNo}+r" style="color: #f8b600;"></b>
+	                                                  <b th:class="${band.bandNo}+t" style="float: right; font-weight:100; color:#1792b8;"></b>
+	                                              </a>
+	                                         </div>
+	                                        		<div  class="boards">
+	                                              <a class="hoverBtn">
+	                                                  <b th:class="${band.bandNo}" style="color:#1792b8;"></b>
+	                                                  <b th:class="${band.bandNo}+r" style="color: #f8b600;"></b>
+	                                                  <b th:class="${band.bandNo}+t" style="float: right; font-weight:100; color:#1792b8;"></b>
+                                        	      </a>
+                                        	</div>
+                            			</blockquote>
+            				    	</div>
+                            	</div>
+	    					</div>
+                  		</div>	
+            		</div>
+        <!--================ 내 밴드 세개씩 끝 ================-->
+        		 </div>	
+        		<!--================ 페이지 Area  =================--> 
+        		<nav th:insert="~{content/band/paging :: component(${paging},'gopage')}">
+	        	</nav>
+	        	<!--================ 페이지 Area 끝  ================= -->
+            </div>
+        </section>
+        <!--================ 가치 추천 끝 Area  =================-->
+        
         <script src="/css/band/js/time.js"></script>
         <script>
       //페이징+검색처리
@@ -170,10 +171,10 @@
                         let bandnum = ele.value;
                         if(bandnum==element.bandNo){
                             //댓글변경~
-                            $('.'+bandnum).eq(0).text(element.bandBoardTitle+' 댓글식별자 : '+element.bandBoardDetailNo);
+                            $('.'+bandnum).eq(0).text(element.bandBoardTitle);
                             //reply_count key 존재유무 확인
                             if('replyCount' in element){
-                                $('.'+bandnum+'r').eq(0).text(element.replyCount).prepend('<span class="icon-chat"/>');
+                                $('.'+bandnum+'r').eq(0).text(element.replyCount).prepend('<i class="fa-solid fa-comment-dots"></i>');
                             }
                             //$('.'+bandnum+'t').eq(0).text(element.bandBoardDate);
                             $('.'+bandnum+'t').eq(0).text(elapsedText(element.bandBoardDate));
@@ -211,16 +212,6 @@
            
             
         </script>
-        <!-- <script src="/css/band/js/popper.js"></script>
-        <script src="/css/band/js/bootstrap.min.js"></script> -->
-    <!--     <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
-        <script src="/css/band/js/jquery.ajaxchimp.min.js"></script>
-        <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-        <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
-        <script src="/css/band/js/mail-script.js"></script>
-        <script src="/css/band/js/stellar.js"></script>
-        <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
-        <script src="/css/band/js/custom.js"></script> -->
     </div>
     </body>
 </html>

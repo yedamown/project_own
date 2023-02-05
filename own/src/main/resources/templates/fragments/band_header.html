@@ -47,7 +47,6 @@
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=11875b29670fe2d80e3abb3d4800699e"></script>
 <!-- ================ hjj 파일 ================ -->
-
  <!-- Bootstrap CSS -->
 	 <!-- <link rel="stylesheet" href="/css/band/css/bootstrap.css"> -->
 	 <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
@@ -130,7 +129,8 @@
 				<!-- HOME Start -->
 				<div class="navbar-collapse" style="justify-content: end;">
 					<div class="navbar-nav font-weight-bold py-0">
-          <a href="/own/band" class="nav-item nav-link" style="padding: 30px 20px; margin-top:6px;">가치HOME</a>
+						<a href="/own/band" class="nav-item nav-link" style="padding: 30px 20px; margin-top:6px;">가치HOME</a>
+						<th:block th:if="${session.defUser}">
 <th:block th:if="${session.defUser}">
 
 						<div class="nav-item dropdown droMom">
@@ -171,12 +171,15 @@
 	</header>
 	<script th:inline="javascript">
 /*<![CDATA[*/
-var header = /*[[${_csrf.headerName}]]*/'defalut';
-var token = /*[[${_csrf.token}]]*/'defalut';
+var header = /*[[${_csrf.headerName}]]*/
+console.log("loginUserId========"+header);
+var token = /*[[${_csrf.token}]]*/
+console.log("loginUserId========"+header); 
 /*]]>*/
 	$(function () {
 		/*<![CDATA[*/
-		let loginUser = /*[[ ${session.loginUser} ]]*/;
+		let loginUser = /*[[ ${session.loginUser} ]]*/
+		console.log("loginUserId========"+loginUserId);
 		let loginUserId = loginUser.userId
 		/*]]*/
 		console.log("loginUserId========"+loginUserId);

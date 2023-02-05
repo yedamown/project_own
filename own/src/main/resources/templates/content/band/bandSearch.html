@@ -8,66 +8,76 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/gachi/own.png" type="image/pnsg">
+        <link rel="icon" href="/css/band/gachi/own.png" type="image/png">
         <title>오늘의운동 가치</title>
         <style type="text/css">
         	/* 나이스셀렉트 */
 			.list li {
-				width: 285px;
+				width: 155px;
 			}
 			.list {
-				max-height: 290px;
+				max-height: 145px;
   				overflow-y: scroll !important;
 			}
+			/* 밴드프로필 */
+			.bandBox {
+			    width: 260px;
+			    height: 270px; 
+			    border-radius: 30%;
+			    overflow: hidden;
+			}  
+			.bandProfile {
+			    width: 260px;
+			    height: 270px;
+			    object-fit: cover;
+			}
+			/* 밴드프로필 */
         </style>
     </head>
     <body>
     <div layout:fragment="content">
         <!--================Banner Area =================-->
-        <section class="banner_area"style="height: 330px; background-color: #17a2b8">
+        <section class="banner_area"style="height: 220px; background-color: #17a2b8">
             <div class=" d_flex align-items-center">
             	<div class="bg-parallax"></div>
 				<div class="container">
 					<div class="banner_content text-center"style="height: 150px; background-color: #17a2b8">
-						<h4 class="hoverCursor" style="color: white; margin-top: 30px">오늘의 운동</h4>
-						<h2 class="hoverCursor" style="color: white;">GACHI</h2>
+						<h3 class="hoverCursor" style="color: white; margin-top: 30px">GACHI</h3>
 					</div>
 				</div>
             </div>
             <div class="hotel_booking_area position">
                 <div class="container">
 	                <form name="recomFrm" class="recomFrm">
-	                    <div class="hotel_booking_table" style="background-color: #00394f; border-top-left-radius: 30px; border-top-right-radius: 30px; display: flex; flex-direction: column;">
+	                    <div class="hotel_booking_table" style="background-color: #00394f; padding-left: 0px; border-top-left-radius: 30px; border-top-right-radius: 30px; display: flex;  justify-content:flex-start; flex-direction:row;">
 	                        <!--================ 셀렉트박스  =================-->
-				        	<div class="col-md-9">
-				                <div class="boking_table">
-				                    <div class="row" style="display: flex; justify-content: center;">
-			                            <div class="col-md-5">
-			                                <div class="input-group">
-			                                    <select class="exercise  form-select" th:value="*{exercise}" name="bandCategory">
-			                                        <option value="">운동 전체</option>
-			                                        <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}" th:selected="${#strings.equals(exe.exersubNo, bandVO.bandCategory)}"></option>
-			                                    </select>
-			                                </div>
-			                            </div>
-			                            <div class="col-md-5">
-			                                <div class="input-group">
-			                                    <select class="location  form-select" th:value="*{location}" name="bandLocation">
-			                                        <option value="">지역 전체</option>
-			                                        <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${#strings.equals(loc.locCode, bandVO.bandLocation)}"></option>
-			                                    </select>
-			                                </div>
-			                            </div>
-				                    </div>
-				                </div>
-				            </div>
+			                <div class="" style="flex-flow: 1; width: 800px;">
+			                    <div class="row" style="display: flex; justify-content: center;">
+		                            <div class="col-md-5">
+		                                <div class="input-group">
+		                                    <select class="exercise  form-select" th:value="*{exercise}" name="bandCategory">
+		                                        <option value="">운동 전체</option>
+		                                        <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}" th:selected="${#strings.equals(exe.exersubNo, bandVO.bandCategory)}"></option>
+		                                    </select>
+		                                </div>
+		                            </div>
+		                            <div class="col-md-5">
+		                                <div class="input-group">
+		                                    <select class="location  form-select" th:value="*{location}" name="bandLocation">
+		                                        <option value="">지역 전체</option>
+		                                        <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${#strings.equals(loc.locCode, bandVO.bandLocation)}"></option>
+		                                    </select>
+		                                </div>
+		                            </div>
+			                    </div>
+			                </div>
 			       			<!--================ 셀렉트박스  =================-->
 	                        <!--================ 검색================ -->
-	                        <div class="input-group mb-3" style="margin-top: 10px;">
-							  <input type="text" style="height:54px;" class="form-control input-text" name="bandName" placeholder="가치 운동 지역 검색" aria-label="Recipient's username" aria-describedby="basic-addon2">
+	                        <div class="input-group mb-3" style="margin-top: 17px; flex-flow: 1;">
+							  <input type="text" style="height:40px; width: 280px;" class="form-control input-text" name="bandName" placeholder="가치 운동 지역 검색" aria-label="Recipient's username" aria-describedby="basic-addon2" th:value="${bandVO.bandName}">
 							  <input type="hidden" name="page" value="1">
 							  <div class="input-group-append">
-							    <button class="btn btn-outline-warning btn-lg searchBtn btn-default"><i class="fa fa-search"></i></button>
+							    <button class="btn btn-outline-warning btn-lg searchBtn btn-default" style="height:40px;" ><i class="fa fa-search"></i></button>
 							  </div>
 							</div>
 							<!-- ================검색 끝================ -->
@@ -77,16 +87,19 @@
             </div>
         </section>
         <!--================Banner Area =================-->
-        <!-- 서치 -->
-        <section class="accomodation_area section_gap" style="padding-top: 0px;">
-            <div class="container">
-                <div class="row mb_30">
-                    <!--================ 추천가치 시작  =================-->    
-                    <div class="col-lg-3 col-sm-6" th:each="band, bandStat : ${bandList}">
+        <!-- ====================서치 ===================== -->
+           <section class="accomodation_area section_gap"  style="padding: 0px; background-color: #f1f1f1;">
+         <!--================ 내 가치 Area  =================-->
+            <div class="container" id="myHomeBand" style="background-color: white; width: 1110px; display: block; height: 100%;">
+                <div class="section_title text-center" style="padding-top: 15px;">
+        				<h3 th:if="${#lists.isEmpty(bandList)}"  style="padding-top: 90px;">검색된 밴드가 없습니다.</h3>
+                </div>
+                <div class="row mb_30" id="recom" style="margin-bottom: 30px;">
+                   <div class="col-lg-3 col-sm-6" th:each="band, bandStat : ${bandList}">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                            	<a th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">
-                                	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="">
+                            	<a th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}" class="bandBox">
+                                	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" class="bandProfile" alt="">
                                 </a>
                             </div>
                             <div class="tags" >
@@ -97,17 +110,15 @@
                             <h5><small></small></h5>
                         </div>
                     </div>
-                    <!--================ 추천가치 끝  =================-->   
-                </div>
-             </div>
-        </section>
-         <!--================ 페이지 Area  =================-->
-        <div id="pagination">
+                    </div>
+                <div id="pagination">
         	<nav th:insert="~{content/band/paging :: component(${paging},'gopage')}"></nav>
         </div>
-        <!--================ 페이지 Area 끝  =================-->
-       
-        <!--================ 내 가치 끝 Area  =================-->    
+            </div>
+        </section>
+        <!-- ====================서치 끝===================== -->
+        
+        
     <script>
 		  //페이징+검색처리
 		    function gopage(i) {

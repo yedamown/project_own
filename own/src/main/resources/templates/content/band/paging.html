@@ -11,8 +11,7 @@
 	        <!--================ 이전  =================-->
 	        <ul class="pagination">
 		        <li class="page-item" th:if="${paging.startPage>1}">
-<!-- 		        	<a class="page-link" aria-label="Previous" th:href="@{/own/band/myBand(page=${paging.startPage-1})}"> -->
-		        	<a class="page-link" aria-label="Previous" th:href="|javascript:${gopage}(${paging.startPage-1})|">
+		        	<a class="page-link" aria-label="Previous" th:href="|javascript:${gopage}(${paging.startPage-1})|" style="background-color: #e3e3e3">
 		        		<span aria-hidden="true">
                         	<span class="lnr lnr-chevron-left"></span>
                         </span></a>
@@ -20,18 +19,16 @@
 	        <!--================ 페이지 이동 1_2_3_4_5  =================-->
 		        <th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
 		            <li class="page-item" th:if="${pag != paging.page && 0!=paging.endPage}">
-<!-- 		            	<a class="page-link" th:href="@{/own/band/myBand(page=${pag})}" th:text ="${#numbers.formatInteger(pag,2)}"></a> -->
-		            	<a class="page-link" th:href="|javascript:${gopage}(${pag})|" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+		            	<a class="page-link" th:href="|javascript:${gopage}(${pag})|" th:text ="${#numbers.formatInteger(pag,2)}" style="background-color: #e3e3e3"></a>
 		            </li>
 		            <li class="page-item active" th:if="${pag==paging.page}" >
- 		            	<a class="page-link" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+ 		            	<a class="page-link" th:text ="${#numbers.formatInteger(pag,2)}" style="background-color: #17a2b8" ></a>
 		        	</li>
 		        </th:block>
 	        <!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
 	        <!--================ 이후  =================-->
 		        <li class="page-item" th:if="${paging.endPage<paging.lastPage}">
-		        	<!-- <a class="page-link" aria-label="Next" th:href="@{/own/band/myBand(page=${paging.endPage+1})}"> -->
-		        	<a class="page-link" aria-label="Next" th:href="|javascript:${gopage}(${paging.endPage+1})|">
+		        	<a class="page-link" aria-label="Next" th:href="|javascript:${gopage}(${paging.endPage+1})|" style="background-color: #e3e3e3">
 		        		<span aria-hidden="true">
                             <span class="lnr lnr-chevron-right"></span>
                         </span></a>
