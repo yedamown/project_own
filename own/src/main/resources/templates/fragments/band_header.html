@@ -182,21 +182,22 @@ console.log("loginUserId========"+header);
 		console.log("loginUserId========"+loginUserId);
 		let loginUserId = loginUser.userId
 		/*]]*/
-		console.log("loginUserId========"+loginUserId);
-		let bandMemberNo = [];
 		// 로그인 아이디로 가입중인 밴드 멤버번호받아오기 -- 채팅컨트롤러에서 처리
 		$.ajax({
-			url: '/getMyBandMemberNo?userId=' + loginUserId,
+			url: '/getMyBandMemberNoList?userId=' + loginUserId,
 			method: 'get',
 			contentType: "application/json" //json으로 보낼때 타입이 이렇다..
 		}).then(res => {
-			//console.log("res========"+res);
-			for (no of res) {
-				var list = `<a class="dropdown-item">${no.bandMemberNo}</a>`
-				$("#chatroomList").append(list);
-				//console.log("no========"+no);
+			let bandMemberNoList = new Array();
+			for (var i=0; i<res.length; i++ ) {
+				/* var list = `<a class="dropdown-item">${no.bandMemberNo}</a>`
+				$("#chatroomList").append(list); */
+				console.log("bandMemberNo========"+res[i].bandMemberNo);
+				bandMemberNoList.push(res[i].bandMemberNo);
 			}
-		})
+		
+			
+		}) // end of 밴드멤버번호 아작스
 	});
 	</script>
 </th:block>

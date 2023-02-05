@@ -1,11 +1,11 @@
 package co.prjt.own.chat.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.prjt.own.band.mapper.BandMemberDefaultMapper;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.chat.mapper.ChatMapper;
 import co.prjt.own.chat.service.ChatService;
@@ -16,19 +16,22 @@ import co.prjt.own.chat.service.MessageVO;
 public class ChatServiceImpl implements ChatService {
 	@Autowired
 	ChatMapper chatMapper;
-	@Autowired
-	BandMemberDefaultMapper bandMemberDefaultMapper;
 
 	@Override
-	public List<BandMemberDetailVO> getMyBandMemberNo(String userId) {
+	public List<BandMemberDetailVO> getMyBandMemberNoList(String userId) {
 		// 로그인 아이디로 가입중인 밴드 멤버번호 받아오기
-		return bandMemberDefaultMapper.getMyBandOption(userId);
+		return chatMapper.getMyBandMemberNoList(userId);
 	}
 	
 	@Override
-	public List<ChatroomVO> myChatroomList(String bandMemberNo) {
-		// 전체 채팅방 목록 중 해당 식별번호로 개설된 채팅방 목록 출력
-		return chatMapper.chatroomList(bandMemberNo);
+	public List<ChatroomVO> getMyChatroomList(List<BandMemberDetailVO> list) {
+		// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
+		List<ChatroomVO> chatroomNoList = new ArrayList<>();
+		for(int i=0; i<list.size(); i++) {
+			String bandNo = list.get(i).getBandMemberNo();
+			chatroomNoList.add(chatMapper.getMyChatroomList(bandNo));
+		}
+		return null;
 	}
 
 	@Override
@@ -61,7 +64,4 @@ public class ChatServiceImpl implements ChatService {
 		// 메세지 DB에서 조회, 메세지 여러개 뽑아 오니까 List타입
 		return chatMapper.getMessage(chatroomNo);
 	}
-
-	
-
 }
