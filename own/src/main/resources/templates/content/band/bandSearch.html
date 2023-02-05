@@ -5,86 +5,78 @@
       layout:decorate="~{layout/band_layout}"
       lang="ko">
     <head>
-    	<!-- jquery -->
-    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/image/favicon.png" type="image/pnsg">
-        <title>Royal Hotel</title>
-        <!-- Bootstrap CSS -->
-        <!-- <link rel="stylesheet" href="/css/band/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        main css -->
-        <!-- <link rel="stylesheet" href="/css/band/css/style.css">
-        <link rel="stylesheet" href="/css/band/css/responsive.css"> -->
+        <link rel="icon" href="/css/band/gachi/own.png" type="image/pnsg">
+        <title>오늘의운동 가치</title>
+        <style type="text/css">
+        	/* 나이스셀렉트 */
+			.list li {
+				width: 285px;
+			}
+			.list {
+				max-height: 290px;
+  				overflow-y: scroll !important;
+			}
+        </style>
     </head>
     <body>
     <div layout:fragment="content">
-        
-        <!--================MY 가치 중 검색 Area =================-->
-        <section class="banner_area">
-            <div class="booking_table d_flex align-items-center"  style="min-height: 300px;">
-            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
+        <!--================Banner Area =================-->
+        <section class="banner_area"style="height: 330px; background-color: #17a2b8">
+            <div class=" d_flex align-items-center">
+            	<div class="bg-parallax"></div>
 				<div class="container">
-					<div class="banner_content text-center">
-						<!-- <h6>Today's Exercise together</h6> -->
-						<h2>가치 검색</h2>
-						<!-- <p>Exercise to stimulate, not to annihilate. The world wasn't formed in a day, and neither were we. Set small goals and build upon them</p> -->
-						<!-- <a href="#" class="btn theme_btn button_hover">Get Started</a> -->
+					<div class="banner_content text-center"style="height: 150px; background-color: #17a2b8">
+						<h4 class="hoverCursor" style="color: white; margin-top: 30px">오늘의 운동</h4>
+						<h2 class="hoverCursor" style="color: white;">GACHI</h2>
 					</div>
 				</div>
             </div>
-            
-        <!--================ input-group ================-->
-            <form name="recomFrm" class="recomFrm">
-                <div class="hotel_booking_area position" >
-                    <div class="container">
-                        <div class="hotel_booking_table" style="background-color:rgba(0, 0, 0, 0.3);">
-                            <div class="input-group">
-                                
-                                    <input type="text" class="form-control" placeholder="오운 가치이름, 태그 키워드 검색"style="text-align: center;" name="bandName"  th:value="${bandVO.bandName}">
-                                    <input type="hidden" name="page" value="1">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default"><i class="lnr lnr-magnifier"></i></button>
-                                    </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--================ 셀렉트박스  =================-->
-	        	<div class="col-md-9">
-	                <div class="boking_table">
-	                    <div class="row">
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <select class="exercise  form-select" th:value="*{exercise}" name="bandCategory">
-                                        <option value="">관심운동..전체</option>
-                                        <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}" th:selected="${#strings.equals(exe.exersubNo, bandVO.bandCategory)}"></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="input-group">
-                                    <select class="location  form-select" th:value="*{location}" name="bandLocation">
-                                        <option value="">관심지역..전체</option>
-                                        <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${#strings.equals(loc.locCode, bandVO.bandLocation)}"></option>
-                                    </select>
-                                </div>
-                            </div>
+            <div class="hotel_booking_area position">
+                <div class="container">
+	                <form name="recomFrm" class="recomFrm">
+	                    <div class="hotel_booking_table" style="background-color: #00394f; border-top-left-radius: 30px; border-top-right-radius: 30px; display: flex; flex-direction: column;">
+	                        <!--================ 셀렉트박스  =================-->
+				        	<div class="col-md-9">
+				                <div class="boking_table">
+				                    <div class="row" style="display: flex; justify-content: center;">
+			                            <div class="col-md-5">
+			                                <div class="input-group">
+			                                    <select class="exercise  form-select" th:value="*{exercise}" name="bandCategory">
+			                                        <option value="">운동 전체</option>
+			                                        <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}" th:selected="${#strings.equals(exe.exersubNo, bandVO.bandCategory)}"></option>
+			                                    </select>
+			                                </div>
+			                            </div>
+			                            <div class="col-md-5">
+			                                <div class="input-group">
+			                                    <select class="location  form-select" th:value="*{location}" name="bandLocation">
+			                                        <option value="">지역 전체</option>
+			                                        <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${#strings.equals(loc.locCode, bandVO.bandLocation)}"></option>
+			                                    </select>
+			                                </div>
+			                            </div>
+				                    </div>
+				                </div>
+				            </div>
+			       			<!--================ 셀렉트박스  =================-->
+	                        <!--================ 검색================ -->
+	                        <div class="input-group mb-3" style="margin-top: 10px;">
+							  <input type="text" style="height:54px;" class="form-control input-text" name="bandName" placeholder="가치 운동 지역 검색" aria-label="Recipient's username" aria-describedby="basic-addon2">
+							  <input type="hidden" name="page" value="1">
+							  <div class="input-group-append">
+							    <button class="btn btn-outline-warning btn-lg searchBtn btn-default"><i class="fa fa-search"></i></button>
+							  </div>
+							</div>
+							<!-- ================검색 끝================ -->
 	                    </div>
-	                </div>
-	            </div>
-        <!--================ 셀렉트박스  =================-->
-            </form>
-        <!--================ input-group ================-->
+                    </form>
+                </div>
+            </div>
         </section>
-        <!--================MY 가치 중 검색 Area 끝=================-->
+        <!--================Banner Area =================-->
         <!-- 서치 -->
         <section class="accomodation_area section_gap" style="padding-top: 0px;">
             <div class="container">
@@ -125,17 +117,10 @@
         $(".recomFrm").on('change',function(){
             $('.recomFrm').submit();
            })
+        $(document).ready(function() {
+			$('select').niceSelect();
+		})   
     </script>
-    <!-- <script src="/css/band/js/popper.js"></script>
-    <script src="/css/band/js/bootstrap.min.js"></script> -->
-    <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
-    <script src="/css/band/js/jquery.ajaxchimp.min.js"></script>
-    <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-    <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
-    <script src="/css/band/js/mail-script.js"></script>
-    <script src="/css/band/js/stellar.js"></script>
-    <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
-    <script src="/css/band/js/custom.js"></script>
     </div>
     </body>
 </html>

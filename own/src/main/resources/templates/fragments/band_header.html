@@ -48,7 +48,19 @@
 	 <!-- main css -->
 	 <link rel="stylesheet" href="/css/band/css/style.css">
 	 <link rel="stylesheet" href="/css/band/css/responsive.css">
-	     <!-- Customized Bootstrap Stylesheet -->
+	 <!-- 나이스 셀렉트/스크롤 -->
+	 <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+	 <!-- <script src="/css/band/vendors/nice-select/js/jquery.nice-scroll.js"></script> -->
+	 <!-- 이건 뭐지 -->
+	 <script src="/css/band/js/popper.js"></script>
+    <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="/css/band/js/jquery.ajaxchimp.min.js"></script>
+    <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="/css/band/js/mail-script.js"></script>
+    <script src="/css/band/js/stellar.js"></script>
+    <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
+    <script src="/css/band/js/custom.js"></script>
+     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/band/newcss/style.css" rel="stylesheet" />
 <!-- ================공통파일 네비용으로 손 봄 끝 ================ -->
 <!-- ================ hjj 파일 끝 ================ -->
@@ -102,6 +114,7 @@
 				<div class="navbar-collapse" style="justify-content: end;">
 					<div class="navbar-nav font-weight-bold py-0">
 						<a href="/own/band" class="nav-item nav-link" style="padding: 30px 20px; margin-top:6px;">가치HOME</a>
+						<th:block th:if="${session.defUser}">
 						<div class="nav-item dropdown droMom">
 							<a href="/own/band" class="nav-item nav-link" data-toggle="dropdown" style="padding: 30px 20px 30px 10px">
 								<i class="fa-solid fa-comment-dots fa-2x"></i>
