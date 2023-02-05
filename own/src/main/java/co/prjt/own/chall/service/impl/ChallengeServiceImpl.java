@@ -1,19 +1,15 @@
 package co.prjt.own.chall.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import co.prjt.own.chall.mapper.CMemberListMapper;
 import co.prjt.own.chall.mapper.ChallengeMapper;
-import co.prjt.own.chall.service.CMemberListVO;
 import co.prjt.own.chall.service.ChallengeService;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.Paging;
-import groovyjarjarantlr4.v4.parse.ANTLRParser.sync_return;
 
 @Component
 public class ChallengeServiceImpl implements ChallengeService {
@@ -76,9 +72,9 @@ public class ChallengeServiceImpl implements ChallengeService {
 
 	@Override
 	// 나의 도전 수 카운트
-	public int countMychall(String id) {
-	      return    mapper.countMychall(id);
-   }
+	public int countMychall(ChallengeVO vo) {
+		return 	mapper.countMychall(vo);
+	}
 
 	@Override
 	// 페이징 3개씩..
@@ -106,7 +102,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		// 검색할 아이디 잘 왔는지 체크
 		System.out.println(vo.getUserId());
 		// 내 도전갯수 세기
-		paging.setTotalRecord(mapper.countMychall(vo.getUserId()));
+		paging.setTotalRecord(mapper.countMychall(vo));
 		// 페이징 정보 우선 검색할 거에 담아두기.
 //		밖에서 정하고가져고온다..
 //		paging.setPageUnit(6); //내 도전이라 6개씩 보여줄 것
