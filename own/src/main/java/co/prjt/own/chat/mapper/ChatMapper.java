@@ -4,12 +4,16 @@ import java.util.List;
 
 import org.springframework.web.socket.WebSocketSession;
 
+import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.chat.service.ChatroomVO;
 import co.prjt.own.chat.service.MessageVO;
 
 public interface ChatMapper {
-	// 전체 채팅방 목록 중 해당 식별번호로 개설된 채팅방 목록 출력
-	List<ChatroomVO> chatroomList(String bandMemberNo);
+	// 채팅방 번호
+	List<BandMemberDetailVO> getMyBandMemberNoList(String userId);
+	
+	// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
+	List<ChatroomVO> getMyChatroomList(String bandMemberNo);
 
 	/*
 	 * 채팅방 번호 가져온 후, 채팅방 개설(1:1) 전체 채팅방은 방개설 필요없이 구역을 만들어 메세지만 띄우면 된다.
@@ -28,4 +32,5 @@ public interface ChatMapper {
 
 	// 웹 소켓 세션에 메세지 저장.
 	public <T> void sendMessage(WebSocketSession session, T message);
+
 }

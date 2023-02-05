@@ -35,18 +35,22 @@ public class ChatController {
 	@PostMapping("/createChatroom")
 	@ResponseBody
 	public String createChatroom(@RequestBody List<ChatroomVO> list) {
-		System.out.println("채팅방 list===========" + list);
 		return chatService.createChatroom(list);
 	}
 
 	// 로그인 아이디로 가입중인 밴드 멤버번호받아오기 
-	@GetMapping("/getMyBandMemberNo")
+	@GetMapping("/getMyBandMemberNoList")
 	@ResponseBody
-	public List<BandMemberDetailVO> getMyBandMemberNo(@RequestParam String userId) {
-		System.out.println("채팅컨트롤러 밴드헤더"+userId);
-		return chatService.getMyBandMemberNo(userId);
+	public List<BandMemberDetailVO> getMyBandMemberNoList(@RequestParam String userId) {
+		return chatService.getMyBandMemberNoList(userId);
 	}
 	
+	// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
+	@PostMapping("/createChatroom")
+	@ResponseBody
+	public List<ChatroomVO> getMyChatroomList(@RequestBody List<BandMemberDetailVO> list) {
+		return chatService.getMyChatroomList(list);
+	}
 	
 	// 기존 채팅방 번호 가져오기 
 	@PostMapping("/findChatroomNo")
