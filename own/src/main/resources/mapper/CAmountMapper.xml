@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.chall.mapper.CAmountMapper">
+
+		<sql id="condition">
+				<if test="amtType !=null and amtType !='' ">
+					AND AMT_TYPE = #{amtType}
+				</if>
+		</sql>
+
 	<select id="getAmountList" resultType="co.prjt.own.chall.service.CAmountVO">
-		SELECT * FROM CHALL_AMOUNT_LIST
-		WHERE USER_ID = #{userId}
+			SELECT * FROM ( SELECT ROWNUM RN, A.*  FROM ( 
+
+						SELECT * FROM CHALL_AMOUNT_LIST
+						WHERE USER_ID = #{userId}
+						<include refid="condition"/>   
+						ORDER BY TO_NUMBER(SUBSTR(AMT_LIST_NO,5)) DESC 
+						                    
+		<![CDATA[  
+			) A WHERE ROWNUM <= #{last} )  WHERE RN >= #{first}
+		]]> 	
 	</select>
 	
 	<insert id="insertAmount">
@@ -22,5 +37,12 @@
 	<select id="getAmt" resultType="co.prjt.own.chall.service.CAmountVO">
 		SELECT * FROM CHALL_AMOUNT_LIST
 		WHERE AMT_LIST_NO = #{amtListNo}
+	</select>
+	
+	<select id="countMyAMT" resultType="int">
+		SELECT COUNT(*)
+		  FROM CHALL_AMOUNT_LIST
+		 WHERE user_id = #{userId}
+		<include refid="condition"/>   
 	</select>
 </mapper>
