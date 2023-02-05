@@ -5,10 +5,11 @@
 		<selectKey keyProperty="memListNo" resultType="string" order="BEFORE">
 			SELECT CML_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-			INSERT INTO CHALL_MEM_LIST (MEM_LIST_NO, USER_ID, CHALL_NO)
+			INSERT INTO CHALL_MEM_LIST (MEM_LIST_NO, USER_ID, CHALL_NO, MEM_STATUS)
 			VALUES( 'CML_'|| #{memListNo},
 					#{userId},
-					#{challNo})
+					#{challNo},
+					#{memStatus})
 	</insert>
 	
 	<sql id="condition">

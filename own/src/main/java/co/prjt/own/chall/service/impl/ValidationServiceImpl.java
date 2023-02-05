@@ -101,9 +101,15 @@ public class ValidationServiceImpl implements ValidationService {
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		vo.setPaging(paging);
-		List<ValidationVO> list = validation.getChallVld(vo);
-		list.get(0).setPaging(paging);
-		return list;
+		if(vo.getUserId() == null) {
+			List<ValidationVO> list = validation.getChallVld(vo);			
+			list.get(0).setPaging(paging);		
+			return list;
+		} else {
+			List<ValidationVO> list = validation.getMyVld(vo);	
+			list.get(0).setPaging(paging);
+			return list;
+		}
 	}
 
 	/// 이번주 오늘인증 체크해서..인증가능한지?

@@ -4,12 +4,13 @@
 	
 		<!-- 팔로워 목록 조회 -->
 		<select id="getFollowerList" resultType="SAccountVO">
-			SELECT A.SNS_NICKNAME, FOLLOWER
-				FROM SNS_ACCOUNT A, (SELECT S.SNS_NICKNAME AS FOLLOWER, F.SNS_FOLLOW_ID, F.SNS_FOLLOWER_ID
-				                        FROM SNS_ACCOUNT S, SNS_FOLLOW F
-				                        WHERE S.SNS_ACCOUNT_NO = F.SNS_FOLLOW_ID) B
-				WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOWER_ID
-				AND A.SNS_NICKNAME = #{snsNickname}
+			SELECT A.SNS_NICKNAME, FOLLOWER, (select media_server_file from multimedia where identify_id = 
+			            (select sns_account_no from sns_account where sns_account_no= B.sns_follow_id)) as media_server_file
+			FROM SNS_ACCOUNT A, (SELECT S.SNS_NICKNAME AS FOLLOWER, F.SNS_FOLLOW_ID, F.SNS_FOLLOWER_ID
+			                        FROM SNS_ACCOUNT S, SNS_FOLLOW F
+			                        WHERE S.SNS_ACCOUNT_NO = F.SNS_FOLLOW_ID) B
+			WHERE A.SNS_ACCOUNT_NO = B.SNS_FOLLOWER_ID
+			AND A.SNS_NICKNAME = #{snsNickname}
 		</select>
 		<!-- 팔로워 수 조회 -->
 		<select id="followerCount" resultType="int">
@@ -25,7 +26,8 @@
 				
 		<!-- 팔로우 리스트 조회 -->
 		<select id="getFollowList" resultType="SAccountVO">
-		SELECT A.SNS_NICKNAME, FOLLOW
+		SELECT A.SNS_NICKNAME, FOLLOW, (select media_server_file from multimedia where identify_id = 
+			            (select sns_account_no from sns_account where sns_account_no= B.sns_follower_id)) as media_server_file
 			FROM SNS_ACCOUNT A, (SELECT S.SNS_NICKNAME AS FOLLOW, F.SNS_FOLLOW_ID, F.SNS_FOLLOWER_ID
 			                        FROM SNS_ACCOUNT S, SNS_FOLLOW F
 			                        WHERE S.SNS_ACCOUNT_NO = F.SNS_FOLLOWER_ID) B

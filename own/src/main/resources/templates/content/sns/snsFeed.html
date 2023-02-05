@@ -74,6 +74,7 @@
             float: right;
             font-size: 28px;
             font-weight: bold;
+            text-align: center;
         }
 
         .close:hover,
@@ -458,7 +459,7 @@
             <!--=================== content body ====================-->
             <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center">
                 <!--=================== filter portfolio start====================-->
-                <div id="snsprofilebox" style="border: 1px solid lightgray; text-align: center;">
+                <div id="snsprofilebox" style="border: 1px solid lightgray;">
                     <br>
                     <div class="profile">
                         <img id="instaImg" src="/css/sns/img/insta.png">
@@ -603,7 +604,10 @@
                             <span class="close">&times;</span>
                             <p>팔로우 목록</p>
                                     <td th:each="snsfol : ${snsFollowerList}">
-                                        <a th:href="@{snsFeed(snsNickname=${snsfol.follower})}">[[${snsfol.follower}]]</a>
+                                        <div class="snsfolProfile" style="padding-bottom: 10px;">
+                                            <img th:src="${snsfol.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; " onerror='this.src="/css/sns/img/defaultUser.png"'>
+                                            <a th:href="@{snsFeed(snsNickname=${snsfol.follower})}">[[${snsfol.follower}]]</a>
+                                        </div>
                                     </td>
                         </div>
                     </div>
@@ -613,7 +617,10 @@
                             <span class="close">&times;</span>
                             <p>팔로워 목록</p>
                                     <td th:each="snsf : ${snsFollowList}">
-                                        <a th:href="@{snsFeed(snsNickname=${snsf.follow})}">[[${snsf.follow}]]</a>
+                                        <div class="snsfProfile" style="padding-bottom: 10px;">
+                                            <img th:src="${snsf.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover;" onerror='this.src="/css/sns/img/defaultUser.png"'>
+                                            <a th:href="@{snsFeed(snsNickname=${snsf.follow})}">[[${snsf.follow}]]</a>
+                                        </div>
                                     </td>
                             </div>
                         </div>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-.card {
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+		.card {
 			position: relative;
 			flex: 1 1 100%;
 			margin: 10px 0;
@@ -54,14 +55,238 @@
 		.card__one:focus::after {
 			opacity: 1;
 		}
-</style>
+
+		/* mystyle.css */
+		/* The Modal (background) */
+		.modal {
+			display: none;
+			/* Hidden by default */
+			position: fixed;
+			/* Stay in place */
+			z-index: 1;
+			/* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%;
+			/* Full width */
+			height: 100%;
+			/* Full height */
+			overflow: auto;
+			/* Enable scroll if needed */
+			background-color: rgb(0, 0, 0);
+			/* Fallback color */
+			background-color: rgba(0, 0, 0, 0.4);
+			/* Black w/ opacity */
+		}
+
+		/* Modal Content/Box */
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			/* 15% from the top and centered */
+			padding: 20px;
+			border: 1px solid #888;
+			width: 50%;
+			/* Could be more or less, depending on screen size */
+		}
+
+		/* The Close Button */
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
 
 </head>
+
 <body>
-<!-- 인증리스트 - 모델로 띄우기-->
-<!-- 모달창띄우기 -->
- 	<h3>여기 인증창</h3>
+	<!-- 인증리스트 - 모델로 띄우기-->
+	<!-- 모달창띄우기 -->
+	<h3>여기 인증창</h3>
+	<div style="text-align: center;">
+		<button th:if=" ${#strings.equals(detailChall.challStatus, '진행 중')}"  class="modalBtn btn btn-primary px-3" id="vldAddModal">MODAL_1 인증하기</button>
+		<button th:if=" ${#strings.equals(detailChall.challStatus, '종료')}" 
+		style="display: none;" class="modalBtn btn btn-primary px-3" id="vldAddModal">MODAL_1 인증하기</button>
+	</div>
+	<div class="row portfolio-container modalBtn" id="vldImg"
+		style="width: 700px; height: fit-content; margin: 0; justify-content: center;">
+		<th:block th:each="vld: ${vldList}">
+			<div class="grid" style="padding: 10px" th:value=${vld.vldNo}>
+				<div class="card card__one" style="width: 330px; height:350px;">
+					<figure class="card__img">
+						<img th:src="|/imgView/${vld.mediaServerFile}|" style="object-fit: cover" />
+					</figure>
+					<div class="card__desc">
+						<input type="hidden" th:value="${vld.vldNo}">
+						<input type="hidden" th:value="${vld.challNo}">
+						<p>인증날짜: [[${vld.vldDate}]]</p>
+						<p th:text="${vld.userId}"></p>
+					</div>
+				</div>
+			</div>
+		</th:block>
+	</div>
+
+		<!-- 첫 번째 Modal -->
+		<div class="modal">
+			<!-- 첫 번째 Modal의 내용 -->
+			<div class="modal-content bg-light p-5" style="width:600px">
+				<span class="close">&times;</span>
+
+				<input type="hidden" id="vldCheck" value="false">
+				<h2 class="mb-4">Validation GoGo</h2>
+				<div id="image_preview">
+					<!--이미지 미리보기-->
+					<!--도전기간 / 횟수 / 참여자 수 -->
+					<input id="challDur" name="challDur" type="hidden"
+						th:value="${detailChall.challDuration}" />
+					<input id="challFreq" name="challFreq" type="hidden" th:value="${detailChall.challFreq}" />
+					<input id="nowMem" type="hidden" th:value="${detailChall.nowMem}" />
+					<input id="challSt" type="hidden" th:value="${detailChall.challStatus}" />
+					<form action="/own/chall/insertVldForm" method="post" id="insertChall" enctype="multipart/form-data">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+						<div class="form-group">
+							<!--도전번호, 유저 아이디 히든 if를 걸면 해당 정보 가져오지 못하니 주의하기! -->
+							<input id="challNo" name="challNo" type="hidden" th:value="${detailChall.challNo}" />
+							<input id="userId" name="userId" type="hidden" th:if="${session.loginUser}" th:value="${session.loginUser.userId}" />
+							<label for="name">NickName *</label>
+							<input type="text" class="form-control" id="vldname" th:value="${myInfo.memNickname}" readonly />
+						</div>
+						<div class="form-group">
+							<label for="name">Date *</label> <input type="text" class="form-control"
+								id="vldname" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"
+									readonly />
+							</div>
+							<input name="uploadfile" type="file" id="btnAtt">
+							<div id="att_zone" data-placeholder='사진을 첨부하세요'></div>
+							<br>
+							<div class="form-group mb-0">
+								<!-- <button type="submit" class="btn btn-primary px-3" id="vldFormSubmit">등록</button> -->
+								<input type="submit" value="등록하기" class="btn btn-primary px-3"
+									id="vldFormSubmit" />
+							</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		     <!-- 두 번째 Modal -->
+			 <div class="modal">
+				<!-- 두 번째 Modal의 내용 -->
+				<div class="modal-content" id="vldReport" style="padding:35px;width: 800px">
+				  <span class="close">&times;</span>
+				  <h1>인증 크게보기</h1>
+				  <img src="" style="width: 700px; margin: auto"/>
+				  <h3></h3>
+				  <p>두 번째 Modal</p>
+				  <input type="hidden" />
+				  <button class="btn btn-primary px-3" id="rptBtn">신고</button>
+					  <div style="display: none" id="reportArea">
+						  <textarea style="width:95%; margin:10px" id="rptReason"></textarea>
+										  <button class="btn btn-primary px-3" id="rptAddBtn" style="width: 150px; margin:auto">
+											  신고 접수하기</button>
+					  </div>
+				</div>
+			</div>
 </body>
-<script type="text/javascript">
+<script>
+
+		let vldPgUserId = $('#userId').val();
+
+		//인증이미지 클릭 시 모달 띄우기
+		$('#vldImg').on('click','.grid',function(e){
+		console.log(this); //이 창을.. 클릭하면 모달띄우기..
+		//gird에 아이디값으로 식별번호 넣어둔거 읽어오기
+		console.log("=========================");
+		console.log($(this).find('input').eq(0).val());
+		let vldNo = $(this).find('input').eq(0).val(); //id에 넣어둔 인증식별번호
+		let vldDtImg = $(this).find('img').attr('src'); //이미지 경로 읽어오기
+		let vldDtId = $(this).find('p').text(); //p 안에 넣어둔 값 읽어오기 - 아이디
+		let vldDtNo = $(this).find('input').eq(1).val(); //인풋 히든으로 넣어온 값읽어오기 -> 나중에 날짜로
+		console.log(vldNo);
+		//각자 태그찾아서 값넣기~! 아이디값으로 넣어도되지않을까합니다..나중에...
+		$('#vldReport h1').text("오 성공");
+		$('#vldReport img').attr('src', vldDtImg);
+		$('#vldReport h3').text(vldDtId);
+		//첫번째 인풋값에 인증번호 넣기.
+		$('#vldReport input').eq(0).val(vldNo);
+
+		//신고여부 확인.
+		$.ajax({
+	        url:'/own/chall/checkRptAjax?vldNo='+ vldNo + '&&reporter=' + vldPgUserId,
+	        method: 'get',
+	        success: function(result){
+	        		if(result > 0 || vldPgUserId == vldDtId){
+		          		console.log(result);
+						$('#rptBtn').attr('style', 'display:none');
+						//$('#rptBtn').replaceWith('<p>이미 신고한 인증입니다.</p>');
+	        		}else {
+						$('#rptBtn').attr('style', 'display:block');
+	        			console.log('신고신청 가능 or s내 아이디 신고불가 ');
+	        		}
+	        },
+	        error: function(err){
+	          	console.log(err);
+	        }
+      	})		
+	});
+
+
+//--------------------------모달모달----------------------------------------------
+		
+	// Modal을 가져옵니다.
+	var modals = document.getElementsByClassName("modal");
+	// Modal을 띄우는 클래스 이름을 가져옵니다.
+	var btns = document.getElementsByClassName("modalBtn");
+	// Modal을 닫는 close 클래스를 가져옵니다.
+	var spanes = document.getElementsByClassName("close");
+	var funcs = [];
+	 
+	// Modal을 띄우고 닫는 클릭 이벤트를 정의한 함수
+	function Modal(num) {
+	  return function() {
+	    // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
+	    btns[num].onclick =  function() {
+	        modals[num].style.display = "block";
+	        console.log(num);
+	    };
+	 
+	    // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
+	    spanes[num].onclick = function() {
+	        modals[num].style.display = "none";
+	    };
+	  };
+	}
+	 
+	// 원하는 Modal 수만큼 Modal 함수를 호출해서 funcs 함수에 정의합니다.
+	for(var i = 0; i < btns.length; i++) {
+	  funcs[i] = Modal(i);
+	}
+	 
+	// 원하는 Modal 수만큼 funcs 함수를 호출합니다.
+	for(var j = 0; j < btns.length; j++) {
+	  funcs[j]();
+	}
+	 
+	// Modal 영역 밖을 클릭하면 Modal을 닫습니다.
+	window.onclick = function(event) {
+	  if (event.target.className == "modal") {
+	      event.target.style.display = "none";
+	  }
+	};
+	
+//-------------------------- 모달모달 끝-----------------------------------------
+
+
 </script>
+
 </html>
