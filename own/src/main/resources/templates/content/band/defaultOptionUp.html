@@ -6,10 +6,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="icon" href="/css/band/image/favicon.png" type="image/png">
+content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="icon" href="/css/band/gachi/own.png" type="image/png">
 <title>오늘의운동 가치</title>
 <style>
+	/* 나이스셀렉트 */
+	.list li {
+		width: 200px;
+	}
+	.list {
+		max-height: 200px;
+				overflow-y: scroll !important;
+	}
+	.nice-select {
+		width: 220px;
+	}
 	.btn:hover {
 		color: #fff;
 	}
@@ -111,119 +122,91 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<!--================위에  Area =================-->
-        <section class="banner_area"style="height: 300px; background-color: #17a2b8">
-            <div class=" d_flex align-items-center">
-            	<div class="bg-parallax"></div>
-				<div class="container">
-					<div class="banner_content text-center"style="height: 150px; background-color: #17a2b8">
-						<h4 class="hoverCursor" style="color: white; margin-top: 30px">오늘의 운동</h4>
-						<h2 class="hoverCursor" style="color: white;">GACHI</h2>
-					</div>
-				</div>
-            </div>
-            <div class="hotel_booking_area position">
-                <div class="container">
-                    <div class="hotel_booking_table" style="background-color: #00394f; border-top-left-radius: 30px; border-top-right-radius: 30px;">
-                        <!--================ 검색================ -->
-                        <div class="input-group mb-3" style="margin-top: 10px;">
-						  <input type="text" style="height:54px;" class="form-control input-text" name="bandName" placeholder="가치 운동 지역 검색" aria-label="Recipient's username" aria-describedby="basic-addon2">
-						  <div class="input-group-append">
-						    <button class="btn btn-outline-warning btn-lg searchBtn" type="button"><i class="fa fa-search"></i></button>
-						  </div>
-						</div>
-						<!-- ================검색 끝================ -->
-                    </div>
-                </div>
-            </div>
-        </section>
-		<!--================위에 Area 끝=================-->
-		
 		 <!--================ 가치 추천 Area  =================-->
         <section class="facilities_area section_gap">
-            <div class="overlay bg-parallax" style="opacity: 1" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
-            </div>
-            <div class="container" style="background-color:rgba(0, 0, 0, 0.5); width: 1110px; padding: 50px 15px; border-radius: 30px;">
-                <div class="section_title text-center">
+			<div class="overlay bg-parallax" style="opacity: 1" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
+			</div>
+			<div class="container" style="background-color:rgba(0, 0, 0, 0.5); width: 1110px; padding: 50px 15px; border-radius: 30px;">
+                <div class="section_title text-center" style=" margin: 50px 0px">
                     <h2 class="title_w">마이페이지</h2>
                     <p style="visibility: hidden;">Who are in extremely love with eco friendly system.</p>
                     <div class="hotel_booking_area position" >
 	                    <div class="container" style="padding-left: 190px;">
 					<!--================폼 시작 Area =================-->
-							<form role="form" id="frm" name="frm" action="/own/band/insertDefault" method="post" autocomplete="off" style="width: 80%;" enctype="multipart/form-data">
+							<form role="form" id="frm" name="frm" action="/own/band/insertDefault" method="post" autocomplete="off" style="width: 80%; display: flex; flex-direction: column;" enctype="multipart/form-data">
 								<input type="hidden" th:name="${_csrf.parameterName}"
 									th:value="${_csrf.token}"> <input type="hidden"
 									th:value="${session.userId}" name="userId" id="userId" />
-								<div class="imgArea">
+								<div class="imgArea" style="display: flex; flex-direction: column;">
 					<!--================이미지 Area =================-->
-								<div>
-								<div style="flex-grow: 3; display: flex; justify-content: space-between; position: relative;" class="imgss">
-									<div style="flex-grow: 1; width: 150x; height: 150px;" class="bandBox">
-										<img th:src="|/imgView/${useries.mediaServerFile}|"
-											id="inputImage" name="inputImage" alt=""
-											style="flex-grow: 1; width: 150x; height: 150px;">
+									<div>
+									<div style="flex-grow: 3; display: flex; justify-content: space-between; position: relative; width: 750px;" class="imgss">
+										<div style="flex-grow: 1; width: 150x; height: 150px;" class="bandBox">
+											<img th:src="|/imgView/${useries.mediaServerFile}|"
+												id="inputImage" name="inputImage" alt=""
+												style="flex-grow: 1; width: 150x; height: 150px;">
 									</div>
-									<p><i class="fa-regular fa-images fa-2x" style="color: black; background:#f3f3f3; border-radius:20px; position: absolute; bottom:10px; left: 130px;"></i></p>
-									<!--================ 이름 =================-->
-									<div style="display: inline-block; width: 70%; padding: 10px 0px 0px 50px; flex-grow: 3; display: flex; flex-direction: column;">
-										<h6 class="typo-list" style="float: left; padding-left: 10px; color:white; padding: 0px 380px 0px 0px;">
-										가치 활동명</h6>
-										<div class="mt-10">
-											<input type="text" th:value="${useries.bandNickname}"
-												id="bandNickname" name="bandNickname" maxlength="10"
-												placeholder="가치 활동명 입력" onfocus="this.placeholder = ''"
-												onblur="this.placeholder = '가치 활동명'" required
-												class="single-input"
-												style="height: 50px; font-size: 20px; width: 88%; display: block; float: left; border-radius: 10px">
+										<p><i class="fa-regular fa-images fa-2x" style="color: black; background:#f3f3f3; border-radius:20px; position: absolute; bottom:10px; left: 130px;"></i></p>
+										<!--================ 이름 =================-->
+										<div style="display: inline-block; width: 70%; padding: 10px 0px 0px 50px; flex-grow: 3; display: flex; flex-direction: column;">
+											<h6 class="typo-list" style="float: left; padding-left: 10px; color:white; padding: 0px 380px 0px 0px;">
+											가치 활동명</h6>
+											<div class="mt-10">
+												<input type="text" th:value="${useries.bandNickname}"
+													id="bandNickname" name="bandNickname" maxlength="10"
+													placeholder="가치 활동명 입력" onfocus="this.placeholder = ''"
+													onblur="this.placeholder = '가치 활동명'" required
+													class="single-input"
+													style="height: 50px; font-size: 20px; width: 88%; display: block; float: left; border-radius: 10px">
+											</div>
+											<b><small
+												style="display: inline; width: 10%; float: right"
+												id="nickNamelength">4/10</small></b>
+											<div id="hiddenBox" style="display: none">
+												<b style="padding-left: 10px;" id="hiddenBoxText">가입가능한
+													닉네임입니다</b>
+											</div>
 										</div>
-										<b><small
-											style="display: inline; width: 10%; float: right"
-											id="nickNamelength">4/10</small></b>
-										<div id="hiddenBox" style="display: none">
-											<b style="padding-left: 10px;" id="hiddenBoxText">가입가능한
-												닉네임입니다</b>
-										</div>
+										<!--================ 이름 끝 =================-->
 									</div>
-									<!--================ 이름 끝 =================-->
-								</div>
+									</div>
+						<!-- 이미지끝남 -->
 								<div class="insertArea"
-								style="margin: 0px auto; width: 100%; position: relative;">
+								style="margin: 0px auto; padding:30px 350px 0px 50px; width: 1080px; display: flex; justify-content: flex-end;">
 								<!--================ 셀렉트박스  =================-->
-										<div class="col-md-5">
-											<div class="input-group">
-											<label for="exe"> 관심 운동 </label>
-												<select class="exercise  form-select" id="exe"
-													th:value="*{exercise}" name="bandInterest">
-													<option value="">전체</option>
-													<option th:each="exe : ${exercise}"
-														th:value="${exe.exersubNo}" th:text="${exe.exersubName}"
-														th:selected="${#strings.equals(exe.exersubNo, useries.bandInterest)}"></option>
-												</select>
-											</div>
+									<div class="col-md-5" style="padding-right: 0px;">
+										<div class="">
+											<select class="exercise" id="exe" style="width: 155px; height: 50px;"
+												th:value="*{exercise}" name="bandInterest" slot="">
+												<option value="">운동 전체</option>
+												<option th:each="exe : ${exercise}"
+													th:value="${exe.exersubNo}" th:text="${exe.exersubName}"
+													th:selected="${#strings.equals(exe.exersubNo, useries.bandInterest)}"></option>
+											</select>
 										</div>
-										<div class="col-md-5">
-											<div class="input-group">
-											<label for="lo"> 관심 지역 </label>
-												<select class="location  form-select" id="lo"
-													th:value="*{location}" name="bandLocation">
-													<option value="">전체</option>
-													<option th:each="loc : ${location}"
-														th:value="${loc.locCode}" th:text="${loc.locCity}"
-														th:selected="${#strings.equals(loc.locCode, useries.bandLocation)}"></option>
-												</select>
-											</div>
+									</div>
+									<div class="col-md-5" style="padding-right: 0px;">
+										<div class="">
+											<select class="location" id="lo" style="width: 155px; height: 50px;"
+												th:value="*{location}" name="bandLocation">
+												<option value="">지역 전체</option>
+												<option th:each="loc : ${location}" 
+													th:value="${loc.locCode}" th:text="${loc.locCity}"
+													th:selected="${#strings.equals(loc.locCode, useries.bandLocation)}"></option>
+											</select>
 										</div>
+									</div>
 								<!--================ 셀렉트박스  =================-->
 							</div>
 							</div>
-							<!--================이미지 Area 끝 =================-->
+					<!--================이미지 Area 끝 =================-->
 							<input type="file" id="attachFile" multiple="multiple"
 								name="attachFile" style="display: none" onchange="imgFnc()"
 								accept="image/gif, image/jpeg, image/png">
-							<button type="button" id="submitBtn" class="genric-btn primary circle arrow"
-									style="position: absolute; right: 150px; top: 20px; font-size: 20px; margin: 0 auto; display: flex;">수정</button>
-						</div>
-						<!-- 이미지끝남 -->
+							<div style="margin: 70px 15px 0px 0px;">	
+								<button type="button" id="submitBtn" class="genric-btn primary circle arrow"
+									style="font-size: 20px; float: right;">수정</button>
+							</div>
 					</form>
 				</div>
             </div>
@@ -369,6 +352,9 @@
             $('.searchBtn').on('click', function(){
             	window.location = '/own/band/bandSearch?bandName='+$('input[name="bandName"]').val();
             })
+            $(document).ready(function() {
+				$('select').niceSelect();
+			})
 		</script>
 	</div>
 </body>

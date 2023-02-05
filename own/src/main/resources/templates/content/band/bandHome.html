@@ -9,13 +9,24 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
+        <link rel="icon" href="/css/band/gachi/own.png" type="image/png">
         <title>오늘의운동 가치</title>
         <style>
        		body {
        			background-color: #EFFBFB;
        		}
-       		/* 셀렉트박스 */
+			/* 나이스셀렉트 */
+			.list li {
+				width: 200px;
+			}
+			.list {
+				max-height: 200px;
+  				overflow-y: scroll !important;
+			}
+			.nice-select {
+				width: 220px;
+			}
+       		/* 서치 셀렉트박스 */
        		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
 			select {
@@ -126,20 +137,20 @@
 		.tab_menu{
 		   position:relative;
 		   }
-		.tab_menu .list{
+		.tab_menu .lists{
 		   overflow:hidden;
 		   /* background-color:#117a8b; */
 		   }
-		.list {
+		.lists {
 			height: 35px;
 			border-bottom: 1px solid #eeeeee; 
 			border-top: 1px solid #eeeeee; 
 		}
-		.tab_menu .list li{
+		.tab_menu .lists li{
 		   float:left;
 		   
 		   }
-		.tab_menu .list .btns{
+		.tab_menu .lists .btns{
 		   font-size:25px;
 		   }
 		.liClick {
@@ -148,11 +159,11 @@
 		.deClick {
 			color: #A4A4A4; 
 		}   
-		.list {
+		.lists {
 			display: flex;
 			justify-content: center;
 		} 
-		li {
+		.lis {
 			 margin: 0px 30px;
 			 font-weight: 500;
 		}
@@ -327,6 +338,7 @@
                 </div>
             </div>
         </section>
+        <!--================Banner Area =================-->
         <!--================================= 유저아이디 히든  ==================================-->
         <input type="hidden" class="hiddenUser" th:value="${session.loginUser.userId}">
         <section class="accomodation_area section_gap"  style="padding: 0px; background-color: #f1f1f1">
@@ -383,14 +395,14 @@
                 <!--================밴드  Area =================-->
 				<div class="wrap container">
 		            <div class="tab_menu">
-		               <ul class="list" style="list-style: none;">
-		                  <li>
+		               <ul class="lists" style="list-style: none;">
+		                  <li class="lis">
 		                     <a id="myBandyIngB" class="btns hoverBtn" style="text-decoration-line: none;">가입 가치<b id="BK01num"></b></a>         
 		                  </li>
-		                  <li>
+		                  <li class="lis">
 		                     <a id="myBandyIngRe" class="btns hoverBtn" style="text-decoration-line: none;">운영 가치</h3>   <b id="BK02num"></b></a>
 		                  </li>
-		                  <li>
+		                  <li class="lis">
 		                     <a id="myBandyIngYe" class="btns hoverBtn" style="text-decoration-line: none;">가입 신청중<b id="BK03num"></b></a>
 		                  </li>
 		               </ul>
@@ -415,7 +427,7 @@
 									</tbody>	
 		                        </table>
 		                        <div class="btnContent1 flexCenter">
-									<div class="replyPagination1" id="replyPagination1">페이지 영역</div>
+									<div class="replyPagination1" id="replyPagination1"></div>
 								</div>
 		                     </div>
 		               </article>
@@ -440,7 +452,7 @@
 									</tbody>	
 		                        </table>
 		                        <div class="btnContent2 flexCenter">
-									<div class="replyPagination2" id="replyPagination2">페이지 영역</div>
+									<div class="replyPagination2" id="replyPagination2"></div>
 								</div>
 		                     </div>
 		               </article>
@@ -465,7 +477,7 @@
 									</tbody>	
 		                        </table>
 		                        <div class="btnContent3 flexCenter">
-									<div class="replyPagination3" id="replyPagination3">페이지 영역</div>
+									<div class="replyPagination3" id="replyPagination3"></div>
 								</div>
 		                     </div>
 		               </article>
@@ -480,7 +492,7 @@
         <section class="facilities_area section_gap">
             <div class="overlay bg-parallax" style="opacity: 1" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
             </div>
-            <div class="container" style="background-color:rgba(0, 0, 0, 0.5); width: 1110px; padding: 50px 15px; border-radius: 30px;">
+            <div class="container" style="background-color:rgba(0, 0, 0, 0.5); width: 1110px; padding: 50px 15px; border-radius: 30px; position: relative;">
                 <div class="section_title text-center">
                     <h2 class="title_w">이런 가치는 어떤가요</h2>
                     <p style="visibility: hidden;">Who are in extremely love with eco friendly system.</p>
@@ -493,16 +505,16 @@
                                 <div class="row">
                                 	<div class="col-md-4">
                                         <div class="input-group">
-                                            <select class="recom_exercise form-select" th:value="*{exercise}">
-                                                <option value="all">관심운동..전체</option>
+                                            <select class="recom_exercise" th:value="*{exercise}" style="width: 220px;">
+                                                <option value="all">운동 전체</option>
                                                 <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}"></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <select class="recom_location form-select" th:value="*{location}">
-                                            	<option value="all">관심지역..전체</option>
+                                            <select class="recom_location" th:value="*{location}" style="width: 220px;">
+                                            	<option value="all">지역 전체</option>
                                                 <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}" th:selected="${loc.locCode} ==${user.bandLocation }"></option>
                                             </select>
                                         </div>
@@ -519,7 +531,7 @@
                 </div>
             </div>
                 </div>
-                <div class="row mb_30" id="recom">
+                <div class="row mb_30" id="recom" style="margin-bottom: 30px;">
                     <!-- <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
@@ -533,8 +545,8 @@
                             <h5><small></small></h5>
                         </div> -->
                     </div>
-                <div style="margin-top: 30px;color: white;">
-                    <button style="position: absolute; right: 320px; bottom: 140px;" class="btnChall-primary btnChall">  추천 더보기<i class="fa-solid fa-arrow-right"></i></button>
+                <div style="margin-top: 150px;color: white; position: absolute; right: 50px; bottom: 30px;">
+                    <button class="btnChall-primary btnChall" onclick="location.href='/own/band/bandRec'">  추천 더보기<i class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </div>
         </section>
@@ -1020,6 +1032,9 @@
 					$table.trigger('repaginate');
 				});
 		}
+		$(document).ready(function() {
+			$('select').niceSelect();
+		})
 		</script>
     </div>
     </body>

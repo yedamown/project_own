@@ -5,8 +5,8 @@
 <mapper namespace="co.prjt.own.band.mapper.BandMapper">
 	<sql id="recom">
 			<if test="bandName != null and bandName !=''">
-				WHERE AND BAND_NAME LIKE '%' || #{bandName} || '%'
-				AND LIKE LIKE '%' || #{bandKeyword} || '%'
+				WHERE BAND_NAME LIKE '%' || #{bandName} || '%'
+				AND BAND_KEYWORD LIKE '%' || #{bandKeyword} || '%'
 			</if>
 	</sql>
 	<sql id="recom2">
@@ -534,7 +534,7 @@
 				                    	AND TO_CHAR(BAND_AGE_BEFOROPTION, 'yyyy')<=TO_CHAR(#{bandAgeBeforoption}, 'yyyy') 
 				                    	AND TO_CHAR(BAND_AGE_AFTEROPTION, 'yyyy')>=TO_CHAR(#{bandAgeBeforoption}, 'yyyy'))) A,
 				                    ]]> 	
-                                    ) A, EXER_SUB B, OWN_LOCATION C
+                                    EXER_SUB B, OWN_LOCATION C
                                     WHERE A.BAND_CATEGORY = B.EXERSUB_NO
                                     AND A.BAND_LOCATION=C.LOC_CODE
 						<include refid="recom2"></include> 
