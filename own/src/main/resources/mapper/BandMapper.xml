@@ -83,23 +83,22 @@
 	</update>
 	<select id="getBand" resultType="map">
 		SELECT  DISTINCT
-	            A.BAND_NO 			"bandNo",
-	            A.BAND_NAME 		"bandName",
-	            A.BAND_INTRO 		"bandIntro",
-	            A.BAND_GENDER 		"bandGender",
-	            A.BAND_KEYWORD 		"bandKeyword",
-	            A.BAND_OPEN_OPTION "bandOpenOption",
-	            A.BAND_AGE_OPTION "bandAgeOption",
-	            A.BAND_AGE_BEFOROPTION "bandAgeBeforoption",
-	            A.BAND_AGE_AFTEROPTION "bandAgeafteroption",
-	            C.EXERSUB_NAME "bandCategory",
-	            A.BAND_GENDER_OPTION "bandGenderOption",
+	            A.BAND_NO 			     "bandNo",
+	            A.BAND_NAME 		     "bandName",
+	            A.BAND_INTRO 		     "bandIntro",
+	            A.BAND_GENDER 		     "bandGender",
+	            A.BAND_KEYWORD 		     "bandKeyword",
+	            A.BAND_OPEN_OPTION       "bandOpenOption",
+	            A.BAND_AGE_OPTION        "bandAgeOption",
+	            A.BAND_AGE_BEFOROPTION   "bandAgeBeforoption",
+	            A.BAND_AGE_AFTEROPTION   "bandAgeafteroption",
+	            C.EXERSUB_NAME           "bandCategory",
+	            A.BAND_GENDER_OPTION     "bandGenderOption",
 	            A.BAND_MEMBERSHIP_OPTION "bandMembershipOption",
-	            D.LOC_CITY "bandLocation",
-	            E.MEMCOUNT "memcount",
-	            A.BAND_LEADERID "bandLeaderid"
-	            
-            
+	            D.LOC_CITY               "bandLocation",
+	            E.MEMCOUNT               "memcount",
+	            A.BAND_LEADERID          "bandLeaderid",
+	            F.BAND_NICKNAME          "bandLeaderNickname"
         FROM BAND A, 
              BAND_MEMBER_DETAIL B,
              EXER_SUB C,
@@ -108,7 +107,8 @@
                 FROM BAND_MEMBER_DETAIL 
                WHERE BAND_NO = #{bandNo}
                and band_member_status = 'BA02'
-               GROUP BY BAND_NO) E
+               GROUP BY BAND_NO) E,
+               BAND_MEMBER_DETAIL F
                     
        WHERE A.BAND_NO = B.BAND_NO
          AND A.BAND_NO = #{bandNo}
@@ -117,6 +117,8 @@
          AND A.BAND_NO = E.BAND_NO
          AND A.BAND_CATEGORY = C.EXERSUB_NO
 		 AND A.BAND_LOCATION = D.LOC_CODE
+		 AND A.BAND_LEADERID = F.USER_ID
+		 AND F.BAND_NO = #{bandNo}
 	</select>
 	<!-- <sql id="condition">
 		<if test="bandName != null and bandName !=''">
