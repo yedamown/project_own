@@ -24,34 +24,43 @@
 
 	.modal_bandMemberInfo {
 		display: none;
-		/* Hidden by default */
 		position: fixed;
-		/* Stay in place */
 		z-index: 80;
-		/* Sit on top */
 		left: 0;
 		top: 0;
 		width: 100%;
-		/* Full width */
 		height: 100%;
-		/* Full height */
 		overflow: auto;
-		/* Enable scroll if needed */
 		background-color: rgb(0, 0, 0);
-		/* Fallback color */
 		background-color: rgba(0, 0, 0, 0.4);
-		/* Black w/ opacity */
 	}
 
-	/* Modal Content/Box */
+	.item {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.item-row {
+		margin-top: 10px;
+		margin-bottom: 20px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
 	.modal-content {
+		display: flex;
+		flex-direction: column;
 		background-color: #fefefe;
 		margin: 15% auto;
-		/* 15% from the top and centered */
 		padding: 20px;
 		border: 1px solid #888;
 		width: 50%;
-		/* Could be more or less, depending on screen size */
 	}
 
 	/* The Close Button */
@@ -146,19 +155,24 @@
 	<div class="modal_bandMemberInfo">
 		<div class="modal-content">
 			<span class="closeBtn">&times;</span>
-			<div id="modal_profileImg"></div>
-			<div class="modal_nickname"><h3 id="modal_nickname"></h3></div>
-			<div id="modal_birtyday">
+			<div class="modal_nickname">
+				<h3 id="modal_nickname"></h3>
 			</div>
-			<div id="modal_signupDate">
+			<div class="item-row">
+				<div id="modal_profileImg"></div>
+				<div class="item">
+					<div id="modal_birtyday"></div>
+					<div id="modal_signupDate"></div>
+				</div>
 			</div>
 			<input type="text" id="modal_intro" readonly>
 			<div id="modal_btn">
 				<span><i class="fa fa-regular fa-message-dots">1:1 채팅</i><span>
-				<span><i class="fa fa-regular fa-file">작성글 보기</i><span>
+						<span><i class="fa fa-regular fa-file">작성글 보기</i><span>
 			</div>
 		</div>
 	</div>
+	<!-- 모달구간 끝 -->
 
 	<div id="wBandMemberList" style="display: none">
 		<div>
@@ -431,11 +445,11 @@
 		}
 
 		//모달시작
-		$(document).on('click', '.modalBtn', function () {	
-			$(".modal_bandMemberInfo").css("display","block");
+		$(document).on('click', '.modalBtn', function () {
+			$(".modal_bandMemberInfo").css("display", "block");
 			let trUserId = $(this).children('td:eq(-1)').children().val();
 			// 정보 가져 오는 아작아작스 실행 
-			 $.ajax({
+			$.ajax({
 				url: '/own/band/bandGroup/selectBandMemberInfo?bandNo=' + bandNo + '&userId=' + trUserId,
 				method: 'get',
 				dataType: 'json',
@@ -446,10 +460,11 @@
 				$("#modal_birtyday").empty();
 				$("#modal_signupDate").empty();
 				// 프로필이미지
-				let modal_profileImg="";
+				let modal_profileImg = "";
 				modal_profileImg = $('<img>').attr({
-                    "src": "/imgView/" + res[0].profileImg, "class": "modal_profileImg"})
-                $('#modal_profileImg').append(modal_profileImg);
+					"src": "/imgView/" + res[0].profileImg, "class": "modal_profileImg"
+				})
+				$('#modal_profileImg').append(modal_profileImg);
 				// 닉네임
 				$('#modal_nickname').text(res[0].bandNickname);
 				// 생일, 가입날짜
@@ -457,20 +472,20 @@
 				$('#modal_birtyday').text(res[0].bandBirth);
 				// 소개글
 				$('#modal_intro').val(res[0].bandMemberIntro);
-			}) 
+			})
 		});
-	
+
 		// <span> 태그(X 버튼)를 클릭하면 Modal을 닫기
-			$('.closeBtn').click(function () {
-				$(".modal_bandMemberInfo").css("display","none");
-			});
-		
+		$('.closeBtn').click(function () {
+			$(".modal_bandMemberInfo").css("display", "none");
+		});
+
 		// Modal 영역 밖을 클릭하면 Modal을 닫기
-			window.onclick = function (event) {
-				if (event.target.className == "modal_bandMemberInfo") {
-					event.target.style.display = "none";
-				}
-			};
+		window.onclick = function (event) {
+			if (event.target.className == "modal_bandMemberInfo") {
+				event.target.style.display = "none";
+			}
+		};
 
 		// 가입한 멤버 리스트 - 강퇴 버튼
 		$('#akickBtn').on('click', function () {
