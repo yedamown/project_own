@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.prjt.own.band.service.BandMemberDetailService;
+import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.chat.service.ChatService;
 import co.prjt.own.chat.service.ChatroomVO;
 import co.prjt.own.chat.service.MessageVO;
-import co.prjt.own.exercise.service.ExerRecordVO;
 
 @Controller
 public class ChatController {
@@ -38,6 +38,15 @@ public class ChatController {
 		System.out.println("채팅방 list===========" + list);
 		return chatService.createChatroom(list);
 	}
+
+	// 로그인 아이디로 가입중인 밴드 멤버번호받아오기 
+	@GetMapping("/getMyBandMemberNo")
+	@ResponseBody
+	public List<BandMemberDetailVO> getMyBandMemberNo(@RequestParam String userId) {
+		System.out.println("채팅컨트롤러 밴드헤더"+userId);
+		return chatService.getMyBandMemberNo(userId);
+	}
+	
 	
 	// 기존 채팅방 번호 가져오기 
 	@PostMapping("/findChatroomNo")
