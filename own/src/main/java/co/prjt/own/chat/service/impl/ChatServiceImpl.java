@@ -1,12 +1,10 @@
 package co.prjt.own.chat.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.chat.mapper.ChatMapper;
 import co.prjt.own.chat.service.ChatService;
 import co.prjt.own.chat.service.ChatroomVO;
@@ -18,20 +16,9 @@ public class ChatServiceImpl implements ChatService {
 	ChatMapper chatMapper;
 
 	@Override
-	public List<BandMemberDetailVO> getMyBandMemberNoList(String userId) {
-		// 로그인 아이디로 가입중인 밴드 멤버번호 받아오기
-		return chatMapper.getMyBandMemberNoList(userId);
-	}
-	
-	@Override
-	public List<ChatroomVO> getMyChatroomList(List<BandMemberDetailVO> list) {
+	public List<ChatroomVO> getMyChatroomList(String userId) {
 		// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
-		List<ChatroomVO> chatroomNoList = new ArrayList<>();
-		for(int i=0; i<list.size(); i++) {
-			String bandNo = list.get(i).getBandMemberNo();
-			chatroomNoList.add(chatMapper.getMyChatroomList(bandNo));
-		}
-		return null;
+		return chatMapper.getMyChatroomList(userId);
 	}
 
 	@Override
