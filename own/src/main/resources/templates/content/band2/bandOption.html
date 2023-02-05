@@ -151,12 +151,13 @@
 }
 </style>
 <body>
+<div id="submain">
 <h1>옵션</h1>
 <div style="flex-grow:3; width: 740px" id="subTemplate">
 <div class="tab-wrap">
 
     <input type="radio" id="tab4" name="tabGroup2" class="tab" checked>
-    <label for="tab4">밴드정보</label>
+    <label for="tab4" id="bandInfo">밴드정보</label>
 
     <input type="radio" id="tab5" name="tabGroup2" class="tab">
     <label for="tab5" id="bandmanage">밴드 수정</label>
@@ -218,9 +219,15 @@
   </div>
   </div>
 </div>
+</div>
 </body>
 <script>
 $(function(){
+$('#bandInfo').on('click', function(){
+	$('#submain').load("/own/band/bandGroup/bandOptionMain?bandNo="+bandNo);
+})
+	
+	
 $('#bandmanage').on('click', function(){
    $('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
 });

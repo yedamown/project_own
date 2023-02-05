@@ -359,9 +359,9 @@ public class OwnhomeController {
 			BandMemberDetailVO vo = new BandMemberDetailVO();
 			vo.setUserId(id);
 			
-			
-			paging2.setPageUnit(2);// 3개씩보기
+			paging2.setPageUnit(3);// 3개씩보기
 			paging2.setPageSize(3); // 페이딩 동그라미 3개
+			vo2.setChallStatus("진행 중");
 			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);
 			
 			paging.setPageUnit(3);// 3개씩보기
