@@ -29,7 +29,7 @@ public class ChatServiceImpl implements ChatService {
 		List<ChatroomVO> chatroomNoList = new ArrayList<>();
 		for(int i=0; i<list.size(); i++) {
 			String bandNo = list.get(i).getBandMemberNo();
-			chatroomNoList.add(chatMapper.getMyChatroomList(bandNo));
+			//chatroomNoList.add(chatMapper.getMyChatroomList(bandNo));
 		}
 		return null;
 	}
