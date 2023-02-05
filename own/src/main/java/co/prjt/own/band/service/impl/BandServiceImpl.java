@@ -258,6 +258,10 @@ return bandList;
 
 	@Override//추천밴드 페이지이동용
 	public List<BandVO> recomBandPage(BandVO band, Paging paging) {
+		//생일하고 성별설정가져오기
+		BandMemberDefaultVO defVo = bandMemberDefaultMapper.getBandMemberDefault(band.getBandLeaderid());
+		band.setBandAgeBeforoption(defVo.getBandBirth());
+		band.setBandGender(defVo.getBandGender());
 		//매퍼를 돌릴 vo
 		//설정으로 추천리스트받아옴
 		paging.setPageUnit(8);
@@ -267,6 +271,7 @@ return bandList;
 		paging.setTotalRecord(bandMapper.recomBandCount(band));
 		band.setFirst(paging.getFirst());
 		band.setLast(paging.getLast());
+		
 		//페이지카운트..용을 해야하는데 힘드니 list size로 대체
 		List<BandVO> list = bandMapper.recomBand(band);
 		//리스트에 이미지담기

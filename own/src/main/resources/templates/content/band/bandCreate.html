@@ -5,28 +5,24 @@
       layout:decorate="~{layout/band_layout}"
       lang="ko">
     <head>
-    	<!-- jquery -->
     	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-        <title>Royal Hotel</title>
-        <!-- Bootstrap CSS -->
-        <!-- <link rel="stylesheet" href="/css/band/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-         --><!-- main css -->
-        <!-- <link rel="stylesheet" href="/css/band/css/style.css">
-        <link rel="stylesheet" href="/css/band/css/responsive.css">
-         --><!--어썸폰트 무료?-->
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+        <link rel="icon" href="/css/band/gachi/own.png" type="image/png">
+        <title>오늘의운동 가치</title>
       <style>
-      	
+      	/* 나이스셀렉트 */
+		.list li {
+			width: 200px;
+		}
+		.list {
+			max-height: 200px;
+					overflow-y: scroll !important;
+		}
+		.nice-select {
+			width: 220px;
+		}
 		img {
 			border-radius: 10px;
 		}
@@ -91,15 +87,14 @@
     <body>
     <div layout:fragment="content">
         <!--================위에  Area =================-->
-        <section class="banner_area">
-            <div class="booking_table d_flex align-items-center" style="min-height: 300px;">
-            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
-            </div>
-        </section>
-        <!--================위에 Area 끝=================-->
-        
-        <!--================ 폼 Area  =================-->
-		<div class="whole-wrap" style="height: 1300px;">
+        <section class="facilities_area section_gap">
+			<div class="overlay bg-parallax" style="opacity: 1" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
+			</div>
+			<div class="container" style="background-color:rgba(0, 0, 0, 0.5); width: 1110px; border-radius: 30px;">
+                <div class="section_title text-center" style=" margin: 50px 0px">
+                    <p style="visibility: hidden;">Who are in extremely love with eco friendly system.</p>
+                    <div class="hotel_booking_area position" >
+	                    <div class="container" style="">
 			<div class="container">
 				<div style="padding: 60px 0px 100px;">
 		<!--================폼 시작 Area =================-->      
@@ -110,11 +105,11 @@
 		         		<div class="imgArea">
 		<!--================이미지 Area =================-->
 							<div>
-								<h2 class="typo-list" style="padding-left: 125px; padding-bottom: 15px">대표 이미지</h2>  
+								<h2 class="typo-list" style="padding-left: 50px; color:white; padding-bottom: 15px">대표 이미지</h2>  
 							</div>
-				            <div style="display: flex; padding: 0px 0px 30px 100px;">
+				            <div style="display: flex; padding: 0px 0px 30px 0px;">
 				                <div  style="flex-grow: 3;"class="imgss">
-				                	<div><img th:src="|/imgView/${createImage[1].mediaServerFile}|" id="inputImage" alt="" style="flex-grow: 3;width: 255px;height: 255px; border-radius: 10px;"></div>
+				                	<div><img src="/css/band/zbandImage/defImg.png" id="inputImage" alt="" style="flex-grow: 3;width: 255px;height: 255px; border-radius: 10px;"></div>
 				                </div>
 								<div id="sampleImg" style="display: flex; flex-wrap: wrap; flex-direction: column; align-items: center; justify-content: flex-end; flex-grow: 2;">
 									<div class="imgss2" style="display:flex-wrap; justify-content:space-between;">
@@ -335,9 +330,11 @@
 			              <button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 개설</button>
 			            </form>
 		<!--================폼 끝 Area =================--> 
-					</div>
 				</div>
-			</div>
+            		</div>
+                </div>
+            </div>
+        </section>
         <!--================ 밴드생성 끝 Area  =================-->
         
         <!-- Optional JavaScript -->

@@ -160,6 +160,7 @@ public class BandController {
 		//운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());
 		model.addAttribute("exercise", bandService.allExcersie());
+		System.out.println(band.toString());
 		model.addAttribute("bandList", bandService.getBandAll(band, paging));
 		return "content/band/bandSearch";
 	}
