@@ -86,8 +86,6 @@ public class ChallengeServiceImpl implements ChallengeService {
 		// 밖에서 하고오면 보는갯수 줄어들지않을까?
 		paging.setTotalRecord(mapper.countChall(vo));
 		System.out.println(mapper.countChall(vo));
-//		paging.setPageUnit(3); //한페이지에 몇개
-//		paging.setPageSize(4); //페이징 ? 갯수 몇번까지?
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		vo.setPaging(paging);
