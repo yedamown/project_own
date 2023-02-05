@@ -76,8 +76,8 @@ public class ChallengeServiceImpl implements ChallengeService {
 
 	@Override
 	// 나의 도전 수 카운트
-	public int countMychall(String id) {
-		return mapper.countMychall(id);
+	public int countMychall(ChallengeVO vo) {
+		return 	mapper.countMychall(vo);
 	}
 
 	@Override
@@ -86,8 +86,6 @@ public class ChallengeServiceImpl implements ChallengeService {
 		// 밖에서 하고오면 보는갯수 줄어들지않을까?
 		paging.setTotalRecord(mapper.countChall(vo));
 		System.out.println(mapper.countChall(vo));
-//		paging.setPageUnit(3); //한페이지에 몇개
-//		paging.setPageSize(4); //페이징 ? 갯수 몇번까지?
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		vo.setPaging(paging);
@@ -108,7 +106,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 		// 검색할 아이디 잘 왔는지 체크
 		System.out.println(vo.getUserId());
 		// 내 도전갯수 세기
-		paging.setTotalRecord(mapper.countMychall(vo.getUserId()));
+		paging.setTotalRecord(mapper.countMychall(vo));
 		// 페이징 정보 우선 검색할 거에 담아두기.
 //		밖에서 정하고가져고온다..
 //		paging.setPageUnit(6); //내 도전이라 6개씩 보여줄 것

@@ -321,7 +321,9 @@
 			let data = { page: page, 
 						 pageUnit: 6, 
 				   		 pageSize: 5,
-				 		 userId: userIdInfo };
+				 		 userId: userIdInfo,
+						 challStatus: "진행 중",
+						 memStatus: "승인" };
 			let pagingName = 'nowChallPaging';
 			pagingAjaxBtn(data, pagingName);
 	   });
@@ -329,14 +331,43 @@
 	   $('#nowChall').on('click', function(){
 			$('#navPaging nav').empty();
 			console.log($('#navPaging').children());
-			let data = { page:1, 
-						 pageUnit:6, 
-				   		 pageSize:5,
-				 		 userId: userIdInfo };
+			let data = { page: 1, 
+						 pageUnit: 6, 
+				   		 pageSize: 5,
+				 		 userId: userIdInfo,
+						 challStatus: "진행 중",
+						 memStatus: "승인" };
 			let pagingName = 'nowChallPaging';
 			firstPageAjax(data, pagingName);
 	   });
 
+
+			//완료된 도전 첫화면
+			$('#doneChall').on('click', function(){
+			$('#navPaging').children().empty();
+				console.log("삭제되었나요..");
+				let data = { page: 1, 
+							pageUnit: 6, 
+							pageSize: 5,
+							userId: userIdInfo,
+							challStatus: "종료" };
+				let pagingName = 'doneChallPaging';
+				firstPageAjax(data, pagingName);
+			});
+
+			//내가참여중인 도전 페이징 버튼 아작스
+			$('#nowChallPaging').on('click', '.pagePort', function(){
+			$('#navPaging').children().empty();
+			let page = $(this).attr('value');
+			console.log(page);
+			let data = { page: page, 
+						 pageUnit: 6, 
+				   		 pageSize: 5,
+				 		 userId: userIdInfo,
+						 challStatus: "종료" };
+			let pagingName = 'doneChallPaging';
+			pagingAjaxBtn(data, pagingName);
+	   });
 
 	   //-----------------------------------내가 좋아요한 도전--------------------------------------
 
@@ -402,10 +433,25 @@
 			let data = { page:1, 
 						 pageUnit:6, 
 				   		 pageSize:5,
-				 		 userId: userIdInfo,
 						 challLeader: userIdInfo };
-			let pagingName = 'leaderChallPaging';
-			firstPageAjax(data, pagingName);
+			$.ajax({
+				url: '/own/chall/leaderChallAjax',
+				method: 'get',
+				data: data,
+				success: function(result){
+					let Chall = $('#ChallRow')
+					$('#challRow').empty();
+					result.forEach( vld => {
+					makeChallDiv(vld);
+					});
+					let pagingName = 'leaderChallPaging';
+					$('#navPaging').children().empty();
+					makePaging(result, pagingName);
+				},
+				error: function(err){
+					console.log(err);
+				}
+        	});
 	   });
 
 	   //리더 페이징 아작스 버튼 시 
@@ -415,26 +461,30 @@
 			let data = { page: page, 
 						 pageUnit: 6, 
 				   		 pageSize: 5,
-				 		 userId: userIdInfo,
 						 challLeader: userIdInfo };
 			let pagingName = 'leaderChallPaging';
-			pagingAjaxBtn(data, pagingName);
+			$.ajax({
+				url: '/own/chall/leaderChallAjax',
+				method: 'get',
+				data: data,
+				success: function(result){
+					let Chall = $('#ChallRow')
+					$('#challRow').empty();
+					result.forEach( vld => {
+					makeChallDiv(vld);
+					});
+					let pagingName = 'leaderChallPaging';
+					$('#navPaging').children().empty();
+					makePaging(result, pagingName);
+				},
+				error: function(err){
+					console.log(err);
+				}
+        	});
 	   });
 
-	   //완료된 도전
-	   $('#doneChall').on('click', function(){
-		$('#navPaging').children().empty();
-		console.log("삭제되었나요..");
-		let data = { page:1, 
-						 pageUnit:6, 
-				   		 pageSize:5,
-				 		 userId: userIdInfo,
-						 challStatus: "종료" };
-			let pagingName = 'doneChallPaging';
-		firstPageAjax(data, pagingName);
-	   });
-
-	   //-------------------------처음페이지 호출 아작스(좋아요빼고), 버튼 아작스 호출 함수 ------------------------
+   
+	   //-------------------------처음페이지 호출 아작스(좋아요, 리더빼고), 버튼 아작스 호출 함수 ------------------------
 
 	   //처음 페이지 호출..아작스 -> 좋아요 빼고, 
 	   function firstPageAjax(data, pagingName) {

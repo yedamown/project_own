@@ -33,7 +33,10 @@ public class ChallengeVO {
 	String firstImage;
 	//내 도전 검색에서 내 아이디 담아둘 곳
 	String userId;
+	//도전검색시 회원상태...
+	String memStatus;
 	
+	//페이징관련정보
 	int first;
 	int last;
 	Paging paging;

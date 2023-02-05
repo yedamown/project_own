@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import co.prjt.own.band.service.BandMemberDetailVO;
+import co.prjt.own.band.service.BandVO;
 import co.prjt.own.chall.service.ChallengeVO;
 import co.prjt.own.common.Paging;
 import co.prjt.own.common.service.ReportVO;
@@ -89,5 +90,8 @@ public interface OwnhomeService {
 	public List<QuestionVO> getPagingmyQuestlist(QuestionVO vo, Paging paging);
 	//질문하기
 	public int questAdd(QuestionVO vo);
-	
+	//마이페이지 밴드 페이징
+	public List<BandVO> adminBandCheck(BandMemberDetailVO vo, Paging paging);
+	//나의 밴드가입갯수
+	public int bandCounting(BandMemberDetailVO vo);
 }

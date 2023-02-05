@@ -23,20 +23,16 @@
 				<if test="vldStatus !=null and vldStatus !='' ">
 					AND vld_status = #{vldStatus}
 				</if>
-				<if test="userId !=null and userId !='' ">
-					AND user_id = #{userId}
-				</if>
 		</sql>
-	
-	
 	
 	<!-- 페이징을 곁을인.. -->
 	<select id="getChallVld" resultType="co.prjt.own.chall.service.ValidationVO">
 		SELECT * FROM ( SELECT ROWNUM RN, A.* 	  FROM ( 
 		
-					SELECT V.*, M.MEDIA_SERVER_FILE
-					  FROM CHALL_VALIDATION V, MULTIMEDIA M
+					SELECT V.*, M.MEDIA_SERVER_FILE, C.MEM_NICKNAME AS USER_NICK
+					  FROM CHALL_VALIDATION V, MULTIMEDIA M, CHALL_MEMBER C
 					 WHERE M.IDENTIFY_ID = V.VLD_NO
+				       AND V.USER_ID = C.USER_ID
 					 <include refid="condition"/>   
 	              ORDER BY V.VLD_DATE DESC
 	<![CDATA[   
@@ -47,10 +43,12 @@
 	<select id="getMyVld" resultType="co.prjt.own.chall.service.ValidationVO">
 		SELECT * FROM ( SELECT ROWNUM RN, A.* 	  FROM (
 		
-					SELECT V.*, M.MEDIA_SERVER_FILE
-					  FROM CHALL_VALIDATION V, MULTIMEDIA M
+					SELECT V.*, M.MEDIA_SERVER_FILE, C.MEM_NICKNAME AS USER_NICK
+					  FROM CHALL_VALIDATION V, MULTIMEDIA M, CHALL_MEMBER C
 					 WHERE M.IDENTIFY_ID = V.VLD_NO
-					   AND V.USER_ID = #{userId}
+				       AND V.USER_ID = C.USER_ID
+				       AND V.USER_ID = #{userId}
+				       <include refid="condition"/>   
 					 ORDER BY V.VLD_DATE DESC
 					 
 	<![CDATA[   

@@ -18,6 +18,7 @@
 				</if>
 	</sql>
 	
+	
 	<insert id="insertChall">
 		<selectKey keyProperty="challNo" resultType="string" order="BEFORE">
 			SELECT CHA_SEQ.NEXTVAL FROM DUAL
@@ -62,7 +63,7 @@
                              		   FROM CHALLENGES S, MULTIMEDIA M
                                    	  WHERE S.CHALL_NO=M.IDENTIFY_ID
                                        GROUP BY S.CHALL_NO )
-                 ORDER BY TO_NUMBER(SUBSTR(CHALL_NO,5))
+                 ORDER BY TO_NUMBER(SUBSTR(CHALL_NO,5)) DESC
       
          <![CDATA[   
 		) A WHERE ROWNUM <= #{last} ) 	WHERE RN >= #{first}
@@ -82,18 +83,18 @@
 					SELECT C.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
 		              FROM MULTIMEDIA M, (SELECT * 
 		                                    FROM CHALLENGES
-		                                   WHERE CHALL_NO IN ( SELECT c.chall_no AS COUNT
-FROM CHALLENGES C, CHALL_MEM_LIST M
-WHERE C.CHALL_NO = M.CHALL_NO
-AND C.CHALL_STATUS = '진행 중'
-AND M.MEM_STATUS = '승인'
-AND M.USER_ID=#{userId})) C
+		                                   WHERE CHALL_NO IN ( SELECT C.CHALL_NO AS COUNT
+																 FROM CHALLENGES C, CHALL_MEM_LIST M
+																WHERE C.CHALL_NO = M.CHALL_NO
+															      AND M.MEM_STATUS = '승인' 
+															       <include refid="condition"/>   
+																  AND M.USER_ID = #{userId} )) C
 		            WHERE  M.IDENTIFY_ID = C.CHALL_NO
 		               AND MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
 		                                   FROM CHALLENGES S, MULTIMEDIA M
 		                                  WHERE S.CHALL_NO=M.IDENTIFY_ID
 		                                  GROUP BY S.CHALL_NO )                 
-
+					ORDER BY TO_NUMBER(SUBSTR(C.CHALL_NO,5)) DESC
 		<![CDATA[  
 		) A WHERE ROWNUM <= #{last} )  WHERE RN >= #{first}
 		]]>
@@ -111,7 +112,7 @@ AND M.USER_ID=#{userId})) C
 		SELECT COUNT(*)
 		FROM CHALL_MEM_LIST M, CHALLENGES C
 		WHERE M.CHALL_NO = C.CHALL_NO
-		AND M.USER_ID = #{value}
+		AND M.USER_ID = #{userId}
 		AND M.MEM_STATUS = '승인'
 		AND C.CHALL_STATUS = '진행 중'
 	</select>
@@ -143,12 +144,24 @@ AND M.USER_ID=#{userId})) C
 	</select>
 	
 	<select id="getMyLike" resultType="co.prjt.own.chall.service.ChallengeVO">
-			SELECT *
-			FROM CHALLENGES C, ( SELECT * 
-								   FROM OWN_LIKE
-			                      WHERE CATEGORY = 'Chall' 
-			                        AND USER_ID = #{userId} ) OL
-			WHERE C.CHALL_NO =  OL.CATEGORY_NO
+			SELECT * FROM ( SELECT ROWNUM RN, A.*  FROM ( 
+
+							 SELECT  C.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
+						        FROM CHALLENGES C, ( SELECT *  
+						                               FROM OWN_LIKE
+						                              WHERE CATEGORY = 'Chall' 
+						                                AND USER_ID = #{userId} ) OL, MULTIMEDIA M
+						      WHERE C.CHALL_NO =  OL.CATEGORY_NO
+						        AND M.IDENTIFY_ID = C.CHALL_NO
+						        AND M.MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
+						                              FROM CHALLENGES S, MULTIMEDIA M
+						                             WHERE S.CHALL_NO=M.IDENTIFY_ID
+						                             GROUP BY S.CHALL_NO )
+						      ORDER BY TO_NUMBER(SUBSTR(C.CHALL_NO,5)) DESC 
+						                    
+			<![CDATA[  
+			) A WHERE ROWNUM <= #{last} )  WHERE RN >= #{first}
+			]]>
 	</select>
 	
 </mapper>

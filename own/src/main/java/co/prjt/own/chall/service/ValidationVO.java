@@ -12,6 +12,7 @@ public class ValidationVO {
 	String vldNo; 
 	String challNo;
 	String userId;
+	String userNick;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	Date vldDate;
@@ -39,6 +40,7 @@ public class ValidationVO {
 	int First;
 	int last;
 	Paging paging;
+	
 	
 	//myALl페이징정보
 	

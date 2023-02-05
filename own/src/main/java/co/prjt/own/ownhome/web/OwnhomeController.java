@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.band.service.BandService;
 import co.prjt.own.band.service.BandVO;
 import co.prjt.own.chall.service.ChallengeService;
@@ -253,6 +254,20 @@ public class OwnhomeController {
 			return ownService.getPagingAdQuestlist(vo, paging);
 		}
 		
+		@ResponseBody		
+		@GetMapping("/own/admin/myBandPaging")
+		public List<BandVO> myBandPaging(Model model, BandMemberDetailVO vo, Paging paging) {
+			return ownService.adminBandCheck(vo, paging);
+		}
+		
+		@ResponseBody		
+		@GetMapping("/own/admin/myChallPaging")
+		public List<ChallengeVO> myChallPaging(Model model, ChallengeVO vo, Paging paging) {
+			paging.setPageUnit(2);// 3개씩보기
+			paging.setPageSize(3); // 페이딩 동그라미 3개
+			List<ChallengeVO> myList = challenge.myPageChall(vo, paging);
+			return myList;
+		}
 		
 		//질문 한건조회
 		@GetMapping("/own/admin/selectquest")
@@ -336,20 +351,26 @@ public class OwnhomeController {
 		public String test(Model model, @RequestParam String id,@ModelAttribute("paging1") Paging paging,
 				@ModelAttribute("paging2") Paging paging2) {
 			System.out.println("===아이디가넘어올까요="+id);
+			
 			ownService.Challenging(id);
 			ChallengeVO vo2 = new ChallengeVO();
 			vo2.setUserId(id);
 			// 6개로 페이징
-			BandVO band = new BandVO();
+			BandMemberDetailVO vo = new BandMemberDetailVO();
+			vo.setUserId(id);
 			
 			
-			paging2.setPageUnit(3);// 3개씩보기
+			paging2.setPageUnit(2);// 3개씩보기
 			paging2.setPageSize(3); // 페이딩 동그라미 3개
 			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);
 			
+			paging.setPageUnit(3);// 3개씩보기
+			paging.setPageSize(3); // 페이딩 동그라미 3개
+			List<BandVO> bandList = ownService.adminBandCheck(vo, paging);
 			
+			model.addAttribute("userId", id);
 			model.addAttribute("CList",	myList);
-			model.addAttribute("BList", ownService.Banding(id));
+			model.addAttribute("BList", bandList);
 			return "/content/own/test";
 		}
 		
