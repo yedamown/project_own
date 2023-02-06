@@ -19,15 +19,6 @@
 	<!-- 카카오톡 공유 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<style>
-		.container {
-			width: 900px;
-			margin-top: 50px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-direction: column;
-		}
-
 		.item {
 			margin-top: 10px;
 			margin-bottom: 10px;
@@ -44,6 +35,18 @@
 			flex-direction: row;
 			align-items: center;
 			justify-content: space-between;
+		}
+
+		.userName {
+			justify-content: center;
+		}
+
+		.buttons {
+			justify-content: center;
+		}
+
+		.dayRecord {
+			align-content: space-evenly;
 		}
 
 		.formbold-btn {
@@ -97,7 +100,6 @@
 		}
 
 		/* 운동시간, 칼로리 계산 부분 */
-
 		.col_half {
 			width: 49%;
 		}
@@ -132,11 +134,8 @@
 		.col_fourth,
 		.col_three_fourth,
 		.col_fifth {
-
 			display: inline;
 			display: inline-block;
-
-
 		}
 
 		.end {
@@ -144,10 +143,8 @@
 		}
 
 		/* Column Grids End */
-
 		.wrapper {
 			width: 900px;
-
 		}
 
 		.counter {
@@ -372,8 +369,6 @@
 		/*<![CDATA[*/
 		var header = /*[[${_csrf.headerName}]]*/;
 		var token = /*[[${_csrf.token}]]*/;
-		console.log(header);
-		console.log(token);
 		/*]]>*/
 		// 제이쿼리 충돌 방지 처리
 		var $jQ = jQuery.noConflict(); // ${}대신에 쓸 변수 설정해줌.
@@ -879,9 +874,9 @@
 <div layout:fragment="content">
 
 	<body>
-		<div class="container">
+		<div class="container py-5">
 			<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
-			<div class="item-row">
+			<div class="item-row userName">
 				<p>
 				<h1 th:text="${session.loginUser.userName}"></h1>
 				<h2>회원님의 운동 기록</h2>
@@ -945,16 +940,16 @@
 				</div>
 				<!--====================== 차트 div ======================-->
 				<div class="item" id="div_myChartArea">
-					<div class="item" id="div_dayChartArea" style="height:30vh; width:30vw">
+					<div class="item" id="div_dayChartArea" style="height: 30vh; width: 30vw">
 						<canvas id="dayChart" align="center"></canvas>
 					</div>
-					<div class="item" id="div_weightChartArea" style="height:30vh; width:30vw">
+					<div class="item" id="div_weightChartArea" style="height: 30vh; width: 30vw">
 						<canvas id="weightChart" align="center"></canvas>
 					</div>
 				</div>
 			</div>
 			<!--====================== 사진으로 저장하기, 공유 버튼 div ======================-->
-			<div class="item-row" id="shareBtn">
+			<div class="item-row buttons" id="shareBtn">
 				<button onclick="captureImage()">
 					<img src="/css/own/common_img/list.png" alt="파일로저장" />
 				</button>
