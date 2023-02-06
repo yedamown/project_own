@@ -3,11 +3,28 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-        <title>Royal Hotel</title>
       <style>
+        .bor{
+        	border: 1.5px solid #d3d3d3;
+        }
+      	.bandBox {
+		    width: 150px;
+		    height: 150px; 
+		    border-radius: 30%;
+		    overflow: hidden;
+		    border: 3px solid white;
+		    text-align: center;
+		}
+		.bandBox > img {
+		  position: relative;
+		  left: 100%;
+		  margin-left: -200%;
+		}
 		img {
 			border-radius: 10px;
+			margin: auto;
+			width: 100%;
+			height: 100%
 		}
 		img:hover{
 			border:#BFBFBF 2px solid;
@@ -65,22 +82,23 @@
         .malp:hover + p.arrow_box {
           display: block;
         }
+        .container3 {
+        	background-color: white;
+        	border: 2px solid rgba(1,1,1,0.1);
+		    padding: 50px 0px 0px 50px;
+		    border-radius: 20px;
+		    width: 600px;
+		    margin-left: 70px;
+        }
       </style>
     </head>
     <body>
-        <!--================위에  Area =================-->
-        <section class="banner_area">
-            <div class="booking_table d_flex align-items-center" style="min-height: 200px;">
-            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
-            	<div><h2 class="typo-list" style="color:white">회원가입</h2></div>
-            </div>
-        </section>
-        <!--================위에 Area 끝=================-->
-        
         <!--================ 폼 Area  =================-->
-		<div id="template">    
+		<div id="template">
+		<div class="overlay bg-parallax" style="opacity: 1" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
+            </div>    
 			<div style="flex-grow:3; width: 740px">
-				<article style="border: 1px solid #eeeeee;padding:20px 0px 50px 70px; background-color: #eeeeee;">
+				<article style="border: 1px solid #eeeeee;padding:40px 0px 40px 0px; background-color: eeeeee;border: 1px solid eeeeee;">
 					<div th:if="${band.bandOpenOption=='BC02'} or ${band.bandOpenOption=='BC01'}">
 					<div th:if="${band.bandAgeOption=='BD02'}
 					 or (${band.bandAgeOption=='BD01'}
@@ -92,9 +110,9 @@
 					  	or (${band.bandGenderOption=='BE01'} 
 					  	and ${not #strings.isEmpty(band.bandGender)} 
 					  	and ${band.bandGender==user.bandGender})">
-							<div class="container">
+							<div class="container3">
 						<!--================폼 시작 Area =================-->      
-						         	<form role="form" action="/own/band/bandGroup/signUp" method="post" autocomplete="off" style="width: 80%;"enctype="multipart/form-data">
+						         	<form role="form" action="/own/band/bandGroup/signUp" method="post" autocomplete="off" style="width: 90%;"enctype="multipart/form-data">
 						         	<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
 						         		<input type="hidden" th:value="${session.userId}" name="userId" id="userId"/>
 						         		<input type="hidden" th:value="${band.bandNo}" name="bandNo" id="bandNo"/>
@@ -104,20 +122,21 @@
 						         		<div class="imgArea">
 						<!--================이미지 Area =================-->
 											<div>
-												<h4 class="typo-list" style="padding-bottom: 15px">대표 이미지</h4>  
+												<h4 class="typo-list" style="padding-bottom: 15px; padding-left: 10px;">대표 이미지</h4>  
 											</div>
 								            <div>
 								                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
-							                		<div style="flex-grow: 1; width: 150x; height: 150px;">
+							                		<div style="flex-grow: 1; position: relative;"class="bandBox">
 							                			<img th:if="${user.defaultImg}" th:src="|/imgView/${user.defaultImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1; width: 150x; height: 150px;">
+							                			<p><i class="fa-regular fa-images fa-2x" style="border-radius:20px; position: absolute; bottom:10px; left: 100px;"></i></p>
 							                		</div>
 							                		<!--================ 이름 =================-->
 									                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">
 									                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 활동명</h6>
 									                  <div class="mt-10">
-									                    <input type="text" th:value="${user.bandNickname}" id="bandNickname" name="bandNickname" maxlength="10" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
+									                    <input type="text" th:value="${user.bandNickname}" id="bandNickname" name="bandNickname" maxlength="10" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input bor" style="height: 50px;font-size: 20px;width: 94%; display: block;float: left;">
 									                  </div>
-									                  <b><small style="display:inline; width: 10%; float: right" id="nickNamelength">4/10</small></b>
+									                  <b><small style="display:inline; width: 15%; float: right" id="nickNamelength">4/10</small></b>
 									                  <div id="hiddenBox" style="display: none"><b style="padding-left: 10px;" id="hiddenBoxText">가입가능한 닉네임입니다</b></div>
 									                </div>
 									                <!--================ 이름 끝 =================-->
@@ -133,9 +152,9 @@
 								                <div style="display: inline-block; width: 90%;  display: flex; flex-direction: column;">
 								                  <h6 class="typo-list" style="float: left;margin-top: 2px; ">소개말</h6>
 								                  <div class="mt-10">
-								                    <textarea id="bandMemberIntro" name="bandMemberIntro" maxlength="300" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input" style=" display: block; float: left;flex-grow: 3;"></textarea>
+								                    <textarea id="bandMemberIntro" name="bandMemberIntro" maxlength="100" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input bor" style=" display: block; float: left;flex-grow: 3;"></textarea>
 								                  </div>
-								                  <b><small style="float: right; display: block;" id="introlength">12/300</small></b>
+								                  <b><small style="float: right; display: block;" id="introlength">12/100</small></b>
 								                </div>
 								                <!--================ 소개 끝 =================-->
 								                <div  style="margin:0px auto; display: flex; justify-content: space-between; align-content:flex-start;">
@@ -163,7 +182,7 @@
 							                       </div>
 						                     </div>
 							<!--================작성 Area =================-->
-							<button type="submit" id="submitBtn" disabled class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 가입</button>
+							<button type="submit" id="submitBtn" disabled class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex; background-color: #6ab0cd; margin: 10px 160px 0px;">가치 가입</button>
 										</div>
 										<!--================hidden 체크박스 Area =================-->
 										<input style="display: none;" type="checkbox" id="bandMemberGenderOpenHi" name="bandMemberGenderOpen" value="BM02">
@@ -187,7 +206,7 @@
 						<h3>연령제한에 맞지 않습니다.</h3>
 					</div>
 					</div>
-					<div class="container"  th:if="${band.bandOpenOption=='BC02'}">
+					<div class="container3"  th:if="${band.bandOpenOption=='BC02'}">
 						<h3>비공개 밴드입니다.</h3>
 					</div>
 				</article>
@@ -308,7 +327,7 @@
            })
             //인트로  글자수
            function chkIntroLength(){
-        		$('#introlength').text($('#bandMemberIntro').val().length+'/300');
+        		$('#introlength').text($('#bandMemberIntro').val().length+'/100');
         	}
             //별명 중복체크(자동)
             function nickNameChk(){
@@ -337,7 +356,7 @@
         				$('#hiddenBoxText').text('사용가능한 닉네임입니다.');
         				$('#hiddenBox').show();
         				$('#submitBtn').prop('disabled', false);
-        				$('#submitBtn').css('backgroundColor', '#F3C300');
+        				$('#submitBtn').css('backgroundColor', '#6ab0cd');
         			}
         		})
             }

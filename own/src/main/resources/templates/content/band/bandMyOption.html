@@ -11,9 +11,27 @@
         <!--어썸폰트 무료?-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
       <style>
-      	
+      	.bor{
+        	border: 1.5px solid #d3d3d3;;
+        }
+      	.bandBox {
+		    width: 150px;
+		    height: 150px; 
+		    border-radius: 30%;
+		    overflow: hidden;
+		    border: 3px solid white;
+		    text-align: center;
+		}
+		/* .bandBox > img {
+		  position: relative;
+		  left: 100%;
+		  margin-left: -200%;
+		} */
 		img {
 			border-radius: 10px;
+			margin: auto;
+			width: 100%;
+			height: 100%
 		}
 		img:hover{
 			border:#BFBFBF 2px solid;
@@ -32,44 +50,46 @@
         #alertTag.vibration{
           animation: vibration 0.1s infinite;
         }
-        
+        .container3 {
+        	background-color: white;
+        	border: 2px solid rgba(1,1,1,0.1);
+		    padding: 50px 0px 0px 50px;
+		    border-radius: 20px;
+		    width: 600px;
+		    margin-left: 70px;
+        }
+        .bor {
+        	border: 1.5px solid #d3d3d3;;
+        }
       </style>
     </head>
     <body>
-        <!--================위에  Area =================-->
-        <section class="banner_area">
-            <div class="booking_table d_flex align-items-center" style="min-height: 200px;">
-            	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
-            	<div><h2 class="typo-list" style="color:white">나의 설정</h2></div>
-            </div>
-        </section>
-        <!--================위에 Area 끝=================-->
-        
         <!--================ 폼 Area  =================-->
 		<div id="template">    
 			<div style="flex-grow:3; width: 740px">
-				<article style="border: 1px solid #eeeeee;padding:20px 0px 50px 70px; ">
-					<div class="container"><input type="hidden" th:value="${member.bandNickname}" id="hiddenNickname">
+				<article style="border: 1px solid #eeeeee;padding:40px 0px 40px 0px; background-color: eeeeee;border: 1px solid eeeeee;">
+					<div class="container3"><input type="hidden" th:value="${member.bandNickname}" id="hiddenNickname">
 					<!--================폼 시작 Area =================-->      
-	        			<form role="form"  autocomplete="off" style="width: 80%;"enctype="multipart/form-data" name="frm" id="frm">
+	        			<form role="form"  autocomplete="off" style="width: 90%;"enctype="multipart/form-data" name="frm" id="frm">
 					         	<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
 					         		<input type="hidden" th:value="${session.userId}" name="userId" id="userId"/>
 					         		<input type="hidden" th:value="${member.bandMemberNo}" name="bandMemberNo" id="bandMemberNo"/>
 					         		<div class="imgArea">
 					<!--================이미지 Area =================-->
 										<div>
-											<h4 class="typo-list" style="padding-bottom: 15px">대표 이미지</h4>  
+											<h4 class="typo-list" style="padding-bottom: 15px; padding-left: 10px;">대표 이미지</h4>  
 										</div>
 							            <div>
 							                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
-						                		<div style="flex-grow: 1; width: 150x; height: 150px;">
-						                			<img th:if="${member.detailImg}" th:src="|/imgView/${member.detailImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1; width: 150x; height: 150px;">
+						                		<div style="flex-grow: 1; position: relative;"class="bandBox">
+						                			<img th:if="${member.detailImg}" th:src="|/imgView/${member.detailImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1;">
+						                			<p><i class="fa-regular fa-images fa-2x" style="border-radius:20px; position: absolute; bottom:10px; left: 100px;"></i></p>
 						                		</div>
 						                		<!--================ 이름 =================-->
 								                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">
 								                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 활동명</h6>
 								                  <div class="mt-10">
-								                    <input type="text" th:value="${member.bandNickname}" id="bandNicknames" name="bandNickname" maxlength="10" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input" style="height: 50px;font-size: 20px;width: 88%; display: block; float: left;">
+								                    <input type="text" th:value="${member.bandNickname}" id="bandNicknames" name="bandNickname" maxlength="10" placeholder="가치 활동명 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 활동명'" required class="single-input bor" style="height: 50px;font-size: 20px;width: 94%; display: block; float: left;">
 								                  </div>
 								                  <b><small style="display:inline; width: 10%; float: right" id="nickNamelength">4/10</small></b>
 								                  <div id="hiddenBox" style="display: none"><b style="padding-left: 10px;" id="hiddenBoxText">가입가능한 닉네임입니다</b></div>
@@ -87,7 +107,7 @@
 							                <div style="display: inline-block; width: 90%;  display: flex; flex-direction: column;">
 							                  <h6 class="typo-list" style="float: left;margin-top: 2px; ">소개말</h6>
 							                  <div class="mt-10">
-							                    <textarea id="bandMemberIntro" name="bandMemberIntro" maxlength="300" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input" style=" display: block; float: left;flex-grow: 3;">[[${member.bandMemberIntro}]]</textarea>
+							                    <textarea id="bandMemberIntro" name="bandMemberIntro" maxlength="300" placeholder="소개말을 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '소개말을 입력'" required class="single-input bor" style=" display: block; float: left;flex-grow: 3;">[[${member.bandMemberIntro}]]</textarea>
 							                  </div>
 							                  <b><small style="float: right; display: block;" id="introlength">12/300</small></b>
 							                </div>
@@ -117,7 +137,7 @@
 						                       </div>
 					                     </div>
 						<!--================작성 Area =================-->
-						<button type="button" id="submitBtn" disabled class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">내 설정 변경</button>
+						<button type="button" id="submitBtn" disabled class="genric-btn primary circle arrow"  style="font-size: 20px; margin: 0 auto; display: flex; background-color: #6ab0cd; margin: 10px 160px 0px;">내 설정 변경</button>
 									</div>
 									<!--================hidden 체크박스 Area =================-->
 									<input style="display: none;" type="checkbox" id="bandMemberGenderOpenHi" name="bandMemberGenderOpen" value="BM02" th:checked="${member.bandMemberGenderOpen=='BM02'}">
