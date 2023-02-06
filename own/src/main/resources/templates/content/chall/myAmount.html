@@ -1,78 +1,225 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
+
 <head>
-<!-- jquery -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-<meta content="Free HTML Templates" name="keywords" />
-<!-- Favicon -->
-<link href="/css/chall/img/favicon.ico" rel="icon" />
-<!-- Google Web Fonts -->
-<link rel="preconnect" href="https://fonts.gstatic.com" />
-<link
-	href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap"
-	rel="stylesheet" />
-<!-- Font Awesome -->
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-	rel="stylesheet" />
-<!-- Flaticon Font -->
-<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
-<!-- Libraries Stylesheet -->
-<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css"
-	rel="stylesheet" />
-<link href="/css/chall/lib/lightbox/css/lightbox.min.css"
-	rel="stylesheet" />
-<!-- Customized Bootstrap Stylesheet -->
-<link href="/css/chall/css/style.css" rel="stylesheet" />
-<!-- JavaScript Libraries -->
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="/css/chall/lib/easing/easing.min.js"></script>
-<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
-<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
-<!-- Contact Javascript File -->
-<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
-<script src="/css/chall/mail/contact.js"></script>
-<!-- Template Javascript -->
-<script src="/css/chall/js/main.js"></script>
-<!-- google chart -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-<meta charset="utf-8">
-<title>도전_마이페이지_내 예치금</title>
+	<!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="Free HTML Templates" name="keywords" />
+	<!-- Favicon -->
+	<link href="/css/chall/img/favicon.ico" rel="icon" />
+	<!-- Google Web Fonts -->
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet" />
+	<!-- Font Awesome -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+	<!-- Flaticon Font -->
+	<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+	<!-- Libraries Stylesheet -->
+	<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+	<link href="/css/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
+	<!-- Customized Bootstrap Stylesheet -->
+	<link href="/css/chall/css/style.css" rel="stylesheet" />
+	<!-- JavaScript Libraries -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+	<script src="/css/chall/lib/easing/easing.min.js"></script>
+	<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
+	<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
+	<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
+	<!-- Contact Javascript File -->
+	<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
+	<script src="/css/chall/mail/contact.js"></script>
+	<!-- Template Javascript -->
+	<script src="/css/chall/js/main.js"></script>
+	<!-- google chart -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	<style>
+		@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+		/* Reset Style */
+
+		/* Responsive Table Style */
+		.responsive-table {
+			background-color: #fefefe;
+			border-collapse: collapse;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.02);
+			width: 100%;
+			margin: 2rem 0;
+			overflow: hidden;
+		}
+
+		.responsive-table__row {
+			display: grid;
+			border-bottom: 1px solid #edeef2;
+			padding: 0 1.5rem;
+		}
+
+		@media (min-width: 768px) {
+			.responsive-table__row {
+				grid-template-columns: 2fr 1fr 2fr 2fr 1fr;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__row {
+				grid-template-columns: 1fr 2fr 1fr;
+			}
+		}
+
+		.responsive-table__row th,
+		.responsive-table__row td {
+			padding: 1rem;
+			text-align: center;
+		}
+
+		.responsive-table__head {
+			background-color: #e1e8f2;
+		}
+
+		@media (max-width: 991px) {
+			.responsive-table__head {
+				display: none;
+			}
+		}
+
+		.responsive-table__head__title {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 500;
+			text-transform: capitalize;
+		}
+
+		.responsive-table__body .responsive-table__row {
+			transition: 0.1s linear;
+			transition-property: color, background;
+		}
+
+		.responsive-table__body .responsive-table__row:last-child {
+			border-bottom: none;
+		}
+
+		.responsive-table__body .responsive-table__row:hover {
+			color: #fff;
+			background-color: #17a2b8;
+		}
+
+		.responsive-table__body__text {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.responsive-table__body__text::before {
+			margin-right: 1rem;
+			font-weight: 600;
+			text-transform: capitalize;
+		}
+
+		@media (max-width: 991px) {
+			.responsive-table__body__text::before {
+				content: attr(data-title) " :";
+			}
+		}
+
+		@media (max-width: 400px) {
+			.responsive-table__body__text::before {
+				width: 100%;
+				margin-bottom: 1rem;
+			}
+		}
+
+		.responsive-table__body__text--name {
+			font-weight: 600;
+		}
+
+		@media (min-width: 768px) {
+			.responsive-table__body__text--name::before {
+				display: none;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__body__text--name {
+				grid-column: 0.5;
+				flex-direction: column;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+
+			.responsive-table__body__text--status,
+			.responsive-table__body__text--types,
+			.responsive-table__body__text--update {
+				grid-column: 0.6666666667;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__body__text--country {
+				grid-column: -3;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+
+			.responsive-table__body__text--name,
+			.responsive-table__body__text--country {
+				grid-row: 2;
+			}
+		}
+
+		/* Status Indicator Style */
+		.status-indicator {
+			display: inline-block;
+			width: 1.8rem;
+			height: 1.8rem;
+			border-radius: 50%;
+			background: #222;
+			margin-right: 0.5rem;
+		}
+
+		.status-indicator--active {
+			background: #25be64;
+		}
+
+		.status-indicator--inactive {
+			background: #dadde4;
+		}
+
+		.status-indicator--new {
+			background: #febf02;
+		}
+	</style>
+	<meta charset="utf-8">
+	<title>도전_마이페이지_내 예치금</title>
 </head>
+
 <body>
 	<!-- Navbar Start -->
 	<div class="container-fluid bg-light position-relative shadow">
-		<nav
-			class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
-			<a href="" class="navbar-brand font-weight-bold text-secondary"
-				style="font-size: 50px"> <i class="flaticon-043-teddy-bear"></i>
+		<nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
+			<a href="" class="navbar-brand font-weight-bold text-secondary" style="font-size: 50px"> <i
+					class="flaticon-043-teddy-bear"></i>
 				<span class="text-primary">OWN_Challenges</span>
 			</a>
-			<button type="button" class="navbar-toggler" data-toggle="collapse"
-				data-target="#navbarCollapse">
+			<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse justify-content-between"
-				id="navbarCollapse">
+			<div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
 				<div class="navbar-nav font-weight-bold mx-auto py-0">
-					<a href="index.html" class="nav-item nav-link">Home</a> <a
-						href="about.html" class="nav-item nav-link">About</a> <a
-						href="class.html" class="nav-item nav-link">Classes</a> <a
-						href="team.html" class="nav-item nav-link">Teachers</a> <a
-						href="gallery.html" class="nav-item nav-link">Gallery</a>
+					<a href="index.html" class="nav-item nav-link">Home</a> <a href="about.html"
+						class="nav-item nav-link">About</a> <a href="class.html" class="nav-item nav-link">Classes</a>
+					<a href="team.html" class="nav-item nav-link">Teachers</a> <a href="gallery.html"
+						class="nav-item nav-link">Gallery</a>
 					<div class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle"
-							data-toggle="dropdown">Pages</a>
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
 						<div class="dropdown-menu rounded-0 m-0">
-							<a href="blog.html" class="dropdown-item">Blog Grid</a> <a
-								href="single.html" class="dropdown-item">Blog Detail</a>
+							<a href="blog.html" class="dropdown-item">Blog Grid</a> <a href="single.html"
+								class="dropdown-item">Blog Detail</a>
 						</div>
 					</div>
 					<a href="contact.html" class="nav-item nav-link active">Contact</a>
@@ -85,9 +232,7 @@
 
 	<!-- Header Start -->
 	<div class="container-fluid bg-primary mb-5">
-		<div
-			class="d-flex flex-column align-items-center justify-content-center"
-			style="min-height: 400px">
+		<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
 			<h3 class="display-3 font-weight-bold text-white">Contact Us</h3>
 			<div class="d-inline-flex text-white">
 				<p class="m-0">
@@ -111,53 +256,80 @@
 				<p class="section-title px-5">
 					<span class="px-2">MY PAGE</span>
 				</p>
-				<h1 class="mb-4">내 예치금</h1>
 			</div>
 			<div class="row">
 				<div class="col-12 text-center mb-2">
 					<ul class="list-inline mb-4" id="portfolio-flters">
-						<li class="btn btn-outline-primary m-1"><a
-							href="/own/chall/mypage">내 정보</a></li>
+						<li class="btn btn-outline-primary m-1"><a href="/own/chall/mypage">내 정보</a></li>
 						<li class="btn btn-outline-primary m-1 active">내 예치금</li>
-						<li class="btn btn-outline-primary m-1"><a
-							href="/own/chall/myChall">내 도전</a></li>
+						<li class="btn btn-outline-primary m-1"><a href="/own/chall/myChall">내 도전</a></li>
 						<li class="btn btn-outline-primary m-1">내 인증내역</li>
 					</ul>
 				</div>
 			</div>
-		<div class="col-12" style="text-align: center; ">
-			<h3>
-				내 현재 보유예치금:<span th:text=${memInfo.memAmt} id="myNowAmt"></span>
-			</h3>
-			<p class="btn btn-outline-primary m-1"><a href="/own/chall/payAmount">충전하러가기</a></p>
-			<h3>
-				내 계좌정보:<span th:text=${memInfo.memAcc}></span> <span>[[${memInfo.memAccname}]]</span>
-			</h3>
-			<p>내 계좌로 환급하기</p>
-			<!-- 유저아이디 히든 -->
-			<input type="hidden" th:value="${memInfo.userId}" id="userId">
-			결제금액:<input type="number" min="1000" max="300000" required="required" id="refundPrice">
-			<p class="btn btn-outline-primary m-1" id="refundBtn">환급하기</div>
-			<table border="solid 1" style="text-align: center;">
-				<thead>
-					<tr>
-						<th>날짜</th>
-						<th>유형</th>
-						<th>금액</th>
-						<th>도전번호</th>
+			<div class="col-12" style="text-align: center; ">
+				<h3>
+					내 현재 보유예치금:<span th:text=${memInfo.memAmt} id="myNowAmt"></span>
+				</h3>
+				<p class="btn btn-outline-primary m-1"><a href="/own/chall/payAmount">충전하러가기</a></p>
+				<h3>
+					내 계좌정보:<span th:text=${memInfo.memAcc}></span> <span>[[${memInfo.memAccname}]]</span>
+				</h3>
+				<p>내 계좌로 환급하기</p>
+				<!-- 유저아이디 히든 -->
+				<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
+				결제금액:<input type="number" min="1000" max="300000" required="required" id="refundPrice">
+				<p class="btn btn-outline-primary m-1" id="refundBtn">환급하기
+			</div>
+			<table class="responsive-table" id="amtTable">
+				<thead class="responsive-table__head">
+					<tr class="responsive-table__row">
+						<th class="responsive-table__head__title">날짜</th>
+						<th class="responsive-table__head__title">유형</th>
+						<th class="responsive-table__head__title">결제방법</th>
+						<th class="responsive-table__head__title">금액</th>
+						<th class="responsive-table__head__title">도전번호</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr th:each="amt: ${memAmount}">
-						<td
-							th:text="${#dates.format(amt.challAmountDate, 'yyyy-MM-dd HH:mm:ss')}" />
-						<td th:text="${amt.amtType}" />
-						<td th:text="${amt.price}"></td>
-						<td th:text="${amt.challNo}"></td>
-					</tr>
+				<tbody class="responsive-table__body">
+						<tr class="responsive-table__row" th:each="amt: ${memAmount}">
+							<td class="responsive-table__body__text" th:text="${#dates.format(amt.challAmountDate, 'yyyy-MM-dd HH:mm')}" />
+							<td class="responsive-table__body__text" th:text="${amt.amtType}" />
+							<td class="responsive-table__body__text" th:text="${amt.amtMethod}" />
+							<td class="responsive-table__body__text" th:text="${amt.price}"></td>
+							<td class="responsive-table__body__text" th:text="${amt.challNo}"></td>
+						</tr>
 				</tbody>
 			</table>
-			</div>
+
+			<!-- 나의도전 페이징 -->
+			<nav class="blog-pagination justify-content-center d-flex pageBtn" id="pageMyAmount">
+			<!--================ 이전  =================-->
+			<ul class="pagination">
+				<li class="page-item" th:if="${memAmount[0].paging.startPage>1}"><a
+					class="page-link" aria-label="Previous"
+					th:value="${memAmount[0].paging.startPage-1}"> <span aria-hidden="true"><span
+							class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+				<!--================ 페이지 이동 1_2_3_4_5  =================-->
+				<th:block
+					th:each="pag:${#numbers.sequence(memAmount[0].paging.startPage, memAmount[0].paging.endPage)}">
+					<li class="page-item" th:if="${pag != memAmount[0].paging.page}"><a
+						class="page-link pagePort" th:value="${pag}"
+						th:text="${#numbers.formatInteger(pag,1)}"></a></li>
+					<li class="page-item active" th:if="${pag==memAmount[0].paging.page}"><a
+						class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+					</li>
+				</th:block>
+				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+				<!--================ 이후  =================-->
+				<li class="page-item" th:if="${memAmount[0].paging.endPage < memAmount[0].paging.lastPage}">
+					<a class="page-link pagePort" aria-label="Next"
+					th:value="${memAmount[0].paging.endPage+1}"> <span aria-hidden="true"><span
+							class="lnr lnr-chevron-right"></span></span></a>
+				</li>
+			</ul>
+		</nav>
+	<!--나의도전 페이징 끝 -->
 		</div>
 	</div>
 	<!-- Contact End -->
@@ -264,6 +436,8 @@
 	</div>
 	<!-- Footer End -->
 	<script>
+
+		let userId = $('#userId').val();
 		//토큰있어야 post가능~!
 		/*<![CDATA[*/
 		var header = '[[${_csrf.headerName}]]';
@@ -277,6 +451,7 @@
 			console.log(rfPrice.value);
 		})
 		console.log(rfPrice); */
+
 		$('#refundBtn').on('click', function(){
 			let rfPrice = $('#refundPrice').val();
 			let myAmt = $('#myNowAmt').text();
@@ -323,7 +498,97 @@
 					}
 				})
 			}
-		})
+		});
+
+		// 내 인증 페이징 버튼 아작스.
+		$('#pageMyAmount').on('click', '.pagePort', function(){
+		    //페이지번호 + 밴드식별번호
+		    let page = $(this).attr('value');
+			console.log(page)
+		    console.log($(this).attr('value')); 
+			console.log("유저 아이디..위에 선언한거...."+userId);
+		    $.ajax({
+		       url: '/own/chall/myAmtAjax',
+		       method: 'get',
+			   data: { page: page,
+					   userId: userId}
+		    }).then(result => {
+		       console.log(result);
+				//형태만들기 이미있는애들 없애준다.. -> 도전폼
+				let amtTb = $('#amtTable tbody');
+				console.log("정보.....");
+				console.log(amtTb);
+				amtTb.empty();
+				//다시 형태 붙이는애 만들어주기..
+				result.forEach(res => {
+					makeTr(res);
+		       	})
+				let pagingName = 'pageMyAmount';
+				makePaging(result, pagingName);
+				})
+		    });
+
+			function makeTr(res){
+				console.log(res);
+				let amtType = res.amtType;
+				let amtDate = res.challAmountDate;
+				let amtMethod = res.amtMethod;
+				let amtPrice = res.price;
+				let amtChallNo = res.challNo;
+				let trTag = `<tr class="responsive-table__row">
+								<td class="responsive-table__body__text">${amtDate}</td>
+								<td class="responsive-table__body__text">${amtType}</td>
+								<td class="responsive-table__body__text">${amtMethod}</td>
+								<td class="responsive-table__body__text">${amtPrice}</td>
+								<td class="responsive-table__body__text">${amtChallNo}</td>
+							</tr>`
+				$('#amtTable tbody').append(trTag);
+			}
+
+			/* 아작스 페이징 버튼 */
+			function makePaging(result, pagingName){
+				//버튼 다시초기화..비우기
+				$(`#${pagingName}`).empty();
+				let pagingM = result[0].paging;
+				//시작 버튼
+				console.log(result[0]); //첫번째? 가져오기..?
+				let startpageTag = $('<ul class="pagination" />');
+				$(`#${pagingName}`).append(startpageTag);
+				//이전 버튼만들기
+				if(pagingM.startPage>1){
+				let pageBeforTag = `<li class="page-item">
+									<a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+									<span aria-hidden="true"> <-
+									<span class="lnr lnr-chevron-left pagePort"></span></span></a>
+									</li>`
+				startpageTag.append(pageBeforTag); 
+				}               
+				//페이지목록..
+				for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+						if(pg != pagingM.page){
+							let pageTag = `<li class="page-item">
+										<a class="page-link pagePort" value=${pg}>${pg}</a>
+										</li>`
+							startpageTag.append(pageTag);
+						} else if(pg == pagingM.page ){
+							let pageTag =  `<li class="page-item active">
+								<a class="page-link" >${pg}</a>
+								</li>`
+								startpageTag.append(pageTag);
+						}
+				}               
+				//이후 버튼만들기
+				if(pagingM.endPage<pagingM.lastPage){
+							let pageAfterTag =`<li class="page-item">
+								<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+									<span aria-hidden="true"> ->
+									<span class="lnr lnr-chevron-right"></span></span></a>
+									</li>`
+									startpageTag.append(pageAfterTag);
+								}
+								$(`#${pagingName}`).append(startpageTag);
+				};
+
 	</script>
 </body>
 </html>

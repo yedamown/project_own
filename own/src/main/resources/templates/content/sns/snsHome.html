@@ -326,7 +326,7 @@
             border: 0;
             outline: none;
             border-radius: 40px;
-            background: linear-gradient(to left, rgb(255, 77, 46), rgb(255, 155, 47));
+            background: linear-gradient(to left, #0c5460, #17a2b8);
             color: white;
             font-size: 1.2em;
             letter-spacing: 2px;
@@ -549,11 +549,11 @@
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                             <div class="login_id">
                                 <h4>ID정보</h4>
-                                <input th:value="${session.loginUser.userId}" readonly>
+                                <input th:value="${session.loginUser.userId}" readonly disabled>
                             </div>
                             <div class="login_pw">
                                 <h4>Email정보</h4>
-                                <input th:value="${session.loginUser.userEmail}"  readonly>
+                                <input th:value="${session.loginUser.userEmail}"  readonly disabled>
                             </div>
                             <div class="login_account">
                                 <h4>nickname</h4>

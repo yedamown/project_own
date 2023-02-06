@@ -144,11 +144,6 @@
 								<i class="fa-solid fa-comment-dots fa-2x"></i>
 							</a>
 							<div class="dropdown-menu rounded-0 m-0" id="chatroomList">
-								<a href="/own/band/myBandOption" class="dropdown-item">채팅목록1</a>
-								<a th:if="${session.loginUser}" href="/own/logout"
-									class="dropdown-item">채팅목록2</a> <a
-									th:unless="${session.loginUser}" href="/own/login"
-									class="dropdown-item">채팅목록3</a>
 							</div>
 						</div>
 						<div class="nav-item dropdown droMom">
@@ -177,31 +172,28 @@
 	<script th:inline="javascript">
 /*<![CDATA[*/
 var header = /*[[${_csrf.headerName}]]*/
-console.log("loginUserId========"+header);
 var token = /*[[${_csrf.token}]]*/
-console.log("loginUserId========"+header); 
 /*]]>*/
 	$(function () {
 		/*<![CDATA[*/
-		let loginUser = /*[[ ${session.loginUser} ]]*/
-		console.log("loginUserId========"+loginUserId);
-		let loginUserId = loginUser.userId
+		let loginUser = /*[[ ${session.loginUser} ]]*/;
+		let loginUserId = loginUser.userId;
 		/*]]*/
 		console.log("loginUserId========"+loginUserId);
 		let bandMemberNo = [];
 		// 로그인 아이디로 가입중인 밴드 멤버번호받아오기 -- 채팅컨트롤러에서 처리
 		$.ajax({
-			url: '/getMyBandMemberNo?userId=' + loginUserId,
+			url: '/getMyChatroomList?userId=' + loginUserId,
 			method: 'get',
 			contentType: "application/json" //json으로 보낼때 타입이 이렇다..
 		}).then(res => {
-			//console.log("res========"+res);
-			for (no of res) {
-				var list = `<a class="dropdown-item">${no.bandMemberNo}</a>`
-				$("#chatroomList").append(list);
-				//console.log("no========"+no);
-			}
-		})
+				console.log(res)
+			for (var i=0; i<res.length; i++ ) {
+				var list = `<a class="dropdown-item" href="/chatroom?chatroomNo=${res[i].chatroomNo}&bandMemberNo=${res[i].bandMemberNo}" 
+					onclick="window.open(this.href, '_blank', 'width=350, height=465'); return false;">${res[i].chatroomName}</a>`
+				$("#chatroomList").append(list); 
+			}	
+		}) 
 	});
 	</script>
 </th:block>

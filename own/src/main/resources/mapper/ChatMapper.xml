@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.prjt.own.chat.mapper.ChatMapper">
-	<!-- 로그인 아이디로 가입중 상태인 밴드 멤버번호 받아오기 -->
-	<select id="getMyBandMemberNoList"
-		resultType="BandMemberDetailVO" parameterType="string">
-		SELECT BAND_MEMBER_NO
-		FROM BAND_MEMBER_DETAIL
-		WHERE BAND_MEMBER_STATUS = 'BA02'
-		AND USER_ID = #{userId}
-	</select>
-
-	<!-- 전체 채팅방 목록 중 해당 멤버의 식별번호로 개설된 채팅방 목록 출력 -->
+	<!-- 전체 채팅방 목록 중 로그인 아이디로 가입중 상태인 밴드 멤버번호로 개설된 채팅방 목록 출력 -->
 	<select id="getMyChatroomList"
 		resultType="co.prjt.own.chat.service.ChatroomVO"
 		parameterType="string">
-		SELECT *
-		FROM CHATROOM
-		WHERE BAND_MEMBER_NO = #{bandMemberNo}
+		SELECT * FROM CHATROOM
+		WHERE BAND_MEMBER_NO IN (	SELECT BAND_MEMBER_NO
+									FROM BAND_MEMBER_DETAIL
+									WHERE BAND_MEMBER_STATUS = 'BA02'
+									AND USER_ID = #{userId}
+								)
 	</select>
 
 	<!-- 채팅방 시퀀스 번호 가져오기 -->
@@ -43,7 +37,8 @@
 		WHERE CHATROOM_NO IN ( SELECT
 		CHATROOM_NO FROM CHATROOM
 		WHERE BAND_MEMBER_NO = #{bandMemberNo} )
-		AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
+		AND
+		BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
 		AND BAND_MEMBER_NO = #{bandMemberNo1}
 	</select>
 

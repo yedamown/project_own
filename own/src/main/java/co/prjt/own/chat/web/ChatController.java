@@ -38,18 +38,12 @@ public class ChatController {
 		return chatService.createChatroom(list);
 	}
 
-	// 로그인 아이디로 가입중인 밴드 멤버번호받아오기 
-	@GetMapping("/getMyBandMemberNoList")
-	@ResponseBody
-	public List<BandMemberDetailVO> getMyBandMemberNoList(@RequestParam String userId) {
-		return chatService.getMyBandMemberNoList(userId);
-	}
 	
 	// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
-	@PostMapping("/createChatroom")
+	@GetMapping("/getMyChatroomList")
 	@ResponseBody
-	List<ChatroomVO> getMyChatroomList(@RequestBody List<BandMemberDetailVO> list) {
-		return chatService.getMyChatroomList(list);
+	public List<ChatroomVO> getMyChatroomList(@RequestParam String userId) {
+		return chatService.getMyChatroomList(userId);
 	}
 	
 	// 기존 채팅방 번호 가져오기 
