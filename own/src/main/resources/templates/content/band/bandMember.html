@@ -3,6 +3,22 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<style>
+		.aBox {
+			width: 60px;
+			height: 60px;
+			border-radius: 30%;
+			overflow: hidden;
+		}
+
+		.aProfile {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 30%;
+			border: 4px solid #00394F;
+		}
+	</style>
 </head>
 <div id="template" style="flex-grow: 3; width: 740px">
 	<div id="bandMemberList">
@@ -12,6 +28,8 @@
 				<button class="searchBtn" type="button" id="searchBtn">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
+				<input type="hidden" name="pageNum" value="1">
+				<input type="hidden" th:value="${myBandMemberNo}" name="myBandMemberNo">
 			</span>
 			<select id="selectOption" name="selectOption">
 				<option value="name" selected="selected">별명 순</option>
@@ -22,11 +40,13 @@
 		<table>
 			<thead>
 				<th></th>
-				<th>별명(아이디)</th>
-				<th>채팅하기</th>
+				<th>별명</th>
+				<th></th>
+				<th></th>
+				<th>신고하기</th>
 
 			</thead>
-			<tbody id="aBandMemberTable">
+			<tbody id="bandMemberTable">
 			</tbody>
 		</table>
 		<div id="paging">
@@ -76,9 +96,122 @@
 			var url = new URL(link);
 			const urlParams = url.searchParams;
 			let bandNo = urlParams.getAll('bandNo');
+			let myBandMemberNo = $("input[name=myBandMemberNo]").val();
+
+			// 페이징, 검색 관련 변수
+			let pageNum = $("input[name=pageNum]").val();
+			var selectOption = $("select[name=selectOption]").val();
+			var searchVal = $("input[name=searchVal]").val();
+
+			// 함수 스타토 
+			allBandMemberList();
 
 			// 맨 처음 띄울 멤버리스트
-			//$.ajax
+			function allBandMemberList() {
+				selectOption = $("select[name=selectOption]").val();
+				searchVal = $("input[name=searchVal]").val();
+				pageNum = $("input[name=pageNum]").val();
+				let listOption = { bandNo: bandNo[0], bandMemberNo: myBandMemberNo, selectOption: selectOption, paging: { page: pageNum }, bandNickname: searchVal };
+				$.ajax({
+					url: '/own/band/bandGroup/bandMemberList',
+					method: 'POST',
+					data: JSON.stringify(listOption),
+					contentType: "application/json",
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (result) {
+						$('#bandMemberTable').empty();
+						console.log(result)
+						for (var i = 0; i < result.length; i++) {
+							let nicknameTag = '';
+							let chatTag = '';
+							if(result[i].chatCheck == 1){
+								chatTag = `<a class="oldChatStart" value=${result[i].bandMemberNo} href="">채팅하기</a>`;
+							} else {
+								chatTag = `<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname} href="">채팅하기</a>`;
+							}
+							if(result[i].userId == loginUserId){
+								nicknameTag = `<td>${result[i].bandNickname}<i class="fa fa-solid fa-crown" style="margin-right: 5px;" aria-hidden="true"></i></td>`;
+							} else {
+								nicknameTag = `<td>${result[i].bandNickname}</td>`;
+							}
+							let table = `<tr>
+						 					<td class="aBox"><img src="/imgView/${result[i].profileImg}" style="object-fit: cover" class="aProfile"/>		
+											${nicknameTag}
+											<td hidden value=${result[i].userId}></td>
+											<td hidden value=${result[i].bandMemberNo}></td>
+											<td> 
+												<div class="nav-item dropdown droMom">
+													<a href="" class="nav-item nav-link"
+														data-toggle="dropdown">
+														<i class="fa fa-solid fa-ellipsis"></i>
+													</a>
+													<div class="dropdown-menu rounded-0 m-0">
+														${chatTag}
+														<a href="">신고하기</a>
+													</div>
+												</div>
+											</td>
+						 				<tr>`
+							$('#bandMemberTable').append(table);
+						}
+
+						//페이지 버튼 만들기
+						$('#paging #pagegation').empty();
+						let pagingM = result[0].paging;
+						//시작 버튼
+						let startpageTag = $('<ul class="pagination" />');
+						$('#paging #pagegation').append(startpageTag);
+						//이전 버튼만들기
+						if (pagingM.startPage > 1) {
+							let pageBeforTag = `<li class="page-item">
+										<a class="page-link" aria-label="Previous" value=${pagingM.startPage - 1}>
+									   <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+									   </li>`
+							startpageTag.append(pageBeforTag);
+						}
+						//페이지목록..
+						for (let pg = pagingM.startPage; pg <= pagingM.endPage; pg++) {
+							if (pg != pagingM.page) {
+								let pageTag = `<li class="page-item">
+									   <a class="page-link pagePort" value=${pg}>${pg}</a>
+									   </li>`
+								startpageTag.append(pageTag);
+							} else if (pg == pagingM.page) {
+								let pageTag = `<li class="page-item active">
+									   <a class="page-link" >${pg}</a>
+									   </li>`
+								startpageTag.append(pageTag);
+							}
+						}
+						//이후 버튼만들기
+						if (pagingM.endPage < pagingM.lastPage) {
+							let pageAfterTag = `<li class="page-item">
+									   <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage + 1}>
+									   <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+									   </li>`
+							startpageTag.append(pageAfterTag);
+						}
+						$('#paging #pagegation').append(startpageTag)
+					} //end of ajax
+				})
+			}
+
+			// 첫 div 밴드 멤버 리스트 페이징 함수, 검색창, 셀렉트 박스
+			$('#paging #pagegation').on('click', '.pagePort', function () {
+				//페이지번호 + 밴드식별번호
+				pageNum = $(this).attr('value');
+				allBandMemberList();
+			}) // end of aPaging
+
+			$('#searchBtn').on('click', function () {
+				allBandMemberList();
+			}) // end of searchBtn
+
+			$("#selectOption").change(function () {
+				allBandMemberList();
+			}) // end of selectOption
 
 			// 새로운 채팅방 생성
 			$(".newChatStart").click(

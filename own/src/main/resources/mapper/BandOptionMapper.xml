@@ -100,7 +100,7 @@ UPDATE BAND SET BAND_NAME = #{bandName},
            ) PROFILE_IMG
    FROM BAND_MEMBER_DETAIL M
    WHERE BAND_MEMBER_STATUS = 'BA02'
-	 <if test="bandNickname != null and userId !=''">
+	 <if test="bandNickname != null and bandNickname !=''">
 	    AND (USER_ID LIKE '%' || #{bandNickname} || '%'
 		OR BAND_NICKNAME LIKE '%' || #{bandNickname} || '%')
 	 </if>

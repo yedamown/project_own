@@ -59,4 +59,5 @@ public class BandMemberDetailController {
 		//처리가 됨..
 		return r;
 	}
+	
 }

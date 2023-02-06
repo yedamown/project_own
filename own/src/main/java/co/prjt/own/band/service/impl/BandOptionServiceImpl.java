@@ -67,7 +67,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 		vo.setBandMemberStatus("BA02"); // 조건 설정
 		vo.getPaging().setTotalRecord(bandOptionMapper.bandCount(vo));
 		// paging.setPageUnit(1); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
-		// paging.setPageSize(5);
+		vo.getPaging().setPageSize(5);
 		vo.setFirst(vo.getPaging().getFirst());
 		vo.setLast(vo.getPaging().getLast());
 		vo.setPaging(vo.getPaging());
@@ -83,7 +83,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 		vo.setBandMemberStatus("BA01"); // 조건 설정
 		vo.getPaging().setTotalRecord(bandOptionMapper.bandCount(vo));
 		// paging.setPageUnit(1); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
-		// paging.setPageSize(5);
+		vo.getPaging().setPageSize(5);
 		vo.setFirst(vo.getPaging().getFirst());
 		vo.setLast(vo.getPaging().getLast());
 		vo.setPaging(vo.getPaging());
@@ -100,7 +100,7 @@ public class BandOptionServiceImpl implements BandOptionService {
 		vo.setBandMemberStatus("BA03"); // 조건 설정
 		vo.getPaging().setTotalRecord(bandOptionMapper.bandCount(vo));
 		// paging.setPageUnit(1); // 페이징 되는지 확인만 하기 위해 한 페이지에 2개씩만 띄우기
-		// paging.setPageSize(5);
+		vo.getPaging().setPageSize(5);
 		vo.setFirst(vo.getPaging().getFirst());
 		vo.setLast(vo.getPaging().getLast());
 		vo.setPaging(vo.getPaging());
