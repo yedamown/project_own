@@ -98,10 +98,11 @@
 	                  <div>
 	                    <select name='bandCalendarMark' id="bandCalendarMark">
 						  <option value='0' selected disabled>-- 선택 --</option>
-						  <option value='red' style='padding:15px;'>빨강🔴</option>
-						  <option value='orange' style='padding:15px;'>주황🟠</option>
-						  <option value='yellow' style='padding:15px;'>노랑🟡</option>
-						  <option value='blue' style='padding:15px;'>파랑🔵</option>
+						  <option value='#F25757' style='padding:15px; background-color: #F25757'></option>
+						  <option value='#FFC780' style='padding:15px; background-color: #FFC780'></option>
+						  <option value='#F8AA94' style='padding:15px; background-color: #F8AA94'></option>
+						  <option value='#5A7CBF' style='padding:15px; background-color: #5A7CBF'></option>
+						  <option value='#BAD98B' style='padding:15px; background-color: #BAD98B'></option>
 						</select>
 	                  </div>
 	                </div>
@@ -450,9 +451,16 @@ $(function(){
 			
 		})
     }
-		
-		
-		
+//셀렉트박스 배경색
+function selectColor(){
+    var color = $("#bandCalendarMark option:checked").css("color");
+    var bgcolor = $("#bandCalendarMark option:checked").css("background-color");
+    $("#bandCalendarMark").css("color",color);		
+    $("#bandCalendarMark").css("background-color",bgcolor);	
+}		
+$("#bandCalendarMark").on('change', function(){
+	selectColor();
+})	
 ////////////////////
 	 Element.prototype.setStyle = function(styles) {
          for (var k in styles) this.style[k] = styles[k];
