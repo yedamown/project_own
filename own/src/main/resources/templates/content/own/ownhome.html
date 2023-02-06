@@ -171,29 +171,29 @@ body {
   <div class="slideshow">
     <!-- Slideshow Items -->
     <div class="slideshow-items">
-      <div class="item">
+      <div class="item div_sns_header" style="z-index:20;">
         <div class="item-image-container">
           <img class="item-image" src="https://i.pinimg.com/564x/23/a4/86/23a4860b8b70b1eb27f2791b97aaee8e.jpg" />
         </div>
         <!-- Staggered Header Elements -->
         <div class="item-header">
-          <span class="vertical-part"><b>O</b></span>
-          <span class="vertical-part"><b>W</b></span>
+          <span class="vertical-part"><b>S</b></span>
           <span class="vertical-part"><b>N</b></span>
+          <span class="vertical-part"><b>S</b></span>
         </div>
         <!-- Staggered Description Elements -->
         <div class="item-description">
           <span class="vertical-part">
-            <b>오늘의 </b>
+            <b>나의 </b>
           </span>
           <span class="vertical-part">
-            <b>운동 </b>
+            <b>운동을 </b>
           </span> 
           <span class="vertical-part">
-            <b>함께 </b>
+            <b>뽐내러 </b>
           </span>
           <span class="vertical-part">
-            <b>하시겠습니까</b>
+            <b>가볼까요</b>
           </span> 
           <span class="vertical-part">
             <b>? </b>
@@ -278,7 +278,7 @@ body {
           </span>      
         </div>
       </div>
-      <div class="item">
+      <div class="item .div_gachi_header" style="z-index:10;">
         <div class="item-image-container">
           <img class="item-image" src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/a1232e48702241.589f548dc6bee.jpg" />
         </div>
@@ -389,7 +389,7 @@ body {
           </span>
         </div>
       </div>
-      <div class="item">
+      <div class="item .div_chall_header" style="z-index:10;">
         <div class="item-image-container">
           <img class="item-image" src="https://i2.wp.com/www.futuristarchitecture.com/wp-content/uploads/2016/11/fantastic-small-living-room-interior-idea-7.jpg?w=700&ssl=1" />
         </div>
@@ -1237,7 +1237,25 @@ body {
 	<!-- Active js -->
 	<script src="/css/chall/js/active.js"></script>
 	<script>
+
+    $('.div_sns_header , .active').on('click',function(e){
+      e.stopPropagation();
+      alert('SNS');
+      location.href='/';
+    })
 	
+    $('.div_gachi_header , .active').on('click',function(e){
+      e.stopPropagation();
+      alert('gachi');
+      location.href='/';
+    })
+    
+    $('.div_chall_header , .active').on('click',function(e){
+      e.stopPropagation();
+      alert('chall');
+      location.href='/';
+    })
+    
 	const items = document.querySelectorAll('.item'),
 	  controls = document.querySelectorAll('.control'),
 	  headerItems = document.querySelectorAll('.item-header'),

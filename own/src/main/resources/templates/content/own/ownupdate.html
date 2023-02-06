@@ -35,22 +35,23 @@
 		}
   </style>
 <body>
+<div class="maintemplate">
+
         <div class="container py-5">
         <h1>내정보 수정</h1>
         </div>
-        <div class="container py-2">
-            <div class="row g-2">
-                <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/mypage" style="text-decoration:none">내정보 수정</a></h4>                 
-                </div>
-                <div class="col-lg-1 col-md-6">
-                    <h4 class="mb-4"><a href="/own/mypage/question" style="text-decoration:none">QNA</a></h4>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a id="myplaying" href="javascript:void(0);" style="text-decoration:none">나의 활동</a></h4>   
-                </div>
-            </div>
-        </div>
+        <div class="row" style="margin: auto;">
+				<div class="col-12 text-left mb-2">
+					<ul class="list-inline mb-4" id="menu-filters" style="text-align: center;">
+						<li class="btn btn-outline-primary m-1 active" id="navMypage" val="1">내정보 수정</li>
+						<li class="btn btn-outline-primary m-1" id="navQuestion" val="1">QNA</li>
+						<li class="btn btn-outline-primary m-1" id="navQuestionForm" val="1">질문하기</li>
+						<li class="btn btn-outline-primary m-1" id="navmyPlaing" val="1">나의 활동</li>
+					</ul>
+				</div>
+			</div>
+        
+      
        <div class="container py-5">
        <div id="subtemplate">       
         <div class="input-form-backgroud row">
@@ -285,11 +286,26 @@
     		// 							   userPhone:tel,
     		// 							   userBirthday:birthday,
     		// 							   userGender:gender})
-        $("#myplaying").on('click',function(){
-        	let id = $('#u_id').val();
-        	$("#subtemplate").load("/own/admin/test?id="+id)
-        })
+        
+    	$('#navMypage').on('click', function(){
+    		location.href='/own/mypage';
+		})
+    	
+    	$('#navQuestion').on('click',function(){
+    		$("#subtemplate").empty();
+    		$("#subtemplate").load('/own/mypage/question');
+    	})
+    	
+    	$('#navmyPlaing').on('click', function(){
+    		let id = $('#u_id').val();
+    		$("#subtemplate").load("/own/admin/test?id="+id)
+		})
+		
+		$('#navQuestionForm').on('click', function(){
+    		$("#subtemplate").load('/own/questform');
+		})
         </script>
+        </div>
 </body>
 </div>
 </html>

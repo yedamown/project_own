@@ -349,16 +349,16 @@ public class OwnhomeController {
 		//테스트 페이지 이동
 		//상세보기로..
 		@GetMapping("/own/admin/test")
-		public String test(Model model, @RequestParam String id,@ModelAttribute("paging1") Paging paging,
+		public String test(HttpServletRequest request, Model model, @RequestParam String id,@ModelAttribute("paging1") Paging paging,
 				@ModelAttribute("paging2") Paging paging2) {
 			System.out.println("===아이디가넘어올까요="+id);
-			
-			ownService.Challenging(id);
+			HttpSession session = request.getSession();
+			OwnUserVO ovo = (OwnUserVO) session.getAttribute("loginUser");
 			ChallengeVO vo2 = new ChallengeVO();
-			vo2.setUserId(id);
+			vo2.setUserId(ovo.getUserId());
 			// 6개로 페이징
 			BandMemberDetailVO vo = new BandMemberDetailVO();
-			vo.setUserId(id);
+			vo.setUserId(ovo.getUserId());
 			
 			paging2.setPageUnit(3);// 3개씩보기
 			paging2.setPageSize(3); // 페이딩 동그라미 3개
@@ -369,7 +369,7 @@ public class OwnhomeController {
 			paging.setPageSize(3); // 페이딩 동그라미 3개
 			List<BandVO> bandList = ownService.adminBandCheck(vo, paging);
 			
-			model.addAttribute("userId", id);
+			model.addAttribute("userId", ovo.getUserId());
 			model.addAttribute("CList",	myList);
 			model.addAttribute("BList", bandList);
 			return "/content/own/test";

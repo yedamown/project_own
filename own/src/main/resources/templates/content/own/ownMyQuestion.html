@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,48 +9,164 @@
 </head>
 <div layout:fragment="content">
 <style>
-body {
-	color: #2e2e2e;
-}
-div.layout-978 { width: 978px; margin: 0px auto; }
-div.tblcontainer {
-	padding: 18px;
-	border: 1px solid #c0c0c0;
-	margin: 20px auto;
-	background: url('../images/splitter.png') repeat-x 0 206px #fff;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px; /* future proofing */
-	-khtml-border-radius: 4px; /* for old Konqueror browsers */
-	width: 93%;	
-}
-.datagrid {
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+/* Reset Style */
+
+div.layout-978 { width: 1200px; margin: 0px auto; }
+
+/* Responsive Table Style */
+.responsive-table {
+	background-color: #fefefe;
 	border-collapse: collapse;
-}
-.datagrid thead tr th {
-	color: #949494;
-	font-size: 11px;
-	font-weight: normal;
-	text-align: left;
-	padding: 6px 8px;
-	border: 1px solid #c9c9c9;
-	background-image: linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
-	background-image: -moz-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
-	background-image: -webkit-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
-	background-image: -ms-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, #EEEFF1), color-stop(0.54, #F9F9F9)); 
-}
-.datagrid tbody tr {
-	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.02);
+	width: 100%;
+	margin: 2rem 0;
+	overflow: hidden;
 }
 
-.datagrid tbody tr td {
-	padding: 6px 8px;
-	border: 1px solid #c9c9c9;
+.responsive-table__row {
+	border-bottom: 1px solid #edeef2;
+	padding: 0 1.5rem;
 }
 
-.datagrid tbody tr td.cash {
-	text-align: right;
+@media (min-width: 768px) {
+	.responsive-table__row {
+		grid-template-columns: 2fr 1fr 2fr 2fr 1fr;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.responsive-table__row {
+		grid-template-columns: 1fr 2fr 1fr;
+	}
+}
+
+.responsive-table__row th,
+.responsive-table__row td {
+	padding: 0.5rem;
+	text-align: center;
+}
+
+.responsive-table__head {
+	background-color: #e1e8f2;
+}
+
+@media (max-width: 991px) {
+	.responsive-table__head {
+		display: none;
+	}
+}
+
+.responsive-table__head__title {
+	
+	align-items: center;
+	justify-content: center;
+	font-weight: 500;
+	text-transform: capitalize;
+}
+
+.responsive-table__body .responsive-table__row {
+	transition: 0.1s linear;
+	transition-property: color, background;
+}
+
+.responsive-table__body .responsive-table__row:last-child {
+	border-bottom: none;
+}
+
+.responsive-table__body .responsive-table__row:hover {
+	color: #fff;
+	background-color: #17a2b8;
+}
+
+.responsive-table__body__text {
+	
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
+
+.responsive-table__body__text::before {
+	margin-right: 1rem;
+	font-weight: 600;
+	text-transform: capitalize;
+}
+
+@media (max-width: 991px) {
+	.responsive-table__body__text::before {
+		content: attr(data-title) " :";
+	}
+}
+
+@media (max-width: 400px) {
+	.responsive-table__body__text::before {
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+}
+
+.responsive-table__body__text--name {
+	font-weight: 600;
+}
+
+@media (min-width: 768px) {
+	.responsive-table__body__text--name::before {
+		display: none;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.responsive-table__body__text--name {
+		grid-column: 0.5;
+		flex-direction: column;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+	.responsive-table__body__text--status,
+	.responsive-table__body__text--types,
+	.responsive-table__body__text--update {
+		grid-column: 0.6666666667;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.responsive-table__body__text--country {
+		grid-column: -3;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+	.responsive-table__body__text--name,
+	.responsive-table__body__text--country {
+		grid-row: 2;
+	}
+}
+
+/* Status Indicator Style */
+.status-indicator {
+	display: inline-block;
+	width: 1.8rem;
+	height: 1.8rem;
+	border-radius: 50%;
+	background: #222;
+	margin-right: 0.5rem;
+}
+
+.status-indicator--active {
+	background: #25be64;
+}
+
+.status-indicator--inactive {
+	background: #dadde4;
+}
+
+.status-indicator--new {
+	background: #febf02;
 }
 
 #my_modal {
@@ -74,58 +189,36 @@ div.tblcontainer {
     border-top: 1px solid #444444;
     border-collapse: collapse;
   }
-  th, td {
-    border-bottom: 1px solid #444444;
-    padding: 10px;
-  }
 </style>
-
-
-
 <body>
         <div class="container py-5">
         <h1>회원목록</h1>
         </div>
-        <div class="container py-2">
-            <div class="row g-2">
-                <div class="col-lg-2 col-md-6" style="width:100px">
-                    <h4 class="mb-4"><a href="/own/mypage" style="text-decoration:none">내정보 수정</a></h4> 
-                                          
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4">
-                    <a href="/own/mypage/question" style="text-decoration:none">QNA</a>
-                    </h4>                 
-                </div>
-            </div>
-             <h4 class="mb-4">
-                     <a href="/own/mypage/question" style="text-decoration:none">내질문보기</a>&nbsp;&nbsp;&nbsp; 
-                     <a href='javascript:void(0)'; onclick="ownQuest()" style="text-decoration:none">질문하기</a>
-                    </h4>
-        </div>
 <div id="subtemplate">
-
 <div class="layout-978">
 <div class="tblcontainer">
-<table class="datagrid">
-    <thead>
-       			<th>No</th>
-				<th>제목</th>
-				<th>머리말</th>
-				<th>처리상태</th>
-    </thead>
-    <tbody id="userList" border="1">
-			<tr th:each="quest ,userStat : ${OList}">
-				<input type="hidden" th:value="${quest.questNo}">
-				<td th:text="${userStat.index+1}"></td>
-				<td class="titlemodal" th:text="${quest.title}"
-					th:id="${quest.questNo}"></td>
-				<td th:text="${quest.header}"></td>
-				<td th:text="${quest.status}"></td>
-				</tr>
-			</tbody>
-</table>
-  
+
+
+
+<table class="responsive-table" id="amtTable">
+	<thead class="responsive-table__head">
+	<tr class="responsive-table__row">
+		<th class="responsive-table__head__title" style="width:40px;">No</th>
+		<th class="responsive-table__head__title" style="width:80px;">제목</th>
+		<th class="responsive-table__head__title" style="width:80px;">머리말</th>
+		<th class="responsive-table__head__title" style="width:80px;">처리상태</th>
+	</tr>
+	</thead>
+	<tbody class="responsive-table__body" id="userList">
+		<tr class="responsive-table__row titlemodal" th:each="quest: ${OList}">
+			<input type="hidden" th:value="${quest.questNo}">
+			<td class="responsive-table__body__text" th:text="${quest.rn}"></td>
+			<td class="responsive-table__body__text" th:text="${quest.title}" th:class="titlemodal" th:id="${quest.questNo}"></td>
+			<td class="responsive-table__body__text" th:text="${quest.header}"></td>				
+			<td class="responsive-table__body__text" th:text="${quest.status}"></td>
+		</tr>
+	</tbody>
+	</table>
   
 </div>
 </div>    
@@ -170,11 +263,6 @@ div.tblcontainer {
 						id="modalcontent">
 				</span>
 				</div>
-				<div class="form-group">
-					<label for="message-text" class="col-form-label">답변</label> <span
-						id="modalanswer"></span>
-				</div>
-                <button type="submit">전송</button>
 				<button type="button" id="qCancel">취소</button>
 			</form>
 			<a class="modal_close_btn">닫기</a>
@@ -210,7 +298,7 @@ div.tblcontainer {
 			$('#qCancel').on('click',function(){
 				let rno = $('input[name="questNo"]').val();
 				console.log('취소함')
-
+				
 				$.ajax({
 				url : '/own/admin/myquestDelete',
 				method : 'post',
@@ -313,20 +401,20 @@ div.tblcontainer {
 					let title = "";
 
 					if(ele.answer==null){
-					answer = `<td>미처리 상태</td>`
-					title = `<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>`
+					answer = `<td class="responsive-table__body__text>미처리 상태</td>`
+					title = `<td class="responsive-table__body__text titlemodal" id="${ele.questNo}">${ele.title}</td>`
 							}
 					else{
-					answer = `<td>${ele.answer}</td>`
-					title = `<td class="titlemodal" id="${ele.questNo}">${ele.title}</td>`
+					answer = `<td class="responsive-table__body__text>${ele.answer}</td>`
+					title = `<td class="responsive-table__body__text titlemodal" id="${ele.questNo}">${ele.title}</td>`
 					}
 
-					let tag = `<tr>
+					let tag = `<tr class="responsive-table__row titlemodal">
 								<input type="hidden" value="${ele.questNo}">
-								<td>${ele.rn}</td>
+								<td class="responsive-table__body__text">${ele.rn}</td>
 								${title}
-								<td>${ele.header}</td>
-								<td>${ele.status}</td>
+								<td class="responsive-table__body__text"> ${ele.header}</td>
+								<td class="responsive-table__body__text">${ele.status}</td>
 							</tr>`
 					tbody.append(tag);
 				})
