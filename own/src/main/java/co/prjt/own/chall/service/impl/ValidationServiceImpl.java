@@ -103,11 +103,15 @@ public class ValidationServiceImpl implements ValidationService {
 		vo.setPaging(paging);
 		if(vo.getUserId() == null) {
 			List<ValidationVO> list = validation.getChallVld(vo);			
-			list.get(0).setPaging(paging);		
+		    if(list!=null && list.size()>0) {
+		    	list.get(0).setPaging(paging);
+		    }		
 			return list;
 		} else {
 			List<ValidationVO> list = validation.getMyVld(vo);	
-			list.get(0).setPaging(paging);
+		    if(list!=null && list.size()>0) {
+		    	list.get(0).setPaging(paging);
+		    }
 			return list;
 		}
 	}

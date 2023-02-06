@@ -174,8 +174,8 @@ public class ChallController {
 	public String searchChall(ChallengeVO vo, Model model, Paging paging) {
 		System.out.println(vo);
 		//보일갯수 설정하기
-		paging.setPageUnit(2);// 3개씩보기
-		paging.setPageSize(3); // 페이딩 동그라미 3개
+		paging.setPageUnit(6);// 3개씩보기
+		paging.setPageSize(5); // 페이딩 동그라미 3개
 		List<ChallengeVO> list = challenge.pageChallList(vo, paging);
 		model.addAttribute("searchList", list);
 		return "content/chall/searchResult";

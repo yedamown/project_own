@@ -1,8 +1,6 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-	lang="ko">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" lang="ko">
 
 <head>
 <!-- jquery -->
@@ -42,44 +40,56 @@
 <script src="/css/chall/mail/contact.js"></script>
 <!-- Template Javascript -->
 <script src="/css/chall/js/main.js"></script>
+<link href="/css/chall/css/chall.css" rel="stylesheet" />
 <meta charset="utf-8">
 <title>검색결과</title>
 </head>
+<div layout:fragment="content">
 <body>
-<!-- 공통헤더 푸터 -->
-<h3>검색 결과</h3>
+		<!-- Header Start -->
+		<div class="container-fluid bg-primary" style="padding: 0">
+			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px; background-image: url(/img/chall/category/스키.png);
+			background-size: contain">
+				<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
+				<div class="d-inline-flex text-white">
+					<p class="m-0">
+						<a class="text-white" href="">Home</a></p>
+					<p class="m-0 px-2">/</p>
+					<p class="m-0">Contact Us</p>
+				</div>
+			</div>
+		</div>
+		<!-- Header End -->
+
 <!-- Blog Start -->
 	<div class="container-fluid pt-5">
 		<div class="container">
 			<div class="text-center pb-2">
 				<p class="section-title px-5">
-					<span class="px-2">My Page</span>
+					<span class="px-2">Search Challenges</span>
 				</p>
-				<h1 class="mb-4">나의 도전</h1>
+				<h1 class="mb-4">도전 검색 결과</h1>
 			</div>
-			
 				<!-- 여기부터  6개 한블럭? -->
 			<div class="row pb-3" id="challRow">
-			
-				<th:block th:each="my: ${searchList}">
-					<div class="col-lg-4 mb-4" >
-						<div class="card border-0 shadow-sm mb-2">
-							<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt=""
-								style="height:240px; object-fit: cover" />
-							<div class="card-body bg-light text-center p-4">
-								<input type="hidden" th:value="${my.challNo}" />
-								<h4 class="" th:text="${my.challTitle}"></h4>
-								<div class="d-flex justify-content-center mb-3">
-									<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
-								    <small class="mr-3">[[${my.challDuration}]]주 동안</small>
-								    <small class="mr-3">주 [[${my.challFreq}]]회</small>
-								</div>
-								<a
-									th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+				<th:block th:each="sl: ${searchList}">
+						<div class="grid m-3" style="padding: 10px">
+							<div class="card card__one" style="width: 300px; height:380px;">
+								<figure class="card__img">
+									<img th:src="|/imgView/${sl.firstImage}|" style="width: 300px; height:210px; object-fit: cover" />
+								</figure>
+								<div class="card__desc vldno" style="text-align: center;">
+									<h5 style="margin-top: 5px;"th:text="${sl.challTitle}"></h5>
+									<div class="row" style="justify-content: center;">
+										<p style="margin: 5px 10px;">[[${sl.challDuration}]]주 동안</p>
+										<p style="margin: 5px 10px;">주 [[${sl.challFreq}]] 회</p>
+										<p style="margin: 5px 10px;">[[${#dates.format(sl.challStartdate, 'M/d')}]]시작</p>
 							</div>
+							<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(sl.challNo, 'CHA_')})}"
+							  class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
 						</div>
-					</div>
+						</div>
+					</div>	
 				</th:block>
 			</div>
 		</div>	
@@ -112,6 +122,6 @@
 	}
 	
 </script>
-
+</div>
 </body>
 </html>
