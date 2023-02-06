@@ -11,6 +11,21 @@
         <link rel="icon" href="/css/band/gachi/own.png" type="image/png">
         <title>오늘의운동 가치</title>
         <style type="text/css">
+            /* view more */
+           .button_hover2 {
+           		color: white;
+				text-align: center;
+    			background-color: #6ab0cd;
+    			width: 150px;
+    			margin: 0 auto;
+    			border: 2px solid #6ab0cd;
+           }
+           .button_hover2:hover {
+           		color: white;
+				box-shadow: #6ab0cd 0 80px 0px 2px inset;
+				border-radius: 10px;
+           }
+           
         	/* //페이징 버튼 1*/
         	.flexCenter {
 				display: flex;
@@ -136,11 +151,10 @@
 		  position: absolute;
 		  z-index: 999;
 		  font-weight: 400;
-		  background-color: #f9f9f9;
+		  background-color:white;
 		  min-width: 200px;
 		  top: 40px;
 		}
-		
 		.dropdown-content a{
 		  display : block;
 		  text-decoration : none;
@@ -187,7 +201,7 @@
                     <!--================ 전체 검색 =================-->    
                         <aside class="single_sidebar_widget search_widget">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="searchBtnInput" placeholder="오운 가치 검색"  name="bandName">
+                            <input type="text" class="form-control" id="searchBtnInput" placeholder="오늘의운동 가치 검색"  name="bandName">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" id="searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
                             </span>
@@ -215,7 +229,7 @@
                         <div class="blog_right_sidebar">
                             <aside class="single_sidebar_widget author_widget">
                                	<a class="hotel_img hoverBtn" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">
-                                   	<img th:src="|/imgView/${band.bandImg.mediaServerFile}|" class="" alt=""  style="width: 200px; height: 200px;">
+                                   	<img th:src="|/imgView/${band.bandImg.mediaServerFile}|" class="" alt=""  style="width: 200px; height: 200px; margin-bottom: 15px;">
                                	</a>
                                	<a class="hotel_img hoverBtn" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}" style="text-decoration: none;"> 
                                 	<h3 th:text="${band.bandName}" class="typo-list" style="display:inline;"></h3>
@@ -230,6 +244,9 @@
                                     <b class="hoverCursor" style="margin: 0px 10px 5px 0px;"><i class="fa fa-user" style="margin-right: 10px;">
                                     	</i><span th:text="${band.memcount}" style="color: #666666; font-weight: 500"></span>
                                     </b>
+                                    <th:block th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
+                                 	<p class="hoverBtn" id="bandOption"><i class="fa fa-cog" aria-hidden="true" style="margin-right: 10px;"></i> 가치 설정</p>
+                                </th:block>
                                     <!-- <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><b><i class="fa fa-plus-square" aria-hidden="true"></i> 초대</b></div> -->
                                  </div>   
                                     <hr>
@@ -240,10 +257,7 @@
                                 <hr>
                                 <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                                <div>
-	                                	<p class="hoverBtn" id="myOption"><i class="fa fa-cog" aria-hidden="true" style="margin: 0px 10px 10px 0px;"></i>[[${BandMemberDetail.bandNickname}]]([[${BandMemberDetail.userId}]])</p>
-	                                    <th:block th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
-	                                    	<p class="hoverBtn" id="bandOption"><i class="fa fa-cog" aria-hidden="true" style="margin-right: 10px;"></i> 가치 설정</p>
-	                                    </th:block>
+	                                	<p class="hoverBtn" id="myOption"><i class="fa fa-cog" aria-hidden="true" style="margin: 0px 10px 10px 0px;"></i>[[${BandMemberDetail.bandNickname}]]</p>
 	                                </div>
 	                                <hr>
                                 </div>
@@ -423,7 +437,7 @@
 		                	//사진이 있는지 체크 // iframe이 있으면 이걸로 대체
 		                	let imgTag = '';
 		                	if(ele.bandImg!=null){
-		                		imgTag = `<img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" class="imgss" style="width: 678px; height: 280px;">`;
+		                		imgTag = `<img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" class="imgss" style="width: 638px; height: 280px;">`;
 		                	}
 
 		                	//iframe을 찾기위함
@@ -447,38 +461,47 @@
 		                	//정규표현식 html태그 제거
 		                	const reg = /<[^>]*>?/g;
 		                	let newContent = ele.bandBoardContent.replace(reg,'');
-		                    let articleTag = `<article style="border: 1px solid #eeeeee;padding:30px; background-color:white; margin:20px 20px; ">
-							                    <div style="display: flex; flex-direction: column;" class="tagg">
-							                    <div>
-							                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-							                            <img class="rounded-circle" src=/imgView/${ele.mediaServerFile} alt="" style="width: 70px; height: 70px;">
-							                            <div  style="display: block; width: 300px; padding: 10px;">
-							                                <ul class="blog_meta list_style" style="display: inline-block;">
-							                                    <li style="display: block;">${bandNickname}</li>
-							                                    <li style="display: block;">${ele.bandBoardDate}</li>
-							                                </ul>
-							                            </div>
-							                        </div>
-							                        
-							                        <h4>${ele.bandBoardTitle}</h4>
-							                        ${imgTag}
-							                        <div class="blog_details${ele.bandBoardDetailNo}">
-							                            <p>${newContent}</p>
-							                        </div>
-							                    </div>
-							                    <a href="#" class="view_btn button_hover boardDett" id="${ele.bandBoardDetailNo}">View More</a>
-							                    <div class="parentUnit" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-							                        <div class="heartt" name="${ele.bandBoardDetailNo}" style="display: flex; justify-content:space-between">
-							                             <div class="heartClick" name="${ele.bandBoardDetailNo}">${likeTag}</div>
-							                        	<span  class="heartClick" name="${ele.bandBoardDetailNo}">${ele.likeList["likeCount"]}</span>
-							                        </div>
-							                        <div class="boardDett" id="${ele.bandBoardDetailNo}">
-							                        	<i class="lnr lnr-bubble boardDett" id="${ele.bandBoardDetailNo}"></i>
-							                        	<span></span>${ele.reply}
-							                        </div>
-							                    </div>
-							                </div>
-							            </article>`;
+		                	if(newContent.length>143){
+		                		newContent = newContent.slice(0, 144) + " ...";
+		                	}
+		                    let articleTag = `<article style="border: 1px solid #eeeeee;padding:15px 30px; background-color:white; margin:20px 20px; ">
+								                    <div style="display: flex; flex-direction: column;" class="tagg">
+									                    <div>
+									                        <div style="display: inline-flex; justify-content: space-between; padding-top: 20px; width: 650px;">
+									                            <img class="" src=/imgView/${ele.mediaServerFile} alt="" style="width: 70px; height: 70px; box-shadow: 5px 5px 10px grey; border: #6a60cd; border-radius:15px;">
+									                            <div  style="display: block; width: 300px; padding: 12px; margin-right: 180px;">
+									                                <ul class="blog_meta list_style" style="display: inline-block;">
+									                                    <li style="display: block;">${bandNickname}</li>
+									                                    <li style="display: block;">${ele.bandBoardDate}</li>
+									                                </ul>
+									                            </div>
+
+									                            <div class="nav-item dropdown droMom">
+				                                                   <a class="nav-item nav-link" data-toggle="dropdown"><i class="fa-solid fa-ellipsis" id="bchild"></i></a>
+				                                                          <div class="dropdown-menu rounded-0 m-0" name="bchilds" style="top: 30px;">
+				                                                      <a class="dropdown-item">신고</a>
+				                                                   </div>
+				                                                </div>   
+									                        </div>
+								                        	<h4 style="margin-top:20px;">${ele.bandBoardTitle}</h4>
+								                        	${imgTag}
+								                        	<div class="blog_details${ele.bandBoardDetailNo}">
+								                            <p>${newContent}</p>
+								                        </div>
+								                    </div>
+								                    <div class="parentUnit" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+								                        <div class="heartt" name="${ele.bandBoardDetailNo}" style="display: flex; justify-content:space-between">
+								                             <div class="heartClick" name="${ele.bandBoardDetailNo}">${likeTag}</div>
+								                        	<span  class="heartClick" name="${ele.bandBoardDetailNo}">${ele.likeList["likeCount"]}</span>
+								                        </div>
+								                        <div class="boardDett" id="${ele.bandBoardDetailNo}">
+								                        	<i class="lnr lnr-bubble boardDett" id="${ele.bandBoardDetailNo}"></i>
+								                        	<span></span>${ele.reply}
+								                        </div>
+								                    </div>
+								                    <a href="#" class="view_btn button_hover2 boardDett" id="${ele.bandBoardDetailNo}" style="text-decoration: none; margin-top:10px;">View More</a>
+								                </div>
+								            </article>`;
 			            
 				                $(articleArea).append(articleTag);
 				                //페이지 버툰에 게시판 끝 숫자달기
@@ -542,7 +565,7 @@
 			                if(result.length==5){
 				                //more 누르면 나오는 페이지
 				            	let btnTag = `<nav class="blog-pagination justify-content-center d-flex" id="multiId">
-							                <a class="view_btn button_hover" id="nextBtn" style="width: 555px;">View More</a>
+							                <a class="view_btn button_hover2" id="nextBtn" style="width: 555px; text-decoration: none;">View More</a>
 							                <input type="hidden" id="multivalue" value=${bandBoardDetailNo}>
 							                </nav>`
 							              
@@ -843,30 +866,46 @@
 				console.log($(e.target));
 				let userId = $('#userId').val();
 	    		let categoryNo = $(e.target).attr('name');
-	    		console.log(categoryNo);
-	    		let category = 'Band';
-	    		data={userId, categoryNo, category}
-	    		$.ajax({
-		            url:'/own/likeAjax',
-		            data: JSON.stringify(data),
-		            contentType : "application/json;",
-		            method: 'post',
-		              beforeSend: function(xhr){
-		                  xhr.setRequestHeader(header,token);
-		                }
-		        }).then(result => {
-		        	console.log(result);
-		        	let number = $(e.target).parentsUntil('.parentUnit').children(':eq(1)').text();
-		        	if(result == 'add'){
-		        		$(e.target).parentsUntil('.parentUnit').children(':eq(0)').text('❤');
-		        		$(e.target).parentsUntil('.parentUnit').children(':eq(1)').text(number-1+2);
-		        	} else if(result == 'del'){
-		        		$(e.target).parentsUntil('.parentUnit').children(':eq(0)').text('🤍');
-		        		$(e.target).parentsUntil('.parentUnit').children(':eq(1)').text(number-1);
-		        	}
+		    		if(categoryNo!=null){	
+		    		console.log(categoryNo);
+		    		let category = 'Band';
+		    		data={userId, categoryNo, category}
+		    		$.ajax({
+			            url:'/own/likeAjax',
+			            data: JSON.stringify(data),
+			            contentType : "application/json;",
+			            method: 'post',
+			              beforeSend: function(xhr){
+			                  xhr.setRequestHeader(header,token);
+			                }
+			        }).then(result => {
+			        	console.log(result);
+			        	let number = $(e.target).parentsUntil('.parentUnit').children(':eq(1)').text();
+			        	if(result == 'add'){
+			        		$(e.target).parentsUntil('.parentUnit').children(':eq(0)').html('<i class="fa-solid fa-heart heartClick"></i>');
+			        		$(e.target).parentsUntil('.parentUnit').children(':eq(1)').text(number-1+2);
+			        	} else if(result == 'del'){
+			        		$(e.target).parentsUntil('.parentUnit').children(':eq(0)').html('<i class="fa-regular fa-heart heartClick"></i>');
+			        		$(e.target).parentsUntil('.parentUnit').children(':eq(1)').text(number-1);
+			        	}
 		        })
-	    	})
-       })
+			}
+    	})//bchild
+    	$('#articleArea').on('click', $('.bchild'), function(e){
+		    		if($(e.target).closest('.droMom').find('[name=bchilds]').lengh!=0 && $(e.target).closest('.droMom').find('[name=bchilds]').is(':visible')){
+		    			$(e.target).closest('.droMom').find('[name=bchilds]').hide();
+		    		} else {
+		    			$('#articleArea').find('[name=bchilds]').hide();
+		    			$(e.target).closest('.droMom').find('[name=bchilds]').show();
+		    		}
+		    	})
+		    	$(document).on('click', function(){
+	    		$($('.arty:eq(0)').find('[name=bchilds]')).each(function(idx, ele){
+	    			$(ele).hide();
+	    		})
+    		})
+    	})
+    	
        //뒤로가기 실험
 			/* window.onpopstate = function(event) {
 				history.go(0);
