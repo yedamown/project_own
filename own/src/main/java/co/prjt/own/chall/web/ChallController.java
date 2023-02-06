@@ -92,13 +92,14 @@ public class ChallController {
 		// 로그인 정보 있는 경우.
 		if (user != null) {
 			String userId = user.getUserId();
+			vo2.setUserId(userId);
 			// 도전멤버 체크
 			cmb.setUserId(userId);
 			CMemberVO cmb2 = new CMemberVO();
 			cmb2 = member.challMemCheck(cmb);
 			System.out.println("세션 유저 정보" + user);
 			System.out.println("검색결과 도전멤버에서 " + cmb2);
-			int rs = challenge.countMychall(userId);
+			int rs = challenge.countMychall(vo2);
 			// 도전멤버없는 경우 모달띄워서 가입.
 			if (cmb2 == null) {
 				System.out.println("---------------도전에 정보 널 인 경우?!");
@@ -207,8 +208,8 @@ public class ChallController {
 
 	// 해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
 	@GetMapping("/detailChall")
-	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, ChallengeVO vo2, CMemberVO mem,
-			CMemberListVO memck, OwnLikeVO like, HttpServletRequest request, Model model) {
+	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, ChallengeVO vo2,
+			CMemberVO mem, CMemberListVO memck, OwnLikeVO like, HttpServletRequest request, Paging paging,Model model) {
 		System.out.println(no);
 		String challNo = "CHA_" + no;
 		vo.setChallNo(challNo);
@@ -223,6 +224,13 @@ public class ChallController {
 		model.addAttribute("detailChall", vo2);
 		// 미디어에서 검색
 		model.addAttribute("challImg", common.selectImgAll(challNo));
+		//
+		paging.setPageUnit(3);// 3개씩보기
+		paging.setPageSize(3); // 페이딩 동그라미 3개
+		ChallengeVO vo3 = new ChallengeVO();
+		List<ChallengeVO> cList = challenge.pageChallList(vo3, paging);
+		System.out.println("새 도전 리스트 ---------------------------------"+cList);
+		model.addAttribute("newChall", cList);
 		// 나의 가입현황 확인 --로그인 세션이용
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
@@ -262,6 +270,7 @@ public class ChallController {
 	@PostMapping("/applyChall")
 	@ResponseBody
 	public String addMemList(@RequestBody CMemberListVO vo, Model model) {
+		
 		// 도전 멤버 대기 리스트에 추가 + 정보 모달 후,
 		// 다시 -> 상세페이지 + 대기중일경우 버튼 비활성화
 		int rs = memberList.insertMemList(vo);
@@ -326,7 +335,9 @@ public class ChallController {
 		return list;
 	}
 	
+	
 	//-----------------------  신 고 -------------------------------------
+	
 	// 인증 신고 등록 아작스
 	@PostMapping("/addRptAjax")
 	@ResponseBody
@@ -354,6 +365,20 @@ public class ChallController {
 		return list;
 	}
 
+	//신고 처리
+	@PostMapping("/reportProcess")
+	@ResponseBody
+	public String reportProcess(@RequestBody CReportVO vo) {
+		System.out.println(vo);
+		int rs = report.updateCReport(vo);
+		System.out.println(rs);
+		if (rs == 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
 //---------------------------------- 멤버관리관련 -----------------------------------------------------------
 	// 도전리더 - 멤버리스트 출력
 	@GetMapping("/challMemList")
@@ -371,9 +396,9 @@ public class ChallController {
 		int rs = memberList.updateMemList(vo);
 		System.out.println(rs);
 		if (rs == 1) {
-			return "sucess";
+			return "처리를 완료하였습니다.";
 		} else {
-			return "fail";
+			return "처리에 오류가 발생하였습니다.";
 		}
 	}
 
@@ -430,7 +455,7 @@ public class ChallController {
 		int rs = member.updateCMem(vo);
 		System.out.println(rs);
 		if (rs == 1) {
-			return "sucess";
+			return "success";
 		} else {
 			return "fail";
 		}
@@ -461,7 +486,8 @@ public class ChallController {
 	// ----------------------------------------------------
 	// 마이페이지 - 내 예치금
 	@GetMapping("/myAmount")
-	public String challMyAmt(CMemberVO vo1, CAmountVO vo2, Model model, HttpServletRequest request) {
+	public String challMyAmt(CMemberVO vo1, CAmountVO vo2, Model model, Paging paging,
+			HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
@@ -469,13 +495,21 @@ public class ChallController {
 		vo1.setUserId(id);
 		vo2.setUserId(id);
 		System.out.println(id);
-		System.out.println(amount.getAmountList(vo2));
+		System.out.println(amount.getAmtListPage(vo2, paging));
 		// 하나에 같이 담을 수 없는게.. 하나는 리스트고 하나는 내역? VO이라서..ㅠㅠ
 		model.addAttribute("memInfo", member.getCMem(vo1));
-		model.addAttribute("memAmount", amount.getAmountList(vo2));
+		model.addAttribute("memAmount", amount.getAmtListPage(vo2, paging));
 		return "content/chall/myAmount";
 	}
-
+	
+	// 마이페이지 - 내 예치금 아작스
+	@GetMapping("/myAmtAjax")
+	@ResponseBody
+	public List<CAmountVO> myAmtAjax(CAmountVO vo, Paging paging) {
+		List<CAmountVO> list = amount.getAmtListPage(vo, paging);
+		return list;
+	}
+	
 	// 마이페이지 - 예치금 충전페이지 이동
 	@GetMapping("/payAmount")
 	public String payAmount(CMemberVO vo, Model model, HttpServletRequest request) {
@@ -538,13 +572,14 @@ public class ChallController {
 		paging.setPageUnit(6); //내 도전이라 6개씩 보여줄 것
 		paging.setPageSize(3); //페이징 동그라미로 할 거라 4개
 		// 6개로 페이징
+		vo.setChallStatus("진행 중");
 		List<ChallengeVO> cList = challenge.myPageChall(vo, paging);
 		model.addAttribute("myChall", cList);
 		// 테스트 중~~!!!
 		return "content/chall/myChall";
 	}
 
-	// 마이페이지 도전 페이징 아작스
+	// 마이페이지 도전 페이징 아작스 
 	@GetMapping("/myPageChallAjax")
 	@ResponseBody
 	public List<ChallengeVO> myPageChallAjax(Model model, Paging paging, ChallengeVO vo) {
@@ -557,5 +592,13 @@ public class ChallController {
 	@ResponseBody
 	public List<ChallengeVO> myLikeChallAjax(Model model, Paging paging, ChallengeVO vo) {
 		return challenge.likeChallPage(vo, paging);
+	}
+	
+	//마이페이지 - 내가 리더인..
+	// 마이페이지 도전 페이징 아작스
+	@GetMapping("/leaderChallAjax")
+	@ResponseBody
+	public List<ChallengeVO> leaderChallAjax(Model model, Paging paging, ChallengeVO vo) {
+		return challenge.pageChallList(vo, paging);
 	}
 }

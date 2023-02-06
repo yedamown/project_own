@@ -32,7 +32,7 @@ public interface ChallengeService {
 	/* -----------------------------내 도전 리스트 페이징 ------------------------------*/
 	
 	//나의 도전 카운트 - 멤버리스트와 조인해야함.
-	int countMychall(String id);
+	int countMychall(ChallengeVO vo);
 	
 	//멤버리스트와 조인 - 아이디로 검색 (챌린지vo에 아이디 부분 넣어버림..)
 	List<ChallengeVO> getMyChall(ChallengeVO vo);
