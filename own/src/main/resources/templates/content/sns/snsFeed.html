@@ -155,7 +155,7 @@
         .feedCount {
             font-size: 14px;
             font-weight: 600;
-            padding-left: 10px;
+            padding-left: 5px;
         }
 
         #feedCount {
@@ -386,6 +386,17 @@
             box-shadow:0 0 8px 0 dodgerBlue;
         }
 
+        .followDelbtn{
+            background-color:#17a2b8;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            width: 50px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
     </style><!--스타일-->
     
     <!-- jquery -->
@@ -491,14 +502,25 @@
                 <div id="snsprofilebox" style="border: 1px solid lightgray;">
                     <br>
                     <div class="profile">
-                        <img id="instaImg" src="/css/sns/img/insta.png">
+                        <img id="instaImg" src="/css/sns/img/insta.png" th:if="${!#lists.isEmpty(snsStoryList)}">
                         <img th:if="${userId.snsNickname == snsInfo.snsNickname}" 
                              src="/css/sns/img/plusIcon2.png" class="modalBtn" style="position:absolute;top:111px; left:191px; width:30px; height:30px; z-index: 1; cursor:pointer">
+
+                        <div th:if="${!#lists.isEmpty(snsStoryList)}">
                         <span class="modalBtn">
                             <img th:if="${profileImg == null}" class="profileImg" src="/css/sns/img/defaultUser.png">
                             <span th:unless="${profileImg == null}">
-                                <img class="profileImg" th:src="|/imgView/${profileImg.mediaServerFile}" onerror='this.src="/css/sns/img/defaultUser.png"'></span>
+                            <img class="profileImg" th:src="|/imgView/${profileImg.mediaServerFile}" onerror='this.src="/css/sns/img/defaultUser.png"'></span>
                         </span>
+                        </div>
+                        <div th:unless="${!#lists.isEmpty(snsStoryList)}">
+                        <span>
+                            <img th:if="${profileImg == null}" class="profileImg" src="/css/sns/img/defaultUser.png">
+                            <span th:unless="${profileImg == null}">
+                            <img class="profileImg" th:src="|/imgView/${profileImg.mediaServerFile}" onerror='this.src="/css/sns/img/defaultUser.png"'></span>
+                        </span>
+                        </div>
+
                         <span id="snsNickname" th:text="${snsInfo.snsNickname}" th:value="${snsInfo.snsAccountNo}"
                             style="position: absolute; top:10px; left:300px; font-size:16px; font-weight:700;"></span>
 
@@ -531,6 +553,7 @@
                             <div th:unless="${snsInfo.snsWebsite != null}">///          </div>
                         </div>
                     </div>
+
                     <!-- 스토리 등록-->
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
                         <div class="modal-content"  style="width: 500px; height: 600px;">
@@ -550,10 +573,10 @@
                             </form>
                         </div>
                     </div>
+
                     <!-- 다른사람 스토리-->
-                    <div th:if="${snsStoryList != null}">
-                    <div class="modal">
-                        <div class="modal-content" style="width: 500px; height: 600px;">
+                    <div class="modal" th:if="${!#lists.isEmpty(snsStoryList)}">
+                        <div class="modal-content" style="width: 500px; height: 600px;" >
                             <div class="storyDelBox">
 
                             </div>
@@ -566,7 +589,7 @@
                             </div>
                         </div>닉네임
                     </div>
-                    </div>
+
                     <!-- 프로필 -->
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
                         <div class="modal-content" style="width: 800px; height: 500px; background-color: aliceblue;">
@@ -641,26 +664,28 @@
 
                     <!-- 팔로우 Modal -->
                     <div class="modal">
-                        <div class="modal-content" style="width:400px;">
+                        <div class="modal-content" style="width:550px;">
                             <span class="close">&times;</span>
                             <p>팔로우 목록</p>
                                     <td th:each="snsfol : ${snsFollowerList}">
                                         <div class="snsfolProfile" style="padding-bottom: 10px;">
                                             <img th:src="${snsfol.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; " onerror='this.src="/css/sns/img/defaultUser.png"'>
                                             <a th:href="@{snsFeed(snsNickname=${snsfol.follower})}">[[${snsfol.follower}]]</a>
+                                            <input class="followDelbtn" type="button" value="삭제">
                                         </div>
                                     </td>
                         </div>
                     </div>
                     <!-- 팔로워 Modal -->
                     <div class="modal">
-                        <div class="modal-content" style="width:400px;">
+                        <div class="modal-content" style="width:550px;">
                             <span class="close">&times;</span>
                             <p>팔로워 목록</p>
                                     <td th:each="snsf : ${snsFollowList}">
                                         <div class="snsfProfile" style="padding-bottom: 10px;">
                                             <img th:src="${snsf.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover;" onerror='this.src="/css/sns/img/defaultUser.png"'>
                                             <a th:href="@{snsFeed(snsNickname=${snsf.follow})}">[[${snsf.follow}]]</a>
+                                            <input class="followDelbtn" type="button" value="삭제">
                                         </div>
                                     </td>
                             </div>
@@ -792,6 +817,12 @@
                 $('.btn-more').text("더보기");
 
             }
+        })
+
+        $('.followDelbtn').on("click", function(){
+            console.log("팔로우 삭제버튼 클릭");
+            console.log($(this).parent());
+            $(this).parent().hide();
         })
         //신고
         $('#btnsignin').on('click',function(){
