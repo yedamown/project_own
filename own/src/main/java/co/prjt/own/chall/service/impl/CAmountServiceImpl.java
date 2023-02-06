@@ -10,6 +10,7 @@ import co.prjt.own.chall.mapper.CMemberMapper;
 import co.prjt.own.chall.service.CAmountService;
 import co.prjt.own.chall.service.CAmountVO;
 import co.prjt.own.chall.service.CMemberVO;
+import co.prjt.own.common.Paging;
 
 @Component
 public class CAmountServiceImpl implements CAmountService{
@@ -52,6 +53,22 @@ public class CAmountServiceImpl implements CAmountService{
 	public List<CAmountVO> getAmountList(CAmountVO vo) {
 		return mapper.getAmountList(vo);
 	}
-
+	
+	//페이징정보 넣기
+	@Override
+	public List<CAmountVO> getAmtListPage(CAmountVO vo, Paging paging) {
+		paging.setTotalRecord(mapper.countMyAMT(vo));
+		paging.setPageUnit(10); //내 도전이라 6개씩 보여줄 것
+		paging.setPageSize(10);
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		vo.setPaging(paging);
+		System.out.println("===================예치금페이징" + vo);
+		List<CAmountVO> list = mapper.getAmountList(vo);
+		if( list!=null && list.size()>0) {
+			list.get(0).setPaging(paging);
+		}
+		return list;
+	}
 
 }

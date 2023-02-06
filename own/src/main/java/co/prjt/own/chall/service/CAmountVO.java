@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import co.prjt.own.common.Paging;
 import lombok.Data;
 
 @Data
@@ -18,6 +19,9 @@ public class CAmountVO {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	Date challAmountDate;
-
 	
+	//페이징관련정보
+	int first;
+	int last;
+	Paging paging;
 }
