@@ -15,4 +15,10 @@ public class CResultVO {
 	double successRate; //횟수를 통해서 계산한 도전성공률
 	int refundPrice; //도전환급금
 	int rewardPrice; //100% 달성시 받는 상금
+	
+	//보상금액 평균
+	double sumRP;
+	
+	//평균 성공률
+	double avgSR;
 }

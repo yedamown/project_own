@@ -15,4 +15,8 @@ public interface CResultService {
 	
 	//달성률 평균 구하기
 	double avgSuccessRate(CResultVO vo);
+	
+	//평균 달성률과 상금 합계
+	CResultVO successReward(CResultVO vo);
+	
 }

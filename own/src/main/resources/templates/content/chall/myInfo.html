@@ -1,0 +1,185 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/default_layout}" lang="ko">
+	
+<head>
+<!-- jquery -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<meta content="Free HTML Templates" name="keywords" />
+<!-- Favicon -->
+<link href="/css/chall/img/favicon.ico" rel="icon" />
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap"
+	rel="stylesheet" />
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+	rel="stylesheet" />
+<!-- Flaticon Font -->
+<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+<!-- Libraries Stylesheet -->
+<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css"
+	rel="stylesheet" />
+<link href="/css/chall/lib/lightbox/css/lightbox.min.css"
+	rel="stylesheet" />
+<!-- Customized Bootstrap Stylesheet -->
+<link href="/css/chall/css/style.css" rel="stylesheet" />
+<!-- JavaScript Libraries -->
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="/css/chall/lib/easing/easing.min.js"></script>
+<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
+<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
+<!-- Contact Javascript File -->
+<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
+<script src="/css/chall/mail/contact.js"></script>
+<!-- Template Javascript -->
+<script src="/css/chall/js/main.js"></script>
+<!-- google chart -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<meta charset="utf-8">
+<title>OWN _ 도전 _ 마이페이지</title>
+</head>
+
+<div layout:fragment="content">
+
+<body>
+	<!-- Header Start -->
+	<div class="container-fluid bg-primary" style="padding: 0">
+		<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 500px; background-image: url(/img/chall/main/yoga1.jpg);
+			background-size: cover">
+			<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
+			<div class="d-inline-flex text-white">
+				<p class="m-0">
+					<a class="text-white" href="">Home</a></p>
+				<p class="m-0 px-2">/</p>
+				<p class="m-0">Contact Us</p>
+			</div>
+		</div>
+	</div>
+
+		<div th:if="${session.loginUser}">
+			오운_마이페이지
+			<h1 th:text="${session.loginUser.userId}"></h1>
+		</div>
+		<a href="/own/chall/myAmount">내 예치금</a> <a href=#>내 인증내역들</a> <a
+			href="/own/chall/myChall">내 도전들</a>
+		<h3>마이 프로필</h3>
+
+	<!-- Contact Start -->
+	<div class="container-fluid pt-5 mb-5">
+		<div class="container">
+			<div class="text-center pb-2">
+				<p class="section-title px-5">
+					<span class="px-2">MY PAGE</span>
+				</p>
+				<h1 class="mb-4">내 프로필</h1>
+			</div>
+
+			<!-- 내 프로필 내역 -->
+			<div class="row mb-3" style="justify-content: center">
+				<div class="col-lg-3 mb-3" style="text-align: center;">
+					<!-- <div class="col-md-5 col-lg-3 text-center team mb-5"> -->
+					<div class="position-relative overflow-hidden mb-4"
+						 style="border-radius: 100%; width: 200px; height: 200px; margin: auto;">
+							<div class="w-100 h-100">
+								<div th:if="${memInfo.memImage != null}">
+									<!-- 도전프로필이 있는경우 -->
+									<img class="img-fluid" alt=""
+										th:src="|/imgView/${memInfo.memImage}|"
+										style="width: 200px; height: 200px; object-fit: cover" />
+								</div>
+								<div th:if="${memInfo.memImage == null}">
+									<!-- 이미지없을때 기본이미지 -->
+									<img class="img-fluid" alt=""
+										th:src="|/imgView/d87e37df-45a0-491e-bcf2-28482284c8d0_2513B53E55DB206927.png|"
+										style="width: 200px; height: 200px; object-fit: cover" />
+								</div>
+							</div>
+					</div>
+				</div>
+				<div class="col-lg-4 mb-3">
+					<h3 class="mt-3 mb-5">[[${memInfo.memNickname}]]</h3>
+					<p>[[${memInfo.memIntro}]]</p>
+					<p>나의 환불계좌:[[${memInfo.memAcc}]]</p>
+				</div>
+			</div>
+
+			<!-- 메뉴바 -->
+			<div class="row" style="margin: auto;">
+				<div class="col-12 text-center mb-2">
+					<ul class="list-inline mb-4" id="menu-filters" style="text-align: center;">
+						<li class="btn btn-outline-primary m-1" id="nowChall">
+							<a href="/own/chall/myAmount">내 정보수정</a></li>
+						<li class="btn btn-outline-primary m-1 active">
+							<a href="/own/chall/myAmount">내 예치금</a></li>
+						<li class="btn btn-outline-primary m-1" >
+							<a href="/own/chall/myChall">내 도전</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- 내 정보수정 -->
+			<div class="row" style="display: flex; justify-content: center">
+				<div class="contact-form">
+					<div id="success"></div>
+					<input id="userId" type="hidden" name="challLeader" th:value="${session.loginUser.userId}">
+					<div class="control-group">
+						<input class="form-control" id="memNick" th:value="${memInfo.memNickname}">
+						<p></p>
+					</div>
+					<div class="control-group">
+						<textarea class="form-control" rows="6" id="memIntro"
+							placeholder="당신의 도전 다짐을 입력해주세요!" th:text="${memInfo.memIntro}"
+							data-validation-required-message="Please enter your message"></textarea>
+						<p class="help-block text-danger"></p>
+					</div>
+					<div>
+						<form action="/own/chall/updateImg" method="post"
+							enctype="multipart/form-data">
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"> 
+							<input type="hidden" th:value="${memInfo.memNo}" id="memNo" name="memNo"> 
+							<label for="inputFile">프로필 사진: <input type="file" name="uploadfile"></input></label>
+							<button type="submit" class="btn btn-primary py-2 px-4" id="updBtn">수정하기</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Contact End -->
+
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-primary p-3 back-to-top"><i
+		class="fa fa-angle-double-up"></i></a>
+		
+	<script>
+		//아작스로 데이터수정해서다시 화면에뿌려주깅
+		$('#updBtn').on("click", function(){
+			let nick = $("#memNick").val();
+			let intro = $("#memIntro").val();
+			let userId = $("#userId").val()
+			console.log(nick, intro, userId);
+			$.ajax({
+				url: '/own/chall/myprofileUpdate',
+				method: 'post',
+				data : JSON.stringify({userId: userId, 
+									   memNickname: nick, 
+									   memIntro: intro}
+									   ),
+				contentType: "application/json"
+			}).then(res => {
+				console.log(res)
+			})
+		})
+	</script>
+</body>
+</div>
+</html>

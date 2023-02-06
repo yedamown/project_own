@@ -39,4 +39,11 @@ public class CResultServiceImpl implements CResultService{
 		return mapper.avgSuccessRate(vo);
 	}
 
+	//평균성공률과 보상금액 가져오기 
+	@Override
+	public CResultVO successReward(CResultVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.successReward(vo);
+	}
+
 }
