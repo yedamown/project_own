@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -314,5 +315,19 @@ public class BandController {
 		}
 		//처리가 됨..
 		return "redirect:/own/band/bandGroup?bandNo="+vo.getBandNo();
+	}
+	
+	// 밴드 멤버로 이동
+	@RequestMapping(value = "/bandGroup/bandMember", method = RequestMethod.GET)
+	public String bandMemberList(BandMemberDetailVO vo, HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		vo.setUserId(user.getUserId());
+		String bmn = bandMemberDetailService.getBandMemberNo(vo);
+		
+		vo.setBandMemberNo(bmn);
+		vo.setBandNo(vo.getBandNo());
+		model.addAttribute("memberList", bandMemberDetailService.bandMemberList(vo));
+		return "content/band/bandMember";
 	}
 }

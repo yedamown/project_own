@@ -1,0 +1,171 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+<div id="template" style="flex-grow: 3; width: 740px">
+	<div id="bandMemberList">
+		<div>
+			<input type="text" class="" placeholder="멤버 검색" id="searchVal" name="searchVal">
+			<span class="inputBtn">
+				<button class="searchBtn" type="button" id="searchBtn">
+					<i class="lnr lnr-magnifier"></i>
+				</button>
+			</span>
+			<select id="selectOption" name="selectOption">
+				<option value="name" selected="selected">별명 순</option>
+				<option value="signupDate">가입일자 순</option>
+			</select>
+			<span class=""> 전체 멤버 수 </span> <span id="memberCnt"></span>
+		</div>
+		<table>
+			<thead>
+				<th></th>
+				<th>별명(아이디)</th>
+				<th>채팅하기</th>
+
+			</thead>
+			<tbody id="aBandMemberTable">
+			</tbody>
+		</table>
+		<div id="paging">
+			<nav class="blog-pagination justify-content-center d-flex" id="pagegation">
+				<!--================ 이전  =================-->
+				<ul class="pagination">
+					<li class="page-item" th:if="${paging.startPage>1}"><a class="page-link" aria-label="Previous"
+							th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+									class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+					<!--================ 페이지 이동 1_2_3_4_5  =================-->
+					<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+						<li class="page-item" th:if="${pag != paging.page}"><a class="page-link pagePort"
+								th:value="${pag}" th:text="${#numbers.formatInteger(pag,2)}"></a></li>
+						<li class="page-item active" th:if="${pag==paging.page}"><a class="page-link"
+								th:text="${#numbers.formatInteger(pag,2)}"></a>
+						</li>
+					</th:block>
+					<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+					<!--================ 이후  =================-->
+					<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+						<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}"> <span
+								aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+
+	<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+	<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var header = /*[[${_csrf.headerName}]]*/'defalut';
+		var token = /*[[${_csrf.token}]]*/'defalut';
+		/*]]>*/
+
+		$(function () {
+			// 세션에 저장된 로그인 유저의 아이디
+			/*<![CDATA[*/
+			let loginUser = /*[[ ${session.loginUser} ]]*/;
+			let loginUserId = loginUser.userId
+			/*]]*/
+
+			// 밴드 번호
+			const link = window.location.href;
+			var url = new URL(link);
+			const urlParams = url.searchParams;
+			let bandNo = urlParams.getAll('bandNo');
+
+			// 맨 처음 띄울 멤버리스트
+			//$.ajax
+
+			// 새로운 채팅방 생성
+			$(".newChatStart").click(
+				function createChatroom() {
+					// 로그인한 유저의 밴드멤버번호와 채팅할 유저의 밴드멤버번호와 닉네임
+					let bMemNo1 = $("#MybandNo").val();
+					let bMemNo2 = $(this).parent().parent().children()
+						.eq(6).text();
+					let bMemNick1 = $("#MybandNick").val();
+					let bMemNick2 = $(this).parent().parent().children()
+						.eq(1).text();
+					// 배열에 추가
+					let rName = bMemNick1 + ", " + bMemNick2 + "의 채팅방";
+					let chatroomDataList = new Array();
+					let chatroomData1 = {
+						chatroomName: rName,
+						bandMemberNo: bMemNo1
+					};
+					chatroomDataList.push(chatroomData1);
+					let chatroomData2 = {
+						chatroomName: rName,
+						bandMemberNo: bMemNo2
+					};
+					chatroomDataList.push(chatroomData2);
+					console.log("chatroomData1"
+						+ JSON.stringify(chatroomData1))
+					console.log("chatroomData2"
+						+ JSON.stringify(chatroomData2))
+					console.log("chatroomDataList"
+						+ JSON.stringify(chatroomDataList))
+					// 채팅방 새로 생성 후 결과값으로 방번호를 받아와 그 번호로 채팅방 페이지 보내기
+					$.ajax({
+						url: '/createChatroom',
+						method: 'post',
+						contentType: "application/json; charset=UTF-8",
+						data: JSON.stringify(chatroomDataList),
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token);
+						},
+						success: function (result) {
+							// 결과로 채팅방 시퀀스 번호 받아옴
+							console.log("채팅방 번호 시퀀스" + result);
+							let url = '/chatroom?chatroomNo=CRN_' + result
+								+ '&bandMemberNo=' + bMemNo1;
+							location.replace(url);
+						},
+						error: function (error) {
+							console.log("error: " + error);
+						}
+					});
+
+				})
+
+			// 기존 채팅방 입장
+			$(".oldChatStart").click(
+				function createChatroom() {
+					let bMemNo = $("#MybandNo").val();
+					let bMemNo1 = $(this).parent().parent().children()
+						.eq(6).text();
+					let chatroomData = {
+						bandMemberNo: bMemNo,
+						bandMemberNo1: bMemNo1
+					};
+					console.log(bMemNo1)
+					// 채팅방번호 받아와서 그 방으로 보내기
+					$.ajax({
+						url: '/findChatroomNo',
+						method: 'post',
+						contentType: "application/json; charset=UTF-8",
+						data: JSON.stringify(chatroomData),
+						beforeSend: function (xhr) {
+							xhr.setRequestHeader(header, token);
+						},
+						success: function (result) {
+							// 결과로 채팅방번호 받아옴
+							console.log("채팅방 번호==========================="
+								+ result);
+							location.href = '/chatroom?chatroomNo='
+								+ result + '&bandMemberNo=' + bMemNo;
+						},
+						error: function (error) {
+							console.log("error: " + error);
+						}
+					});
+				})
+		});
+	</script>
+</div>
+
+</html>

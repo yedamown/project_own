@@ -199,8 +199,7 @@
                             <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">가치 홈</a></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandPhoto">앨범</a></div></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandCalendar">일정</a></div></li>
-                            <!--================ 채팅기능을 위한 임시 =================-->
-                            <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></div></li>
+                            <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandMember">멤버</a></div></li>
                         </ul>
                     </div> 
                 </nav>
@@ -800,6 +799,10 @@
 	    	//앨범으로 이동
 	    	$('#bandPhoto').on('click', function(){
 	    		$('#mainTemplate').load("/own/band/bandGroup/bandPhoto?bandNo="+bandNo);
+	    	})
+	    	//멤버로 이동
+	    	$('#bandMember').on('click', function(){
+	    		$('#mainTemplate').load("/own/band/bandGroup/bandMember?bandNo="+bandNo);
 	    	})
 	    	//가입버튼
 	    	 $('#signUpBand').on('click', function(){
