@@ -18,11 +18,6 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public List<ChatroomVO> getMyChatroomList(String userId) {
 		// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
-		List<ChatroomVO> chatroomNoList = new ArrayList<>();
-		for(int i=0; i<list.size(); i++) {
-			String bandNo = list.get(i).getBandMemberNo();
-			//chatroomNoList.add(chatMapper.getMyChatroomList(bandNo));
-		}
 		return chatMapper.getMyChatroomList(userId);
 	}
 

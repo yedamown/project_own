@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.prjt.own.band.service.BandMemberDetailService;
-import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.chat.service.ChatService;
 import co.prjt.own.chat.service.ChatroomVO;
 import co.prjt.own.chat.service.MessageVO;

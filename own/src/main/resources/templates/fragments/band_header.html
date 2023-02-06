@@ -71,9 +71,7 @@
     <script src="/css/band/js/custom.js"></script>
      <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/band/newcss/style.css" rel="stylesheet" />
-	
-	<!-- 시간 -->
-    <script src="/css/band/js/time.js"></script>
+
 <!-- ================공통파일 네비용으로 손 봄 끝 ================ -->
 <!-- ================ hjj 파일 끝 ================ -->
 <style type="text/css">
@@ -113,9 +111,6 @@
 
 .hoverCursor {
 	cursor: default;
-}
-.hoverString:hover {
-	color: #17a2b8;
 }
 </style>
 	</head>
@@ -179,8 +174,6 @@ var token = /*[[${_csrf.token}]]*/
 		let loginUser = /*[[ ${session.loginUser} ]]*/;
 		let loginUserId = loginUser.userId;
 		/*]]*/
-		console.log("loginUserId========"+loginUserId);
-		let bandMemberNo = [];
 		// 로그인 아이디로 가입중인 밴드 멤버번호받아오기 -- 채팅컨트롤러에서 처리
 		$.ajax({
 			url: '/getMyChatroomList?userId=' + loginUserId,
