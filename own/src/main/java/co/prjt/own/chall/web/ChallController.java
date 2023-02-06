@@ -99,6 +99,7 @@ public class ChallController {
 			cmb2 = member.challMemCheck(cmb);
 			System.out.println("세션 유저 정보" + user);
 			System.out.println("검색결과 도전멤버에서 " + cmb2);
+
 			int rs = challenge.countMychall(vo2);
 			// 도전멤버없는 경우 모달띄워서 가입.
 			if (cmb2 == null) {

@@ -37,28 +37,28 @@ public class ChatController {
       return chatService.createChatroom(list);
    }
 
-   
-   // 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
-   @GetMapping("/getMyChatroomList")
-   @ResponseBody
-   public List<ChatroomVO> getMyChatroomList(@RequestParam String userId) {
-      return chatService.getMyChatroomList(userId);
-   }
-   
-   // 기존 채팅방 번호 가져오기 
-   @PostMapping("/findChatroomNo")
-   @ResponseBody
-   public String findChatroomNo(@RequestBody ChatroomVO vo) {
-      System.out.println("채팅방 번호===========" + vo);
-      return chatService.findChatroomNo(vo);
-   }
-   
-   
-   // 채팅 페이지 이동
-   @RequestMapping(value="/chatroom", method=RequestMethod.GET)
-   public String chatPage() {
-      return "content/chat/chatroom";
-   }
+	
+	// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
+	@GetMapping("/getMyChatroomList")
+	@ResponseBody
+	public List<ChatroomVO> getMyChatroomList(@RequestParam String userId) {
+		return chatService.getMyChatroomList(userId);
+	}
+	
+	// 기존 채팅방 번호 가져오기 
+	@PostMapping("/findChatroomNo")
+	@ResponseBody
+	public String findChatroomNo(@RequestBody ChatroomVO vo) {
+		System.out.println("채팅방 번호===========" + vo);
+		return chatService.findChatroomNo(vo);
+	}
+	
+	
+	// 채팅 페이지 이동
+	@RequestMapping(value="/chatroom", method=RequestMethod.GET)
+	public String chatPage() {
+		return "content/chat/chatroom";
+	}
 
    // 채팅 입장 메세지
    @MessageMapping("/chat/room/enter")

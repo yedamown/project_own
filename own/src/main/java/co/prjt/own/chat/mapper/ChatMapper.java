@@ -9,21 +9,17 @@ import co.prjt.own.chat.service.ChatroomVO;
 import co.prjt.own.chat.service.MessageVO;
 
 public interface ChatMapper {
-	// 채팅방 번호
-	List<BandMemberDetailVO> getMyBandMemberNoList(String userId);
-	
 	// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
-	List<ChatroomVO> getMyChatroomList(String bandMemberNo);
+	List<ChatroomVO> getMyChatroomList(String userId);
 
-	/*
-	 * 채팅방 번호 가져온 후, 채팅방 개설(1:1) 전체 채팅방은 방개설 필요없이 구역을 만들어 메세지만 띄우면 된다.
-	 */
+	//채팅방 번호 가져온 후, 채팅방 개설(1:1) 전체 채팅방은 방개설 필요없이 구역을 만들어 메세지만 띄우면 된다.
 	String createChatroomNo();
+
 	int createChatroom(ChatroomVO vo);
 
 	// 기존 채팅방번호 가져옴.
 	String findChatroomNo(ChatroomVO vo);
-	
+
 	// 메세지 DB에 저장
 	int saveMessage(MessageVO vo);
 

@@ -3,12 +3,13 @@ package co.prjt.own.chat.service;
 import java.util.List;
 
 public interface ChatService {
-   // 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
-   List<ChatroomVO> getMyChatroomList(String userId);
-   
-   /* 신규 채팅방 개설(1:1)
-    */
-   String createChatroom(List<ChatroomVO> list);
+
+	// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
+	List<ChatroomVO> getMyChatroomList(String userId);
+	
+	/* 신규 채팅방 개설(1:1)
+	 */
+	String createChatroom(List<ChatroomVO> list);
 
    // 기존 채팅방번호 가져옴.
    String findChatroomNo(ChatroomVO vo);

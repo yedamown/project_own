@@ -28,21 +28,6 @@ public class BandMemberDetailController {
 	BandMemberDetailService bandMemberDetailService;
 	@Autowired CommonService commonService;
 	
-	// 멤버 리스트 페이지 이동
-	@RequestMapping(value = "/memberTest", method = RequestMethod.GET)
-	public String bandMemberList(BandMemberDetailVO vo, HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-		vo.setUserId(user.getUserId());
-		String bmn = bandMemberDetailService.getBandMemberNo(vo);
-		System.out.println("밴드멤버디테일컨트롤러====================="+bmn);
-				
-		vo.setBandMemberNo(bmn);
-		vo.setBandNo(vo.getBandNo());
-		model.addAttribute("memberList", bandMemberDetailService.bandMemberList(vo));
-		return "content/chat/memberTest";
-	}
-	
 	//밴드 가입시...내 설정 바꿀 때 중복체크
 	@RequestMapping("/bandGroup/duplicateChk")
 	@ResponseBody

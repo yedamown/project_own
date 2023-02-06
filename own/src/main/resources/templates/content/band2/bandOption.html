@@ -149,6 +149,12 @@
   transform: translateY(-3px);
   border-radius: 6px;
 }
+#bandmainImg{
+margin-left:20px;
+width:200px;
+height:200px;
+}
+
 </style>
 <body>
 <div id="submain">
@@ -166,7 +172,7 @@
     <label for="tab6" id="memberManage">멤버관리</label>
 
     <input type="radio" id="tab7" name="tabGroup2" class="tab">
-    <label for="tab7">채팅관리</label>
+    <label for="tab7" id="boardManage">게시판관리</label>
 
     <input type="radio" id="tab8" name="tabGroup2" class="tab">
     <label for="tab8" id="bandPass">밴드위임</label>
@@ -178,7 +184,12 @@
   <h1>밴드정보</h1>
   <fieldset>
        <legend>밴드상세정보</legend>
-       <ul>
+        <div class="row">
+        
+        <h3>
+         <img id="bandmainImg" th:src="|/imgView/${bandInfo.bandImg.mediaServerFile}">
+        </h3>
+      	<ul>
                 <li><label th:text="'밴드이름 '+${bandInfo.bandName}"></label>
                 <li><label th:text="'활동지역 '+${bandInfo.bandLocation}"></label>
                 <li><label th:text="'카테고리 ' + ${bandInfo.bandCategory}"></label>
@@ -186,7 +197,8 @@
                 <li><label th:text="'키워드 '+${bandInfo.bandKeyword}"></label>
                 </th:block>
                 <li><label th:text="'가입인원 '+${bandInfo.memcount}"></label> 
-       </ul>
+        </ul>
+        </div>
   </fieldset>
 <!--   <fieldset>
   <legend>모든유저</legend>
@@ -223,24 +235,28 @@
 </body>
 <script>
 $(function(){
-$('#bandInfo').on('click', function(){
-	$('#submain').load("/own/band/bandGroup/bandOptionMain?bandNo="+bandNo);
-})
+	$('#bandInfo').on('click', function(){
+		$('#submain').load("/own/band/bandGroup/bandOptionMain?bandNo="+bandNo);
+	})
+		
+		
+	$('#bandmanage').on('click', function(){
+	   $('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
+	});
+	
+	// 硫ㅻ쾭 愿 由   꺆
+	$('#memberManage').on('click', function(){
+	   $('#manageTemplate').load("/own/band/bandGroup/bandMemberManage?bandNo="+bandNo);
+	});
 	
 	
-$('#bandmanage').on('click', function(){
-   $('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
-});
-
-// 硫ㅻ쾭 愿 由   꺆
-$('#memberManage').on('click', function(){
-   $('#manageTemplate').load("/own/band/bandGroup/bandMemberManage?bandNo="+bandNo);
-});
-
-
-$('#bandPass').on('click', function(){
-	$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
-})
+	$('#bandPass').on('click', function(){
+		$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
+	})
+	//게시판 관리 /bandGroup/bandOption9
+	$('#boardManage').on('click', function() {
+		$('#manageTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
+	})
 })
 </script>
 </html>

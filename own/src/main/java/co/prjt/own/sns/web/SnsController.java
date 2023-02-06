@@ -60,7 +60,6 @@ public class SnsController {
 		//세션 담아주기
 		HttpSession session = request.getSession();
 		//세션에 강제로 로그인유저 저장하기
-
 		//session.setAttribute("loginUser", ownService.login("test05"));
 
 		ovo = (OwnUserVO) session.getAttribute("loginUser");
@@ -127,7 +126,7 @@ public class SnsController {
 		
 		//세션에 강제로 로그인유저 저장하기
 
-		//session.setAttribute("loginUser", ownService.login("kyr"));
+		session.setAttribute("loginUser", ownService.login("kyr"));
 
 		OwnUserVO ovo = new OwnUserVO();
 		ovo =(OwnUserVO) session.getAttribute("loginUser");
@@ -145,6 +144,8 @@ public class SnsController {
 		model.addAttribute("userId", userId); //세션값 
 		model.addAttribute("snsInfo", snsService.getSnsUser(nickname)); //해당 닉네임에 대한 sns 계정정보 한건
 		model.addAttribute("snsFeed", boardService.getSnsBoardList(nickname)); // sns 개인 피드 게시글
+		model.addAttribute("snsStoryList", storyService.getStoryList(nickname));
+		System.out.println("=================스토리" + storyService.getStoryList(nickname));
 		model.addAttribute("snsFeedCount", boardService.countBoard(nickname)); //sns 게시글 수 
 		model.addAttribute("snsFollow", followService.followCount(nickname)); // sns 팔로우 수
 		model.addAttribute("snsFollowList", followService.getFollowList(nickname)); // sns 팔로우 리스트
@@ -239,7 +240,6 @@ public class SnsController {
 	@ResponseBody
 	public int insertFollow(String snsFollowId, String snsFollowerId, String nickname) {
 		int result = followService.insertFollow(snsFollowId, snsFollowerId);
-		//팔로우 되는데 ..... 왜 ... 숫자는 오르지 않을까..?
 		if(result == 1) {
 			return followService.followerCount(nickname);
 		}else {
@@ -427,7 +427,7 @@ public class SnsController {
     public String snsNewFeed(SBoardVO svo, Model model, HttpServletRequest request) {
     	HttpSession session = request.getSession();
 
-    	//session.setAttribute("loginUser", ownService.login("kyr"));
+    	session.setAttribute("loginUser", ownService.login("kyr"));
 
 		OwnUserVO ovo = new OwnUserVO();
 		ovo =(OwnUserVO) session.getAttribute("loginUser");
