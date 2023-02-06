@@ -8,9 +8,67 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-        <title>Royal Hotel</title>
+        <link rel="icon" href="/css/band/gachi/own.png" type="image/png">
+        <title>오늘의운동 가치</title>
         <style type="text/css">
+        	/* //페이징 버튼 1*/
+        	.flexCenter {
+				display: flex;
+				justify-content: center;
+			}
+			.pageNum .clickable{
+			  display: inline-block;
+			  padding: 3px 5px;
+			  margin-right: 10px;
+			  font-family:Tahoma;
+			  background: #ccc;
+			  color: #17a2b8;
+			  text-decoration: none;
+			  cursor:pointer;
+			}
+			.pageNum active {
+			  background: #00394f;
+			  color: #fff;
+			  cursor:pointer;
+			}
+			.off-screen {
+			  display: none;
+			  cursor:pointer;
+			}
+			.replyPagination1  {
+			  width: 500px;
+			  text-align: center;
+			  cursor:pointer;
+			}
+			.replyPagination1  .pageNum {
+			  display: inline-block;
+			  padding: 3px 5px;
+			  margin-right: 10px;
+			  font-family:Tahoma;
+			  background: #ccc;
+			  color: #fff;
+			  text-decoration: none;
+			  cursor:pointer;
+			  border-radius: 10px;
+			}
+			.replyPagination1 .pageNum.active {
+			  background: #17a2b8;
+			  color: #fff;
+			}
+        
+        
+        	.bandBox {
+			    width: 260px;
+			    height: 270px; 
+			    border-radius: 30%;
+			    overflow: hidden;
+			}
+			.bandProfile {
+			    width: 260px;
+			    height: 270px;
+			    object-fit: cover;
+			}
+        
         	.modal {
 				display: none;
 				z-index: 500;
@@ -75,11 +133,12 @@
 		}
 		.dropdown-content{
 		  display : none;
-		  position : absolute;
-		  z-index : 1; /*다른 요소들보다 앞에 배치*/
+		  position: absolute;
+		  z-index: 999;
 		  font-weight: 400;
 		  background-color: #f9f9f9;
-		  min-width : 200px;
+		  min-width: 200px;
+		  top: 40px;
 		}
 		
 		.dropdown-content a{
@@ -88,6 +147,7 @@
 		  color : rgb(37, 37, 37);
 		  font-size: 12px;
 		  padding : 12px 20px;
+		  cursor: pointer;
 		}
 		
 		.dropdown-content a:hover{
@@ -121,15 +181,15 @@
             <div class="br"></div>
         </aside>
             <div class="container">
-                <nav class="navbar navbar-expand-lg navbar-light">
+                <nav class="navbar navbar-expand-lg navbar-light"  style="background-color: rgba(0,0,0,0); width: 1000px;">
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent" >
                     <!--================ 전체 검색 =================-->    
                         <aside class="single_sidebar_widget search_widget">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="오운 가치 검색"  name="bandName">
+                            <input type="text" class="form-control" id="searchBtnInput" placeholder="오운 가치 검색"  name="bandName">
                             <span class="input-group-btn">
-                                <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
+                                <button class="btn btn-default" id="searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
                             </span>
                         </div>
                    <!--================ 전체 검색 끝 =================-->    
@@ -150,62 +210,75 @@
         
         <!--================Blog Area =================-->
         <section class="blog_area" style="padding-top: 0px">
-            <div class="container" style="display: flex;">
+            <div class="container2" style="display: flex;">
                 <div style="display: flex; flex-direction: row; justify-content: center;">
                     <div style="flex-grow:1; width: 260px">
                         <div class="blog_right_sidebar">
                             <aside class="single_sidebar_widget author_widget">
-                                <div class="hotel_img">
-                                    <img th:src="|/imgView/${band.bandImg.mediaServerFile}|"  alt=""  style="width: 200px; height: 200px;">
-                                </div>
-                                <h3 th:text="${band.bandName}" class="typo-list" style="display:inline;"></h3>
+                               	<a class="hotel_img hoverBtn" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">
+                                   	<img th:src="|/imgView/${band.bandImg.mediaServerFile}|" class="" alt=""  style="width: 200px; height: 200px;">
+                               	</a>
+                               	<a class="hotel_img hoverBtn" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}" style="text-decoration: none;"> 
+                                	<h3 th:text="${band.bandName}" class="typo-list" style="display:inline;"></h3>
+                                </a>
                                 <hr>
-                                <div>
-                                    <b><i class="fa fa-user"></i>멤버 <span th:text="${band.memcount}"></span></b>
-                                    <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><b><i class="fa fa-plus-square" aria-hidden="true"></i> 초대</b></div>
-                                    <p><i class="fa fa-map-marker" aria-hidden="true"></i> <span th:text="${band.bandLocation}"></span></p>
-                                    <p><i class="fa fa-futbol-o" aria-hidden="true"></i> <span th:text="${band.bandCategory}"></span></p>
-                                </div>
+                                <div style="display: flex; flex-direction: column;">
+                                    <b class="hoverCursor"style="margin: 5px 10px 10px 0px;">
+                                    	<i class="fa fa-solid fa-crown" style="margin-right: 5px;"></i>
+                                    	<span th:text="${band.bandLeaderNickname}" style="color: #666666; font-weight: 500">
+                                    	</span>
+                                    </b>
+                                    <b class="hoverCursor" style="margin: 0px 10px 5px 0px;"><i class="fa fa-user" style="margin-right: 10px;">
+                                    	</i><span th:text="${band.memcount}" style="color: #666666; font-weight: 500"></span>
+                                    </b>
+                                    <!-- <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><b><i class="fa fa-plus-square" aria-hidden="true"></i> 초대</b></div> -->
+                                 </div>   
+                                    <hr>
+                                    <div style="display: flex; justify-content: center; margin: 10px;">
+                                    	<p class="hoverCursor" style="margin-right: 20px;"><i class="fa fa-map-marker" aria-hidden="true"></i> <span th:text="${band.bandLocation}"></span></p>
+                                    	<p class="hoverCursor"><i class="fa fa-futbol-o" aria-hidden="true"></i> <span th:text="${band.bandCategory}"></span></p>
+                                    </div>
                                 <hr>
                                 <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                                <div>
-	                                	<p id="myOption"><i class="fa fa-cog" aria-hidden="true"></i>[[${BandMemberDetail.bandNickname}]]([[${BandMemberDetail.userId}]])<b th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}"><i class="fa fa-solid fa-crown"></i></b></p>
-	                                    <p id="bandOption"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정</p>
-	                                    <p id="bandOption9"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정(게시판)</p>
+	                                	<p class="hoverBtn" id="myOption"><i class="fa fa-cog" aria-hidden="true" style="margin: 0px 10px 10px 0px;"></i>[[${BandMemberDetail.bandNickname}]]([[${BandMemberDetail.userId}]])</p>
+	                                    <th:block th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
+	                                    	<p class="hoverBtn" id="bandOption"><i class="fa fa-cog" aria-hidden="true" style="margin-right: 10px;"></i> 가치 설정</p>
+	                                    	<p class="hoverBtn" id="bandOption9"><i class="fa fa-cog" aria-hidden="true" style="margin-right: 10px;"></i> 가치 설정(게시판)</p>
+	                                    </th:block>
 	                                </div>
 	                                <hr>
-
                                 </div>
                                 <div th:if="${#strings.isEmpty(BandMemberDetail)}"  id="signUpBand">
                                 <!-- =======가입======= -->
-                                	<h4 class="widget_title" style="color:white;">회원가입</h4>
+                                	<h4 class="widget_title" style="color:white; background-color: #17a2b8">회원가입</h4>
                                 </div>
                                 <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA01'}">
                                 <!-- =======승인중======= -->
-                                	<h4 class="widget_title" style="color:white;">승인대기중</h4>
+                                	<h4 class="widget_title" style="color:white; background-color: #17a2b8">승인대기중</h4>
                                 </div>
                             </aside>
                             <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                            <aside class="single_sidebar_widget post_category_widget">
-	                                <h4 class="widget_title" id="writeBoard">글쓰기</h4>
+	                                <h4 class="widget_title hoverBtn" id="writeBoard" style="background-color: #17a2b8">글쓰기</h4>
 	                                <div class="d-flex justify-content-between smallBoard" id="totalBoard">
-	                                    <p name=""><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
-	                                    <p th:text="${boardCount}">2538</p>
+	                                    <p class="hoverBtn hoverString"><i class="fa fa-file-text hoverBtn" style="padding-right: 7px"></i>전체 글보기</p>
+	                                    <p th:text="${boardCount}" class="hoverCursor">2538</p>
 	                                </div>
 	                                <hr style="margin-bottom: 20px; margin-top: 0px;">
 	                                <ul class="list_style cat-list">
 	                                    <li th:each="board: ${boardList}">
-	                                    	<p th:if="${board.bandBoardLine}!=0" class="smallBoard" th:name="${board.bandBoardOptionNo}"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
-	                                    	<b th:if="${board.bandBoardLine}==0" th:text="${board.bandBoardName}"></b>
+	                                    	<p th:if="${board.bandBoardLine}!=0" class="smallBoard hoverBtn hoverString" th:name="${board.bandBoardOptionNo}" style="margin-bottom:0px;"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
+	                                    	<b th:if="${board.bandBoardLine}==0" class="hoverCursor" th:text="${board.bandBoardName}" style="margin-bottom:0px; color: #17a2b8;"></b>
 	                                    </li>											
 	                                </ul>
 	                                <div class="br"></div>
 	                            </aside>
 	                            <aside class="single-sidebar-widget tag_cloud_widget">
-	                                <h4 class="widget_title">가치 태그</h4>
+	                                <h4 class="widget_title hoverCursor" style="background-color: #17a2b8">가치 유입 태그</h4>
 	                            	<ul class="list_style">
 	                                    <li th:if="${keyword != null}" th:each="tag: ${keyword}">
-	                                    	<a href="#"  th:text="${tag}"></a>
+	                                    	<a th:text="${tag}" class="hoverCursor" style="text-decoration: none;"></a>
 	                                    </li>
 	                                </ul>
 	                            </aside>
@@ -220,7 +293,7 @@
 	                            <!-- ================== 검색================== -->
 	                            	  
 	                                <div class="input-group">
-	                                    <input type="text" class="form-control" id="searchBox" placeholder="Search Posts">
+	                                    <input type="text" class="form-control" id="searchBox" placeholder="밴드 내 글을 검색하세요">
 	                                    <span class="input-group-btn">
 	                                        <button class="btn btn-default" id="searchBoxBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
 	                                    </span>
@@ -271,7 +344,7 @@
 	                        	<div class="blog_right_sidebar">
 		                            <aside class="single_sidebar_widget popular_post_widget">
 		                                <div class="dropdown">
-		                                	<h3 class="widget_title dropbtn">다가오는 일정<i class="fa fa-cog" aria-hidden="true"></i></h3>
+		                                	<h3 class="widget_title dropbtn" style="background-color: #17a2b8;">다가오는 일정<i class="fa fa-cog" aria-hidden="true" style="margin-left: 10px;"></i></h3>
 										    <div class="dropdown-content">
 										        <a id="7">7일 이내</a>
 										        <a id="14">14일 이내</a>
@@ -279,7 +352,7 @@
 										      </div>
 		                                </div>
 		                                <div id="groupCal">
-			                                <div class="media post_item" th:each="c : ${calendar}">
+			                                <div class="media post_item hoverBtn" th:each="c : ${calendar}" style="border:#c3c3c3 1px solid; padding-top:10px; padding-bottom:5px; background-color:white; border-radius:10px;">
 			                                    <div class="media-body">
 			                                        <h3><a class="goToCal" th:text="${c.bandCalendarTitle}" th:style="|background-color:${c.bandCalendarMark}|"></a></h3>
 			                                        <span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
@@ -287,6 +360,9 @@
 			                                    </div>
 			                                </div>
 		                                </div>
+		                                <div class="btnContent1 flexCenter" style="margin-top: 20px;">
+											<div class="replyPagination1" id="replyPagination1"></div>
+										</div>
 		                                <div class="br"></div>
 		                            </aside>
 		                    	</div>
@@ -319,7 +395,7 @@
         var bandNo= $('#bandNo').val();
         var bandLeaderid = $('#bandLeaderid').val();
         console.log(bandLeaderid)
-        $(function(){  
+        $(function(){
         	//더보기 페이지용
          	//1페이지
 	        let bandNo = $('#bandNo').val();
@@ -373,7 +449,7 @@
 		                	//정규표현식 html태그 제거
 		                	const reg = /<[^>]*>?/g;
 		                	let newContent = ele.bandBoardContent.replace(reg,'');
-		                    let articleTag = `<article style="border: 1px solid #eeeeee;padding:30px; ">
+		                    let articleTag = `<article style="border: 1px solid #eeeeee;padding:30px; background-color:white; margin:20px 20px; ">
 							                    <div style="display: flex; flex-direction: column;" class="tagg">
 							                    <div>
 							                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
@@ -552,11 +628,15 @@
 			        	//일정만들기..기존 것 지우기..time.js파일이용
 			        	$('#groupCal').empty();
 			        	$(result).each(function(idx,ele){
+			        		let title = ele.bandCalendarTitle;
+			        		if(title.length>12){
+			        			title = title.slice(0, 8)+"..."
+			        		}
 			        		let sDay = SimpleDateTimeFormat(new Date(ele.bandCalendarStart));
 			        		let cDay = SimpleDateTimeFormat(new Date(ele.bandCalendarEnd));
-				        	let tag = `<div class="media post_item">
+				        	let tag = `<div class="media post_item hoverBtn" style="border:#c3c3c3 1px solid; padding-top:10px; padding-bottom:5px; background-color:white; border-radius:10px;">
 							        		<div class="media-body">
-						        			<h3><a class="goToCal" style="background-color:${ele.bandCalendarMark}">${ele.bandCalendarTitle}</a></h3>
+						        			<h3><a class="goToCal" style="background-color:${ele.bandCalendarMark}">${title}</a></h3>
 						        			<span style="font-size: 12px">${sDay}</span> ~
 						        			<span style="font-size: 12px">${cDay}</span>
 						        		</div>
@@ -565,6 +645,7 @@
 						   $('#groupCal').append(tag);
 						   console.log(sDay+cDay);
 			        	})
+			        	page1();
 					})
 				}
 			})
@@ -581,6 +662,99 @@
 					$('.dropdown-content').css('display','block');
 				}, 200);
 			})
+			//페이징
+			page1();
+			function page1(){ 
+				console.log('111');
+				$('#groupCal').each(function() {
+				var $tband1 = $('#groupCal');
+				
+				var pagesu = 10;  //페이지 번호 갯수
+				var currentPage = 0;
+				var numPerPage = 5;  //목록의 수
+				var $table = $(this);    
+				var replyPagination1 = $("#replyPagination1");
+				//length로 원래 리스트의 전체길이구함
+				var numRows = $($tband1).children().length;
+				console.log(numRows+"???");
+				//Math.ceil를 이용하여 반올림
+				var numPages = Math.ceil(numRows / numPerPage);
+				//리스트가 없으면 종료
+				if (numPages==0) return;
+				//pager라는 클래스의 div엘리먼트 작성
+				var $pager = $('<div class="pager navvyBtn"></div>');
+				var nowp = currentPage;
+				var endp = nowp+10;
+		
+				//페이지를 클릭하면 다시 셋팅
+				$table.bind('repaginate', function() {
+				//기본적으로 모두 감춘다, 현재페이지+1 곱하기 현재페이지까지 보여준다
+				$($tband1).children().hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+				$("#replyPagination1").html("");
+				if (numPages > 1) {     // 한페이지 이상이면
+				if (currentPage < 5 && numPages-currentPage >= 5) {   // 현재 5p 이하이면
+					nowp = 0;     // 1부터 
+					endp = pagesu;    // 10까지
+				}else{
+					nowp = currentPage -5;  // 6넘어가면 2부터 찍고
+					endp = nowp+pagesu;   // 10까지
+				pi = 1;
+				}
+				if (numPages < endp) {   // 10페이지가 안되면
+					endp = numPages;   // 마지막페이지를 갯수 만큼
+					nowp = numPages-pagesu;  // 시작페이지를   갯수 -10
+				}
+				if (nowp < 1) {     // 시작이 음수 or 0 이면
+					nowp = 0;     // 1페이지부터 시작
+				}
+				}else{       // 한페이지 이하이면
+					nowp = 0;      // 한번만 페이징 생성
+					endp = numPages;
+				}
+				// [처음]
+				$('<span class="pageNum first"><i class="fa-solid fa-angles-left"></i></span>').bind('click', {newPage: page},function(event) {
+					currentPage = 0;   
+					$table.trigger('repaginate');  
+					$($(".pageNum")[2]).addClass('active').siblings().removeClass('active');
+				}).appendTo(replyPagination1).addClass('clickable');
+				// [이전]
+				$('<span class="pageNum back"><i class="fa-solid fa-angle-left"></i></span>').bind('click', {newPage: page},function(event) {
+				if(currentPage == 0) return; 
+					currentPage = currentPage-1;
+					$table.trigger('repaginate'); 
+					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+				}).appendTo(replyPagination1).addClass('clickable');
+				// [1,2,3,4,5,6,7,8]
+				for (var page = nowp ; page < endp; page++) {
+					$('<span class="pageNum"></span>').text(page + 1).bind('click', {newPage: page}, function(event) {
+					currentPage = event.data['newPage'];
+					$table.trigger('repaginate');
+					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+				}).appendTo(replyPagination1).addClass('clickable');
+				} 
+				// [다음]
+				$('<span class="pageNum next"><i class="fa-solid fa-angle-right"></i></span>').bind('click', {newPage: page},function(event) {
+					if(currentPage == numPages-1) return;
+					currentPage = currentPage+1;
+					$table.trigger('repaginate'); 
+					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
+				}).appendTo(replyPagination1).addClass('clickable');
+				// [끝]
+				$('<span class="pageNum last"><i class="fa-solid fa-angles-right"></i></span>').bind('click', {newPage: page},function(event) {
+				currentPage = numPages-1;
+					$table.trigger('repaginate');
+					$($(".pageNum")[endp-nowp+1]).addClass('active').siblings().removeClass('active');
+				}).appendTo(replyPagination1).addClass('clickable');
+					$($(".pageNum")[2]).addClass('active');
+				});
+					$pager.insertAfter($table).find('span.pageNum:first').next().next().addClass('active');   
+					$pager.appendTo(replyPagination1);
+					$table.trigger('repaginate');
+				});
+			}
+			
+			
+			
 			//###################################################$().load()
 	       	//게시판이동
 	    	$('.smallBoard').on('click', function(e){
@@ -632,9 +806,10 @@
 	    		 $('#mainTemplate').load("/own/band/bandGroup/signUpBand?bandNo="+bandNo);
 	    	 })
 	    	//검색버튼
-	        $('.searchBtn').on('click', function(){
-	        	boardNo = $('.searchBtn').val();
-	        	window.location = "/own/band/bandSearch?boardNo="+boardNo;
+	        $('#searchBtn').on('click', function(){
+	        	let bandName = $('#searchBtnInput').val();
+	        	console.log(bandName)
+	        	window.location = "/own/band/bandSearch?bandName="+bandName;
 	        })
 	        //게시판관리
 	        $('#bandOption9').on('click', function(){

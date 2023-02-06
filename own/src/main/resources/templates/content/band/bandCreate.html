@@ -51,12 +51,19 @@
             transform: rotate(-1deg);
           }
         }
+        .malpWrap {
+        	width: 60px;
+          	height: 50px;
+          	border-radius: 50px;
+        }
+        	
         .malp {
+          object-fit: cover;	 
           background: #f3f3f3;
           border: 1px solid #d8d8d8;
           text-align: center;
           border-radius: 50px;
-          width: 50px;
+          width: 80px;
           height: 50px;
           padding: 2px 8px;
           cursor: pointer;
@@ -73,14 +80,22 @@
           -moz-border-radius: 8px;
           border-radius: 8px;
           background: #333;
-          color: #fff;
+          color: white;
           font-size: 14px;
           z-index: 999;
         }
-
-
         .malp:hover + p.arrow_box {
           display: block;
+        }
+        hr {
+        	background:white;
+    		height:1px;
+    		border:0;
+        }
+        hStyle {
+        	padding-left: 10px;
+        	margin:4px 0px;
+        	color: white;
         }
       </style>
     </head>
@@ -92,7 +107,6 @@
 			</div>
 			<div class="container" style="background-color:rgba(0, 0, 0, 0.5); width: 1110px; border-radius: 30px;">
                 <div class="section_title text-center" style=" margin: 50px 0px">
-                    <p style="visibility: hidden;">Who are in extremely love with eco friendly system.</p>
                     <div class="hotel_booking_area position" >
 	                    <div class="container" style="">
 			<div class="container">
@@ -133,31 +147,35 @@
 						</div><!-- 이미지끝남 -->
 						<div class="insertArea" style="margin:0px auto;width: 110%; padding: 10px 15px 80px">
         <!--================작성 Area 시작 =================-->
-				            <div style="display: flex; flex-wrap: wrap; flex-direction: column;justify-content: flex-end; flex-grow: 2; padding-left: 50px">
+				            <div style="display: flex; flex-wrap: wrap; flex-direction: column;justify-content: flex-end; flex-grow: 2; padding-left: 50px; margin-bottom: 15px;">
 				                <!--================ 이름 =================-->
 				                <div style="display: inline-block; width: 90%;">
-				                  <h6 class="typo-list" style="float: left; padding-left: 10px;">가치 명</h6>
-				                  <div>
-				                    <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
-				                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+				                  <div style="display: flex; height: 25px;">
+					                  <h6 class="typo-list" style="padding-left: 10px; margin:4px 0px; color: white;">가치 명</h6>
+					                  <div class="malpWrap">
+					                    <span class="malp"><i class="fa fa-info" aria-hidden="true" style="width: 10px;"></i></span>
+					                    <p class="arrow_box" style="color: white">가치명은 최대 20자 까지 가능합니다.<br> 옵션사항에 따라 검색에 노출됩니다.</p>
+					                  </div>
 				                  </div>
 				                  <div class="mt-10">
-				                    <input type="text" name="bandName" placeholder="가치 이름 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 이름 입력'" required class="single-input" style="height: 50px; font-size: 20px;width: 88%; display: block; float: left;">
+				                    <input type="text" id="bandNickname" maxlength="20" name="bandName" placeholder="가치 이름 입력" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 이름 입력'" required class="single-input" style="height: 50px; font-size: 20px;width: 88%; display: block; float: left;">
 				                  </div>
-				                  <p style="padding: 30px 20px 0px; display:inline-block; width: 10%;"><small>12/100</small></p>
+				                  <p style="padding: 30px 20px 0px; display:inline-block; width: 10%; color:#f8b600"><small id="gachiName">0/20</small></p>
 				                </div>
 				                <!--================ 이름 끝 =================-->
 				                <!--================ 소개 =================-->
-				                <div style="display: inline-block; width: 90%;">
-				                  <h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 2px; ">가치 소개</h6>
-				                  <div>
-				                    <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
-				                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
-				                  </div>
+				                <div style="display: inline-block; width: 90%; margin-top: 30px;">
+				                	<div style="display: flex; height: 25px;">
+					                  <h6 class="typo-list" style="padding-left: 10px; margin:4px 0px; color: white;">가치 소개</h6>
+					                  <div class="malpWrap">
+					                    <span class="malp"><i class="fa fa-info" aria-hidden="true"style="width: 10px;"></i></span>
+					                    <p class="arrow_box"  style="color: white">가치소개는 최대 100자 까지 가능합니다.</p>
+					                  </div>
+					              </div>    
 				                  <div class="mt-10">
-				                    <textarea name="bandIntro" placeholder="가치 소개" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 소개'" required class="single-input" style="width: 88%; display: block; float: left;"></textarea>
+				                    <textarea name="bandIntro" id="bandIntro" maxlength="100" placeholder="가치 소개" onfocus="this.placeholder = ''" onblur="this.placeholder = '가치 소개'" required class="single-input" style="width: 88%; display: block; float: left;"></textarea>
 				                  </div>
-				                  <p style="padding: 60px 20px 0px; display:inline-block; width: 10%;"><small>12/100</small></p>
+				                  <p style="padding: 60px 20px 0px; display:inline-block; width: 10%; color:#f8b600"><small id="gachiIntro">0/100</small></p>
 				                </div>
 				                <!--================ 소개 끝 =================-->
 				                <div  style="margin:0px auto; display: flex; justify-content: space-between; align-content:flex-start;">
@@ -168,32 +186,36 @@
 							        <div style="flex-grow: 3; display: flex; flex-wrap: nowrap; flex-direction: column; align-items: flex-start;">
 						                <!--================ 나이체크 =================-->
 						                <div style="display: inline-block; width: 60%; display: flex;" >
-						                  <h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 20px;">연령 제한
+						                  <div style="display: flex; height: 25px;">
+					                 		 <h6 class="typo-list" style="padding-left: 10px; margin:4px 0px; color: white;">연령 제한
 						                      <input type="checkbox" name="bandAgeOption" value="BD01" id="bandAgeOption" style="display: block; float: right; margin: 5px;">
 						                      <input type="checkbox" name="bandAgeOption" value="BD02" id="bandAgeOptionHidden" style="display: none" checked>
 						                      <label for="bandAgeOption"></label>
 						                    </h6>
-						                    <div style="padding: 20px;">
-						                      <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
-						                      <p class="arrow_box" style="margin-left: 27px;">말풍선 등장!말풍선 등장!</p>
+						                    <div style="" class="malpWrap">
+						                      <span class="malp" ><i class="fa fa-info" aria-hidden="true"style="width: 10px;"></i></span>
+						                      <p class="arrow_box" style="color: white">가치가입을 허용하는 생년을 설정합니다.</p>
+						                    </div>
 						                    </div>
 						                </div>
 						                <div class="mt-10" id="yearCheck" style="display: inline-block; width: 120%; display: none;">
 						                  <input type="number" name="bandAgeBeforoptionInput"required class="single-input" min="1900" value="1950" style="width: 30%; display: block; float: left;">
-						                  <div style="float: left; font-size: 20px; padding-left: 40px; padding-top: 10px;"><p>~</p></div>
+						                  <div style="float: left; font-size: 20px; padding-left: 40px; padding-top: 10px;"><p style=" color: white;">~</p></div>
 						                  <input type="number" name="bandAgeAfteroptionInput" required class="single-input" max="2023" value="2023" style="width: 30%; display: block;float: left; margin-left: 50px;" >
 						                  <input type="date" name="bandAgeBeforoption" style="display: none">
 						                  <input type="date" name="bandAgeAfteroption" style="display: none">
 						                </div>
 						                <!--================ 나이체크 끝 =================-->
 						                <!--================ 관심지역 =================-->
-						                <div style="display: inline-block; width: 90%;display: flex;">
-						                  <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">활동 지역</h6>
-						                  <div style="padding: 9px;">
-						                    <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
-						                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
+						                <div style="display: inline-block; width: 100%;display: flex;  margin-top: 15px;">
+						                  <div style="display: flex; height: 25px;">
+					                 		<h6 class="typo-list" style="padding-left: 10px; margin:4px 0px; color: white;">활동 지역</h6>
+						                  	<div class="malpWrap">
+						                    	<span class="malp" ><i class="fa fa-info" aria-hidden="true"style="width: 10px;"></i></span>
+						                    	<p class="arrow_box" style="color: white">말풍선 등장!말풍선 등장!</p>
+						                  	</div>
 						                  </div>
-						                  </div>
+						               </div>
 						                  <div>
 						                  <div class="input-group-icon mt-10"style="width: 245%;">
 						                    <div class="form-select" id="default-select">
@@ -206,15 +228,17 @@
 						                </div>
 						                 <!--================ 관심지역 끝 =================-->
 						                 <!--================ 관심종목 =================-->
-						                <div style="display: inline-block; width: 90%;display: flex;">
-						                  <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">관심 종목</h6>
-						                  <div style="padding: 9px; display: block;">
-						                    <span class="malp" ><i class="fa fa-info" aria-hidden="true"></i></span>
-						                    <p class="arrow_box">말풍선 등장!말풍선 등장!</p>
-						                  </div>
+						                <div style="display: inline-block; width: 100%;display: flex; margin-top: 15px;">
+						                	<div style="display: flex; height: 25px;">
+						                 		 <h6 class="typo-list" style="padding-left: 10px; margin:4px 0px; color: white;">관심 종목</h6>
+							                  <div style="display: block;" class="malpWrap">
+							                    <span class="malp" ><i class="fa fa-info" aria-hidden="true"style="width: 10px;"></i></span>
+							                    <p class="arrow_box" style="color: white">활동 지역을 설정합니다.</p>
+							                  </div>
+							                  </div>
 						                  </div>
 						                  <div>
-						                  <div class="input-group-icon mt-10"style="width: 245%;">
+						                  <div class="input-group-icon mt-10"style="width: 265%;">
 						                    <div class="form-select" id="default-select">
 						                      <select name="bandCategory" th:value="*{exercise}">
 						                        <option disabled="disabled">관심 종목</option>
@@ -225,26 +249,26 @@
 						                </div>
 						                <!--================ 관심종목 끝 =================-->
 						                <!--================ 태그 =================-->
-						                <div id="searchTagArea" style="display: flex;">
-							                <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left;">밴드 검색 키워드</h6>
+						                <div id="searchTagArea" style="display: flex;   margin-top: 15px;">
+							                <h6 class="typo-list" style="padding-left: 10px; margin-top: 10px;float: left; color: white;">가치 검색 키워드</h6>
 							                <div style="margin-top: 10px;">
-							                  <span class="malp"><i class="fa fa-info" aria-hidden="true"></i></span>
-							                  <p class="arrow_box"  style="margin-left: 45px;">말풍선 등장!말풍선 등장!</p>
+							                  <span class="malp"><i class="fa fa-info" aria-hidden="true"style="width: 10px;"></i></span>
+							                  <p class="arrow_box"  style="margin-left: 45px; color: white">가치 검색 키워드를 설정합니다.<br>검색에 노출됩니다.</p>
 							                </div>
 							            </div>
 							            <div style="display: flex;">
 							                <div style=" width: 500px;">
 							                  <div class="mt-10">
-							                    <input type="text" id="letTag" placeholder="운동하는 1조" maxlength="10" onfocus="this.placeholder = ''" onblur="this.placeholder = '운동하는 1조'" class="single-input"style="width: 30%; display: block; float: left;">
+							                    <input type="text" id="letTag" placeholder="운동하는 1조" maxlength="7" onfocus="this.placeholder = ''" onblur="this.placeholder = '운동하는 1조'" class="single-input"style="width: 30%; display: block; float: left;">
 							                  </div>  
-							                  <p style="padding: 15px"><small>5/10</small><a class="genric-btn default-border" id="intag" style="height: 30px; line-height: 30px;float: right;display: block;color: blue;">입력</a></p>
+							                  <p style="padding: 15px; color:#f8b600;"><small style="color:#f8b600;" id="letleng">0/7</small><a class="genric-btn default-border" id="intag" style="height: 30px; line-height: 30px;float: right;display: block;color: blue;">입력</a></p>
 						                	</div>
 						                </div>
 						                <div id="insertKeyword" style="width: 500px;"></div>
 						                <input type="hidden" name="bandKeyword">
 						                <div style="padding-top: 20px; width: 500px;">
-						                 	<h6 class="typo-list" id="alertTag" style="display: none;">글자를 입력해주세요.</h6>
-						                  	<h6 class="typo-list"id="alertTag2" style="display: none;">키워드는 10개만 등록이 가능합니다.</h6>
+						                 	<h6 class="typo-list" id="alertTag" style="display: none; color: #f8b600">글자를 입력해주세요.</h6>
+						                  	<h6 class="typo-list"id="alertTag2" style="display: none; color: #f8b600">10개만 등록이 가능합니다.</h6>
 						                </div>
 						                <!--================ 태그 끝 =================-->
 						            </div>
@@ -254,9 +278,10 @@
 					                  <div class="col-lg-8 col-md-8" style="max-width: 100%;">
 					                    <!--================ 성별 라디오  =================-->
 					                    <div>
-					                      <h6 class="typo-list">성별 제한</h6>
+					                      <h6 class="typo-list" style="color: white;">성별 제한</h6>
+					                      
 					                      <div class="d-flex justify-content-between">
-					                        <p>모두</p>
+					                        <p style="color: white;">모두</p>
 					                        <div class="primary-radio">
 					                          <input type="checkbox" id="positivity" name="bandGenderOption" value="BE02" checked>
 					                          <label for="positivity" style="top: 0px"></label>
@@ -264,14 +289,14 @@
 					                        </div>
 					                      </div>
 					                      <div class="switch-wrap d-flex justify-content-between">
-					                        <p>남자만</p>
+					                        <p style="color: white;">남자만</p>
 					                        <div class="primary-radio">
 					                          <input type="radio" id="male" name="bandGender" value="GD01">
 					                          <label for="male" style="top: 0px"></label>
 					                        </div>
 					                      </div>
 					                      <div class="switch-wrap d-flex justify-content-between">
-					                        <p>여자만</p>
+					                        <p style="color: white;">여자만</p>
 					                        <div class="primary-radio">
 					                          <input type="radio" id="female" name="bandGender" value="GD02">
 					                          <label for="female" style="top: 0px"></label>
@@ -282,23 +307,23 @@
 					                    <hr>
 					                    <!--================ 공개 라디오  =================-->
 					                    <div class="single-element-widget" style="padding-top: 10px;">
-					                      <h6 class="typo-list">가치 공개 유무</h6>
+					                      <h6 class="typo-list" style="color: white;">가치 공개 유무</h6>
 					                      <div class="switch-wrap d-flex justify-content-between">
-					                        <p>공개 가치<small> (상세히 공개)</small></p>
+					                        <p style="color: white;">공개 가치<small> (상세히 공개)</small></p>
 					                        <div class="primary-radio">
 					                          <input type="radio" id="oprn" name="bandOpenOption" value="BC01" checked>
 					                          <label for="oprn" style="top: 0px"></label>
 					                        </div>
 					                      </div>
 					                      <div class="switch-wrap d-flex justify-content-between">
-					                        <p>비공개 가치<small> (비공개함)</small></p>
+					                        <p style="color: white;">비공개 가치<small> (비공개함)</small></p>
 					                        <div class="primary-radio" >
 					                          <input type="radio" id="dopen" name="bandOpenOption" value="BC02">
 					                          <label for="dopen" style="top: 0px"></label>
 					                        </div>
 					                      </div>
 					                      <div class="switch-wrap d-flex justify-content-between">
-					                        <p>밴드명 공개 가치<small> (검색만 허용)</small></p>
+					                        <p style="color: white;">가치명 공개<small> (검색만 허용)</small></p>
 					                        <div class="primary-radio">
 					                          <input type="radio" id="hide" name="bandOpenOption" value="BC03">
 					                          <label for="hide" style="top: 0px"></label>
@@ -311,8 +336,8 @@
 					                    
 										<!--================ 가입신청옵션단추  =================-->
 					                    <div style="padding-top: 20px; display: flex">
-					                    	<h6 class="typo-list">가입신청받기</h6>
-					                    	<div class="switch-wrap d-flex justify-content-between" style="padding-left: 100px">
+					                    	<h6 class="typo-list" style="color: white;">가입신청받기</h6>
+					                    	<div class="switch-wrap d-flex justify-content-between" style="padding-left: 30px">
 												<div class="primary-switch" style="display: absolute;">
 													<input type="checkbox" name="bandMembershipOption" id="primary-switch" value="BF01" checked>
 													<label for="primary-switch" style="top: 0px"></label>
@@ -327,7 +352,7 @@
 						</div>
 			<!--================작성 Area =================-->
 						</div>
-			              <button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 개설</button>
+			              <button type="button" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">가치 개설</button>
 			            </form>
 		<!--================폼 끝 Area =================--> 
 				</div>
@@ -350,9 +375,9 @@
         <script src="/css/band/js/custom.js"></script>
         <script>
           function tagFnc(val){
-            let tag = `<div class="aTag" style="height: 30px; line-height: 30px;float: left;display: block; margin-bottom:5px; color: rgb(71, 114, 255);">
-                      <p class="genric-btn default-border inTag" style="display: block; margin-bottom:5px; color: rgb(71, 114, 255);">#${val}</p>
-                      <span style="float: right; margin: -43px 20px 30px 60px;"><i class="fa fa-times" aria-hidden="true"></i></span>
+            let tag = `<div class="aTag" style="margin-top:20px; height: 30px; line-height: 30px;float: left;display: block; margin-bottom:10px; color: rgb(71, 114, 255);">
+                      <p class="default-border inTag" style="background-color:white;  display: block; margin:5px; padding: 5px 10px; color: rgb(71, 114, 255);">#${val}</p>
+                      <span style="float: right; margin: -50px 10px 30px 60px;"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>`
             return tag;
           }
@@ -501,6 +526,52 @@
             } else {
             	$('#primary-switchHidden').prop('checked',true);
             }
+        })
+        //글자수 체크
+        //가치인트로 체크  
+       	function gachiName(){
+        	if($('#bandNickname').val().length>20){
+        		$('#bandNickname').val( $('#bandNickname').val().slice(0, 20) );
+        	}
+       		$('#gachiName').text($('#bandNickname').val().length+'/20');
+       	}
+       	//가치인트로  글자수
+        $('#bandNickname').keyup(function(e){
+       	//글자수 체크
+       		gachiName();
+        })
+         //가치명 글자수 체크  
+       	function gachiIntro(){
+        	if($('#gachiIntro').val().length>20){
+        		$('#gachiIntro').val( $('#gachiIntro').val().slice(0, 100) );
+        	}
+       		$('#gachiIntro').text($('#bandIntro').val().length+'/100');
+       	}
+       	//가치명  글자수
+        $('#bandIntro').keyup(function(e){
+       		gachiIntro();
+        })
+          //가치명 글자수 체크  
+       	function letTagyy(){
+        	if($('#letTag').val().length>7){
+        		$('#letTag').val( $('#letTag').val().slice(0, 7) );
+        	}
+       		$('#letleng').text($('#letTag').val().length+'/7');
+       	}
+       	//태그  글자수 letleng
+        $('#letTag').keyup(function(e){
+       	//글자수 체크 letleng
+       		letTagyy();
+        })
+        
+        //서브밋버튼
+        $('button').on('click', function(){
+        	//아무것도 첨부안해서 저기가 샘플이고(만약 샘플을 첨부하면 저기 샘플칸이 샘플명으로 바뀜)
+        	if($('input[name=mediaServerFile]').val()=='sample'&& $('#gateImage').val()==''){
+        		alert('가치 이미지를 설정해주세요.')
+        		return false;
+        	}
+        	$('form').submit();
         })
         </script>
     </div>

@@ -406,6 +406,7 @@
 				WHERE(( BAND_CALENDAR_START BETWEEN CURRENT_DATE AND CURRENT_DATE + #{day})
 		          OR (BAND_CALENDAR_END  BETWEEN CURRENT_DATE AND CURRENT_DATE + #{day}))
           		AND BAND_NO = #{bandNo}
+          		ORDER BY BAND_CALENDAR_START
 	</select>
 	
 	<!-- 30일 밴드캘린더 창 용 ....그냥 다 넘기자 -->

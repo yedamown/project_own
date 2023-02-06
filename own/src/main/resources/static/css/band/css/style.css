@@ -106,9 +106,15 @@ button:focus {
 @media (min-width: 1200px) {
   .container {
     max-width: 1170px;
+    margin: 0 auto;
   }
 }
-
+@media (min-width: 1200px) {
+  .container2 {
+    max-width: 1250px;
+    margin: 0 auto;
+  }
+}
 .section_gap {
   padding: 120px 0;
 }
