@@ -28,5 +28,8 @@ public interface ChatMapper {
 
 	// 웹 소켓 세션에 메세지 저장.
 	public <T> void sendMessage(WebSocketSession session, T message);
+	
+	// 채팅방 정보 가져옴
+	List<ChatroomVO> getChatroomInfo(ChatroomVO vo);
 
 }
