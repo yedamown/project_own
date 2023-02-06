@@ -89,7 +89,7 @@
 		</div>
 		<!-- 검색 끝 -->
 
-		<!-- <div th:if="${session.loginUser}">
+		<div th:if="${session.loginUser}">
 			도전 홈 _ 로그인 중
 			<h1 th:text="${session.loginUser.userId}"></h1>
 			<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
@@ -99,7 +99,7 @@
 				<a href="/own/chall/myChall">내가만든도전보기</a>
 			</div>
 		</div>
-		<div th:if="${session.loginUser} == null">로그인 안한 상태 볼 순 있지만 등록이나 그런건불가능</div> -->
+		<div th:if="${session.loginUser} == null">로그인 안한 상태 볼 순 있지만 등록이나 그런건불가능</div>
 
 		<!-- 운동카테고리 -->
 			<div class="container py-5">
@@ -193,20 +193,15 @@
 					</div>
 					<!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
 					<div class="owl-carousel testimonial-carousel">
-						<div class="testimonial-item px-3">
-
-						</div>
 						<th:block th:each="my: ${myChall}">
 							<div class="testimonial-item px-3">
 								<div class="grid" style="padding: 10px" id=${vldNo}>
-									<div class="card card__one" style="width: 330px; height:380px;">
+									<div class="card card__one" style="width: 300px; height:380px;">
 										<figure class="card__img">
-											<img th:src="|/imgView/${my.firstImage}|" style="object-fit: cover" />
+											<img th:src="|/imgView/${my.firstImage}|" style="width: 300px; height:210px; object-fit: cover" />
 										</figure>
 										<div class="card__desc vldno" style="text-align: center;">
-											<input type="hidden" value=${vldNo}>
-											<input type="hidden" value=${reporter}>
-											<h5 th:text="${my.challTitle}"></h5>
+											<h5 style="margin-top: 5px;"th:text="${my.challTitle}"></h5>
 											<div class="row" style="justify-content: center;">
 												<p style="margin: 5px 10px;">[[${my.challDuration}]]주 동안</p>
 												<p style="margin: 5px 10px;">주 [[${my.challFreq}]] 회</p>
@@ -225,219 +220,50 @@
 	</div> 
 	<!-- Testimonial End -->
 
-
-	 <!-- Testimonial Start3333 -->
-	 <div th:if="${myChall}">
-	 <div class="container pb-5">
+<!--  -->
+	<div class="container pb-5">
 		<div class="container p-0">
-		  <div class="text-center pb-2">
-			<p class="section-title px-5">
-			  <span class="px-2">Pop Challenges</span>
-			</p>
-			<h1 class="mb-4">현재 인기있는 도전</h1>
-		  </div>
-  
-		  <div class="owl-carousel testimonial-carousel" >
-		  <th:block th:each="my: ${myChall}">
-			<div class="testimonial-item col-lg-4 mb-4">
-						  <div class="card border-0 shadow-sm mb-2" style="width: 300px">
-							  <img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt="도전사진"
-								  style="height: 230px; object-fit: cover" />
-							  <div class="card-body bg-light text-center p-4">
-								  <input type="hidden" th:value="${my.challNo}" />
-								  <h5 class="" th:text="${my.challTitle}"></h5>
-								  <div class="d-flex justify-content-center mb-3">
-									  <small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
-									  <small class="mr-3">[[${my.challDuration}]]주 동안</small> 
-									  <small class="mr-3">주 [[${my.challFreq}]]회</small>
-								  </div>
-								 <a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-				 					 class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
-							  </div>
-						  </div>
-					  
+			<div class="text-center pb-2">
+				<p class="section-title px-5">
+					<span class="px-2">Pop Challenges</span>
+				</p>
+				<h1 class="mb-4">현재 인기있는 도전</h1>
 			</div>
+			<!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
+			<div class="owl-carousel testimonial-carousel">
+				<div class="testimonial-item px-3">
+				</div>
+				<th:block th:each="cha: ${popChall}">
+					<div class="testimonial-item px-3">
+						<div class="grid" style="padding: 10px">
+							<div class="card card__one" style="width: 300px; height:380px;">
+								<figure class="card__img">
+									<img th:src="|/imgView/${cha.firstImage}|" style="width: 300px; height:210px; object-fit: cover" />
+								</figure>
+								<div class="card__desc vldno" style="text-align: center;">
+									<h5 style="margin-top: 5px;"th:text="${cha.challTitle}"></h5>
+									<div class="row" style="justify-content: center;">
+										<p style="margin: 5px 10px;">[[${cha.challDuration}]]주 동안</p>
+										<p style="margin: 5px 10px;">주 [[${cha.challFreq}]] 회</p>
+										<p style="margin: 5px 10px;">[[${#dates.format(cha.challStartdate, 'M/d')}]]시작</p>
+							</div>
+							<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(cha.challNo, 'CHA_')})}"
+							  class="btn btn-primary px-4 mx-auto my-2">도전하러 가기</a>
+						</div>
+						</div>
+					</div>	
+				</div>
 			</th:block>
 		  </div>
-		</div>
-		</div>
-	  </div> 
-	  <!-- Testimonial End -->
-
-	<!-- 페이징효과 테스트끝 -->
+	</div>
+</div>
 
 	<!-- 나의 도전 -->
-	<div class="container-fluid pt-3" th:if="${myChall}">
-		<div class="container">
-			<div class="text-center pb-2">
-				<p class="section-title px-5">
-					<span class="px-2">New Challenges</span>
-				</p>
-				<h1 class="mb-4">새로운 도전들</h1>
-			</div>
-			<!-- 여기부터  6개 한블럭? -->
-			<div class="row pb-3" id="rowMyChall">
-				<th:block th:each="my: ${myChall}">
-					<div class="col-lg-4 mb-4">
-						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
-							<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt="도전사진"
-								style="height: 230px;"/>
-							<div class="card-body bg-light text-center p-4" style="width: 300px">
-								<input type="hidden" th:value="${my.challNo}" />
-								<h4 class="" th:text="${my.challTitle}"></h4>
-								<div class="d-flex justify-content-center mb-3">
-									<small class="mr-3">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</small>
-									<small class="mr-3">[[${my.challDuration}]]주 동안</small> 
-									<small class="mr-3">주 [[${my.challFreq}]]회</small>
-									<small class="mr-3">[[${my.nowMem}]]참여중</small>
-								</div>
-								<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-									class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
-							</div>
-						</div>
-					</div>
-				</th:block>
-			</div>
-		</div>
-		<!-- 도전 6개 끝 -->
 
-		<!-- 나의도전 페이징 -->
-		<nav class="blog-pagination justify-content-center d-flex pageBtn"  th:if="${myChall}"
-			id="pageMyChall">
-			<!--================ 이전  =================-->
-			<ul class="pagination">
-				<li class="page-item" th:if="${myChall[0].paging.startPage>1}"><a
-					class="page-link" aria-label="Previous"
-					th:value="${myChall[0].paging.startPage-1}"> <span aria-hidden="true"><span
-							class="lnr lnr-chevron-left pagePort"></span></span></a></li>
-				<!--================ 페이지 이동 1_2_3_4_5  =================-->
-				<th:block
-					th:each="pag:${#numbers.sequence(myChall[0].paging.startPage,myChall[0].paging.endPage)}">
-					<li class="page-item" th:if="${pag != myChall[0].paging.page}"><a
-						class="page-link pagePort" th:value="${pag}"
-						th:text="${#numbers.formatInteger(pag,1)}"></a></li>
-					<li class="page-item active" th:if="${pag==myChall[0].paging.page}"><a
-						class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
-					</li>
-				</th:block>
-				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
-				<!--================ 이후  =================-->
-				<li class="page-item" th:if="${myChall[0].paging.endPage<myChall[0].paging.lastPage}">
-					<a class="page-link pagePort" aria-label="Next"
-					th:value="${myChall[0].paging.endPage+1}"> <span aria-hidden="true"><span
-							class="lnr lnr-chevron-right"></span></span></a>
-				</li>
-			</ul>
-		</nav>
-		<!--나의도전 페이징 끝 -->
-	</div>
-
-	<!-- 나의도전 끝 -->
-
-	<!-- 새로운 도전 -->
-	<div class="container-fluid pt-5">
-		<div class="container">
-			<div class="text-center pb-2">
-				<p class="section-title px-5">
-					<span class="px-2">New challenge</span>
-				</p>
-				<h1 class="mb-4">새로운 도전</h1>
-			</div>
-			<div class="row pb-3" id="rowPopChall">
-				<th:block th:each="cha: ${popChall}">
-					<div class="col-lg-4 mb-5">
-						<div class="card border-0 bg-light shadow-sm pb-2">
-							<input type="hidden" th:value="${cha.challNo}" /> <img
-								class="card-img-top mb-2" th:src="|/imgView/${cha.firstImage}|"
-								alt="" />
-							<div class="card-body text-center">
-								<h4 class="card-title" th:text="${cha.challTitle}"></h4>
-								<p class="card-text">간단소개?</p>
-							</div>
-							<div class="card-footer bg-transparent py-4 px-5">
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>CATEGORY</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.challCategory}"></div>
-								</div>
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>START DATE</strong>
-									</div>
-									<div class="col-6 py-1"
-										th:text="${#dates.format(cha.challStartdate, 'MM월 dd일')}"></div>
-								</div>
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>도전 횟수</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.challFreq}"></div>
-								</div>
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>도전 금액</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.challPrice}"></div>
-								</div>
-								<div class="row border-bottom">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>현재 도전 회원</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.nowMem}"></div>
-								</div>
-								<div class="row">
-									<div class="col-6 py-1 text-right border-right">
-										<strong>도전 기간</strong>
-									</div>
-									<div class="col-6 py-1" th:text="${cha.challDuration}"></div>
-								</div>
-							</div>
-							<a
-								th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(cha.challNo, 'CHA_')})}"
-								class="btn btn-primary px-4 mx-auto mb-4">상세보기</a>
-						</div>
-					</div>
-				</th:block>
-			</div>
-		</div>
-		<!-- 새로운 도전  페이징버튼 넣기 -->
-		<nav class="blog-pagination justify-content-center d-flex pageBtn" id="pagePopChall">
-			<!--================ 이전  =================-->
-			<ul class="pagination">
-				<li class="page-item" th:if="${popChall[0].paging.startPage>1}"><a
-					class="page-link" aria-label="Previous"
-					th:value="${popChall[0].paging.startPage-1}"> <span aria-hidden="true"> << <span
-							class="lnr lnr-chevron-left pagePort"></span></span></a></li>
-				<!--================ 페이지 이동 1_2_3_4_5  =================-->
-				<th:block
-					th:each="pag:${#numbers.sequence(popChall[0].paging.startPage,popChall[0].paging.endPage)}">
-					<li class="page-item" th:if="${pag != popChall[0].paging.page}"><a
-						class="page-link pagePort" th:value="${pag}"
-						th:text="${#numbers.formatInteger(pag,1)}"></a></li>
-					<li class="page-item active" th:if="${pag==popChall[0].paging.page}"><a
-						class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
-					</li>
-				</th:block>
-				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
-				<!--================ 이후  =================-->
-				<li class="page-item" th:if="${popChall[0].paging.endPage<popChall[0].paging.lastPage}">
-					<a class="page-link pagePort" aria-label="Next"
-					th:value="${popChall[0].paging.endPage+1}"> <span aria-hidden="true"> >> <span
-							class="lnr lnr-chevron-right"></span></span></a>
-				</li>
-			</ul>
-		</nav>
-		<!-- 새로운 도전 페이징버튼 끝 -->
-	</div>
 	<!-- 새로운 도전 끝 -->
 
-	<!-- 인기 도전 -->
-	<!-- 인기도전 끝 -->
-
 	<!-- Footer Start -->
-	<div
-		class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
+	<div class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
 		<div class="row pt-5">
 			<div class="col-lg-3 col-md-6 mb-5">
 				<a href=""
@@ -540,8 +366,6 @@
     <a href="#" class="btn btn-primary p-3 back-to-top" >
     	<i class="fa fa-angle-double-up"></i></a>
 
-
-
 	<!-- 첫번째 modal 모달 버튼 -->
 	<h1 class="modalBtn" id="joinChall" style="display: none">MODAL_1</h1>
 	<!-- 첫 번째 Modal -->
@@ -557,7 +381,7 @@
 				<input id="memAccname" type="hidden" name="memAccname" th:value="${session.loginUser.userName}">
 				<div class="form-group">
 					<label for="memNick">도전 닉네임 NickName *</label>
-					<input type="text" class="form-control"st id="memNick" name="memNickname" required onchange="nickDouble()"
+					<input type="text" class="form-control" id="memNick" name="memNickname" required onchange="nickDouble()"
 						placeholder="1-8자의 한글, 영어만 이용가능합니다." />
 					<button type="button" id="idchk" style="WIDTH: 70pt; HEIGHT: 45px" value="0">중복체크</button>
 					<p class="help-block text-danger"></p>
