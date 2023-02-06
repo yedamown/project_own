@@ -12,6 +12,7 @@ import co.prjt.own.chat.service.MessageVO;
 
 @Service
 public class ChatServiceImpl implements ChatService {
+
 	@Autowired
 	ChatMapper chatMapper;
 

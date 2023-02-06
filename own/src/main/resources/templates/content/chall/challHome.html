@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" lang="ko">
 
 <head>
 	<!-- jquery -->
@@ -33,53 +33,9 @@
 	<script src="/css/chall/mail/contact.js"></script>
 	<!-- Template Javascript -->
 	<script src="/css/chall/js/main.js"></script>
+	<!-- 내 css들 -->
+	<link href="/css/chall/css/chall.css" rel="stylesheet" />
 	<style>
-		.modal {
-			display: none;
-			/* Hidden by default */
-			position: fixed;
-			/* Stay in place */
-			z-index: 1;
-			/* Sit on top */
-			left: 0;
-			top: 0;
-			width: 100%;
-			/* Full width */
-			height: 100%;
-			/* Full height */
-			overflow: auto;
-			/* Enable scroll if needed */
-			background-color: rgb(0, 0, 0);
-			/* Fallback color */
-			background-color: rgba(0, 0, 0, 0.4);
-			/* Black w/ opacity */
-		}
-
-		/* Modal Content/Box */
-		.modal-content {
-			background-color: #fefefe;
-			margin: 15% auto;
-			/* 15% from the top and centered */
-			padding: 20px;
-			border: 1px solid #888;
-			width: 50%;
-			/* Could be more or less, depending on screen size */
-		}
-
-		/* The Close Button */
-		.close {
-			color: #aaa;
-			float: right;
-			font-size: 28px;
-			font-weight: bold;
-		}
-
-		.close:hover,
-		.close:focus {
-			color: black;
-			text-decoration: none;
-			cursor: pointer;
-		}
 	</style>
 	<script th:inline="javascript">
 		$(document).ready(function () {
@@ -105,179 +61,162 @@
 	<meta charset="utf-8">
 	<title>OWN _ 도전</title>
 </head>
-
+<div layout:fragment="content">
 <body>
-	<!-- 공통헤더 -->
-	<!-- Navbar Start -->
-	<div class="container-fluid bg-light position-relative shadow">
-		<nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
-			<a href="" class="navbar-brand font-weight-bold text-secondary" style="font-size: 50px"> <span
-					class="text-primary">OWN 오운</span>
-			</a>
-			<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-				<div class="navbar-nav font-weight-bold mx-auto py-0">
-					<a href="index.html" class="nav-item nav-link">Home</a> <a href="about.html"
-						class="nav-item nav-link">About</a> <a href="class.html" class="nav-item nav-link">Classes</a>
-					<a href="team.html" class="nav-item nav-link">Teachers</a> <a href="gallery.html"
-						class="nav-item nav-link">Gallery</a>
-					<div class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-						<div class="dropdown-menu rounded-0 m-0">
-							<a href="blog.html" class="dropdown-item">Blog Grid</a> <a href="single.html"
-								class="dropdown-item">Blog Detail</a>
-						</div>
-					</div>
-					<a href="contact.html" class="nav-item nav-link active">Contact</a>
-				</div>
-				<a href="" class="btn btn-primary px-4">Join Class</a>
-			</div>
-		</nav>
-	</div>
-	<!-- Navbar End -->
-
-	<!-- Header Start -->
-	<div class="container-fluid bg-primary mb-5" style="padding: 0">
-		<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px; background-image: url(/img/chall/category/swim_main.jpg);
+		<!-- Header Start -->
+		<div class="container-fluid bg-primary mb-5" style="padding: 0">
+			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px; background-image: url(/img/chall/category/스키.png);
 			background-size: contain">
-			<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
-			<div class="d-inline-flex text-white">
-				<p class="m-0">
-					<a class="text-white" href="">Home</a></p>
-				<p class="m-0 px-2">/</p>
-				<p class="m-0">Contact Us</p>
-			</div>
-		</div>
-	</div>
-
-	<!-- Header End -->
-	<div>[[${paging}]]</div>
-	<div th:if="${session.loginUser}">
-		도전 홈 _ 로그인 중
-		<h1 th:text="${session.loginUser.userId}"></h1>
-		<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
-		<div th:if="${session.loginUser}">
-			<a href="/own/chall/mypage">마이페이지</a>
-			<a href="/own/chall/insertFormChall">도전만들러고고</a>
-			<a href="/own/chall/myChall">내가만든도전보기</a>
-		</div>
-	</div>
-	<div th:if="${session.loginUser} == null">로그인 안한 상태 볼 순 있지만 등록이나 그런건불가능</div>
-
-	<!-- 검색  -->
-	<div class="container-fluid pt-4 mb-4" style="width: 650px">
-		<div class="input-group">
-			<input type="text" class="form-control form-control-lg" id="searchWord" placeholder="Keyword" />
-			<div class="input-group-append" id="searchBtn">
-				<span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
-			</div>
-		</div>
-	</div>
-	<!-- 검색 끝 -->
-
-	<a th:text="${paging1}"></a>
-	<br>
-	<hr>
-	<a th:text="${paging2}"></a>
-	<!-- 운동카테고리 -->
-	<div class="container-fluid pt-4">
-		<div class="container pb-4" style="width: 800px">
-			<div class="row" style="justify-content: center;" id="categoryBtn">
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover"
-						value="춤 댄스" picname="댄스" />
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_30.png" style="width: 80px; height: 80px; object-fit: cover"
-						alt="하이킹" />
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_2.png" style="width: 80px; height: 80px; object-fit: cover"
-						alt="3" />
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" />
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" />
-					<p>5댄스</p>
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" />
-					<p>6댄스</p>
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/hiking.png" style="width: 80px; height: 80px; object-fit: cover" />
-					<p>7하이킹</p>
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/swimming.png" style="width: 80px; height: 80px; object-fit: cover" />
-					<p>8수영</p>
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" />
-					<p>9댄스</p>
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" />
-					<p>10댄스</p>
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" />
-					<p>11댄스</p>
-				</div>
-				<div style="text-align: center; width: 120px; height: 120px">
-					<img src="/img/chall/category/EXS_6.png" style="width: 80px; height: 80px; object-fit: cover" />
-					<p>12댄스</p>
+				<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
+				<div class="d-inline-flex text-white">
+					<p class="m-0">
+						<a class="text-white" href="">Home</a></p>
+					<p class="m-0 px-2">/</p>
+					<p class="m-0">Contact Us</p>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- 운동카테고리 끝 -->
+		<!-- Header End -->
 
-	<!-- 도전페이징효과 테스트 -->
-	<!-- Testimonial Start -->
-	<div th:if="${myChall} !=null">
-		<div class="container-fluid py-5">
-			<div class="container p-0">
-				<div class="text-center pb-2">
-					<p class="section-title px-5">
-						<span class="px-2">Testimonial</span>
-					</p>
-					<h1 class="mb-4">What Parents Say!</h1>
+		<!-- 검색  -->
+		<div class="container-fluid pt-4 mb-4" style="width: 800px">
+			<div class="input-group">
+				<input type="text" class="form-control form-control-lg" id="searchWord" placeholder="Keyword" />
+				<div class="input-group-append" id="searchBtn">
+					<span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
 				</div>
-				<!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
-				<div class="owl-carousel testimonial-carousel">
-					<div class="testimonial-item px-3">
-						<div class="bg-light shadow-sm rounded mb-4 p-4">
-							<h3 class="fas fa-quote-left text-primary mr-3">나의 도전 보러가기</h3>
-						</div>
-						<div class="d-flex align-items-center">
-							<img class="rounded-circle" src="img/testimonial-4.jpg" style="width: 70px; height: 70px"
-								alt="Image" />
-							<div class="pl-3">
-								<h5>77777777777</h5>
-								<i>Profession</i>
-							</div>
-						</div>
+			</div>
+		</div>
+		<!-- 검색 끝 -->
+
+		<!-- <div th:if="${session.loginUser}">
+			도전 홈 _ 로그인 중
+			<h1 th:text="${session.loginUser.userId}"></h1>
+			<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
+			<div th:if="${session.loginUser}">
+				<a href="/own/chall/mypage">마이페이지</a>
+				<a href="/own/chall/insertFormChall">도전만들러고고</a>
+				<a href="/own/chall/myChall">내가만든도전보기</a>
+			</div>
+		</div>
+		<div th:if="${session.loginUser} == null">로그인 안한 상태 볼 순 있지만 등록이나 그런건불가능</div> -->
+
+		<!-- 운동카테고리 -->
+			<div class="container py-5">
+				<div class="row" style="justify-content: center;" id="categoryBtn">
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/걷기.png" style="width: 100px; height: 100px; object-fit: cover"
+							picname="걷기" />
+						<p>걷기</p>
 					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/계단오르기.png" style="width: 100px; height: 100px; object-fit: cover"
+							picname="계단오르기" />
+						<p>계단오르기</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/골프2.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="골프" />
+						<p>골프</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/달리기.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="달리기" />
+						<p>달리기</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/배구.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="배구" />
+						<p>배구</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/배드민턴.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="배드민턴" />
+						<p>배드민턴</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/사이클.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="사이클" />
+						<p>사이클</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/실내자전거.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="실내자전거" />
+						<p>실내자전거</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/유도.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="유도" />
+						<p>유도</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/줌바.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="줌바" />
+						<p>줌바</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/축구.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="축구" />
+						<p>축구</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/탁구.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="탁구" />
+						<p>탁구</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/태권도.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="태권도" />
+						<p>태권도</p>
+					</div>
+					<div style="text-align: center; width: 150px; height:150px">
+						<img src="/img/chall/category/하이킹.png" style="width: 100px; height: 100px;  object-fit: cover"
+							picname="하이킹" />
+						<p>하이킹</p>
+					</div>
+				</div>
+			</div>
 
-					<th:block th:each="my: ${myChall}">
+
+		<!-- 운동카테고리 끝 -->
+
+		<!-- 도전페이징효과 테스트 -->
+		<!-- Testimonial Start -->
+		<div th:if="${myChall} !=null">
+			<div class="container pb-5">
+				<div class="container p-0">
+					<div class="text-center pb-2">
+						<p class="section-title px-5">
+							<span class="px-2">My Challenges</span>
+						</p>
+						<h1 class="mb-4">내가 참여중인 챌린지</h1>
+					</div>
+					<!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
+					<div class="owl-carousel testimonial-carousel">
 						<div class="testimonial-item px-3">
-							<div class="bg-light shadow-sm rounded mb-4 p-4">
-								<h3 class="fas fa-quote-left text-primary mr-3" th:text="${my.challTitle}"></h3>
-							</div>
-							<div class="d-flex align-items-center">
-								<img class="rounded-circle" th:src="|/imgView/${my.firstImage}|"
-									style="width: 70px; height: 70px" alt="Image" />
-								<div class="pl-3">
-									<h5 th:text="${my.challTitle}"></h5>
+
+						</div>
+						<th:block th:each="my: ${myChall}">
+							<div class="testimonial-item px-3">
+								<div class="grid" style="padding: 10px" id=${vldNo}>
+									<div class="card card__one" style="width: 330px; height:380px;">
+										<figure class="card__img">
+											<img th:src="|/imgView/${my.firstImage}|" style="object-fit: cover" />
+										</figure>
+										<div class="card__desc vldno" style="text-align: center;">
+											<input type="hidden" value=${vldNo}>
+											<input type="hidden" value=${reporter}>
+											<h5 th:text="${my.challTitle}"></h5>
+											<div class="row" style="justify-content: center;">
+												<p style="margin: 5px 10px;">[[${my.challDuration}]]주 동안</p>
+												<p style="margin: 5px 10px;">주 [[${my.challFreq}]] 회</p>
+												<p style="margin: 5px 10px;">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</p>
+									</div>
 									<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-				 					 class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+				 					 class="btn btn-primary px-4 mx-auto my-2">도전하러 가기</a>
 								</div>
-			  				</div>
+								</div>
+							</div>	
 						</div>
 					</th:block>
 		  		</div>
@@ -289,13 +228,13 @@
 
 	 <!-- Testimonial Start3333 -->
 	 <div th:if="${myChall}">
-	 <div class="container-fluid py-5">
+	 <div class="container pb-5">
 		<div class="container p-0">
 		  <div class="text-center pb-2">
 			<p class="section-title px-5">
-			  <span class="px-2">Testimonial</span>
+			  <span class="px-2">Pop Challenges</span>
 			</p>
-			<h1 class="mb-4">What's New Challenges!</h1>
+			<h1 class="mb-4">현재 인기있는 도전</h1>
 		  </div>
   
 		  <div class="owl-carousel testimonial-carousel" >
@@ -312,8 +251,8 @@
 									  <small class="mr-3">[[${my.challDuration}]]주 동안</small> 
 									  <small class="mr-3">주 [[${my.challFreq}]]회</small>
 								  </div>
-								  <a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-									  class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+								 <a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+				 					 class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
 							  </div>
 						  </div>
 					  
@@ -332,9 +271,9 @@
 		<div class="container">
 			<div class="text-center pb-2">
 				<p class="section-title px-5">
-					<span class="px-2">My Page</span>
+					<span class="px-2">New Challenges</span>
 				</p>
-				<h1 class="mb-4">나의 도전</h1>
+				<h1 class="mb-4">새로운 도전들</h1>
 			</div>
 			<!-- 여기부터  6개 한블럭? -->
 			<div class="row pb-3" id="rowMyChall">
@@ -653,8 +592,6 @@
 		</div>
 	</div>
 	</div>
-
-		<hr>
 		<!-- 두 번째 Modal을 여는 클래스 -->
 		<h1 class="modalBtn">MODAL_2</h1>
 		<!-- 두 번째 Modal -->
@@ -666,7 +603,6 @@
 			</div>
 		</div>
 
-		<hr>
 		<!-- 세 번째 Modal을 여는 클래스 -->
 		<h1 class="modalBtn">MODAL_3</h1>
 		<!-- 세 번째 Modal -->
@@ -676,15 +612,48 @@
 				<span class="close">&times;</span>
 				<p>세 번째 Modal</p>
 			</div>
+		</div>
 
 	<script>
+window.addEventListener('load', function() {
+	
+	// setTimeout to simulate the delay from a real page load
+	setTimeout(lazyLoad, 1000);
+	
+});
+
+function lazyLoad() {
+	var card_images = document.querySelectorAll('.card-image');
+	
+	// loop over each card image
+	card_images.forEach(function(card_image) {
+		var image_url = card_image.getAttribute('data-image-full');
+		var content_image = card_image.querySelector('img');
+		
+		// change the src of the content image to load the new high res photo
+		content_image.src = image_url;
+		
+		// listen for load event when the new photo is finished loading
+		content_image.addEventListener('load', function() {
+			// swap out the visible background image with the new fully downloaded photo
+			card_image.style.backgroundImage = 'url(' + image_url + ')';
+			// add a class to remove the blur filter to smoothly transition the image change
+			card_image.className = card_image.className + ' is-loaded';
+		});
+		
+	});
+	
+}
+
+
+
 	 //카테고리 그림 클릭 시 검색으로 이동
 	    $('#categoryBtn div img').click(function(){
 	    	console.log(this);
 	    	let picname = $(this).attr('picname');
 	    	console.log(picname);
 	    	//아작스로 이동
-	    	location.href = '/own/chall/applyForm?challNo=' + cNo
+	    	location.href = '/own/chall/searchChall?searchWord=' + picname
 	    })
  		//검색
  		$('#searchBtn').on('click', function(){
@@ -938,7 +907,7 @@
 								</li>`
 								startpageTag.append(pageAfterTag);
 							}
-							$('#pageMyChall').append(startpageTag);
+					$('#pageMyChall').append(startpageTag);
 				})
 		   })
 
@@ -1055,4 +1024,5 @@
 			}('att_zone', 'btnAtt')
 </script>
 </body>
+</div>
 </html>
