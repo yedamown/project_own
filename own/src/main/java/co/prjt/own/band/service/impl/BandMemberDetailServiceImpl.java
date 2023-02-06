@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.prjt.own.band.mapper.BandMemberDetailMapper;
+import co.prjt.own.band.mapper.BandOptionMapper;
 import co.prjt.own.band.service.BandMemberDetailService;
 import co.prjt.own.band.service.BandMemberDetailVO;
 import co.prjt.own.chat.service.MessageVO;
@@ -15,11 +16,22 @@ import co.prjt.own.common.mapper.CommonMapper;
 public class BandMemberDetailServiceImpl implements BandMemberDetailService{
 	@Autowired BandMemberDetailMapper bandMemberDetailMapper;
 	@Autowired CommonMapper commonMapper;
+	@Autowired
+	BandOptionMapper bandOptionMapper;
 	
 	@Override
 	public List<BandMemberDetailVO> bandMemberList(BandMemberDetailVO vo) {
 		// 밴드 회원 목록 띄우기 + 채팅방 생성여부
-		return bandMemberDetailMapper.bandMemberList(vo);
+		vo.setBandMemberStatus("BA02"); // 조건 설정
+		vo.getPaging().setTotalRecord(bandOptionMapper.bandCount(vo));
+		vo.getPaging().setPageSize(5);
+		vo.setFirst(vo.getPaging().getFirst());
+		vo.setLast(vo.getPaging().getLast());
+		vo.setPaging(vo.getPaging());
+		
+		List<BandMemberDetailVO> list = bandMemberDetailMapper.bandMemberList(vo);
+		list.get(0).setPaging(vo.getPaging());
+		return list;
 	}
 
 	@Override

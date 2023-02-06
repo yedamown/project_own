@@ -3,20 +3,51 @@
 <mapper
 	namespace="co.prjt.own.band.mapper.BandMemberDetailMapper">
 
-	<!-- 전체 밴드 멤버 목록 + 나랑 채팅중이면 1, 아니면 0뜨는 컬럼까지 -->
+	<!-- 전체 밴드 멤버 목록, 나랑 채팅중이면 1, 아니면 0뜨는 컬럼, 밴드장아이디, 페이징, 정렬, 검색옵션까지 -->
 	<select id="bandMemberList"
 		resultType="co.prjt.own.band.service.BandMemberDetailVO"
 		parameterType="string">
-		SELECT B.*, ( 	SELECT COUNT(*)
-						FROM CHATROOM
-						WHERE CHATROOM_NO IN ( SELECT CHATROOM_NO FROM CHATROOM
-												WHERE BAND_MEMBER_NO = #{bandMemberNo} )
-						AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
-						AND BAND_MEMBER_NO = B.BAND_MEMBER_NO
-					) CHAT_CHECK  
-		FROM BAND_MEMBER_DETAIL B
-		WHERE BAND_NO = #{bandNo}
-		<!-- and USER_ID <![CDATA[  <> #{userId}]]> -->
+		SELECT * FROM ( SELECT ROWNUM RN, 
+								  AN.* 
+				      FROM (
+							SELECT  BMD.USER_ID,
+							        BMD.BAND_NICKNAME,
+							        BMD.BAND_SIGNUP_DATE,
+							        BMD.BAND_MEMBER_NO,
+							        BMD.BAND_BIRTH,
+							        ( 	SELECT COUNT(*)
+							              FROM CHATROOM
+							             WHERE CHATROOM_NO IN ( SELECT CHATROOM_NO 
+							                                      FROM CHATROOM
+							                                     WHERE BAND_MEMBER_NO = #{bandMemberNo})
+							               AND BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
+							               AND BAND_MEMBER_NO = BMD.BAND_MEMBER_NO
+							        ) CHAT_CHECK, 
+							        (   SELECT M.MEDIA_SERVER_FILE
+							              FROM MULTIMEDIA M
+							             WHERE M.IDENTIFY_ID = BMD.BAND_MEMBER_NO
+							        ) PROFILE_IMG,
+							        (   SELECT B.BAND_LEADERID
+							              FROM BAND B
+							            WHERE B.BAND_NO = BMD.BAND_NO
+							        ) BAND_LEADERID
+							FROM BAND_MEMBER_DETAIL BMD
+							WHERE BAND_MEMBER_STATUS = 'BA02'
+							<if test="bandNickname != null and bandNickname !=''">
+								    AND (USER_ID LIKE '%' || #{bandNickname} || '%'
+									OR BAND_NICKNAME LIKE '%' || #{bandNickname} || '%')
+							</if>
+							AND BAND_NO = #{bandNo}
+							ORDER BY  DECODE(   BAND_MEMBER_NO, #{bandMemberNo}, 1), 
+                                      DECODE(   USER_ID, (SELECT BAND_LEADERID
+                                                            FROM BAND 
+                                                           WHERE BAND_NO = #{bandNo}), 2),
+							<choose>
+							        <when test="selectOption == 'name'">BAND_NICKNAME</when>
+							        <when test="selectOption == 'signupDate'">BAND_SIGNUP_DATE</when>
+							        <otherwise>BAND_NICKNAME</otherwise>
+							</choose>
+		) AN WHERE ROWNUM  <![CDATA[ <= #{last}) where RN>= #{first} ]]>
 	</select>
 
 	<!-- 밴드식별번호랑 유저아이디로 밴드멤버식별번호 가져오기 -->

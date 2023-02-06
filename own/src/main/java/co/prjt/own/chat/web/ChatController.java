@@ -37,7 +37,6 @@ public class ChatController {
       return chatService.createChatroom(list);
    }
 
-	
 	// 밴드멤버번호로 생성된 모든 채팅방 정보 가져오기
 	@GetMapping("/getMyChatroomList")
 	@ResponseBody
