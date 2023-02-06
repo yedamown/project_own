@@ -43,7 +43,7 @@
 				<th>별명</th>
 				<th></th>
 				<th></th>
-				<th>신고하기</th>
+				<th></th>
 
 			</thead>
 			<tbody id="bandMemberTable">
@@ -126,11 +126,13 @@
 						for (var i = 0; i < result.length; i++) {
 							let nicknameTag = '';
 							let chatTag = '';
+							// 채팅체크
 							if(result[i].chatCheck == 1){
-								chatTag = `<a class="oldChatStart" value=${result[i].bandMemberNo} href="">채팅하기</a>`;
+								chatTag = `<a class="oldChatStart" value=${result[i].bandMemberNo}>채팅하기</a>`;
 							} else {
 								chatTag = `<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname} href="">채팅하기</a>`;
 							}
+							// 밴드장 표시
 							if(result[i].userId == loginUserId){
 								nicknameTag = `<td>${result[i].bandNickname}<i class="fa fa-solid fa-crown" style="margin-right: 5px;" aria-hidden="true"></i></td>`;
 							} else {
@@ -214,15 +216,12 @@
 			}) // end of selectOption
 
 			// 새로운 채팅방 생성
-			$(".newChatStart").click(
-				function createChatroom() {
+			$(document).on("click", ".newChatStart", function(){
 					// 로그인한 유저의 밴드멤버번호와 채팅할 유저의 밴드멤버번호와 닉네임
-					let bMemNo1 = $("#MybandNo").val();
-					let bMemNo2 = $(this).parent().parent().children()
-						.eq(6).text();
-					let bMemNick1 = $("#MybandNick").val();
-					let bMemNick2 = $(this).parent().parent().children()
-						.eq(1).text();
+					let bMemNo1 = myBandMemberNo;
+					let bMemNo2 = $(this).parent().parent().parent().parent().eq(4).val();
+					let bMemNick1 = $("#bandMemberTable").find(tr).eq(1).children().eq(2).text();
+					let bMemNick2 = $(this).parent().parent().parent().parent().children().eq(2).text();
 					// 배열에 추가
 					let rName = bMemNick1 + ", " + bMemNick2 + "의 채팅방";
 					let chatroomDataList = new Array();
@@ -243,31 +242,29 @@
 					console.log("chatroomDataList"
 						+ JSON.stringify(chatroomDataList))
 					// 채팅방 새로 생성 후 결과값으로 방번호를 받아와 그 번호로 채팅방 페이지 보내기
-					$.ajax({
-						url: '/createChatroom',
-						method: 'post',
-						contentType: "application/json; charset=UTF-8",
-						data: JSON.stringify(chatroomDataList),
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader(header, token);
-						},
-						success: function (result) {
-							// 결과로 채팅방 시퀀스 번호 받아옴
-							console.log("채팅방 번호 시퀀스" + result);
-							let url = '/chatroom?chatroomNo=CRN_' + result
-								+ '&bandMemberNo=' + bMemNo1;
-							location.replace(url);
-						},
-						error: function (error) {
-							console.log("error: " + error);
-						}
-					});
-
-				})
+					// $.ajax({
+					// 	url: '/createChatroom',
+					// 	method: 'post',
+					// 	contentType: "application/json; charset=UTF-8",
+					// 	data: JSON.stringify(chatroomDataList),
+					// 	beforeSend: function (xhr) {
+					// 		xhr.setRequestHeader(header, token);
+					// 	},
+					// 	success: function (result) {
+					// 		// 결과로 채팅방 시퀀스 번호 받아옴
+					// 		console.log("채팅방 번호 시퀀스" + result);
+					// 		let url = '/chatroom?chatroomNo=CRN_' + result
+					// 			+ '&bandMemberNo=' + bMemNo1;
+					// 		location.replace(url);
+					// 	},
+					// 	error: function (error) {
+					// 		console.log("error: " + error);
+					// 	}
+					// });
+			});
 
 			// 기존 채팅방 입장
-			$(".oldChatStart").click(
-				function createChatroom() {
+			$(document).on("click", ".oldChatStart", function(){
 					let bMemNo = $("#MybandNo").val();
 					let bMemNo1 = $(this).parent().parent().children()
 						.eq(6).text();
@@ -296,7 +293,7 @@
 							console.log("error: " + error);
 						}
 					});
-				})
+				});
 		});
 	</script>
 </div>
