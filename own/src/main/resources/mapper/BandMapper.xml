@@ -6,7 +6,7 @@
 	<sql id="recom">
 			<if test="bandName != null and bandName !=''">
 				WHERE LOWER(BAND_NAMELOWER) LIKE '%'||LOWER(#{bandName})||'%'
-				AND LOWER(BAND_KEYWORD) LIKE '%'||LOWER(#{bandKeyword})||'%'
+				AND LOWER(BAND_KEYWORD) LIKE '%'||LOWER(#{bandName})||'%'
 			</if>
 	</sql>
 	<sql id="recom2">
@@ -138,9 +138,10 @@
 	<!-- AS를 썼기 때문에 검색조건에... -->
 	<sql id="condition">
 		<if test="bandName != null and bandName !=''">
-			AND (LOWER(BAND_NAME) LIKE '%'||LOWER(#{bandName})||'%'
-			OR LOWER(BAND_KEYWORD) LIKE '%'||LOWER(#{bandName})||'%'
-			)
+			AND (
+				LOWER(BAND_NAME) LIKE '%'||LOWER(#{bandName})||'%'
+				OR LOWER(BAND_KEYWORD) LIKE '%'||LOWER(#{bandName})||'%'
+				)
 			<if test="bandLocation != null and bandLocation !=''">
 				AND BAND_LOCATION = #{bandLocation}
 			</if>

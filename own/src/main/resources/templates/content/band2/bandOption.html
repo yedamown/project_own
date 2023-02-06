@@ -166,7 +166,7 @@
     <label for="tab6" id="memberManage">멤버관리</label>
 
     <input type="radio" id="tab7" name="tabGroup2" class="tab">
-    <label for="tab7">채팅관리</label>
+    <label for="tab7" id="boardManage">게시판관리</label>
 
     <input type="radio" id="tab8" name="tabGroup2" class="tab">
     <label for="tab8" id="bandPass">밴드위임</label>
@@ -223,24 +223,28 @@
 </body>
 <script>
 $(function(){
-$('#bandInfo').on('click', function(){
-	$('#submain').load("/own/band/bandGroup/bandOptionMain?bandNo="+bandNo);
-})
+	$('#bandInfo').on('click', function(){
+		$('#submain').load("/own/band/bandGroup/bandOptionMain?bandNo="+bandNo);
+	})
+		
+		
+	$('#bandmanage').on('click', function(){
+	   $('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
+	});
+	
+	// 硫ㅻ쾭 愿 由   꺆
+	$('#memberManage').on('click', function(){
+	   $('#manageTemplate').load("/own/band/bandGroup/bandMemberManage?bandNo="+bandNo);
+	});
 	
 	
-$('#bandmanage').on('click', function(){
-   $('#manageTemplate').load("/own/band/bandGroup/bandManage?bandNo="+bandNo);
-});
-
-// 硫ㅻ쾭 愿 由   꺆
-$('#memberManage').on('click', function(){
-   $('#manageTemplate').load("/own/band/bandGroup/bandMemberManage?bandNo="+bandNo);
-});
-
-
-$('#bandPass').on('click', function(){
-	$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
-})
+	$('#bandPass').on('click', function(){
+		$('#manageTemplate').load("/own/band/bandGroup/bandPass?bandNo="+bandNo);
+	})
+	//게시판 관리 /bandGroup/bandOption9
+	$('#boardManage').on('click', function() {
+		$('#manageTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
+	})
 })
 </script>
 </html>

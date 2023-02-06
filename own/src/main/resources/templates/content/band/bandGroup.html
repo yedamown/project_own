@@ -22,7 +22,7 @@
 			  margin-right: 10px;
 			  font-family:Tahoma;
 			  background: #ccc;
-			  color: #17a2b8;
+			  color: #6ab0cd;
 			  text-decoration: none;
 			  cursor:pointer;
 			}
@@ -52,7 +52,7 @@
 			  border-radius: 10px;
 			}
 			.replyPagination1 .pageNum.active {
-			  background: #17a2b8;
+			  background: #6ab0cd;
 			  color: #fff;
 			}
         
@@ -244,23 +244,22 @@
 	                                	<p class="hoverBtn" id="myOption"><i class="fa fa-cog" aria-hidden="true" style="margin: 0px 10px 10px 0px;"></i>[[${BandMemberDetail.bandNickname}]]([[${BandMemberDetail.userId}]])</p>
 	                                    <th:block th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
 	                                    	<p class="hoverBtn" id="bandOption"><i class="fa fa-cog" aria-hidden="true" style="margin-right: 10px;"></i> 가치 설정</p>
-	                                    	<p class="hoverBtn" id="bandOption9"><i class="fa fa-cog" aria-hidden="true" style="margin-right: 10px;"></i> 가치 설정(게시판)</p>
 	                                    </th:block>
 	                                </div>
 	                                <hr>
                                 </div>
                                 <div th:if="${#strings.isEmpty(BandMemberDetail)}"  id="signUpBand">
                                 <!-- =======가입======= -->
-                                	<h4 class="widget_title" style="color:white; background-color: #17a2b8">회원가입</h4>
+                                	<h4 class="widget_title" style="color:white; background-color: #6ab0cd">회원가입</h4>
                                 </div>
                                 <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA01'}">
                                 <!-- =======승인중======= -->
-                                	<h4 class="widget_title" style="color:white; background-color: #17a2b8">승인대기중</h4>
+                                	<h4 class="widget_title" style="color:white; background-color: #6ab0cd">승인대기중</h4>
                                 </div>
                             </aside>
                             <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                            <aside class="single_sidebar_widget post_category_widget">
-	                                <h4 class="widget_title hoverBtn" id="writeBoard" style="background-color: #17a2b8">글쓰기</h4>
+	                                <h4 class="widget_title hoverBtn" id="writeBoard" style="background-color: #6ab0cd">글쓰기</h4>
 	                                <div class="d-flex justify-content-between smallBoard" id="totalBoard">
 	                                    <p class="hoverBtn hoverString"><i class="fa fa-file-text hoverBtn" style="padding-right: 7px"></i>전체 글보기</p>
 	                                    <p th:text="${boardCount}" class="hoverCursor">2538</p>
@@ -269,13 +268,13 @@
 	                                <ul class="list_style cat-list">
 	                                    <li th:each="board: ${boardList}">
 	                                    	<p th:if="${board.bandBoardLine}!=0" class="smallBoard hoverBtn hoverString" th:name="${board.bandBoardOptionNo}" style="margin-bottom:0px;"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
-	                                    	<b th:if="${board.bandBoardLine}==0" class="hoverCursor" th:text="${board.bandBoardName}" style="margin-bottom:0px; color: #17a2b8;"></b>
+	                                    	<b th:if="${board.bandBoardLine}==0" class="hoverCursor" th:text="${board.bandBoardName}" style="margin-bottom:0px; color: #6ab0cd;"></b>
 	                                    </li>											
 	                                </ul>
 	                                <div class="br"></div>
 	                            </aside>
 	                            <aside class="single-sidebar-widget tag_cloud_widget">
-	                                <h4 class="widget_title hoverCursor" style="background-color: #17a2b8">가치 유입 태그</h4>
+	                                <h4 class="widget_title hoverCursor" style="background-color: #6ab0cd">가치 유입 태그</h4>
 	                            	<ul class="list_style">
 	                                    <li th:if="${keyword != null}" th:each="tag: ${keyword}">
 	                                    	<a th:text="${tag}" class="hoverCursor" style="text-decoration: none;"></a>
@@ -344,7 +343,7 @@
 	                        	<div class="blog_right_sidebar">
 		                            <aside class="single_sidebar_widget popular_post_widget">
 		                                <div class="dropdown">
-		                                	<h3 class="widget_title dropbtn" style="background-color: #17a2b8;">다가오는 일정<i class="fa fa-cog" aria-hidden="true" style="margin-left: 10px;"></i></h3>
+		                                	<h3 class="widget_title dropbtn" style="background-color: #6ab0cd;">다가오는 일정<i class="fa fa-cog" aria-hidden="true" style="margin-left: 10px;"></i></h3>
 										    <div class="dropdown-content">
 										        <a id="7">7일 이내</a>
 										        <a id="14">14일 이내</a>
@@ -352,9 +351,9 @@
 										      </div>
 		                                </div>
 		                                <div id="groupCal">
-			                                <div class="media post_item hoverBtn" th:each="c : ${calendar}" style="border:#c3c3c3 1px solid; padding-top:10px; padding-bottom:5px; background-color:white; border-radius:10px;">
+			                                <div class="media post_item hoverBtn" th:each="c : ${calendar}" th:style="|border: 1px dotted ${c.bandCalendarMark}; padding-top:10px; padding-bottom:5px; background-color:white; border-radius:10px;|">
 			                                    <div class="media-body">
-			                                        <h3><a class="goToCal" th:text="${c.bandCalendarTitle}" th:style="|background-color:${c.bandCalendarMark}|"></a></h3>
+			                                        <h3><a class="goToCal" th:text="${c.bandCalendarTitle}"></a></h3>
 			                                        <span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
 			                                        <span th:text="${#dates.format(c.bandCalendarEnd, 'yyyy-MM-dd')}" style="font-size: 12px"></span>
 			                                    </div>
@@ -634,9 +633,9 @@
 			        		}
 			        		let sDay = SimpleDateTimeFormat(new Date(ele.bandCalendarStart));
 			        		let cDay = SimpleDateTimeFormat(new Date(ele.bandCalendarEnd));
-				        	let tag = `<div class="media post_item hoverBtn" style="border:#c3c3c3 1px solid; padding-top:10px; padding-bottom:5px; background-color:white; border-radius:10px;">
+				        	let tag = `<div class="media post_item hoverBtn" style="border:${ele.bandCalendarMark} 1px dotted; padding-top:10px; padding-bottom:5px; background-color:white; border-radius:10px;">
 							        		<div class="media-body">
-						        			<h3><a class="goToCal" style="background-color:${ele.bandCalendarMark}">${title}</a></h3>
+						        			<h3><a class="goToCal">${title}</a></h3>
 						        			<span style="font-size: 12px">${sDay}</span> ~
 						        			<span style="font-size: 12px">${cDay}</span>
 						        		</div>
@@ -811,10 +810,10 @@
 	        	console.log(bandName)
 	        	window.location = "/own/band/bandSearch?bandName="+bandName;
 	        })
-	        //게시판관리
-	        $('#bandOption9').on('click', function(){
-	    		$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
-	    	})
+	        //게시판관리 설정안으로 들어감
+	        //$('#bandOption9').on('click', function(){
+	    	//	$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
+	    	//})
 	    	//게시판상세로 이동
 	    	$('.arty:eq(0)').on('click', $('.boardDett'), function(e){
 	    		let BoardNo = $(e.target).attr('id');
