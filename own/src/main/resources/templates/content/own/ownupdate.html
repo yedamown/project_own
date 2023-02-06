@@ -47,11 +47,12 @@
                     <h4 class="mb-4"><a href="/own/mypage/question" style="text-decoration:none">QNA</a></h4>
                 </div>
                 <div class="col-lg-2 col-md-6">
-                    <h4 class="mb-4"><a href="/own/mypage/question" style="text-decoration:none">나의 활동</a></h4>   
+                    <h4 class="mb-4"><a id="myplaying" href="javascript:void(0);" style="text-decoration:none">나의 활동</a></h4>   
                 </div>
             </div>
         </div>
-       <div id = "container">
+       <div class="container py-5">
+       <div id="subtemplate">       
         <div class="input-form-backgroud row">
             <div class="input-form col-md-12 mx-auto">
               <h4 class="mb-3">내정보 수정</h4>
@@ -122,6 +123,7 @@
                 <hr class="mb-4">
                 <button type="button" id="btnupdate">가입 완료</button>              
             </div>
+        </div>
         </div>
         </div>
 <script th:inline="javascript">
@@ -283,7 +285,10 @@
     		// 							   userPhone:tel,
     		// 							   userBirthday:birthday,
     		// 							   userGender:gender})
-        
+        $("#myplaying").on('click',function(){
+        	let id = $('#u_id').val();
+        	$("#subtemplate").load("/own/admin/test?id="+id)
+        })
         </script>
 </body>
 </div>
