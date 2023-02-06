@@ -17,15 +17,16 @@
 	
 	<!-- 내가 팔로우 한 사람들 중 최신스토리 1개 조회 -->
 	<select id="getNowStoryList" resultType="StoryVO">
-		SELECT A.SNS_NICKNAME,
-		        (SELECT MEDIA_SERVER_FILE FROM MULTIMEDIA WHERE IDENTIFY_ID = 
-		        (SELECT SNS_ACCOUNT_NO FROM SNS_ACCOUNT WHERE SNS_ACCOUNT_NO= A.SNS_ACCOUNT_NO)) AS MEDIA_SERVER_FILE
-	    FROM (SELECT 
-	            SNS_NICKNAME, SNS_story_DATE, SNS_ACCOUNT_NO,
-	            ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_story_no,5)) DESC) AS rn FROM sns_story) A,
-	         (SELECT SNS_FOLLOW_ID FROM SNS_FOLLOW WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
-	    WHERE A.SNS_ACCOUNT_NO = B.SNS_Follow_id
-	    AND rn = 1
+	SELECT A.SNS_NICKNAME,
+	        (SELECT MEDIA_SERVER_FILE FROM MULTIMEDIA WHERE IDENTIFY_ID = 
+	        (SELECT SNS_ACCOUNT_NO FROM SNS_ACCOUNT WHERE SNS_ACCOUNT_NO= A.SNS_ACCOUNT_NO)) AS MEDIA_SERVER_FILE
+			FROM (SELECT 
+		        SNS_NICKNAME, SNS_story_DATE, SNS_ACCOUNT_NO, sns_status,
+		        ROW_NUMBER() OVER(PARTITION BY sns_nickname ORDER BY to_number(SUBSTR(sns_story_no,5)) DESC) AS rn FROM sns_story) A,
+		    	(SELECT SNS_FOLLOW_ID FROM SNS_FOLLOW WHERE SNS_FOLLOWER_ID = #{snsFollowerId}) B
+				WHERE A.SNS_ACCOUNT_NO = B.SNS_Follow_id
+				and A.sns_status = 'open'
+				AND rn = 1
 	</select>
 	
 	<!-- 스토리 입력 -->

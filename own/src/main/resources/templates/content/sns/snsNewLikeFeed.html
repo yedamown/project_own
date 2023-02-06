@@ -168,19 +168,11 @@ body {
     }
 
     .topContentBox{
-        height:100px;
         text-align: center;
-        padding-bottom: 20px;
     }
-
     .topContentBox>span{
-        padding-left: 20px;
         cursor: pointer;
-        font-weight: 600;
-        font-size: 50px;
     }
-
-    
 
     .Feedmodal {
             display: none; /* Hidden by default */
@@ -235,7 +227,7 @@ body {
             height: 30px;
         }
         /*검색 프로필*/
-        .profileImg{
+        .searchProfileImg{
             width:50px;
             height:50px;
             border-radius: 50%;
@@ -244,7 +236,7 @@ body {
 
         #schoolInput{
             width: 260px;
-            height: 50px;
+            height: 45px;
             border: 2px solid lightblue;
             border-radius: 20px;
             margin-top: 30px;
@@ -271,9 +263,6 @@ body {
 
             <!--logo -->
             <div class="logo_box">
-                <a href="#">
-                    <img src="/css/sns/img/logo.png" alt="cocoon">
-                </a>
             </div>
             <!--logo end-->
 
@@ -337,10 +326,16 @@ body {
 
         <!--=================== content body ====================-->
         <div class="col-lg-10 col-md-9 col-12 body_block align-content-center">
-            <div class="topContentBox">
-                <span id="snsNewList">최신게시글</span><span>|</span><span  id="snsLikeList" value="false">좋아요</span>
+            <div id="snsLogoBox">
+                <img src="/css/sns/img/snsLogo.png" style="height:150px; margin-left: 545px;">
             </div>
             <hr>
+            <div class="topContentBox" style="position: relative;">
+                <img src="/css/sns/img/newFeedBack.png" style="margin-right: 100px;">
+                <span id="snsNewList" style="position: absolute; left: 38%; width: 130px; height: 70px;"></span>
+                <span id="snsLikeList" value="false" style="position: absolute; right: 44%; width: 90px; height: 70px;"></span>
+            </div>
+            
            
             
             <div class="container">
@@ -850,7 +845,7 @@ body {
                 console.log(data);
                 data.forEach((school)=>{
                     if(school['snsNickname'].includes(checkWord)){
-                        schoolList.append(`<img class="profileImg" src="/imgView/${school['mediaServerFile']}" onerror='this.src="/css/sns/img/defaultUser.png"'>
+                        schoolList.append(`<img class="searchProfileImg" src="/imgView/${school['mediaServerFile']}" onerror='this.src="/css/sns/img/defaultUser.png"'>
                                        <span style="cursor: pointer;" onclick="select(this);"> ${school['snsNickname']} </span> <br/>
                                        `   );                
                     }

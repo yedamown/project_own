@@ -2233,7 +2233,7 @@ img {
 -------------------------------------------------------- */
 .blog_card {
   margin-bottom: 30px;
-  padding: 15px;
+  padding-top: 13px;
 }
 .blog_card .blog_card_top {
   position: relative;
@@ -2275,7 +2275,7 @@ img {
 .blog_card .blog_card_bottom .meta_data {
   font-size: 13px;
   font-weight: 300;
-  margin-bottom: 30px;
+  margin-bottom: 70px;
 }
 .blog_card .blog_card_bottom .meta_data span {
   padding: 0 5px;

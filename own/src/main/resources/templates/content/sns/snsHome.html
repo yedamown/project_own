@@ -66,14 +66,16 @@
         }
 
         #snsprofilebox {
-            border: 1px solid black;
             text-align: center;
             padding: 20px;
-            margin-top: 70px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid lightgray;
         }
 
         .homeProfile {
-            margin-bottom: 40px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding-left: 30px;
         }
         .modal {
             display: none; /* Hidden by default */
@@ -187,12 +189,11 @@
             z-index: 20;
         }
         /*검색 프로필*/
-        .profileImg{
+        .searchProfileImg{
             width:50px;
             height:50px;
             border-radius: 50%;
             margin-bottom: 7px;
-            object-fit: cover;
         }
 
          /*게시글 더보기*/
@@ -217,7 +218,7 @@
 
         #schoolInput{
             width: 260px;
-            height: 50px;
+            height: 45px;
             border: 2px solid lightblue;
             border-radius: 20px;
             margin-top: 30px;
@@ -386,7 +387,7 @@
 
                     <!--logo -->
                     <div class="logo_box">
-                        <a href="#"><img src="/css/sns/img/logo.png" alt="cocoon"></a>
+                       
                     </div>
                     <!--logo end-->
 
@@ -445,7 +446,11 @@
 
                 <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center"  th:if="${session.loginUser.snsAccountNo != null}">
                     <br>
-
+                    <div id="snsLogoBox">
+                        <img src="/css/sns/img/snsLogo.png" style="height:150px; margin-left: 545px;">
+                    </div>
+                    <hr>
+                    <div th:if="${!#lists.isEmpty(snsStoryList)}">
                     <div id="snsprofilebox" class="modalBtn">
                         <span class="storyInfo" th:each="story : ${storyInfo}">
                             <span th:if="${story.mediaServerFile != null}">
@@ -460,7 +465,7 @@
                             	  style="font-size:17px; padding-right:30px; cursor: pointer; font-weight: 500;"></span>
                         </span>
                     </div>
-
+                    </div>
 
                     <!-- 스토리 모달 -->
                     <div class="modal">
@@ -473,20 +478,19 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
-
+                   
                     <!-- sns 메인 -->
                     <div class="blog">
                         <div class="row justify-content-center">
-                            <div class="col-lg-8 col-md-12 col-12" style="padding-left: 70px;">
+                            <div class="col-lg-8 col-md-12 col-12" style="padding-left: 80px;">
                                 <th:block th:each="now, stat : ${nowFeed}">
-                                    <article class="blog_card" th:if="${snsFollow != 0}" data-aos="fade-down">
+                                    <article class="blog_card" th:if="${snsFollow != 0}" data-aos="fade-down" style="width:804px; border: 2px solid lightgray; margin-bottom: 100px;">
                                         <div class="homeProfile">
                                             <img th:src="|/imgView/${now.mediaServerFile}"
-                                                style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid lightgray;">
                                             <a th:href="@{/own/snsFeed(snsNickname=${now.snsNickname})}">
                                                 <span th:text="${now.snsNickname}"
-                                                    style="font-size: 20px; padding-left: 10px;"></span></a>
+                                                    style="font-size: 17px; padding-left: 10px;"></span></a>
                                         </div>
                                         <div class="feedImg" style="position: relative; width: 800px; height: 500px;">
                                             <div class="blog_card_top" th:each="nowimg : ${now.fileList}"
@@ -508,12 +512,10 @@
                                                 <span th:text="${#dates.format(now.snsBoardDate, 'yyyy-MM-dd HH:mm:ss')}">
                                                  </span>
                                                  <input id="snsBoardDate" type="hidden" th:value="${now.snsBoardDate}">
-                                            </div>
-                                            <p>게시글내용 /
-                                                <p th:text="${now.snsBoardContent}" class="feed-content" value="summary"></p>
-                                            </p>
                                         </div>
-                                        <p class="btn-more">더보기</p>
+                                                <p th:text="${now.snsBoardContent}" class="feed-content" value="summary"></p>
+                                        </div>
+                                        <p class="btn-more" style="text-align: right;">더보기</p>
                                     </article>
                                 </th:block>
                                 
@@ -556,8 +558,8 @@
                                 <input th:value="${session.loginUser.userEmail}"  readonly disabled>
                             </div>
                             <div class="login_account">
-                                <h4>nickname</h4>
-                                <input type="text" name="snsNickname" placeholder="SNS 닉네임 입력">
+                                <h4>닉네임 <sup>*(필수항목)</sup></h4>
+                                <input type="text" name="snsNickname" placeholder="SNS 닉네임을 입력하세요." >
                             </div>
                             <div class="submit">
                                 <input id="snsAccountBtn" type="button" onclick="snscheck()" role="button" value="SNS 가입">
@@ -822,7 +824,7 @@
                 console.log(data);
                 data.forEach((school)=>{
                     if(school['snsNickname'].includes(checkWord)){
-                        schoolList.append(`<img class="profileImg" src="/imgView/${school['mediaServerFile']}" onerror='this.src="/css/sns/img/defaultUser.png"'>
+                        schoolList.append(`<img class="searchProfileImg" src="/imgView/${school['mediaServerFile']}" onerror='this.src="/css/sns/img/defaultUser.png"'>
                                        <span style="cursor: pointer;" onclick="select(this);"> ${school['snsNickname']} </span> <br/>
                                        `   );                
                     }

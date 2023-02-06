@@ -84,6 +84,7 @@ public class SnsController {
 				model.addAttribute("snsInfo", snsInfo);
 				model.addAttribute("nowFeed", list);
 				model.addAttribute("storyInfo", storyList);
+				model.addAttribute("snsStoryList", storyService.getStoryList(snsInfo.getSnsNickname()));
 				System.out.println("받아온 스토리 정보 ----------"+storyList);
 			}else {
 				System.out.println("정보없음");
@@ -126,7 +127,7 @@ public class SnsController {
 		
 		//세션에 강제로 로그인유저 저장하기
 
-		session.setAttribute("loginUser", ownService.login("kyr"));
+		//session.setAttribute("loginUser", ownService.login("kyr"));
 
 		OwnUserVO ovo = new OwnUserVO();
 		ovo =(OwnUserVO) session.getAttribute("loginUser");
