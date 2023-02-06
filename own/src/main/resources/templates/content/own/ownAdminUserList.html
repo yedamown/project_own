@@ -7,115 +7,214 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-body {
-	color: #2e2e2e;
-}
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
-table{
-width:100%;
-}
+		/* Reset Style */
 
-div.layout-978 { width: 978px; margin: 0px auto; }
+div.layout-978 { width: 1200px; margin: 0px auto; }
 
-div.tblcontainer {
-	padding: 18px;
-	border: 1px solid #c0c0c0;
-	margin: 20px auto;
-	background: url('../images/splitter.png') repeat-x 0 206px #fff;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px; /* future proofing */
-	-khtml-border-radius: 4px; /* for old Konqueror browsers */
-	width: 93%;	
-}
-.datagrid {
-	border-collapse: collapse;
-}
+		/* Responsive Table Style */
+		.responsive-table {
+			background-color: #fefefe;
+			border-collapse: collapse;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.02);
+			width: 100%;
+			margin: 2rem 0;
+			overflow: hidden;
+		}
 
-.datagrid thead tr th {
-	color: #949494;
-	font-size: 11px;
-	font-weight: normal;
-	text-align: left;
-	padding: 6px 8px;
-	border: 1px solid #c9c9c9;
-	background-image: linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
-	background-image: -moz-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
-	background-image: -webkit-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
-	background-image: -ms-linear-gradient(bottom, #EEEFF1 50%, #F9F9F9 54%);
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, #EEEFF1), color-stop(0.54, #F9F9F9)); 
-}
-.datagrid tbody tr {
-	background: #fff;
-}
+		.responsive-table__row {
+			border-bottom: 1px solid #edeef2;
+			padding: 0 1.5rem;
+		}
 
-.datagrid tbody tr td {
-	padding: 6px 8px;
-	border: 1px solid #c9c9c9;
-}
+		@media (min-width: 768px) {
+			.responsive-table__row {
+				grid-template-columns: 2fr 1fr 2fr 2fr 1fr;
+			}
+		}
 
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__row {
+				grid-template-columns: 1fr 2fr 1fr;
+			}
+		}
 
-.datagrid tbody tr td.cash {
-	text-align: right;
-}
+		.responsive-table__row th,
+		.responsive-table__row td {
+			padding: 0.5rem;
+			text-align: center;
+		}
+
+		.responsive-table__head {
+			background-color: #e1e8f2;
+		}
+
+		@media (max-width: 991px) {
+			.responsive-table__head {
+				display: none;
+			}
+		}
+
+		.responsive-table__head__title {
+			
+			align-items: center;
+			justify-content: center;
+			font-weight: 500;
+			text-transform: capitalize;
+		}
+
+		.responsive-table__body .responsive-table__row {
+			transition: 0.1s linear;
+			transition-property: color, background;
+		}
+
+		.responsive-table__body .responsive-table__row:last-child {
+			border-bottom: none;
+		}
+
+		.responsive-table__body .responsive-table__row:hover {
+			color: #fff;
+			background-color: #17a2b8;
+		}
+
+		.responsive-table__body__text {
+			
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.responsive-table__body__text::before {
+			margin-right: 1rem;
+			font-weight: 600;
+			text-transform: capitalize;
+		}
+
+		@media (max-width: 991px) {
+			.responsive-table__body__text::before {
+				content: attr(data-title) " :";
+			}
+		}
+
+		@media (max-width: 400px) {
+			.responsive-table__body__text::before {
+				width: 100%;
+				margin-bottom: 1rem;
+			}
+		}
+
+		.responsive-table__body__text--name {
+			font-weight: 600;
+		}
+
+		@media (min-width: 768px) {
+			.responsive-table__body__text--name::before {
+				display: none;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__body__text--name {
+				grid-column: 0.5;
+				flex-direction: column;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+
+			.responsive-table__body__text--status,
+			.responsive-table__body__text--types,
+			.responsive-table__body__text--update {
+				grid-column: 0.6666666667;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__body__text--country {
+				grid-column: -3;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+
+			.responsive-table__body__text--name,
+			.responsive-table__body__text--country {
+				grid-row: 2;
+			}
+		}
+
+		/* Status Indicator Style */
+		.status-indicator {
+			display: inline-block;
+			width: 1.8rem;
+			height: 1.8rem;
+			border-radius: 50%;
+			background: #222;
+			margin-right: 0.5rem;
+		}
+
+		.status-indicator--active {
+			background: #25be64;
+		}
+
+		.status-indicator--inactive {
+			background: #dadde4;
+		}
+
+		.status-indicator--new {
+			background: #febf02;
+		}
 </style>
 </head>
 <div layout:fragment="content">
 	<body>
-		<div class="container py-5">
-			<h1>회원목록</h1>
-		</div>
+	<div id="submain">
 		<div class="container py-2">
-			<div class="row g-2">
-				<div class="col-lg-2 col-md-6">
-					<h4 class="mb-4">
-						<a href="/own/admin/userList" style="text-decoration: none">회원목록</a>
-					</h4>
-				</div>
-				<div class="col-lg-2 col-md-6">
-					<h4 class="mb-4">
-						<a href="/own/admin/question" style="text-decoration: none">질문목록</a>
-					</h4>
-				</div>
-				<div class="col-lg-2 col-md-6">
-					<h4 class="mb-4">
-						<a href="/own/admin/reportList" style="text-decoration: none">신고목록</a>
-					</h4>
+		
+			<div class="row" style="margin: auto;">
+				<div class="col-12 text-left mb-2">
+					<ul class="list-inline mb-4" id="menu-filters" style="text-align: center;">
+						<li class="btn btn-outline-primary m-1 active" id="navuserList" val="1">회원 목록</li>
+						<li class="btn btn-outline-primary m-1" id="navquestion" val="1">질문 목록</li>
+						<li class="btn btn-outline-primary m-1" id="navreportList" val="1">신고 목록</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 		<div class="layout-978">
 		<div id="mainTemplate">
-			<div class="tblcontainer">
-			<table class="datagrid">
-					<thead>
-						<th>no</th>
-						<th>아이디</th>
-						<th>이름</th>
-						<th>sns계정</th>
-						<th>챌린저스 진행상태</th>
-						<th>가입중인 밴드</th>
-						<th>상태</th>
-					</thead>
-					<tbody id="userList">
-						<tr th:each="user ,userStat : ${OList}"th:value="${user.userId}">
-							<td th:text="${user.rn}"></td>
-							<td th:text="${user.userId}" th:class="test2" ></td>
-							<td th:text="${user.userName}"></td>
+			<table class="responsive-table" id="amtTable">
+				<thead class="responsive-table__head">
+					<tr class="responsive-table__row">
+						<th class="responsive-table__head__title" style="width:40px;">no</th>
+						<th class="responsive-table__head__title" style="width:80px;">아이디</th>
+						<th class="responsive-table__head__title" style="width:80px;">이름</th>
+						<th class="responsive-table__head__title" style="width:80px;">sns계정</th>
+						<th class="responsive-table__head__title" style="width:80px;">챌린저스 진행상태</th>
+						<th class="responsive-table__head__title" style="width:80px;">가입중인 밴드</th>
+						<th class="responsive-table__head__title" style="width:80px;">상태</th>
+					</tr>
+				</thead>
+				<tbody class="responsive-table__body" id="userList">
+						<tr class="responsive-table__row" th:each="user: ${OList}">
+							<td class="responsive-table__body__text" th:text="${user.rn}" style="width:40px;"></td>
+							<td class="responsive-table__body__text"th:text="${user.userId}" th:class="test2" style="width:80px;"></td>
+							<td class="responsive-table__body__text" th:text="${user.userName}" style="width:80px;"></td>
 							<span th:if="${user.snsAccountNo==null}">
-								<td>미등록</td>
+								<td class="responsive-table__body__text" style="width:80px;">미등록</td>
 							</span>
 							<span th:unless="${user.snsAccountNo==null}">
-								<td th:text="${user.snsAccountNo}"></td>
+								<td class="responsive-table__body__text" th:text="${user.snsAccountNo}" style="width:80px;"></td>
 							</span>
-							<td th:text="${user.challcount}+'개 진행중..'"></td>
-							<td th:text="${user.bandcount}+'개 가입중..'"></td>
-							<td th:text="${user.userPerm}"></td>							
-							</select>
-						</td>
-					</tbody>
-				</table>
-			</div>
+							<td class="responsive-table__body__text" th:text="${user.challcount}+'개 진행중..'" style="width:80px;"></td>
+							<td class="responsive-table__body__text" th:text="${user.bandcount}+'개 진행중..'" style="width:80px;"></td>
+							<td class="responsive-table__body__text" th:text="${user.userPerm}" style="width:80px;"></td>
+						</tr>
+				</tbody>
+			</table>
+
 		<nav class="blog-pagination justify-content-center d-flex"
 			id="pagegation">
 			<!--================ 이전  =================-->
@@ -149,6 +248,12 @@ div.tblcontainer {
 		<!-- 모달창 -->
 
 		<script th:inline="javascript">
+		
+		 $('#menu-filters li').click(function(){
+		    	$('#menu-filters li').removeClass('active');
+		    	$(this).addClass('active');
+		    })
+		
 		$('#pagegation').on('click', '.pagePort', function(){
 			//페이지번호 + 밴드식별번호
 			let page = $(this).attr('value');
@@ -171,14 +276,14 @@ div.tblcontainer {
 						snsAccountNo = ele.snsAccountNo
 					}
 
-					let tag = `<tr>
-								<td>${ele.rn}</td>
-								<td class="test2" >${ele.userId} </td>
-								<td>${ele.userName}</td>
-								<td>${snsAccountNo}</td>
-								<td>${ele.challcount}개 진행중..</td>
-								<td>${ele.bandcount}개 가입중..</td>
-								<td>${ele.userPerm}</td>
+					let tag = `<tr class="responsive-table__row">
+								<td class="responsive-table__body__text" >${ele.rn}</td>
+								<td class="responsive-table__body__text test2">${ele.userId}</td>
+								<td class="responsive-table__body__text" >${ele.userName}</td>
+								<td class="responsive-table__body__text" >${snsAccountNo}</td>
+								<td class="responsive-table__body__text" >${ele.challcount}개 진행중..</td>
+								<td class="responsive-table__body__text" >${ele.bandcount}개 진행중..</td>
+								<td class="responsive-table__body__text" >${ele.userPerm}</td>
 							</tr>`
 					tbody.append(tag);
 				})
@@ -230,7 +335,23 @@ div.tblcontainer {
     		$('#mainTemplate').load('/own/admin/test?id='+id);
     	})
 		
+    	$('#navquestion').on('click',function(){
+    		$('#mainTemplate').empty();
+    		$('#mainTemplate').load('/own/admin/question');
+    	})
+    	
+    	$('#navreportList').on('click',function(){
+    		$('#mainTemplate').empty();
+    		$('#mainTemplate').load('/own/admin/reportList');
+    	})
+    	
+    	$('#navuserList').on('click', function(){
+    		location.href='/own/admin/userList';
+		})
+    	
         </script>
+        
+	</div>
 	</body>
 </div>
 </html>

@@ -6,12 +6,10 @@
                 padding: 10px;
                 width: 700px;
                 margin: 0 auto;
-                border: 1px solid black;
             }
             legend{
-                color:purple;
-                font-size: 20px;
-                font-weight: bold;
+                color: #6ab0cd;
+                font-size: 15px;
             }
             
             ul{
@@ -154,6 +152,14 @@ margin-left:20px;
 width:200px;
 height:200px;
 }
+ul li p{
+font-size:12px;
+}
+.bandoptiondiv{
+padding:10px;
+margin:20px;
+}
+
 
 </style>
 <body>
@@ -182,24 +188,29 @@ height:200px;
   
   <div id="container23">  
   <h1>밴드정보</h1>
-  <fieldset>
-       <legend>밴드상세정보</legend>
-        <div class="row">
-        
-        <h3>
+  <div class="bandoptiondiv" style="border:1px solid #ababab;">
+       <legend>밴드상세정보
+         <i class="fa fa-cog" aria-hidden="true" style="margin-left:370px;">수정하기</i>
+       </legend>
+        <div class="row" style="padding:10px;">
+         
+         <div class="row-container">
+         <h3 style="margin-left:20px;">대표 이미지</h3>
          <img id="bandmainImg" th:src="|/imgView/${bandInfo.bandImg.mediaServerFile}">
-        </h3>
-      	<ul>
-                <li><label th:text="'밴드이름 '+${bandInfo.bandName}"></label>
-                <li><label th:text="'활동지역 '+${bandInfo.bandLocation}"></label>
-                <li><label th:text="'카테고리 ' + ${bandInfo.bandCategory}"></label>
+         </div>
+        
+        <ul>
+        		
+                <li><p th:text="'밴드이름 '+${bandInfo.bandName}"></p>
+                <li><p th:text="'활동지역 '+${bandInfo.bandLocation}"></p>
+                <li><p th:text="'카테고리 ' + ${bandInfo.bandCategory}"></p>
                 <th:block th:if="${bandInfo.bandKeyword != null}">
-                <li><label th:text="'키워드 '+${bandInfo.bandKeyword}"></label>
+                <li><p th:text="'키워드 '+${bandInfo.bandKeyword}"></p>
                 </th:block>
-                <li><label th:text="'가입인원 '+${bandInfo.memcount}"></label> 
+                <li><p th:text="'가입인원 '+${bandInfo.memcount}"></p> 
         </ul>
         </div>
-  </fieldset>
+  </div>
 <!--   <fieldset>
   <legend>모든유저</legend>
   <span th:each="list : ${memList}">
@@ -209,23 +220,23 @@ height:200px;
   </span>
   </fieldset> -->
   
-  <fieldset>
+  <div class="bandoptiondiv" style="height:100px; border:1px solid #ababab;">
   <legend>오늘 가입한 유저</legend>
   <span th:each="list : ${memList}">
    <th:block th:if="${#dates.format(list.bandAccessDate, 'yyyy-MM-dd')}==${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
       <label><p th:text="${list.userId}"></p></label>
    </th:block>
   </span>
-  </fieldset>
+  </div>
   
-  <fieldset>
+  <div class="bandoptiondiv" style="height:100px; border:1px solid #ababab;">
   <legend>승인대기 유저</legend>
   <span th:each="list : ${memList}">
    <th:block th:if="${#strings.equals(list.bandMemberStatus, 'BA01')}">
       <label><p th:text="${list.userId}"></p></label>
    </th:block>
   </span>
-  </fieldset>
+  </div>
   
   
   </div>

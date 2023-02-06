@@ -265,6 +265,7 @@ public class OwnhomeController {
 		public List<ChallengeVO> myChallPaging(Model model, ChallengeVO vo, Paging paging) {
 			paging.setPageUnit(3);// 3개씩보기
 			paging.setPageSize(3); // 페이딩 동그라미 3개
+			vo.setChallStatus("진행 중");
 			List<ChallengeVO> myList = challenge.myPageChall(vo, paging);
 			return myList;
 		}
