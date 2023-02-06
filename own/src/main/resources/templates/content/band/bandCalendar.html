@@ -4,10 +4,52 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<script src="/css/band/js/jquery-3.2.1.js"></script>
-	<script src="/css/band/js/json.min.js"></script>
 	<script src="/css/band/calendar/index.global.js"></script>
+	<script src="/css/band/js/json.min.js"></script>
 	<style>
+		li {
+			list-style: none;
+			padding: 10px;
+			border-bottom: 1px solid #eeeeee;
+			border-top: 1px solid #eeeeee;
+		}
+		#attendChk {
+			padding: 20px;
+		}
+		/* 버튼 */
+	    .button_hover2 {
+			color: white;
+			text-align: center;
+			background-color: #6ab0cd;
+			width: 150px;
+			margin: 0 auto;
+			border: 2px solid #6ab0cd;
+			border: none;
+	       }
+		.button_hover2:hover {
+			color: white;
+			box-shadow: #6ab0cd 0 80px 0px 2px inset;
+			border-radius: 10px;
+			border: none;
+		}
+		
+		.button_hover3 {
+			color: white;
+			text-align: center;
+			background-color: #6ab0cd;
+			width: 150px;
+			margin: 0 auto;
+			border: 2px solid #6ab0cd;
+			border: none;
+			height: 25px;
+	       }
+		.button_hover3:hover {
+			color: white;
+			box-shadow: #6ab0cd 0 80px 0px 2px inset;
+			border-radius: 10px;
+			border: none;
+		}
+		
 		/*지도*/
 		.map_wrap {
 			position: relative;
@@ -123,15 +165,15 @@
 
 <body>
 	<!--== 캘린더 ==-->
-	<div id="template" style="flex-grow: 3; width: 740px">
-		<article style="border: 1px solid #eeeeee; padding: 30px;">
-			<div id='calendar'></div>
+	<div id="template" style="flex-grow: 3; width: 740px; padding: 10px;">
+		<article style=" padding: 30px; border: 1px solid #eeeeee;">
+			<div id='calendar' style="background-color: white;"></div>
 		</article>
 		<article style="border: 1px solid #eeeeee; padding: 30px;">
 			<div id="articleArea">
 			</div>
-			<div  style="padding-top:20px;">
-				<button type="button" id="loadBtn" class="more">더보기</button>
+			<div  style="padding-top:20px; text-align: center">
+				<button type="button" id="loadBtn" class="more view_btn button_hover2">더보기</button>
 			</div>
 		</article>
 		<!--== 초기에 아작스로 불러온 일정리스트를 저장하는 곳 ==-->
@@ -143,7 +185,7 @@
 		<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
 		<!--== 캘린더 끝 ==-->
 		<!--== 캘린더 상세 모달창 ==-->
-		<div id="my_calendar_modal">
+		<div id="my_calendar_modal" style="background-color: white">
 			<div id="modalform">
 				<div>
 					<!--================ 일정상세 =================-->
@@ -165,7 +207,7 @@
 					<!--================ 일정상세 끝 =================-->
 					<!--================ if참석여부 =================-->
 					<div id="voteRE">
-						<h6 class="typo-list">참석여부 <b id="voteR"></b><b></b></h6>
+						<h6 class="typo-list" style="color: #6ab0cd;">참석여부 <b id="voteR" style="color: white; background-color:#6ab0cd; font-weight: 300; font-size: 13px;"></b><b></b></h6>
 						<div id="attendChk"> 
 							<!-- <ul style="list-style: none;">
 								<!-- bandCalendarOptionDay보다 늦으면 체크 못하게 막아야함 -->
@@ -183,10 +225,12 @@
 					</div>
 					<!--================ if지도 끝 =================-->
 				</div>
-				<button type="button" id="calBtn"></button>
-				<button type="button" id="deleteBtn">삭제</button>
+				<div style="display: flex; margin-top:10px;">
+					<button type="button" class="button_hover3" id="calBtn"></button>
+					<button type="button" class="button_hover3" id="deleteBtn">삭제</button>
+				</div>
 			</div>
-			<a class="modal_close_btn">:</a>
+			<a class="modal_close_btn hoverBtn" style="text-decoration: none;">닫기</a>
 		</div>
 		<!--== 캘린더 모달창 끝 ==-->
 	<!-- =====캘린더 입력 모달 창====== -->
@@ -410,14 +454,14 @@
 			let writer = item.bandNickname
 			//마크색
 			let color = item.bandCalendarMark;
-		    let cal  = `<div class='pagingCal' style= "display:none;" >
-		    			<div class='boardC' style= "width: 500x;padding:5px; height: 100px; display: flex; justify-content: space-between; border: 1px solid #eeeeee;" id="calendarModal2">`
+		    let cal  = `<div class='pagingCal' style= "display:none; background-Color:white;" >
+		    			<div class='boardC' style= "width: 500x;padding:15px; height: 100px; display: flex; justify-content: space-between; border: 1px solid #eeeeee;" id="calendarModal2">`
 		    			cal += `<input type="hidden" value=${item.bandCalendarNo}>`
-		    			cal += `<div style="padding:10px;"><h3 id="jsDD"  style="margin-bottom:0px">${sDay}</h3>`
+		    			cal += `<div style="padding:10px;"><h3 id="jsDD" style="margin-bottom:0px; text-align:center;">${sDay}</h3>`
 						cal += `<p id="jsDay">${mon}</p></div>`
-						cal += `<div style="padding:10px;"><h5>${title}</h5>`
+						cal += `<div style="padding:10px; width:500px;"><h5 style="color:${color};"><span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span>${title}</h5>`
 						cal += `<p id="jsDeDay" style="margin-bottom: 0px">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
-						cal += `<span style="background-color:${color}">💭</span><span>${writer}</span></div></div>`;
+						cal += `</div></div>`;
 					
 			//요일뽑기
 			function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
@@ -526,7 +570,8 @@
 			makeModalDetail(saveCal);
 	    	//밴드한개 붙여두기
 	    	$('#saveCalendarEach').val(saveCal[0].bandCalendarNo);
-	    	$('#savesavebandCalendarOptionDay').val(saveCal[0].savebandCalendarOptionDay);
+	    	$('#savesavebandCalendarOptionDay').val(saveCal[0].bandCalendarOptionDay);
+	    	console.log(saveCal[0].bandCalendarNo)
 	    	//카카오지도용
 	    	return saveCal[0].bandCalendarLocationLatlong;
 	   	}
@@ -575,11 +620,11 @@
 			let color = calendar[0].bandCalendarMark;
 		    let cal  = `<div style="width: 500x; height: 100px; display: flex; justify-content: space-between" id="calendarModal2">`
 		    			cal += `<input type="hidden" value="${calendar[0].bandCalendarNo}" id="bandCalNo">`
-		    			cal += `<div style="padding:10px;"><h3 id="jsDD"  style="margin-bottom:0px">${sDay}</h3>`
+		    			cal += `<div style="padding:10px 30px;"><h3 id="jsDD" style="margin-bottom:0px; text-align:center;">${sDay}</h3>`
 						cal += `<p id="jsDay">${mon}</p></div>`
 						cal += `<div style="padding:10px;"><h5>${title}</h5>`
 						cal += `<p id="jsDeDay" style="margin-bottom: 0px">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
-						cal += `<span style="background-color:${color}">💭</span><span>${writer}</span></div>`;
+						cal += `<span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span><span>${writer}</span></div>`;
 					
 		  //지도가 있다면
 		    if(calendar[0].bandCalendarLocation!=null){
@@ -624,7 +669,7 @@
 			$('#deleteBtn').css('display', 'block');
 			if(calendar[0].bandBoardDetailNo!=null){
 				$('#savebandBoardNum').val(calendar[0].bandBoardDetailNo);
-				$('#calBtn').text('이 일정이 첨부된 글 확인하기');
+				$('#calBtn').text('첨부된 글 확인');
 				console.log('글번호저장'+$('#savebandBoardNum').val())
 			} else if(calendar[0].userId==userId){
 				$('#savebandBoardNum').val(null);
@@ -681,6 +726,18 @@
 					myChk = ele.bandAttend;
 				}
 			})
+			
+			//참석자 너무 많으면 자르기
+			if(bk01Per.length>4){
+				bk01Per.splice(4,'...');
+			}
+			if(bk02Per.length>4){
+				bk01Per.splice(4,'...');
+			}
+			if(bk03Per.length>4){
+				bk01Per.splice(4,'...');
+			}
+			
 			//내 체크 확인
 			let myBk1 = '🤍';
 			let nameBk1 = 'BK01'
@@ -690,13 +747,13 @@
 			let nameBk3 = 'BK03'
 			console.log(myChk);
 			if(myChk == 'BK01'){
-				myBk1 = '❤'
+				myBk1 = '💖'
 				nameBk1 = 'BK01chk'
 			} else if(myChk == 'BK02'){
-				myBk2 = '❤';
+				myBk2 = '💖';
 				nameBk2 = 'BK02chk'
 			} else if(myChk == 'BK03'){
-				myBk3 = '❤';
+				myBk3 = '💖';
 				nameBk3 = 'BK03chk'
 			}
 			let liTag = `
@@ -752,24 +809,18 @@
 				//선택한 것의 name
 				let heartChk = $(e.target).attr('name');
 				//내 체크 확인 우선 다 지우고 눌린게 체크라면 체크해주기...그외에 체크=>비체크면 그냥 다 빈 칸됨
-				let myBk1 = '🤍';
 				let nameBk1 = 'BK01'
-				let myBk2 = '🤍';
 				let nameBk2 = 'BK02'
-				let myBk3 = '🤍';
 				let nameBk3 = 'BK03'
 				//넘길 값용
 				let result = 0;
 				if(heartChk=='BK01') {
-					myBk1 = '❤';
 					nameBk1 = 'BK01chk';
 					result = 'BK01';
 				} else if (heartChk=='BK02') {
-					myBk2 = '❤';
 					nameBk2 = 'BK02chk';
 					result = 'BK02';
 				} else if (heartChk=='BK03') {
-					myBk3 = '❤';
 					nameBk3 = 'BK03chk';
 					result = 'BK03';
 				}
@@ -780,7 +831,7 @@
 				let bandCalendarNo = $('#saveCalendarEach').val();
 				let bandUserId = $('#userId').val();
 				let bandAttend = result==0?null:result;
-				
+				console.log('???')
 				$.ajax({
 					url: '/own/band/bandGroup/calendarUpdel?bandCalendarNo='+bandCalendarNo+'&bandMemberNo='+bandUserId+'&bandAttend='+bandAttend,
 					dataType: 'json',

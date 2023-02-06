@@ -178,6 +178,9 @@
 			 width: 800px;
 			 height: 1000px;
 		}
+		.nav-item, .nav-link, .dropdown-item {
+			cursor: pointer;
+		}
         </style>
     </head>
     <body>
@@ -426,11 +429,11 @@
 		                //순환시작
 		                //버튼에 붙일 게시판 끝번호(페이징용)
 	                	let bandBoardDetailNo = ''
-		                $(result).each(function(idx, ele){
+		                $(result).each(function(idx, ele){ //hoverBtn" name="${ele.bandBoardDetailNo}"
 		                	//likeTAG i class="fa fa-heart" aria-hidden="true"></i>
 		                	let likeTag = '';
 		                	if(ele.likeList['userId']!=null&&ele.likeList['userId']!=""){
-		                		likeTag = `❤`
+		                		likeTag = `💗`
 		                	} else {
 		                		likeTag = `🤍`
 		                	}
@@ -470,7 +473,7 @@
 									                        <div style="display: inline-flex; justify-content: space-between; padding-top: 20px; width: 650px;">
 									                            <img class="" src=/imgView/${ele.mediaServerFile} alt="" style="width: 70px; height: 70px; box-shadow: 5px 5px 10px grey; border: #6a60cd; border-radius:15px;">
 									                            <div  style="display: block; width: 300px; padding: 12px; margin-right: 180px;">
-									                                <ul class="blog_meta list_style" style="display: inline-block;">
+									                                <ul class="blog_meta list_style hoverCursor" style="display: inline-block;">
 									                                    <li style="display: block;">${bandNickname}</li>
 									                                    <li style="display: block;">${ele.bandBoardDate}</li>
 									                                </ul>
@@ -490,12 +493,12 @@
 								                        </div>
 								                    </div>
 								                    <div class="parentUnit" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-								                        <div class="heartt" name="${ele.bandBoardDetailNo}" style="display: flex; justify-content:space-between">
-								                             <div class="heartClick" name="${ele.bandBoardDetailNo}">${likeTag}</div>
-								                        	<span  class="heartClick" name="${ele.bandBoardDetailNo}">${ele.likeList["likeCount"]}</span>
+								                        <div style="display: flex; justify-content:space-between;">
+								                             <div id="heartClick" name="${ele.bandBoardDetailNo}">${likeTag}</div>
+								                        	<span id="heartClick" class="hoverBtn num" name="${ele.bandBoardDetailNo}">${ele.likeList["likeCount"]}</span>
 								                        </div>
 								                        <div class="boardDett" id="${ele.bandBoardDetailNo}">
-								                        	<i class="lnr lnr-bubble boardDett" id="${ele.bandBoardDetailNo}"></i>
+								                        	<i class="lnr lnr-bubble boardDett hoverBtn" id="${ele.bandBoardDetailNo}"></i>
 								                        	<span></span>${ele.reply}
 								                        </div>
 								                    </div>
@@ -545,11 +548,11 @@
 			                		let mon = getDayOfWeek(startDay);
 			                		//마크색
 			                		let color = calendar.bandCalendarMark;
-			                	    let cal  = `<div style="width:678px; height:80px; border: 0.3rem solid ${color}; display:flex; justify-content:space-between" id="calendarModal">`
-			                	    			cal += `<div style="padding:10px;"><h3 style="margin-bottom:0px">${sDay}</h3>`
-			                					cal += `<p>${mon}</p></div>`
-			                					cal += `<div style="padding:10px;"><h5>${title}</h5>`
-			                					cal += `<p>${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
+			                	    let cal  = `<div style="width:630px; height:80px; cursor: pointer; border: 0.2rem solid ${color}; border-radius:20px; padding:0px 10px; margin:10px 0px;display:flex; justify-content:space-between" class="boardDett" id=${ele.bandBoardDetailNo}>`
+			                	    			cal += `<div style="padding:10px; pointer-events: none;"><h3 style="margin-bottom:0px; text-align:center;pointer-events: none;">${sDay}</h3>`
+			                					cal += `<p style="text-align:center;pointer-events: none;">${mon}</p></div>`
+			                					cal += `<div style="padding:10px;pointer-events: none;"><h5>${title}</h5>`
+			                					cal += `<p style="pointer-events: none;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
 			                				cal += `</div>`;
 			                		//요일뽑기
 			                		function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
@@ -650,7 +653,7 @@
 			        	$('#groupCal').empty();
 			        	$(result).each(function(idx,ele){
 			        		let title = ele.bandCalendarTitle;
-			        		if(title.length>12){
+			        		if(title.length>8){
 			        			title = title.slice(0, 8)+"..."
 			        		}
 			        		let sDay = SimpleDateTimeFormat(new Date(ele.bandCalendarStart));
@@ -866,29 +869,34 @@
 				console.log($(e.target));
 				let userId = $('#userId').val();
 	    		let categoryNo = $(e.target).attr('name');
-		    		if(categoryNo!=null){	
-		    		console.log(categoryNo);
-		    		let category = 'Band';
-		    		data={userId, categoryNo, category}
-		    		$.ajax({
-			            url:'/own/likeAjax',
-			            data: JSON.stringify(data),
-			            contentType : "application/json;",
-			            method: 'post',
-			              beforeSend: function(xhr){
-			                  xhr.setRequestHeader(header,token);
-			                }
-			        }).then(result => {
-			        	console.log(result);
-			        	let number = $(e.target).parentsUntil('.parentUnit').children(':eq(1)').text();
-			        	if(result == 'add'){
-			        		$(e.target).parentsUntil('.parentUnit').children(':eq(0)').html('<i class="fa-solid fa-heart heartClick"></i>');
-			        		$(e.target).parentsUntil('.parentUnit').children(':eq(1)').text(number-1+2);
-			        	} else if(result == 'del'){
-			        		$(e.target).parentsUntil('.parentUnit').children(':eq(0)').html('<i class="fa-regular fa-heart heartClick"></i>');
-			        		$(e.target).parentsUntil('.parentUnit').children(':eq(1)').text(number-1);
-			        	}
-		        })
+		    		if($(e.target).attr('id')=='heartClick' && categoryNo!=null){	
+			    		console.log(categoryNo);
+			    		let category = 'Band';
+			    		data={userId, categoryNo, category}
+			    		$.ajax({
+				            url:'/own/likeAjax',
+				            data: JSON.stringify(data),
+				            contentType : "application/json;",
+				            method: 'post',
+				              beforeSend: function(xhr){
+				                  xhr.setRequestHeader(header,token);
+				                }
+				        }).then(result => {
+				        	console.log(result);
+				        	let number = $(e.target).parentsUntil('.parentUnit').find('.num').text();
+				        	console.log(number+'원형');
+				        	if(result == 'add'){
+				        		$(e.target).parentsUntil('.parentUnit').find('div').html(`💗`);
+				        		number++
+				        		console.log(number+'증가함')
+				        	} else if(result == 'del'){
+				        		$(e.target).parentsUntil('.parentUnit').find('div').html(`🤍`);
+				        		number--
+				        		console.log(number+'감소함')
+				        	}
+				        	//$(e.target).parentsUntil('.parentUnit').find('.num').empty();
+				        	$(e.target).parentsUntil('.parentUnit').find('.num').text(number);
+			        })
 			}
     	})//bchild
     	$('#articleArea').on('click', $('.bchild'), function(e){
