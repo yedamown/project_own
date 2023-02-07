@@ -11,7 +11,7 @@
         <link rel="icon" href="/css/band/gachi/own.png" type="image/png">
         <title>오늘의운동 가치</title>
         <style type="text/css">
-            /* view more */
+c            /* view more */
            .button_hover2 {
            		color: white;
 				text-align: center;
@@ -367,7 +367,7 @@
 										      </div>
 		                                </div>
 		                                <div id="groupCal">
-			                                <div class="media post_item hoverBtn" th:each="c : ${calendar}" th:style="|border: 1px dotted ${c.bandCalendarMark}; padding-top:10px; padding-bottom:5px; background-color:white; border-radius:10px;|">
+			                                <div class="media post_item hoverBtn" th:each="c : ${calendar}" th:style="|border: 1px dotted ${c.bandCalendarMark}; padding-top:10px; padding-bottom:10px; background-color:white; border-radius:10px;|">
 			                                    <div class="media-body">
 			                                        <h3><a class="goToCal" th:text="${c.bandCalendarTitle}"></a></h3>
 			                                        <span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
@@ -502,7 +502,7 @@
 								                        	<span></span>${ele.reply}
 								                        </div>
 								                    </div>
-								                    <a href="#" class="view_btn button_hover2 boardDett" id="${ele.bandBoardDetailNo}" style="text-decoration: none; margin-top:10px;">View More</a>
+								                    <a href="#" class="view_btn button_hover2 boardDett" id="${ele.bandBoardDetailNo}" style="text-decoration: none; margin-top:10px; text-align:center;">View More</a>
 								                </div>
 								            </article>`;
 			            
@@ -551,7 +551,7 @@
 			                	    let cal  = `<div style="width:630px; height:80px; cursor: pointer; border: 0.2rem solid ${color}; border-radius:20px; padding:0px 10px; margin:10px 0px;display:flex; justify-content:space-between" class="boardDett" id=${ele.bandBoardDetailNo}>`
 			                	    			cal += `<div style="padding:10px; pointer-events: none;"><h3 style="margin-bottom:0px; text-align:center;pointer-events: none;">${sDay}</h3>`
 			                					cal += `<p style="text-align:center;pointer-events: none;">${mon}</p></div>`
-			                					cal += `<div style="padding:10px;pointer-events: none;"><h5>${title}</h5>`
+			                					cal += `<div style="padding:10px;pointer-events: none;"><h5 style="color:${color};"><span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span>${title}</h5>`
 			                					cal += `<p style="pointer-events: none;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
 			                				cal += `</div>`;
 			                		//요일뽑기
@@ -568,7 +568,7 @@
 			                if(result.length==5){
 				                //more 누르면 나오는 페이지
 				            	let btnTag = `<nav class="blog-pagination justify-content-center d-flex" id="multiId">
-							                <a class="view_btn button_hover2" id="nextBtn" style="width: 555px; text-decoration: none;">View More</a>
+							                <a class="view_btn button_hover2" id="nextBtn" style="width: 555px; text-decoration: none; text-align:center;">View More</a>
 							                <input type="hidden" id="multivalue" value=${bandBoardDetailNo}>
 							                </nav>`
 							              
@@ -686,6 +686,8 @@
 					$('.dropdown-content').css('display','block');
 				}, 200);
 			})
+			    
+			    
 			//페이징
 			page1();
 			function page1(){ 
@@ -736,7 +738,7 @@
 					endp = numPages;
 				}
 				// [처음]
-				$('<span class="pageNum first"><i class="fa-solid fa-angles-left"></i></span>').bind('click', {newPage: page},function(event) {
+				$('<span class="pageNum first" style="display:none;"><i class="fa-solid fa-angles-left"></i></span>').bind('click', {newPage: page},function(event) {
 					currentPage = 0;   
 					$table.trigger('repaginate');  
 					$($(".pageNum")[2]).addClass('active').siblings().removeClass('active');
@@ -750,7 +752,7 @@
 				}).appendTo(replyPagination1).addClass('clickable');
 				// [1,2,3,4,5,6,7,8]
 				for (var page = nowp ; page < endp; page++) {
-					$('<span class="pageNum"></span>').text(page + 1).bind('click', {newPage: page}, function(event) {
+					$('<span class="pageNum"  style="display:none;"></span>').text(page + 1).bind('click', {newPage: page}, function(event) {
 					currentPage = event.data['newPage'];
 					$table.trigger('repaginate');
 					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
@@ -764,7 +766,7 @@
 					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
 				}).appendTo(replyPagination1).addClass('clickable');
 				// [끝]
-				$('<span class="pageNum last"><i class="fa-solid fa-angles-right"></i></span>').bind('click', {newPage: page},function(event) {
+				$('<span class="pageNum last" style="display:none;"><i class="fa-solid fa-angles-right"></i></span>').bind('click', {newPage: page},function(event) {
 				currentPage = numPages-1;
 					$table.trigger('repaginate');
 					$($(".pageNum")[endp-nowp+1]).addClass('active').siblings().removeClass('active');
@@ -899,19 +901,23 @@
 			        })
 			}
     	})//bchild
-    	$('#articleArea').on('click', $('.bchild'), function(e){
-		    		if($(e.target).closest('.droMom').find('[name=bchilds]').lengh!=0 && $(e.target).closest('.droMom').find('[name=bchilds]').is(':visible')){
-		    			$(e.target).closest('.droMom').find('[name=bchilds]').hide();
-		    		} else {
-		    			$('#articleArea').find('[name=bchilds]').hide();
-		    			$(e.target).closest('.droMom').find('[name=bchilds]').show();
-		    		}
-		    	})
-		    	$(document).on('click', function(){
-	    		$($('.arty:eq(0)').find('[name=bchilds]')).each(function(idx, ele){
-	    			$(ele).hide();
-	    		})
-    		})
+	    	$('#articleArea').on('click', $('.bchild'), function(e){
+			    		if($(e.target).closest('.droMom').find('[name=bchilds]').lengh!=0 && $(e.target).closest('.droMom').find('[name=bchilds]').is(':visible')){
+			    			$(e.target).closest('.droMom').find('[name=bchilds]').hide();
+			    		} else {
+			    			$('#articleArea').find('[name=bchilds]').hide();
+			    			$(e.target).closest('.droMom').find('[name=bchilds]').show();
+			    		}
+			    		//캘린더숨기기
+			    		$(".dropdown-content").hide();
+			    	})
+	    	$(document).on('click', function(){
+		   		$($('.arty:eq(0)').find('[name=bchilds]')).each(function(idx, ele){
+		   			$(ele).hide();
+		   		})
+		   		//캘린더숨기기
+		   		$(".dropdown-content").hide();
+	  		})
     	})
     	
        //뒤로가기 실험

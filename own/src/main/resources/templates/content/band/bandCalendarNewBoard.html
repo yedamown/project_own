@@ -14,22 +14,65 @@
 	<link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
  	<link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
 	<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+	<!-- main css -->
+	<link rel="stylesheet" href="/css/band/css/style.css">
+	<link rel="stylesheet" href="/css/band/css/responsive.css">
+	<!-- nice select -->
+	<script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+	<!-- Font Awesome -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+	<script src="https://kit.fontawesome.com/0695eff491.js" crossorigin="anonymous"></script>
+	<style type="text/css">
+		.nice-select {
+		    width: 205px;
+		     margin-right: 10px;
+		 }
+		 .bor {
+		 	border: 1px solid #eeeeee;
+		 }
+		 .pa {
+		 	margin: 15px 15px 20px 0px;
+		 	width: 555px;
+		 	border-radius: 5px;
+		 	resize: none;
+		 	height: 250px;
+		 }
+		   /* view more */
+           .button_hover2 {
+           		color: white;
+				text-align: center;
+    			background-color: #6ab0cd;
+    			width: 150px;
+    			margin: 0 auto;
+    			border: 2px solid #6ab0cd;
+           }
+           .button_hover2:hover {
+           		color: white;
+				box-shadow: #6ab0cd 0 80px 0px 2px inset;
+				border-radius: 10px;
+           }
+           
+	</style>
   </head>
   <body>
-  <div id="template">
-		<form class="wrap" id="frm" name="frm">
+  <div id="template" style="background-color: #eeeeee;">
+		<form class="wrap" id="frm" name="frm" style="padding: 10px; border: 2px solid white; background-color:#d3d3d3; height:480px;">
 			<input type="hidden" th:value="${bandCalendarNo}" id="${bandCalendarNo}" name="bandCalendarNo">
 			<input type="hidden" th:value="${bandNo}" id="${bandNo}">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-			<select class="form-group" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo"  required>
+			<div ></div>
+			<select class="nice-select" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo"  required>
 				<option disabled>::게시판을 선택해주세요::</option>
-				<option th:if="${list.bandBoardLine}!='0'" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}"></option>
+				<option th:if="${list.bandBoardLine}!='0'" th:disabld="${session.loginUser.userId != band.bandLeaderid}" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}"></option>
 			</select>
-			<input placeholder="타이틀" th:value="title" type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle"  required>
-			<input placeholder="내용을 입력해주세요" name="bandBoardContent" th:value="일정공유입니다." type="text" class="form-control" id="bandBoardContent" required>
+			<input class="single-input bor" id="bandBoardTitle" name="bandBoardTitle"
+			 style="border: 1px solid #eeeeee; border-radius: 5px; width: 340px;" maxlength="30"
+			 placeholder="제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '제목을 입력해주세요'" required >
+			<textarea name="bandBoardContent" class="single-input bor pa" id="bandBoardContent" 
+			placeholder="내용을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '내용을 입력해주세요'" required></textarea>
 		  	<div id="bCalendar"></div>
-		  	<div>
-		  		<button type="button"  id="writeBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white; float: right">등록</button>
+		  	<div style="margin:0 auto; text-align: center;">
+		  		<button type="button"  id="writeBtn" class="button_hover2 hoverBtn" style="margin-top: 15px; ">등록</button>
 		  	</div>
 	  	</form>
   </div>
@@ -82,13 +125,13 @@
 			let writer = calendar.userId
 			//마크색
 			let color = calendar.bandCalendarMark;
-		    let cal  = `<div style="width: 500x; height: 100px; display: flex; justify-content: space-between" id="calendarModal2">`
+		    let cal  = `<div style="pointer-events: none; width: 480x; height: 90px; display: flex; justify-content: space-between; border:2px solid ${color}; border-radius:15px; padding-top:10px; background-color: white;" id="calendarModal2">`
 		    			cal += `<input type="hidden" value="${calendar.bandCalendarNo}" id="bandCalNo">`
-		    			cal += `<div style="padding:10px;"><h3 id="jsDD"  style="margin-bottom:0px">${sDay}</h3>`
-						cal += `<p id="jsDay">${mon}</p></div>`
-						cal += `<div style="padding:10px;"><h5>${title}</h5>`
-						cal += `<p id="jsDeDay" style="margin-bottom: 0px">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
-						cal += `<span style="background-color:${color}">💭</span><span>${writer}</span></div>`;
+		    			cal += `<div style="pointer-events: none; padding:10px;width:70px;display:flex; flex-direction: column;"><h3 id="jsDD" style="pointer-events: none; margin-bottom:0px; text-align:center; margin:0px">${sDay}</h3>`
+						cal += `<p id="jsDay" style="pointer-events: none; margin:0px; text-align:center;">${mon}</p></div>`
+						cal += `<div style="pointer-events: none; margin:8px 0px;width:430px; padding: 10px;"><h5 style="pointer-events: none; color:${color}; margin:0px;"><span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span>${title}</h5>`
+						cal += `<p id="jsDeDay" style="pointer-events: none; margin-bottom: 0px;margin:0px;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
+						cal += `</div>`;
 		    $('#bCalendar').empty();
 			$('#bCalendar').append(cal);
 			//요일뽑기
@@ -113,11 +156,15 @@
 			console.log(res);
 			if(res.bandBoardDetailNo!=null){
 				alert('글쓰기 성공');
+				window.close();
 			} else {
 				alert('글쓰기 실패');
 			}
 		})
 	})
+	$(document).ready(function() {
+			$('select').niceSelect();
+		})
   </script>   
   </body>
 </html>
