@@ -1,29 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
-<script src="/css/band/js/jquery-3.2.1.js"></script>
- <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-        
+	<meta charset="utf-8" />
    <style>
-   	select {
-		width: 150px; 
-		padding: .8em .5em; 
-		border: 1px solid #999;
-		font-family: inherit;  
-		background: url('arrow.jpg') no-repeat 95% 50%; 
-		border-radius: 0px; 
-		-webkit-appearance: none; 
-		-moz-appearance: none;
-		appearance: none;
+	.nice-select {
+		width: 113px;
+	    border: solid 1px #ced4da;		
 	}
-	select::-ms-expand {
-		display: none;
-	}
+	
    </style>     
   <div id="template">
 	<input type="hidden" id="bandNo" th:value="${bandNo}">
@@ -37,8 +19,13 @@
 		<!-- ===========검색=========== -->
 		 <article style="border: 1px solid #eeeeee;padding:30px; ">
 			<div class="input-group">
-				<h3 th:if=${bandBoardOption} th:text="|${bandBoardOption.bandBoardName}>>|"></h3>
-				<h3 th:unless=${bandBoardOption}>전체 글보기>></h3>
+				<h3 th:if=${bandBoardOption}>
+					<i class="fa-solid fa-list" style="margin-right: 10px;"></i>
+					[[${bandBoardOption.bandBoardName}]]
+				</h3>
+				<h3 th:unless=${bandBoardOption}>
+					<i class="fa-solid fa-list"  style="margin-right: 10px;"></i>
+				전체 글보기</h3>
 			</div>
 		</article>
 		 <article style="border: 1px solid #eeeeee;padding:30px; ">
@@ -50,8 +37,8 @@
 				    <option value="s3">내용</option>
 				    <option value="s4">글쓴이</option>
 				</select>
-				<input type="text" class="form-control" placeholder="Search Posts" id="searchBox" th:value="${searchValue}">
-				<span class="input-group-btn">
+				<input type="text" class="form-control" placeholder="Search Posts" id="searchBox" th:value="${searchValue}" style="height: 42px;border-radius: 4px; margin-left: 5px;">
+				<span class="input-group-btn" style="margin-top: 3px;">
 					<button class="btn btn-default" type="button" id="searchBoxBtn" value="1"><i class="lnr lnr-magnifier"></i></button>
 					<input type="hidden" name="page" value="1">
 				</span>
@@ -60,8 +47,8 @@
 		<!-- ===========검색 끝=========== -->
 		<article style="border: 1px solid #eeeeee;padding:30px; ">
 			<!-- 목록 시작 -->
-			<table class="table">
-				<thead  class="thead-dark">
+			<table class="table table-hover" style="background-color: white;">
+				<thead>
 					<tr>
 					<th><input type="checkbox" id="allChk"></th><th>글제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
 					</tr>
@@ -340,4 +327,9 @@ $(function(){
 })
 //앵커
 location.href="#template";
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('select').niceSelect();
+	})
 </script>

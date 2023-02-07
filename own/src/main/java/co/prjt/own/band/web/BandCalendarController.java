@@ -64,6 +64,7 @@ public class BandCalendarController {
 		model.addAttribute("bandCalendarNo", bandCalendarNo);
 		model.addAttribute("title", title);
 		model.addAttribute("bandNo", bandNo);
+		model.addAttribute("band", bandService.getBand(bandNo));
 		//게시판목록
 		model.addAttribute("boardList", bandBoardOptionService.getBandBoardList(bandNo));
 		//일정조회해서 넣기

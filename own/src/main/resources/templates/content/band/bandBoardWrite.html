@@ -1,20 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
-<script src="/css/band/js/jquery-3.2.1.js"></script>
-<script src="/css/band/js/json.min.js"></script>
- <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-<link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-<link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
- 	<link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
 <!-- 서머노트를 위해 추가해야할 부분 -->
 <link rel="stylesheet" href="/css/band/editor/summernote-lite.css">
 <script src="/css/band/editor/summernote-lite.js"></script>
 <script src="/css/band/editor/lang/summernote-ko-KR.js"></script>
  <!-- 지도 -->
+ <!-- 카카오 지도 -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=11875b29670fe2d80e3abb3d4800699e"></script>
  <script src="/css/band/js/map.js"></script>
 <style>
+	.nice-select:nth-child(1) {
+		margin-right: 10px;
+	}
+ 	.myInput {
+ 		height: 42px;
+ 	}
 	.note-resize{
 		display: none !important;
 		}
@@ -60,15 +59,17 @@
 			<input type="hidden" id="bandBoardDetailNo" name="bandBoardDetailNo">
 			<input type="hidden" id="bandNo" name="bandNo" th:value=${band.bandNo}>
 			<h3>가치 글쓰기</h3>
-			<select class="form-group" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo"  required>
-				<option disabled>::게시판을 선택해주세요::</option>
-				<option th:if="${list.bandBoardLine}!='0'" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}"></option>
-			</select>
-			<select class="form-group" name="bandRemarks" id="bandRemarks">
-				<option value="">::말머리 선택::</option>
-			</select>
+			<div style="display: flex">
+				<select class="form-group " th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo" required>
+					<option disabled>::게시판을 선택해주세요::</option>
+					<option th:if="${list.bandBoardLine}!='0'" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}"></option>
+				</select>
+				<select class="form-group " name="bandRemarks" id="bandRemarks">
+					<option value="">말머리 선택</option>
+				</select>
+			</div>	
 			<div class="form-group">
-				<input placeholder="타이틀" type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle"  required maxlength="30">
+				<input type="text" class="form-control myInput" id="bandBoardTitle" name="bandBoardTitle" maxlength="30" placeholder="제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '제목을 입력해주세요'" required >
 				<div class="form-group">
 					<textarea id="summernote" name="bandBoardContent"></textarea>
 				</div>
@@ -158,6 +159,7 @@
 		</article>
 	</div>
 </div>
+<!-- 서머노트를 위해 추가해야할 부분 -->
 <script th:inline="javascript">
 /*<![CDATA[*/
 var header = /*[[${_csrf.headerName}]]
@@ -294,7 +296,7 @@ $(function(){
 	    click: function () {
 	    	//이미 일정있는지 확인
 	    	if($('#calVote').children().length>0){
-	    		alert('이미 등록된 일정이나 투표가 있습니다.');
+	    		alert('이미 등록된 일정이 있습니다.');
 	    		return false;
 	    	}
 	    	//우선 모달창띄우기
@@ -311,24 +313,7 @@ $(function(){
 	};
 	// -----------------------------------------------
 	// 현재 단락 p 태그로 변경 - 툴바 버튼 정의
-	var Vote = function (context) {
-	var ui = $.summernote.ui;
-	var button = ui.button({
-	    contents: '<i class="fa fa-pencil"/> 투표',
-	    tooltip: "투표하기",
-	    click: function () {
-	      context.invoke("editor.formatPara");
-	    },
-	  });
-	  return button.render();
-	};
-	// 툴바의 버튼 이벤트 붙이기
-	buttons.Vote = Vote;
-	//  현재 단락 p 태그로 변경 - 이벤트 버튼 정의
-	var Vote = function(){
-	  a.summernote('formatPara');
-	};
-		// -----------------------------------------------
+	
 	//모달
 	function modal(id) {
         var zIndex = 9999;
@@ -564,7 +549,7 @@ $("#bandCalendarMark").on('change', function(){
 				bandContentOption = ele.bandContentOption;
 			}
 		})
-		makeSelectRe(bandBoardRemarks, bandLikeOption, bandBoardAuth, bandContentOption)
+		makeSelectRe(bandBoardRemarks, bandLikeOption, bandBoardAuth, bandContentOption);
 	})
 	//페이지 열릴때 1번게시판말머리로 초기화 + 댓글불능확인
 	//말머리 함수
@@ -584,6 +569,7 @@ $("#bandCalendarMark").on('change', function(){
 			console.log(arr);
 			
 		}
+		$('select').niceSelect('update');
 		//라디오박스(댓글)
 		//만약 댓글작성불가면..
 		console.log(bandLikeOption)
@@ -646,7 +632,9 @@ $("#bandCalendarMark").on('change', function(){
 $(document).ready(function () {
        $('html, body').animate({
            scrollTop: $('#template').offset().top
+           
        }, 'slow'); //slow
+       $('select').niceSelect();
    });
 </script>
 
