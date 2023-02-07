@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-  <!-- header fragment 사용 -->
+  <!-- header fragment �궗�슜 -->
     <th:block th:replace="fragments/header :: headerFragment"></th:block>
 </head>   
 <body>
@@ -12,14 +12,14 @@
         <!-- Navbar Start -->
     <div class="container-fluid bg-light position-relative shadow">
       <nav
-        class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5"
+        class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-3"
       >
         <a
           href=""
           class="navbar-brand font-weight-bold text-secondary"
           style="font-size: 50px"
         >
-          <img src="/css/header/header_logo.png" style="height:120px">
+          <img src="/css/header/header_logo.png" style="height:70px; margin-bottom: 10px">
           <span class="text-primary">KidKinder</span>
         </a>
         <button
@@ -36,17 +36,17 @@
                <a href="/" class="nav-item nav-link">Home</a> 
                <div class="nav-item dropdown">
                   <a href="/own/ownRecordForm" class="nav-link dropdown-toggle"
-                     data-toggle="dropdown">오운완</a>
+                     data-toggle="dropdown">운동기록</a>
                   <div class="dropdown-menu rounded-0 m-0">
-                            <a href="/own/ownRecordForm" class="dropdown-item">운동기록 폼</a>
-                            <a href="/own/ownRecordList" class="dropdown-item">운동분석</a>
+                            <a href="/own/ownRecordForm" class="dropdown-item">운동기록</a>
+                            <a href="/own/ownRecordList" class="dropdown-item">운동결과</a>
                   </div>
                </div>
                     <a href="/own/sns" class="nav-item nav-link">SNS</a>
-                    <a href="/own/band" class="nav-item nav-link">밴드</a>
-                    <a href="/own/chall/home" class="nav-item nav-link">챌린저스</a>
+                    <a href="/own/band" class="nav-item nav-link">가치</a>
+                    <a href="/own/chall/home" class="nav-item nav-link">도전</a>
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
-                      <a href="/own/admin/userList" class="nav-item nav-link">관리페이지</a>
+                      <a href="/own/admin/userList" class="nav-item nav-link">관리자페이지</a>
                     </div>
                     <div sec:authorize="hasRole('ROLE_USER')">
                     <a href="/own/mypage" class="nav-item nav-link">마이페이지</a>
@@ -66,9 +66,9 @@
    </div>
     </header>
   
-    <!-- content fragment 사용 -->
+    <!-- content fragment �궗�슜 -->
     <th:block layout:fragment="content"></th:block>
-    <!-- footer fragment 사용 -->
+    <!-- footer fragment �궗�슜 -->
     <th:block th:replace="fragments/footer :: footerFragment"></th:block>
 </body>
 </html>

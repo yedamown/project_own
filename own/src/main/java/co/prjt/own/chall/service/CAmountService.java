@@ -2,6 +2,10 @@ package co.prjt.own.chall.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import co.prjt.own.common.Paging;
 
 public interface CAmountService {
@@ -16,6 +20,9 @@ public interface CAmountService {
 	
 	//멤버로 출력
 	List<CAmountVO> getAmountList(CAmountVO vo);
+	
+	//은행계좌출금 서비스 -> 컨트롤러에서 아작스로할때..하는거라고한다..
+	ResponseEntity<JsonNode> refundMoney(CAmountVO vo); 
 	
 	/*-----------계좌 리스트 페이징------------------*/
 	

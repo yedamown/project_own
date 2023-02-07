@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import co.prjt.own.chall.service.CAmountService;
 import co.prjt.own.chall.service.CAmountVO;
@@ -336,7 +339,6 @@ public class ChallController {
 		return list;
 	}
 	
-	
 	//-----------------------  신 고 -------------------------------------
 	
 	// 인증 신고 등록 아작스
@@ -381,6 +383,7 @@ public class ChallController {
 	}
 	
 //---------------------------------- 멤버관리관련 -----------------------------------------------------------
+	
 	// 도전리더 - 멤버리스트 출력
 	@GetMapping("/challMemList")
 	@ResponseBody
@@ -434,20 +437,40 @@ public class ChallController {
 		return msg;
 	}
 
+	//
+	@GetMapping("/myAvgRs")
+	public String myAvgRs(CResultVO vo, HttpServletRequest request) {
+		
+		return null;
+	}
+	
 	// 마이페이지 - 프로필
 	@GetMapping("/mypage")
-	public String challMypage(CMemberVO vo, Model model, HttpServletRequest request) {
+	public String challMypage(CMemberVO vo, CResultVO vo1, Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		String id = user.getUserId();
+		vo.setUserId(id);
+		vo1.setUserId(id);
+		System.out.println(member.getCMem(vo));
+		System.out.println("=================" + result.successReward(vo1));
+		model.addAttribute("memInfo", member.getCMem(vo));
+		model.addAttribute("memResult", result.successReward(vo1));
+		return "content/chall/mypageChall";
+	}
+
+	//
+	@GetMapping("/myInfo")
+	public String myInfo(CMemberVO vo, Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.getUserId();
 		vo.setUserId(id);
 		System.out.println(member.getCMem(vo));
-		String idNo = member.getCMem(vo).getMemNo(); // 멤버식별번호
 		model.addAttribute("memInfo", member.getCMem(vo));
-		model.addAttribute("memImg", common.selectImg(idNo));
-		return "content/chall/mypageChall";
+		return "content/chall/myInfo";
 	}
-
+	
 	// 마이페이지 프로필 수정
 	@PostMapping("/myprofileUpdate")
 	@ResponseBody
@@ -480,7 +503,7 @@ public class ChallController {
 			System.out.println("-----------------이미지없음" + number);
 			common.upload(uploadfile, number, "CMB_", "Chall");
 		}
-		return "redirect:/own/chall/mypage";
+		return "redirect:/own/chall/myInfo";
 	}
 
 	// -------------------------------------- 예치금관련
@@ -552,16 +575,24 @@ public class ChallController {
 		}
 	}
 
-	// 결제 결과아작스 --> 우선 그냥적용안하고 바로 예치금창으로 이동하게함.
-	@GetMapping("/payResult")
-	public String payResult(@RequestParam("amtNo") String no, CAmountVO vo, Model model) {
-		System.out.println(no);
-		String amtNo = "CAL_" + no;
-		vo.setAmtListNo(amtNo);
-		// 챌린지정보
-		model.addAttribute("payResult", amount.getAmt(vo));
-		return "content/chall/payResult";
+	@PostMapping("/refundToBank")
+	public String refundToBank(CAmountVO vo, CMemberVO mem) {
+		ResponseEntity<JsonNode> rs = amount.refundMoney(vo);
+		System.out.println(rs);
+		return "content/chall/myAmount";
 	}
+	
+	
+//	// 결제 결과아작스 --> 우선 그냥적용안하고 바로 예치금창으로 이동하게함.
+//	@GetMapping("/payResult")
+//	public String payResult(@RequestParam("amtNo") String no, CAmountVO vo, Model model) {
+//		System.out.println(no);
+//		String amtNo = "CAL_" + no;
+//		vo.setAmtListNo(amtNo);
+//		// 챌린지정보
+//		model.addAttribute("payResult", amount.getAmt(vo));
+//		return "content/chall/payResult";
+//	}
 
 	// 마이페이지 도전정보
 	@GetMapping("/myChall")

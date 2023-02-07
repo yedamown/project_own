@@ -22,10 +22,10 @@
 	</insert>
 	
 	<select id="getCMem" resultType="co.prjt.own.chall.service.CMemberVO">
-		SELECT C.*, M.MEDIA_SERVER_FILE AS MEM_IMAGE
-		FROM CHALL_MEMBER C, MULTIMEDIA M
-		WHERE C.MEM_NO = M.IDENTIFY_ID
-		AND C.USER_ID = #{userId}
+			SELECT C.*, M.MEDIA_SERVER_FILE AS MEM_IMAGE
+			FROM CHALL_MEMBER C, MULTIMEDIA M
+			WHERE C.MEM_NO = M.IDENTIFY_ID
+			AND C.USER_ID = #{userId}
 	</select>
 	
 	<update id="updateCMem" parameterType="co.prjt.own.chall.service.CMemberVO">

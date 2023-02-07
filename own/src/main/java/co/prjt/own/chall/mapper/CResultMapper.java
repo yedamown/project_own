@@ -17,5 +17,7 @@ public interface CResultMapper {
 		
 	//달성률 평균 구하기
 	double avgSuccessRate(CResultVO vo);
-	
+
+	//달성률평균 보상총합
+	CResultVO successReward(CResultVO vo);
 }
