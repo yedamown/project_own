@@ -67,8 +67,8 @@
 
         #snsprofilebox {
             text-align: center;
-            padding: 20px;
-            margin-bottom: 40px;
+            padding: 35px;
+            margin-bottom: 50px;
             border-bottom: 1px solid lightgray;
         }
 
@@ -199,7 +199,7 @@
          /*게시글 더보기*/
          .feed-content {
             display: inline-block;
-            width: 800px;
+            width: 760px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -219,12 +219,15 @@
         #schoolInput{
             width: 260px;
             height: 45px;
-            border: 2px solid lightblue;
             border-radius: 20px;
             margin-top: 30px;
             margin-left: 20px;
             margin-bottom: 10px;
+            background-color: ghostwhite;
+            border:none;
+            padding: 20px;
         }
+
         li {
             list-style: none;   
         }
@@ -446,10 +449,6 @@
 
                 <div class="col-lg-10 col-md-9 col-12 body_block  align-content-center"  th:if="${session.loginUser.snsAccountNo != null}">
                     <br>
-                    <div id="snsLogoBox">
-                        <img src="/css/sns/img/snsLogo.png" style="height:150px; margin-left: 545px;">
-                    </div>
-                    <hr>
                     <div th:if="${!#lists.isEmpty(snsStoryList)}">
                     <div id="snsprofilebox" class="modalBtn">
                         <span class="storyInfo" th:each="story : ${storyInfo}">
@@ -484,7 +483,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-8 col-md-12 col-12" style="padding-left: 80px;">
                                 <th:block th:each="now, stat : ${nowFeed}">
-                                    <article class="blog_card" th:if="${snsFollow != 0}" data-aos="fade-down" style="width:804px; border: 2px solid lightgray; margin-bottom: 100px;">
+                                    <article class="blog_card" th:if="${snsFollow != 0}" data-aos="fade-down" style="width:802px; border: 1px solid lightgray; margin-bottom: 100px; background-color: white;">
                                         <div class="homeProfile">
                                             <img th:src="|/imgView/${now.mediaServerFile}"
                                                 style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid lightgray;">

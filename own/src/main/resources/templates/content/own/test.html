@@ -8,18 +8,22 @@
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
     <!-- content script -->
     <!-- Style CSS -->
+    <style>
+    .card-img, .card-img-top, .card-img-bottom{
+    height:300px;
+    }
+    </style>
 </head>
 <body>
-<h1>테스트페이지</h1>
 <h1>참여중인 챌린저스명</h1>
 <input type="hidden" th:value="${userId}" th:id="userIdchk">
 			<div class="row pb-3" id="rowMyChall">
 				<th:block th:each="my: ${CList}">
 					<div class="col-lg-4 mb-4">
-						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
+						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px;padding:10px;">
 							<img class="card-img-top mb-2" th:src="|/imgView/${my.firstImage}|" alt="도전사진"
-								style="height: 230px;"/>
-							<div class="card-body bg-light text-center p-4" style="width: 300px">
+								style="object-fit:cover;"/>
+							<div class="card-body bg-light text-center p-4" style="object-fit:cover;">
 								<input type="hidden" th:value="${my.challNo}" />
 								<h4 class="" th:text="${my.challTitle}"></h4>
 								<div class="d-flex justify-content-center mb-3">
@@ -66,12 +70,12 @@
 <div class="row pb-3" id="rowMyBand">
 				<th:block th:each="my: ${BList}">
 					<div class="col-lg-4 mb-4">
-						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
+						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px; padding:10px;">
 							<img class="card-img-top mb-2" th:src="|/imgView/${my.mediaServerFile}|" alt="도전사진"
-								style="height: 230px;"/>
-							<div class="card-body bg-light text-center p-4" style="width: 300px">
+								style="object-fit:cover;"/>
+							<div class="card-body bg-light text-center p-4" style="object-fit:cover;">
 								<input type="hidden" th:value="${my.bandName}" />
-								<h4 class="" th:text="${my.bandName}"></h4>
+								<h4 class="" th:text="${my.bandName}" th:value="${my.bandNo}" id="changeBand" style="cursor: pointer;"></h4>
 								<div class="d-flex justify-content-center mb-3">
 									<small class="mr-3">[[${my.memcount}]]명 참여중</small> 
 								</div>
@@ -79,10 +83,7 @@
 						</div>
 					</div>
 				</th:block>				
-			</div>
-			
-
-
+</div>
 <nav class="blog-pagination justify-content-center d-flex pageBtn"  th:if="${!#lists.isEmpty(BList)}"
 			id="pageMyBand">
 			<!--================ 이전  =================-->
@@ -106,7 +107,7 @@
 				<li class="page-item" th:if="${BList[0].paging.endPage<BList[0].paging.lastPage}">
 					<a class="page-link pagePort" aria-label="Next"
 					th:value="${BList[0].paging.endPage+1}"> <span aria-hidden="true"><span
-							class="lnr lnr-chevron-right"></span></span></a>
+							class="lnr lnr-chevron-right">></span></span></a>
 				</li>
 			</ul>
 		</nav>
@@ -135,10 +136,10 @@
 
 					let tag = `
 					<div class="col-lg-4 mb-4">
-						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
+						<div class="card border-0 shadow-sm mb-2" style="300px, padding:10px;">
 							<img class="card-img-top mb-2" src="/imgView/${my.firstImage}" alt="도전사진"
-								style="height: 230px;"/>
-							<div class="card-body bg-light text-center p-4" style="width: 300px">
+								style="object-fit:cover;;"/>
+							<div class="card-body bg-light text-center p-4" style="object-fit:cover;">
 								<input type="hidden" value="${my.challNo}" />
 								<h4 class="">${my.challTitle}</h4>
 								<div class="d-flex justify-content-center mb-3">
@@ -165,7 +166,7 @@
 		         if(pagingM.startPage>1){
 		            let pageBeforTag = `<li class="page-item">
 		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
-		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"><</span></span></a>
 		                           </li>`
 		               startpageTag.append(pageBeforTag);               
 		         }               
@@ -187,7 +188,7 @@
 		         if(pagingM.endPage<pagingM.lastPage){
 		            let pageAfterTag =`<li class="page-item">
 		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
-		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right">></span></span></a>
 		                           </li>`
 		            startpageTag.append(pageAfterTag);
 		         }
@@ -215,16 +216,18 @@
 					console.log(ele)
 
 					let tag = `
-					<div class="card border-0 shadow-sm mb-2" style="min-width: 300px">
+					<div class="col-lg-4 mb-4">
+						<div class="card border-0 shadow-sm mb-2" style="min-width: 300px; padding:10px;">
 							<img class="card-img-top mb-2" src="/imgView/${ele.mediaServerFile}" alt="도전사진"
-								style="height: 230px;"/>
-							<div class="card-body bg-light text-center p-4" style="width: 300px">
+							style="object-fit:cover;"/>
+							<div class="card-body bg-light text-center p-4" style="object-fit:cover;">
 								<input type="hidden" "${ele.bandName}" />
-								<h4>"${ele.bandName}"</h4>
+								<h4 value="${ele.bandNo}" id="changeBand" style="cursor: pointer;">${ele.bandName}</h4>
 								<div class="d-flex justify-content-center mb-3">
 									<small class="mr-3">${ele.memcount}명 참여중</small> 
-								</div>
-							</div>
+									</div>
+									</div>
+									</div>
 					</div>`;
 					
 				$('#rowMyBand').append(tag);		
@@ -242,7 +245,7 @@
 		         if(pagingM.startPage>1){
 		            let pageBeforTag = `<li class="page-item">
 		                           <a class="page-link" aria-label="Previous" value=${pagingM.startPage-1}>
-		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort"></span></span></a>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort" value=${pagingM.startPage-1}><</span></span></a>
 		                           </li>`
 		               startpageTag.append(pageBeforTag);               
 		         }               
@@ -264,14 +267,17 @@
 		         if(pagingM.endPage<pagingM.lastPage){
 		            let pageAfterTag =`<li class="page-item">
 		                           <a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
-		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right"></span></span></a>
+		                           <span aria-hidden="true"><span class="lnr lnr-chevron-right">></span></span></a>
 		                           </li>`
 		            startpageTag.append(pageAfterTag);
 		         }
 		         $('#pageMyBand').append(startpageTag)
 		      })
 		})
-
+				$('#rowMyBand').on('click','#changeBand',function(){
+					let bno = $(this).attr('value');
+					location.href="/own/band/bandGroup?bandNo="+bno;
+				})
 
 		</script>
 </body>

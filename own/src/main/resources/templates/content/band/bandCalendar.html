@@ -6,8 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script src="/css/band/calendar/index.global.js"></script>
 	<script src="/css/band/js/json.min.js"></script>
+	
 	<style>
-		li {
+		.toSt {
+			margin-left: 15px;
+		}
+		.myPadding {
+			padding-top: 10px;
+		}
+		.myInput {
+			border: 1px solid #eeeeee;
+			height: 42px; 
+			padding: 0 20px;
+		}
+		.lis {
 			list-style: none;
 			padding: 10px;
 			border-bottom: 1px solid #eeeeee;
@@ -160,6 +172,47 @@
 		-ms-transform: translate(-50%, -50%);
 		-webkit-transform: translate(-50%, -50%);
 	}
+/* 	 #F25757'></option>
+  <option value='#FFC780' style='padding:15px; background-color: #FFC780'></option>
+  <option value='#F8AA94' style='padding:15px; background-color: #F8AA94'></option>
+  <option value='#5A7CBF' style='padding:15px; background-color: #5A7CBF'></option>
+  <option value='#BAD98B' style='padding:15px; background-color: #BAD98B */
+  	.list > li:nth-child(2)  {
+  		background-color: #F25757;
+  		}
+	.list > li:nth-child(3)  {
+  		background-color: #FFC780;
+  		}
+	.list > li:nth-child(4)  {
+  		background-color: #F8AA94;
+  		}
+	.list > li:nth-child(5)  {
+  		background-color: #5A7CBF;
+  		}
+	.list > li:nth-child(6)  {
+  		background-color: #BAD98B;
+  		}
+  	.nice-select {
+  		width: 106px;
+  	}
+  	.list > li:nth-child(2):hover  {
+  		background-color: #F25757;
+  		}
+	.list > li:nth-child(3):hover  {
+  		background-color: #FFC780;
+  		}
+	.list > li:nth-child(4):hover  {
+  		background-color: #F8AA94;
+  		}
+	.list > li:nth-child(5):hover  {
+  		background-color: #5A7CBF;
+  		}
+	.list > li:nth-child(6):hover  {
+  		background-color: #BAD98B;
+  		}
+  	.nice-select {
+  		width: 106px;
+  	}	
 	</style>
 </head>
 
@@ -170,7 +223,7 @@
 			<div id='calendar' style="background-color: white;"></div>
 		</article>
 		<article style="border: 1px solid #eeeeee; padding: 30px;">
-			<div id="articleArea">
+			<div id="articleArea" class="hoverBtn">
 			</div>
 			<div  style="padding-top:20px; text-align: center">
 				<button type="button" id="loadBtn" class="more view_btn button_hover2">더보기</button>
@@ -206,7 +259,7 @@
 					</div>
 					<!--================ 일정상세 끝 =================-->
 					<!--================ if참석여부 =================-->
-					<div id="voteRE">
+					<div id="voteRE" style="margin-top:20px;">
 						<h6 class="typo-list" style="color: #6ab0cd;">참석여부 <b id="voteR" style="color: white; background-color:#6ab0cd; font-weight: 300; font-size: 13px;"></b><b></b></h6>
 						<div id="attendChk"> 
 							<!-- <ul style="list-style: none;">
@@ -225,7 +278,7 @@
 					</div>
 					<!--================ if지도 끝 =================-->
 				</div>
-				<div style="display: flex; margin-top:10px;">
+				<div style="display: flex; margin-top:20px;">
 					<button type="button" class="button_hover3" id="calBtn"></button>
 					<button type="button" class="button_hover3" id="deleteBtn">삭제</button>
 				</div>
@@ -234,25 +287,25 @@
 		</div>
 		<!--== 캘린더 모달창 끝 ==-->
 	<!-- =====캘린더 입력 모달 창====== -->
-		<form id="my_calendar_modal_input" name="my_calendar_modal_input" class="my_calendar_modal_input">
+		<form id="my_calendar_modal_input" name="my_calendar_modal_input" class="my_calendar_modal_input" style="width: 402px;">
 		<input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">
 			<div id="modalform_input">
-                <div>
+                <div style="display: flex; flex-direction: column;">
                 	<!--================ 일정명 =================-->
                 	<div>
 	                  <h6 class="typo-list">일정만들기</h6>
 	                  <input type="hidden" th:value="${bandNo}" th:name="bandNo" id="bandNo">
 	                  <div>
-	                    <input type="text" name="bandCalendarTitle" id="bandCalendarTitle" placeholder="일정 제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '일정 제목을 입력해주세요'" required>
+	                    <input type="text" class="single-input" style="border: 1px solid #eeeeee;" maxlength="14" name="bandCalendarTitle" id="bandCalendarTitle" placeholder="일정 제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '일정 제목을 입력해주세요'" required>
 	                  </div>
 	                </div>
 	                <!--================ 일정명 끝 =================-->
 	                <!--================ 일정마크 =================-->
                 	<div>
-	                  <h6 class="typo-list">일정마크</h6>
+	                  <h6 class="typo-list myPadding">일정마크</h6>
 	                  <div>
-	                    <select name='bandCalendarMark' id="bandCalendarMark">
+	                    <select name='bandCalendarMark' id="bandCalendarMark" class="nice-select">
 						  <option value='0' selected disabled>-- 선택 --</option>
 						  <option value='#F25757' style='padding:15px; background-color: #F25757'></option>
 						  <option value='#FFC780' style='padding:15px; background-color: #FFC780'></option>
@@ -265,41 +318,40 @@
 	                <!--================ 일정마크 끝 =================-->
 	                <!--================ 시작/종료 =================-->
 	                <div>
-	                  <h6 class="typo-list">시작</h6>
-                      <input type="date" name="bandCalendarStartDay" id="bandCalendarStartDay">
-                      <input type="time" name="bandCalendarStartTime" id="bandCalendarStartTime">
+	                  <h6 class="typo-list myPadding">시작</h6>
+                      <input type="date" class="myInput" name="bandCalendarStartDay" id="bandCalendarStartDay" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
+                      <input type="time" class="myInput" name="bandCalendarStartTime" id="bandCalendarStartTime"  value="12:00">
 					  <input type="hidden" name="bandCalendarStart" id="bandCalendarStart">
 	                </div>
 	                <div>
-	                  <h6 class="typo-list">종료</h6>
-                      <input type="date" name="bandCalendarEndDay" id="bandCalendarEndDay">
-                      <input type="time" name="bandCalendarEndTime" id="bandCalendarEndTime">
+	                  <h6 class="typo-list myPadding">종료</h6>
+                      <input type="date" class="myInput" name="bandCalendarEndDay" id="bandCalendarEndDay" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
+                      <input type="time" class="myInput" name="bandCalendarEndTime" id="bandCalendarEndTime"  value="12:00">
 					  <input type="hidden" name="bandCalendarEnd" id="bandCalendarEnd">
 	                </div>
 	                <!--================ 시작/종료 끝 =================-->
 	                 <!--================ 위치 =================-->
 	                <div>
-	                  <h6 class="typo-list">위치</h6>
+	                  <h6 class="typo-list myPadding">위치</h6>
 	                  <div>
-	                    <input type="text" id="bandCalendarLocation" name="bandCalendarLocation" value="">
-	                    <input type="hidden" id="bandCalendarLocationLatlong" name="bandCalendarLocationLatlong" value="">
+	                    <input type="text" class="myInput" id="bandCalendarLocation" name="bandCalendarLocation" value="">
+	                    <input type="hidden" id="bandCalendarLocationLatlong" name="bandCalendarLocationLatlong">
 	                  </div>
 	                </div>
 	                <!--================ 위치 끝 =================-->
 	                <!--================ 참석여부 =================-->
-	                <div>
-						<h6 class="typo-list" style="float: left; padding-left: 10px; margin-top: 20px;">참석여부 묻기</h6>
-	                	<input type="checkbox" name="bandCalendarOption" value="t" id="bandCalendarOption">
+	                <div style="display: flex; flex-direction: column; padding-bottom: 20px;">
+						<h6 class="typo-list myPadding" style="float: left;">참석여부 묻기 <input type="checkbox" name="bandCalendarOption" value="t" id="bandCalendarOption"></h6>
 	                    <div id="checkDate" style="display: none">
-						<h6 class="typo-list">참석여부 확인 종료일</h6>
-	                     	<input type="date" name="bandCalendarOptionDayD" id="bandCalendarOptionDayD">
-                      		<input type="time" name="bandCalendarOptionDayT" id="bandCalendarOptionDayT">
+						<h6 class="typo-listmyPadding">참석여부 확인 종료일</h6>
+	                     	<input type="date" class="myInput"  name="bandCalendarOptionDayD" id="bandCalendarOptionDayD" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
+                      		<input type="time" class="myInput"  name="bandCalendarOptionDayT" id="bandCalendarOptionDayT" value="12:00">
 							<input type="hidden" name="bandCalendarOptionDay" id="bandCalendarOptionDay">
 						</div>
 	                </div>
 	                <!--================ 참석여부 끝 =================-->
 	            </div>
-                <button type="button" id="calBtn_input">전송</button>
+                <button type="button" class="button_hover2" style="margin:0 auto" id="calBtn_input">전송</button>
 			</div>
 			<a class="modal_close_btn_input">닫기</a>
 		</form>
@@ -329,6 +381,12 @@
 	   		      click: function() {
 	   		      addCalendar();
 	   			  $('#calBtn_input').on('click', function(){
+	   				 //전송조건걸어주기 아 이거 날자조건 여기서 걸어주면 안되네 이거 버튼 수행후 히든에 넣음
+	   				 if( $('#bandCalendarTitle').val()==''||
+	   					 $('#bandCalendarTitle').val()==null||$('#bandCalendarMark').val()==null){
+	   					 alert('일정 제목과 마크색을 입력해주십시오.');
+	   					 return false;
+	   				 }
 	   				 insertView();
 	   			   })
 	   		      }
@@ -460,7 +518,7 @@
 		    			cal += `<div style="padding:10px;"><h3 id="jsDD" style="margin-bottom:0px; text-align:center;">${sDay}</h3>`
 						cal += `<p id="jsDay">${mon}</p></div>`
 						cal += `<div style="padding:10px; width:500px;"><h5 style="color:${color};"><span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span>${title}</h5>`
-						cal += `<p id="jsDeDay" style="margin-bottom: 0px">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
+						cal += `<p id="jsDeDay" style="margin-bottom: 0px;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
 						cal += `</div></div>`;
 					
 			//요일뽑기
@@ -494,7 +552,7 @@
 	    $('#deleteBtn').on('click', function(){
 	    	let calendarNo = $('#saveCalendarEach').val();
 	    	//삭제 아작스
-	    	if(confirm('일정이 삭제됩니다.'+calendarNo)){
+	    	if(confirm('일정을 삭제합니다.')){
 	    		$.ajax({
 	    			url:'/own/band/deleteCalendar?calendarNo='+calendarNo,
 		            method: 'delete',
@@ -622,8 +680,8 @@
 		    			cal += `<input type="hidden" value="${calendar[0].bandCalendarNo}" id="bandCalNo">`
 		    			cal += `<div style="padding:10px 30px;"><h3 id="jsDD" style="margin-bottom:0px; text-align:center;">${sDay}</h3>`
 						cal += `<p id="jsDay">${mon}</p></div>`
-						cal += `<div style="padding:10px;"><h5>${title}</h5>`
-						cal += `<p id="jsDeDay" style="margin-bottom: 0px">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
+						cal += `<div style="padding:10px 0px 10px 10px;"><h5>${title}</h5>`
+						cal += `<p id="jsDeDay" style="margin-bottom: 0px;;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
 						cal += `<span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span><span>${writer}</span></div>`;
 					
 		  //지도가 있다면
@@ -695,7 +753,7 @@
 			//아작스로 글 집어넣기 //새창을 열어서 해야겠음
 			console.log('새창보낼 값'+calendarNo+title+bandNo)
 			window.open( "/own/band/bandGroup/bandCalendarInsert?bandCalendarNo="+calendarNo+"&title="+title+"&bandNo="+bandNo,
-					"Child", "width=600px, height=200px, top=50%, left=50% resizable = no, scrollbars = no" );	
+					"Child", "width=600px, height=530px, top=50%, left=50% resizable = no, scrollbars = no" );	
 		  }
 	  })
 	  //모달 참석여부 상세만들기
@@ -710,6 +768,7 @@
 			let bk03 = 0; //미정
 			let bk03Per = new Array(); //미참석인원
 			let myChk = ''; // 본인 거 체크
+			//bandMemberNo=:닉네임이들어감
 			$(result).each(function(idx, ele){
 				if(ele.bandAttend=="BK01"){
 					bk01++;
@@ -726,16 +785,16 @@
 					myChk = ele.bandAttend;
 				}
 			})
-			
+			console.log(bk01Per.toString()+'???')
 			//참석자 너무 많으면 자르기
 			if(bk01Per.length>4){
-				bk01Per.splice(4,'...');
+				bk01Per.splice(4, bk01Per.length, '...');
 			}
 			if(bk02Per.length>4){
-				bk01Per.splice(4,'...');
+				bk02Per.splice(4, bk02Per.length, '...');
 			}
 			if(bk03Per.length>4){
-				bk01Per.splice(4,'...');
+				bk03Per.splice(4, bk03Per.length, '...');
 			}
 			
 			//내 체크 확인
@@ -757,9 +816,9 @@
 				nameBk3 = 'BK03chk'
 			}
 			let liTag = `
-				<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
-				<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
-				<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right;">💧</span></li>
+				<li class="lis"><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b class="toSt">${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right; padding-right:15px;">💧</span></li>
+				<li class="lis"><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b class="toSt">${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right; padding-right:15px;">💧</span></li>
+				<li class="lis"><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b class="toSt">${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right; padding-right:15px;">💧</span></li>
 			`;
 			attendChk.append(liTag);
 			
@@ -971,6 +1030,13 @@
 		console.log(endDay)//여기까진 변환완료
 		$('#bandCalendarEnd').val(timestamp(endDay))
 		//입력데이터
+		
+		//시작일과 종료일 체크
+		 if($('#bandCalendarStart').val()>$('#bandCalendarEnd').val()){
+				 alert('시작일과 종료일이 올바르지 않습니다.');
+				 return false;
+			 }
+		
 		//글쓰기
 		$.ajax({
 			url : '/own/band/insertCalendar',
@@ -1021,7 +1087,14 @@
         
 	}
 	 })
+	 $(document).ready(function() {
+			$('select').niceSelect();
+	 })
 	  //$()끝
+	  $('#bandCalendarMark').on('change', function(){
+		  console.log($('.nice-select:eq(1)'));
+		  $('.nice-select').css('background-color', $('#bandCalendarMark').val())
+	  })
 	</script>
 	</div>
 </body>

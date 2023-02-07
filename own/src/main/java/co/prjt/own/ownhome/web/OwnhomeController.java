@@ -257,6 +257,8 @@ public class OwnhomeController {
 		@ResponseBody		
 		@GetMapping("/own/admin/myBandPaging")
 		public List<BandVO> myBandPaging(Model model, BandMemberDetailVO vo, Paging paging) {
+			paging.setPageUnit(3);
+			paging.setPageSize(5);
 			return ownService.adminBandCheck(vo, paging);
 		}
 		
@@ -264,7 +266,7 @@ public class OwnhomeController {
 		@GetMapping("/own/admin/myChallPaging")
 		public List<ChallengeVO> myChallPaging(Model model, ChallengeVO vo, Paging paging) {
 			paging.setPageUnit(3);// 3개씩보기
-			paging.setPageSize(3); // 페이딩 동그라미 3개
+			paging.setPageSize(10); // 페이딩 동그라미 3개
 			vo.setChallStatus("진행 중");
 			List<ChallengeVO> myList = challenge.myPageChall(vo, paging);
 			return myList;
@@ -314,7 +316,7 @@ public class OwnhomeController {
 		@GetMapping("/own/admin/reportList")
 		public String reportList(Model model,Paging paging,ReportVO vo) {
 			model.addAttribute("RList", ownService.getPagingReportList(vo,paging));
-			return "/content/own/ownAdminReport";
+			return "content/own/ownAdminReport";
 		}
 		
 		
@@ -350,7 +352,7 @@ public class OwnhomeController {
 		//상세보기로..
 		@GetMapping("/own/admin/test")
 		public String test(HttpServletRequest request, Model model, @RequestParam String id,@ModelAttribute("paging1") Paging paging,
-				@ModelAttribute("paging2") Paging paging2) {
+			@ModelAttribute("paging2") Paging paging2) {
 			System.out.println("===아이디가넘어올까요="+id);
 			HttpSession session = request.getSession();
 			OwnUserVO ovo = (OwnUserVO) session.getAttribute("loginUser");
@@ -361,18 +363,18 @@ public class OwnhomeController {
 			vo.setUserId(ovo.getUserId());
 			
 			paging2.setPageUnit(3);// 3개씩보기
-			paging2.setPageSize(3); // 페이딩 동그라미 3개
+			paging2.setPageSize(5); // 페이딩 동그라미 3개
 			vo2.setChallStatus("진행 중");
 			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);
 			
 			paging.setPageUnit(3);// 3개씩보기
-			paging.setPageSize(3); // 페이딩 동그라미 3개
+			paging.setPageSize(5); // 페이딩 동그라미 3개
 			List<BandVO> bandList = ownService.adminBandCheck(vo, paging);
 			
 			model.addAttribute("userId", ovo.getUserId());
 			model.addAttribute("CList",	myList);
 			model.addAttribute("BList", bandList);
-			return "/content/own/test";
+			return "content/own/test";
 		}
 		
 		@ResponseBody		

@@ -27,7 +27,7 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,500");
 /* ----------------Text Fonts ------------------- */
 body {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   font-weight: 500;
   font-family: 'Noto Sans KR', sans-serif;
@@ -1744,8 +1744,8 @@ img {
 3 body
 -------------------------------------------------------- */
 .body_block {
-  background-color: #ffffff;
-  padding: 50px 30px;
+  background-color: #f8f9fa;
+  padding: 50px 110px;
 }
 
 .img_card {
@@ -2260,7 +2260,8 @@ img {
 }
 .blog_card .blog_card_bottom {
   padding: 0px 0;
-  width : 800px;
+  width : 765px;
+  margin: 20px;
 }
 .blog_card .blog_card_bottom h4 {
   margin-bottom: 5px;
@@ -2275,7 +2276,7 @@ img {
 .blog_card .blog_card_bottom .meta_data {
   font-size: 13px;
   font-weight: 300;
-  margin-bottom: 70px;
+  margin-bottom: 15px;
 }
 .blog_card .blog_card_bottom .meta_data span {
   padding: 0 5px;

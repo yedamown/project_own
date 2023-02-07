@@ -5,17 +5,17 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 	<title>My Exercise Record Form</title>
 	<style>
-		/* .container {
-			width: 900px;
-			margin-top: 50px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex-direction: column;
-		} */
-
+		.container .py-5 p, label, td, input, button, span{
+			font-family: 'Noto Sans KR', sans-serif;
+		}
+		.slidecontainer label{
+			font-family: 'Noto Sans KR', sans-serif;
+		}
 		.item {
 			margin-top: 10px;
 			margin-bottom: 10px;
@@ -69,25 +69,54 @@
 			border-color: #117a8b;
 		}
 
-		#searchExer{
-			width: 260px;  
+		.form-control {
+			display: block;
+			width: 100%;
+			height: calc(1.5em + 0.75rem + 2px);
+			padding: 0.375rem 0.75rem;
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			color: #495057;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid #ced4da;
+			border-radius: 5px;
+			transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 		}
-		#exerInput{
+
+		.form-control:disabled,
+		.form-control[readonly] {
+			background-color: #e9ecef;
+			opacity: 1;
+		}
+
+		#searchExer {
 			width: 260px;
 		}
-	
-		#exerRecord textarea{
-			height: 73px;	
+
+		#exerInput {
 			width: 260px;
-			margin-bottom: 20px;
+			margin-bottom: 3px;
+			margin-right: 3px;
 		}
-		#exerRecord label{
+
+		#exerRecord textarea {
+			height: 85px;
+			width: 260px;
+			margin-bottom: 15px;
+		}
+
+		#exerRecord label {
 			margin-right: 215px;
 			margin-bottom: 0;
 		}
-		#recordDiv input{
+
+		#recordDiv input {
 			width: 490px;
 		}
+
+		#exerTable tr {}
 
 		/* 컨디션 체크박스 */
 		.badImg {
@@ -150,13 +179,8 @@
 		}
 
 		/* 체중 */
-		.slidecontainer label {
-			all: unset;
-		}
 
-		.slidecontainer p {
-			all: unset;
-		}
+		
 
 		td {
 			cursor: pointer;
@@ -277,10 +301,12 @@
 				</h1>
 			</div>
 			<div class="item">
-				<p>
-				<h1 th:text="${session.loginUser.userName}"></h1>
-				<h2>회원님의 운동 기록하기</h2>
-				</p>
+				<div class="item-row">
+					<p>
+					<h1 th:text="${session.loginUser.userName}"></h1>
+					<h2>회원님의 운동 기록하기</h2>
+					</p>
+				</div>
 			</div>
 			<div class="item" id="recordForm">
 				<form id="exerciseRecordForm" name="exerciseRecordForm" action="/own/ownRecordList">
@@ -298,7 +324,7 @@
 						</div>
 					</div>
 					<div class="item slidecontainer">
-						<label for="exerecWeight">오늘 나는</label> <br>
+						<label for="exerecWeight">오늘 나는</label>
 						<input type="range" min="30" max="130" value="80" class="weightSlider" name="exerecWeight"
 							id="myRange" required>
 						<p>
@@ -308,8 +334,8 @@
 					<div>
 						<div class="item-row">
 							<div class="item" id="searchExer">
-								<input type="text" id="exerInput" onkeyup="myFunction()" placeholder="운동명 검색"
-									title="Type in a name">
+								<input class="form-control" type="text" id="exerInput" onkeyup="myFunction()"
+									placeholder="운동명 검색" title="Type in a name">
 								<div class="exerciseSearch" style="width: 100%; height: 200px; overflow: auto">
 									<table id="exerTable">
 									</table>
@@ -317,20 +343,24 @@
 							</div>
 							<div class="item" id="exerRecord">
 								<label for="exerecRoution">루틴&nbsp;&nbsp;&nbsp;</label>
-								<textarea name="exerecRoution" id="routin"></textarea>
+								<textarea class="form-control" name="exerecRoution" id="routin"></textarea>
 								<label for="exerecFeedback">피드백</label>
-								<textarea name="exerecFeedback" id="feedback"></textarea>
+								<textarea class="form-control" name="exerecFeedback" id="feedback"></textarea>
 							</div>
 						</div>
 						<div class="item" id="recordDiv" style="display: none;">
 							<label for="exerecTime">시간</label>
-							<input name="exersubNo" hidden> 
-							<input type="number" name="minute" id="minute" required>분
-							<input name="exerecTime" hidden>
+							<div class="item-row">
+								<input name="exersubNo" hidden>
+								<input class="form-control" type="number" name="minute" id="minute" required>분
+								<input name="exerecTime" hidden>
+							</div>
 							<div class="formDiv" id="meterDiv" style="display: none;">
-								<label for="exerecMeter">거리 </label> 
-								<input type="number" name="meter" id="meter">Km
-								<input name="exerecMeter" hidden>
+								<label for="exerecMeter">거리 </label>
+								<div class="item-row">
+									<input class="form-control" type="number" name="meter" id="meter">Km
+									<input name="exerecMeter" hidden>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -392,7 +422,7 @@
 
 		function makeTr(sub) {
 
-			let tr = `<tr><td data-sub="${sub.exersubNo}" onClick="showForm(this)" value="${sub.exersubName}">${sub.exersubName}</td></tr>`
+			let tr = `<tr><td data-sub="${sub.exersubNo}" data-sub1="unckecked" onClick="showForm(this)" value="${sub.exersubName}">${sub.exersubName}</td></tr>`
 
 			return tr;
 		}
