@@ -64,7 +64,7 @@ public class BandOptionController {
 
 		model.addAttribute("bandInfo", band);
 		model.addAttribute("count", bandOptionService.bandCount(dvo));
-		return "/content/band2/bandOption";
+		return "content/band2/bandOption";
 	}
 
 	// ================================= 밴드 옵션 임시 컨트롤러
