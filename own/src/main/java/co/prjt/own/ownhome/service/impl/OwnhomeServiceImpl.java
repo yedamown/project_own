@@ -58,7 +58,9 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		vo.setPaging(paging);
 		System.out.println("=====페이징하고싶어요======"+paging.toString());
 		List<OwnUserVO> list = ownhomeMapper.getUserList(vo);
-		list.get(0).setPaging(paging);
+		if(list!=null && list.size()>0) {
+			list.get(0).setPaging(paging);
+		}
 		return list;
 	}
 	
@@ -335,9 +337,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 
 	@Override
 	public List<BandVO> adminBandCheck(BandMemberDetailVO vo, Paging paging) {
-		paging.setTotalRecord(ownhomeMapper.bandCounting(vo)); // start end		
-		paging.setPageUnit(3);
-		paging.setPageSize(3);
+		paging.setTotalRecord(ownhomeMapper.bandCounting(vo)); // start end
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
 		System.out.println(paging);
