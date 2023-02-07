@@ -9,7 +9,7 @@ public interface ChatService {
 	
 	/* 신규 채팅방 개설(1:1)
 	 */
-	String createChatroom(List<ChatroomVO> list);
+   String createChatroom(List<ChatroomVO> list);
 
    // 기존 채팅방번호 가져옴.
    String findChatroomNo(ChatroomVO vo);
@@ -19,5 +19,8 @@ public interface ChatService {
    
    // 메세지 DB에서 조회, 메세지 여러개 뽑아 오니까 List타입
    List<MessageVO> getMessage(String chatroomNo);
+   
+   // 채팅방 정보 가져옴
+   List<ChatroomVO> getChatroomInfo(ChatroomVO vo);
 
 }

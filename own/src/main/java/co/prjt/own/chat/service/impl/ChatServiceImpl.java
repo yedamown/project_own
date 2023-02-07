@@ -52,4 +52,10 @@ public class ChatServiceImpl implements ChatService {
 		// 메세지 DB에서 조회, 메세지 여러개 뽑아 오니까 List타입
 		return chatMapper.getMessage(chatroomNo);
 	}
+
+	@Override
+	public List<ChatroomVO> getChatroomInfo(ChatroomVO vo) {
+		// 채팅방 정보 가져옴
+		return chatMapper.getChatroomInfo(vo);
+	}
 }

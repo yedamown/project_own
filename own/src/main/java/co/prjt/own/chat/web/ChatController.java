@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,7 +56,8 @@ public class ChatController {
 	
 	// 채팅 페이지 이동
 	@RequestMapping(value="/chatroom", method=RequestMethod.GET)
-	public String chatPage() {
+	public String chatPage(ChatroomVO vo, Model model) {
+		model.addAttribute("chatInfo", chatService.getChatroomInfo(vo));
 		return "content/chat/chatroom";
 	}
 

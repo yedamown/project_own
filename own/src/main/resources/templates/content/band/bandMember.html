@@ -127,10 +127,30 @@
 							let nicknameTag = '';
 							let chatTag = '';
 							// 채팅체크
-							if(result[i].chatCheck == 1){
-								chatTag = `<a class="oldChatStart" value=${result[i].bandMemberNo}>채팅하기</a>`;
-							} else {
-								chatTag = `<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname} href="">채팅하기</a>`;
+							if(result[i].userId == loginUserId){
+								chatTag = '';
+							} else if(result[i].chatCheck != 1 && result[i].userId != loginUserId){
+								chatTag = `<div class="nav-item dropdown droMom">
+													<a href="" class="nav-item nav-link"
+														data-toggle="dropdown">
+														<i class="fa fa-solid fa-ellipsis"></i>
+													</a>
+													<div class="dropdown-menu rounded-0 m-0">
+														<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname}>채팅하기</a>
+														<br><a href="">신고하기</a>
+													</div>
+												</div>`;
+							} else if(result[i].chatCheck == 1 && result[i].userId != loginUserId){
+								chatTag = `<div class="nav-item dropdown droMom">
+													<a href="" class="nav-item nav-link"
+														data-toggle="dropdown">
+														<i class="fa fa-solid fa-ellipsis"></i>
+													</a>
+													<div class="dropdown-menu rounded-0 m-0">
+														<a class="oldChatStart" value=${result[i].bandMemberNo} ">채팅하기</a><br>
+														<a href="">신고하기</a>
+													</div>
+												</div>`;
 							}
 							// 밴드장 표시
 							if(result[i].userId == loginUserId){
@@ -144,16 +164,7 @@
 											<td hidden value=${result[i].userId}></td>
 											<td hidden value=${result[i].bandMemberNo}></td>
 											<td> 
-												<div class="nav-item dropdown droMom">
-													<a href="" class="nav-item nav-link"
-														data-toggle="dropdown">
-														<i class="fa fa-solid fa-ellipsis"></i>
-													</a>
-													<div class="dropdown-menu rounded-0 m-0">
-														${chatTag}
-														<a href="">신고하기</a>
-													</div>
-												</div>
+												${chatTag}
 											</td>
 						 				<tr>`
 							$('#bandMemberTable').append(table);
@@ -217,11 +228,12 @@
 
 			// 새로운 채팅방 생성
 			$(document).on("click", ".newChatStart", function(){
-					// 로그인한 유저의 밴드멤버번호와 채팅할 유저의 밴드멤버번호와 닉네임
-					let bMemNo1 = myBandMemberNo;
-					let bMemNo2 = $(this).parent().parent().parent().parent().eq(4).val();
-					let bMemNick1 = $("#bandMemberTable").find(tr).eq(1).children().eq(2).text();
-					let bMemNick2 = $(this).parent().parent().parent().parent().children().eq(2).text();
+				// 로그인한 유저의 밴드멤버번호와 채팅할 유저의 밴드멤버번호와 닉네임
+				let bMemNo1 = myBandMemberNo;
+				let bMemNo2 = $(this).attr('value');
+				let bMemNick1 = $("#bandMemberTable").find("td").eq(1).text();
+				let bMemNick2 = $(this).attr('data-sub');
+
 					// 배열에 추가
 					let rName = bMemNick1 + ", " + bMemNick2 + "의 채팅방";
 					let chatroomDataList = new Array();
@@ -242,37 +254,34 @@
 					console.log("chatroomDataList"
 						+ JSON.stringify(chatroomDataList))
 					// 채팅방 새로 생성 후 결과값으로 방번호를 받아와 그 번호로 채팅방 페이지 보내기
-					// $.ajax({
-					// 	url: '/createChatroom',
-					// 	method: 'post',
-					// 	contentType: "application/json; charset=UTF-8",
-					// 	data: JSON.stringify(chatroomDataList),
-					// 	beforeSend: function (xhr) {
-					// 		xhr.setRequestHeader(header, token);
-					// 	},
-					// 	success: function (result) {
-					// 		// 결과로 채팅방 시퀀스 번호 받아옴
-					// 		console.log("채팅방 번호 시퀀스" + result);
-					// 		let url = '/chatroom?chatroomNo=CRN_' + result
-					// 			+ '&bandMemberNo=' + bMemNo1;
-					// 		location.replace(url);
-					// 	},
-					// 	error: function (error) {
-					// 		console.log("error: " + error);
-					// 	}
-					// });
+					$.ajax({
+						url: '/createChatroom',
+						method: 'post',
+						contentType: "application/json; charset=UTF-8",
+					 	data: JSON.stringify(chatroomDataList),
+					 	beforeSend: function (xhr) {
+					 		xhr.setRequestHeader(header, token);
+					 	},
+					 	success: function (result) {
+					 		// 결과로 채팅방 시퀀스 번호 받아옴
+					 		let url = '/chatroom?chatroomNo=CRN_' + result
+					 			+ '&bandMemberNo=' + bMemNo1;
+							window.open(url, '_blank', 'width=350, height=465');
+					 	},
+					 	error: function (error) {
+					 		console.log("error: " + error);
+					 	}
+					 });
 			});
 
 			// 기존 채팅방 입장
 			$(document).on("click", ".oldChatStart", function(){
-					let bMemNo = $("#MybandNo").val();
-					let bMemNo1 = $(this).parent().parent().children()
-						.eq(6).text();
+					let bMemNo = myBandMemberNo;
+					let bMemNo1 = $(this).attr('value');
 					let chatroomData = {
 						bandMemberNo: bMemNo,
 						bandMemberNo1: bMemNo1
 					};
-					console.log(bMemNo1)
 					// 채팅방번호 받아와서 그 방으로 보내기
 					$.ajax({
 						url: '/findChatroomNo',
@@ -284,10 +293,9 @@
 						},
 						success: function (result) {
 							// 결과로 채팅방번호 받아옴
-							console.log("채팅방 번호==========================="
-								+ result);
-							location.href = '/chatroom?chatroomNo='
-								+ result + '&bandMemberNo=' + bMemNo;
+							console.log("결과"+result)
+							let url = '/chatroom?chatroomNo='+ result + '&bandMemberNo=' + bMemNo;
+							window.open(url, '_blank', 'width=350, height=465');
 						},
 						error: function (error) {
 							console.log("error: " + error);

@@ -67,4 +67,21 @@
 		WHERE CHATROOM_NO = #{chatroomNo}
 		ORDER BY MESSAGE_TIME
 	</select>
+	
+	<!-- 채팅방 정보 조회 -->
+	<select id="getChatroomInfo"
+		resultType="co.prjt.own.chat.service.ChatroomVO" parameterType="string">
+		SELECT  C.*,
+        		(SELECT M.MEDIA_SERVER_FILE
+              	   FROM MULTIMEDIA M
+             	  WHERE M.IDENTIFY_ID = (SELECT band_member_no
+                                      	   FROM CHATROOM
+                                     	  WHERE BAND_MEMBER_NO <![CDATA[ <> #{bandMemberNo}]]>
+                                       	    AND CHATROOM_NO = #{chatroomNo}
+                                    	)
+        		) PROFILE_IMG
+		  FROM CHATROOM C
+		 WHERE C.CHATROOM_NO = #{chatroomNo}
+		   AND C.BAND_MEMBER_NO = #{bandMemberNo}
+	</select>
 </mapper>
