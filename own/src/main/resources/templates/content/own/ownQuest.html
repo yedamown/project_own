@@ -3,15 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-</head>
-<body>
-
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 textarea {
     width: 100%;
@@ -19,15 +10,12 @@ textarea {
     resize: none;
   }
   
-  
   </style>
 </head>
-<
 <body>
 <div class="layout-978">
 <div class="tblcontainer">
 <div class="formdiv">
-
 	<form action="/own/QuestADD" method="post" id="modalform">
                 <input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">
@@ -56,7 +44,7 @@ textarea {
 				</span>
 				</div>
 				</div>
-                <button type="submit">질문 등록</button>
+                <button type="submit" class="btn btn-outline-primary m-1">질문 등록</button>
 	</form>
 	</div>
 </div>

@@ -59,15 +59,16 @@
 	<p>아이디 해킹이나 가치 매매 등 비정상적, 불법으로 위임된 가치는 위임이 취소되거나, OWN활동에 제재를 받으실 수 있습니다.</p>
 	<input type="hidden" th:value="${memList[0].bandNo}" id="bandNo">
 	<div class="nice-select" tabindex="0">
-	<span class="current" th:value="${memList[0].userId}"></span>
+	<span class="current">선택</span>
 	<ul class="list">
+	<li data-value="======" class="option disabled">======</li>
 	<th:block th:each="list : ${memList}">
 	<li th:text="${list.userId}" th:value="${list.userId}" th:class="option"></li>
 	</th:block>	
 	</ul>
 	</div>
 	
-<a class="modalBtn">위임하기</a>
+<a class="modalBtn" style="cursor: pointer;">위임하기</a>
 <hr>
 </div>
 <div>
@@ -75,7 +76,7 @@
 <p>폐쇄신청 이후 절차 안내<br>
 멤버가 탈퇴 후 가치를 폐쇄하시면 30일간의 보류기간을 거치며, 그 이후에는 가치의 모든 정보가 삭제됩니다.
 보류 기간 중에는 가치 폐쇄를 취소하실 수 있습니다.</p>
-<a class="modalBtn">밴드 비활성화하기</a>
+<a class="modalBtn" style="cursor: pointer;">밴드 비활성화하기</a>
 	
 </div>
 </div>
@@ -87,26 +88,27 @@
       <div class="modal-content">
         <span class="close">&times;</span>                         
         <p id="modaltext"></p>
-        <button type="button" id="bandPassModal">
+        <button type="button" id="bandPassModal" class="btn btn-outline-primary m-1">
   	밴드장 위임
 	</button>
       </div>
     </div>
-    <div class="importmodal"> 
+
+<div class="importmodal"> 
       <!-- 첫 번째 Modal의 내용 -->
       <div class="modal-content">
         <span class="close">&times;</span>                         
         <p id="modaltext">'밴드 삭제' 버튼 클릭 시 자동으로 비활성화되며 30일동안 유예기간이 주어집니다.</p>
-        <button type="button" id="bandDelModal">밴드 삭제</button>
-	<button type="button" id="bandDisModal">휴면 해제</button>
+    <button type="button" id="bandDelModal" class="btn btn-outline-primary m-1">밴드 삭제</button>
+	<button type="button" id="bandDisModal" class="btn btn-outline-primary m-1">휴면 해제</button>
 	</button>
       </div>
-    </div>
+</div>
 </body>
 <script th:inline="javascript">
 /*<![CDATA[*/
-var header = '[[${_csrf.headerName}]]';
-  var token = '[[${_csrf.token}]]';
+var header = [[${_csrf.headerName}]];
+  var token = [[${_csrf.token}]];
  console.log(header);
  console.log(token);
  /*]]>*/
@@ -174,7 +176,7 @@ $("#bandPassModal").on("click",function(){
 			              xhr.setRequestHeader(header,token);
 			            }
 		  }).then(res => {
-			  console.log(res);
+			  alert('밴드장이 변경되었습니다')
 	})
 })
 
@@ -189,7 +191,7 @@ $("#bandDelModal").on('click',function(){
 			              xhr.setRequestHeader(header,token);
 			            }
 		  }).then(res => {
-			  console.log(res);
+			alert('휴면상태 전환 완료')
 	})
 })
 
@@ -204,7 +206,7 @@ $("#bandDisModal").on('click',function(){
 			              xhr.setRequestHeader(header,token);
 			            }
 		  }).then(res => {
-			  console.log(res);
+			  alert('휴면 해제 완료')
 	})
 })
 

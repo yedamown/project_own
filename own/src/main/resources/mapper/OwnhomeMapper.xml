@@ -124,7 +124,7 @@ select count(*) from question
 	<![CDATA[	
 	) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 	]]>
-   ORDER BY QUEST_DATE desc
+   ORDER BY RN
    </select>
    
    <select id="myquestionCount" resultType="int">
@@ -199,7 +199,7 @@ AND BMD.BAND_NO = B.BAND_NO
  <select id="adminBandCheck" resultType="co.prjt.own.band.service.BandVO">
  SELECT * FROM ( SELECT ROWNUM RN, 
 A.* FROM(
-SELECT B.BAND_NAME, C.EXERSUB_NAME BAND_CATEGORY, M.MEDIA_SERVER_FILE , E.MEMCOUNT FROM 
+SELECT B.BAND_NAME, B.BAND_NO, C.EXERSUB_NAME BAND_CATEGORY, M.MEDIA_SERVER_FILE , E.MEMCOUNT FROM 
 BAND_MEMBER_DETAIL BMD , BAND B, MULTIMEDIA M, EXER_SUB C , (SELECT BAND_NO, COUNT(*) "MEMCOUNT"
                 FROM BAND_MEMBER_DETAIL 
                WHERE BAND_NO = BAND_NO
@@ -218,7 +218,9 @@ AND E.BAND_NO = B.BAND_NO
  </select>
  <select id="bandCounting" resultType="int">
 SELECT COUNT(*) FROM BAND B, BAND_MEMBER_DETAIL BMD
-    WHERE B.BAND_NO=BMD.BAND_NO
+    WHERE B.BAND_NO=BMD.BAND_NO 
+    AND BMD.BAND_MEMBER_STATUS = 'BA02'
+    AND BMD.BAND_KICK_STATUS = 'BB01'
     AND BMD.USER_ID=#{userId}
  </select>
 </mapper>
