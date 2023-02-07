@@ -11,9 +11,9 @@
 
 <body>
 	<div class="chat-box">
-		<div class="header"> img src="/imgView/${result[i].profileImg}" style="object-fit: cover" class="aProfile"/>
+		<div class="header"> 
 			<div class="avatar-wrapper avatar-big">
-				<img th:src="|/imgView/${chatInfo[0].profileImg}|" alt="avatar" />
+				<img th:src=|/imgView/${chatInfo[0].profileImg}| alt="avatar" />
 			</div>
 			<span class="name" th:text="${chatInfo[0].chatroomName}"></span> 
 		</div>

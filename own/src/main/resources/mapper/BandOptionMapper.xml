@@ -105,7 +105,9 @@ UPDATE BAND SET BAND_NAME = #{bandName},
 		OR BAND_NICKNAME LIKE '%' || #{bandNickname} || '%')
 	 </if>
    AND BAND_NO = #{bandNo}
-   ORDER BY
+   ORDER BY  DECODE(M.USER_ID, (SELECT Q.BAND_LEADERID
+	                              FROM BAND Q 
+	                             WHERE Q.BAND_NO = #{bandNo}), 1),
    <choose>
         <when test="selectOption == 'name'">BAND_NICKNAME</when>
         <when test="selectOption == 'accessDate'">BAND_ACCESS_DATE</when>
