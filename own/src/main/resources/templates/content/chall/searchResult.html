@@ -61,43 +61,122 @@
 		</div>
 		<!-- Header End -->
 
-<!-- Blog Start -->
+	<!-- Blog Start -->
 	<div class="container-fluid pt-5">
-		<div class="container">
-			<div class="text-center pb-2">
-				<p class="section-title px-5">
-					<span class="px-2">Search Challenges</span>
-				</p>
-				<h1 class="mb-4">도전 검색 결과</h1>
-			</div>
-				<!-- 여기부터  6개 한블럭? -->
-			<div class="row pb-3" id="challRow">
-				<th:block th:each="sl: ${searchList}">
-						<div class="grid m-3" style="padding: 10px">
-							<div class="card card__one" style="width: 300px; height:380px;">
-								<figure class="card__img">
-									<img th:src="|/imgView/${sl.firstImage}|" style="width: 300px; height:210px; object-fit: cover" />
-								</figure>
-								<div class="card__desc vldno" style="text-align: center;">
-									<h5 style="margin-top: 5px;"th:text="${sl.challTitle}"></h5>
-									<div class="row" style="justify-content: center;">
-										<p style="margin: 5px 10px;">[[${sl.challDuration}]]주 동안</p>
-										<p style="margin: 5px 10px;">주 [[${sl.challFreq}]] 회</p>
-										<p style="margin: 5px 10px;">[[${#dates.format(sl.challStartdate, 'M/d')}]]시작</p>
+
+
+		<div class="container-fluid py-5 mt-2" style="margin:auto; width: 1300px; ">
+			<div style="display: flex;">
+				<div class="w-25 mt-1 mt-lg-0">
+
+					<div class="mb-3">
+						<form action="">
+							<div class="input-group">
+								<input type="text" class="form-control form-control-lg"
+									placeholder="Keyword" />
+								<div class="input-group-append">
+									<span class="input-group-text bg-transparent text-primary"><i
+										class="fa fa-search"></i></span>
+								</div>
 							</div>
-							<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(sl.challNo, 'CHA_')})}"
-							  class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
+						</form>
+					</div>
+
+					<!-- Category List -->
+					<div class="mb-5 bg-light rounded p-5">
+						<h2 class="mb-4">Search</h2>
+						<ul class="list-group list-group-flush bg-light">
+							<li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-light">
+								<a href="/own/chall/myInfo">내 정보수정</a>
+								<span class="badge badge-primary badge-pill">12000</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-light">
+								<a href="/own/chall/myAmount">내 예치금</a>
+								<span class="badge badge-primary badge-pill">131</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-light">
+								<a href="/own/chall/myChall">내 도전</a>
+								<span class="badge badge-primary badge-pill">78</span>
+							</li>
+						</ul>
+						
+					</div>
+
+				</div>
+
+				<div class="ml-5" style="display: inline-block; width: 1300px;" >
+					<div class="text-center pb-2">
+						<p class="section-title px-5">
+							<span class="px-2">Search Challenges</span>
+						</p>
+						<h1 class="mb-4">도전 검색 결과</h1>
+					</div>
+
+
+						<div>
+							<div class="row pb-3" id="challRow">
+								<th:block th:each="sl: ${searchList}">
+										<div class="grid m-3" style="padding: 3px; cursor: pointer;"
+										th:onclick="|location.href='@{/own/chall/detailChall(challNo = ${#strings.substringAfter(sl.challNo, 'CHA_')})}'|">
+										<div class="card card__one" style="width: 260px; height:350px;" > 
+												<figure class="card__img">
+													<img th:src="|/imgView/${sl.firstImage}|" style="width: 260px; height:210px; object-fit: cover" />
+												</figure>
+												<div class="card__desc vldno" style="text-align: center;">
+													<h5 style="margin-top: 5px;"th:text="${sl.challTitle}"></h5>
+													<div class="row" style="justify-content: center;">
+														<p style="margin: 5px 10px;">[[${sl.challDuration}]]주 동안</p>
+														<p style="margin: 5px 10px;">주 [[${sl.challFreq}]] 회</p>
+														<p style="margin: 5px 10px;">[[${#dates.format(sl.challStartdate, 'M/d')}]]시작</p>
+											</div>
+											<!-- <a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(sl.challNo, 'CHA_')})}"
+											  class="btn btn-primary px-4 mx-auto my-2">상세보기</a> -->
+												</div>
+											</div>
+										</div>	
+								</th:block>
+							</div>
+
+							<!-- 페이징버튼 넣기 -->
+							<div id="navPaging">
+								<nav class="blog-pagination justify-content-center d-flex" id="nowChallPaging"  th:if="${!#lists.isEmpty(myChall)}" >
+									<!--================ 이전  =================-->
+									<ul class="pagination">
+										<li class="page-item" th:if="${paging.startPage > 1}"><a
+											class="page-link" aria-label="Previous"
+											th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+													class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+										<!--================ 페이지 이동 1_2_3_4_5  =================-->
+										<th:block
+											th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+											<li class="page-item" th:if="${pag != paging.page}"><a
+												class="page-link pagePort" th:value="${pag}"
+												th:text="${#numbers.formatInteger(pag,1)}"></a></li>
+											<li class="page-item active" th:if="${pag==paging.page}"><a
+												class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+											</li>
+										</th:block>
+										<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+										<!--================ 이후  =================-->
+										<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+											<a class="page-link pagePort" aria-label="Next"
+											th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
+													class="lnr lnr-chevron-right"></span></span></a>
+										</li>
+									</ul>
+								</nav>
+									<nav class="blog-pagination justify-content-center d-flex" id="likeChallPaging"></nav>
+									<nav class="blog-pagination justify-content-center d-flex" id="leaderChallPaging"></nav>
+									<nav class="blog-pagination justify-content-center d-flex" id="doneChallPaging"></nav>
+							</div>
 						</div>
-						</div>
-					</div>	
-				</th:block>
+
+				</div>
+
 			</div>
-		</div>	
-	<!-- 도전 6개 끝 -->
-
-
-		
+		</div>		
 	</div>
+	
 	<!-- Blog End -->
 	<script type="text/javascript">
 

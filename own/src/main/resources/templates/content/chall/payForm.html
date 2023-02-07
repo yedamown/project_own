@@ -113,10 +113,10 @@
 	<h3>예치금 충전하기</h3>
 			
 		<ul>
-			<li>아이디:<input id="userId" type="text" th:value="${session.loginUser.userId}"></li>
-			<li>전화번호:<input id="userPhone" type="text" th:value="${session.loginUser.userPhone}"></li>
-			<li>이름:<input id="userName" type="text" th:value="${session.loginUser.userName}"></li>
-			<li>이메일:<input id="userEmail" type="text" th:value="${session.loginUser.userEmail}"></li>
+			<li>아이디:<input id="userId" type="text" th:value="${session.loginUser.userId}" readonly></li>
+			<li>전화번호:<input id="userPhone" type="text" th:value="${session.loginUser.userPhone}" readonly></li>
+			<li>이름:<input id="userName" type="text" th:value="${session.loginUser.userName}" readonly></li>
+			<li>이메일:<input id="userEmail" type="text" th:value="${session.loginUser.userEmail}" readonly></li>
 			<li>결제방법:<select id="amtMethod">
 				<option value="carddd">일반결제</option>
 				<option value="kakaopayu">카카오페이</option>
