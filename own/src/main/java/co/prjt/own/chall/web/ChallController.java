@@ -87,7 +87,7 @@ public class ChallController {
 		System.out.println("===================도전 홈" + user);
 		// 페이징정보담은
 		//보일갯수 설정하기
-		paging.setPageUnit(3);// 3개씩보기
+		paging.setPageUnit(9);// 3개씩보기
 		paging.setPageSize(3); // 페이딩 동그라미 3개
 		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);
 		model.addAttribute("popChall", cList);
@@ -102,7 +102,6 @@ public class ChallController {
 			cmb2 = member.challMemCheck(cmb);
 			System.out.println("세션 유저 정보" + user);
 			System.out.println("검색결과 도전멤버에서 " + cmb2);
-
 			int rs = challenge.countMychall(vo2);
 			// 도전멤버없는 경우 모달띄워서 가입.
 			if (cmb2 == null) {
@@ -115,7 +114,8 @@ public class ChallController {
 				System.out.println("---------------도전회원 & 참여중인 도전 유");
 				vo2.setUserId(userId);
 				// 6개로 페이징
-				paging2.setPageUnit(3);// 3개씩보기
+				vo2.setChallStatus("진행 중");
+				paging2.setPageUnit(6);// 3개씩보기
 				paging2.setPageSize(3); // 페이딩 동그라미 3개
 				List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);
 				System.out.println("======마이뉴리스트====" + myList);
@@ -596,16 +596,19 @@ public class ChallController {
 
 	// 마이페이지 도전정보
 	@GetMapping("/myChall")
-	public String myPageChall(Model model, HttpServletRequest request, Paging paging, ChallengeVO vo) {
+	public String myPageChall(Model model, HttpServletRequest request, Paging paging, 
+			ChallengeVO vo, CMemberVO vo1) {
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String id = user.userId;
 		vo.setUserId(id);
+		vo1.setUserId(id);
 		paging.setPageUnit(6); //내 도전이라 6개씩 보여줄 것
 		paging.setPageSize(3); //페이징 동그라미로 할 거라 4개
 		// 6개로 페이징
 		vo.setChallStatus("진행 중");
 		List<ChallengeVO> cList = challenge.myPageChall(vo, paging);
+		model.addAttribute("memInfo", member.getCMem(vo1));
 		model.addAttribute("myChall", cList);
 		// 테스트 중~~!!!
 		return "content/chall/myChall";

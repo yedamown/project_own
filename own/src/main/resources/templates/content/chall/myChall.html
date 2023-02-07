@@ -41,7 +41,8 @@
 	<title>도전_마이페이지_내 도전</title>
 </head>
 <div layout:fragment="content">
-<body>
+
+	<body>
 		<!-- Header Start -->
 		<div class="container-fluid bg-primary" style="padding: 0">
 			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px; background-image: url(/img/chall/category/스키.png);
@@ -57,95 +58,130 @@
 		</div>
 		<!-- Header End -->
 
-	<input id="userId" name="userId" type="hidden" th:if="${session.loginUser}"
-		th:value="${session.loginUser.userId}" />
+		<input id="userId" name="userId" type="hidden" th:if="${session.loginUser}"
+			th:value="${session.loginUser.userId}" />
 
-	<!-- Blog Start -->
-	<div class="container-fluid pt-5" style="height: 1300px;" id="myPageChallDiv">
-		<div class="container"> 
+		<div class="container-fluid py-5 mt-2" style="margin:auto; width: 1300px; ">
+			<div style="display: flex;">
+				<div class="col-lg-3 mt-1 mt-lg-0">
+					<div class="d-flex flex-column text-center rounded mb-5 py-5 px-4"
+						style="background-color:  #6ab0cd;">
+						<h4 class="text-white mb-3">My Profile</h4>
+						<!-- 도전리더 프로필 있는 경우-->
+						<img th:src="|/imgView/${memInfo.memImage}|" class="img-fluid rounded-circle mx-auto mb-4"
+							style="width: 180px; height:180px ; object-fit: cover" />
+						<h5 class="text-secondary mb-3">[[${memInfo.memNickname}]]</h5>
+						<p class="text-white m-0" th:text="${memInfo.memIntro}"></p>
+					</div>
 
-			<div class="text-center pb-2">
-				<p class="section-title px-5">
-					<span class="px-2">My Page</span>
-				</p>
-				<h1 class="mb-4">나의 도전</h1>
-			</div>
-
-			<!-- 나의도전 한줄 메뉴바 -->
-			<div class="row" style="margin: auto;">
-				<div class="col-12 text-left mb-2">
-					<ul class="list-inline mb-4" id="menu-filters" style="text-align: center;">
-						<li class="btn btn-outline-primary m-1 active" id="nowChall" val="1"> 내가 참여 중인 도전</li>
-						<li class="btn btn-outline-primary m-1" id="likeChall" val="1">내가 북마크한 도전</li>
-						<li class="btn btn-outline-primary m-1" id="leaderChall" val="1">내가 만든</li>
-						<li class="btn btn-outline-primary m-1" id="doneChall" val="1">완료된 도전</li>
-					</ul>
-				</div>
-			</div>
-			<!-- 나의도전 한줄 메뉴바 끝 -->
-			<div th:if=" ${myChall} !=null ">
-
-				<div class="row pb-3" id="challRow">
-					<th:block th:each="my: ${myChall}">
-						<div class="grid m-3" style="padding: 10px">
-							<div class="card card__one" style="width: 300px; height:380px;">
-								<figure class="card__img">
-									<img th:src="|/imgView/${my.firstImage}|" style="width: 300px; height:210px; object-fit: cover" />
-								</figure>
-								<div class="card__desc vldno" style="text-align: center;">
-									<h5 style="margin-top: 5px;"th:text="${my.challTitle}"></h5>
-									<div class="row" style="justify-content: center;">
-										<p style="margin: 5px 10px;">[[${my.challDuration}]]주 동안</p>
-										<p style="margin: 5px 10px;">주 [[${my.challFreq}]] 회</p>
-										<p style="margin: 5px 10px;">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</p>
-									</div>
-									<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-								 	 class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
-								</div>
-							</div>
-						</div>
-					</th:block>	
-				</div>
-		
-
-				<!-- 페이징버튼 넣기 -->
-				<div id="navPaging">
-					<nav class="blog-pagination justify-content-center d-flex" id="nowChallPaging"  th:if="${!#lists.isEmpty(myChall)}" >
-						<!--================ 이전  =================-->
-						<ul class="pagination">
-							<li class="page-item" th:if="${paging.startPage > 1}"><a
-								class="page-link" aria-label="Previous"
-								th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
-										class="lnr lnr-chevron-left pagePort"></span></span></a></li>
-							<!--================ 페이지 이동 1_2_3_4_5  =================-->
-							<th:block
-								th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
-								<li class="page-item" th:if="${pag != paging.page}"><a
-									class="page-link pagePort" th:value="${pag}"
-									th:text="${#numbers.formatInteger(pag,1)}"></a></li>
-								<li class="page-item active" th:if="${pag==paging.page}"><a
-									class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
-								</li>
-							</th:block>
-							<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
-							<!--================ 이후  =================-->
-							<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
-								<a class="page-link pagePort" aria-label="Next"
-								th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
-										class="lnr lnr-chevron-right"></span></span></a>
+					<!-- Category List -->
+					<div class="mb-5">
+						<h2 class="mb-4">Categories</h2>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item d-flex justify-content-between align-items-center px-0">
+								<a href="/own/chall/myInfo">내 정보수정</a>
+								<span class="badge badge-primary badge-pill">12000</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center px-0">
+								<a href="/own/chall/myAmount">내 예치금</a>
+								<span class="badge badge-primary badge-pill">131</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center px-0">
+								<a href="/own/chall/myChall">내 도전</a>
+								<span class="badge badge-primary badge-pill">78</span>
 							</li>
 						</ul>
-					</nav>
-						<nav class="blog-pagination justify-content-center d-flex" id="likeChallPaging"></nav>
-						<nav class="blog-pagination justify-content-center d-flex" id="leaderChallPaging"></nav>
-						<nav class="blog-pagination justify-content-center d-flex" id="doneChallPaging"></nav>
+					</div>
+
+				</div>
+
+				<div class="ml-5" style="display: inline-block;" >
+					<div class="text-center pb-2">
+						<p class="section-title px-5">
+							<span class="px-2">My Page</span>
+						</p>
+						<h1 class="mb-4">나의 도전</h1>
+					</div>
+
+					<!-- 나의도전 한줄 메뉴바 -->
+					<div class="row" style="margin: auto;">
+						<div class="col-12 text-left">
+							<ul class="list-inline mb-2" id="menu-filters" style="text-align: center;">
+								<li class="btn btn-outline-primary m-1 active" id="nowChall" val="1"> 내가 참여 중인 도전</li>
+								<li class="btn btn-outline-primary m-1" id="likeChall" val="1">내가 북마크한 도전</li>
+								<li class="btn btn-outline-primary m-1" id="leaderChall" val="1">내가 만든</li>
+								<li class="btn btn-outline-primary m-1" id="doneChall" val="1">완료된 도전</li>
+							</ul>
+						</div>
+					</div>
+					<!-- 나의도전 한줄 메뉴바 끝 -->
+					<div th:if=" ${myChall} !=null ">
+						<div class="row pb-2" id="challRow" style="margin: 0; width: 950px;">
+							<th:block th:each="my: ${myChall}">
+								<div class="grid m-3" style="padding: 3px; cursor: pointer;"
+								th:onclick="|location.href='@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}'|">
+									<div class="card card__one" style="width: 260px; height:350px;" > 
+										<figure class="card__img">
+											<img th:src="|/imgView/${my.firstImage}|"
+												style="width: 260px; height:210px; object-fit: cover" />
+										</figure>
+										<div class="card__desc vldno" style="text-align: center;">
+											<h6 style="margin-top: 5px;" th:text="${my.challTitle}"></h6>
+											<div class="row" style="justify-content: center;">
+												<p style="margin: 5px 10px;">[[${my.challDuration}]]주 동안</p>
+												<p style="margin: 5px 10px;">주 [[${my.challFreq}]] 회</p>
+												<p style="margin: 5px 10px;">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</p>
+											</div>
+											<!-- <a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
+											  class="btn btn-primary px-4 mx-auto my-2">상세보기</a> -->
+										</div>
+									</div>
+								</div>
+							</th:block>	
+						</div>
+				
+		
+						<!-- 페이징버튼 넣기 -->
+						<div id="navPaging">
+							<nav class="blog-pagination justify-content-center d-flex" id="nowChallPaging"  th:if="${!#lists.isEmpty(myChall)}" >
+								<!--================ 이전  =================-->
+								<ul class="pagination">
+									<li class="page-item" th:if="${paging.startPage > 1}"><a
+										class="page-link" aria-label="Previous"
+										th:value="${paging.startPage-1}"> <span aria-hidden="true"><span
+												class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+									<!--================ 페이지 이동 1_2_3_4_5  =================-->
+									<th:block
+										th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
+										<li class="page-item" th:if="${pag != paging.page}"><a
+											class="page-link pagePort" th:value="${pag}"
+											th:text="${#numbers.formatInteger(pag,1)}"></a></li>
+										<li class="page-item active" th:if="${pag==paging.page}"><a
+											class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+										</li>
+									</th:block>
+									<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+									<!--================ 이후  =================-->
+									<li class="page-item" th:if="${paging.endPage<paging.lastPage}">
+										<a class="page-link pagePort" aria-label="Next"
+										th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
+												class="lnr lnr-chevron-right"></span></span></a>
+									</li>
+								</ul>
+							</nav>
+								<nav class="blog-pagination justify-content-center d-flex" id="likeChallPaging"></nav>
+								<nav class="blog-pagination justify-content-center d-flex" id="leaderChallPaging"></nav>
+								<nav class="blog-pagination justify-content-center d-flex" id="doneChallPaging"></nav>
+						</div>
+		
+					</div>
+		
 				</div>
 
 			</div>
+		</div>
 
-		</div>	
-	</div>
-	<!-- Blog End -->
+
 
 	<!-- Footer Start -->
 	<div
@@ -590,24 +626,22 @@
 			console.log(cha.challStartdate);
 			let startDate = toStringByFormatting(new Date(cha.challStartdate));
 			console.log(startDate);
-			let girdTag =  `<div class="grid m-3" style="padding: 10px">
-							    <div class="card card__one" style="width: 300px; height:380px;">
+			let girdTag =  `<div class="grid m-3" style="padding: 3px; cursor:pointer" 
+							 onclick="location.href='detailChall?challNo=${cNo}'" >
+							    <div class="card card__one" style="width: 260px; height:350px">
 									<figure class="card__img">
-										<img src="|/imgView/${cha.firstImage}|" style="width: 300px; height:210px; object-fit: cover" />
+										<img src="|/imgView/${cha.firstImage}|" style="width: 260px; height:210px; object-fit: cover" />
 									</figure>
 								<div class="card__desc vldno" style="text-align: center;">
-									<h5 style="margin-top: 5px;" >${cha.challTitle}</h5>
+									<h6 style="margin-top: 5px;" >${cha.challTitle}</h6>
 									<div class="row" style="justify-content: center;">
 										<p style="margin: 5px 10px;">${cha.challDuration}주 동안</p>
 										<p style="margin: 5px 10px;">주 ${cha.challFreq} 회</p>
 										<p style="margin: 5px 10px;"> ${startDate} 시작</p>
 									</div>
-									<a href="detailChall?challNo=${cNo}"
-								 	 class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
 								</div>
 								</div>
 							</div>`;
-
 			// let div1 = $('<div />').addClass("col-lg-4 mb-4");
 			// let div2 = $('<div />').addClass("card border-0 shadow-sm mb-2");
 			// let hiddenInput = $('<input />').attr('type', 'hidden').val(cha.challNo);

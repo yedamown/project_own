@@ -1,75 +1,65 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
-	layout:decorate="~{layout/default_layout}" lang="ko">
-	
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" lang="ko">
+
 <head>
-<!-- jquery -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-<meta content="Free HTML Templates" name="keywords" />
-<!-- Favicon -->
-<link href="/css/chall/img/favicon.ico" rel="icon" />
-<!-- Google Web Fonts -->
-<link rel="preconnect" href="https://fonts.gstatic.com" />
-<link
-	href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap"
-	rel="stylesheet" />
-<!-- Font Awesome -->
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-	rel="stylesheet" />
-<!-- Flaticon Font -->
-<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
-<!-- Libraries Stylesheet -->
-<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css"
-	rel="stylesheet" />
-<link href="/css/chall/lib/lightbox/css/lightbox.min.css"
-	rel="stylesheet" />
-<!-- Customized Bootstrap Stylesheet -->
-<link href="/css/chall/css/style.css" rel="stylesheet" />
-<!-- JavaScript Libraries -->
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="/css/chall/lib/easing/easing.min.js"></script>
-<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
-<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
-<!-- Contact Javascript File -->
-<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
-<script src="/css/chall/mail/contact.js"></script>
-<!-- Template Javascript -->
-<script src="/css/chall/js/main.js"></script>
-<!-- google chart -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-<title>OWN _ 도전 _ 마이페이지</title>
+	<!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="Free HTML Templates" name="keywords" />
+	<!-- Favicon -->
+	<link href="/css/chall/img/favicon.ico" rel="icon" />
+	<!-- Google Web Fonts -->
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet" />
+	<!-- Font Awesome -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+	<!-- Flaticon Font -->
+	<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+	<!-- Libraries Stylesheet -->
+	<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+	<link href="/css/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
+	<!-- Customized Bootstrap Stylesheet -->
+	<link href="/css/chall/css/style.css" rel="stylesheet" />
+	<!-- JavaScript Libraries -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+	<script src="/css/chall/lib/easing/easing.min.js"></script>
+	<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
+	<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
+	<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
+	<!-- Contact Javascript File -->
+	<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
+	<script src="/css/chall/mail/contact.js"></script>
+	<!-- Template Javascript -->
+	<script src="/css/chall/js/main.js"></script>
+	<!-- google chart -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	<title>OWN _ 도전 _ 마이페이지</title>
 </head>
 
 <div layout:fragment="content">
 
-<body>
-	<!-- Header Start -->
-	<div class="container-fluid bg-primary" style="padding: 0">
-		<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 500px; background-image: url(/img/chall/main/yoga1.jpg);
+	<body>
+		<!-- Header Start -->
+		<div class="container-fluid bg-primary" style="padding: 0">
+			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 500px; background-image: url(/img/chall/main/yoga1.jpg);
 			background-size: cover">
-			<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
-			<div class="d-inline-flex text-white">
-				<p class="m-0">
-					<a class="text-white" href="">Home</a></p>
-				<p class="m-0 px-2">/</p>
-				<p class="m-0">Contact Us</p>
+				<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
+				<div class="d-inline-flex text-white">
+					<p class="m-0">
+						<a class="text-white" href="">Home</a></p>
+					<p class="m-0 px-2">/</p>
+					<p class="m-0">Contact Us</p>
+				</div>
 			</div>
 		</div>
-	</div>
-
+		<!-- Header end
 		<div th:if="${session.loginUser}">
 			오운_마이페이지
 			<h1 th:text="${session.loginUser.userId}"></h1>
 		</div>
-		<a href="/own/chall/myAmount">내 예치금</a> <a href=#>내 인증내역들</a> <a
-			href="/own/chall/myChall">내 도전들</a>
-		<h3>마이 프로필</h3>
+		<a href="/own/chall/myAmount">내 예치금</a> <a href=#>내 인증내역들</a> <a href="/own/chall/myChall">내 도전들</a>
+		<h3>마이 프로필</h3> -->
 		<!-- 		<ul>
 			<input id ="userId" type="hidden" name="challLeader" th:value="${session.loginUser.userId}">
 			<li>회원정보<span th:text="{memInfo}"></span>
@@ -83,213 +73,185 @@
 						</form>
 		</ul> -->
 
-	<!-- Contact Start -->
-	<div class="container-fluid pt-5">
-		<div class="container">
-			<div class="text-center pb-2">
-				<p class="section-title px-5">
-					<span class="px-2">MY PAGE</span>
-				</p>
-				<h1 class="mb-4">내 프로필</h1>
-			</div>
+		<!-- Contact Start -->
+		<div class="container py-5">
+			<div class="row pt-3">
+				<div class="col-lg-3 mt-5 mt-lg-0">
 
-<!-- 내 프로필 내역 -->
-			<div class="row mb-3" style="justify-content: center; ">
-				<div class="col-lg-3 mb-3" style="text-align: center;">
-					<!-- <div class="col-md-5 col-lg-3 text-center team mb-5"> -->
-					<div class="position-relative overflow-hidden mb-4"
-						style="border-radius: 100%; width: 200px; height: 200px; margin: auto;">
-						<div class="w-100 h-100">
-							<div th:if="${memInfo}">
-								<!-- 도전프로필이 있는경우 -->
-								<img class="img-fluid" alt=""
-									th:src="|/imgView/${memInfo.memImage}|"
-									style="width: 200px; height: 200px; object-fit: cover" />
+					<div class="d-flex flex-column text-center rounded mb-5 py-5 px-4" style="background-color:  #6ab0cd;">
+					<p class="text-white">My Profile</p>
+						<!-- 도전리더 프로필 있는 경우-->
+						<img th:src="|/imgView/${memInfo.memImage}|"
+							class="img-fluid rounded-circle mx-auto mb-4"
+							style="width: 180px; height:180px ; object-fit: cover" />
+						<h5 class="text-secondary mb-3">[[${memInfo.memNickname}]]</h5>
+						<p class="text-white m-0" th:text="${memInfo.memIntro}"></p>
+				</div>
+
+				 <!-- Category List -->
+				 <div class="mb-5">
+					<h2 class="mb-4">Categories</h2>
+					<ul class="list-group list-group-flush">
+					  <li class="list-group-item d-flex justify-content-between align-items-center px-0" >
+						<a href="/own/chall/myInfo">내 정보수정</a>
+						<span class="badge badge-primary badge-pill">12000</span>
+					  </li>
+					  <li class="list-group-item d-flex justify-content-between align-items-center px-0" >
+						<a href="/own/chall/myAmount">내 예치금</a>
+						<span class="badge badge-primary badge-pill">131</span>
+					  </li>
+					  <li class="list-group-item d-flex justify-content-between align-items-center px-0" >
+						<a href="/own/chall/myChall">내 도전</a>
+						<span class="badge badge-primary badge-pill">78</span>
+					  </li>
+					</ul>
+				  </div>
+
+				</div>
+				<div class="col-lg-9">
+					<div class="text-center pb-2">
+						<p class="section-title px-5">
+							<span class="px-2">MY PAGE</span>
+						</p>
+						<h1 class="mb-4">내 정보</h1>
+					</div>
+					<div class="bg-light text-center rounded p-5" style="width: 800px;">
+						<div style="width: 700px; display: flex;justify-content: center;">
+							<div style="text-align: center;">
+								<canvas id="myChart" style="width: 300px; height: 300px; "></canvas>
+								<h3 class="m-3">성공률 [[${memResult.avgSR}]] % </h3>
 							</div>
-							<div th:if="${memInfo.memImage == null}">
-								<!-- 이미지없을때 기본이미지 -->
-								<img class="img-fluid" alt=""
-									th:src="|/imgView/d87e37df-45a0-491e-bcf2-28482284c8d0_2513B53E55DB206927.png|"
-									style="width: 200px; height: 200px; object-fit: cover" />
+							<div style="text-align: center; width: 300px; height: 300px; vertical-align: middle;">
+								<h5>현재까지 총 상금:[[${memResult.sumRP}]]</h5>
 							</div>
 						</div>
 					</div>
-
-				</div>
-				<div class="col-lg-4 mb-3 p-4" style="text-align: center;">
-					<h3 class="mt-3 mb-5">[[${memInfo.memNickname}]]</h3>
-					<p>[[${memInfo.memIntro}]]</p>
-					<p>나의 환불계좌:[[${memInfo.memAcc}]]</p>
-					<p>나의 환불계좌:[[${memResult}]]</p>
-				</div>
-			</div>
-
-			<!-- 메뉴바 -->
-			<div class="row" style="margin: auto;">
-				<div class="col-12 text-center mb-2">
-					<ul class="list-inline mb-4" id="menu-filters" style="text-align: center;">
-						<li class="btn btn-outline-primary m-1 active" id="nowChall">
-							<a href="/own/chall/myInfo">내 정보수정</a></li>
-						<li class="btn btn-outline-primary m-1" >
-							<a href="/own/chall/myAmount">내 예치금</a></li>
-						<li class="btn btn-outline-primary m-1" >
-							<a href="/own/chall/myChall">내 도전</a></li>
-					</ul>
-				</div>
-			</div>
-			<div>
-			<h3>도전평균 내기</h3>
-				<div style="width: 700px; display: flex;justify-content: center;">
-					<div style="text-align: center;">
-						<canvas id="myChart" style="width: 300px; height: 300px; "></canvas>
-						<h3>[[${memResult.avgSR}]] % 확률로 성공 ! </h3>
-					</div>
-					<div style="text-align: center; width: 300px; height: 300px; vertical-align: middle;">
-						 <h5>현재까지 총 상금:[[${memResult.sumRP}]]</h5>
-					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- Contact End -->
 
-	<!-- Footer Start -->
-	<div
-		class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
-		<div class="row pt-5">
-			<div class="col-lg-3 col-md-6 mb-5">
-				<a href=""
-					class="navbar-brand font-weight-bold text-primary m-0 mb-4 p-0"
-					style="font-size: 40px; line-height: 40px"> <i
-					class="flaticon-043-teddy-bear"></i> <span class="text-white">KidKinder</span>
-				</a>
-				<p>Labore dolor amet ipsum ea, erat sit ipsum duo eos. Volup
-					amet ea dolor et magna dolor, elitr rebum duo est sed diam elitr.
-					Stet elitr stet diam duo eos rebum ipsum diam ipsum elitr.</p>
-				<div class="d-flex justify-content-start mt-4">
-					<a
-						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
-						style="width: 38px; height: 38px" href="#"><i
-						class="fab fa-twitter"></i></a> <a
-						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
-						style="width: 38px; height: 38px" href="#"><i
-						class="fab fa-facebook-f"></i></a> <a
-						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
-						style="width: 38px; height: 38px" href="#"><i
-						class="fab fa-linkedin-in"></i></a> <a
-						class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
-						style="width: 38px; height: 38px" href="#"><i
-						class="fab fa-instagram"></i></a>
+		<!-- Contact End -->
+
+		<!-- Footer Start -->
+		<div class="container-fluid bg-secondary text-white mt-5 py-5 px-sm-3 px-md-5">
+			<div class="row pt-5">
+				<div class="col-lg-3 col-md-6 mb-5">
+					<a href="" class="navbar-brand font-weight-bold text-primary m-0 mb-4 p-0"
+						style="font-size: 40px; line-height: 40px"> <i class="flaticon-043-teddy-bear"></i> <span
+							class="text-white">KidKinder</span>
+					</a>
+					<p>Labore dolor amet ipsum ea, erat sit ipsum duo eos. Volup
+						amet ea dolor et magna dolor, elitr rebum duo est sed diam elitr.
+						Stet elitr stet diam duo eos rebum ipsum diam ipsum elitr.</p>
+					<div class="d-flex justify-content-start mt-4">
+						<a class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+							style="width: 38px; height: 38px" href="#"><i class="fab fa-twitter"></i></a> <a
+							class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+							style="width: 38px; height: 38px" href="#"><i class="fab fa-facebook-f"></i></a> <a
+							class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+							style="width: 38px; height: 38px" href="#"><i class="fab fa-linkedin-in"></i></a> <a
+							class="btn btn-outline-primary rounded-circle text-center mr-2 px-0"
+							style="width: 38px; height: 38px" href="#"><i class="fab fa-instagram"></i></a>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5">
+					<h3 class="text-primary mb-4">Get In Touch</h3>
+					<div class="d-flex">
+						<h4 class="fa fa-map-marker-alt text-primary"></h4>
+						<div class="pl-3">
+							<h5 class="text-white">Address</h5>
+							<p>123 Street, New York, USA</p>
+						</div>
+					</div>
+					<div class="d-flex">
+						<h4 class="fa fa-envelope text-primary"></h4>
+						<div class="pl-3">
+							<h5 class="text-white">Email</h5>
+							<p>info@example.com</p>
+						</div>
+					</div>
+					<div class="d-flex">
+						<h4 class="fa fa-phone-alt text-primary"></h4>
+						<div class="pl-3">
+							<h5 class="text-white">Phone</h5>
+							<p>+012 345 67890</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5">
+					<h3 class="text-primary mb-4">Quick Links</h3>
+					<div class="d-flex flex-column justify-content-start">
+						<a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a> <a
+							class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>About Us</a> <a
+							class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Classes</a> <a
+							class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Teachers</a> <a
+							class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Blog</a> <a
+							class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5">
+					<h3 class="text-primary mb-4">Newsletter</h3>
+					<form action="">
+						<div class="form-group">
+							<input type="text" class="form-control border-0 py-4" placeholder="Your Name"
+								required="required" />
+						</div>
+						<div class="form-group">
+							<input type="email" class="form-control border-0 py-4" placeholder="Your Email"
+								required="required" />
+						</div>
+						<div>
+							<button class="btn btn-primary btn-block border-0 py-3" type="submit">Submit Now</button>
+						</div>
+					</form>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-6 mb-5">
-				<h3 class="text-primary mb-4">Get In Touch</h3>
-				<div class="d-flex">
-					<h4 class="fa fa-map-marker-alt text-primary"></h4>
-					<div class="pl-3">
-						<h5 class="text-white">Address</h5>
-						<p>123 Street, New York, USA</p>
-					</div>
-				</div>
-				<div class="d-flex">
-					<h4 class="fa fa-envelope text-primary"></h4>
-					<div class="pl-3">
-						<h5 class="text-white">Email</h5>
-						<p>info@example.com</p>
-					</div>
-				</div>
-				<div class="d-flex">
-					<h4 class="fa fa-phone-alt text-primary"></h4>
-					<div class="pl-3">
-						<h5 class="text-white">Phone</h5>
-						<p>+012 345 67890</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6 mb-5">
-				<h3 class="text-primary mb-4">Quick Links</h3>
-				<div class="d-flex flex-column justify-content-start">
-					<a class="text-white mb-2" href="#"><i
-						class="fa fa-angle-right mr-2"></i>Home</a> <a class="text-white mb-2"
-						href="#"><i class="fa fa-angle-right mr-2"></i>About Us</a> <a
-						class="text-white mb-2" href="#"><i
-						class="fa fa-angle-right mr-2"></i>Our Classes</a> <a
-						class="text-white mb-2" href="#"><i
-						class="fa fa-angle-right mr-2"></i>Our Teachers</a> <a
-						class="text-white mb-2" href="#"><i
-						class="fa fa-angle-right mr-2"></i>Our Blog</a> <a class="text-white"
-						href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6 mb-5">
-				<h3 class="text-primary mb-4">Newsletter</h3>
-				<form action="">
-					<div class="form-group">
-						<input type="text" class="form-control border-0 py-4"
-							placeholder="Your Name" required="required" />
-					</div>
-					<div class="form-group">
-						<input type="email" class="form-control border-0 py-4"
-							placeholder="Your Email" required="required" />
-					</div>
-					<div>
-						<button class="btn btn-primary btn-block border-0 py-3"
-							type="submit">Submit Now</button>
-					</div>
-				</form>
+			<div class="container-fluid pt-5" style="border-top: 1px solid rgba(23, 162, 184, 0.2);">
+				<p class="m-0 text-center text-white">
+					&copy; <a class="text-primary font-weight-bold" href="#">Your
+						Site Name</a>. All Rights Reserved.
+
+					<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+					Designed by <a class="text-primary font-weight-bold" href="https://htmlcodex.com">HTML Codex</a>
+					<br />Distributed By:
+					<a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+				</p>
 			</div>
 		</div>
-		<div class="container-fluid pt-5"
-			style="border-top: 1px solid rgba(23, 162, 184, 0.2);">
-			<p class="m-0 text-center text-white">
-				&copy; <a class="text-primary font-weight-bold" href="#">Your
-					Site Name</a>. All Rights Reserved.
+		<!-- Footer End -->
 
-				<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-				Designed by <a class="text-primary font-weight-bold"
-					href="https://htmlcodex.com">HTML Codex</a> <br />Distributed By:
-				<a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-			</p>
-		</div>
-	</div>
-	<!-- Footer End -->
+		<!-- Back to Top -->
+		<a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-	<!-- Back to Top -->
-	<a href="#" class="btn btn-primary p-3 back-to-top"><i
-		class="fa fa-angle-double-up"></i></a>
-		
-	<script th:inline="javascript">
-	$(document).ready(function () {
-		//근데이거 좀따가 생각해서 홈페이지로 이동해야할듯
-		/*<![CDATA[*/
-		let avgSuccessRate = /*[[${memResult.avgSR}]]*/
-			//도전멤버정보가 없는 경우
-		console.log(avgSuccessRate);
-		let rest = 100 - avgSuccessRate;
-		//아작스로 데이터수정해서다시 화면에뿌려주깅
-			var context = document.getElementById('myChart').getContext('2d');
-		
-			var myChart = new Chart(context, {
-				type: 'doughnut',
-				data: { 
-						  datasets: [{
-							  label: '나의 평균 성공률',
-							  data: [avgSuccessRate, rest],
-							  backgroundColor: [
-								  'rgb(54, 162, 235)',
-								  'rgba(23, 162, 184, 0.2)'
-							  ],
-							  hoverOffset: 4
-						  }],
-						 labels: [
-								'평균 성공률',
-								'100'
-							  ], 
-				     }
+		<script th:inline="javascript">
+			$(document).ready(function () {
+				//근데이거 좀따가 생각해서 홈페이지로 이동해야할듯
+				/*<![CDATA[*/
+				let avgSuccessRate = /*[[${memResult.avgSR}]]*/
+					//도전멤버정보가 없는 경우
+					console.log(avgSuccessRate);
+				let rest = 100 - avgSuccessRate;
+				//아작스로 데이터수정해서다시 화면에뿌려주깅
+				var context = document.getElementById('myChart').getContext('2d');
+
+				var myChart = new Chart(context, {
+					type: 'doughnut',
+					data: {
+						datasets: [{
+							label: '나의 평균 성공률',
+							data: [avgSuccessRate, rest],
+							backgroundColor: [
+								'rgb(54, 162, 235)',
+								'rgba(23, 162, 184, 0.2)'
+							],
+							hoverOffset: 4
+						}]
+					}
 				});
-			/*]]>*/
-	});
-	</script>
-</body>
+				/*]]>*/
+			});
+		</script>
+	</body>
 </div>
+
 </html>

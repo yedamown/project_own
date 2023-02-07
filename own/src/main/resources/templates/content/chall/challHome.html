@@ -64,8 +64,8 @@
 <div layout:fragment="content">
 <body>
 		<!-- Header Start -->
-		<div class="container-fluid bg-primary mb-5" style="padding: 0">
-			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 500px; background-image: url(/img/chall/main/basket.jpg);
+		<div class="container-fluid bg-primary mb-3" style="padding: 0">
+			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px; background-image: url(/img/chall/main/basket.jpg);
 			background-size: cover">
 				<!-- 	<img src="/img/chall/main/badminton.jpg" style=" object-fit: cover"/> -->
 				<div class="d-inline-flex text-white">
@@ -81,14 +81,14 @@
 		<!-- 검색  -->
 		<div class="container-fluid pt-4 mb-4" style="width: 800px">
 			<div class="input-group">
-				<input type="text" class="form-control form-control-lg" id="searchWord" placeholder="Keyword" />
+				<input type="text" class="form-control form-control-lg" id="searchWord" placeholder="어떤 운동을 좋아하시나요?" />
 				<div class="input-group-append" id="searchBtn">
 					<span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
 				</div>
 			</div>
 		</div>
 		<!-- 검색 끝 -->
-
+<!-- 
 		<div th:if="${session.loginUser}">
 			도전 홈 _ 로그인 중
 			<h1 th:text="${session.loginUser.userId}"></h1>
@@ -99,7 +99,7 @@
 				<a href="/own/chall/myChall">내가만든도전보기</a>
 			</div>
 		</div>
-		<div th:if="${session.loginUser} == null">로그인 안한 상태 볼 순 있지만 등록이나 그런건불가능</div>
+		<div th:if="${session.loginUser} == null">로그인 안한 상태 볼 순 있지만 등록이나 그런건불가능</div> -->
 
 		<!-- 운동카테고리 -->
 			<div class="container py-5">
@@ -107,72 +107,72 @@
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/걷기.png" style="width: 100px; height: 100px; object-fit: cover"
 							picname="걷기" />
-						<p>걷기</p>
+						<p class="p-2">걷기</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/계단오르기.png" style="width: 100px; height: 100px; object-fit: cover"
 							picname="계단오르기" />
-						<p>계단오르기</p>
+						<p class="p-2">계단오르기</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/골프2.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="골프" />
-						<p>골프</p>
+						<p class="p-2">골프</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/달리기.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="달리기" />
-						<p>달리기</p>
+							<p class="p-2">달리기</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/배구.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="배구" />
-						<p>배구</p>
+							<p class="p-2">배구</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/배드민턴.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="배드민턴" />
-						<p>배드민턴</p>
+							<p class="p-2">배드민턴</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/사이클.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="사이클" />
-						<p>사이클</p>
+							<p class="p-2">사이클</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/실내자전거.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="실내자전거" />
-						<p>실내자전거</p>
+							<p class="p-2">실내자전거</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/유도.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="유도" />
-						<p>유도</p>
+							<p class="p-2">유도</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/줌바.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="줌바" />
-						<p>줌바</p>
+							<p class="p-2">줌바</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/축구.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="축구" />
-						<p>축구</p>
+							<p class="p-2">축구</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/탁구.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="탁구" />
-						<p>탁구</p>
+							<p class="p-2">탁구</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/태권도.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="태권도" />
-						<p>태권도</p>
+							<p class="p-2">태권도</p>
 					</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/하이킹.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="하이킹" />
-						<p>하이킹</p>
+							<p class="p-2">하이킹</p>
 					</div>
 				</div>
 			</div>
@@ -185,7 +185,8 @@
 		<div th:if="${myChall} !=null">
 			<div class="container pb-5">
 				<div class="container p-0">
-					<div class="text-center pb-2">
+					<div class="text-center pb-2" style="cursor: pointer;"
+					 th:onclick="|location.href='@{/own/chall/myChall}'|" >
 						<p class="section-title px-5">
 							<span class="px-2">My Challenges</span>
 						</p>
@@ -195,20 +196,19 @@
 					<div class="owl-carousel testimonial-carousel">
 						<th:block th:each="my: ${myChall}">
 							<div class="testimonial-item px-3">
-								<div class="grid" style="padding: 10px" id=${vldNo}>
-									<div class="card card__one" style="width: 300px; height:380px;">
+								<div class="grid" style="padding: 5px ; cursor: pointer;"
+								 th:onclick="|location.href='@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}'|">
+									<div class="card card__one" style="width: 300px; height:350px;">
 										<figure class="card__img">
 											<img th:src="|/imgView/${my.firstImage}|" style="width: 300px; height:210px; object-fit: cover" />
 										</figure>
 										<div class="card__desc vldno" style="text-align: center;">
 											<h5 style="margin-top: 5px;"th:text="${my.challTitle}"></h5>
 											<div class="row" style="justify-content: center;">
-												<p style="margin: 5px 10px;">[[${my.challDuration}]]주 동안</p>
-												<p style="margin: 5px 10px;">주 [[${my.challFreq}]] 회</p>
-												<p style="margin: 5px 10px;">[[${#dates.format(my.challStartdate, 'M/d')}]]시작</p>
+												<p style="margin: 5px 5px;">[[${my.challDuration}]]주 동안</p>
+												<p style="margin: 5px 5px;">주 [[${my.challFreq}]] 회</p>
+												<p style="margin: 5px 5px;">[[${my.challStatus}]]</p>
 									</div>
-									<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(my.challNo, 'CHA_')})}"
-				 					 class="btn btn-primary px-4 mx-auto my-2">도전하러 가기</a>
 								</div>
 								</div>
 							</div>	
@@ -231,24 +231,21 @@
 			</div>
 			<!-- 한개를 붙여야.. 밑에 점들이 나온다 ㅋ...이유는 모르겠음.. 그리고원래 갯수만큼..나오는데왜안노오-->
 			<div class="owl-carousel testimonial-carousel">
-				<div class="testimonial-item px-3">
-				</div>
 				<th:block th:each="cha: ${popChall}">
 					<div class="testimonial-item px-3">
-						<div class="grid" style="padding: 10px">
-							<div class="card card__one" style="width: 300px; height:380px;">
+						<div class="grid" style="padding: 5px ; cursor: pointer;"
+						th:onclick="|location.href='@{/own/chall/detailChall(challNo = ${#strings.substringAfter(cha.challNo, 'CHA_')})}'|">
+							<div class="card card__one" style="width: 300px; height:350px;">
 								<figure class="card__img">
 									<img th:src="|/imgView/${cha.firstImage}|" style="width: 300px; height:210px; object-fit: cover" />
 								</figure>
 								<div class="card__desc vldno" style="text-align: center;">
 									<h5 style="margin-top: 5px;"th:text="${cha.challTitle}"></h5>
 									<div class="row" style="justify-content: center;">
-										<p style="margin: 5px 10px;">[[${cha.challDuration}]]주 동안</p>
-										<p style="margin: 5px 10px;">주 [[${cha.challFreq}]] 회</p>
-										<p style="margin: 5px 10px;">[[${#dates.format(cha.challStartdate, 'M/d')}]]시작</p>
+										<p style="margin: 5px 5px;">[[${cha.challDuration}]]주 동안</p>
+										<p style="margin: 5px 5px;">주 [[${cha.challFreq}]] 회</p>
+										<p style="margin: 5px 5px;">[[${#dates.format(cha.challStartdate, 'M/d')}]]시작</p>
 							</div>
-							<a th:href="@{/own/chall/detailChall(challNo = ${#strings.substringAfter(cha.challNo, 'CHA_')})}"
-							  class="btn btn-primary px-4 mx-auto my-2">도전하러 가기</a>
 						</div>
 						</div>
 					</div>	
