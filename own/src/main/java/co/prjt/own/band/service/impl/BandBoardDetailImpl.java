@@ -58,6 +58,7 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 					for(OwnLikeVO o : list) {
 						if(o.getCategoryNo()!=null&&v.getBandBoardDetailNo().equals(o.getCategoryNo())) {
 							v.setLikeList(o);
+							break;
 						} else {
 							OwnLikeVO like = new OwnLikeVO();
 							like.setLikeCount(0);

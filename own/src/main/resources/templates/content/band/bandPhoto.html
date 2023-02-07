@@ -1,32 +1,43 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
 <head>
-	<script src="/css/band/js/jquery-3.2.1.js"></script>
-	<script src="/css/band/js/json.min.js"></script>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-    <title>Royal Hotel</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/band/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-    <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-    <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="/css/band/vendors/lightbox/simpleLightbox.css">
-    <!-- main css -->
-    <link rel="stylesheet" href="/css/band/css/style.css">
-    <link rel="stylesheet" href="/css/band/css/responsive.css">
-    <!-- 라이트 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.min.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox.min.js"></script>
 </head>
 <style>
-	
+	img {
+    filter: brightness(1);
+	}
+	 
+	img:hover {
+	    filter: brightness(0.5);
+	}
+	.fa {
+		position: absolute;
+		top: 8px;
+		left:47%;
+		display: none;
+		color: white;
+	}
+	.light:hover .fa{
+		display: block;
+	}
+	.light {
+		position: relative;
+	}
+	  /* view more */
+    .button_hover2 {
+		color: white;
+		text-align: center;
+		background-color: #6ab0cd;
+		width: 150px;
+		margin: 0 auto;
+		border: 2px solid #6ab0cd;
+       }
+	.button_hover2:hover {
+		color: white;
+		box-shadow: #6ab0cd 0 80px 0px 2px inset;
+		border-radius: 10px;
+	}
 </style>
-<div id="template" style="flex-grow: 3; width: 740px">
+<div id="template" style="flex-grow: 3; width: 740px; padding:10px;">
         <!--================Breadcrumb Area =================-->
         <section class="banner_area">
         <input type="hidden" id="bandNo" th:value="${bandNo}">
@@ -34,7 +45,7 @@
             	<div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0" data-background=""></div>
             	<div class="container" >
                 <div class="page-cover text-center">
-                    <h2 class="page-cover-tittle">앨범</h2>
+                    <h2 class="page-cover-tittle">PHOTO</h2>
                 </div>
             </div>
             </div>
@@ -42,36 +53,12 @@
         <!--================Breadcrumb Area =================-->
         
         <!--================Breadcrumb Area =================-->
-        <section class="gallery_area section_gap">
+        <section class="gallery_area section_gap" style="padding: 25px 0px;">
             <div class="container">
-                <div class="row imageGallery1" id="gallery">
-                    <!-- <div class="col-md-4 gallery_item">
-                        <div class="gallery_img">
-                            <img src="/css/band/image/gallery/01.jpg" alt="">
-                            <div class="hover">
-                            	<a class="light"><i class="fa fa-expand"></i></a>
-                            </div>
-                        </div>
-                    </div> -->
+                <div class="row imageGallery1" id="gallery" style="justify-content: center;">
             	</div>
             </div>
         </section>
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="/css/band/js/popper.js"></script>
-        <script src="/css/band/js/bootstrap.min.js"></script>
-        <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
-        <script src="/css/band/js/jquery.ajaxchimp.min.js"></script>
-        <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-        <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
-        <script src="/css/band/js/mail-script.js"></script>
-        <script src="/css/band/js/stellar.js"></script>
-        <script src="/css/band/vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
-        <script src="/css/band/vendors/isotope/isotope-min.js"></script>
-        <script src="/css/band/js/stellar.js"></script>
-        <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
-        <script src="/css/band/js/custom.js"></script>
-        
 </div>
 <script>
 $(function(){
@@ -105,14 +92,11 @@ $(function(){
 	    	if(leg==9){
                 //more 누르면 나오는 페이지
             	let btnTag = `<nav class="blog-pagination justify-content-center d-flex" id="multiId">
-			                <a class="view_btn button_hover" id="nextBtn" style="width: 555px;">View More</a>
+			                <a class="view_btn button_hover2" id="nextBtn" style="width: 555px;">View More</a>
 			                <input type="hidden" id="mediaNo" value=${mediaNo}>
 			                </nav>`
 			              
                 gallery.append(btnTag);
-            } else {
-            	let endtag = `<div><h5>끝입니다</h5></div>`
-           		gallery.append(endtag);
             }
 		})
 	}
