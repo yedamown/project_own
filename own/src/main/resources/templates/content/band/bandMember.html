@@ -4,30 +4,214 @@
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<style>
-		.aBox {
-			width: 60px;
-			height: 60px;
-			border-radius: 30%;
+		.item-row {
+			margin-top: 10px;
+			margin-bottom: 20px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+		}
+
+		.searchInput {
+			width: 250px;
+		}
+
+		#selectOption {
+			margin-left: 247px;
+		}
+
+		/* 테이블 */
+		.responsive-table {
+			background-color: #fefefe;
+			border-collapse: collapse;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.02);
+			width: 100%;
 			overflow: hidden;
 		}
 
-		.aProfile {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			border-radius: 30%;
-			
+		.responsive-table__row {
+			border-bottom: 1px solid #edeef2;
+			padding: 0 1.5rem;
+		}
+
+		@media (min-width: 768px) {
+			.responsive-table__row {
+				grid-template-columns: 2fr 1fr 2fr 2fr 1fr;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__row {
+				grid-template-columns: 1fr 2fr 1fr;
+			}
+		}
+
+		.responsive-table__row th,
+		.responsive-table__row td {
+			padding: 0.3rem;
+			text-align: left;
+		}
+
+		.responsive-table__head {
+			background-color: #e1e8f2;
+		}
+
+		@media (max-width: 991px) {
+			.responsive-table__head {
+				display: none;
+			}
+		}
+
+		.responsive-table__head__title {
+
+			align-items: center;
+			justify-content: center;
+			font-weight: 500;
+			text-transform: capitalize;
+		}
+
+		.responsive-table__body .responsive-table__row {
+			transition: 0.1s linear;
+			transition-property: color, background;
+		}
+
+		.responsive-table__body .responsive-table__row:last-child {
+			border-bottom: none;
+		}
+
+		.responsive-table__body .responsive-table__row:hover {
+			color: #fff;
+			background-color: #17a2b8;
+		}
+
+		.responsive-table__body__text {
+
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.responsive-table__body__text::before {
+			margin-right: 1rem;
+			font-weight: 600;
+			text-transform: capitalize;
+		}
+
+		@media (max-width: 991px) {
+			.responsive-table__body__text::before {
+				content: attr(data-title) " :";
+			}
+		}
+
+		@media (max-width: 400px) {
+			.responsive-table__body__text::before {
+				width: 100%;
+				margin-bottom: 1rem;
+			}
+		}
+
+		.responsive-table__body__text--name {
+			font-weight: 600;
+		}
+
+		@media (min-width: 768px) {
+			.responsive-table__body__text--name::before {
+				display: none;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__body__text--name {
+				grid-column: 0.5;
+				flex-direction: column;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+
+			.responsive-table__body__text--status,
+			.responsive-table__body__text--types,
+			.responsive-table__body__text--update {
+				grid-column: 0.6666666667;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+			.responsive-table__body__text--country {
+				grid-column: -3;
+			}
+		}
+
+		@media (min-width: 768px) and (max-width: 991px) {
+
+			.responsive-table__body__text--name,
+			.responsive-table__body__text--country {
+				grid-row: 2;
+			}
+		}
+
+		/* demo styles */
+
+		/* for custom scrollbar for webkit browser*/
+		::-webkit-scrollbar {
+			width: 6px;
+		}
+
+		::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		}
+
+		::-webkit-scrollbar-thumb {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		}
+
+		/* 버튼 */
+		.formbold-btn {
+			display: inline-block;
+			font-weight: 400;
+			color: #666666;
+			text-align: center;
+			vertical-align: middle;
+			user-select: none;
+			background-color: transparent;
+			border: 1px solid transparent;
+			padding: 0.375rem 0.75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			border-radius: 30px;
+			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+				border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+
+		.formbold-btn:hover {
+			color: #666666;
+			text-decoration: none;
+		}
+
+		.formbold-btn-primary {
+			color: #fff;
+			background-color: #17a2b8;
+			border-color: #17a2b8;
+		}
+
+		.formbold-btn-primary:hover {
+			color: #fff;
+			background-color: #138496;
+			border-color: #117a8b;
 		}
 	</style>
 </head>
 <div id="template" style="flex-grow: 3; width: 740px">
 	<div id="bandMemberList">
-		<div>
-			<input type="text" class="" placeholder="멤버 검색" id="searchVal" name="searchVal">
-			<span class="inputBtn">
-				<button class="searchBtn" type="button" id="searchBtn">
+		<div class="item-row optionDiv">
+			<input type="text" class="form-control searchInput" placeholder="멤버 검색" id="searchVal" name="searchVal">
+			<span class="inputBtn input-group-btn">
+				<button class="btn btn-default searchBtn" type="button" id="searchBtn">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
+				<span class=""> 전체 멤버 수 </span> <span id="memberCnt"></span>
 				<input type="hidden" name="pageNum" value="1">
 				<input type="hidden" th:value="${myBandMemberNo}" name="myBandMemberNo">
 			</span>
@@ -35,18 +219,18 @@
 				<option value="name" selected="selected">별명 순</option>
 				<option value="signupDate">가입일자 순</option>
 			</select>
-			<span class=""> 전체 멤버 수 </span> <span id="memberCnt"></span>
 		</div>
-		<table>
-			<thead>
-				<th></th>
-				<th>별명</th>
-				<th></th>
-				<th></th>
-				<th></th>
-
+		<table class="responsive-table">
+			<thead class="responsive-table__head">
+				<tr class="responsive-table__row">
+					<th class="responsive-table__head__title" colspan="1"></th>
+					<th class="responsive-table__head__title" style="width: 200px;" colspan="3">별명</th>
+					<th class="responsive-table__head__title"></th>
+					<th class="responsive-table__head__title"></th>
+					<th class="responsive-table__head__title" colspan="1"></th>
+				</tr>
 			</thead>
-			<tbody id="bandMemberTable">
+			<tbody class="responsive-table__body" id="bandMemberTable">
 			</tbody>
 		</table>
 		<div id="paging">
@@ -127,9 +311,9 @@
 							let nicknameTag = '';
 							let chatTag = '';
 							// 채팅체크
-							if(result[i].userId == loginUserId){
+							if (result[i].userId == loginUserId) {
 								chatTag = '';
-							} else if(result[i].chatCheck != 1 && result[i].userId != loginUserId){
+							} else if (result[i].chatCheck != 1 && result[i].userId != loginUserId) {
 								chatTag = `<div class="nav-item dropdown droMom">
 													<a href="" class="nav-item nav-link"
 														data-toggle="dropdown">
@@ -139,9 +323,9 @@
 														<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname}>채팅하기</a>
 														<br><a href="">신고하기</a>
 													</div>
-												</div>`;
-							} else if(result[i].chatCheck == 1 && result[i].userId != loginUserId){
-								chatTag = `<div class="nav-item dropdown droMom">
+											</div>`;
+							} else if (result[i].chatCheck == 1 && result[i].userId != loginUserId) {
+								chatTag = `<div class="nav-item dropdown droMom" style="height: 50px; width: 50px;">
 													<a href="" class="nav-item nav-link"
 														data-toggle="dropdown">
 														<i class="fa fa-solid fa-ellipsis"></i>
@@ -150,21 +334,21 @@
 														<a class="oldChatStart" value=${result[i].bandMemberNo} ">채팅하기</a><br>
 														<a href="">신고하기</a>
 													</div>
-												</div>`;
+											</div>`;
 							}
 							// 밴드장 표시
-							if(result[i].userId == loginUserId){
-								nicknameTag = `<td>${result[i].bandNickname}<i class="fa fa-solid fa-crown" style="margin-right: 5px;" aria-hidden="true"></i></td>`;
+							if (result[i].userId == loginUserId) {
+								nicknameTag = `<td class="responsive-table__body__text" colspan="3">${result[i].bandNickname}<i class="fa fa-solid fa-crown" style="margin-right: 5px;" aria-hidden="true"></i></td>`;
 							} else {
-								nicknameTag = `<td>${result[i].bandNickname}</td>`;
+								nicknameTag = `<td class="responsive-table__body__text" colspan="3">${result[i].bandNickname}</td>`;
 							}
-							let table = `<tr>
-						 					<td class="aBox"><img src="/imgView/${result[i].profileImg}" style="object-fit: cover" class="aProfile"/>		
+							let table = `<tr class="responsive-table__row">
+						 					<td class="responsive-table__body__text" colspan="1"><img src="/imgView/${result[i].profileImg}" style="height: 50px; width: 50px; border-radius: 30%; object-fit: cover"/>		
 											${nicknameTag}
-											<td hidden value=${result[i].userId}></td>
-											<td hidden value=${result[i].bandMemberNo}></td>
-											<td> 
-												${chatTag}
+											<td class="responsive-table__body__text" hidden value=${result[i].userId}></td>
+											<td class="responsive-table__body__text" hidden value=${result[i].bandMemberNo}></td>
+											<td class="responsive-table__body__text" colspan="1"> 
+											${chatTag}
 											</td>
 						 				<tr>`
 							$('#bandMemberTable').append(table);
@@ -227,81 +411,81 @@
 			}) // end of selectOption
 
 			// 새로운 채팅방 생성
-			$(document).on("click", ".newChatStart", function(){
+			$(document).on("click", ".newChatStart", function () {
 				// 로그인한 유저의 밴드멤버번호와 채팅할 유저의 밴드멤버번호와 닉네임
 				let bMemNo1 = myBandMemberNo;
 				let bMemNo2 = $(this).attr('value');
 				let bMemNick1 = $("#bandMemberTable").find("td").eq(1).text();
 				let bMemNick2 = $(this).attr('data-sub');
 
-					// 배열에 추가
-					let rName = bMemNick1 + ", " + bMemNick2 + "의 채팅방";
-					let chatroomDataList = new Array();
-					let chatroomData1 = {
-						chatroomName: rName,
-						bandMemberNo: bMemNo1
-					};
-					chatroomDataList.push(chatroomData1);
-					let chatroomData2 = {
-						chatroomName: rName,
-						bandMemberNo: bMemNo2
-					};
-					chatroomDataList.push(chatroomData2);
-					console.log("chatroomData1"
-						+ JSON.stringify(chatroomData1))
-					console.log("chatroomData2"
-						+ JSON.stringify(chatroomData2))
-					console.log("chatroomDataList"
-						+ JSON.stringify(chatroomDataList))
-					// 채팅방 새로 생성 후 결과값으로 방번호를 받아와 그 번호로 채팅방 페이지 보내기
-					$.ajax({
-						url: '/createChatroom',
-						method: 'post',
-						contentType: "application/json; charset=UTF-8",
-					 	data: JSON.stringify(chatroomDataList),
-					 	beforeSend: function (xhr) {
-					 		xhr.setRequestHeader(header, token);
-					 	},
-					 	success: function (result) {
-					 		// 결과로 채팅방 시퀀스 번호 받아옴
-					 		let url = '/chatroom?chatroomNo=CRN_' + result
-					 			+ '&bandMemberNo=' + bMemNo1;
-							window.open(url, '_blank', 'width=350, height=465');
-					 	},
-					 	error: function (error) {
-					 		console.log("error: " + error);
-					 	}
-					 });
+				// 배열에 추가
+				let rName = bMemNick1 + ", " + bMemNick2 + "의 채팅방";
+				let chatroomDataList = new Array();
+				let chatroomData1 = {
+					chatroomName: rName,
+					bandMemberNo: bMemNo1
+				};
+				chatroomDataList.push(chatroomData1);
+				let chatroomData2 = {
+					chatroomName: rName,
+					bandMemberNo: bMemNo2
+				};
+				chatroomDataList.push(chatroomData2);
+				console.log("chatroomData1"
+					+ JSON.stringify(chatroomData1))
+				console.log("chatroomData2"
+					+ JSON.stringify(chatroomData2))
+				console.log("chatroomDataList"
+					+ JSON.stringify(chatroomDataList))
+				// 채팅방 새로 생성 후 결과값으로 방번호를 받아와 그 번호로 채팅방 페이지 보내기
+				$.ajax({
+					url: '/createChatroom',
+					method: 'post',
+					contentType: "application/json; charset=UTF-8",
+					data: JSON.stringify(chatroomDataList),
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (result) {
+						// 결과로 채팅방 시퀀스 번호 받아옴
+						let url = '/chatroom?chatroomNo=CRN_' + result
+							+ '&bandMemberNo=' + bMemNo1;
+						window.open(url, '_blank', 'width=350, height=465');
+					},
+					error: function (error) {
+						console.log("error: " + error);
+					}
+				});
 			});
 
 			// 기존 채팅방 입장
-			$(document).on("click", ".oldChatStart", function(){
-					let bMemNo = myBandMemberNo;
-					let bMemNo1 = $(this).attr('value');
-					let chatroomData = {
-						bandMemberNo: bMemNo,
-						bandMemberNo1: bMemNo1
-					};
-					// 채팅방번호 받아와서 그 방으로 보내기
-					$.ajax({
-						url: '/findChatroomNo',
-						method: 'post',
-						contentType: "application/json; charset=UTF-8",
-						data: JSON.stringify(chatroomData),
-						beforeSend: function (xhr) {
-							xhr.setRequestHeader(header, token);
-						},
-						success: function (result) {
-							// 결과로 채팅방번호 받아옴
-							console.log("결과"+result)
-							let url = '/chatroom?chatroomNo='+ result + '&bandMemberNo=' + bMemNo;
-							window.open(url, '_blank', 'width=350, height=465');
-						},
-						error: function (error) {
-							console.log("error: " + error);
-						}
-					});
+			$(document).on("click", ".oldChatStart", function () {
+				let bMemNo = myBandMemberNo;
+				let bMemNo1 = $(this).attr('value');
+				let chatroomData = {
+					bandMemberNo: bMemNo,
+					bandMemberNo1: bMemNo1
+				};
+				// 채팅방번호 받아와서 그 방으로 보내기
+				$.ajax({
+					url: '/findChatroomNo',
+					method: 'post',
+					contentType: "application/json; charset=UTF-8",
+					data: JSON.stringify(chatroomData),
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (result) {
+						// 결과로 채팅방번호 받아옴
+						console.log("결과" + result)
+						let url = '/chatroom?chatroomNo=' + result + '&bandMemberNo=' + bMemNo;
+						window.open(url, '_blank', 'width=350, height=465');
+					},
+					error: function (error) {
+						console.log("error: " + error);
+					}
 				});
+			});
 		});
 	</script>
 </div>
