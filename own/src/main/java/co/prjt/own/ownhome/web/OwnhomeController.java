@@ -316,7 +316,7 @@ public class OwnhomeController {
 		@GetMapping("/own/admin/reportList")
 		public String reportList(Model model,Paging paging,ReportVO vo) {
 			model.addAttribute("RList", ownService.getPagingReportList(vo,paging));
-			return "/content/own/ownAdminReport";
+			return "content/own/ownAdminReport";
 		}
 		
 		
@@ -374,7 +374,7 @@ public class OwnhomeController {
 			model.addAttribute("userId", ovo.getUserId());
 			model.addAttribute("CList",	myList);
 			model.addAttribute("BList", bandList);
-			return "/content/own/test";
+			return "content/own/test";
 		}
 		
 		@ResponseBody		

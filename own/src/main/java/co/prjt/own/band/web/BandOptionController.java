@@ -139,7 +139,7 @@ public class BandOptionController {
 		// 샘플이미지 여덟장 실어보내기
 		// 밴드 대표이미지 찾기
 		model.addAttribute("createImage", common.selectImg(vo.getBandNo()));
-		return "/content/band2/bandManage";
+		return "content/band2/bandManage";
 	}
 
 	// 밴드 업데이트 처리
@@ -167,7 +167,7 @@ public class BandOptionController {
 		System.out.println("밴드위임페이지이동"+dvo);
 		model.addAttribute("bandInfo", bandService.getBand(dvo.getBandNo()));
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
-		return "/content/band2/bandImport";
+		return "content/band2/bandImport";
 	}
 
 	// 밴드위임처리

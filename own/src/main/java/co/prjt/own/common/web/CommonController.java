@@ -81,7 +81,7 @@ public class CommonController {
 	//신고폼예시 이동
 	@GetMapping("/own/test/reportformExam")
 	public String moveReport() {
-		return "/content/own/reportformExam";
+		return "content/own/reportformExam";
 	}
 	
 	//신고 폼 이동
