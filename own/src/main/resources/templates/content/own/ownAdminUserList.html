@@ -173,22 +173,21 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 	<div id="submain">
 	<div class="container-fluid py-5 mt-2" style="margin:auto; width: 1500px; ">
 	<div style="display: flex;">
-		<div class="col-lg-3 mt-1 mt-lg-0">					
+		<div class="col-lg-3 mt-1 mt-lg-0">		
+		<div style="height:86px;">
+			</div>			
 					<!-- Category List -->
 					<div class="mb-5">
 						<h2 class="mb-4">Categories</h2>
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item d-flex justify-content-between align-items-center px-0">
-								<p id="navuserList">회원 목록</p>
-								<span class="badge badge-primary badge-pill">12000</span>
+								<p id="navuserList" style="cursor: pointer;">회원 목록</p>
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center px-0">
-								<p id="navquestion">질문 목록</p>
-								<span class="badge badge-primary badge-pill">131</span>
+								<p id="navquestion" style="cursor: pointer;">질문 목록</p>
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center px-0">
-								<p id="navreportList">신고 목록</p>
-								<span class="badge badge-primary badge-pill">78</span>
+								<p id="navreportList" style="cursor: pointer;">신고 목록</p>
 							</li>
 						</ul>
 					</div>
@@ -208,6 +207,12 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 		</div> -->
 		<div class="layout-978">
 		<div id="mainTemplate">
+		<div class="text-center pb-2">
+          <p class="section-title px-5">
+            <span class="px-2">관리 페이지</span>
+          </p>
+          <h2 class="mb-4">회원 목록</h2>
+        </div>
 			<table class="responsive-table" id="amtTable">
 				<thead class="responsive-table__head">
 					<tr class="responsive-table__row">
@@ -223,7 +228,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 				<tbody class="responsive-table__body" id="userList">
 						<tr class="responsive-table__row" th:each="user: ${OList}">
 							<td class="responsive-table__body__text" th:text="${user.rn}" style="width:40px;"></td>
-							<td class="responsive-table__body__text"th:text="${user.userId}" th:class="test2" style="width:80px;"></td>
+							<td class="responsive-table__body__text" th:text="${user.userId}" th:class="test2" style="width:80px; cursor: pointer;"></td>
 							<td class="responsive-table__body__text" th:text="${user.userName}" style="width:80px;"></td>
 							<span th:if="${user.snsAccountNo==null}">
 								<td class="responsive-table__body__text" style="width:80px;">미등록</td>
@@ -303,7 +308,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 
 					let tag = `<tr class="responsive-table__row">
 								<td class="responsive-table__body__text" >${ele.rn}</td>
-								<td class="responsive-table__body__text test2">${ele.userId}</td>
+								<td class="responsive-table__body__text test2" style="cursor: pointer;">${ele.userId}</td>
 								<td class="responsive-table__body__text" >${ele.userName}</td>
 								<td class="responsive-table__body__text" >${snsAccountNo}</td>
 								<td class="responsive-table__body__text" >${ele.challcount}개 진행중..</td>
@@ -355,9 +360,10 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 		//페이지 이동
     	$('tbody').on('click', '.test2',function(e){
     		let id = $(this).text()
+    		console.log(id);
     		event.preventDefault()
     		$('#mainTemplate').empty();
-    		$('#mainTemplate').load('/own/admin/test?id='+id);
+    		$('#mainTemplate').load('/own/admin/test2?id='+id);
     	})
 		
     	$('#navquestion').on('click',function(){
