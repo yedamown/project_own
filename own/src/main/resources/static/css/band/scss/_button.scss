@@ -4,10 +4,10 @@
     text-transform: uppercase;
     color: #fff;
     font-weight: 600;
-    background: $yellow;
+    background: #6ab0cd;
     padding: 5px 30px;
     &:before{
-        background: #f8b100;
+        background: #00394f;
     }
     &:hover{
         color: #fff;
@@ -66,7 +66,7 @@
 .book_now_btn{
     width: 100%;
     display: block;
-    background: #f3c300;
+    background: #00394f;
     color: $dark;
     text-transform: uppercase;
     font-size: 14px;
