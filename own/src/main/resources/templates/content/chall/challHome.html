@@ -8,31 +8,18 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="Free HTML Templates" name="keywords" />
-	<!-- Favicon -->
-	<link href="/css/chall/img/favicon.ico" rel="icon" />
-	<!-- Google Web Fonts -->
-	<link rel="preconnect" href="https://fonts.gstatic.com" />
-	<link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet" />
-	<!-- Font Awesome -->
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
-	<!-- Flaticon Font -->
-	<link href="/css/chall/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+
 	<!-- Libraries Stylesheet -->
 	<link href="/css/chall/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
 	<link href="/css/chall/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
-	<!-- Customized Bootstrap Stylesheet -->
-	<link href="/css/chall/css/style.css" rel="stylesheet" />
+
 	<!-- JavaScript Libraries -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 	<script src="/css/chall/lib/easing/easing.min.js"></script>
 	<script src="/css/chall/lib/owlcarousel/owl.carousel.min.js"></script>
 	<script src="/css/chall/lib/isotope/isotope.pkgd.min.js"></script>
 	<script src="/css/chall/lib/lightbox/js/lightbox.min.js"></script>
-	<!-- Contact Javascript File -->
-	<script src="/css/chall/mail/jqBootstrapValidation.min.js"></script>
-	<script src="/css/chall/mail/contact.js"></script>
-	<!-- Template Javascript -->
-	<script src="/css/chall/js/main.js"></script>
+
 	<!-- 내 css들 -->
 	<link href="/css/chall/css/chall.css" rel="stylesheet" />
 	<style>
@@ -63,30 +50,35 @@
 </head>
 <div layout:fragment="content">
 <body>
-		<!-- Header Start -->
+		<!-- Banner Start -->
 		<div class="container-fluid bg-primary mb-3" style="padding: 0">
-			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px; background-image: url(/img/chall/main/basket.jpg);
-			background-size: cover">
-				<!-- 	<img src="/img/chall/main/badminton.jpg" style=" object-fit: cover"/> -->
-				<div class="d-inline-flex text-white">
-					<p class="m-0">
-						<a class="text-white" href="">Home</a></p>
-					<p class="m-0 px-2">/</p>
-					<p class="m-0">Contact Us</p>
+			<div class="d-flex flex-column align-items-center justify-content-end" style="min-height: 300px; background-color: #6ab0cd">
+				<div class="justify-content-center" style="height: 150px; background-color: #6ab0cd">
+					<h4 class="text-center" style="color: white; margin-top: 30px;">오늘의 운동</h4>
+					<h2 class="text-center" style="color: white;">Challenges</h2>
+				</div>
+				<div class="container-fluid" style="background-color: #00394f; width: 900px;height: 130px; padding-top: 40px;
+				border-top-left-radius: 15px; border-top-right-radius: 15px;">
+						<div class="input-group" style="width: 800px; margin: auto;">
+							<input type="text" class="form-control form-control-lg" id="searchWord" placeholder="어떤 운동을 좋아하시나요?" />
+							<div class="input-group-append" id="searchBtn">
+								<span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
+							</div>
+						</div>
 				</div>
 			</div>
 		</div>
-		<!-- Header End -->
+		<!-- Banner End -->
 
 		<!-- 검색  -->
-		<div class="container-fluid pt-4 mb-4" style="width: 800px">
+		<!-- <div class="container-fluid pt-4 mb-4" style="width: 800px">
 			<div class="input-group">
 				<input type="text" class="form-control form-control-lg" id="searchWord" placeholder="어떤 운동을 좋아하시나요?" />
 				<div class="input-group-append" id="searchBtn">
 					<span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- 검색 끝 -->
 <!-- 
 		<div th:if="${session.loginUser}">
@@ -103,73 +95,78 @@
 
 		<!-- 운동카테고리 -->
 			<div class="container py-5">
-				<div class="row" style="justify-content: center;" id="categoryBtn">
+				<div class="row" style="justify-content: center; cursor: pointer;" id="categoryBtn">
+					<div style="text-align: center; width: 150px; height:150px">
+							<img src="/img/chall/category/add.png" style="width: 100px; height: 100px; object-fit: cover"
+								picname="chall" />
+							<p class="text-primary">도전 만들기</p>
+						</div>
 					<div style="text-align: center; width: 150px; height:150px">
 						<img src="/img/chall/category/걷기.png" style="width: 100px; height: 100px; object-fit: cover"
 							picname="걷기" />
 						<p class="p-2">걷기</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+<!-- 					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/계단오르기.png" style="width: 100px; height: 100px; object-fit: cover"
 							picname="계단오르기" />
 						<p class="p-2">계단오르기</p>
-					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					</div> -->
+					<div style="text-align: center;cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/골프2.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="골프" />
 						<p class="p-2">골프</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/달리기.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="달리기" />
 							<p class="p-2">달리기</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/배구.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="배구" />
 							<p class="p-2">배구</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/배드민턴.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="배드민턴" />
 							<p class="p-2">배드민턴</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/사이클.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="사이클" />
 							<p class="p-2">사이클</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/실내자전거.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="실내자전거" />
 							<p class="p-2">실내자전거</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/유도.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="유도" />
 							<p class="p-2">유도</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer;  width: 150px; height:150px">
 						<img src="/img/chall/category/줌바.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="줌바" />
 							<p class="p-2">줌바</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/축구.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="축구" />
 							<p class="p-2">축구</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/탁구.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="탁구" />
 							<p class="p-2">탁구</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/태권도.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="태권도" />
 							<p class="p-2">태권도</p>
 					</div>
-					<div style="text-align: center; width: 150px; height:150px">
+					<div style="text-align: center; cursor: pointer; width: 150px; height:150px">
 						<img src="/img/chall/category/하이킹.png" style="width: 100px; height: 100px;  object-fit: cover"
 							picname="하이킹" />
 							<p class="p-2">하이킹</p>
@@ -373,8 +370,12 @@ function lazyLoad() {
 	    	console.log(this);
 	    	let picname = $(this).attr('picname');
 	    	console.log(picname);
+			if(picname == "chall"){
+				location.href ='/own/chall/insertFormChall'
+			}else {				
+	 	   		location.href = '/own/chall/searchChall?searchWord=' + picname 
+			}
 	    	//아작스로 이동
-	    	location.href = '/own/chall/searchChall?searchWord=' + picname
 	    })
  		//검색
  		$('#searchBtn').on('click', function(){
