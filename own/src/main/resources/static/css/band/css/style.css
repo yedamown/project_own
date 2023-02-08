@@ -85,7 +85,7 @@ a:hover, a:focus {
 body {
   line-height: 24px;
   font-size: 14px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif, "Cafe24Ohsquare";;
   font-weight: 300;
   color: #777777;
 }
@@ -95,7 +95,7 @@ section {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Cafe24Ohsquare", sans-serif;
   font-weight: 600;
 }
 
