@@ -513,13 +513,15 @@
 			let cNo = cha.challNo.substr(4);
 			let firstImg = cha.firstImage;
 			console.log(cha.challStartdate);
+			console.log(cha.firstImage);
+			console.log(firstImg);
 			let startDate = toStringByFormatting(new Date(cha.challStartdate));
 			console.log(startDate);
 			let girdTag =  `<div class="grid m-3" style="padding: 3px; cursor:pointer" 
 							 onclick="location.href='detailChall?challNo=${cNo}'" >
 							    <div class="card card__one" style="width: 260px; height:350px">
 									<figure class="card__img">
-										<img src="|/imgView/${cha.firstImage}|" style="width: 260px; height:210px; object-fit: cover" />
+										<img src=/imgView/${firstImg} style="width: 260px; height:210px; object-fit: cover" />
 									</figure>
 								<div class="card__desc vldno" style="text-align: center;">
 									<h6 style="margin-top: 5px;" >${cha.challTitle}</h6>
