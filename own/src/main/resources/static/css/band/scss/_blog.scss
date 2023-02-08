@@ -2,6 +2,8 @@
 .latest_blog_area{
     
 }
+$yellow: #6ab0cd;
+
 .single-recent-blog-post{
     margin-bottom: 30px;
     .thumb{
@@ -400,7 +402,7 @@
 }
 
 .blog-pagination .page-item.active .page-link {
-    //background-color: $yellow;
+    background-color: $yellow;
     border-color: transparent;
     color:#fff;
 }
@@ -702,7 +704,7 @@
         color:#fff;
         text-transform: uppercase;
         font-weight:600;
-        background: #f8b600;
+        background: #6ab0cd;
         display: inline-block;
         padding: 7px 44px;
         transition: all 0.2s linear;

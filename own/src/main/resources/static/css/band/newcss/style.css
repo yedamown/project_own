@@ -32,7 +32,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: "Nunito", sans-serif;
+  --font-family-sans-serif: "Nunito", sans-serif, "Cafe24Ohsquare", "Cafe24Ohsquareair";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -75,6 +75,7 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6 {
+  font-family: "Cafe24Ohsquare", sans-serif;	 
   margin-top: 0;
   margin-bottom: 0.5rem;
 }

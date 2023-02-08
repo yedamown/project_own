@@ -169,9 +169,8 @@ padding:20px;
   color: #EF3B3A;
 }
 body {
-  background: #76b852; /* fallback for old browsers */
+  background: #6ab0cd; /* fallback for old browsers */
   background: rgb(255,255,255);
-  font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
 }
@@ -187,16 +186,16 @@ body {
 </head>
 <body>
 <div layout:fragment="content">
-		<h1>로그인 페이지</h1>
-  
   <div class="login-page">
   <div class="row">
+  <div>
   <img
               class="img-fluid rounded mb-5 mb-lg-0"
               src="/css/chall/img/about-1.jpg"
               alt=""
               style="width:320px; height:372px"
             />
+  </div>
   <div class="form">
     <form class="register-form">
       <input type="text" placeholder="name"/>
@@ -214,7 +213,7 @@ body {
              id="u_pw" name="password"/>
       <button type="submit">login</button>
       <small id="exception"></small>
-      <p class="message">회원이 아니신가요? <a href="/own/SigninForm">회원가입 하러가기</a></p>
+      <p class="message">회원이 아니신가요? <a href="/own/SigninForm">회원가입</a></p>
       <p class="message modalBtn">아이디 찾기</p>
       <p class="message modalBtn">비밀번호 찾기</p>
     </form>
