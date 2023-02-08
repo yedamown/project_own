@@ -126,6 +126,7 @@
 			<input type="hidden" id="bandNo" name="bandNo" th:value=${band.bandNo}>
 			<h4 style="display: inline">가치 글쓰기</h4>
 			<button type="button" id="writeBtn" class="btn btn-primary mb-2 button_hover2" style="color:white; float: right">등록</button>
+			<b id="writeBtnAlert" style="float: right">가치장만 작성가능한 게시판입니다</b>
 			<hr>
 			<div style="display: flex" id="selectors">
 				<select class="form-group aSel" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo" required>
@@ -153,7 +154,6 @@
 							<input type="checkbox" name="bandBoardTag" id="primary-switchHidden"  style="display: none" value="BH02">
 	                    </div>
 				</div>
-				<b id="writeBtnAlert">가치장만 작성가능한 게시판입니다</b>
 			</div>
 <!--==캘린더 모달창 ==-->
 		<div id="my_calendar_modal" style="width: 402px;">

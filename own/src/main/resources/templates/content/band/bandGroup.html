@@ -232,7 +232,7 @@
                         <div class="blog_right_sidebar">
                             <aside class="single_sidebar_widget author_widget">
                                	<a class="hotel_img hoverBtn" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">
-                                   	<img th:src="|/imgView/${band.bandImg.mediaServerFile}|" class="" alt=""  style="width: 200px; height: 200px; margin-bottom: 15px;">
+                                   	<img th:src="|/imgView/${band.bandImg.mediaServerFile}|" class="" alt=""  style="width: 200px; height: 200px; margin-bottom: 15px; pointer-events: none;">
                                	</a>
                                	<a class="hotel_img hoverBtn" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}" style="text-decoration: none;"> 
                                 	<h3 th:text="${band.bandName}" class="typo-list" style="display:inline;"></h3>
@@ -483,6 +483,7 @@
 				                                                   <a class="nav-item nav-link" data-toggle="dropdown"><i class="fa-solid fa-ellipsis" id="bchild"></i></a>
 				                                                          <div class="dropdown-menu rounded-0 m-0" name="bchilds" style="top: 30px;">
 				                                                      <a class="dropdown-item">신고</a>
+				                                                      <a class="dropdown-item">닫기</a>
 				                                                   </div>
 				                                                </div>   
 									                        </div>

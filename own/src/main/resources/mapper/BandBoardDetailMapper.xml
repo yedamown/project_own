@@ -213,37 +213,63 @@
 	</select>
 	
 	<select id="getBandBoardDetail" resultType="BandBoardDetailSearchVO">
-		SELECT BAND_BOARD_DETAIL_NO "bandBoardDetailNo",
-	            BAND_BOARD_OPTION_NO "bandBoardOptionNo",
-	            BAND_BOARD_CONTENT "bandBoardContent",
-	            BAND_BOARD_CNT "bandBoardCnt",
-	            BAND_BOARD_TITLE "bandBoardTitle",
-	            BAND_BOARD_WRITER "bandBoardWriter", 
-	            BAND_REMARKS "bandRemarks",
-	            BAND_BOARD_DATE "bandBoardDate",
-	            BAND_BOARD_UPDATE "bandBoardUpdate",
-	            BAND_BOARD_TAG "bandBoardTag",
-	            BAND_NICKNAME "bandNickname",
-	            BAND_NO "bandNo"
-	    FROM  (SELECT 
-	    		BAND_BOARD_DETAIL_NO,
-	            A.BAND_BOARD_OPTION_NO,
-	            BAND_BOARD_CONTENT,
-	            BAND_BOARD_CNT,
-	            BAND_BOARD_TITLE,
-	            BAND_BOARD_WRITER,
-	            BAND_REMARKS,
-	            BAND_BOARD_DATE,
-	            BAND_BOARD_UPDATE,
-	            BAND_BOARD_TAG,
-	            BAND_NICKNAME,
-	            C.BAND_NO 
-	            FROM BAND_BOARD_DETAIL A, BAND_MEMBER_DETAIL B, band_board_option C
-	            WHERE A.BAND_BOARD_WRITER = B.USER_ID
-                     AND C.BAND_NO = B.BAND_NO
-                     AND C.BAND_BOARD_OPTION_NO = A.BAND_BOARD_OPTION_NO
-	                 AND A.BAND_BOARD_DETAIL_NO = #{bandBoardDetailNo}
-	        )WHERE ROWNUM=1
+		SELECT  BANDBOARDDETAILNO	"bandBoardDetailNo",
+	            BANDBOARDOPTIONNO	"bandBoardOptionNo",
+	            BANDBOARDCONTENT	"bandBoardContent",
+	            BANDBOARDCNT  		"bandBoardCnt",
+	            BANDBOARDTITLE		"bandBoardTitle",
+	            BANDBOARDWRITER		"BANDBOARDWRITER", 
+	            BANDREMARKS			"bandRemarks",
+	            BANDBOARDDATE		"bandBoardDate",
+	            BANDBOARDUPDATE		"bandBoardUpdate",
+	            BANDBOARDTAG		"bandBoardTag",
+	            BANDNICKNAME		"bandNickname",
+	            BANDNO				"bandNo",
+	            MEDIA_SERVER_FILE	"mediaServerFile",
+                BAND_BOARD_NAME     "bandBoardName"
+		 FROM(
+				SELECT * FROM
+					            (SELECT BAND_BOARD_DETAIL_NO	"BANDBOARDDETAILNO",
+							            BAND_BOARD_OPTION_NO	"BANDBOARDOPTIONNO",
+							            BAND_BOARD_CONTENT		"BANDBOARDCONTENT",
+							            BAND_BOARD_CNT			"BANDBOARDCNT",
+							            BAND_BOARD_TITLE		"BANDBOARDTITLE",
+							            BAND_BOARD_WRITER		"BANDBOARDWRITER", 
+							            BAND_REMARKS			"BANDREMARKS",
+							            BAND_BOARD_DATE			"BANDBOARDDATE",
+							            BAND_BOARD_UPDATE		"BANDBOARDUPDATE",
+							            BAND_BOARD_TAG			"BANDBOARDTAG",
+							            BAND_NICKNAME			"BANDNICKNAME",
+							            BAND_NO					"BANDNO"
+								    FROM  (SELECT   BAND_BOARD_DETAIL_NO,
+										            A.BAND_BOARD_OPTION_NO,
+										            BAND_BOARD_CONTENT,
+										            BAND_BOARD_CNT,
+										            BAND_BOARD_TITLE,
+										            BAND_BOARD_WRITER,
+										            BAND_REMARKS,
+										            BAND_BOARD_DATE,
+										            BAND_BOARD_UPDATE,
+										            BAND_BOARD_TAG,
+										            BAND_NICKNAME,
+										            C.BAND_NO 
+								            FROM BAND_BOARD_DETAIL A,
+								            	 BAND_MEMBER_DETAIL B, 
+								            	 BAND_BOARD_OPTION C
+								            WHERE A.BAND_BOARD_WRITER = B.USER_ID
+						                     AND  C.BAND_NO = B.BAND_NO
+						                     AND  C.BAND_BOARD_OPTION_NO = A.BAND_BOARD_OPTION_NO
+							                 AND  A.BAND_BOARD_DETAIL_NO = #{bandBoardDetailNo})WHERE ROWNUM=1) Z, 
+		             	   		(SELECT * FROM BAND_MEMBER_DETAIL
+		            				WHERE BAND_NO=(SELECT BAND_NO FROM BAND_BOARD_OPTION WHERE BAND_BOARD_OPTION_NO=(SELECT BAND_BOARD_OPTION_NO FROM BAND_BOARD_DETAIL
+		            							WHERE BAND_BOARD_DETAIL_NO=#{bandBoardDetailNo}))) Y,
+                                                BAND_BOARD_OPTION W
+	            		WHERE Z.BANDBOARDWRITER=Y.USER_ID
+                         AND  Z.BANDBOARDOPTIONNO=W.BAND_BOARD_OPTION_NO) 
+            		   A,
+        	MULTIMEDIA B
+        WHERE A.BAND_MEMBER_NO = B.IDENTIFY_ID
+
 	</select>
 	<select id="getOwnDetailLike" resultType="OwnLikeVO">
 		SELECT * FROM OWN_LIKE WHERE CATEGORY_NO = #{bandBoardDetailNo}
