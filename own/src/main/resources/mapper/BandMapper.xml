@@ -92,6 +92,7 @@
 	            A.BAND_AGE_OPTION        "bandAgeOption",
 	            A.BAND_AGE_BEFOROPTION   "bandAgeBeforoption",
 	            A.BAND_AGE_AFTEROPTION   "bandAgeafteroption",
+	            A.BAND_STATUS			 "bandStatus",
 	            C.EXERSUB_NAME           "bandCategory",
 	            A.BAND_GENDER_OPTION     "bandGenderOption",
 	            A.BAND_MEMBERSHIP_OPTION "bandMembershipOption",

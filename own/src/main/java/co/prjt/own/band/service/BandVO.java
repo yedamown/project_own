@@ -39,6 +39,7 @@ public class BandVO {
 	//밴드 대표이미지 주소
 	MultimediaVO bandMainImg;
 	//임시로추가했습니다..
+	String bandStatus;
 	Paging Paging;
 	String memcount;
 	//bandNo의 집합

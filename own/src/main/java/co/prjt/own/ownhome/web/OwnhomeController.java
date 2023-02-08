@@ -377,6 +377,32 @@ public class OwnhomeController {
 			return "content/own/test";
 		}
 		
+		@GetMapping("/own/admin/test2")
+		public String test2(HttpServletRequest request, Model model, @RequestParam String id,@ModelAttribute("paging1") Paging paging,
+			@ModelAttribute("paging2") Paging paging2) {
+			System.out.println("===아이디가넘어올까요="+id);
+			ChallengeVO vo2 = new ChallengeVO();
+			vo2.setUserId(id);
+			// 6개로 페이징
+			BandMemberDetailVO vo = new BandMemberDetailVO();
+			vo.setUserId(id);
+			
+			paging2.setPageUnit(3);// 3개씩보기
+			paging2.setPageSize(5); // 페이딩 동그라미 3개
+			vo2.setChallStatus("진행 중");
+			List<ChallengeVO> myList = challenge.myPageChall(vo2, paging2);
+			
+			paging.setPageUnit(3);// 3개씩보기
+			paging.setPageSize(5); // 페이딩 동그라미 3개
+			List<BandVO> bandList = ownService.adminBandCheck(vo, paging);
+			
+			model.addAttribute("userId", id);
+			model.addAttribute("CList",	myList);
+			model.addAttribute("BList", bandList);
+			return "content/own/test";
+		}
+		
+		
 		@ResponseBody		
 		@GetMapping("/own/reportListAjax")
 		public List<ReportVO> reportListAjax(Model model, ReportVO vo, Paging paging) {
