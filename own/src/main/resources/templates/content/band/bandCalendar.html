@@ -273,7 +273,7 @@
 					<!--================ if참석여부 끝 =================-->
 					<!--================ if지도 =================-->
 					<div>
-						<h6 class="typo-list" id="mapName"></h6>
+						<h6 class="typo-list" id="mapName" style="color:#6ab0cd;"></h6>
 						<div id="map" style="width:100%;height:350px;"></div>
 					</div>
 					<!--================ if지도 끝 =================-->
@@ -637,6 +637,9 @@
 	  //모달 참석여부 외에 상세창
 	  function makeModalDetail(calendar){
 		  console.log('????'+calendar);
+		  //지역이 빠져서 뒤늦게
+		 	$('#mapName').text(calendar[0].bandCalendarLocation);
+		 
 			//타이틀
 			let title = calendar[0].bandCalendarTitle;
 			//타이틀 저장도..
@@ -679,7 +682,7 @@
 		    let cal  = `<div style="width: 500x; height: 100px; display: flex; justify-content: space-between" id="calendarModal2">`
 		    			cal += `<input type="hidden" value="${calendar[0].bandCalendarNo}" id="bandCalNo">`
 		    			cal += `<div style="padding:10px 30px;"><h3 id="jsDD" style="margin-bottom:0px; text-align:center;">${sDay}</h3>`
-						cal += `<p id="jsDay">${mon}</p></div>`
+						cal += `<p style=" text-align:center;id="jsDay">${mon}</p></div>`
 						cal += `<div style="padding:10px 0px 10px 10px;"><h5>${title}</h5>`
 						cal += `<p id="jsDeDay" style="margin-bottom: 0px;;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
 						cal += `<span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span><span>${writer}</span></div>`;

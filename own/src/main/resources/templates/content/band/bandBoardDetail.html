@@ -3,6 +3,13 @@
 <script src="/css/band/js/json.min.js"></script>
 
 <style>
+	.textarea{
+	width:500px; 
+	height:150px; 
+	    resize:none;/* 크기고정 */ 
+	/*   resize: horizontal; // 가로크기만 조절가능 
+		resize: vertical;  세로크기만 조절가능  */
+	}
  	.decoLine {
  		text-decoration-line: underline;
   		text-decoration-color: f3c300;
@@ -145,19 +152,23 @@
 	  margin-right: 10px;
 	  font-family:Tahoma;
 	  background: #ccc;
-	  color: #000;
+	  color: #6ab0cd;
 	  text-decoration: none;
+	  cursor:pointer;
 	}
 	.pageNum active {
+	  background: #00394f;
 	  background: #333;
 	  color: #fff;
 	}
 	.off-screen {
 	  display: none;
+	  cursor:pointer;
 	}
 	.replyPagination  {
 	  width: 500px;
 	  text-align: center;
+	  cursor:pointer;
 	}
 	.replyPagination  .pageNum {
 	  display: inline-block;
@@ -165,11 +176,13 @@
 	  margin-right: 10px;
 	  font-family:Tahoma;
 	  background: #ccc;
-	  color: #000;
+	  color: #fff;
 	  text-decoration: none;
+	  cursor:pointer;
+	  border-radius: 10px;
 	}
 	.replyPagination .pageNum.active {
-	  background: #333;
+	  background: #6ab0cd;
 	  color: #fff;
 	}
 	/* 추가 */
@@ -306,16 +319,16 @@
 				<table class="table" id="replybody">
 				</table>
 				<div class="btnContent">
-					<div class="replyPagination " id="replyPagination"></div>
+					<div class="replyPagination " id="replyPagination" style="margin: 0 auto;"></div>
 				</div>
 				</div>
 				<div>
 				<hr>
 				<form id="frmRe">
 					<div class="form-group">
-						<textarea class="form-control" rows="5" id="reply"></textarea>
+						<textarea class="form-control" rows="5" id="reply" maxlength="150" placeholder="댓글을 남겨보세요" style="resize: none;"onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 남겨보세요'" required></textarea>
 						<input type="hidden" class="form-control" id="replyer" th:value="${session.loginUser.userId}">
-						<button type="button" id="btnReployInsert"class="btn btn-primary mb-2">댓글작성</button>
+						<button type="button" id="btnReployInsert"class="btn btn-primary mb-2" style="margin-top: 10px; margin-bottom:10px; float: right;">댓글작성</button>
 					</div>
 				</form>
 			</div>
@@ -341,24 +354,24 @@
 						style="width: 500x; height: 100px; display: flex; justify-content: space-between"
 						id="calendarModal2">
 						<input type="hidden" th:value="${board.bandCalendar.bandCalendarNo}" id="bandCalendarNo">
-						<div style="padding: 10px;">
-							<h3 id="jsDD" style="margin-bottom: 0px"></h3>
-							<p id="jsDay"></p>
+						<div style="padding: 10px 30px;">
+							<h3 id="jsDD" style="margin-bottom: 0px; text-align:center;"></h3>
+							<p style=" text-align:center;" id="jsDay"></p>
 							<!-- 이건 밑에서 붙임 -->
 						</div>
 						<div style="padding: 10px;">
 							<h5 th:text="${board.bandCalendar.bandCalendarTitle}"></h5>
 							<p id="jsDeDay" style="margin-bottom: 0px"></p>
 							<span
-								th:style="|background-color: ${board.bandCalendar.bandCalendarMark}|">💭</span>
+								th:style="|color: ${board.bandCalendar.bandCalendarMark}; margin-right:10px;|"><i class="fa-regular fa-calendar-check"></i></span>
 							<span th:text="${board.bandBoardWriter}"></span>
 						</div>
 					</div>
 				</div>
 				<!--================ 일정상세 끝 =================-->
 				<!--================ if참석여부 ================= not 붙여야 함..임시-->
-				<div th:if="${not #strings.isEmpty(board.bandCalendar.bandCalendarOption)}">
-					<h6 class="typo-list">참석여부 <b>투표마감일: </b><b th:text="|${#dates.format(board.bandCalendar.bandCalendarOptionDay, 'yyyy-MM-dd HH:mm')}"></b></h6>
+				<div th:if="${not #strings.isEmpty(board.bandCalendar.bandCalendarOption)}" style="margin-top:20px;">
+					<h6 class="typo-list"  style="color: #6ab0cd;">참석여부 <b>투표마감일: <b th:text="|${#dates.format(board.bandCalendar.bandCalendarOptionDay, 'yyyy-MM-dd HH:mm')}" style="color: white; background-color:#6ab0cd; font-weight: 300; font-size: 13px;"></b></b></h6>
 					<div id="attendChk"> 
 						<!-- <ul style="list-style: none;">
 							<!-- bandCalendarOptionDay보다 늦으면 체크 못하게 막아야함 -->
@@ -372,7 +385,7 @@
 				<!--================ if지도 =================-->
 				<div
 					th:if="${not #strings.isEmpty(board.bandCalendar.bandCalendarLocation)}">
-					<h6 class="typo-list"
+					<h6 class="typo-list" style="color:#6ab0cd;"
 						th:text="${board.bandCalendar.bandCalendarLocation}"></h6>
 					<div id="map" style="width:100%;height:350px;"></div>
 				</div>
@@ -381,7 +394,7 @@
 			<!-- <button type="button" id="calBtn">이 일정이 첨부된 글 확인하기</button> -->
 			
 		</div>
-		<a class="modal_close_btn">:</a>
+		<a class="modal_close_btn hoverBtn" style="text-decoration: none;">닫기</a>
 	</div>
 	<!--==캘린더 모달창 ==-->
 </div>
@@ -439,12 +452,12 @@ $(function(){
 		let mon = getDayOfWeek(startDay);
 		//마크색
 		let color = calendar.bandCalendarMark;
-	    let cal  = `<div style="width:678px; height:80px; border: 0.3rem solid ${color}; display:flex; justify-content:space-between" id="calendarModal">`
+	    let cal  = `<div style="width:678px; height:80px; cursor: pointer; border: 0.2rem solid ${color}; border-radius:20px; padding:0px 10px; margin:10px 0px;display:flex; justify-content:space-between" id="calendarModal">`
 	    			cal += `<input type="hidden" value="${calendar.bandCalendarNo}">`
-	    			cal += `<div style="padding:10px;"><h3 style="margin-bottom:0px">${sDay}</h3>`
-					cal += `<p>${mon}</p></div>`
-					cal += `<div style="padding:10px;"><h5>${title}</h5>`
-					cal += `<p>${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
+	    			cal += `<div style="margin-bottom:0px; padding-top:10px; padding-left:10px; text-align:center;pointer-events: none;"><h3 style="margin-bottom:0px">${sDay}</h3>`
+					cal += `<p style="text-align:center;pointer-events: none;">${mon}</p></div>`
+					cal += `<div style="padding:10px;pointer-events: none;"><h5 style="color:${color};"><span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span>${title}</h5>`
+					cal += `<p style="pointer-events: none;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
 				cal += `</div>`;
 		//요일뽑기
 		function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
@@ -901,17 +914,21 @@ var token = [[${_csrf.token}]]*/
 					$(tr).find('#btnSelect').hide();
 					//인펏박스달아주기
 					$(tr).find('.con').text('');
-					$(tr).find('.con').append('<input class="inputBox" type="text" value='+res.replyContent+'/>');
+					$(tr).find('.con').append(`<textarea class="textarea" style="font-size:14px; width:315px; row:6; resize: none; border:#eeeeee solid 1px;">${res.replyContent}</textarea>`);
 				})
 			})
 		}
-		
+		//텍스트
+		 $('textarea').on('keyup', function (e) {
+	        $(this).css('height', 'auto');
+	        $(this).height(this.scrollHeight - 15);
+	    });
 		//댓글 수정
 		function replyUpdate(){
 			$("table").on("click", "#btnReployUpdate", function(){
 				let replyNo = $(this).closest("tr").data("id");
 				let tr = $('[data-id='+replyNo+']');
-				let replyContent = $(this).closest("tr").find('input').val();
+				let replyContent = $(this).closest("tr").find('textarea').val();
 				console.log(replyContent);
 				let userId = $("#replyer").val();
 				$.ajax({
@@ -946,7 +963,7 @@ var token = [[${_csrf.token}]]*/
 		                }
 				}).then( res => {
 					if(res>0){
-						$(tr).find('.pho').html('<img class="rounded-circle" src=/imgView/bandprofilnull.png alt="" style="width: 70px; height: 70px;">');
+						$(tr).find('.pho').html('<img class="rounded-circle" src=/imgView/bandprofilnull.png alt="" style="width: 40px; height: 40px;">');
 						$(tr).find('.name').text('이름없음');
 						$(tr).find('.con').text('삭제된 댓글입니다.');
 						$(tr).find('#btnDelete').hide();
@@ -962,7 +979,7 @@ var token = [[${_csrf.token}]]*/
 			console.log("makeTr 리더"+bandLeaderid);
 			let nick = reply.nickName;
 			if(reply.userId==bandLeaderid){
-				nick += '<i class="fa fa-solid fa-crown"></i>';
+				nick += '<small style="color:#f8b600"><i class="fa fa-solid fa-crown"></i></small>';
 			} else if (reply.userId == '이름없음'){
 				//삭제한 경우
 				nick = '이름없음';
@@ -970,10 +987,10 @@ var token = [[${_csrf.token}]]*/
 			//만약 삭제한 거라면 프로필사진..기본으로
 			//만약 삭제 수정된 버튼이면 안보이게..
 			let profileImg = reply.profileImg;
-			let btnTag = `<td><b class="decoLine">답글</b></td>
-						  <td><button type="button" id="btnDelete" class="btn btn-primary mb-2">삭제</button></td>
-						  <td><button type="button" id="btnSelect" class="btn btn-primary mb-2">수정</button>
-						  <button type="button" id="btnReployUpdate" class="btn btn-primary mb-2" style="display:none">수정</button></td>`;	
+				/* <td><b class="decoLine">답글</b></td> */
+			let btnTag = `  <td style="width:75px;"><button type="button" id="btnDelete" class="btn btn-primary mb-2" style="font-size: 12px; padding: 3px; width: 45px;">삭제</button></td>
+						  <td style="width:75px;"><button type="button" id="btnSelect" class="btn btn-primary mb-2" style="font-size: 12px; padding: 3px; width: 45px;">수정</button>
+						  <button type="button" id="btnReployUpdate" class="btn btn-primary mb-2" style="display:none; font-size: 12px; padding: 3px; width: 45px;">수정</button></td>`;	
 			if(reply.userId=='이름없음'){
 				profileImg = 'bandprofilnull.png';
 				btnTag = `<td></td>
@@ -987,10 +1004,8 @@ var token = [[${_csrf.token}]]*/
 			}
 			
 			let tag = `<tr data-id="${reply.replyNo}" class= trs>
-				<td class="pho"><img class="rounded-circle" src=/imgView/${profileImg} alt="" style="width: 70px; height: 70px;"></td>
-				<td class="name">${nick}</td>
-				<td class="con">${reply.replyContent}</td>
-				<td>${elapsedText(reply.replyDate)}</td>
+				<td class="pho" style="width: 220px; display:flex; justify-content: flex-start;"><img class="rounded-circle" src=/imgView/${profileImg} alt="" style="width: 40px; height: 40px;"><span style="font-size: 13px; display:flex; flex-direction: column;"><span>${nick}</span><span style="font-size: 16px;">${elapsedText(reply.replyDate)}</span></span></td>
+				<td class="con" style="font-size: 14px; width: 500px;">${reply.replyContent}</td>
 				${btnTag}
 			</tr>`;
 			return tag;
@@ -1046,13 +1061,13 @@ var token = [[${_csrf.token}]]*/
 				endp = numPages;
 			}
 			// [처음]
-			$('<span class="pageNum first">처음</span>').bind('click', {newPage: page},function(event) {
+			$('<span class="pageNum first"><i class="fa-solid fa-angles-left"></i></span>').bind('click', {newPage: page},function(event) {
 				currentPage = 0;   
 				$table.trigger('repaginate');  
 				$($(".pageNum")[2]).addClass('active').siblings().removeClass('active');
 			}).appendTo(replyPagination).addClass('clickable');
 			// [이전]
-			$('<span class="pageNum back">이전</span>').bind('click', {newPage: page},function(event) {
+			$('<span class="pageNum back"><i class="fa-solid fa-angle-left"></i></span>').bind('click', {newPage: page},function(event) {
 			if(currentPage == 0) return; 
 				currentPage = currentPage-1;
 				$table.trigger('repaginate'); 
@@ -1067,14 +1082,14 @@ var token = [[${_csrf.token}]]*/
 			}).appendTo(replyPagination).addClass('clickable');
 			} 
 			// [다음]
-			$('<span class="pageNum next">다음</span>').bind('click', {newPage: page},function(event) {
+			$('<span class="pageNum next"><i class="fa-solid fa-angle-right"></i></span>').bind('click', {newPage: page},function(event) {
 				if(currentPage == numPages-1) return;
 				currentPage = currentPage+1;
 				$table.trigger('repaginate'); 
 				$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
 			}).appendTo(replyPagination).addClass('clickable');
 			// [끝]
-			$('<span class="pageNum last">끝</span>').bind('click', {newPage: page},function(event) {
+			$('<span class="pageNum last"><i class="fa-solid fa-angles-right"></i></span>').bind('click', {newPage: page},function(event) {
 			currentPage = numPages-1;
 				$table.trigger('repaginate');
 				$($(".pageNum")[endp-nowp+1]).addClass('active').siblings().removeClass('active');
