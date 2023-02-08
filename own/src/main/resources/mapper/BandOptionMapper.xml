@@ -168,7 +168,7 @@ UPDATE BAND SET BAND_NAME = #{bandName},
 			OR BAND_NICKNAME LIKE '%' || #{userId} || '%'
 		 </if>
 							AND BAND_NO = #{bandNo}
-							ORDER BY BAND_KICK_DATE 
+							ORDER BY BAND_KICK_DATE DESC
 	
 				) AN WHERE ROWNUM <![CDATA[ <= #{last}) 
 	WHERE RN>= #{first} ]]>

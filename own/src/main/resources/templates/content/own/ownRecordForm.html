@@ -1,291 +1,286 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/default_layout}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
-	rel="stylesheet">
-<title>My Exercise Record Form</title>
-<style>
-.item {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+	<title>My Exercise Record Form</title>
+	<style>
+		.item {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
 
-.item-row {
-	margin-top: 10px;
-	margin-bottom: 20px;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
-}
+		.item-row {
+			margin-top: 10px;
+			margin-bottom: 20px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
 
-.formbold-btn {
-	display: inline-block;
-	font-weight: 400;
-	color: #666666;
-	text-align: center;
-	vertical-align: middle;
-	user-select: none;
-	background-color: transparent;
-	border: 1px solid transparent;
-	padding: 0.375rem 0.75rem;
-	font-size: 1rem;
-	line-height: 1.5;
-	border-radius: 30px;
-	width: 100%;
-	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-		border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
+		.formbold-btn {
+			display: inline-block;
+			font-weight: 400;
+			color: #666666;
+			text-align: center;
+			vertical-align: middle;
+			user-select: none;
+			background-color: transparent;
+			border: 1px solid transparent;
+			padding: 0.375rem 0.75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			border-radius: 30px;
+			width: 100%;
+			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+				border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
 
-.formbold-btn:hover {
-	color: #666666;
-	text-decoration: none;
-}
+		.formbold-btn:hover {
+			color: #666666;
+			text-decoration: none;
+		}
 
-.formbold-btn-primary {
-	color: #fff;
-	background-color: #17a2b8;
-	border-color: #17a2b8;
-}
+		.formbold-btn-primary {
+			color: #fff;
+			background-color: #17a2b8;
+			border-color: #17a2b8;
+		}
 
-.formbold-btn-primary:hover {
-	color: #fff;
-	background-color: #138496;
-	border-color: #117a8b;
-}
+		.formbold-btn-primary:hover {
+			color: #fff;
+			background-color: #138496;
+			border-color: #117a8b;
+		}
 
-.form-control {
-	display: block;
-	width: 100%;
-	height: calc(1.5em + 0.75rem + 2px);
-	padding: 0.375rem 0.75rem;
-	font-size: 1rem;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #495057;
-	background-color: #fff;
-	background-clip: padding-box;
-	border: 1px solid #ced4da;
-	border-radius: 5px;
-	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
+		.form-control {
+			display: block;
+			width: 100%;
+			height: calc(1.5em + 0.75rem + 2px);
+			padding: 0.375rem 0.75rem;
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			color: #495057;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid #ced4da;
+			border-radius: 5px;
+			transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
 
-.form-control:disabled, .form-control[readonly] {
-	background-color: #e9ecef;
-	opacity: 1;
-}
+		.form-control:disabled,
+		.form-control[readonly] {
+			background-color: #e9ecef;
+			opacity: 1;
+		}
 
-#searchExer {
-	width: 260px;
-}
+		#searchExer {
+			width: 260px;
+		}
 
-#exerInput {
-	width: 260px;
-	margin-bottom: 3px;
-	margin-right: 3px;
-}
+		#exerInput {
+			width: 260px;
+			margin-bottom: 3px;
+			margin-right: 3px;
+		}
 
-#exerRecord textarea {
-	height: 85px;
-	width: 260px;
-	margin-bottom: 15px;
-}
+		#exerRecord textarea {
+			height: 85px;
+			width: 260px;
+			margin-bottom: 15px;
+		}
 
-#exerRecord label {
-	margin-right: 215px;
-	margin-bottom: 0;
-}
+		#exerRecord label {
+			margin-right: 215px;
+			margin-bottom: 0;
+		}
 
-#recordDiv input {
-	width: 490px;
-}
+		#recordDiv input {
+			width: 490px;
+		}
 
-#exerTable tr {
-	
-}
+		#exerTable tr {}
 
-/* 컨디션 체크박스 */
-.badImg {
-	background-image: url(/css/own/common_img/bad.png);
-}
+		/* 컨디션 체크박스 */
+		.badImg {
+			background-image: url(/css/own/common_img/bad.png);
+		}
 
-.sadImg {
-	background-image: url(/css/own/common_img/sad.png);
-}
+		.sadImg {
+			background-image: url(/css/own/common_img/sad.png);
+		}
 
-.sosoImg {
-	background-image: url(/css/own/common_img/soso.png);
-}
+		.sosoImg {
+			background-image: url(/css/own/common_img/soso.png);
+		}
 
-.smileImg {
-	background-image: url(/css/own/common_img/smile.png);
-}
+		.smileImg {
+			background-image: url(/css/own/common_img/smile.png);
+		}
 
-.happyImg {
-	background-image: url(/css/own/common_img/happy.png);
-}
+		.happyImg {
+			background-image: url(/css/own/common_img/happy.png);
+		}
 
-.cc-selector input {
-	margin: 0;
-	padding: 0;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-}
+		.cc-selector input {
+			margin: 0;
+			padding: 0;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
 
-.cc-selector input:active+.drinkcard-cc {
-	opacity: .5;
-}
+		.cc-selector input:active+.drinkcard-cc {
+			opacity: .5;
+		}
 
-.cc-selector input:checked+.drinkcard-cc {
-	-webkit-filter: none;
-	-moz-filter: none;
-	filter: none;
-}
+		.cc-selector input:checked+.drinkcard-cc {
+			-webkit-filter: none;
+			-moz-filter: none;
+			filter: none;
+		}
 
-.drinkcard-cc {
-	cursor: pointer;
-	background-size: contain;
-	background-repeat: no-repeat;
-	display: inline-block;
-	width: 100px;
-	height: 70px;
-	-webkit-transition: all 100ms ease-in;
-	-moz-transition: all 100ms ease-in;
-	transition: all 100ms ease-in;
-	-webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
-	-moz-filter: brightness(1.8) grayscale(1) opacity(.7);
-	filter: brightness(1.8) grayscale(1) opacity(.7);
-}
+		.drinkcard-cc {
+			cursor: pointer;
+			background-size: contain;
+			background-repeat: no-repeat;
+			display: inline-block;
+			width: 100px;
+			height: 70px;
+			-webkit-transition: all 100ms ease-in;
+			-moz-transition: all 100ms ease-in;
+			transition: all 100ms ease-in;
+			-webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
+			-moz-filter: brightness(1.8) grayscale(1) opacity(.7);
+			filter: brightness(1.8) grayscale(1) opacity(.7);
+		}
 
-.drinkcard-cc:hover {
-	-webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
-	-moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
-	filter: brightness(1.2) grayscale(.5) opacity(.9);
-}
+		.drinkcard-cc:hover {
+			-webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+			-moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+			filter: brightness(1.2) grayscale(.5) opacity(.9);
+		}
 
-/* 체중 */
-td {
-	cursor: pointer;
-}
+		/* 체중 */
+		td {
+			cursor: pointer;
+		}
 
-input[type=range] {
-	-webkit-appearance: none;
-	margin: 12.5px 0;
-	width: 100%;
-}
+		input[type=range] {
+			-webkit-appearance: none;
+			margin: 12.5px 0;
+			width: 100%;
+		}
 
-input[type=range]:focus {
-	outline: none;
-}
+		input[type=range]:focus {
+			outline: none;
+		}
 
-input[type=range]::-webkit-slider-runnable-track {
-	width: 100%;
-	height: 5px;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	background: #cecece;
-	border: 0px solid #000;
-	border-radius: 0px;
-}
+		input[type=range]::-webkit-slider-runnable-track {
+			width: 100%;
+			height: 5px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			background: #cecece;
+			border: 0px solid #000;
+			border-radius: 0px;
+		}
 
-input[type=range]::-webkit-slider-thumb {
-	position: relative;
-	border: 5px solid rgba(255, 255, 255, 0.5);
-	height: 25px;
-	width: 25px;
-	border-radius: 100%;
-	background: #01c9ca;
-	cursor: pointer;
-	z-index: 1;
-	-webkit-appearance: none;
-	margin-top: -10px;
-}
+		input[type=range]::-webkit-slider-thumb {
+			position: relative;
+			border: 5px solid rgba(255, 255, 255, 0.5);
+			height: 25px;
+			width: 25px;
+			border-radius: 100%;
+			background: #01c9ca;
+			cursor: pointer;
+			z-index: 1;
+			-webkit-appearance: none;
+			margin-top: -10px;
+		}
 
-input[type=range]:focus::-webkit-slider-runnable-track {
-	background: #cecece;
-}
+		input[type=range]:focus::-webkit-slider-runnable-track {
+			background: #cecece;
+		}
 
-input[type=range]::-moz-range-track {
-	width: 100%;
-	height: 5px;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	background: #cecece;
-	border: 0px solid #000;
-	border-radius: 0px;
-}
+		input[type=range]::-moz-range-track {
+			width: 100%;
+			height: 5px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			background: #cecece;
+			border: 0px solid #000;
+			border-radius: 0px;
+		}
 
-input[type=range]::-moz-range-thumb {
-	position: relative;
-	border: 5px solid rgba(255, 255, 255, 0.5);
-	height: 25px;
-	width: 25px;
-	border-radius: 100%;
-	background: #01c9ca;
-	cursor: pointer;
-	z-index: 1;
-}
+		input[type=range]::-moz-range-thumb {
+			position: relative;
+			border: 5px solid rgba(255, 255, 255, 0.5);
+			height: 25px;
+			width: 25px;
+			border-radius: 100%;
+			background: #01c9ca;
+			cursor: pointer;
+			z-index: 1;
+		}
 
-input[type=range]::-ms-track {
-	width: 100%;
-	height: 5px;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	background: transparent;
-	border-color: transparent;
-	border-width: 25px 0;
-	color: transparent;
-}
+		input[type=range]::-ms-track {
+			width: 100%;
+			height: 5px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			background: transparent;
+			border-color: transparent;
+			border-width: 25px 0;
+			color: transparent;
+		}
 
-input[type=range]::-ms-fill-lower {
-	background: #cecece;
-	border: 0px solid #000;
-	border-radius: 0px;
-}
+		input[type=range]::-ms-fill-lower {
+			background: #cecece;
+			border: 0px solid #000;
+			border-radius: 0px;
+		}
 
-input[type=range]::-ms-fill-upper {
-	background: #cecece;
-	border: 0px solid #000;
-	border-radius: 0px;
-}
+		input[type=range]::-ms-fill-upper {
+			background: #cecece;
+			border: 0px solid #000;
+			border-radius: 0px;
+		}
 
-input[type=range]::-ms-thumb {
-	position: relative;
-	border: 5px solid rgba(255, 255, 255, 0.5);
-	height: 25px;
-	width: 25px;
-	border-radius: 100%;
-	background: #01c9ca;
-	cursor: pointer;
-	z-index: 1;
-}
+		input[type=range]::-ms-thumb {
+			position: relative;
+			border: 5px solid rgba(255, 255, 255, 0.5);
+			height: 25px;
+			width: 25px;
+			border-radius: 100%;
+			background: #01c9ca;
+			cursor: pointer;
+			z-index: 1;
+		}
 
-input[type=range]:focus::-ms-fill-lower {
-	background: #cecece;
-}
+		input[type=range]:focus::-ms-fill-lower {
+			background: #cecece;
+		}
 
-input[type=range]:focus::-ms-fill-upper {
-	background: #cecece;
-}
+		input[type=range]:focus::-ms-fill-upper {
+			background: #cecece;
+		}
 
-textarea {
-	resize: none;
-}
-</style>
+		textarea {
+			resize: none;
+		}
+	</style>
 </head>
 <div layout:fragment="content">
 
@@ -305,26 +300,23 @@ textarea {
 				</div>
 			</div>
 			<div class="item" id="recordForm">
-				<form id="exerciseRecordForm" name="exerciseRecordForm"
-					action="/own/ownRecordList">
+				<form id="exerciseRecordForm" name="exerciseRecordForm" action="/own/ownRecordList">
 					<div class="item" id="moodcontainer">
 						<div class="cc-selector">
 							<input id="badImg" type="radio" name="exerecCondition" value="1" />
-							<label class="drinkcard-cc badImg" for="badImg"></label> <input
-								id="sadImg" type="radio" name="exerecCondition" value="2" /> <label
-								class="drinkcard-cc sadImg" for="sadImg"></label> <input
-								id="sosoImg" type="radio" name="exerecCondition" value="3" /> <label
-								class="drinkcard-cc sosoImg" for="sosoImg"></label> <input
+							<label class="drinkcard-cc badImg" for="badImg"></label> <input id="sadImg" type="radio"
+								name="exerecCondition" value="2" /> <label class="drinkcard-cc sadImg"
+								for="sadImg"></label> <input id="sosoImg" type="radio" name="exerecCondition"
+								value="3" /> <label class="drinkcard-cc sosoImg" for="sosoImg"></label> <input
 								id="smileImg" type="radio" name="exerecCondition" value="4" />
-							<label class="drinkcard-cc smileImg" for="smileImg"></label> <input
-								id="happyImg" type="radio" name="exerecCondition" value="5" />
+							<label class="drinkcard-cc smileImg" for="smileImg"></label> <input id="happyImg"
+								type="radio" name="exerecCondition" value="5" />
 							<label class="drinkcard-cc happyImg" for="happyImg"></label>
 						</div>
 					</div>
 					<div class="item slidecontainer">
-						<label for="exerecWeight">오늘 나는</label> <input type="range"
-							min="30" max="130" value="80" class="weightSlider"
-							name="exerecWeight" id="myRange" required>
+						<label for="exerecWeight">오늘 나는</label> <input type="range" min="30" max="130" value="80"
+							class="weightSlider" name="exerecWeight" id="myRange" required>
 						<p>
 							<span id="value"></span>Kg
 						</p>
@@ -332,12 +324,13 @@ textarea {
 					<div>
 						<div class="item-row">
 							<div class="item" id="searchExer">
-								<input class="form-control" type="text" id="exerInput"
-									onkeyup="myFunction()" placeholder="운동명 검색"
-									title="Type in a name">
-								<div class="exerciseSearch"
-									style="width: 100%; height: 200px; overflow: auto">
+								<input class="form-control" type="text" id="exerInput" onkeyup="myFunction()"
+									placeholder="운동명 검색">
+								<div class="exerciseSearch" style="width: 100%; height: 200px; overflow: auto">
 									<table id="exerTable">
+										<tr>
+											<td value="" data-sub="unChoice" onclick="showForm(this)">운동을 선택하세요</td>
+										</tr>
 									</table>
 								</div>
 							</div>
@@ -345,28 +338,25 @@ textarea {
 								<label for="exerecRoution">루틴&nbsp;&nbsp;&nbsp;</label>
 								<textarea class="form-control" name="exerecRoution" id="routin"></textarea>
 								<label for="exerecFeedback">피드백</label>
-								<textarea class="form-control" name="exerecFeedback"
-									id="feedback"></textarea>
+								<textarea class="form-control" name="exerecFeedback" id="feedback"></textarea>
 							</div>
 						</div>
 						<div class="item" id="recordDiv" style="display: none;">
 							<label for="exerecTime">시간</label>
 							<div class="item-row">
-								<input name="exersubNo" hidden> <input
-									class="form-control" type="number" name="minute" id="minute"
-									required>분 <input name="exerecTime" hidden>
+								<input name="exersubNo" hidden> <input class="form-control" type="number" name="minute"
+									id="minute" required>분 <input name="exerecTime" hidden>
 							</div>
 							<div class="formDiv" id="meterDiv" style="display: none;">
 								<label for="exerecMeter">거리 </label>
 								<div class="item-row">
-									<input class="form-control" type="number" name="meter"
-										id="meter">Km <input name="exerecMeter" hidden>
+									<input class="form-control" type="number" name="meter" id="meter">Km <input
+										name="exerecMeter" hidden>
 								</div>
 							</div>
 						</div>
 					</div>
-					<button class="item formbold-btn formbold-btn-primary"
-						type="button" id="insertBtn">기록하기</button>
+					<button class="item formbold-btn formbold-btn-primary" type="button" id="insertBtn">기록하기</button>
 				</form>
 			</div>
 		</div>
@@ -424,7 +414,7 @@ textarea {
 
 		function makeTr(sub) {
 
-			let tr = `<tr><td data-sub="${sub.exersubNo}" data-sub1="unckecked" onClick="showForm(this)" value="${sub.exersubName}">${sub.exersubName}</td></tr>`
+			let tr = `<tr><td data-sub="${sub.exersubNo}" onClick="showForm(this)" value="${sub.exersubName}">${sub.exersubName}</td></tr>`
 
 			return tr;
 		}
@@ -452,16 +442,21 @@ textarea {
 		// 운동 클릭시 폼 생성
 		function showForm(td) {
 			let name = td.getAttribute("data-sub");
-		    let exername = $(td).attr('value');
-		    $('#exerInput').attr('value', exername);
-			if (name == "EXS_1" || name == "EXS_5" || name == "EXS_11" || name == "EXS_12" || name == "EXS_14" || name == "EXS_18" || name == "EXS_29") {
-				document.getElementById("recordDiv").style.display = "block";
-				document.getElementById("meterDiv").style.display = "block";
-				$('[name="exersubNo"]').attr('value', name);
-			} else {
-				document.getElementById("recordDiv").style.display = "block"
+			let exername = $(td).attr('value');
+			$('#exerInput').attr('value', exername);
+			if (td.getAttribute("data-sub") == "unChoice") {
+				document.getElementById("recordDiv").style.display = "none"
 				document.getElementById("meterDiv").style.display = "none";
-				$('[name="exersubNo"]').attr('value', name);
+			} else {
+				if (name == "EXS_1" || name == "EXS_5" || name == "EXS_11" || name == "EXS_12" || name == "EXS_14" || name == "EXS_18" || name == "EXS_29") {
+					document.getElementById("recordDiv").style.display = "block";
+					document.getElementById("meterDiv").style.display = "block";
+					$('[name="exersubNo"]').attr('value', name);
+				} else {
+					document.getElementById("recordDiv").style.display = "block"
+					document.getElementById("meterDiv").style.display = "none";
+					$('[name="exersubNo"]').attr('value', name);
+				}
 			}
 		}
 
