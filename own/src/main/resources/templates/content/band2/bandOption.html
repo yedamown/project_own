@@ -46,9 +46,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
-.tab-wrap:hover {
-  box-shadow: 0 12px 23px rgba(0, 0, 0, 0.23), 0 10px 10px rgba(0, 0, 0, 0.19);
-}
+
 
 .tab {
   display: none;
@@ -160,11 +158,12 @@ padding:10px;
 margin:20px;
 }
 
+label{
+margin-bottom: 0;}
 
 </style>
 <body>
 <div id="submain">
-<h1>옵션</h1>
 <div style="flex-grow:3; width: 740px" id="subTemplate">
 <div class="tab-wrap">
 
@@ -172,7 +171,7 @@ margin:20px;
     <label for="tab4" id="bandInfo">밴드정보</label>
 
     <input type="radio" id="tab5" name="tabGroup2" class="tab">
-    <label for="tab5" class="bandmanage">밴드 수정</label>
+    <label for="tab5" class="bandmanage">밴드수정</label>
 
     <input type="radio" id="tab6" name="tabGroup2" class="tab">
     <label for="tab6" id="memberManage">멤버관리</label>
@@ -186,8 +185,7 @@ margin:20px;
 
   <div id="manageTemplate">
   
-  <div id="container23">  
-  <h1>밴드정보</h1>
+  <div id="container23"> 
   <div class="bandoptiondiv" style="border:1px solid #ababab;">
        <legend>밴드상세정보
          <i class="fa fa-cog" aria-hidden="true" style="margin-left:370px; cursor: pointer;"><a class="bandmanage">수정하기</a></i>

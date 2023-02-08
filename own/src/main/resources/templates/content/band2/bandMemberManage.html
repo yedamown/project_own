@@ -109,13 +109,20 @@
 		width: 250px;
 	}
 
-	#aSelectOption {
-		margin-left: 97px;
-		margin-right: 5px;
+	.selectDiv1 {
+		display: flex;
+		flex-direction: row;
+		margin-left:67px
 	}
-	#wPagingOption, #kPagingOption{
-		margin-left: 192px;
+	.selectDiv2 {
+		display: flex;
+		flex-direction: row;
+		margin-left:168.5px
 	}
+	.nice-select{
+			width: 137px;
+		}
+
 
 	/* 버튼 */
 	.formbold-btn {
@@ -317,23 +324,25 @@
 				<button class="btn btn-default searchBtn" type="button" id="aSearchBtn">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
-				<span class=""> 전체 멤버 수 </span> <span id="aMemberCnt"></span>
+				<span class="hoverCursor"> 전체 멤버 수 </span> <span id="aMemberCnt"></span>
 				<input type="hidden" name="aPageNum" value="1">
 			</span>
-			<select id="aSelectOption" name="aSelectOption">
-				<option value="signupDate" selected="selected">가입일자 순</option>
-				<option value="name">별명 순</option>
-				<option value="accessDate">최종접속일 순</option>
-				<option value="boradCnt">게시글 순</option>
-				<option value="replyCnt">댓글 순</option>
-			</select>
-			<select id="aPagingOption" name="aPagingOption">
-				<option value="10" selected="selected">10개씩 보기</option>
-				<option value="20">20개씩 보기</option>
-				<option value="50">50개씩 보기</option>
-			</select>
+			<div class="selectDiv1">
+				<select id="aSelectOption" name="aSelectOption">
+					<option value="signupDate" selected="selected">가입일자 순</option>
+					<option value="name">별명 순</option>
+					<option value="accessDate">최종접속일 순</option>
+					<option value="boradCnt">게시글 순</option>
+					<option value="replyCnt">댓글 순</option>
+				</select>
+				<select id="aPagingOption" name="aPagingOption">
+					<option value="10" selected="selected">10개씩 보기</option>
+					<option value="20">20개씩 보기</option>
+					<option value="50">50개씩 보기</option>
+				</select>
+			</div>
 		</div>
-		<table class="responsive-table">
+		<table class="responsive-table hoverCursor">
 			<thead class="responsive-table__head">
 				<tr class="responsive-table__row">
 					<th class="responsive-table__head__title"></th>
@@ -344,7 +353,7 @@
 					<th style="width: 20px;" class="responsive-table__head__title">성별</th>
 					<th style="width: 20px;" class="responsive-table__head__title">연령</th>
 					<th style="width: 20px;" class="responsive-table__head__title"><input type="checkbox"
-							id="aCheckAll"></th>
+							class="hoverBtn" id="aCheckAll"></th>
 				</tr>
 			</thead>
 			<tbody class="responsive-table__body" id="aBandMemberTable">
@@ -408,21 +417,23 @@
 
 	<div id="wBandMemberList" style="display: none">
 		<div class="item-row optionDiv">
-			<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="wMemberSearch"> 
+			<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="wMemberSearch">
 			<span class="input-group-btn">
 				<button class="btn btn-default searchBtn" type="button" id="wSearchBtn">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
 				<span class=""> 승인 대기 멤버 수 </span> <span id="wMemberCnt"></span>
 				<input type="hidden" name="wPageNum" value="1">
-			</span> 
-			<select id="wPagingOption" name="wPagingOption">
-				<option value="10">10개씩 보기</option>
-				<option value="20">20개씩 보기</option>
-				<option value="30">50개씩 보기</option>
-			</select> 
+			</span>
+			<div class="selectDiv2">
+				<select id="wPagingOption" name="wPagingOption">
+					<option value="10">10개씩 보기</option>
+					<option value="20">20개씩 보기</option>
+					<option value="30">50개씩 보기</option>
+				</select>
+			</div>
 		</div>
-		<table class="responsive-table">
+		<table class="responsive-table hoverCursor">
 			<thead class="responsive-table__head">
 				<tr class="responsive-table__row">
 					<th class="responsive-table__head__title"></th>
@@ -430,7 +441,8 @@
 					<th class="responsive-table__head__title">소개말</th>
 					<th class="responsive-table__head__title">성별</th>
 					<th class="responsive-table__head__title">연령</th>
-					<th class="responsive-table__head__title"><input type="checkbox" id="wCheckAll"></th>
+					<th class="responsive-table__head__title"><input type="checkbox" id="wCheckAll" class="hoverBtn">
+					</th>
 				</tr>
 			</thead>
 			<tbody class="responsive-table__body" id="wBandMemberTable">
@@ -468,21 +480,23 @@
 
 	<div id="kBandMemberList" style="display: none">
 		<div class="item-row optionDiv">
-			<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="kMemberSearch"> 
+			<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="kMemberSearch">
 			<span class="input-group-btn">
 				<button class="btn btn-default searchBtn" type="button" id="kSearchBtn">
 					<i class="lnr lnr-magnifier"></i>
 				</button>
 				<span class=""> 강제 탈퇴 멤버 수 </span> <span id="kMemberCnt"></span>
 				<input type="hidden" name="kPageNum" value="1">
-			</span> 
-			<select id="kPagingOption" name="kPagingOption">
-				<option value="10">10개씩 보기</option>
-				<option value="20">20개씩 보기</option>
-				<option value="30">50개씩 보기</option>
-			</select> 
+			</span>
+			<div class="selectDiv2">
+				<select id="kPagingOption" name="kPagingOption">
+					<option value="10">10개씩 보기</option>
+					<option value="20">20개씩 보기</option>
+					<option value="30">50개씩 보기</option>
+				</select>
+			</div>
 		</div>
-		<table class="responsive-table">
+		<table class="responsive-table hoverCursor">
 			<thead class="responsive-table__head">
 				<tr class="responsive-table__row">
 					<th class="responsive-table__head__title"></th>
@@ -490,7 +504,8 @@
 					<th class="responsive-table__head__title">사유</th>
 					<th class="responsive-table__head__title">처리일</th>
 					<th class="responsive-table__head__title">가입불가여부</th>
-					<th class="responsive-table__head__title"><input type="checkbox" id="kCheckAll"></th>
+					<th class="responsive-table__head__title"><input type="checkbox" id="kCheckAll" class="hoverBtn">
+					</th>
 				</tr>
 
 			</thead>
@@ -634,10 +649,10 @@
 						if (e.userId == loginUserId) {
 							checkBoxTd = `<td class="responsive-table__body__text" ></td>`;
 						} else {
-							checkBoxTd = `<td class="responsive-table__body__text" ><input type="checkbox" class="aKickCheck" value=${e.userId}></td>`;
+							checkBoxTd = `<td class="responsive-table__body__text" ><input type="checkbox" class="aKickCheck hoverBtn" value=${e.userId}></td>`;
 						}
 						var td = `<tr class="responsive-table__row">
-										<td class="responsive-table__body__text modalOpen" style="width: 50px;"><img src="/imgView/${e.profileImg}" style="height: 50px; width: 50px; border-radius: 30%; object-fit: cover"/></td>
+										<td class="responsive-table__body__text modalOpen" style="width: 50px;"><img src="/imgView/${e.profileImg}" class="hoverBtn" style="height: 50px; width: 50px; border-radius: 30%; object-fit: cover"/></td>
 										<td hidden>${e.userId}</td>
 										${nickNameTd}
 										<td class="responsive-table__body__text" >${e.bandAccessDate}</td>
@@ -655,7 +670,7 @@
 											<span class="textCount">0자</span>
 											<span class="textTotal">/20자</span>
 											<p><label for="aResignCheck">회원의 재가입을 허용하지 않습니다.</label>
-											<input type="checkbox" class="aResignCheck" value="aResignCheck"></p>
+											<input type="checkbox" class="aResignCheck hoverBtn" value="aResignCheck"></p>
 										</td class="responsive-table__body__text" >
 								  </tr>`;
 						$('#aBandMemberTable').append(td);
@@ -1116,8 +1131,8 @@
 
 
 	}) // end of function
-	$(document).ready(function() {
+	$(document).ready(function () {
 		$('select').niceSelect();
 	})
-	
+
 </script>

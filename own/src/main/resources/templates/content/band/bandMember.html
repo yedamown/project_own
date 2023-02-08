@@ -1,24 +1,110 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <head>
+	<!-- 나이스 셀렉트/스크롤 -->
+	<script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<style>
+		/* 모달 */
+		/* 모달css */
+		.modal_bandMemberInfo {
+			display: none;
+			position: fixed;
+			z-index: 80;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgb(0, 0, 0);
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		#modal_profileText {
+			margin-left: 10px;
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: column;
+			align-content: flex-start;
+		}
+
+		#modal_profileText i {
+			margin-right: 15px;
+		}
+
+		.modal_btn {
+			padding: 10px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.modal_btn i {
+			margin-right: 40px;
+		}
+
+		.item {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.modal-content {
+			display: flex;
+			width: 500px;
+			height: 600px;
+			flex-direction: column;
+			background-color: #fefefe;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+		}
+
+		.form-control {
+			display: block;
+			width: 100%;
+			height: calc(1.5em + 0.75rem + 2px);
+			padding: 0.375rem 0.75rem;
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			color: #495057;
+			background-color: #fff;
+			background-clip: padding-box;
+			border: 1px solid #ced4da;
+			border-radius: 5px;
+			transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+
+		.form-control:disabled,
+		.form-control[readonly] {
+			background-color: #e9ecef;
+			opacity: 1;
+		}
+
 		.item-row {
 			margin-top: 10px;
 			margin-bottom: 20px;
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-
 		}
 
 		.searchInput {
 			width: 250px;
 		}
 
-		#selectOption {
-			margin-left: 247px;
+		.selectDiv {
+			margin-left: 230px;
+		}
+
+		.nice-select {
+			width: 123px;
 		}
 
 		/* 테이블 */
@@ -152,21 +238,6 @@
 			}
 		}
 
-		/* demo styles */
-
-		/* for custom scrollbar for webkit browser*/
-		::-webkit-scrollbar {
-			width: 6px;
-		}
-
-		::-webkit-scrollbar-track {
-			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-		}
-
-		::-webkit-scrollbar-thumb {
-			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-		}
-
 		/* 버튼 */
 		.formbold-btn {
 			display: inline-block;
@@ -215,10 +286,12 @@
 				<input type="hidden" name="pageNum" value="1">
 				<input type="hidden" th:value="${myBandMemberNo}" name="myBandMemberNo">
 			</span>
-			<select id="selectOption" name="selectOption">
-				<option value="name" selected="selected">별명 순</option>
-				<option value="signupDate">가입일자 순</option>
-			</select>
+			<div class="selectDiv">
+				<select id="selectOption" name="selectOption">
+					<option value="name" selected="selected">별명 순</option>
+					<option value="signupDate">가입일자 순</option>
+				</select>
+			</div>
 		</div>
 		<table class="responsive-table">
 			<thead class="responsive-table__head">
@@ -259,6 +332,51 @@
 		</div>
 	</div>
 
+	<div class="modal_bandMemberInfo">
+		<!-- 신고 Modal -->
+		<div class="modal-content">
+			<span class="closeBtn">&times;</span>
+			<div id="container" style="padding-bottom: 20px;">
+				<h2 style="text-align: center; margin: 10px;margin-bottom: 30px;">신고하기</h2>
+				<form role="form" autocomplete="off" style="width: 80%; margin: auto;" enctype="multipart/form-data"
+					name="frm" id="frm">
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+					<input type="hidden" th:if="${session.loginUser.userId}" th:value="${session.loginUser.userId}"
+						id="reporter" name="reporter">
+
+					<!-- <div class="input-form col-md-12 mx-auto"> -->
+					<div class="form-group mb-4">
+						<label for="dereporter">신고할 사람 *</label>
+						<input type="hidden" id="dereporter" name="dereporter" readonly />
+						<input type="text" class="form-control" id="rptNickName" readonly />
+					</div>
+					<div class="form-group mb-4">
+						<label for="reason">신고사유 *</label>
+						<select class="form-control" id="reason" name="reason" style="height: 47px">
+							<option selected>:: 신고사유를 선택해주세요 ::</option>
+							<option value="욕설">욕설</option>
+							<option value="광고">광고</option>
+							<option value="부적절한 아이디">부적절한 아이디</option>
+						</select>
+					</div>
+					<div class="form-group mb-4">
+						<label for="name">Date *</label> <input type="text" class="form-control" id="vldname"
+							th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}" readonly />
+					</div>
+					<div class="form-group mb-5">
+						<label for="code">신고 증거 사진첨부</label>
+						<input name="uploadfile" type="file" id="uploadfile" multiple="multiple">
+					</div>
+					<div style="text-align: center;">
+						<button type="button" class="btn btn-primary px-3" style="width: 150px;"
+							id="btnreporting">신고</button>
+						<button type="button" class="btn btn-primary px-3" style="width: 150px;"
+							id="btnsignin">취소</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 	<script src="/webjars/sockjs-client/sockjs.min.js"></script>
 	<script src="/webjars/stomp-websocket/stomp.min.js"></script>
@@ -321,7 +439,7 @@
 													</a>
 													<div class="dropdown-menu rounded-0 m-0">
 														<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname}>채팅하기</a>
-														<br><a href="">신고하기</a>
+														<br><a class="reportModalOpen" value=${result[i].userId}>신고하기</a>
 													</div>
 											</div>`;
 							} else if (result[i].chatCheck == 1 && result[i].userId != loginUserId) {
@@ -332,7 +450,7 @@
 													</a>
 													<div class="dropdown-menu rounded-0 m-0">
 														<a class="oldChatStart" value=${result[i].bandMemberNo} ">채팅하기</a><br>
-														<a href="">신고하기</a>
+														<a class="reportModalOpen" value=${result[i].userId} data-sub=${result[i].bandNickname}>신고하기</a>
 													</div>
 											</div>`;
 							}
@@ -486,7 +604,64 @@
 					}
 				});
 			});
-		});
+
+			// 신고 모달
+			//신고하기 누르면 신고폼 display block
+			$(document).on("click", ".reportModalOpen", function () {
+				let reportUserId = $(this).attr('data-sub');
+				$("#rptNickName").val(reportUserId); // 신고할 사람 input값 넣기
+				$("#dereporter").val(loginUserId); // 신고하는 사람 input값 넣기
+				$('.modal_bandMemberInfo').attr('style', 'display:block');
+				
+			});
+
+			//신고제출 버튼...
+			$('#btnreporting').on('click', function () {
+				console.log($('form[name="frm"]').serialize());
+				$.ajax({
+					url: '/common/report',
+					method: 'post',
+					data: formData,
+					cache: false,
+					contentType: false,
+					processData: false,
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (res) {
+						console.log(res);
+						alert("신고 완료");
+						let cutChallNo = challNo.substr(4);
+						//신고완료 시 새로고침.
+						location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
+					},
+					error: function (err) {
+						console.log(err);
+						alert("오류 발생. 다시 시도해주세요.")
+					}
+					// }).then(res=>{
+					// 	console.log(res)          
+					// });	
+				});
+			});
+
+			// <span> 태그(X 버튼)를 클릭하면 Modal을 닫기
+			$('.closeBtn').click(function () {
+				$(".modal_bandMemberInfo").css("display", "none");
+			});
+
+			// Modal 영역 밖을 클릭하면 Modal을 닫기
+			window.onclick = function (event) {
+				if (event.target.className == "modal_bandMemberInfo") {
+					event.target.style.display = "none";
+				}
+			};
+
+		}); // end of function
+		$(document).ready(function () {
+			$('select').niceSelect();
+		})
+
 	</script>
 </div>
 
