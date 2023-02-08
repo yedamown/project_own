@@ -440,7 +440,7 @@ public class SnsController {
     	model.addAttribute("userId", userId); //세션값 
     	model.addAttribute("snsInfo", snsService.getSnsUser(nickname));
     	model.addAttribute("newBoard", snsNewBoardList);
-    	return "/content/sns/snsNewLikeFeed";
+    	return "content/sns/snsNewLikeFeed";
     }
     
     //16. 좋아요 한 피드
