@@ -5,7 +5,6 @@
       layout:decorate="~{layout/band_layout}"
       lang="ko">
     <head>
-    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,15 +12,16 @@
         <title>오늘의운동 가치</title>
       <style>
       	/* 나이스셀렉트 */
-		.list li {
+		/* .list li {
 			width: 200px;
-		}
+		} */
 		.list {
-			max-height: 200px;
-					overflow-y: scroll !important;
+			height: 300px;
+			width: 447px;
+			overflow-y: scroll !important;
 		}
 		.nice-select {
-			width: 220px;
+			width: 450px;
 		}
 		img {
 			border-radius: 10px;
@@ -217,8 +217,8 @@
 						                  </div>
 						               </div>
 						                  <div>
-						                  <div class="input-group-icon mt-10"style="width: 245%;">
-						                    <div class="form-select" id="default-select">
+						                  <div class="input-group-icon mt-10"style="width: 440px;">
+						                    <div id="default-select">
 						                      <select name="bandLocation" th:value="*{location}">
 						                        <option disabled="disabled">활동 지역</option>
 						                        <option th:each="loc : ${location}" th:value="${loc.locCode}" th:text="${loc.locCity}"></option>
@@ -228,7 +228,7 @@
 						                </div>
 						                 <!--================ 관심지역 끝 =================-->
 						                 <!--================ 관심종목 =================-->
-						                <div style="display: inline-block; width: 100%;display: flex; margin-top: 15px;">
+						                <div style="display: inline-block; width: 440px;display: flex; margin-top: 15px;">
 						                	<div style="display: flex; height: 25px;">
 						                 		 <h6 class="typo-list" style="padding-left: 10px; margin:4px 0px; color: white;">관심 종목</h6>
 							                  <div style="display: block;" class="malpWrap">
@@ -239,7 +239,7 @@
 						                  </div>
 						                  <div>
 						                  <div class="input-group-icon mt-10"style="width: 265%;">
-						                    <div class="form-select" id="default-select">
+						                    <div id="default-select">
 						                      <select name="bandCategory" th:value="*{exercise}">
 						                        <option disabled="disabled">관심 종목</option>
 						                        <option th:each="exe : ${exercise}" th:value="${exe.exersubNo}" th:text="${exe.exersubName}"></option>
@@ -573,6 +573,9 @@
         	}
         	$('form').submit();
         })
+        $(document).ready(function () {
+	       $('select').niceSelect();
+	   });
         </script>
     </div>
     </body>

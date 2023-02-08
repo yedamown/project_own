@@ -1,6 +1,4 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
-<script src="/css/band/js/jquery-3.2.1.js"></script>
-<script src="/css/band/js/json.min.js"></script>
 
 <style>
 	.lis {
@@ -266,6 +264,7 @@
 				id="bandNo" th:value="${board.bandNo}"> <input type="hidden"
 				id="userId" th:value="${session.loginUser.userId}">
 				<input type="hidden" th:value="${board.bandBoardOptionNo}" id="bandBoardOptionNo">
+				<input type="hidden" th:value="${board.bandBoardWriter}" id="bandBoardWriter">
 <!-- ============ 게시판시작 ============= -->
 				<hr>
 				<div style="display: flex; justify-content: space-between;">
@@ -314,7 +313,7 @@
 			<div>
 <!--=============== 댓글 ===============-->			
 				<div style="display: flex; justify-content: flex-start;">
-					<div id="bandLike" style="display: inline-block; margin-right: 10px;"></div>
+					<div id="bandLike" class="hoverBtn" style="display: inline-block; margin-right: 10px;"></div>
 					<th:block th:if="${#strings.equals(board.bandBoardTag, 'BH01')}">
 					<div id="bandReply" style="display: inline-block;"><i class="lnr lnr-bubble"></i><span id="replyCnt">3</span></div>
 					</th:block>
@@ -330,6 +329,7 @@
 				</div>
 				<div>
 				<hr>
+				<th:block th:if="${#strings.equals(board.bandBoardTag, 'BH01')}">
 				<form id="frmRe">
 					<div class="form-group">
 						<textarea class="form-control" rows="5" id="reply" maxlength="150" placeholder="댓글을 남겨보세요" style="resize: none;"onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 남겨보세요'" required></textarea>
@@ -337,6 +337,7 @@
 						<button type="button" id="btnReployInsert"class="btn btn-primary mb-2" style="margin-top: 5px; margin-bottom:10px; float: right;">댓글작성</button>
 					</div>
 				</form>
+				</th:block>
 			</div>
 		</article>
 	</div>
@@ -413,9 +414,9 @@
         console.log(bandLeaderid);
 $(function(){
 	//밴드장이면(전역변수사용) 마크달아주기
-	if(bandLeaderid=$('#userId')){
-		let val = $('#writer').text()+'🎁';
-		$('#writer').text(val);
+	if(bandLeaderid==$('#bandBoardWriter').val()){
+		let val = $('#writer').text()+'<small style="color:#f8b600"><i class="fa-solid fa-crown"></i></small>';
+		$('#writer').html(val);
 	}
 	//일정추가하기....
 	/*<![CDATA[*/
@@ -881,10 +882,12 @@ var token = [[${_csrf.token}]]*/
 					console.log(res)
 					$("#replybody").append(makeTr(res));
 					let cnt = $('#replyCnt').text();
+					cnt=cnt.slice(2);
 					cnt++;
-					console.log(cnt+"??");
+					console.log(cnt);
 					$('#replyCnt').text('');
-					$('#replyCnt').text('댓글'+cnt);
+					console.log(cnt);
+					$('#replyCnt').text('댓글'+cnt.toString());
 					//입력칸 초기화
 					$("#reply").val('');
 					//페이징...? 후 페이징 이동
