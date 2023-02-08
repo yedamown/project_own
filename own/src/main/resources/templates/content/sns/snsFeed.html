@@ -169,7 +169,7 @@
             position: absolute;
             top: 90px;
             left: 300px;
-            font-size: 14px;
+            font-size: 13px;
             text-align: left;
         }
 
@@ -791,8 +791,9 @@
                                 <!--</a>-->
                             </th:block>
                     </div>
-                    <div th:unless="${!#lists.isEmpty(snsImg)}">
-                        <p>제발제발 글쓰기 테스트@@@@@@@@@@@@@@@@@@@@@@@@@@</p>
+                    <div th:unless="${!#lists.isEmpty(snsImg)}" style="width:630px; margin-left: 320px;">
+                        <img style="margin: 100px; margin-left: 250px;" src="/css/sns/img/camera.png" alt="blog title " />
+                        <p style="text-align: center; font-size: 20px; color: gray;">첫 게시물을 등록해보세요!</p>
                     </div>
 
 
