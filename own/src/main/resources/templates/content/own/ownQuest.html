@@ -26,7 +26,7 @@ textarea {
 					<input type="text" th:value="${session.loginUser.userId}" disabled/>
 					<br>
 				<label for="recipient-name" class="col-form-label">질문제목</label>
-                    <input type="text" style="width:200px" name="title">
+                    <input type="text" style="width:200px" name="title" maxlength="49">
                     <span style="margin-left:20px">분류</span>
 						<select id="category" name="header">
 							<option value="OWN">오운</option>

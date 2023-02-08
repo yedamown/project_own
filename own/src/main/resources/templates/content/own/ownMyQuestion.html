@@ -210,7 +210,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 		<tr class="responsive-table__row" th:each="quest: ${OList}">
 			<input type="hidden" th:value="${quest.questNo}">
 			<td class="responsive-table__body__text" th:text="${quest.rn}"></td>
-			<td class="responsive-table__body__text" th:text="${quest.title}" th:class="titlemodal" th:id="${quest.questNo}"></td>
+			<td class="responsive-table__body__text" th:text="${quest.title}" th:class="titlemodal" th:id="${quest.questNo}" style="cursor: pointer;"></td>
 			<td class="responsive-table__body__text" th:text="${quest.header}"></td>				
 			<td class="responsive-table__body__text" th:text="${quest.status}"></td>
 		</tr>
@@ -260,9 +260,8 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 						id="modalcontent">
 				</span>
 				</div>
-				<button class="btn btn-outline-primary m-1 "type="button" id="qCancel">취소</button>
 			</form>
-			<a class="modal_close_btn">닫기</a>
+			<a class="modal_close_btn" style="cursor: pointer;">닫기</a>
 	</div>
 
 </div>    
@@ -351,6 +350,9 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 			modal('my_modal');
 			let qno = $(this).attr('id')
 			console.log('id'+$(this).attr('id'));
+			
+			$('#qCancel').remove();
+			
 			$.ajax({
 				url : '/own/admin/selectquest',
 				method : 'get',
@@ -360,6 +362,11 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
                 $('#modaltitle').html(res.title);
                 $('#modalcontent').html(res.content);	                
                 $('#modalanswer').html(res.answer);
+                console.log(res.status);
+                if(res.status=='미처리'){
+                	let tag = `<button class="btn btn-outline-primary m-1 "type="button" id="qCancel">취소</button>`
+                $('#modalform').append(tag);
+                }
 			})		
 		})
 		
@@ -386,11 +393,11 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 
 					if(ele.answer==null){
 					answer = `<td class="responsive-table__body__text>미처리 상태</td>`
-					title = `<td class="responsive-table__body__text titlemodal" id="${ele.questNo}">${ele.title}</td>`
+					title = `<td class="responsive-table__body__text titlemodal" id="${ele.questNo}" style="cursor: pointer;">${ele.title}</td>`
 							}
 					else{
 					answer = `<td class="responsive-table__body__text>${ele.answer}</td>`
-					title = `<td class="responsive-table__body__text titlemodal" id="${ele.questNo}">${ele.title}</td>`
+					title = `<td class="responsive-table__body__text titlemodal" id="${ele.questNo}" style="cursor: pointer;">${ele.title}</td>`
 					}
 
 					let tag = `<tr class="responsive-table__row titlemodal">

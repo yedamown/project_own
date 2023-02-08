@@ -80,6 +80,7 @@
 									<small class="mr-3">[[${my.memcount}]]명 참여중</small> 
 								</div>
 							</div>
+							<a th:href="@{/own/band/bandGroup(bandNo=${my.bandNo})}" class="btn btn-primary px-4 mx-auto my-2">상세보기</a>
 						</div>
 					</div>
 				</th:block>				
@@ -136,7 +137,7 @@
 
 					let tag = `
 					<div class="col-lg-4 mb-4">
-						<div class="card border-0 shadow-sm mb-2" style="300px, padding:10px;">
+						<div class="card border-0 shadow-sm mb-2" style="300px; padding:10px;">
 							<img class="card-img-top mb-2" src="/imgView/${my.firstImage}" alt="도전사진"
 								style="object-fit:cover;;"/>
 							<div class="card-body bg-light text-center p-4" style="object-fit:cover;">

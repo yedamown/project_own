@@ -98,9 +98,14 @@
       <div class="modal-content">
         <span class="close">&times;</span>                         
         <p id="modaltext">'밴드 삭제' 버튼 클릭 시 자동으로 비활성화되며 30일동안 유예기간이 주어집니다.</p>
-    <button type="button" id="bandDelModal" class="btn btn-outline-primary m-1">밴드 삭제</button>
-	<button type="button" id="bandDisModal" class="btn btn-outline-primary m-1">휴면 해제</button>
-	</button>
+     
+    
+     <th:block th:if="${#strings.equals(bandInfo.bandStatus, 'BS_1')}">
+    <button type="button" id="bandDelModal" class="btn btn-outline-primary m-1" style="width:400px;">밴드 삭제</button>
+     </th:block>
+    <th:block th:if="${#strings.equals(bandInfo.bandStatus, 'BS_2')}"> 
+	<button type="button" id="bandDisModal" class="btn btn-outline-primary m-1" style="width:400px;">휴면 해제</button>
+     </th:block>
       </div>
 </div>
 </body>
@@ -176,6 +181,7 @@ $("#bandPassModal").on("click",function(){
 			            }
 		  }).then(res => {
 			  alert('밴드장이 변경되었습니다')
+				location.href="/own/band/bandGroup?bandNo="+bandNo
 	})
 })
 
@@ -191,6 +197,7 @@ $("#bandDelModal").on('click',function(){
 			            }
 		  }).then(res => {
 			alert('휴면상태 전환 완료')
+			location.href="/own/band/bandGroup?bandNo="+bandNo
 	})
 })
 
@@ -206,6 +213,7 @@ $("#bandDisModal").on('click',function(){
 			            }
 		  }).then(res => {
 			  alert('휴면 해제 완료')
+				location.href="/own/band/bandGroup?bandNo="+bandNo
 	})
 })
 
