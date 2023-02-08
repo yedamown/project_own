@@ -3,11 +3,8 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko">
 
 <head>
-	<!-- 폰트어썸 -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
-	<!-- jquery -->
-	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
-	<!-- Required meta tags -->
+	<!-- 나이스 셀렉트/스크롤 -->
+	<script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Royal Hotel</title>
@@ -113,7 +110,7 @@
 	}
 
 	#aSelectOption {
-		margin-left: 100px;
+		margin-left: 97px;
 		margin-right: 5px;
 	}
 	#wPagingOption, #kPagingOption{
@@ -284,21 +281,6 @@
 		.responsive-table__body__text--country {
 			grid-row: 2;
 		}
-	}
-
-	/* demo styles */
-
-	/* for custom scrollbar for webkit browser*/
-	::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	::-webkit-scrollbar-track {
-		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	}
-
-	::-webkit-scrollbar-thumb {
-		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 	}
 
 	/* The Close Button */
@@ -1134,4 +1116,8 @@
 
 
 	}) // end of function
+	$(document).ready(function() {
+		$('select').niceSelect();
+	})
+	
 </script>
