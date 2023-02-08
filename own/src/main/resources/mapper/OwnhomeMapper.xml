@@ -13,7 +13,7 @@ select user_id from own_users where user_email = #{email}
 </select>
 
 <update id="searchPw">
-update own_users set user_passwd = #{userPasswd} where user_email = #{userEmail}
+update own_users set user_passwd = #{userPasswd} where user_email = #{userEmail} and user_id = #{userId}
 </update>
 
 <select id="getEmpList" resultType="EmpVO">
@@ -121,10 +121,10 @@ select count(*) from question
    <select id="myQuestion" resultType="co.prjt.own.ownhome.service.QuestionVO">
    	SELECT * FROM (SELECT ROWNUM RN, A.* FROM (
 	SELECT * FROM QUESTION where user_id = #{userId}
+	ORDER BY QUEST_DATE DESC
 	<![CDATA[	
 	) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
-	]]>
-   ORDER BY RN
+	]]>   
    </select>
    
    <select id="myquestionCount" resultType="int">

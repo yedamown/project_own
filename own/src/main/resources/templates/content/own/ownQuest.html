@@ -13,10 +13,11 @@ textarea {
   </style>
 </head>
 <body>
+<div id="subTemp">
 <div class="layout-978">
 <div class="tblcontainer">
 <div class="formdiv">
-	<form action="/own/QuestADD" method="post" id="modalform">
+	<form role="form" method="post" id="frm" name="frm">
                 <input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}">
 				<input type="hidden" name="userId" th:value="${session.loginUser.userId}">
@@ -44,10 +45,40 @@ textarea {
 				</span>
 				</div>
 				</div>
-                <button type="submit" class="btn btn-outline-primary m-1">질문 등록</button>
+                <button type="button" class="btn btn-outline-primary m-1" id="btnaddQuest">질문 등록</button>
 	</form>
 	</div>
 </div>
 </div>
+
+</div>
+<script>
+
+/*<![CDATA[*/
+var header = '[[${_csrf.headerName}]]';
+var token = '[[${_csrf.token}]]';
+console.log(header);
+console.log(token);
+/*]]>*/
+$('#btnaddQuest').on('click',function(){
+	let formData = new FormData(document.frm);
+
+	$.ajax({
+        url: '/own/QuestADD',
+        method: 'post',
+        data : formData,
+          cache: false,
+	          contentType: false,
+	          processData: false,
+        beforeSend: function(xhr){
+          xhr.setRequestHeader(header,token);
+        }
+      }).then(res=>{
+    	  alert('질문등록 완료!!')
+    	  $('#subTemp').load('/own/mypage/question');
+      })
+})
+</script>
+
 </body>
 </html>
