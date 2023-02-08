@@ -35,13 +35,15 @@
             <div class="navbar-nav font-weight-bol py-0" style="margin-left: 800px;font-size: 22px;">
             <div class="navbar-nav font-weight-bold mx-auto py-0">
                <a href="/" class="nav-item nav-link">Home</a> 
+                <div sec:authorize="hasRole('ROLE_USER')">
                <div class="nav-item dropdown">
                   <a href="/own/ownRecordForm" class="nav-link dropdown-toggle"
-                     data-toggle="dropdown">운동기록</a>
+                     data-toggle="dropdown">오늘의 운동</a>
                   <div class="dropdown-menu rounded-0 m-0">
                             <a href="/own/ownRecordForm" class="dropdown-item">운동기록</a>
                             <a href="/own/ownRecordList" class="dropdown-item">운동결과</a>
                   </div>
+               </div>
                </div>
                     <a href="/own/sns" class="nav-item nav-link">SNS</a>
                     <a href="/own/band" class="nav-item nav-link">가치</a>
