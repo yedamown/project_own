@@ -334,6 +334,7 @@
             color: white;
             font-size: 1.2em;
             letter-spacing: 2px;
+            font-weight:600;
         }
     </style>
 
@@ -461,7 +462,7 @@
                                     style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
                             </span>
                             <span class="storyNickname" th:text="${story.snsNickname}" 
-                            	  style="font-size:17px; padding-right:30px; cursor: pointer; font-weight: 500;"></span>
+                            	  style="font-size:17px; padding-right:45px; cursor: pointer; font-weight: 800; padding-left: 10px;"></span>
                         </span>
                     </div>
                     </div>
@@ -470,8 +471,10 @@
                     <div class="modal">
                         <div class="modal-content" style="width: 500px; height: 600px;">
                             <span class="close"></span>
+
                             <div class="storyProfile" style="position:relative; width: 450px; height: 60px;">
                             </div>
+
                             <div class="storyContent" style="position:relative; width:499px;">
 
                             </div>
@@ -486,10 +489,10 @@
                                     <article class="blog_card" th:if="${snsFollow != 0}" data-aos="fade-down" style="width:802px; border: 1px solid lightgray; margin-bottom: 100px; background-color: white;">
                                         <div class="homeProfile">
                                             <img th:src="|/imgView/${now.mediaServerFile}"
-                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid lightgray;">
+                                                style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid lightgray;">
                                             <a th:href="@{/own/snsFeed(snsNickname=${now.snsNickname})}">
                                                 <span th:text="${now.snsNickname}"
-                                                    style="font-size: 17px; padding-left: 10px;"></span></a>
+                                                    style="font-size: 14px; padding-left: 10px; color: gray; font-weight: 800;"></span></a>
                                         </div>
                                         <div class="feedImg" style="position: relative; width: 800px; height: 500px;">
                                             <div class="blog_card_top" th:each="nowimg : ${now.fileList}"
@@ -506,8 +509,8 @@
                                         </div>
                                         <div class="blog_card_bottom">
                                             <div class="meta_data">
-                                                <span>좋아요 <span th:text="${now.likeCount}" style="font-size:16px; font-weight:500;"></span>개</span>
-                                                <span>댓글 <span th:text="${now.replyCount}" style="font-size:16px; font-weight:500;"></span>개</span>
+                                                <span>좋아요 <span th:text="${now.likeCount}" style="font-size:14px; font-weight:600;"></span>개</span>
+                                                <span>댓글 <span th:text="${now.replyCount}" style="font-size:14px; font-weight:600;"></span>개</span>
                                                 <span th:text="${#dates.format(now.snsBoardDate, 'yyyy-MM-dd HH:mm:ss')}">
                                                  </span>
                                                  <input id="snsBoardDate" type="hidden" th:value="${now.snsBoardDate}">
@@ -544,7 +547,7 @@
                     <div class="wrap">
                         <div class="login">
                             <!--<h2>SNS 간편 가입</h2>-->
-                            <form action="/own/snsAccount" method="post" name="snsForm" style="width: 550px; padding-left: 70px;">
+                            <form action="/own/snsAccount" method="post" name="snsForm" style="width: 570px; padding-left: 115px;">
                             <input name="userId" type="hidden" th:value="${session.loginUser.userId}">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                             <div class="login_id">
@@ -566,7 +569,7 @@
                         </div>
                         </div>
                         <hr>
-                        <div style="cursor:pointer; text-align: center;padding-bottom: 10px;padding-top: 10px; background-color: lightblue; color: white;"
+                        <div style="cursor:pointer; text-align: center;padding-bottom: 10px;padding-top: 10px; background-color: lightblue; color: white; font-size:20px; font-weight:600; cursor:pointer;"
                             onClick="closeModal();">닫기
                             <span class="pop_bt modalCloseBtn" style="font-size: 13pt;">
                             </span>
@@ -690,10 +693,11 @@
                     }
                         let storyProfileName = $('<span>').text(res.storyInfo[0].snsNickname)
                         storyProfileName.attr('class', "storyProfileName")
-
-
-                    $('.storyProfile').append(storyProfileImg, storyProfileName);
-
+                        let stroyProfileLink = $('<a>').attr("href","/own/snsFeed?snsNickname="+res.storyInfo[0].snsNickname+"")
+                            console.log(stroyProfileLink);
+                            stroyProfileLink.css({"position":"absolute","width":"150px","height":"35px"});
+                        $('.storyProfile').append(storyProfileImg, storyProfileName, stroyProfileLink);
+                    //<a th:href="@{/own/snsFeed(snsNickname=${now.snsNickname})}">
                    for (let i = 0;  i < res.storyImg.length; i++) {
                         let storyImg = $('<img>').attr({
                             "src": "/imgView/" + res.storyImg[i].mediaServerFile,
