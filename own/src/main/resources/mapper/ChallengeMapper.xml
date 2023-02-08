@@ -164,4 +164,8 @@
 			]]>
 	</select>
 	
+	<delete id="deleteChall">
+		DELETE CHALLENGES
+		WHERE CHALL_NO =  #{challNo}
+	</delete>
 </mapper>

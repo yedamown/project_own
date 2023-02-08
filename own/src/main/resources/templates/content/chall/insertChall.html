@@ -1,9 +1,6 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="ko"
-	>
-
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
 <!-- jquery -->
 <script
@@ -45,6 +42,7 @@
 <meta charset="utf-8">
 <title>도전 등록</title>
 </head>
+<div layout:fragment="content">
 <script th:inline="javascript">
 $(function(){
 	//근데이거 좀따가 생각해서 홈페이지로 이동해야할듯
@@ -72,39 +70,6 @@ $(function(){
 
 <!-- 공통헤더 -->
 	<!-- Navbar Start -->
-	<div class="container-fluid bg-light position-relative shadow">
-		<nav
-			class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
-			<a href="" class="navbar-brand font-weight-bold text-secondary"
-				style="font-size: 50px"> <i class="flaticon-043-teddy-bear"></i>
-				<span class="text-primary">OWN_Challenges</span>
-			</a>
-			<button type="button" class="navbar-toggler" data-toggle="collapse"
-				data-target="#navbarCollapse">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse justify-content-between"
-				id="navbarCollapse">
-				<div class="navbar-nav font-weight-bold mx-auto py-0">
-					<a href="index.html" class="nav-item nav-link">Home</a> <a
-						href="about.html" class="nav-item nav-link">About</a> <a
-						href="class.html" class="nav-item nav-link">Classes</a> <a
-						href="team.html" class="nav-item nav-link">Teachers</a> <a
-						href="gallery.html" class="nav-item nav-link">Gallery</a>
-					<div class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle"
-							data-toggle="dropdown">Pages</a>
-						<div class="dropdown-menu rounded-0 m-0">
-							<a href="blog.html" class="dropdown-item">Blog Grid</a> <a
-								href="single.html" class="dropdown-item">Blog Detail</a>
-						</div>
-					</div>
-					<a href="contact.html" class="nav-item nav-link active">Contact</a>
-				</div>
-				<a href="" class="btn btn-primary px-4">Join Class</a>
-			</div>
-		</nav>
-	</div>
 	<!-- Navbar End -->
 
 	<!-- Header Start -->
@@ -122,12 +87,6 @@ $(function(){
 		</div>
 	</div>
 	<!-- Header End -->
-		
-				
-		<div th:if="${session.loginUser}">
-			<h1 th:text="${session.loginUser.userId}"></h1>
-		</div>
-		
 		
   <!-- 입력 폼 시작 -->
   	    <!-- Contact Start -->
@@ -233,7 +192,6 @@ $(function(){
     <!-- Contact End -->
     <!-- 입력폼 끝 -->
 		
-	
 <script>
 		//첨부파일 이미지 
       	/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
@@ -332,7 +290,7 @@ $(function(){
             }
         }('att_zone', 'btnAtt')
 
-        
 </script>
 </body>
+</div>
 </html>

@@ -102,7 +102,7 @@
 			<li class="py-2" th:if=" ${myInfo.memAmt} > ${detailChall.challPrice} ">
 				->  예상 잔여 예치금 : <span style="font:bold">[[${myInfo.memAmt} - ${detailChall.challPrice}]]원</span></li>
 			<li class="py-2" th:unless=" ${myInfo.memAmt} > ${detailChall.challPrice} ">
-				->  잔액이 부족합니다. 예치금 충전을 해 주세요.</li>
+				->  잔액이 부족합니다. 예치금 충전을 해 주세요. <span class="btn btn-outline-primary m-1"><a href="/own/chall/payAmount">충전 하러가기</a></span></li>
 		</ul>
 		<!-- <h3>나의 보유 예치금 : [[${myInfo.memAmt}]]</h3>
 		<h3>도전 예치금 : [[${detailChall.challPrice}]]</h3>

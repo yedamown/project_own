@@ -17,6 +17,9 @@
 	</insert>
 
 		<sql id="condition">
+				<if test="userId !=null and userId !=''">
+					AND	USER_ID = #{userId}
+				</if>
 				<if test="challNo !=null and challNo !=''">
 					AND	CHALL_NO = #{challNo}
 				</if>

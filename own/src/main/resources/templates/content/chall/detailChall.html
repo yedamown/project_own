@@ -21,7 +21,7 @@
 
 	<!-- 모달 사진효과 -->
 	<link href="/css/chall/css/chall.css" rel="stylesheet" />
-
+	
 	<!-- google chart -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	<meta charset="utf-8">
@@ -38,15 +38,6 @@
 					<h4 class="text-center" style="color: white; margin-top: 30px;">오늘의 운동</h4>
 					<h2 class="text-center" style="color: white;">Challenges</h2>
 				</div>
-				<div class="container-fluid" style="background-color: #00394f; width: 900px;height: 130px; padding-top: 40px;
-				border-top-left-radius: 15px; border-top-right-radius: 15px;">
-						<div class="input-group" style="width: 800px; margin: auto;">
-							<input type="text" class="form-control form-control-lg" id="searchWord" placeholder="어떤 운동을 좋아하시나요?" />
-							<div class="input-group-append" id="searchBtn">
-								<span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
-							</div>
-						</div>
-				</div>
 			</div>
 		</div>
 		<!-- Banner End -->
@@ -62,8 +53,10 @@
 							</p>
 							<div class="d-flex" style="padding-left: 20px;">
 								<h1 class="mb-3" th:text="${detailChall.challTitle}"></h1>
+									<th:block th:if="${session.loginUser}">
+										<button class="btn btn-primary mt-2 py-2 px-4" th:if="${leaderInfo.userId == session.loginUser.userId} and ${detailChall.nowMem == 0}" id="delChall">도전삭제</button>
+									</th:block>
 								<div style="margin-left: auto; margin-right: 10px;">
-									<h1 class="fa fa-regular fa-share text-primary" style="margin-right: 15px;"></h1>
 									<h1 th:if="${myLike != null }" class="fa fa-regular fa-bookmark text-primary bmBtn" style="margin: 3px;"></h1>
 									<h1 th:if="${myLike == null }" class="fa fa-solid fa-bookmark text-primary bmBtn" style="font-weight: 100;"></h1>
 								</div>
@@ -142,7 +135,7 @@
 							<!-- 상세보기 소제목 -->
 							<h1 class="mb-3">인증 상세정보</h1>
 							<!-- <div class="mb-5" id="detailC" style="display: inline-block; height: auto; overflow: hidden;"> -->
-							<p><span th:text="${detailChall.vldMethod}"></span></p>
+							<p><span th:text="${detailChall.challIntro}"></span></p>
 							<div class="row" style="justify-content: center;">
 								<div style="width: 300px; padding: 1px; display: inline-block; text-align: center; margin-right: 10px;">
 									<img class="rounded" th:src="|/imgView/${challImg[1].mediaServerFile}|" alt="vldFail"
@@ -154,6 +147,7 @@
 										style="width: 280px; height:200px ; object-fit: cover"  />
 										<h5 class="m-1 mt-2">실패 사진 예시</h5>
 								</div>
+								<p><span th:text="${detailChall.vldMethod}"></span></p>
 							</div>		
 					</div>
 					<!--상세정보 끝-->
@@ -257,6 +251,7 @@
 								th:value="${detailChall.challDuration}" />
 							<input id="challFreq" name="challFreq" type="hidden" th:value="${detailChall.challFreq}" />
 							<input id="nowMem" type="hidden" th:value="${detailChall.nowMem}" />
+							<input id="maxMem" type="hidden" th:value="${detailChall.maxMem}" />
 							<input id="challSt" type="hidden" th:value="${detailChall.challStatus}" />
 							<form action="/own/chall/insertVldForm" method="post" id="insertChall"
 								enctype="multipart/form-data">
@@ -299,9 +294,9 @@
 							<input type="hidden" id="vldReportId">
 							<input type="hidden" id="vldNickName">
 							<h2></h2>
-							<h4 class="mr-3" style="padding: 3px; float: right;">
+							<h4 class="mr-3" style="padding: 3px; float: right; " id="userRpt">
 								<!-- 세 번째 Modal을 여는 클래스 -->
-								<i class="modalBtn fas fa-bullhorn text-primary" id="userRpt"></i>
+								<i class="modalBtn fas fa-bullhorn text-primary"></i>
 								<span>신고</span>
 							</h4>
 						</div>
@@ -320,15 +315,15 @@
 				<div class="modal">
 					<!-- 세 번째 Modal의 내용 -->
 					<div class="modal-content bg-light p-5"  style="width:550px; height:670px;">
-						<span class="close">&times;</span>
+						<span class="close">X</span>
 						<div id = "container" style="padding-bottom: 20px;">
-							<h2 style="text-align: center; margin: 10px;margin-bottom: 30px;">Report Form 신고하기</h2>
+							<h2 style="text-align: center; margin: 10px;margin-bottom: 30px;">회원 신고</h2>
 							<form role="form"  autocomplete="off" style="width: 80%; margin: auto;"enctype="multipart/form-data" name="frm" id="frm">
 							<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
 							<input type="hidden" th:if="${session.loginUser.userId}" th:value="${session.loginUser.userId}" id="reporter" name="reporter">
 							<!-- <div class="input-form col-md-12 mx-auto"> -->
 								<div class="form-group mb-4">
-									<label for="dereporter">신고할 사람 *</label>
+									<label for="dereporter">신고대상 *</label>
 									<input type="hidden"  id="dereporter" name="dereporter" readonly />
 									<input type="text" class="form-control" id="rptNickName" readonly />
 								</div>
@@ -351,8 +346,7 @@
 									<input  name="uploadfile" type="file" id="uploadfile" multiple="multiple">
 								</div>
 								<div style="text-align: center;">
-									<button type="button" class="btn btn-primary px-3" style="width: 150px;" id="btnreporting">신고</button>      
-									<button type="button" class="btn btn-primary px-3" style="width: 150px;" id="btnsignin">취소</button>              
+									<button type="button" class="btn btn-primary px-3" style="width: 150px;" id="btnreporting">신고</button>                
 								</div>
 							</form>
 						</div>
@@ -382,8 +376,8 @@
 					<form action="">
 						<div class="input-group">
 							<input type="text" class="form-control form-control-lg"
-								placeholder="Keyword" />
-							<div class="input-group-append">
+								placeholder="어떤 도전을 하시겠어요?" id="searchWord" />
+							<div class="input-group-append" id="searchBtn">
 								<span class="input-group-text bg-transparent text-primary"><i
 									class="fa fa-search"></i></span>
 							</div>
@@ -407,19 +401,6 @@
 							</div>
 						</div>
 					</th:block>
-				</div>
-
-				<!-- Tag Cloud -->
-				<div class="mb-5  mt-4">
-					<h2 class="mb-4">Tag Cloud</h2>
-					<div class="d-flex flex-wrap m-n1">
-						<a href="" class="btn btn-outline-primary m-1">Design</a> <a
-							href="" class="btn btn-outline-primary m-1">Development</a> <a
-							href="" class="btn btn-outline-primary m-1">Marketing</a> <a
-							href="" class="btn btn-outline-primary m-1">SEO</a> <a href=""
-							class="btn btn-outline-primary m-1">Writing</a> <a href=""
-							class="btn btn-outline-primary m-1">Consulting</a>
-					</div>
 				</div>
 
 				<!-- Plain Text -->
@@ -466,6 +447,20 @@
 		const day = leftPad(source.getDate());
 		return [year, month, day].join(delimiter);
 	}
+
+	//검색하기
+	$('#searchBtn').on('click', function(){
+ 			console.log("헐헐");
+ 			console.log($('#searchWord').val());
+			let searchWord = $('#searchWord').val();
+			console.log(searchWord);
+			if(searchWord != ''){
+				location.href = '/own/chall/searchChall?searchWord=' + searchWord
+			} else if(searchWord == ''){
+				alert('검색어를 입력해주세요!');
+			}
+ 	});
+
 
 	//--------------------------모달모달----------------------------------------------
 		
@@ -547,7 +542,7 @@
 		})
 	})
 
-	//회원신고
+	//회원신고 ----------------------------------------------------------------------------------
 	$('#userRpt').on("click", function(e){
 		console.log("회원신고");
 		console.log($(this).parent().parent().find('input').eq(1).val());
@@ -558,16 +553,8 @@
 		console.log(reportedNick)
 		$('#dereporter').val(reported);
 		$('#rptNickName').val(reportedNick);
-/*		
-	<input type="hidden" id="vldReportNo">
-			<input type="hidden" id="vldReportId">
-			<input type="hidden" id="vldNickName">
-*/
 	});
 
-	$('#btnsignin').on('click',function(){
-		console.log('취소');
-	})
 	$('#btnreporting').on('click',function(){
 		console.log("왜안되노..?")
 		let formData = new FormData(document.frm);
@@ -592,9 +579,6 @@
 				console.log(err);
 				alert("오류 발생. 다시 시도해주세요.")	
 			}
-		// }).then(res=>{
-		// 	console.log(res)          
-		// });	
 		});
 	});
 
@@ -605,24 +589,68 @@
 		console.log(nwCh);
 		console.log(cutChallNo);
 		location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
-	})
+	});
 
     //도전 신청으로 이동하기   --> 여유가되면 모달로 띄우기...^^;
     $('#applyBtn').on("click", function () {
-		if(userId != null){
-			console.log("도전신청");
-			location.href = '/own/chall/applyForm?challNo=' + challNo + '&&userId=' + userId;
-		} else{
-			alert('오운 로그인 후 이용해주세요.');
-		}
+		$.ajax({
+			url:'/own/chall/applyCheck',
+			method:'get',
+			data:{ userId: userId,
+				  challNo: challNo },
+			success: function(res){
+				console.log(res);
+				if(userId != null && res > 0) {
+					alert('이미 도전신청 하였습니다. 승인을 기다려주세요.');
+				} else if(userId != null && res == 0){
+					location.href = '/own/chall/applyForm?challNo=' + challNo + '&&userId=' + userId;
+				} else {
+					alert('오운 로그인 후 이용해주세요.');
+				}
+			},
+			error: function(err){
+				console.log(err);
+			}
+		});
     });
     
     //메뉴 클릭 색깔 변경 이벤트
     $('#menu-filters li').click(function(){
     	$('#menu-filters li').removeClass('active');
     	$(this).addClass('active');
-    })
+    });
     
+	//도전삭제
+	$('#delChall').click( function(){
+		console.log("삭제");
+		let nowChallMem = $('#nowMem').val();
+		console.log(nowChallMem);
+		if(nowChallMem == 0){
+			console.log("삭제가능")
+			$.ajax({
+				url:'/own/chall/delChall',
+				method:'post',
+				data: {challNo:challNo},
+				beforeSend : function(xhr){
+							xhr.setRequestHeader(header, token);
+				},
+				success: function(res){
+					console.log(res);
+					if(res == 1){
+						alert("삭제완료. 도전 홈으로 이동합니다.");
+						location.href = '/own/chall/home';
+					}
+				},
+				error: function(err){
+					consol.log(err);
+				}
+
+			})
+		} else{
+			alert("참여하는 회원이 있어 삭제 불가능.");
+		}
+	});
+
     //-------------------------------상세보기-------------------------------------
       /* 상세보기 버튼 */
     $('#detailBtn').on("click", function () {
@@ -740,7 +768,7 @@
 			$.ajax({
 			url: '/own/chall/vldPageListAjax',
 			method: 'get',
-			data: {page:1,
+			data:  {page:1,
 					pageUnit:4,
 					pageSize:5,
 					challNo: challNo},
@@ -756,7 +784,7 @@
 				console.log(err);
 			}
 			})
-		}
+		};
 
 		//올 버튼 누를때 전체불러오는 아작스..
 		$('#allVldPage').on('click', function(){
@@ -949,7 +977,13 @@
 		$('#vldReportId').val(vldDtId);
 		$('#vldNickName').val(vldNick);
 
-		
+		//내 인증이면 회원신고 버튼 안띄우기
+		if(userId == vldDtId){
+			$('#userRpt').attr('style', 'display:none');
+		} else {
+			$('#userRpt').attr('style', 'display:block');
+		}
+
 		//신고여부 확인.
 		$.ajax({
 	        url:'/own/chall/checkRptAjax?vldNo='+ vldNo + '&&reporter=' + userId,
@@ -1040,6 +1074,7 @@
 	        url:'/own/chall/vldCountAvgAjax?userId='+ userId + '&&challNo=' + challNo,
 	        method: 'get',
 	        success: function(result){
+					console.log(userId);
 	        		console.log(result);
 					let myVld =  result.myVld;
 					let nowMem = $('#nowMem').val();
@@ -1091,8 +1126,6 @@
 					}
 				})
 				
-	
-	  
 	  //달성률 구글차트
 		var context = document.getElementById('myChart').getContext('2d');
 		var context2 = document.getElementById('memChart').getContext('2d');
@@ -1187,26 +1220,32 @@
       console.log("이벤트 텍스트 "+$(e).text());
       let memId = $(e).parent().text().substring(0,3);
       let memStatus = $(e).text();
-      $.ajax({
-        url: '/own/chall/challMemAuth',
-        method: 'post',
-        data: JSON.stringify({userId: memId,
-                              challNo: challNo,
-                              memStatus: memStatus
-                            }),
-        beforeSend : function(xhr){
-                      xhr.setRequestHeader(header, token);
-        }, 
-        contentType: "application/json",
-        success: function(result){
-          console.log(result)
-		  alert(result);
-		  console.log($(e).parent().remove());
-        },
-        error: function(err){
-          console.log(err)
-        }
-      })
+	  let nowMem = $('#nowMem').val();
+	  let maxMem = $('#maxMem').val();
+	  if(nowMem >= maxMem){
+		alert('최대인원을 초과하여 도전승인을 할 수 없습니다.');
+	  } else{
+		  $.ajax({
+			  url: '/own/chall/challMemAuth',
+			  method: 'post',
+			  data: JSON.stringify({userId: memId,
+				challNo: challNo,
+				memStatus: memStatus
+			}),
+			beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+			}, 
+			contentType: "application/json",
+			success: function(result){
+				console.log(result)
+				alert(result);
+				console.log($(e).parent().remove());
+			},
+			error: function(err){
+				console.log(err)
+			}
+		})
+	}
     }
  
 	//-----------------------------인증신고 관리 - 리더만 가능.--------------------------------

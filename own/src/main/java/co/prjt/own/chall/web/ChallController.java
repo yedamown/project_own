@@ -172,6 +172,17 @@ public class ChallController {
 		return cList;
 	}
 
+	//도전찾기 (검색) 페이지로 이동
+	@GetMapping("/findChall")
+	public String findChall(ChallengeVO vo, Paging paging, Model model) {
+		paging.setPageUnit(6);// 3개씩보기
+		paging.setPageSize(5); // 페이딩 동그라미 3개
+		List<ChallengeVO> cList = challenge.pageChallList(vo, paging);
+		model.addAttribute("exersub", common.getListExersub());
+		model.addAttribute("list", cList);
+		return "content/chall/findChall";
+	}
+	
 	// 검색 후 결과페이지로 이동
 	@GetMapping("/searchChall")
 	public String searchChall(ChallengeVO vo, Model model, Paging paging) {
@@ -200,6 +211,8 @@ public class ChallController {
 		System.out.println(vo);
 		int rs = challenge.insertChall(vo);
 		String cNo = vo.getChallNo();
+		System.out.println("신청결과" + rs);
+		System.out.println("도전번호" + cNo);
 		rttr.addFlashAttribute("result", rs);
 		rttr.addFlashAttribute("challNo", cNo);
 		if (rs == 1) {
@@ -210,6 +223,14 @@ public class ChallController {
 		return "redirect:/own/chall/insertFormChall";
 	}
 
+
+	//도전삭제
+	@PostMapping("/delChall")
+	@ResponseBody
+	public int delChall(ChallengeVO vo) {
+		int rs = challenge.deleteChall(vo);
+		return rs;
+	}
 	// 해당 도전 상세보기 페이지로 이동 처리 + 페이지이동
 	@GetMapping("/detailChall")
 	public String detailChall(@RequestParam("challNo") String no, ChallengeVO vo, ChallengeVO vo2,
@@ -395,6 +416,13 @@ public class ChallController {
 		return list;
 	}
 
+	//신청했는지 체크
+	@GetMapping("/applyCheck")
+	@ResponseBody
+	public int applyCheck(CMemberListVO vo, CMemberListVO vo1) {
+		int rs = memberList.applyCheck(vo);
+		return rs;
+	}
 	// 멤버리스트 권한 변경 -> 승인/ 거절
 	@PostMapping("/challMemAuth")
 	@ResponseBody
