@@ -172,63 +172,147 @@
 	  background: #333;
 	  color: #fff;
 	}
+	/* 추가 */
+	.bandBox {
+	    width: 260px;
+	    height: 270px; 
+	    border-radius: 30%;
+	    overflow: hidden;
+	}
+	.bandProfile {
+	    width: 260px;
+	    height: 270px;
+	    object-fit: cover;
+	}
+	.dropdown{
+		  position : relative;
+		  display : inline-block;
+		}
+		
+		.dropbtn_icon{
+		  font-family : 'Material Icons';
+		}
+		.dropbtn{
+		  border-radius : 4px;
+		  background-color: #f5f5f5;
+		  font-weight: 400;
+		  color : rgb(37, 37, 37);
+		  width :200px;
+		  text-align: left;
+		  cursor : pointer;
+		  font-size : 12px;
+		}
+		.dropdown-content{
+		  display : none;
+		  position: absolute;
+		  z-index: 999;
+		  font-weight: 400;
+		  background-color:white;
+		  min-width: 200px;
+		  top: 40px;
+		}
+		.dropdown-content a{
+		  display : block;
+		  text-decoration : none;
+		  color : rgb(37, 37, 37);
+		  font-size: 12px;
+		  padding : 12px 20px;
+		  cursor: pointer;
+		}
+		
+		.dropdown-content a:hover{
+		  background-color : #ececec
+		}
+		.dropdown:hover .dropdown-content {
+		  display: block;
+		}
+		.clickBoard {
+			color : blue;
+			text-decoration : underline;
+		}
+		#ifr {
+			 width: 800px;
+			 height: 1000px;
+		}
+		.nav-item, .nav-link, .dropdown-item {
+			cursor: pointer;
+		}
 </style>
 <div id="template" style="flex-grow: 3; width: 740px">
-	<div>
 		<article style="border: 1px solid #eeeeee; padding: 30px;">
-			<h3>게시판 상세페이지</h3>
+			<h4 class="hoverBtn" id="toBoard" th:name="${board.bandBoardOptionNo}" style="display: inline">[[${board.bandBoardName}]]</h4>
+			<p class="hoverBtn"  style="display: inline; margin-top: 5px;"><i class="fa-solid fa-chevron-right"></i></p>
 			<input type="hidden" id="bandBoardDetailNo"
 				th:value="${board.BandBoardDetailNo}"> <input type="hidden"
 				id="bandNo" th:value="${board.bandNo}"> <input type="hidden"
 				id="userId" th:value="${session.loginUser.userId}">
 				<input type="hidden" th:value="${board.bandBoardOptionNo}" id="bandBoardOptionNo">
-				<h4 class="form-control" id="writerId" th:text="${board.bandBoardWriter }"></h4>
-			<div class="form-group">
-				<h4 class="form-control" id="title" th:text="|[${board.bandRemarks }] ${board.bandBoardTitle }|"></h4>
-				<h4 class="form-control" id="writer" th:text="${board.bandNickname }"></h4>
-				<h4 class="form-control" id="RegDate" th:text="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"></h4>
-				<h4 class="form-control" id="cnt" th:text="${board.bandBoardCnt}"></h4>
-				<div class="form-group">
-					<label for="comment">Content:</label>
-					<div id="bCalendar"></div>
-					<div th:utext="${board.bandBoardContent }"></div>
+<!-- ============ 게시판시작 ============= -->
+				<hr>
+				<div style="display: flex; justify-content: space-between;">
+					<div style="display: flex;">
+						<h5 id="bandRemarks" th:if="${board.bandRemarks }" th:text="|[${board.bandRemarks }]|" style="display:inline; margin-right: 10px;"></h5>
+						<h4 id="title" th:text="${board.bandBoardTitle }" style="display:inline"></h4>
+					</div>
+					<div>
+						<button type="button" id="btnUpdate" class="btn btn-primary mb-2"
+						th:if="${#strings.equals(session.loginUser.userId, board.bandBoardWriter)}"
+						>수정</button>
+						<button type="button" id="btnDelete" class="btn btn-primary mb-2"
+						th:if="${#strings.equals(session.loginUser.userId, board.bandBoardWriter)}"
+						>삭제</button>
+					</div>
 				</div>
-				<!--임시-->
-				<div th:each="img : ${board.bandImgs}">
-					<img style="width: 700px;"
-						th:src="|/imgView/${img.mediaServerFile}|" alt="">
+				<div style="display: flex; flex-direction: column;" class="tagg">
+	                <div>
+	                    <div style="display: inline-flex; justify-content: space-between; width: 700px;">
+	                        <img class="" th:src="|/imgView/${board.mediaServerFile}|" alt="" style="width: 70px; margin-top:10px; height: 70px; box-shadow: 5px 5px 10px grey; border: #6a60cd; border-radius:15px;">
+	                        <div  style="display: block; width: 350px; padding: 12px; margin-right: 180px;">
+	                            <ul class="blog_meta list_style hoverCursor" style="display: inline-block;">
+	                                <li style="display: block;" id="writer">[[${board.bandNickname}]]</li>
+	                                <li style="display: block;"id="RegDate" th:text="${#dates.format(board.bandBoardDate, 'yyyy-MM-dd HH:mm:ss')}"></li>
+	                            </ul>
+	                            <p id="cnt">조회 [[${board.bandBoardCnt}]]</p>
+	                        </div>
+	                        <div class="nav-item dropdown droMom" style="margin-right: 20px;">
+                                <a class="nav-item nav-link" data-toggle="dropdown"><i class="fa-solid fa-ellipsis" id="bchild"></i></a>
+                                       <div class="dropdown-menu rounded-0 m-0" name="bchilds" style="top: 30px;">
+                                   <a class="dropdown-item">신고</a>
+                                   <a class="dropdown-item">닫기</a>
+                                </div>
+                            </div>   
+						</div>
+					</div>
 				</div>
-			</div>
+<!--=============== 컨텐츠 ===============-->
+				<hr style="margin-top: -1rem;">
+				<div>			
+					<div class="form-group">
+						<div id="bCalendar"></div>
+						<div th:utext="${board.bandBoardContent }"></div>
+					</div>
+				</div>	
 			<div>
-				<button type="button" id="btnUpdate" class="btn btn-primary mb-2"
-				th:if="${#strings.equals(session.loginUser.userId, board.bandBoardWriter)}"
-				>수정</button>
-				<button type="button" id="btnDelete" class="btn btn-primary mb-2"
-				th:if="${#strings.equals(session.loginUser.userId, board.bandBoardWriter)}"
-				>삭제</button>
-			</div>
-			<div>
-				<th:block th:if="${#strings.equals(board.bandBoardTag, 'BH01')}">
-					<article id="bandReply"><i class="lnr lnr-bubble"></i><span id="replyCnt">3</span></article>
-				</th:block>
-				<article id="bandLike"></article>
+<!--=============== 댓글 ===============-->			
+				<div style="display: flex; justify-content: flex-start;">
+					<div id="bandLike" style="display: inline-block; margin-right: 10px;"></div>
+					<th:block th:if="${#strings.equals(board.bandBoardTag, 'BH01')}">
+					<div id="bandReply" style="display: inline-block;"><i class="lnr lnr-bubble"></i><span id="replyCnt">3</span></div>
+					</th:block>
+				</div>
 			</div>
 			<div id=repp th:if="${#strings.equals(board.bandBoardTag, 'BH01')}">
-				<h3>댓글</h3>
+				<h5 style="margin-top: 10px;">댓글</h5>
 				<table class="table" id="replybody">
-					<!-- <tr>
-						<td>reply.replyer</td>
-						<td>reply.reply</td>
-						<td>reply.replyDate</td>
-						<td>reply.updateDat}</td>
-					</tr> -->
 				</table>
 				<div class="btnContent">
-					<div class="replyPagination " id="replyPagination">페이지 영역</div>
+					<div class="replyPagination " id="replyPagination"></div>
 				</div>
+				</div>
+				<div>
+				<hr>
 				<form id="frmRe">
 					<div class="form-group">
-						<label for="reply">Content:</label>
 						<textarea class="form-control" rows="5" id="reply"></textarea>
 						<input type="hidden" class="form-control" id="replyer" th:value="${session.loginUser.userId}">
 						<button type="button" id="btnReployInsert"class="btn btn-primary mb-2">댓글작성</button>
@@ -395,19 +479,19 @@ $(function(){
 			$(result).each(function(idx, ele){
 	        	//likeTAG
 	        	if(ele.userId==userId){
-	        		likeTag = '♥'
+	        		likeTag = '💗'
 	       			return false;
 	        	}
 			})
 			if(likeTag == ''){
-				likeTag = '♡'
+				likeTag = '🤍'
 			}
 			//좋아요 수
 			let r = result.length;
 			if(r == null){
 				r = 0;
 			}
-			$('#bandLike').append('<span class="likeIt">'+likeTag+'</span><span class="likeIt">'+r+'</span>');
+			$('#bandLike').append('<span class="likeIt">'+likeTag+'</span><span class="likeIt">좋아요 '+r+'</span>');
 		})
 	}
 	heartIt();
@@ -731,6 +815,13 @@ var header = /*[[${_csrf.headerName}]]
 var token = [[${_csrf.token}]]*/
 /*]]>*/$(function(){
 		
+		//게시판 이동
+	$('#toBoard').on('click', function(e){
+	    let bandBoardOptionNo = $(e.target).attr('name');
+	    $('#template').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo+"&bandBoardOptionNo="+bandBoardOptionNo);
+	})
+		
+		
 		replyList();
 		replyInsert();
 		replySelect();
@@ -764,7 +855,7 @@ var token = [[${_csrf.token}]]*/
 					cnt++;
 					console.log(cnt+"??");
 					$('#replyCnt').text('');
-					$('#replyCnt').text(cnt);
+					$('#replyCnt').text('댓글'+cnt);
 					//입력칸 초기화
 					$("#reply").val('');
 					//페이징...? 후 페이징 이동
@@ -789,7 +880,7 @@ var token = [[${_csrf.token}]]*/
 					let tag = makeTr(reply);
 					$("#replybody").append(tag);						
 				}
-				let cnt = $('#replyCnt').text(res.length);
+				let cnt = $('#replyCnt').text('댓글'+res.length);
 			}) 
 		}
 		

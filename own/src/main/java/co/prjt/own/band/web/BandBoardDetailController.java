@@ -71,13 +71,13 @@ public class BandBoardDetailController {
 		 * BandBoardDetailSearchVO vo = new BandBoardDetailSearchVO();
 		 * vo.setBandBoardDetailNo(bandBoardDetailNo);
 		 */
+		//게시판 단건조회 getBandBoardOption
+		model.addAttribute("bandBoardOption", bandBoardOptionService.getBandBoardOption(vo.getBandBoardOptionNo()));
 		 //글단건조회(글+이미지+유저별명) ... 좋아요랑 댓글은 json으로 구현 --> 이미지 뺌
 		model.addAttribute("board", bandBoardDetailService.getBandBoardDetail(vo));
 		//좋아요 내가 찍었다면 찍었다는 게 필요할 듯..
 		//일정있는지 검색해서 넣기(impl)
 		//리스트로 만들어서 검색할 수 있는게 있기에 그걸 사용하겠음
-		//게시판 단건조회 getBandBoardOption
-		model.addAttribute("bandBoardOption", bandBoardOptionService.getBandBoardOption(vo.getBandBoardOptionNo()));
 		return "content/band/bandBoardDetail";
 	}
 	//좋아요

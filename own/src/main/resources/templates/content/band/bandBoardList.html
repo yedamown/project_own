@@ -1,23 +1,30 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
 	<meta charset="utf-8" />
+	<link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
    <style>
 	.nice-select {
 		width: 113px;
 	    border: solid 1px #ced4da;		
 	}
 	/*  */
-   	th {
+	/* table {
+		ma: 678px important!;
+	} */
+/*    	th {
 		padding: 0.3rem;
 	}
-	td {
+	tr {
 		padding: 0.3rem;
-	}
-	
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	} */
    </style>     
   <div id="template">
 	<input type="hidden" id="bandNo" th:value="${bandNo}">
 	<input type="hidden" id="bandLeaderid" th:value="${band.bandLeaderid}">
 	<input type="hidden" th:value=${bandBoardOptionNo} id="bandBoardOptionNo">
+	<input type="hidden" th:value=${session.loginUser.userId} id="userId">
 	<div th:if="${not #strings.isEmpty(bandBoardOption)}" >
 		<input type="hidden" th:value=${bandBoardOption.bandBoardOptionNo} id="bandBoardOptionNo">
 	</div>
@@ -56,23 +63,31 @@
 			<!-- 목록 시작 -->
 			<table class="table table-hover" style="background-color: white;">
 				<thead>
-					<tr>
-					<th><input type="checkbox" id="allChk"></th><th>글제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
-					</tr>
+					<tr class="hoverCursor">
+					
+						<block th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
+						<th style="text-align:center; width: 37px;">
+							<input type="checkbox" class="hoverBtn" id="allChk">
+						</th>
+						</block>
+						<th><nobr>글제목<nobr></th><th style="text-align:center;"><nobr>작성자<nobr></th><th style="text-align:center;"><nobr style="text-align:center;">작성일<nobr></th><th style="text-align:center;"><nobr>조회수<nobr></th>
+					</tr>	
 				</thead>
 				<tbody id="tbodyBand">
 					<tr th:each="board: ${boardList}">
-					 	<td><input type="checkbox" class="minChk"></td>
+						<block th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
+					 		<td style="text-align:center; width: 37px;"><input type="checkbox" class="minChk hoverBtn"></td>
+					 	</block>
 					 	<!-- 만약자유게시판이아니면 -->
 					 	<th:block th:if="${not #strings.isEmpty(bandBoardOption)}" >
-							<td><b th:if="${board.bandRemarks }" th:text="|[${board.bandRemarks }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
+							<td><b class="hoverCursor" th:if="${board.bandRemarks }" th:text="|[${board.bandRemarks }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" class="hoverBtn detail" th:id="${board.bandBoardDetailNo}"></a></td>
 						</th:block>
 						<th:block th:unless="${not #strings.isEmpty(bandBoardOption)}">
-							<td><b th:text="|[${board.bandBoardNames }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" th:class="detail" th:id="${board.bandBoardDetailNo}"></a></td>
+							<td ><b th:text="|[${board.bandBoardNames }]|"></b><a th:text="|${board.bandBoardTitle} [${board.reply}]|" class="detail hoverBtn" th:id="${board.bandBoardDetailNo}"></a></td>
 						</th:block>
-						<td th:id="${board.bandBoardWriter}">[[${board.bandNickname}]]<b th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}"><i class="fa fa-solid fa-crown"></i></b></td>
-						<td class="timeCheck" th:text="${#dates.format(board.bandBoardDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
-						<td th:text="${board.bandBoardCnt}"></td>
+						<td class="hoverCursor" th:id="${board.bandBoardWriter}"style="text-align:center;">[[${board.bandNickname}]]<b th:if="${#strings.equals(board.bandBoardWriter, band.bandLeaderid)}"style="text-align:center;"><i class="fa fa-solid fa-crown"></i></b></td>
+						<td class="timeCheck hoverCursor" th:text="${#dates.format(board.bandBoardDate, 'yyyy.MM.dd HH:mm:ss')}"style="text-align:center;"></td>
+						<td class="hoverCursor" th:text="${board.bandBoardCnt}"style="text-align:center;"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -80,8 +95,8 @@
 		</article>
 		</div>
 		<div style="float: right">
-			<div th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
-				<a id="deleteBtn" class="btn btn-primary mb-2"  style="background-color: #f3c300; color:white;">삭제</a>
+			<div th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}" style="margin: 15px;">
+				<a id="deleteBtn" class="btn btn-primary mb-2"  style="background-color: #6ab0cd; border:none; color:white;">삭제</a>
 			</div>
 		</div>
 		 <!--================ 페이지 Area  =================-->
@@ -89,22 +104,22 @@
 		<!--================ 이전  =================-->
 			<ul class="pagination">
 				<li class="page-item" th:if="${paging.startPage>1}" th:value="${paging.startPage-1}">
-					<a class="page-link" aria-label="Previous" th:value="${paging.startPage-1}">
+					<a class="page-link hoverBtn" aria-label="Previous" th:value="${paging.startPage-1}">
 					<span aria-hidden="true"><span class="lnr lnr-chevron-left pagePort" th:value="${paging.startPage-1}"></span></span></a>
 				</li>
 		<!--================ 페이지 이동 1_2_3_4_5  =================-->
 			<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
 			<li class="page-item" th:if="${pag != paging.page && 0!= paging.endPage}" >
-				<a class="page-link pagePort" th:value="${pag}" th:text ="${pag}"></a>
+				<a class="page-link pagePort hoverBtn" th:value="${pag}" th:text ="${pag}"></a>
 			</li>
 	  		<li class="page-item active" th:if="${pag==paging.page}" >
-				<a class="page-link" th:text ="${pag}"></a>
+				<a class="page-link hoverBtn" th:text ="${pag}"></a>
 			</li>
 	       </th:block>
 		<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
 		<!--================ 이후  =================-->
 				<li class="page-item" th:if="${paging.endPage<paging.lastPage}"  th:value="${paging.endPage+1}">
-				<a class="page-link pagePort" aria-label="Next" th:value="${paging.endPage+1}">
+				<a class="page-link pagePort hoverBtn" aria-label="Next" th:value="${paging.endPage+1}">
 					<span aria-hidden="true"><span class="lnr lnr-chevron-right" th:value="${paging.endPage+1}"></span></span></a>
 				</li>
 			</ul>
@@ -209,23 +224,32 @@ $(function(){
 		//밴드장이면...<b><i class="fa fa-solid fa-crown"></i></b>
     	let bandNickname = ele.bandNickname;
     	let bandLeaderid = $('#bandLeaderid').val();
-    	let userId = $('#userId').val();
-    	if(bandLeaderid == userId){
+    	let writer = ele.bandBoardWriter;
+    	if(bandLeaderid == writer){
     		bandNickname += '<b><i class="fa fa-solid fa-crown"></i></b>'
     	}
+    	let userId = $('#userId').val();
 		//종합게시판이면...
 		if($('#bandBoardOptionNo').val()==null||$('#bandBoardOptionNo').val()==''){
 			re = `[${ele.bandBoardNames}] `;
 			console.log('종합')
 		}
 		//종합게시판아니면...
+		let tag = `<tr>`
+		if(userId==bandLeaderid){
+			tag += `<tr>
+					<td style="text-align:center; width: 37px;"><input type="checkbox" class="minChk hoverBtn"></td>`
+		} else {
+			tag+=`<tr>`
+		}
 		//re그대로 사용
-		let tag = `<tr>
-					<td><input type="checkbox" class="minChk"></td>
-					<td><b>${re}</b><a id=${ele.bandBoardDetailNo} class="detail" >${ele.bandBoardTitle} [${ele.reply}]</a></td>
-					<td id=${ele.bandBoardWriter}>${bandNickname}</td>
-					<td>${time}</td>
-					<td>${ele.bandBoardCnt}</td>
+		tag += `<td style=" max-width:330px; important!;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><b>${re}</b><nobr>
+				<a id=${ele.bandBoardDetailNo} class="detail hoverBtn">
+					${ele.bandBoardTitle} [${ele.reply}]
+					</a><nobr></td>
+					<td id=${ele.bandBoardWriter} class="hoverCursor" style="width:160px;text-align:center;"><nobr>${bandNickname}<nobr></td>
+					<td class="hoverCursor" style="width:116px;text-align:center;"><nobr>${time}<nobr></td>
+					<td class="hoverCursor" style="width:72px; text-align:center;"><nobr>${ele.bandBoardCnt}<nobr></td>
 				</tr>`
 		return tag;
 	}
@@ -237,7 +261,7 @@ $(function(){
 		//이전 버튼만들기
 		if(pagingM.startPage>1){
 			let pageBeforTag = `<li class="page-item">
-								<a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+								<a class="page-link pagePort hoverBtn" aria-label="Previous" value=${pagingM.startPage-1}>
 								<span aria-hidden="true" value=${pagingM.startPage-1}><span class="lnr lnr-chevron-left pagePort" value=${pagingM.startPage-1}></span></span></a>
 								</li>`
 				startpageTag.append(pageBeforTag);					
@@ -246,12 +270,12 @@ $(function(){
 		for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
 			if(pg != pagingM.page){
 				let pageTag = `<li class="page-item">
-								<a class="page-link pagePort" value=${pg}>${pg}</a>
+								<a class="page-link pagePort hoverBtn" value=${pg}>${pg}</a>
 								</li>`
 				startpageTag.append(pageTag);
 			} else if(pg == pagingM.page ){
 				let pageTag =  `<li class="page-item active">
-								<a class="page-link" >${pg}</a>
+								<a class="page-link hoverBtn" >${pg}</a>
 								</li>`
 				startpageTag.append(pageTag);
 			}
@@ -259,7 +283,7 @@ $(function(){
 		//이후 버튼만들기
 		if(pagingM.endPage<pagingM.lastPage){
 			let pageAfterTag =`<li class="page-item">
-								<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+								<a class="page-link pagePort hoverBtn" aria-label="Next" value=${pagingM.endPage+1}>
 								<span aria-hidden="true" value=${pagingM.endPage+1}><span class="lnr lnr-chevron-right" value=${pagingM.endPage+1}></span></span></a>
 								</li>`
 			startpageTag.append(pageAfterTag);
@@ -335,6 +359,7 @@ $(function(){
 //앵커
 location.href="#template";
 </script>
+<script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('select').niceSelect();
