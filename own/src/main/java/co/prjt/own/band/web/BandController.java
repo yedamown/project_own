@@ -66,7 +66,7 @@ public class BandController {
 		// 원래는 사용자의 각 기호..세션아이디 에 맞춰서 추천 ...........밴드 검색어 넣어야 함
 		// 1.세션아이디 불러와서 최신글이 있고 가입상태인 밴드목록을 불러옴..위치설정
 		HttpSession session = request.getSession();
-		session.setAttribute("loginUser", ownService.login("hjj"));
+		//session.setAttribute("loginUser", ownService.login("hjj"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 
 		System.out.println(user); // 세션널..임시

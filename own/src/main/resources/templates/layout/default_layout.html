@@ -20,7 +20,7 @@
           style="font-size: 50px"
         >
           <img src="/css/header/header_logo.png" style="height:70px; margin-bottom: 10px">
-          <span class="text-primary">오늘의 운동</span>
+          <span class="text-primary" style="color: #6ab0cd;">오늘의 운동</span>
         </a>
         <button
           type="button"
@@ -45,7 +45,14 @@
                </div>
                     <a href="/own/sns" class="nav-item nav-link">SNS</a>
                     <a href="/own/band" class="nav-item nav-link">가치</a>
-                    <a href="/own/chall/home" class="nav-item nav-link">도전</a>
+                    <div class="nav-item dropdown">
+                      <a href="/own/chall/home" class="nav-link dropdown-toggle"
+                         data-toggle="dropdown">도전</a>
+                      <div class="dropdown-menu rounded-0 m-0">
+ 								<a href="/own/chall/home" class="dropdown-item">도전 홈</a> 
+                                <a href="/own/chall/mypage" class="dropdown-item">내 도전 정보</a> 
+                      </div>
+                   </div>
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
                       <a href="/own/admin/userList" class="nav-item nav-link">관리자페이지</a>
                     </div>
