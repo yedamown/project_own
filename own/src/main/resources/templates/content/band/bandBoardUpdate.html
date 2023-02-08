@@ -2,18 +2,29 @@
 <script src="/css/band/js/jquery-3.2.1.js"></script>
 <script src="/css/band/js/json.min.js"></script>
  <!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-	<link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-	<link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-  	<link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-	<link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-	
-	<!-- 서머노트를 위해 추가해야할 부분 -->
-	<link rel="stylesheet" href="/css/band/editor/summernote-lite.css">
-	<script src="/css/band/editor/summernote-lite.js"></script>
-	<script src="/css/band/editor/lang/summernote-ko-KR.js"></script>
-  <!--  --> 
+<link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+<script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+<!-- 서머노트를 위해 추가해야할 부분 -->
+<link rel="stylesheet" href="/css/band/editor/summernote-lite.css">
+<script src="/css/band/editor/summernote-lite.js"></script>
+<script src="/css/band/editor/lang/summernote-ko-KR.js"></script>
+ <!--  -->
+<style>
+	.aSel {
+		margin-right: 10px;
+		width: 450px;
+	}
+	.list {
+		width: 100%;
+	}
+	.bSel {
+		width: 230px;
+	}
+ 	.myInput {
+ 		height: 42px;
+ 		margin-bottom: 10px;
+ 	}
+</style> 
 <div id="template">    
 <div style="flex-grow:3; width: 740px">
 	<div>
@@ -27,25 +38,23 @@
 			<input type="hidden" id="bandBoardOptionNo" name="bandBoardOptionNo" th:value="${board.bandBoardOptionNo}">
 			<input type="hidden" id="eachBandRemarks" name="eachBandRemarks" th:value="${board.bandRemarks}">
 			
-			<h3>가치 글수정</h3>
-			<select class="form-group" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo">
-				<option disabled>::게시판을 선택해주세요::</option>
-				<option th:if="${list.bandBoardLine}!='0'" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}" th:selected="${#strings.equals(list.bandBoardOptionNo, board.bandBoardOptionNo)}" disabled></option>
-			</select>
-			<select class="form-group" name="bandRemarks" id="bandRemarks">
-				<option value="">::말머리 선택::</option>
-			</select>
+			<h4 style="display: inline">가치 글수정</h4>
+			<button type="button" id="updateBtn" class="btn btn-primary mb-2" style="color:white; float: right">수정</button>
+			<hr>
+			<div style="display: flex" id="selectors">
+				<select class="form-group aSel" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo">
+					<option disabled>::게시판을 선택해주세요::</option>
+					<option th:if="${list.bandBoardLine}!='0'" th:each="list : ${boardList}" th:value="${list.bandBoardOptionNo}" th:text="${list.bandBoardName}" th:selected="${#strings.equals(list.bandBoardOptionNo, board.bandBoardOptionNo)}" disabled></option>
+				</select>
+				<select class="form-group bSel" name="bandRemarks" id="bandRemarks">
+					<option value="">::말머리 선택::</option>
+				</select>
+			</div>	
 			<div class="form-group">
-				<input type="text" class="form-control" id="bandBoardTitle" name="bandBoardTitle" th:value="${board.bandBoardTitle}">
+				<input type="text" class="form-control myInput" id="bandBoardTitle" name="bandBoardTitle" th:value="${board.bandBoardTitle}" maxlength="30" placeholder="제목을 입력해주세요" onfocus="this.placeholder = ''" onblur="this.placeholder = '제목을 입력해주세요'" required >
 				<div class="form-group">
 					<textarea id="summernote" name="bandBoardContent"></textarea>
 				</div>
-				<div id="calVote"></div>
-				<!-- <div id="replyee" style="display: block">
-				댓글 허용<input type="radio" th:checked="${board.bandBoardTag eq 'BH01'}" value="BH01" id="replyId" class="form-group" name="bandBoardTag">
-					    <input type="radio" th:checked="${board.bandBoardTag eq 'BH02'}" value="BH02" id="replyId2" class="form-group" name="bandBoardTag">
-				</div> -->
-				<button type="button" id="updateBtn" class="btn btn-primary mb-2" style="background-color: #f3c300; color:white; float: right">수정</button>
 			</div>
 		</form>	
 		</article>
@@ -310,6 +319,7 @@ $(document).ready(function () {
        $('html, body').animate({
            scrollTop: $('#template').offset().top
        }, 'fast'); //slow
+       $('select').niceSelect();
    });
 </script>
 </div>

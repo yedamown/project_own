@@ -195,6 +195,7 @@
 													  <include refid="condition" />
 												 )       
  <![CDATA[
+ 		ORDER BY BAND_BOARD_DATE DESC
  		) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
  ]]>
 	</select>

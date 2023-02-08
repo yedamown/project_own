@@ -306,7 +306,7 @@
 	                  <h6 class="typo-list myPadding">일정마크</h6>
 	                  <div>
 	                    <select name='bandCalendarMark' id="bandCalendarMark" class="nice-select">
-						  <option value='0' selected disabled>-- 선택 --</option>
+						  <option value='0' selected disabled> 선택 </option>
 						  <option value='#F25757' style='padding:15px; background-color: #F25757'></option>
 						  <option value='#FFC780' style='padding:15px; background-color: #FFC780'></option>
 						  <option value='#F8AA94' style='padding:15px; background-color: #F8AA94'></option>
@@ -343,7 +343,7 @@
 	                <div style="display: flex; flex-direction: column; padding-bottom: 20px;">
 						<h6 class="typo-list myPadding" style="float: left;">참석여부 묻기 <input type="checkbox" name="bandCalendarOption" value="t" id="bandCalendarOption"></h6>
 	                    <div id="checkDate" style="display: none">
-						<h6 class="typo-listmyPadding">참석여부 확인 종료일</h6>
+						<h6 class="typo-list myPadding">참석여부 확인 종료일</h6>
 	                     	<input type="date" class="myInput"  name="bandCalendarOptionDayD" id="bandCalendarOptionDayD" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}">
                       		<input type="time" class="myInput"  name="bandCalendarOptionDayT" id="bandCalendarOptionDayT" value="12:00">
 							<input type="hidden" name="bandCalendarOptionDay" id="bandCalendarOptionDay">
@@ -353,7 +353,7 @@
 	            </div>
                 <button type="button" class="button_hover2" style="margin:0 auto" id="calBtn_input">전송</button>
 			</div>
-			<a class="modal_close_btn_input">닫기</a>
+			<a class="modal_close_btn_input hoverBtn">닫기</a>
 		</form>
 	<!-- =====캘린더 입력 모달 창 끝====== -->
 	
