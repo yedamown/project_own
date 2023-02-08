@@ -34,7 +34,8 @@ public class CMemberListServiceImpl implements CMemberListService{
 			vo.setMemStatus("승인");
 			System.out.println(vo + "리더랑비교 o");
 			return memlist.insertMemList(vo);
-		} else {			
+		} else {	
+			vo.setMemStatus("대기");
 			System.out.println(vo + "리더랑같지않음");
 			return memlist.insertMemList(vo);
 		}
