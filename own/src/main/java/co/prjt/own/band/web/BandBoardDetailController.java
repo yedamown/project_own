@@ -109,6 +109,7 @@ public class BandBoardDetailController {
 		System.out.println(board.toString());
 		BandBoardDetailSearchVO newBoard = bandBoardDetailService.insertBandBoard(board);
 		//일정등록
+		System.out.println(cal.toString());
 		if(cal.getBandCalendarTitle()!=null && !(cal.getBandCalendarTitle()).equals("")) {
 			cal.setBandBoardDetailNo(newBoard.getBandBoardDetailNo());
 			System.out.println(cal.toString());
