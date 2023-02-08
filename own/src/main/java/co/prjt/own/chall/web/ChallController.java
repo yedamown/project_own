@@ -238,11 +238,13 @@ public class ChallController {
 		// 나의 가입현황 확인 --로그인 세션이용
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
+		System.out.println("로그인세션정보 리스트 ---------------------------------"+ user);
 		CMemberVO mymem = new CMemberVO();
 		if (user != null) {
 			String userId = user.getUserId();
 			// user정보있을경우 정보 보내줌
 			mymem.setUserId(userId);
+			System.out.println("유저아이디---------------------" + userId );
 			model.addAttribute("myInfo", member.getCMem(mymem));
 			// 나의 좋아요 여부 파악하기
 			like.setUserId(userId);
