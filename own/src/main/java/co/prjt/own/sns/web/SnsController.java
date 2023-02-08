@@ -177,6 +177,7 @@ public class SnsController {
 			
 			// 좋아요 조회 해봅니데이
 			like.setCategoryNo(snsBoardNo);
+			like.setUserId(null);
 			int snsLikeCount = likeService.countLike(like);
 			like.setUserId(userId);
 			int snsReplyCount = boardService.snsReplyCount(snsBoardNo);
@@ -354,6 +355,7 @@ public class SnsController {
 		like.setCategory("SNS");
 		
 		int result = likeService.addLike(like);
+		like.setUserId(null);
 		int snsLikeCount = likeService.countLike(like);
 		
 		if(result == 1) {
@@ -373,6 +375,7 @@ public class SnsController {
 		
 		like.setUserId(userId);
 		int result = likeService.delLike(like);
+		like.setUserId(null);
 		int snsLikeCount = likeService.countLike(like);
 		
 		if(result == 1) {

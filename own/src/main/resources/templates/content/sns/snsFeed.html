@@ -439,6 +439,12 @@
             font-weight: 600;
             color:gray;
         }
+        #snsReplyCount{
+            font-weight: 600;
+        }
+        #snsLikeCount{
+            font-weight: 600;
+        }
     </style><!--스타일-->
     
     <!-- jquery -->
@@ -817,9 +823,9 @@
                                 <div class="boardContent" style="float: right; width: 500px; min-height:180px; border-bottom: 1px lightgray solid; padding-bottom: 35px;">
                                   
                                 </div>
-                                <div class="snsLikeBox" style="width:100px; display: inline-block; position: absolute; top:171px; right: 95px;">
+                                <div class="snsLikeBox" style="width:100px; display: inline-block; position: absolute; top:195px; right: 95px;">
                                 </div>
-                                <div class="snsReplyBox" style="width:100px; display: inline-block; position: absolute; top:173px; right: -7px;">
+                                <div class="snsReplyBox" style="width:100px; display: inline-block; position: absolute; top:197px; right: -7px;">
                                     <img id="snsReplyIcon" src="/css/sns/img/speechImg.png" style="width: 20px; height: 20px;" >
                                 </div>
                                 <div class="boardImgList" style="position:relative; width: 500px; height: 600px; float:left">
@@ -988,7 +994,6 @@
                                 console.log('좋아요 성공~!')
                                 let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
                                     snsLikeCount.attr({"id" : "snsLikeCount"})
-                                    snsLikeCount.css("font-weight","600");
                                     $('.snsLikeBox').eq(0).append(snsLikeCount)
                             },
                             error : function(err){
@@ -1521,11 +1526,10 @@
                                 }
                                 
                                 let snsLikeCount = $('<span>').text("좋아요 "+res.snsLikeCount+"개");
-                                    snsLikeCount.css("font-weight","600");
                                     snsLikeCount.attr("id" , "snsLikeCount");
 
                                 let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
-                                    snsReplyCount.css("font-weight","600");
+                                    snsReplyCount.attr("id","snsReplyCount")
                                     $('.snsLikeBox').append(snsLikeCount);
                                     $('.snsReplyBox').append(snsReplyCount)
                                 
