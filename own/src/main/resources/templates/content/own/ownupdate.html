@@ -94,19 +94,19 @@
                     <label for="nickname">비밀번호 변경</label>
                     <br>
                         <label for="nickname">현재 비밀번호</label>
-                        <input type="text" class="form-control" id="u_pw" onchange="pwCheck()" placeholder="" value="" required>
+                        <input type="password" class="form-control" id="u_pw" onchange="pwCheck()" placeholder="" value="" style="font-family:none;" required>
                         <div class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
                     </div>      
                     <div class="mb-6">
                         <label for="nickname">변경할 비밀번호 (8~16자 특수문자,영문,숫자 하나이상입력)</label>
-                        <input type="password" class="form-control" id="u_newpw" oninput="pwMatchCheck()" placeholder="" value="" required>
+                        <input type="password" class="form-control" id="u_newpw" oninput="pwMatchCheck()" placeholder="" value="" style="font-family:none;"required>
                         <div class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
                          <label for="nickname">변경할 비밀번호 확인</label>
-                        <input type="password" class="form-control" id="u_newpw2" oninput="pwMatchCheck()" placeholder="" value="" required>
+                        <input type="password" class="form-control" id="u_newpw2" oninput="pwMatchCheck()" placeholder="" value="" style="font-family:none;" required>
                         <div class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
@@ -158,8 +158,8 @@
         </div>
 <script th:inline="javascript">
   /*<![CDATA[*/
-  var header = '[[${_csrf.headerName}]]';
-  var token = '[[${_csrf.token}]]';
+  var header = [[${_csrf.headerName}]];
+  var token = [[${_csrf.token}]];
     console.log(header);
     console.log(token);
 

@@ -204,10 +204,11 @@ public class OwnhomeController {
 		}
 		
 		@PostMapping("/own/QuestADD")
+		@ResponseBody
 		public String questAdd(QuestionVO vo) {
 			System.out.println(vo);
 			ownService.questAdd(vo);
-			return "redirect:/own/mypage/question";
+			return "1";
 		}
 		
 		
