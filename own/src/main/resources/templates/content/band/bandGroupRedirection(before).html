@@ -4,86 +4,38 @@
       layout:decorate="~{layout/band_layout}"
       lang="ko">
     <head>
-        <!-- <script src="/css/band/js/jquery-3.2.1.js"></script> -->
-        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/gachi/own.png" type="image/png">
-        <title>오늘의운동 가치</title>
+        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
+        <title>Royal Hotel</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="/css/band/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
+        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="/css/band/css/style.css">
+        <link rel="stylesheet" href="/css/band/css/responsive.css">
+        <script src="/css/band/js/jquery-3.2.1.js"></script>
+        <!--  -->
+         <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <!-- <script src="/css/band/js/popper.js"></script> -->
+        <!-- <script src="/css/band/js/bootstrap.min.js"></script> -->
+        <script src="/css/band/vendors/owl-carousel/owl.carousel.min.js"></script>
+       <!--  <script src="/css/band/js/jquery.ajaxchimp.min.js"></script> -->
+        <script src="/css/band/js/mail-script.js"></script>
+        <script src="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="/css/band/vendors/nice-select/js/jquery.nice-select.js"></script>
+        <script src="/css/band/js/mail-script.js"></script>
+        <script src="/css/band/js/stellar.js"></script>
+        <script src="/css/band/vendors/lightbox/simpleLightbox.min.js"></script>
+        <script src="/css/band/js/custom.js"></script>
+         <script src="/css/band/js/time.js"></script>
         <style type="text/css">
-            /* view more */
-           .button_hover2 {
-           		color: white;
-				text-align: center;
-    			background-color: #6ab0cd;
-    			width: 150px;
-    			margin: 0 auto;
-    			border: 2px solid #6ab0cd;
-           }
-           .button_hover2:hover {
-           		color: white;
-				box-shadow: #6ab0cd 0 80px 0px 2px inset;
-				border-radius: 10px;
-           }
-           
-        	/* //페이징 버튼 1*/
-        	.flexCenter {
-				display: flex;
-				justify-content: center;
-			}
-			.pageNum .clickable{
-			  display: inline-block;
-			  padding: 3px 5px;
-			  margin-right: 10px;
-			  font-family:Tahoma;
-			  background: #ccc;
-			  color: #6ab0cd;
-			  text-decoration: none;
-			  cursor:pointer;
-			}
-			.pageNum active {
-			  background: #00394f;
-			  color: #fff;
-			  cursor:pointer;
-			}
-			.off-screen {
-			  display: none;
-			  cursor:pointer;
-			}
-			.replyPagination1  {
-			  width: 500px;
-			  text-align: center;
-			  cursor:pointer;
-			}
-			.replyPagination1  .pageNum {
-			  display: inline-block;
-			  padding: 3px 5px;
-			  margin-right: 10px;
-			  font-family:Tahoma;
-			  background: #ccc;
-			  color: #fff;
-			  text-decoration: none;
-			  cursor:pointer;
-			  border-radius: 10px;
-			}
-			.replyPagination1 .pageNum.active {
-			  background: #6ab0cd;
-			  color: #fff;
-			}
-        
-        
-        	.bandBox {
-			    width: 260px;
-			    height: 270px; 
-			    border-radius: 30%;
-			    overflow: hidden;
-			}
-			.bandProfile {
-			    width: 260px;
-			    height: 270px;
-			    object-fit: cover;
-			}
-        
         	.modal {
 				display: none;
 				z-index: 500;
@@ -148,20 +100,19 @@
 		}
 		.dropdown-content{
 		  display : none;
-		  position: absolute;
-		  z-index: 999;
+		  position : absolute;
+		  z-index : 1; /*다른 요소들보다 앞에 배치*/
 		  font-weight: 400;
-		  background-color:white;
-		  min-width: 200px;
-		  top: 40px;
+		  background-color: #f9f9f9;
+		  min-width : 200px;
 		}
+		
 		.dropdown-content a{
 		  display : block;
 		  text-decoration : none;
 		  color : rgb(37, 37, 37);
 		  font-size: 12px;
 		  padding : 12px 20px;
-		  cursor: pointer;
 		}
 		
 		.dropdown-content a:hover{
@@ -178,37 +129,32 @@
 			 width: 800px;
 			 height: 1000px;
 		}
-		.nav-item, .nav-link, .dropdown-item {
-			cursor: pointer;
-		}
         </style>
     </head>
     <body>
     <div layout:fragment="content">
-    <input type="hidden" th:value="${band.bandNo}" 				id="bandNumber" >
+    <!-- <input type="hidden" th:value="${band.bandNo}" 				id="bandNumber" > -->
     <input type="hidden" th:value="${band.bandNo}" 				id="bandNo" >
    	<input type="hidden" th:value="${session.loginUser.userId}" id="userId" >
    	<input type="hidden" th:value="${band.bandLeaderid}" id="bandLeaderid" >
-   	<!-- 게시판 넘기기용 -->
+    <input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}">
+	<!-- 게시판 넘기기용 -->
 	<input type="hidden" th:value="${bandBoardDetailNo}" id="bandBoardDetailNo" >
-   	<th:block th:if="${BandMemberDetail}">
-   		<input type="hidden" th:value="${BandMemberDetail.bandNickname}" id="bandNickname" >
-	</th:block>
-    <input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
         <!--================Header Area =================-->
         <header><aside class="single_sidebar_widget search_widget">
             <div class="br"></div>
         </aside>
             <div class="container">
-                <nav class="navbar navbar-expand-lg navbar-light"  style="background-color: rgba(0,0,0,0); width: 1000px;">
+                <nav class="navbar navbar-expand-lg navbar-light">
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent" >
+                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <!--================ 전체 검색 =================-->    
                         <aside class="single_sidebar_widget search_widget">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="searchBtnInput" placeholder="오늘의운동 가치 검색"  name="bandName">
+                            <input type="text" class="form-control" placeholder="오운 가치 검색"  name="bandName">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" id="searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
+                                <button class="btn btn-default searchBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
                             </span>
                         </div>
                    <!--================ 전체 검색 끝 =================-->    
@@ -218,7 +164,8 @@
                             <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">가치 홈</a></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandPhoto">앨범</a></div></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandCalendar">일정</a></div></li>
-                            <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandMember">멤버</a></div></li>
+                            <!--================ 채팅기능을 위한 임시 =================-->
+                            <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" th:href="@{/own/band/memberTest(bandNo = ${band.bandNo})}">멤버</a></div></li>
                         </ul>
                     </div> 
                 </nav>
@@ -228,74 +175,62 @@
         
         <!--================Blog Area =================-->
         <section class="blog_area" style="padding-top: 0px">
-            <div class="container2" style="display: flex;">
+            <div class="container" style="display: flex;">
                 <div style="display: flex; flex-direction: row; justify-content: center;">
                     <div style="flex-grow:1; width: 260px">
                         <div class="blog_right_sidebar">
                             <aside class="single_sidebar_widget author_widget">
-                               	<a class="hotel_img hoverBtn" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">
-                                   	<img th:src="|/imgView/${band.bandImg.mediaServerFile}|" class="" alt=""  style="width: 200px; height: 200px; margin-bottom: 15px; pointer-events: none;">
-                               	</a>
-                               	<a class="hotel_img hoverBtn" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}" style="text-decoration: none;"> 
-                                	<h3 th:text="${band.bandName}" class="typo-list" style="display:inline;"></h3>
-                                </a>
+                                <div class="hotel_img">
+                                    <img th:src="|/imgView/${band.bandImg.mediaServerFile}|"  alt=""  style="width: 200px; height: 200px;">
+                                </div>
+                                <h3 th:text="${band.bandName}" class="typo-list" style="display:inline;"></h3>
                                 <hr>
-                                <div style="display: flex; flex-direction: column;">
-                                    <b class="hoverCursor"style="margin: 5px 10px 10px 0px;">
-                                    	<i class="fa fa-solid fa-crown" style="margin-right: 5px;"></i>
-                                    	<span th:text="${band.bandLeaderNickname}" style="color: #666666; font-weight: 500">
-                                    	</span>
-                                    </b>
-                                    <b class="hoverCursor" style="margin: 0px 10px 5px 0px;"><i class="fa fa-user" style="margin-right: 10px;">
-                                    	</i><span th:text="${band.memcount}" style="color: #666666; font-weight: 500"></span>
-                                    </b>
-                                    <th:block th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}">
-                                 	<p class="hoverBtn" id="bandOption"><i class="fa fa-cog" aria-hidden="true" style="margin-right: 10px;"></i> 가치 설정</p>
-                                </th:block>
-                                    <!-- <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><b><i class="fa fa-plus-square" aria-hidden="true"></i> 초대</b></div> -->
-                                 </div>   
-                                    <hr>
-                                    <div style="display: flex; justify-content: center; margin: 10px;">
-                                    	<p class="hoverCursor" style="margin-right: 20px;"><i class="fa fa-map-marker" aria-hidden="true"></i> <span th:text="${band.bandLocation}"></span></p>
-                                    	<p class="hoverCursor"><i class="fa fa-futbol-o" aria-hidden="true"></i> <span th:text="${band.bandCategory}"></span></p>
-                                    </div>
+                                <div>
+                                    <b><i class="fa fa-user"></i>멤버 <span th:text="${band.memcount}"></span></b>
+                                    <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><b><i class="fa fa-plus-square" aria-hidden="true"></i> 초대</b></div>
+                                    <p><i class="fa fa-map-marker" aria-hidden="true"></i> <span th:text="${band.bandLocation}"></span></p>
+                                    <p><i class="fa fa-futbol-o" aria-hidden="true"></i> <span th:text="${band.bandCategory}"></span></p>
+                                </div>
                                 <hr>
                                 <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                                <div>
-	                                	<p class="hoverBtn" id="myOption"><i class="fa fa-cog" aria-hidden="true" style="margin: 0px 10px 10px 0px;"></i>[[${BandMemberDetail.bandNickname}]]</p>
+	                                	<p id="myOption"><i class="fa fa-cog" aria-hidden="true"></i>[[${BandMemberDetail.bandNickname}]]([[${BandMemberDetail.userId}]])<b th:if="${#strings.equals(session.loginUser.userId, band.bandLeaderid)}"><i class="fa fa-solid fa-crown"></i></b></p>
+	                                    <p id="bandOption"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정</p>
+	                                    <p id="bandOption9"><i class="fa fa-cog" aria-hidden="true"></i> 가치 설정(게시판)</p>
 	                                </div>
 	                                <hr>
+
                                 </div>
                                 <div th:if="${#strings.isEmpty(BandMemberDetail)}"  id="signUpBand">
                                 <!-- =======가입======= -->
-                                	<h4 class="widget_title" style="color:white; background-color: #6ab0cd">회원가입</h4>
+                                	<h4 class="widget_title" style="color:white;">회원가입</h4>
                                 </div>
                                 <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA01'}">
                                 <!-- =======승인중======= -->
-                                	<h4 class="widget_title" style="color:white; background-color: #6ab0cd">승인대기중</h4>
+                                	<h4 class="widget_title" style="color:white;">승인대기중</h4>
                                 </div>
                             </aside>
                             <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}">
 	                            <aside class="single_sidebar_widget post_category_widget">
-	                                <h4 class="widget_title hoverBtn" id="writeBoard" style="background-color: #6ab0cd">글쓰기</h4>
+	                                <h4 class="widget_title" id="writeBoard">글쓰기</h4>
 	                                <div class="d-flex justify-content-between smallBoard" id="totalBoard">
-	                                    <p class="hoverBtn hoverString"><i class="fa fa-file-text hoverBtn" style="padding-right: 7px"></i>전체 글보기</p>
-	                                    <p th:text="${boardCount}" class="hoverCursor">2538</p>
+	                                    <p name=""><i class="fa fa-file-text" style="padding-right: 7px"></i>전체 글보기</p>
+	                                    <p th:text="${boardCount}">2538</p>
 	                                </div>
 	                                <hr style="margin-bottom: 20px; margin-top: 0px;">
 	                                <ul class="list_style cat-list">
 	                                    <li th:each="board: ${boardList}">
-	                                    	<p th:if="${board.bandBoardLine}!=0" class="smallBoard hoverBtn hoverString" th:name="${board.bandBoardOptionNo}" style="margin-bottom:0px;"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
-	                                    	<b th:if="${board.bandBoardLine}==0" class="hoverCursor" th:text="${board.bandBoardName}" style="margin-bottom:0px; color: #6ab0cd;"></b>
+	                                    	<p th:if="${board.bandBoardLine}!=0" class="smallBoard" th:name="${board.bandBoardOptionNo}"><i class="fa fa-file-text" style="padding-right: 7px"></i>[[${board.bandBoardName}]]</p>
+	                                    	<b th:if="${board.bandBoardLine}==0" th:text="${board.bandBoardName}"></b>
 	                                    </li>											
 	                                </ul>
 	                                <div class="br"></div>
 	                            </aside>
 	                            <aside class="single-sidebar-widget tag_cloud_widget">
-	                                <h4 class="widget_title hoverCursor" style="background-color: #6ab0cd">가치 유입 태그</h4>
+	                                <h4 class="widget_title">가치 태그</h4>
 	                            	<ul class="list_style">
 	                                    <li th:if="${keyword != null}" th:each="tag: ${keyword}">
-	                                    	<a th:text="${tag}" class="hoverCursor" style="text-decoration: none;"></a>
+	                                    	<a href="#"  th:text="${tag}"></a>
 	                                    </li>
 	                                </ul>
 	                            </aside>
@@ -310,7 +245,7 @@
 	                            <!-- ================== 검색================== -->
 	                            	  
 	                                <div class="input-group">
-	                                    <input type="text" class="form-control" id="searchBox" placeholder="밴드 내 글을 검색하세요">
+	                                    <input type="text" class="form-control" id="searchBox" placeholder="Search Posts">
 	                                    <span class="input-group-btn">
 	                                        <button class="btn btn-default" id="searchBoxBtn" type="button"><i class="lnr lnr-magnifier"></i></button>
 	                                    </span>
@@ -361,7 +296,7 @@
 	                        	<div class="blog_right_sidebar">
 		                            <aside class="single_sidebar_widget popular_post_widget">
 		                                <div class="dropdown">
-		                                	<h3 class="widget_title dropbtn" style="background-color: #6ab0cd;">다가오는 일정<i class="fa fa-cog" aria-hidden="true" style="margin-left: 10px;"></i></h3>
+		                                	<h3 class="widget_title dropbtn">다가오는 일정<i class="fa fa-cog" aria-hidden="true"></i></h3>
 										    <div class="dropdown-content">
 										        <a id="7">7일 이내</a>
 										        <a id="14">14일 이내</a>
@@ -369,17 +304,14 @@
 										      </div>
 		                                </div>
 		                                <div id="groupCal">
-			                                <div class="media post_item hoverBtn" th:each="c : ${calendar}" th:style="|border: 1px dotted ${c.bandCalendarMark}; padding-top:10px; padding-bottom:10px; background-color:white; border-radius:10px;|">
+			                                <div class="media post_item" th:each="c : ${calendar}">
 			                                    <div class="media-body">
-			                                        <h3><a class="goToCal" th:text="${c.bandCalendarTitle}"></a></h3>
+			                                        <h3><a class="goToCal" th:text="${c.bandCalendarTitle}" th:style="|background-color:${c.bandCalendarMark}|"></a></h3>
 			                                        <span th:text="${#dates.format(c.bandCalendarStart, 'yyyy-MM-dd')}" style="font-size: 12px"></span> ~
 			                                        <span th:text="${#dates.format(c.bandCalendarEnd, 'yyyy-MM-dd')}" style="font-size: 12px"></span>
 			                                    </div>
 			                                </div>
 		                                </div>
-		                                <div class="btnContent1 flexCenter" style="margin-top: 20px;">
-											<div class="replyPagination1" id="replyPagination1"></div>
-										</div>
 		                                <div class="br"></div>
 		                            </aside>
 		                    	</div>
@@ -410,13 +342,11 @@
         var token = /*[[${_csrf.token}]]*/
            console.log(token);
         var bandNo= $('#bandNo').val();
-        var bandLeaderid = $('#bandLeaderid').val();
-        console.log(bandLeaderid)
         $(function(){
-        	
         	let bandBoardDetailNo = $('#bandBoardDetailNo').val();
         	console.log(bandBoardDetailNo+'??왜 안가져');
         	$('#mainTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+bandBoardDetailNo);
+        	
         	//더보기 페이지용
          	//1페이지
 	        let bandNo = $('#bandNo').val();
@@ -435,18 +365,18 @@
 		                //순환시작
 		                //버튼에 붙일 게시판 끝번호(페이징용)
 	                	let bandBoardDetailNo = ''
-		                $(result).each(function(idx, ele){ //hoverBtn" name="${ele.bandBoardDetailNo}"
+		                $(result).each(function(idx, ele){
 		                	//likeTAG i class="fa fa-heart" aria-hidden="true"></i>
 		                	let likeTag = '';
 		                	if(ele.likeList['userId']!=null&&ele.likeList['userId']!=""){
-		                		likeTag = `💗`
+		                		likeTag = `❤`
 		                	} else {
 		                		likeTag = `🤍`
 		                	}
 		                	//사진이 있는지 체크 // iframe이 있으면 이걸로 대체
 		                	let imgTag = '';
 		                	if(ele.bandImg!=null){
-		                		imgTag = `<img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" class="imgss" style="width: 638px; height: 280px;">`;
+		                		imgTag = `<img src="/imgView/${ele.bandImg.mediaServerFile}" alt="" class="imgss" style="width: 678px; height: 280px;">`;
 		                	}
 
 		                	//iframe을 찾기위함
@@ -470,48 +400,38 @@
 		                	//정규표현식 html태그 제거
 		                	const reg = /<[^>]*>?/g;
 		                	let newContent = ele.bandBoardContent.replace(reg,'');
-		                	if(newContent.length>143){
-		                		newContent = newContent.slice(0, 144) + " ...";
-		                	}
-		                    let articleTag = `<article style="border: 1px solid #eeeeee;padding:15px 30px; background-color:white; margin:20px 20px; ">
-								                    <div style="display: flex; flex-direction: column;" class="tagg">
-									                    <div>
-									                        <div style="display: inline-flex; justify-content: space-between; padding-top: 20px; width: 650px;">
-									                            <img class="" src=/imgView/${ele.mediaServerFile} alt="" style="width: 70px; height: 70px; box-shadow: 5px 5px 10px grey; border: #6a60cd; border-radius:15px;">
-									                            <div  style="display: block; width: 300px; padding: 12px; margin-right: 180px;">
-									                                <ul class="blog_meta list_style hoverCursor" style="display: inline-block;">
-									                                    <li style="display: block;">${bandNickname}</li>
-									                                    <li style="display: block;">${ele.bandBoardDate}</li>
-									                                </ul>
-									                            </div>
-
-									                            <div class="nav-item dropdown droMom">
-				                                                   <a class="nav-item nav-link" data-toggle="dropdown"><i class="fa-solid fa-ellipsis" id="bchild"></i></a>
-				                                                          <div class="dropdown-menu rounded-0 m-0" name="bchilds" style="top: 30px;">
-				                                                      <a class="dropdown-item">신고</a>
-				                                                      <a class="dropdown-item">닫기</a>
-				                                                   </div>
-				                                                </div>   
-									                        </div>
-								                        	<h4 style="margin-top:20px;">${ele.bandBoardTitle}</h4>
-								                        	${imgTag}
-								                        	<div class="blog_details${ele.bandBoardDetailNo}">
-								                            <p>${newContent}</p>
-								                        </div>
-								                    </div>
-								                    <div class="parentUnit" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
-								                        <div style="display: flex; justify-content:space-between;">
-								                             <div id="heartClick" class="hoverBtn" name="${ele.bandBoardDetailNo}">${likeTag}</div>
-								                        	<span id="heartClick" class="hoverBtn num" name="${ele.bandBoardDetailNo}">${ele.likeList["likeCount"]}</span>
-								                        </div>
-								                        <div class="boardDett" id="${ele.bandBoardDetailNo}">
-								                        	<i class="lnr lnr-bubble boardDett hoverBtn" id="${ele.bandBoardDetailNo}"></i>
-								                        	<span></span>${ele.reply}
-								                        </div>
-								                    </div>
-								                    <a href="#" class="view_btn button_hover2 boardDett" id="${ele.bandBoardDetailNo}" style="text-decoration: none; margin-top:10px; border:none; text-align:center;">View More</a>
-								                </div>
-								            </article>`;
+		                    let articleTag = `<article style="border: 1px solid #eeeeee;padding:30px; ">
+							                    <div style="display: flex; flex-direction: column;" class="tagg">
+							                    <div>
+							                        <div  style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+							                            <img class="rounded-circle" src=/imgView/${ele.mediaServerFile} alt="" style="width: 70px; height: 70px;">
+							                            <div  style="display: block; width: 300px; padding: 10px;">
+							                                <ul class="blog_meta list_style" style="display: inline-block;">
+							                                    <li style="display: block;">${bandNickname}</li>
+							                                    <li style="display: block;">${ele.bandBoardDate}</li>
+							                                </ul>
+							                            </div>
+							                        </div>
+							                        
+							                        <h4>${ele.bandBoardTitle}</h4>
+							                        ${imgTag}
+							                        <div class="blog_details${ele.bandBoardDetailNo}">
+							                            <p>${newContent}</p>
+							                        </div>
+							                    </div>
+							                    <a href="#" class="view_btn button_hover boardDett" id="${ele.bandBoardDetailNo}">View More</a>
+							                    <div class="parentUnit" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+							                        <div class="heartt" name="${ele.bandBoardDetailNo}" style="display: flex; justify-content:space-between">
+							                             <div class="heartClick" name="${ele.bandBoardDetailNo}">${likeTag}</div>
+							                        	<span  class="heartClick" name="${ele.bandBoardDetailNo}">${ele.likeList["likeCount"]}</span>
+							                        </div>
+							                        <div class="boardDett" id="${ele.bandBoardDetailNo}">
+							                        	<i class="lnr lnr-bubble boardDett" id="${ele.bandBoardDetailNo}"></i>
+							                        	<span></span>${ele.reply}
+							                        </div>
+							                    </div>
+							                </div>
+							            </article>`;
 			            
 				                $(articleArea).append(articleTag);
 				                //페이지 버툰에 게시판 끝 숫자달기
@@ -555,11 +475,11 @@
 			                		let mon = getDayOfWeek(startDay);
 			                		//마크색
 			                		let color = calendar.bandCalendarMark;
-			                	    let cal  = `<div style="width:630px; height:80px; cursor: pointer; border: 0.2rem solid ${color}; border-radius:20px; padding:0px 10px; margin:10px 0px;display:flex; justify-content:space-between" class="boardDett" id=${ele.bandBoardDetailNo}>`
-			                	    			cal += `<div style="padding:10px; pointer-events: none;"><h3 style="margin-bottom:0px; text-align:center;pointer-events: none;">${sDay}</h3>`
-			                					cal += `<p style="text-align:center;pointer-events: none;">${mon}</p></div>`
-			                					cal += `<div style="padding:10px;pointer-events: none;"><h5 style="color:${color};"><span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span>${title}</h5>`
-			                					cal += `<p style="pointer-events: none;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
+			                	    let cal  = `<div style="width:678px; height:80px; border: 0.3rem solid ${color}; display:flex; justify-content:space-between" id="calendarModal">`
+			                	    			cal += `<div style="padding:10px;"><h3 style="margin-bottom:0px">${sDay}</h3>`
+			                					cal += `<p>${mon}</p></div>`
+			                					cal += `<div style="padding:10px;"><h5>${title}</h5>`
+			                					cal += `<p>${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
 			                				cal += `</div>`;
 			                		//요일뽑기
 			                		function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')
@@ -575,7 +495,7 @@
 			                if(result.length==5){
 				                //more 누르면 나오는 페이지
 				            	let btnTag = `<nav class="blog-pagination justify-content-center d-flex" id="multiId">
-							                <a class="view_btn button_hover2" id="nextBtn" style="width: 555px; text-decoration: none; text-align:center;">View More</a>
+							                <a class="view_btn button_hover" id="nextBtn" style="width: 555px;">View More</a>
 							                <input type="hidden" id="multivalue" value=${bandBoardDetailNo}>
 							                </nav>`
 							              
@@ -659,15 +579,11 @@
 			        	//일정만들기..기존 것 지우기..time.js파일이용
 			        	$('#groupCal').empty();
 			        	$(result).each(function(idx,ele){
-			        		let title = ele.bandCalendarTitle;
-			        		if(title.length>8){
-			        			title = title.slice(0, 8)+"..."
-			        		}
 			        		let sDay = SimpleDateTimeFormat(new Date(ele.bandCalendarStart));
 			        		let cDay = SimpleDateTimeFormat(new Date(ele.bandCalendarEnd));
-				        	let tag = `<div class="media post_item hoverBtn" style="border:${ele.bandCalendarMark} 1px dotted; padding-top:10px; padding-bottom:5px; background-color:white; border-radius:10px;">
+				        	let tag = `<div class="media post_item">
 							        		<div class="media-body">
-						        			<h3><a class="goToCal">${title}</a></h3>
+						        			<h3><a class="goToCal" style="background-color:${ele.bandCalendarMark}">${ele.bandCalendarTitle}</a></h3>
 						        			<span style="font-size: 12px">${sDay}</span> ~
 						        			<span style="font-size: 12px">${cDay}</span>
 						        		</div>
@@ -676,7 +592,6 @@
 						   $('#groupCal').append(tag);
 						   console.log(sDay+cDay);
 			        	})
-			        	page1();
 					})
 				}
 			})
@@ -693,129 +608,24 @@
 					$('.dropdown-content').css('display','block');
 				}, 200);
 			})
-			    
-			    
-			//페이징
-			page1();
-			function page1(){ 
-				console.log('111');
-				$('#groupCal').each(function() {
-				var $tband1 = $('#groupCal');
-				
-				var pagesu = 10;  //페이지 번호 갯수
-				var currentPage = 0;
-				var numPerPage = 5;  //목록의 수
-				var $table = $(this);    
-				var replyPagination1 = $("#replyPagination1");
-				//length로 원래 리스트의 전체길이구함
-				var numRows = $($tband1).children().length;
-				console.log(numRows+"???");
-				//Math.ceil를 이용하여 반올림
-				var numPages = Math.ceil(numRows / numPerPage);
-				//리스트가 없으면 종료
-				if (numPages==0) return;
-				//pager라는 클래스의 div엘리먼트 작성
-				var $pager = $('<div class="pager navvyBtn"></div>');
-				var nowp = currentPage;
-				var endp = nowp+10;
-		
-				//페이지를 클릭하면 다시 셋팅
-				$table.bind('repaginate', function() {
-				//기본적으로 모두 감춘다, 현재페이지+1 곱하기 현재페이지까지 보여준다
-				$($tband1).children().hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
-				$("#replyPagination1").html("");
-				if (numPages > 1) {     // 한페이지 이상이면
-				if (currentPage < 5 && numPages-currentPage >= 5) {   // 현재 5p 이하이면
-					nowp = 0;     // 1부터 
-					endp = pagesu;    // 10까지
-				}else{
-					nowp = currentPage -5;  // 6넘어가면 2부터 찍고
-					endp = nowp+pagesu;   // 10까지
-				pi = 1;
-				}
-				if (numPages < endp) {   // 10페이지가 안되면
-					endp = numPages;   // 마지막페이지를 갯수 만큼
-					nowp = numPages-pagesu;  // 시작페이지를   갯수 -10
-				}
-				if (nowp < 1) {     // 시작이 음수 or 0 이면
-					nowp = 0;     // 1페이지부터 시작
-				}
-				}else{       // 한페이지 이하이면
-					nowp = 0;      // 한번만 페이징 생성
-					endp = numPages;
-				}
-				// [처음]
-				$('<span class="pageNum first" style="display:none;"><i class="fa-solid fa-angles-left"></i></span>').bind('click', {newPage: page},function(event) {
-					currentPage = 0;   
-					$table.trigger('repaginate');  
-					$($(".pageNum")[2]).addClass('active').siblings().removeClass('active');
-				}).appendTo(replyPagination1).addClass('clickable');
-				// [이전]
-				$('<span class="pageNum back"><i class="fa-solid fa-angle-left"></i></span>').bind('click', {newPage: page},function(event) {
-				if(currentPage == 0) return; 
-					currentPage = currentPage-1;
-					$table.trigger('repaginate'); 
-					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
-				}).appendTo(replyPagination1).addClass('clickable');
-				// [1,2,3,4,5,6,7,8]
-				for (var page = nowp ; page < endp; page++) {
-					$('<span class="pageNum"  style="display:none;"></span>').text(page + 1).bind('click', {newPage: page}, function(event) {
-					currentPage = event.data['newPage'];
-					$table.trigger('repaginate');
-					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
-				}).appendTo(replyPagination1).addClass('clickable');
-				} 
-				// [다음]
-				$('<span class="pageNum next"><i class="fa-solid fa-angle-right"></i></span>').bind('click', {newPage: page},function(event) {
-					if(currentPage == numPages-1) return;
-					currentPage = currentPage+1;
-					$table.trigger('repaginate'); 
-					$($(".pageNum")[(currentPage-nowp)+2]).addClass('active').siblings().removeClass('active');
-				}).appendTo(replyPagination1).addClass('clickable');
-				// [끝]
-				$('<span class="pageNum last" style="display:none;"><i class="fa-solid fa-angles-right"></i></span>').bind('click', {newPage: page},function(event) {
-				currentPage = numPages-1;
-					$table.trigger('repaginate');
-					$($(".pageNum")[endp-nowp+1]).addClass('active').siblings().removeClass('active');
-				}).appendTo(replyPagination1).addClass('clickable');
-					$($(".pageNum")[2]).addClass('active');
-				});
-					$pager.insertAfter($table).find('span.pageNum:first').next().next().addClass('active');   
-					$pager.appendTo(replyPagination1);
-					$table.trigger('repaginate');
-				});
-			}
 			
-			
-			
-			//###################################################$().load()
 	       	//게시판이동
 	    	$('.smallBoard').on('click', function(e){
 	    		let bandBoardOptionNo = $(e.target).attr('name');
-	    		
-	    		//history.pushState(null, null, "/own/band/bandGroup/bandBoardList?bandNo="+bandNo+"&bandBoardOptionNo="+bandBoardOptionNo)
-	    		
-	    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo+"&bandBoardOptionNo="+bandBoardOptionNo);
+	    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardList?bandNo="+bandNo+"&bandBoardOptionNo="+bandBoardOptionNo);	
 	    	})
 	    	//글쓰기
 	    	$('#writeBoard').on('click', function(){
-	    		
-	    		//history.pushState(null, null, "?id=bandBoardWrite")
-	    		
 	    		$('#mainTemplate').load("/own/band/bandGroup/bandBoardWrite?bandNo="+bandNo);
 	    		//$('#mainTemplate').empty();
 	    		 // document.getElementById("ifr").src = "/own/band/bandGroup/bandBoardWrite?bandNo="+bandNo;
 	    	})
 	    	//내 정보수정으로 이동
 	    	$('#myOption').on('click', function(){
-	    		
-	    		//history.pushState(null, null, "?id=bandBoardList")
-	    		
 	    		$('#mainTemplate').load("/own/band/bandGroup/myOption?bandNo="+bandNo);
 	    	})
 	    	//가치 설정으로 이동
 	    	$('#bandOption').on('click', function(){
-	    		
 	    		$('#mainTemplate').load("/own/band/bandGroup/bandOptionMain?bandNo="+bandNo);
 	    	})
 	    	$('#bandOption2').on('click', function(){
@@ -834,24 +644,19 @@
 	    	$('#bandPhoto').on('click', function(){
 	    		$('#mainTemplate').load("/own/band/bandGroup/bandPhoto?bandNo="+bandNo);
 	    	})
-	    	//멤버로 이동
-	    	$('#bandMember').on('click', function(){
-	    		$('#mainTemplate').load("/own/band/bandGroup/bandMember?bandNo="+bandNo);
-	    	})
 	    	//가입버튼
 	    	 $('#signUpBand').on('click', function(){
 	    		 $('#mainTemplate').load("/own/band/bandGroup/signUpBand?bandNo="+bandNo);
 	    	 })
 	    	//검색버튼
-	        $('#searchBtn').on('click', function(){
-	        	let bandName = $('#searchBtnInput').val();
-	        	console.log(bandName)
-	        	window.location = "/own/band/bandSearch?bandName="+bandName;
+	        $('.searchBtn').on('click', function(){
+	        	boardNo = $('.searchBtn').val();
+	        	window.location = "/own/band/bandSearch?boardNo="+boardNo;
 	        })
-	        //게시판관리 설정안으로 들어감
-	        //$('#bandOption9').on('click', function(){
-	    	//	$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
-	    	//})
+	        //게시판관리
+	        $('#bandOption9').on('click', function(){
+	    		$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
+	    	})
 	    	//게시판상세로 이동
 	    	$('.arty:eq(0)').on('click', $('.boardDett'), function(e){
 	    		let BoardNo = $(e.target).attr('id');
@@ -878,60 +683,30 @@
 				console.log($(e.target));
 				let userId = $('#userId').val();
 	    		let categoryNo = $(e.target).attr('name');
-		    		if($(e.target).attr('id')=='heartClick' && categoryNo!=null){	
-			    		console.log(categoryNo);
-			    		let category = 'Band';
-			    		data={userId, categoryNo, category}
-			    		$.ajax({
-				            url:'/own/likeAjax',
-				            data: JSON.stringify(data),
-				            contentType : "application/json;",
-				            method: 'post',
-				              beforeSend: function(xhr){
-				                  xhr.setRequestHeader(header,token);
-				                }
-				        }).then(result => {
-				        	console.log(result);
-				        	let number = $(e.target).parentsUntil('.parentUnit').find('.num').text();
-				        	console.log(number+'원형');
-				        	if(result == 'add'){
-				        		$(e.target).parentsUntil('.parentUnit').find('div').html(`💗`);
-				        		number++
-				        		console.log(number+'증가함')
-				        	} else if(result == 'del'){
-				        		$(e.target).parentsUntil('.parentUnit').find('div').html(`🤍`);
-				        		number--
-				        		console.log(number+'감소함')
-				        	}
-				        	//$(e.target).parentsUntil('.parentUnit').find('.num').empty();
-				        	$(e.target).parentsUntil('.parentUnit').find('.num').text(number);
-			        })
-			}
-    	})//bchild
-	    	$('#articleArea').on('click', $('.bchild'), function(e){
-			    		if($(e.target).closest('.droMom').find('[name=bchilds]').lengh!=0 && $(e.target).closest('.droMom').find('[name=bchilds]').is(':visible')){
-			    			$(e.target).closest('.droMom').find('[name=bchilds]').hide();
-			    		} else {
-			    			$('#articleArea').find('[name=bchilds]').hide();
-			    			$(e.target).closest('.droMom').find('[name=bchilds]').show();
-			    		}
-			    		//캘린더숨기기
-			    		$(".dropdown-content").hide();
-			    	})
-	    	$(document).on('click', function(){
-		   		$($('.arty:eq(0)').find('[name=bchilds]')).each(function(idx, ele){
-		   			$(ele).hide();
-		   		})
-		   		//캘린더숨기기
-		   		$(".dropdown-content").hide();
-	  		})
-    	})
-    	
-       //뒤로가기 실험
-			/* window.onpopstate = function(event) {
-				history.go(0);
-			} */
-			//세션스토리지 저장 https://ryuhojin.tistory.com/10
+	    		console.log(categoryNo);
+	    		let category = 'Band';
+	    		data={userId, categoryNo, category}
+	    		$.ajax({
+		            url:'/own/likeAjax',
+		            data: JSON.stringify(data),
+		            contentType : "application/json;",
+		            method: 'post',
+		              beforeSend: function(xhr){
+		                  xhr.setRequestHeader(header,token);
+		                }
+		        }).then(result => {
+		        	console.log(result);
+		        	let number = $(e.target).parentsUntil('.parentUnit').children(':eq(1)').text();
+		        	if(result == 'add'){
+		        		$(e.target).parentsUntil('.parentUnit').children(':eq(0)').text('❤');
+		        		$(e.target).parentsUntil('.parentUnit').children(':eq(1)').text(number-1+2);
+		        	} else if(result == 'del'){
+		        		$(e.target).parentsUntil('.parentUnit').children(':eq(0)').text('🤍');
+		        		$(e.target).parentsUntil('.parentUnit').children(':eq(1)').text(number-1);
+		        	}
+		        })
+	    	})
+       })
     	</script>
     </div>
     </body>

@@ -790,14 +790,14 @@
 			})
 			console.log(bk01Per.toString()+'???')
 			//참석자 너무 많으면 자르기
-			if(bk01Per.length>4){
-				bk01Per.splice(4, bk01Per.length, '...');
+			if(bk01Per.length>2){
+				bk01Per.splice(2, bk01Per.length, '...');
 			}
-			if(bk02Per.length>4){
-				bk02Per.splice(4, bk02Per.length, '...');
+			if(bk02Per.length>2){
+				bk02Per.splice(2, bk02Per.length, '...');
 			}
-			if(bk03Per.length>4){
-				bk03Per.splice(4, bk03Per.length, '...');
+			if(bk03Per.length>2){
+				bk03Per.splice(2, bk03Per.length, '...');
 			}
 			
 			//내 체크 확인
@@ -819,9 +819,9 @@
 				nameBk3 = 'BK03chk'
 			}
 			let liTag = `
-				<li class="lis"><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b class="toSt">${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right; padding-right:15px;">💧</span></li>
-				<li class="lis"><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b class="toSt">${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right; padding-right:15px;">💧</span></li>
-				<li class="lis"><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b class="toSt">${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right; padding-right:15px;">💧</span></li>
+				<li class="lis"><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b class="toSt">${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
+				<li class="lis"><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b class="toSt">${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
+				<li class="lis"><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b class="toSt">${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
 			`;
 			attendChk.append(liTag);
 			

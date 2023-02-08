@@ -3,6 +3,12 @@
 <script src="/css/band/js/json.min.js"></script>
 
 <style>
+	.lis {
+		list-style: none;
+		padding: 10px;
+		border-bottom: 1px solid #eeeeee;
+		border-top: 1px solid #eeeeee;
+	}
 	.textarea{
 	width:500px; 
 	height:150px; 
@@ -328,7 +334,7 @@
 					<div class="form-group">
 						<textarea class="form-control" rows="5" id="reply" maxlength="150" placeholder="댓글을 남겨보세요" style="resize: none;"onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 남겨보세요'" required></textarea>
 						<input type="hidden" class="form-control" id="replyer" th:value="${session.loginUser.userId}">
-						<button type="button" id="btnReployInsert"class="btn btn-primary mb-2" style="margin-top: 10px; margin-bottom:10px; float: right;">댓글작성</button>
+						<button type="button" id="btnReployInsert"class="btn btn-primary mb-2" style="margin-top: 5px; margin-bottom:10px; float: right;">댓글작성</button>
 					</div>
 				</form>
 			</div>
@@ -397,7 +403,6 @@
 		<a class="modal_close_btn hoverBtn" style="text-decoration: none;">닫기</a>
 	</div>
 	<!--==캘린더 모달창 ==-->
-</div>
 
 <script src="/css/band/js/time.js"></script>
 <script th:inline="javascript">
@@ -728,6 +733,17 @@ $(function(){
 				myChk = ele.bandAttend;
 			}
 		})
+		//참석자 너무 많으면 자르기
+		if(bk01Per.length>2){
+			bk01Per.splice(2, bk01Per.length, '...');
+		}
+		if(bk02Per.length>2){
+			bk02Per.splice(2, bk02Per.length, '...');
+		}
+		if(bk03Per.length>2){
+			bk03Per.splice(2, bk03Per.length, '...');
+		}
+		
 		//내 체크 확인
 		let myBk1 = '🤍';
 		let nameBk1 = 'BK01'
@@ -737,19 +753,19 @@ $(function(){
 		let nameBk3 = 'BK03'
 		console.log(myChk);
 		if(myChk == 'BK01'){
-			myBk1 = '❤'
+			myBk1 = '💖'
 			nameBk1 = 'BK01chk'
 		} else if(myChk == 'BK02'){
-			myBk2 = '❤';
+			myBk2 = '💖';
 			nameBk2 = 'BK02chk'
 		} else if(myChk == 'BK03'){
-			myBk3 = '❤';
+			myBk3 = '💖';
 			nameBk3 = 'BK03chk'
 		}
 		let liTag = `
-			<li><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b>${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right;">💧</span></li>
-			<li><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b>${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right;">💧</span></li>
-			<li><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b>${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right;">💧</span></li>
+			<li class="lis"><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b class="toSt">${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right; cursor: pointer;">🌕</span></li>
+			<li class="lis"><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b class="toSt">${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right; cursor: pointer;">🌕</span></li>
+			<li class="lis"><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b class="toSt">${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right; cursor: pointer;">🌕</span></li>
 		`;
 		attendChk.append(liTag);
 	}
