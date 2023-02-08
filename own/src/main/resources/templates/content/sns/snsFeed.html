@@ -131,6 +131,7 @@
             left: 300px;
             font-size: 11px;
             color: blue;
+            font-weight: 600;
         }
 
         #instaImg {
@@ -161,7 +162,7 @@
 
         #feedCount {
             position: absolute;
-            top: 50px;
+            top: 55px;
             left: 300px;
         }
 
@@ -279,8 +280,8 @@
             margin-top: 20px;
         }
         #snsLikeBtn{
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             cursor: pointer;
         }
 
@@ -307,12 +308,13 @@
         #fileLabel{
             position: absolute;
             top: 252px;
-            left: 213px;
+            left: 212px;
             color: cornflowerblue;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             text-align: center;
             padding-top: 3px;
+            font-weight: 800;
         }
         .nicknameBox{
             position: absolute;
@@ -332,7 +334,7 @@
 
         #websiteLink{
             position: absolute;
-            top: 421px;
+            top: 422px;
             right: 5px;
             width: 480px;
             padding:10px;
@@ -349,10 +351,11 @@
             width: 100px;
             height: 30px;
             color: white;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
             text-align: center;
-            padding-top: 3px;
+            padding-top: 4px;
+            font-weight: 600;
         }
         input[type=text]{
             border:2px solid #aaa;
@@ -419,6 +422,8 @@
             position: absolute; 
             bottom: 3%; 
             right: 3%;
+            font-size: 15px;
+            font-weight: 600;
         }
 
         .searchProfileImg{
@@ -426,6 +431,13 @@
             height:50px;
             border-radius: 50%;
             margin-bottom: 7px;
+        }
+
+        .replyInput{
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color:gray;
         }
     </style><!--스타일-->
     
@@ -554,7 +566,7 @@
                         </div>
 
                         <span id="snsNickname" th:text="${snsInfo.snsNickname}" th:value="${snsInfo.snsAccountNo}"
-                            style="position: absolute; top:0px; left:300px; font-size:22px;"></span>
+                            style="position: absolute; top:0px; left:300px; font-size:22px; font-weight: 600;"></span>
 
                         <p th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="cursor:pointer">프로필 변경</p>
                         <td th:if="${userId.snsNickname != snsInfo.snsNickname}">
@@ -582,14 +594,14 @@
                             <div th:if="${snsInfo.snsWebsite != null}">
                                 <a th:href="${snsInfo.snsWebsite}" th:text="${snsInfo.snsWebsite}"
                                     style="color: skyblue;"></a></div>
-                            <div th:unless="${snsInfo.snsWebsite != null}">///          </div>
+                            <div th:unless="${snsInfo.snsWebsite != null}">          </div>
                         </div>
                     </div>
 
                     <!-- 스토리 등록-->
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
                         <div class="modal-content"  style="width: 500px; height: 680px;">
-                            <span class="close">&times;</span>
+                            <span class="close">x</span>
                             <p></p>
                             <form action="/own/snsStory" method="post" enctype="multipart/form-data">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
@@ -597,7 +609,7 @@
                                 <br>
                                 <input name="uploadStory" type="file" class="imgInp" id="imgInp" style="display: none;">
                                 <div class="storyImgBox">
-                                <label for="imgInp" style="cursor: pointer; color: lightgray; position: absolute;top:49%; left:35%; font-size: 30px;">이미지 첨부</label>
+                                <label for="imgInp" style="cursor: pointer; color: lightgray; position: absolute;top:49%; left:37%; font-size: 30px;">이미지 첨부</label>
                                 <img src="/css/sns/img/cameraIcon1.png" style="width: 50px; height: 50px; position: absolute; top:42%; left: 46%;">
                                 </div>
                                 <div style="width:460px; height: 460px;">
@@ -606,7 +618,7 @@
                                 <input th:value="${userId.snsNickname}" name="snsNickname" type="hidden">
                                 <input th:value="${userId.snsAccountNo}" name="snsAccountNo" type="hidden">
                                 
-                                <input type="submit" role="button" value="확인" class="snsFeedWriteBtn" style="bottom: 2%; width: 465px;"/>
+                                <input type="submit" role="button" value="확인" class="snsFeedWriteBtn" style="bottom: 2%; width: 465px; font-size: 18px; font-weight: 600;"/>
                             </form>
                         </div>
                     </div>
@@ -619,7 +631,7 @@
                             </div>
                             
                             <div class="storyProfile" style="position:relative; width: 450px; height: 60px;">
-                                <span class="close" style="padding-left: 16px; padding-top:2px;">&times;</span>
+                                <span class="close" style="padding-left: 16px; padding-top:2px;">x</span>
                             </div>
                             <div class="storyContent" style="position:relative; width:498px; height: 500px;">
 
@@ -630,7 +642,7 @@
                     <!-- 프로필 -->
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
                         <div class="modal-content" style="height:680px;">
-                            <span class="close">&times;</span>
+                            <span class="close">x</span>
                             <div><p style="border-bottom: 1px solid lightgray; font-size: 20px; font-weight: 600; text-align: center; padding-bottom: 20px;">프로필 편집</p></div>
                             <br>
                             <form id="form1" action="/own/snsProfile" method="post" enctype="multipart/form-data"  style="position:relative;">
@@ -648,12 +660,12 @@
                                 <div class="nicknameBox" >
                                     <input type="text" th:value="${userId.snsNickname}" name="snsNickname" style="width:480px; padding:10px; border-radius: 0px; border-top: 1px soild black; border-bottom: 1px soild black; color: gray;">
                                 </div>
-                                    <textarea id="profileTextBox" name="snsProfile" th:text="${snsInfo.snsProfile}" style="border-bottom: 1px soild black; border-radius: 0px; color: gray;"></textarea>
-                                <div class="textLengthWarp" style="position: absolute; top:408px; right:-44px; width: 100px;">
+                                    <textarea id="profileTextBox" name="snsProfile"th:text="${snsInfo.snsProfile}" placeholder="프로필 소개글을 입력하세요." style="border-bottom: 1px soild black; border-radius: 0px; color: gray;"></textarea>
+                                <div class="textLengthWarp" style="position: absolute; top:408px; right:-25px; width: 100px;">
                                     <span id="profileTextCount">0</span>
                                     <span id="profileTextTotal">/100</span>
                                 </div>
-                                    <textarea id="websiteLink" name="snsWebsite" th:text="${snsInfo.snsWebsite}">  </textarea>   
+                                    <textarea id="websiteLink" name="snsWebsite" th:text="${snsInfo.snsWebsite}" placeholder="웹사이트 링크를 입력하세요.">  </textarea>   
                                     <input type="submit" role="button" value="확인" id="profileUpdateBtn" style="display: none;"/>
                                     <label for="profileUpdateBtn" id="updateLabel">수정</label>
                             </form>
@@ -664,7 +676,7 @@
                     <!--신고모달-->
                     <div th:if="${userId.snsNickname != snsInfo.snsNickname}" class="modal">
                         <div class="modal-content" style="width: 400px; height: 600px;">
-                            <span class="close">&times;</span>
+                            <span class="close">x</span>
                              <h2>신고하기</h2>
 							       <div id = "container" style="text-align:center">
 							       <form role="form"  autocomplete="off" style="width: 80%;"enctype="multipart/form-data" name="frm" id="frm">
@@ -706,7 +718,7 @@
                     <!-- 팔로우 Modal -->
                     <div class="modal">
                         <div class="modal-content" style="width:550px;">
-                            <span class="close">&times;</span>
+                            <span class="close">x</span>
                             <p style="text-align: center; border-bottom: 1px solid lightgray;">팔로우 목록</p>
                                     <td th:each="snsfol : ${snsFollowerList}">
                                         <div class="snsfolProfile" style="padding-bottom: 10px;">
@@ -720,7 +732,7 @@
                     <!-- 팔로워 Modal -->
                     <div class="modal">
                         <div class="modal-content" style="width:550px;">
-                            <span class="close">&times;</span>
+                            <span class="close">x</span>
                             <p style="text-align: center; border-bottom: 1px solid lightgray;">팔로워 목록</p>
                                     <td th:each="snsf : ${snsFollowList}">
                                         <div class="snsfProfile" style="padding-bottom: 10px;">
@@ -735,26 +747,26 @@
                     <hr>
          
                 <!-- 글작성 모달을 여는 클래스 -->
-                <h1 th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="text-align: right; cursor:pointer;">
-               		 📝글작성</h1>
+                <h1 th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modalBtn" style="text-align: right; cursor:pointer; font-size: 16px; font-weight: 600;">
+               		 📝글쓰기</h1>
                 <p>
                     <div th:if="${userId.snsNickname == snsInfo.snsNickname}" class="modal">
                         <div class="modal-content" style="min-height: 880px; width:30%;">
-                            <span class="close">&times;</span>
+                            <span class="close">x</span>
                             <div><p style="border-bottom: 1px solid lightgray; font-size: 20px; font-weight: 600; text-align: center; padding-bottom: 20px;">새 게시물 작성</p></div>
                             <div id="image_preview">
                                 <!--이미지 미리보기-->
                                 <form action="/own/snsWriteFeed" method="post" class="snsWriteFrm" enctype="multipart/form-data" onsubmit="return feedFormCheck()">
                                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                     <input name="uploadfile" type="file" id="btnAtt" multiple="multiple" required style="display: none;">
-                                    <label for="btnAtt" style="cursor: pointer; color: lightgray; position: absolute;top:41%; left:36%; font-size: 30px;">이미지 첨부</label>
+                                    <label for="btnAtt" style="cursor: pointer; color: lightgray; position: absolute;top:41%; left:38%; font-size: 30px;">이미지 첨부</label>
                                     <img src="/css/sns/img/cameraIcon1.png" style="width: 50px; height: 50px; position: absolute; top:36%; left: 46%;">
                                     <p id="demo"></p>
                                     <div id="att_zone"></div>
                                     <br>
                                         <textarea style="width: 530px; height: 200px; position: absolute; padding:20px;" name="snsBoardContent"
                                             id="textBox" placeholder="내용을 입력하세요." required></textarea>
-                                        <div class="textLengthWarp" style="position: absolute; top:69%; right:-1%; width:100px; z-index: 22;">
+                                        <div class="textLengthWarp" style="position: absolute; top:69%; right:3px; width:100px; z-index: 22;">
                                             <span id="textCount">0자</span>
                                             <span id="textTotal">/500자</span>
                                         </div>
@@ -779,9 +791,9 @@
                                                 <div class="product_info_text_inner">
                                                     <th:block th:each="snsFeed : ${snsFeed}" th:if="${#strings.substring(snsimg.identifyId,4) == snsFeed.snsBoardNo}">
                                                     <i class="fa fa-regular fa-heart" style="color:white"></i>
-                                                    <span th:text="${snsFeed.likeCount}" style="font-size: 20px; color: white; margin-right: 20px;"></span>
+                                                    <span th:text="${snsFeed.likeCount}" style="font-size: 13px; color: white; margin-right: 20px; font-weight: 600; margin-left:4px;"></span>
                                                     <i class="fa fa-regular fa-comment-dots" style="color:white"></i>
-                                                    <span th:text="${snsFeed.replyCount}" style="font-size: 20px; color: white;  margin-right: 10px;"></span>
+                                                    <span th:text="${snsFeed.replyCount}" style="font-size: 13px; color: white;  margin-right: 10px; font-weight: 600; margin-left:4px;"></span>
                                                     </th:block>
                                                 </div>
                                             </div>
@@ -792,21 +804,22 @@
                             </th:block>
                     </div>
                     <div th:unless="${!#lists.isEmpty(snsImg)}" style="width:630px; margin-left: 320px;">
-                        <img style="margin: 100px; margin-left: 250px;" src="/css/sns/img/camera.png" alt="blog title " />
-                        <p style="text-align: center; font-size: 20px; color: gray;">첫 게시물을 등록해보세요!</p>
+                        <img style="margin-top: 100px; margin-left: 250px;" src="/css/sns/img/camera.png" alt="blog title " />
+                        <p style="text-align: center; font-size: 22px; font-weight: 800;">게시물 없음</p>
+                        <p style="text-align: center; font-size: 20px; color: lightgray; font-weight: 600;">첫 게시물을 등록해보세요!</p>
                     </div>
 
 
                     <!-- 게시글 상세보기 Modal -->                  
                         <div class="Feedmodal">
-                            <div class="Feedmodal-content" style="width: 1100px; height: 800px;">
+                            <div class="Feedmodal-content" style="width: 1100px; min-height: 700px; position: relative;">
                                 <span class="close"></span>
-                                <div class="boardContent" style="float: right; width: 500px;border-bottom: 1px lightgray solid; padding-bottom: 16px;">
+                                <div class="boardContent" style="float: right; width: 500px; min-height:180px; border-bottom: 1px lightgray solid; padding-bottom: 35px;">
                                   
                                 </div>
-                                <div class="snsLikeBox" style="width:100px; display: inline-block;">
+                                <div class="snsLikeBox" style="width:100px; display: inline-block; position: absolute; top:171px; right: 95px;">
                                 </div>
-                                <div class="snsReplyBox" style="width:100px; display: inline-block;">
+                                <div class="snsReplyBox" style="width:100px; display: inline-block; position: absolute; top:173px; right: -7px;">
                                     <img id="snsReplyIcon" src="/css/sns/img/speechImg.png" style="width: 20px; height: 20px;" >
                                 </div>
                                 <div class="boardImgList" style="position:relative; width: 500px; height: 600px; float:left">
@@ -824,7 +837,7 @@
                                 </div>
 
                                 <div class="btnIcon" th:if="${userId.snsNickname == snsInfo.snsNickname}">
-                                    <img src="/css/sns/img/trash.png" id="trashBtn" style="width: 20px; height: 20px; cursor: pointer;" >
+                                    <img src="/css/sns/img/trash.png" id="trashBtn" style="width: 20px; height: 20px; cursor: pointer; position: absolute; top:17px; right:167px;" >
                                 </div>
                                 
                             </div>
@@ -975,6 +988,7 @@
                                 console.log('좋아요 성공~!')
                                 let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
                                     snsLikeCount.attr({"id" : "snsLikeCount"})
+                                    snsLikeCount.css("font-weight","600");
                                     $('.snsLikeBox').eq(0).append(snsLikeCount)
                             },
                             error : function(err){
@@ -1017,7 +1031,7 @@
         console.log('댓글쓰기 버튼 클릭')
 
         $(e.target).remove();
-            let replyArea = $('<textarea>').css({"width":"500px","height" : "200px"})
+            let replyArea = $('<textarea>').css({"width":"500px","height" : "100px", "padding":"15px"})
                 replyArea.attr({"class":"replyText"})
             let insertBtn = $('<button>').text("입력")
                 insertBtn.attr({"class": "insertBtn"})
@@ -1053,8 +1067,6 @@
                         $('.replyInsert').children('.replyInput').remove();
                         let replyInput = $('<div>').text('댓글쓰기');
                             replyInput.attr({"class" : "replyInput"})
-                            replyInput.css({"cursor":"pointer",
-                                            "font-size":"14px"});
                         $('.realReply').append(replyInput);
                     let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
                     $('.snsReplyBox').append(snsReplyCount)
@@ -1074,8 +1086,6 @@
             $('.replyInsert').children('.replyInput').remove();
             let replyInput = $('<div>').text('댓글쓰기');
                 replyInput.attr({"class" : "replyInput"})
-                replyInput.css({"cursor":"pointer",
-                                "font-size":"14px"});
             $('.realReply').append(replyInput);
             
         })
@@ -1454,8 +1464,9 @@
                                 let boardNo = $('<div>').attr({"value": res.svo.snsBoardNo,
                                                                "class" : "boardNo"});
                                 let boardDate = $('<div>').text(res.svo.snsBoardDate);
-                                    boardDate.css({"text-align": "right", "color":"darkgray"});
+                                    boardDate.css({"text-align": "right", "color":"darkgray", "padding-bottom":"20px"});
                                 let boardContent = $('<div>').text(res.svo.snsBoardContent);
+                                    boardContent.css({"border-top":"1px solid lightgray", "padding-top":"15px"})
                                      $('.boardContent').append(boardNo, boardDate, boardContent);
                                 
                                 for(let i=res.imgList.length-1; i>= 0; i--){
@@ -1510,9 +1521,11 @@
                                 }
                                 
                                 let snsLikeCount = $('<span>').text("좋아요 "+res.snsLikeCount+"개");
+                                    snsLikeCount.css("font-weight","600");
                                     snsLikeCount.attr("id" , "snsLikeCount");
 
                                 let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                                    snsReplyCount.css("font-weight","600");
                                     $('.snsLikeBox').append(snsLikeCount);
                                     $('.snsReplyBox').append(snsReplyCount)
                                 
@@ -1526,7 +1539,7 @@
         })
         
         function makeReply(reply){
-            let Tag = ` <div class="replyIdDate">${reply.snsNickname} |    ${reply.replyDate} 
+            let Tag = ` <div class="replyIdDate" style="padding-top:10px" >${reply.snsNickname} |    ${reply.replyDate} 
                         <input class="snsReplyNo" type="hidden" value="${reply.replyNo}" /></div> 
                         <div style="padding-left:20px;">${reply.replyContent}</div>`
             console.log(reply.snsNickname)
