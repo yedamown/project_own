@@ -339,14 +339,13 @@ public class OwnhomeController {
 			//보류상황
 			if(val.equals("0")) {
 				System.out.println("보류처리");
-				vo.setStatus("보류처리");
 				ownService.reportUpdate(vo);
 				return 0;
 			}
 			else{
 				System.out.println("신고처리");
-				vo.setStatus("신고처리");
 				ownService.reportUpdate(vo);
+				ownService.ReportCountup(ovo);
 				return 1;
 			}
 		}
