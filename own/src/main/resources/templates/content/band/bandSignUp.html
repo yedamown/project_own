@@ -20,13 +20,13 @@
 		  left: 100%;
 		  margin-left: -200%;
 		}
-		img {
+		.imgs {
 			border-radius: 10px;
 			margin: auto;
 			width: 100%;
 			height: 100%
 		}
-		img:hover{
+		.imgs:hover{
 			border:#BFBFBF 2px solid;
 			cursor:pointer;
 		}
@@ -96,7 +96,18 @@
         <!--================ 폼 Area  =================-->
 		<div id="template">
 		<div class="overlay bg-parallax" style="opacity: 1" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background="">
-            </div>    
+            </div>
+            <!-- <p th:text="|bandAgeBeforoption ${band.bandAgeBeforoption}|"></p>
+            <p th:text="|bandAgeafteroption ${band.bandAgeafteroption}|"></p>
+            <p th:text="|bandAgeOption ${band.bandAgeOption}|"></p>
+            <p th:text="|bandBirth ${user.bandBirth}|"></p>
+            and
+            <p th:text="${band.bandAgeOption=='BD02'}"></p>
+            or
+            <p th:text="${not #strings.isEmpty(band.bandAgeBeforoption)}"></p>
+            <p th:text="${not #strings.isEmpty(band.bandAgeafteroption)}"></p>
+            <p th:text="${band.bandAgeBeforoption.before(user.bandBirth)}"></p>
+            <p th:text="${band.bandAgeafteroption.after(user.bandBirth)}"></p> -->
 			<div style="flex-grow:3; width: 740px">
 				<article style="border: 1px solid #eeeeee;padding:40px 0px 40px 0px; background-color: eeeeee;border: 1px solid eeeeee;">
 					<div th:if="${band.bandAgeOption=='BD02'}
@@ -126,7 +137,7 @@
 								            <div>
 								                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
 							                		<div style="flex-grow: 1; position: relative;"class="bandBox">
-							                			<img th:if="${user.defaultImg}" th:src="|/imgView/${user.defaultImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1;">
+							                			<img class="imgs" th:if="${user.defaultImg}" th:src="|/imgView/${user.defaultImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1;">
 							                			<p><i class="fa-regular fa-images fa-2x" style="border-radius:20px; position: absolute; bottom:10px; left: 100px;"></i></p>
 							                		</div>
 							                		<!--================ 이름 =================-->

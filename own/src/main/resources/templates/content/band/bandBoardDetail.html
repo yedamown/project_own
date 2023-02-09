@@ -861,7 +861,6 @@ var token = [[${_csrf.token}]]*/
 		
 		function replyInsert(){
 			$("#btnReployInsert").on("click", function(){
-				
 				let categoryNo = $('#bandBoardDetailNo').val()
 				let reply = $("#reply").val();
 				let userId = $("#replyer").val();
@@ -869,7 +868,10 @@ var token = [[${_csrf.token}]]*/
 				console.log("categoryNo"+categoryNo);
 				console.log(reply);
 				console.log(userId);
-				
+				if(reply==''||reply==null){
+					alert('작성된 댓글이 없습니다.')
+					return false;
+				}
 				$.ajax({
 					url : "/own/band/reply",
 					method: "post",

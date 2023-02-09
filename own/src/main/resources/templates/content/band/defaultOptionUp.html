@@ -233,14 +233,20 @@ content="width=device-width, initial-scale=1, shrink-to-fit=no">
 							if (nickName == '') {
 								$('#hiddenBoxText').text('닉네임을 입력해주세요.');
 								$('#hiddenBox').show();
+								$('#submitBtn').attr('disabled', true)
+			    				$('#submitBtn').css('background-color', '#666666');
 							} else if (nickName.match(replaceChar)
 									|| nickName.match(replaceNotFullKorean)) {
 								$('#hiddenBoxText').text(
 										'특수문자를 제외하고 올바른 문자를 입력해주십시오.');
 								$('#hiddenBox').show();
+								$('#submitBtn').attr('disabled', true)
+			    				$('#submitBtn').css('background-color', '#666666');
 							} else {
 								$('#hiddenBoxText').text('사용가능한 닉네임입니다.');
 								$('#hiddenBox').show();
+								$('#submitBtn').attr('disabled', false)
+			    				$('#submitBtn').css('background-color', '#f8b600');
 							}
 						})
 				//닉네임 공백막기 글자수

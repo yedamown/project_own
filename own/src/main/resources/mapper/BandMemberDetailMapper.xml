@@ -251,7 +251,7 @@
 		                    BAND_MEMBER_BIRTH_OPEN,
 		                    BAND_MEMBER_AGE_OPEN
 		             FROM BAND_MEMBER_DETAIL
-		             WHERE BAND_NO='BDU_1'
+		             WHERE BAND_NO = #{bandNo}
 		             AND USER_ID IN 
 	                                <foreach collection="userIds" item="u" separator="," open="(" close=")">
 	                                	#{u}

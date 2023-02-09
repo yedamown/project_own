@@ -842,7 +842,7 @@
 	    	//	$('#mainTemplate').load("/own/band/bandGroup/bandOption9?bandNo="+bandNo);
 	    	//})
 	    	//게시판상세로 이동
-	    	$('.arty:eq(0)').on('click', $('.boardDett'), function(e){
+	    	$('.arty:eq(0)').on('click', '.boardDett', function(e){
 	    		
 	    		//비회원은 접근불가
 	    		if(($('#bandNickname').val()===undefined) || ($('#bandNickname').val()==='undefined'==='undefined')){
@@ -874,9 +874,8 @@
 			//하트 //heartClick 
 			$('.arty:eq(0)').on('click', $('.heartClick'), function(e){
 				//비회원은 접근불가
-	    		if(($('#bandNickname').val()===undefined) || ($('#bandNickname').val()==='undefined'==='undefined')){
-	    			e.preventDefault;
-	    			e.target.preventDefault();
+	    		if(($('#bandNickname').val()===undefined) || ($('#bandNickname').val()==='undefined')){
+	    			e.preventDefault();
 		  			alert('가치 회원만 접근 가능합니다.')
 	    			return false;
 	    		}
