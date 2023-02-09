@@ -750,7 +750,7 @@
                             <p style="text-align: center; border-bottom: 1px solid lightgray;">팔로우 목록</p>
                                     <th:block th:each="snsfol : ${snsFollowerList}">
                                         <div class="snsfolProfile" style="padding-bottom: 10px;">
-                                            <img th:src="${snsfol.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; " onerror='this.src="/css/sns/img/defaultUser.png"'>
+                                            <img th:src="|/imgView/${snsfol.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; " onerror='this.src="/css/sns/img/defaultUser.png"'>
                                             <a th:href="@{snsFeed(snsNickname=${snsfol.follower})}">[[${snsfol.follower}]]</a>
                                             <input class="followDelbtn" type="button" value="삭제">
                                         </div>
@@ -764,7 +764,7 @@
                             <p style="text-align: center; border-bottom: 1px solid lightgray;">팔로워 목록</p>
                                     <td th:each="snsf : ${snsFollowList}">
                                         <div class="snsfProfile" style="padding-bottom: 10px;">
-                                            <img th:src="${snsf.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover;" onerror='this.src="/css/sns/img/defaultUser.png"'>
+                                            <img th:src="|/imgView/${snsf.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" onerror='this.src="/css/sns/img/defaultUser.png"'>
                                             <a th:href="@{snsFeed(snsNickname=${snsf.follow})}">[[${snsf.follow}]]</a>
                                             <input class="followDelbtn" type="button" value="삭제">
                                         </div>
