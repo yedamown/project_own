@@ -159,7 +159,7 @@
 					<div style="display: none;" id="challVld">
 						<div style="width: 700px; text-align: center;">
 							<!-- 첫 번째 Modal을 여는 클래스 -->
-							<button th:if=" ${#strings.equals(detailChall.challStatus, '진행 중')}"  class="modalBtn btn btn-primary px-3" id="vldAddModal">MODAL_1 인증하기</button>
+							<button th:if=" ${#strings.equals(detailChall.challStatus, '진행 중')}"  class="modalBtn btn btn-primary px-3" id="vldAddModal">인증하기</button>
 							<button th:if=" ${#strings.equals(detailChall.challStatus, '종료')}" 
 							 style="display: none;" class="modalBtn btn btn-primary px-3">이미 종료된 도전입니다.</button>
 							<!-- 인증 구분 라벨 -->
@@ -684,7 +684,8 @@
 		  data: {page:1,
 				 pageUnit:4,
 			     pageSize:5,
-				 challNo: challNo},
+				 challNo: challNo,
+				 vldStatus: "승인"},
           success: function(result){
             console.log(result);
             result.forEach( vld => {
@@ -744,7 +745,7 @@
 		    $.ajax({
 		       url: '/own/chall/vldPageListAjax',
 		       method: 'get',
-			   data: {page:page, pageUnit:4, pageSize:5, challNo: challNo}
+			   data: {page:page, pageUnit:4, pageSize:5, challNo: challNo, vldStatus: "승인"}
 		    }).then(result => {
 		       console.log(result);
 				//형태만들기 이미있는애들 없애준다.. -> 도전폼
@@ -771,7 +772,8 @@
 			data:  {page:1,
 					pageUnit:4,
 					pageSize:5,
-					challNo: challNo},
+					challNo: challNo,
+					vldStatus: "승인"},
 			success: function(result){
 				console.log(result);
 				result.forEach( vld => {
@@ -1185,7 +1187,7 @@
             let ul = $("<ul />")
             result.forEach(mem => {
               console.log(mem.userId, mem.memStatus)
-              ul.append($("<li />").text(mem.userId + mem.memStatus)
+              ul.append($("<li />").text(mem.userId)
               .append($("<button />").text('승인').attr('onclick', 'authChange(this)'), $("<button />").text('거절').attr('onclick', 'authChange(this)')));
             })
             $("#waitMemList").append(ul);
@@ -1202,7 +1204,7 @@
 				let ul = $("<ul />")
 				result.forEach(mem => {
 				console.log(mem.userId, mem.memStatus)
-				ul.append($("<li />").text(mem.userId + mem.memStatus)
+				ul.append($("<li />").text(mem.userId)
 				.append($("<button />").text('승인').attr('onclick', 'authChange(this)'), $("<button />").text('거절').attr('onclick', 'authChange(this)')));
 				})
 				$("#nowMemList").append(ul);
@@ -1218,17 +1220,20 @@
      /* 멤버 승인, 거절 버튼 -> 권한변경*/
     function authChange(e){
       console.log("이벤트 텍스트 "+$(e).text());
-      let memId = $(e).parent().text().substring(0,3);
+      let memId = $(e).parent().text();
       let memStatus = $(e).text();
 	  let nowMem = $('#nowMem').val();
 	  let maxMem = $('#maxMem').val();
+	  console.log(memId);
+	  let memCutId = memId.slice(0, -4);
+	  console.log(memCutId);
 	  if(nowMem >= maxMem){
 		alert('최대인원을 초과하여 도전승인을 할 수 없습니다.');
 	  } else{
 		  $.ajax({
 			  url: '/own/chall/challMemAuth',
 			  method: 'post',
-			  data: JSON.stringify({userId: memId,
+			  data: JSON.stringify({userId: memCutId,
 				challNo: challNo,
 				memStatus: memStatus
 			}),

@@ -291,10 +291,10 @@
 			let userId = $('#userId').val();
 			let challNo =  $('#challNo').val();	
 			let cutChallNo  = challNo.substr(4);
-			let challPrice = $('#challPrice').val();
+			let challPrice = Number($('#challPrice').val());
 			let check1 = $('input:checkbox[id="check1"]').is(":checked")
 			let check2 = $('input:checkbox[id="check2"]').is(":checked")
-			let myAmt = $('#myAmt').val()
+			let myAmt = Number($('#myAmt').val());
 			console.log(check1)
 			console.log(challNo, userId);
 			if( (check1 == true && check2 == true) && myAmt > challPrice){
