@@ -455,16 +455,19 @@
 		    color: white;
 		    font-size: 16px;
 		    border-radius: 25px;
+		    cursor:pointer;
         }
         
         .delBtn{
 	        width: 200px;
 		    height: 40px;
-		    background-color: #6ab0cd;
+		    background-color: white;
 		    border: none;
-		    color: white;
+		    color: #6ab0cd;
 		    font-size: 16px;
 		    border-radius: 25px;
+		    border: 3px solid #6ab0cd;
+		    cursor:pointer;
         }
         
         #schoolList{
@@ -475,6 +478,29 @@
             width: 265px;
             opacity: 0.9;
             font-weight: 600;
+        }
+        #btnreporting{
+            width: 100px;
+            height: 40px;
+            margin-left: 48px;
+            margin-right: 10px;
+            background-color: #6ab0cd;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        #btnsignin{
+            width: 100px;
+            height: 40px;
+            background-color: white;
+            color: #6ab0cd;
+            font-size: 16px;
+            border-radius: 25px;
+            border: 3px solid #6ab0cd;
+            cursor: pointer;
         }
     </style><!--스타일-->
     
@@ -715,33 +741,30 @@
                         <div class="modal-content" style="width: 400px; height: 600px;">
                             <span class="close">x</span>
                              <h4 style="text-align: center; font-weight: 600; border-bottom:1px solid lightgray; padding-bottom:20px;">SNS 유저 신고하기</h4>
-							       <div id = "container" style="text-align:center">
+							       <div id = "container">
 							       <form role="form"  autocomplete="off" style="width: 80%;"enctype="multipart/form-data" name="frm" id="frm">
 									<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
 							        <input type="hidden" th:value="${session.loginUser.userId}" id="reporter" name="reporter">
 							        <input type="hidden" th:value="${snsInfo.userId}" id="dereporter" name="dereporter">
 							        <div class="input-form-backgroud row">
-							            <div class="input-form col-md-12 mx-auto">
-							              <p class="mb-3">신고 대상</p>
-							              	<input type="text" th:value="${snsInfo.snsNickname}" disabled />
-							            	 <div class="col-md-7 mb-3">
+							            <div class="input-form col-md-12 mx-auto" style="padding-left:40px; font-weight: 600;">
+							              <span class="mb-3">신고 대상</span>
+							              	<input type="text" th:value="${snsInfo.snsNickname}" disabled style="margin-bottom:20px"/>
+	
 							                    <label for="reason">신고사유 *</label>
-							                    <select id="reason" name="reason">
+                                                <br>
+							                    <select id="reason" name="reason" style="margin-bottom:20px">
 							                    	<option selected>:: 신고사유를 선택해주세요 ::</option>
 							                        <option value="욕설">욕설</option>
 							                        <option value="광고">광고</option>
 							                        <option value="부적절한 아이디">부적절한 아이디</option>
 							                    </select>
-							                  </div>
-							                  <div class="form-group mb-4">
-												<label for="name">Date *</label> <input type="text" class="form-control"
+                                                <br>
+												<label for="name" style="margin-top:20px; ">Date *</label> <input type="text" class="form-control"
 													id="vldname" th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}"
-														readonly />
-											  </div>
-							                  <div class="col-md-7 mb-3">
+														readonly style="margin-bottom:40px;"/>
 							                    <label for="code">신고 증거 사진 첨부</label>
-							                    <input name="uploadfile" type="file" id="uploadfile" multiple="multiple">
-							                  </div>
+							                    <input name="uploadfile" type="file" id="uploadfile" multiple="multiple" style="margin-bottom:40px;">
 							                <button type="button" id="btnreporting">신고</button>      
 							                <button type="button" id="btnsignin">취소</button>              
 							            </div>
@@ -1105,6 +1128,7 @@
                             replyInput.attr({"class" : "replyInput"})
                         $('.realReply').append(replyInput);
                     let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                        snsReplyCount.css("id", "snsReplyCount")
                     $('.snsReplyBox').append(snsReplyCount)
 
                     },
