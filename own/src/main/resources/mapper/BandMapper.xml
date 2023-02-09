@@ -27,8 +27,11 @@
 	</sql> -->
 	<!-- 밴드 인서트 업데이트 -->
 	<insert id="insertBand">
-		<selectKey keyProperty="bandNo" resultType="string" order="BEFORE">
+		<!-- <selectKey keyProperty="bandNo" resultType="string" order="BEFORE">
 			SELECT MAX(TO_NUMBER(SUBSTR(BAND_NO,5)))+1 FROM BAND
+		</selectKey> -->
+		<selectKey keyProperty="bandNo" resultType="string" order="BEFORE">
+			SELECT BAND_SEQ.NEXTVAL-1 FROM DUAL
 		</selectKey>
 		INSERT INTO BAND(
 			BAND_NO,

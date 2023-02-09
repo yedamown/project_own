@@ -17,9 +17,6 @@
 	</insert>
 
 		<sql id="condition">
-				<if test="userId !=null and userId !=''">
-					AND	USER_ID = #{userId}
-				</if>
 				<if test="challNo !=null and challNo !=''">
 					AND	CHALL_NO = #{challNo}
 				</if>
@@ -101,7 +98,7 @@
 	<select id="countVld" resultType="int">
 		SELECT COUNT(*)
 		FROM CHALL_VALIDATION
-		WHERE 1=1
+		WHERE user_id = #{userId}
 		<include refid="condition"/>   
 	</select>
 	
@@ -119,10 +116,10 @@
 	</update>
 	
 	<select id="getVldList" resultType="co.prjt.own.chall.service.ValidationVO">
-			SELECT V.*, M.MEDIA_SERVER_FILE
-		      FROM CHALL_VALIDATION V, MULTIMEDIA M
-			 WHERE M.IDENTIFY_ID = V.VLD_NO
-			 <include refid="condition"/>   
-	         ORDER BY V.VLD_DATE DESC
+		SELECT V.*, M.MEDIA_SERVER_FILE
+	      FROM CHALL_VALIDATION V, MULTIMEDIA M
+		 WHERE M.IDENTIFY_ID = V.VLD_NO
+		 <include refid="condition"/>   
+         ORDER BY V.VLD_DATE DESC
 	</select>
 </mapper>

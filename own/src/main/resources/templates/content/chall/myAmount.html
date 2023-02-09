@@ -1,6 +1,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}" lang="ko">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/default_layout}" lang="ko">
 
 <head>
 	<!-- jquery -->
@@ -189,27 +190,17 @@
 	<title>도전_마이페이지_내 예치금</title>
 </head>
 <div layout:fragment="content">
-
-	<body>
-		<!-- Header Start -->
-		<div class="container-fluid bg-primary mb-5">
-			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-				<h3 class="display-3 font-weight-bold text-white">Contact Us</h3>
-				<div class="d-inline-flex text-white">
-					<p class="m-0">
-						<a class="text-white" href="">Home</a>
-					</p>
-					<p class="m-0 px-2">/</p>
-					<p class="m-0">Contact Us</p>
+<body>
+ 		<!-- Banner Start -->
+		 <div class="container-fluid bg-primary mb-3" style="padding: 0">
+			<div class="d-flex flex-column align-items-center justify-content-end" style="min-height: 300px; background-color: #6ab0cd">
+				<div class="justify-content-center" style="height: 150px; background-color: #6ab0cd">
+					<h4 class="text-center" style="color: white; margin-top: 30px;">오늘의 운동</h4>
+					<h2 class="text-center" style="color: white;">Challenges</h2>
 				</div>
 			</div>
 		</div>
-		<!-- Header End -->
-		<!-- 내 현재 예치금, 내 예금주 .. 등 -> cmemberVO -->
-		<!-- 내 충전, 출금 상금 등의 내역  -> CAmountVO -->
-		<!-- 두 것을..조인해서 가져와야함. 멤버별로 뽑을땐 cmemeberd에서
-	내거에서 내역별로 볼 때는..  -->
-
+		<!-- Banner End -->
 
 	<div class="container-fluid py-5 mt-2" style="margin:auto; width: 1300px; ">
 		<div style="display: flex;">
@@ -280,22 +271,6 @@
 	
 					<!-- 예치금 분류 -->
 					<div style="float: right;margin-right: 40px;">
-							<!-- <ul class="list-inline mb-2 row" id="menu-filters" style="text-align: center;">
-								<li class="m-3">
-									<input type="radio" name="method" value="all" id="all" checked="checked" class="radio">
-									<label for="allAmt">전체 보기</label>
-								</li>
-								<li class="m-3"><input type="radio" name="method" value="도전참가" id="applyCAmt" class="radio">
-									<label for="refundAmt">도전 충전</label></li>
-								<li class="m-3"><input type="radio" name="method" value="도전참가" id="applyCAmt" class="radio">
-									<label for="refundAmt">도전 참가</label></li>
-								<li class="m-3"><input type="radio" name="method" value="도전환급" id="refundCAmt" class="radio">
-									<label for="refundAmt">도전 환급</label></li>
-								<li class="m-3"><input type="radio" name="method" value="refund" id="rewardCAmt" class="radio">
-									<label for="refundAmt">도전 보상</label></li>
-								<li class="m-3"><input type="radio" name="method" value="refund" id="refundAmt" class="radio">
-									<label for="refundAmt">도전 보상</label></li>
-							</ul> -->
 							<div class="m-3" style="width: 200px;">
 								<select class="form-control" id="amountType" name="amountType" style="height: 47px" onchange=amtList()>
 									<option selected>전체보기</option>
@@ -306,7 +281,6 @@
 									<option value="도전환급">도전환급</option>
 								</select>
 							</div>
-						
 					</div>
 					<!-- 예치금분류 -->
 
@@ -331,6 +305,7 @@
 							</tr>
 						</tbody>
 					</table>
+
 				<!-- 페이징버튼 넣기 -->
 				<nav class="blog-pagination justify-content-center d-flex pageBtn" id="pageMyAmount">
 					<!--================ 이전  =================-->
@@ -353,12 +328,11 @@
 						<!--================ 이후  =================-->
 						<li class="page-item" th:if="${memAmount[0].paging.endPage < memAmount[0].paging.lastPage}">
 							<a class="page-link pagePort" aria-label="Next"
-							th:value="${memAmount[0].paging.endPage+1}"> <span aria-hidden="true"><span
-									class="lnr lnr-chevron-right"></span></span></a>
+							th:value="${memAmount[0].paging.endPage+1}"> <span aria-hidden="true">
+							<span class="lnr lnr-chevron-right"></span></span></a>
 						</li>
 					</ul>
 				</nav>
-	
 			</div>
 		</div>
 	</div>
@@ -431,11 +405,11 @@
 			if(rfPrice < 1000){
 				alert("1000원 이상 출금 가능합니다.");
 			}
-			if(Number(myAmt) < rfPrice){
+			if(Number(myAmt) < Number(rfPrice)){
 				alert("보유 예치금을 초과하여 출금할 수 없습니다.")
 			}
 			//둘다 해당될 경우 아작스 - 출금아작스
-			if( rfPrice> 1000 && Number(myAmt) > rfPrice){
+			if( rfPrice> 1000 && Number(myAmt) > Number(rfPrice)){
 				console.log(userId);
 				console.log("출금가능");
 				if(!confirm("출금계좌를 다시한번 확인해주세요. 출금하시겠습니까?")){
@@ -563,6 +537,7 @@
 								startpageTag.append(pageTag);
 						}
 				}               
+				
 				//이후 버튼만들기
 				if(pagingM.endPage<pagingM.lastPage){
 							let pageAfterTag =`<li class="page-item">

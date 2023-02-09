@@ -48,7 +48,7 @@
 	<!-- 기본 게시판 생성 -->
 		<insert id="insertBandBoardOption">
 			<selectKey keyColumn="BAND_BOARD_ORDER" keyProperty="bandBoardOrder" resultType="int" order="BEFORE">
-				SELECT MAX(BAND_BOARD_ORDER)+1 FROM BAND_BOARD_OPTION WHERE BAND_NO =  #{bandNo}
+				SELECT BOARD_OPTION_SEQ.NEXTVAL-1 FROM DUAL
 			</selectKey>
 		INSERT INTO BAND_BOARD_OPTION
 			VALUES(
@@ -58,7 +58,7 @@
 	<!-- 게시판 라인 생성 -->
 	<insert id="insertBandBoardOptionLine">
 		<selectKey keyColumn="BAND_BOARD_ORDER" keyProperty="bandBoardOrder" resultType="int" order="BEFORE">
-			SELECT MAX(BAND_BOARD_ORDER)+1 FROM BAND_BOARD_OPTION WHERE BAND_NO =  #{bandNo}
+			SELECT BOARD_OPTION_SEQ.NEXTVAL-1 FROM DUAL
 		</selectKey>
 	INSERT INTO BAND_BOARD_OPTION
 		VALUES(

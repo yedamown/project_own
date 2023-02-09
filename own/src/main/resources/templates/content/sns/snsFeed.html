@@ -389,14 +389,14 @@
         }
 
         .followDelbtn{
-            background-color:#17a2b8;
+            background-color:#6ab0cd;
             color: white;
             border: none;
             border-radius: 15px;
             width: 50px;
             height: 30px;
             cursor: pointer;
-            margin-left: 5px;
+            margin-left: 15px;
         }
 
         #schoolInput{
@@ -467,6 +467,15 @@
 		    border-radius: 25px;
         }
         
+        #schoolList{
+            z-index: 1;
+            position: absolute;
+            margin-left: 20px;
+            background-color: white;
+            width: 265px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
     </style><!--스타일-->
     
     <!-- jquery -->
@@ -601,7 +610,7 @@
                             <button th:if="${isCheckFollow == 0}" class="followBtn" data-follow="0"
                                 value="팔로우">팔로우</button>
                             <button th:unless="${isCheckFollow == 0}" class="followBtn" data-follow="1" value="팔로잉"
-                                style="background-color: white; color:black">팔로잉</button>
+                                style="background-color: white; color:black; font-size:11px;">팔로우 취소</button>
                             <img class="modalBtn" src="/css/sns/img/moreIcon.png" style="position: absolute; top:6px; right: 60px; width:30px; height: 30px; cursor: pointer;">
                         </td>
                         <div id="feedCount">
@@ -705,7 +714,7 @@
                     <div th:if="${userId.snsNickname != snsInfo.snsNickname}" class="modal">
                         <div class="modal-content" style="width: 400px; height: 600px;">
                             <span class="close">x</span>
-                             <h2>신고하기</h2>
+                             <h4 style="text-align: center; font-weight: 600; border-bottom:1px solid lightgray; padding-bottom:20px;">SNS 유저 신고하기</h4>
 							       <div id = "container" style="text-align:center">
 							       <form role="form"  autocomplete="off" style="width: 80%;"enctype="multipart/form-data" name="frm" id="frm">
 									<input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
@@ -748,13 +757,13 @@
                         <div class="modal-content" style="width:550px;">
                             <span class="close">x</span>
                             <p style="text-align: center; border-bottom: 1px solid lightgray;">팔로우 목록</p>
-                                    <td th:each="snsfol : ${snsFollowerList}">
-                                        <div class="snsfolProfile" style="padding-bottom: 10px;">
-                                            <img th:src="${snsfol.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; " onerror='this.src="/css/sns/img/defaultUser.png"'>
+                                    <th:block th:each="snsfol : ${snsFollowerList}">
+                                        <div class="snsfolProfile" style="padding-bottom: 15px;">
+                                            <img th:src="|/imgView/${snsfol.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; " onerror='this.src="/css/sns/img/defaultUser.png"'>
                                             <a th:href="@{snsFeed(snsNickname=${snsfol.follower})}">[[${snsfol.follower}]]</a>
-                                            <input class="followDelbtn" type="button" value="삭제">
+                                            <input th:if="${userId.snsNickname == snsInfo.snsNickname}" class="followDelbtn" type="button" value="삭제">
                                         </div>
-                                    </td>
+                                    </th:block>
                         </div>
                     </div>
                     <!-- 팔로워 Modal -->
@@ -763,10 +772,10 @@
                             <span class="close">x</span>
                             <p style="text-align: center; border-bottom: 1px solid lightgray;">팔로워 목록</p>
                                     <td th:each="snsf : ${snsFollowList}">
-                                        <div class="snsfProfile" style="padding-bottom: 10px;">
-                                            <img th:src="${snsf.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover;" onerror='this.src="/css/sns/img/defaultUser.png"'>
+                                        <div class="snsfProfile" style="padding-bottom: 15px;">
+                                            <img th:src="|/imgView/${snsf.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" onerror='this.src="/css/sns/img/defaultUser.png"'>
                                             <a th:href="@{snsFeed(snsNickname=${snsf.follow})}">[[${snsf.follow}]]</a>
-                                            <input class="followDelbtn" type="button" value="삭제">
+                                            <input th:if="${userId.snsNickname == snsInfo.snsNickname}" class="followDelbtn" type="button" value="삭제">
                                         </div>
                                     </td>
                             </div>
@@ -1216,7 +1225,7 @@
                 this.style.backgroundColor = "white";
                 this.style.color = "black";
                 this.value = '팔로잉';
-                this.textContent = "팔로잉";
+                this.textContent = "팔로우 취소";
                 $.ajax({
                     url: '/own/follow',
                     method: 'post',

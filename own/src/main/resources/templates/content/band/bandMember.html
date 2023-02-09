@@ -113,7 +113,6 @@
 			border-radius: 10px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.02);
 			width: 100%;
-			overflow: hidden;
 		}
 
 		.responsive-table__row {
@@ -271,6 +270,10 @@
 			background-color: #138496;
 			border-color: #117a8b;
 		}
+		
+		#dropDownDiv{
+		z-index: 1000;
+		}
 	</style>
 </head>
 <div id="template" style="flex-grow: 3; width: 740px">
@@ -297,8 +300,8 @@
 				<tr class="responsive-table__row">
 					<th class="responsive-table__head__title" colspan="1"></th>
 					<th class="responsive-table__head__title" style="width: 200px;" colspan="3">별명</th>
-					<th class="responsive-table__head__title"></th>
-					<th class="responsive-table__head__title"></th>
+					<th class="responsive-table__head__title" hidden></th>
+					<th class="responsive-table__head__title" hidden></th>
 					<th class="responsive-table__head__title" colspan="1"></th>
 				</tr>
 			</thead>
@@ -339,15 +342,12 @@
 				<h2 style="text-align: center; margin: 10px;margin-bottom: 30px;">신고하기</h2>
 				<form role="form" autocomplete="off" style="width: 80%; margin: auto;" enctype="multipart/form-data"
 					name="frm" id="frm">
-					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-					<input type="hidden" th:if="${session.loginUser.userId}" th:value="${session.loginUser.userId}"
-						id="reporter" name="reporter">
-
 					<!-- <div class="input-form col-md-12 mx-auto"> -->
 					<div class="form-group mb-4">
 						<label for="dereporter">신고할 사람 *</label>
 						<input type="hidden" id="dereporter" name="dereporter" readonly />
-						<input type="text" class="form-control" id="rptNickName" readonly />
+						<input type="hidden" id="reportUserId" name="reportUserId" readonly />
+						<input type="text" class="form-control" id="reportUserNickname" readonly />
 					</div>
 					<div class="form-group mb-4">
 						<label for="reason">신고사유 *</label>
@@ -392,7 +392,6 @@
 			let loginUserId = loginUser.userId;
 			/*]]>*/
 
-
 			// 밴드 번호
 			const link = window.location.href;
 			var url = new URL(link);
@@ -424,7 +423,6 @@
 					},
 					success: function (result) {
 						$('#bandMemberTable').empty();
-						console.log(result)
 						for (var i = 0; i < result.length; i++) {
 							let nicknameTag = '';
 							let chatTag = '';
@@ -443,7 +441,7 @@
 													</div>
 											</div>`;
 							} else if (result[i].chatCheck == 1 && result[i].userId != loginUserId) {
-								chatTag = `<div class="nav-item dropdown droMom" style="height: 50px; width: 50px;">
+								chatTag = `<div class="nav-item dropdown droMom" id="dropDownDiv" style="height: 50px; width: 50px;">
 													<a href="" class="nav-item nav-link"
 														data-toggle="dropdown">
 														<i class="fa fa-solid fa-ellipsis"></i>
@@ -608,8 +606,10 @@
 			// 신고 모달
 			//신고하기 누르면 신고폼 display block
 			$(document).on("click", ".reportModalOpen", function () {
-				let reportUserId = $(this).attr('data-sub');
-				$("#rptNickName").val(reportUserId); // 신고할 사람 input값 넣기
+				let reportUserNickname = $(this).attr('data-sub');
+				let reportUserId = $(this).attr('value');
+				$("#reportUserNickname").val(reportUserNickname); // 신고할 사람 닉네임 input값 넣기
+				$("#reportUserId").val(reportUserId); // 신고할 사람 아이디 input값 넣기
 				$("#dereporter").val(loginUserId); // 신고하는 사람 input값 넣기
 				$('.modal_bandMemberInfo').attr('style', 'display:block');
 				
@@ -617,7 +617,7 @@
 
 			//신고제출 버튼...
 			$('#btnreporting').on('click', function () {
-				console.log($('form[name="frm"]').serialize());
+				data = {};
 				$.ajax({
 					url: '/common/report',
 					method: 'post',
@@ -639,9 +639,6 @@
 						console.log(err);
 						alert("오류 발생. 다시 시도해주세요.")
 					}
-					// }).then(res=>{
-					// 	console.log(res)          
-					// });	
 				});
 			});
 

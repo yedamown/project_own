@@ -94,7 +94,7 @@
 	</select>
 	<insert id="insertBandMemberDetail">
 		<selectKey keyProperty="bandMemberNo" resultType="string" order="BEFORE">
-			SELECT MAX(TO_NUMBER(SUBSTR(BAND_MEMBER_NO,5)))+1 FROM BAND_MEMBER_DETAIL
+			SELECT BAND_DETAIL_SEQ.NEXTVAL-1 FROM DUAL
 		</selectKey>
 		INSERT INTO BAND_MEMBER_DETAIL(
 			 	USER_ID,
