@@ -42,27 +42,17 @@
 </head>
 <div layout:fragment="content">
 	<body>
-		<!-- Header Start -->
-		<div class="container-fluid bg-primary mb-2" style="padding: 0">
-			<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px; background-image: url(/img/chall/category/스키.png);
-			background-size: contain">
-				<!-- 	<img src="/img/chall/category/swim_main.jpg" style=" object-fit: cover"/> -->
-				<div class="d-inline-flex text-white">
-					<p class="m-0">
-						<a class="text-white" href="">Home</a></p>
-					<p class="m-0 px-2">/</p>
-					<p class="m-0">Contact Us</p>
+ 		<!-- Banner Start -->
+		 <div class="container-fluid bg-primary mb-3" style="padding: 0">
+			<div class="d-flex flex-column align-items-center justify-content-end" style="min-height: 300px; background-color: #6ab0cd">
+				<div class="justify-content-center" style="height: 150px; background-color: #6ab0cd">
+					<h4 class="text-center" style="color: white; margin-top: 30px;">오늘의 운동</h4>
+					<h2 class="text-center" style="color: white;">Challenges</h2>
 				</div>
 			</div>
 		</div>
+		<!-- Banner End -->
 
-		<div th:if="${session.loginUser}">
-			안녕하세요 세션확인 
-			<span th:text="${session.loginUser}"> ${session.loginUser} </span>
-			<h1 th:text="${session.loginUser.userId}"></h1>
-		</div>
-
-		<!-- Header End -->
 <div class="container py-5" >
 	<div class="text-center pb-2">
 		<p class="section-title px-5">
