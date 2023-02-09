@@ -104,6 +104,7 @@ public class BandBoardDetailImpl implements BandBoardDetailService{
 				}
 			}
 			//프로필이미지는 주소값으로 바로 넣어야겠음...조인고치려니까 안되겠음 그냥 for문..bandNo가져오기...option번호 하나 넣어서 검색해야겠음
+			//??? 아이디말고 글쓴이의 밴드멤버번호를 넣어야 함
 			List<BandMemberDetailVO> mems = new ArrayList<>();
 			if(fiveboard.size()>0) {
 				BandMemberDetailVO mem = new BandMemberDetailVO();

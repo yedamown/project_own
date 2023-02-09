@@ -45,11 +45,13 @@
     			width: 150px;
     			margin: 0 auto;
     			border: 2px solid #6ab0cd;
+    			cursor: pointer;
            }
            .button_hover2:hover {
            		color: white;
 				box-shadow: #6ab0cd 0 80px 0px 2px inset;
 				border-radius: 10px;
+				
            }
            
 	</style>
@@ -154,8 +156,10 @@
             }
 		}).then( res =>{
 			console.log(res);
-			if(res.bandBoardDetailNo!=null){
+			if(res.bandBoardDetailNo!=null){//childBoardValue
 				alert('글쓰기 성공');
+				window.opener.document.getElementById( "childBoardValue" ).value = res.bandBoardDetailNo;
+				//$("#childBoardValue", opener.document).val(res.bandBoardDetailNo);
 				window.close();
 			} else {
 				alert('글쓰기 실패');

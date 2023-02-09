@@ -219,6 +219,8 @@
 	<!--== 캘린더 ==-->
 	<div id="template" style="flex-grow: 3; width: 740px; padding: 10px;">
 		<article style=" padding: 30px; border: 1px solid #eeeeee;">
+			<!-- 자식에게서 받아올 값..게시판이동 -->
+			<input type="hidden" id="childBoardValue" value="">
 			<div id='calendar' style="background-color: white;"></div>
 		</article>
 		<article style="border: 1px solid #eeeeee; padding: 30px;">
@@ -365,6 +367,18 @@
 	   console.log(token);
 	 /*]]>*/
 	$(function(){ //2023-03-23타입의 string으로 고쳐서 보냄..DB에서 1일과 마지막날을 구해서 보낼 것..
+		
+		// 글게시 후이동...
+		$('#childBoardValue').on("propertychange change keyup paste input", function(){
+			let boardNo = $('#childBoardValue').val();
+			console.log($('#childBoardValue').val())
+	   		if(boardNo == null|| boardNo==''){
+	   			return false;
+	   		}
+		$('#template').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo);
+		})
+		
+		
 		let bandNo = $('#bandNo').val();
 		//me 한달일정가져오기
 		var calendarEl = document.getElementById('calendar');
