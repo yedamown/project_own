@@ -1,7 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
    <!--CDN으로 사용함-->
    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <!-- Bootstrap CSS -->
 <meta charset="utf-8">
@@ -121,88 +120,135 @@
 	  border-radius: 6px;
 	}
 	.clickBoard {
-		color : blue;
+		color : #6ab0cd;
 		text-decoration : underline;
+		font-weight: 800;
 	}
 	ul{
 		list-style: none;
 	}
+	#boardListArray{
+		padding: 0px;
+	}
+	#boardListArray>li {
+		width: 250px;
+		padding: 10px;
+	}
+	.ui-icon {
+		display: none;
+	}
+	#boardListArray>li>p{
+		margin: 0px;
+		padding: 0px;
+		font-size: 16px;
+	}
+	/* view more */
+	.button_hover2 {
+		color: white;
+		text-align: center;
+		background-color: #6ab0cd;
+		width: 110px;
+		margin: 0 auto;
+		border: 2px solid #6ab0cd;
+		margin: 10px;
+       }
+	.button_hover2:hover {
+		color: white;
+		box-shadow: #6ab0cd 0 80px 0px 2px inset;
+		border-radius: 10px;
+	}
+	.myCalInput {
+			border: 1px solid #666666;
+			height: 30px; 
+			padding: 0 20px;
+	}
+	.nice-select {
+		width: 150px;
+	}
+	.nice-select .list {
+		width: 145px;
+	}
 </style>
 <div style="flex-grow:3; width: 740px" id="subTemplate">
   <div id="manageTemplate">
-	<article style="border: 1px solid #eeeeee;padding:20px 30px 50px 30px; ">
-		<div class="container">
-			<h4 class="typo-list" style="padding-bottom: 15px">게시판 관리</h4>  
-			<hr>
+	<article>
+		<div class="container" style="padding: 20px 20px 20px 30px;">
 			<div style="display: flex;">
-				<div style="border: 1px solid #eeeeee;">
+				<div>
 					<div>
-						<span id="dowwdoww">⏬</span>
-						<span id="uppupp">⏫</span>
-						<span id="doww">🔽</span>
-						<span id="upp">🔼</span>
-						<span id="pluu">➕</span>
-						<span id="linn">➗</span>
-						<span id="minn">➖</span>
+						<span id="pluu" style="color: #6ab0cd;" class="hoverBtn"><i class="fa-solid fa-file-circle-plus fa-2x"></i></span>
+						<span id="minn" style="color: #6ab0cd;" class="hoverBtn"><i class="fa-solid fa-file-circle-minus  fa-2x"></i></span>
+						<span id="linn" style="color: #6ab0cd;" class="hoverBtn"><i class="fa-solid fa-grip-lines  fa-2x"></i></span>
 					</div>
 					<div>
 						<ul style="border: 15px solid #eeeeee;" id="boardListArray">
 	                          <li th:each="board: ${boardList}" class="boards ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-	                          	<p class="boardLine" th:if="${board.bandBoardLine}!=0" th:name="${board.bandBoardOptionNo}" th:id="${board.bandBoardName}">[[${board.bandBoardName}]] ([[${board.boardNumber}]])</p>
+	                          	<p class="boardLine" th:if="${board.bandBoardLine}!=0" th:name="${board.bandBoardOptionNo}" th:id="${board.bandBoardName}">[[${board.bandBoardName}]] ([[${board.boardNumber}]])<span style="color:#6ab0cd; margin-left: 10px;"><i class="fa-solid fa-up-down"></i></span></p>
 	                          	<b class="boardLine" th:if="${board.bandBoardLine}==0" th:text="${board.bandBoardName}"  th:name="${board.bandBoardOptionNo}" th:id="${board.bandBoardName}"></b>
 	                          </li>											
 						</ul>
-						<div><button type="button" id="boardSaveBtn">게시판 순서 저장</button></div>
-						<div><button type="button" id="boardSaveReset">게시판 순서 초기화</button></div>
+						<div style="display: flex; flex-direction: row; justify-content: flex-start;;">
+							<div style="text-align: center;"><button type="button" id="boardSaveBtn" class="button_hover2">순서 저장</button></div>
+							<div style="text-align: center;"><button type="button" id="boardSaveReset" class="button_hover2">순서 초기화</button></div>
+						</div>	
 					</div>
 				</div>
-				<div style="border: 1px solid #eeeeee;">
-					<form id="frm" name="frm">
+				<div style="margin-left: 10px;">
+					<form id="frm" name="frm" style="padding: -5px 10px 5px 10px;  padding-left: 15px; display: flex; flex-direction: column;">
+						<div style="display: flex; flex-direction: row; justify-content: flex-end;;">
+							<h4 style="display: inline; margin: 0px;">게시판 설정</h4>
+							<div><button type="button" id="savee" class="button_hover2" style="margin:0px 10px  10px  10px;">설정 저장</button></div>
+							<div><button type="button" id="resett" class="button_hover2" style="margin:0px 10px 10px 10px;">설정 초기화</button></div>
+						</div>
 						<div>
 							<input type="hidden" id="bandBoardOptionNo" name="bandBoardOptionNo">
 							<input type="hidden" id="bandBoardLine" name="bandBoardLine">
 							<input type="hidden" id="bandBoardOrder" name="bandBoardOrder">
 							<input type="hidden" id="numberss" name="numberss"class="numberss"><!-- 글개수 -->
-							<h5 class="typo-list">메뉴명</h5>
-							<input type="text" id="bandBoardName" name="bandBoardName" maxlength="10">
+							<h5 class="typo-list" style="color:#6ab0cd; margin-top: 10px;">메뉴명</h5>
+							<input type="text" id="bandBoardName" name="bandBoardName" maxlength="10" class="myCalInput">
 						</div>
 						<div id="linee" style="display: block">
-							<div>
-								<h5 class="typo-list">권한 설정</h5>
-								<select id="bandBoardAuth" name="bandBoardAuth">
-									<option value="BG01" th:selected="${boardList[0].bandBoardAuth}=='BG01'">가치리더</option>
-									<option value="BG02" th:selected="${boardList[0].bandBoardAuth}=='BG02'">일반멤버</option>
-								</select>
-							</div>
-							<div>
-								<h5 class="typo-list">댓글 기능</h5>
-								<input type="radio" id="bandLikeOption" name="bandLikeOption" value="BH01">
-								<input type="radio" id="bandLikeOption2" name="bandLikeOption" value="BH02">
-							</div>
-							<div>
-								<h5 class="typo-list">양식 사용</h5>
-								<input type="checkbox" id="conOption" name="conOption" value="T">
-								<textarea rows="2" cols="30" id="bandContentOption" name="bandContentOption" style="display: none"  wrap="hard"></textarea>
-							</div>
-							<div>
-								<h5 class="typo-list">말머리</h5>
-								<input type="text" id="inputBox" maxlength="8">
-								<button type="button" id="reAdd">추가</button>
-								<button type="button" id="reUp">수정</button>
-								<button type="button" id="reDel">삭제</button>
-								<select id="bandBoardRemarks" name="bandBoardRemarks">
-									<option selected value="no" disabled>말머리 추가</option>
-									<option></option>
-								</select>
-							</div>
+							<div style="display: flex; flex-direction: column;">
+								<div>
+									<h5 class="typo-list"  style="color:#6ab0cd; margin-top: 10px;">권한 설정</h5>
+									<select id="bandBoardAuth" name="bandBoardAuth">
+										<option value="BG01" th:selected="${boardList[0].bandBoardAuth}=='BG01'">가치리더</option>
+										<option value="BG02" th:selected="${boardList[0].bandBoardAuth}=='BG02'">일반멤버</option>
+									</select>
+								</div>
+								<div>
+									<h5 class="typo-list" style="color:#6ab0cd; margin-top: 10px;">댓글 기능</h5>
+									<label for="bandLikeOption" style="margin-right: 5px;">사용</label><input type="radio" id="bandLikeOption" name="bandLikeOption" value="BH01">
+									<label for="bandLikeOption2" style="margin-right: 5px;">사용하지않음</label><input type="radio" id="bandLikeOption2" name="bandLikeOption" value="BH02">
+								</div>
+								<div style="display: flex; flex-direction: column;">
+									<div style="display: flex;">
+										<h5 class="typo-list" style="color:#6ab0cd; margin-top: 10px;">양식 사용</h5>
+										<input type="checkbox" id="conOption" name="conOption" value="T" style="margin: 5px;display: inline" class="myCalInput">
+									</div>	
+										<textarea class="myInput" rows="2" cols="30" id="bandContentOption" name="bandContentOption" style="display: none"  wrap="hard"></textarea>
+								</div>
+								<h5 class="typo-list" style="color:#6ab0cd; margin-top: 10px;">말머리</h5>
+								<div style="display: flex; flex-direction: row; justify-content: flex-start; margin-bottom: 10px;">
+									<input type="text" id="inputBox" maxlength="8"  class="myCalInput">
+									<button type="button" id="reAdd" class="button_hover2" style="margin: 0px 0px 0px 10px; width: 80px;">추가</button>
+								</div>
+								<div style="display: flex; flex-direction: row; justify-content: flex-start;;;">	
+									<select id="bandBoardRemarks" name="bandBoardRemarks" style="margin-top: 10px;">
+										<option selected value="no" disabled>말머리 추가</option>
+										<option></option>
+									</select>
+									<button type="button" id="reUp" class="button_hover2" style="margin: 7px 0px 10px 10px; width: 80px; height: 30px;">수정</button>
+									<button type="button" id="reDel" class="button_hover2" style="margin: 7px 0px 10px 10px; width: 80px; height: 30px;">삭제</button>
+								</div>
+							</div>	
 						</div>
 					</form>
 					<!-- 여기다 저장해놓고 js에서 잘라서 씀 -->
 					<input type="hidden" value="" id="saveRemark">
 					<!-- 여기다가 태그#태그#으로 저장할때 저장 -->
 					<input type="hidden" value="" id="saveRe">
-					<div><button type="button" id="savee">저장</button></div>
-					<div><button type="button" id="resett">초기화</button></div>
 				</div>
 			</div>
 		</div>
@@ -256,6 +302,7 @@ var token = /*[[${_csrf.token}]]*/
 				//보드식별번호보내기 name="optionNo"
 				boardLoad($(e.target).attr('name'));
 			}
+			$('select').niceSelect('update');
 		})
 		//보드 식별 번호 받아서 설정불러오기
 		function boardLoad(optionNo){
@@ -266,6 +313,7 @@ var token = /*[[${_csrf.token}]]*/
 				if(element.bandBoardOptionNo==optionNo){
 					ele = element;
 				}
+				
 			})
 			//히든 bandBoardName
 			$('#bandBoardOptionNo').val(ele.bandBoardOptionNo);
@@ -286,6 +334,7 @@ var token = /*[[${_csrf.token}]]*/
 				//여긴 줄 설정
 				$('#linee').hide();
 			}
+			$('select').niceSelect('update');
 		}
 		function makeBoardOption(ele){
 			//권한설정
@@ -327,6 +376,7 @@ var token = /*[[${_csrf.token}]]*/
 				//말머리저장
 				$('#saveRemark').val(tag);
 			}
+			$('select').niceSelect('update');
 		}
 		//정규식
 		// 특수문자 정규식 변수(공백 미포함)
@@ -361,6 +411,7 @@ var token = /*[[${_csrf.token}]]*/
 			console.log(arr)
 			$('#saveRemark').val(arr.join("#"));
 			$('#inputBox').val('');
+			$('select').niceSelect('update');
 		})
 		//셀렉트박스 이벤트
 		$('#bandBoardRemarks').on('click', function(){
@@ -409,6 +460,7 @@ var token = /*[[${_csrf.token}]]*/
 			//여기도 저장
 			$('#saveRemark').val(arr.join("#"));
 			$('#inputBox').val('');
+			$('select').niceSelect('update');
 		})
 		//말머리삭제
 		$('#reDel').on('click', function(){
@@ -431,6 +483,7 @@ var token = /*[[${_csrf.token}]]*/
 			$('#saveRemark').val(arr.join("#"));
 			//화면상지우기
 			$('#bandBoardRemarks option:selected').remove();
+			$('select').niceSelect('update');
 		})
 		//양식설정임
 		$('#conOption').on('click', function(){
@@ -450,6 +503,7 @@ var token = /*[[${_csrf.token}]]*/
 			console.log('??');
 			console.log($('#bandBoardOptionNo').val())
 			boardLoad($('#bandBoardOptionNo').val());
+			$('select').niceSelect('update');
 		})
 		//보드저장옵션
 		$('#savee').on('click', function(){
@@ -553,6 +607,7 @@ var token = /*[[${_csrf.token}]]*/
 					//보드리스트 저장분 새걸로 채우기..+ 이름 바꾸기
 				})
 			}
+			$('select').niceSelect('update');
 		})
 		//게시판 생성
 		$('#pluu').on('click', function(){
@@ -676,4 +731,7 @@ var token = /*[[${_csrf.token}]]*/
 	    	 
 	    })
 	})
+	$(document).ready(function () {
+       $('select').niceSelect();
+   });
 </script>
