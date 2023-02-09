@@ -295,6 +295,7 @@
     				}
              	}).then(res2=>{
              		alert('변경완료!!')
+             		location.href="/own/mypage";
              	})
               
               
@@ -336,7 +337,7 @@
 		})
 		
 		$('#navQuestionForm').on('click', function(){
-    		$("#subtemplate").load('/own/questform');
+    		$("#subtemplate").load('/own/mypage/questform');
 		})
         </script>
         </div>
