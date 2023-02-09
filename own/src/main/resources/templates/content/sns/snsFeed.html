@@ -389,7 +389,7 @@
         }
 
         .followDelbtn{
-            background-color:#17a2b8;
+            background-color:#6ab0cd;
             color: white;
             border: none;
             border-radius: 15px;
@@ -748,13 +748,13 @@
                         <div class="modal-content" style="width:550px;">
                             <span class="close">x</span>
                             <p style="text-align: center; border-bottom: 1px solid lightgray;">팔로우 목록</p>
-                                    <td th:each="snsfol : ${snsFollowerList}">
+                                    <th:block th:each="snsfol : ${snsFollowerList}">
                                         <div class="snsfolProfile" style="padding-bottom: 10px;">
                                             <img th:src="${snsfol.mediaServerFile}" style="width: 50px; height: 50px; object-fit: cover; " onerror='this.src="/css/sns/img/defaultUser.png"'>
                                             <a th:href="@{snsFeed(snsNickname=${snsfol.follower})}">[[${snsfol.follower}]]</a>
                                             <input class="followDelbtn" type="button" value="삭제">
                                         </div>
-                                    </td>
+                                    </th:block>
                         </div>
                     </div>
                     <!-- 팔로워 Modal -->
