@@ -174,7 +174,7 @@
 			margin: 0 auto;
 			float: none;
 			display: table;
-			color: #4ad1e5;
+			color: #6ab0cd;
 		}
 
 		/* datepicker */
@@ -364,6 +364,10 @@
 			outline: none;
 			background-color: #eee;
 		}
+		
+		.pngButton{
+			filter: opacity(0.5) drop-shadow(0 0 0 #6ab0cd);
+		}
 	</style>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
@@ -469,24 +473,14 @@
 				dataType: 'json',
 				contentType: "application/json"
 			}).then(res => {
-				// 랜덤으로 차트 색상 생성
-				function colorize() {
-					var r = Math.floor(Math.random() * 200);
-					var g = Math.floor(Math.random() * 200);
-					var b = Math.floor(Math.random() * 200);
-					var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-					return color;
-				}
-
 				var labelList = new Array();
 				var valueList = new Array();
-				var colorList = new Array();
+				var colorList = ['#eef6f9', '#f9eef1', '#f1f9ee', '#f9f6ee', '#f1eef9'];
 
 				for (var i = 0; i < res.length; i++) {
 					var d = res[i];
 					labelList.push(d.exersubName);
 					valueList.push(d.ecount);
-					colorList.push(colorize());
 				}
 				var data = {
 					labels: labelList,
@@ -521,18 +515,10 @@
 				dataType: 'json',
 				contentType: "application/json"
 			}).then(res => {
-				// 랜덤으로 차트 색상 생성
-				function colorize() {
-					var r = Math.floor(Math.random() * 200);
-					var g = Math.floor(Math.random() * 200);
-					var b = Math.floor(Math.random() * 200);
-					var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-					return color;
-				}
-
 				var labelList = new Array();
 				var valueList = new Array();
-				var colorList = new Array();
+				var colorList = ['#eef6f9', '#f9eef1', '#f1f9ee', '#f9f6ee', '#f1eef9'];
+
 
 				for (var i = 0; i < res.length; i++) {
 					var d = res[i];
@@ -541,13 +527,12 @@
 
 					labelList.push(formattedDate);
 					valueList.push(d.exerecWeight);
-					colorList.push(colorize());
 				}
 				var data = {
 					labels: labelList,
 					datasets: [{
 						label: '몸무게',
-						backgroundColor: colorList,
+						backgroundColor: '#f9f6ee',
 						data: valueList
 					}],
 					options: {
@@ -632,23 +617,14 @@
 					xhr.setRequestHeader(header, token);
 				},
 				success: function (res) {
-					// 랜덤으로 차트 색상 생성
-					function colorize() {
-						var r = Math.floor(Math.random() * 200);
-						var g = Math.floor(Math.random() * 200);
-						var b = Math.floor(Math.random() * 200);
-						var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-						return color;
-					}
 					var labelList = new Array();
 					var valueList = new Array();
-					var colorList = new Array();
+					var colorList = ['#eef6f9', '#f9eef1', '#f1f9ee', '#f9f6ee', '#f1eef9'];
 
 					for (var i = 0; i < res.length; i++) {
 						var d = res[i];
 						labelList.push(d.exersubName);
 						valueList.push(d.ecount);
-						colorList.push(colorize());
 					}
 					var data = {
 
@@ -683,31 +659,21 @@
 					xhr.setRequestHeader(header, token);
 				},
 				success: function (res) {
-					// 랜덤으로 차트 색상 생성
-					function colorize() {
-						var r = Math.floor(Math.random() * 200);
-						var g = Math.floor(Math.random() * 200);
-						var b = Math.floor(Math.random() * 200);
-						var color = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.7)';
-						return color;
-					}
-
 					var labelList = new Array();
 					var valueList = new Array();
-					var colorList = new Array();
+					var colorList = ['#eef6f9', '#f9eef1', '#f1f9ee', '#f9f6ee', '#f1eef9'];
 
 					for (var i = 0; i < res.length; i++) {
 						var d = res[i];
 						var formattedDate = "20" + d.exerecDate.substr(2, 8);
 						labelList.push(formattedDate);
 						valueList.push(d.exerecWeight);
-						colorList.push(colorize());
 					}
 					var data = {
 						labels: labelList,
 						datasets: [{
 							label: '몸무게',
-							backgroundColor: colorList,
+							backgroundColor: '#f9f6ee',
 							data: valueList
 						}],
 						options: {
@@ -951,10 +917,10 @@
 			<!--====================== 사진으로 저장하기, 공유 버튼 div ======================-->
 			<div class="item-row buttons" id="shareBtn">
 				<button onclick="captureImage()">
-					<img src="/css/own/common_img/list.png" alt="파일로저장" />
+					<img src="/css/own/common_img/list.png" alt="파일로저장" class="pngButton" />
 				</button>
 				<button onclick="shareKakao()">
-					<img src="/css/own/common_img/kakaoBtn1.png" alt="카카오톡 공유" />
+					<img src="/css/own/common_img/kakaoBtn1.png" alt="카카오톡 공유" class="pngButton" />
 				</button>
 			</div>
 		</div>
