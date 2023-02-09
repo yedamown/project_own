@@ -102,9 +102,9 @@
 					<div th:if="${band.bandAgeOption=='BD02'}
 					 or (${band.bandAgeOption=='BD01'}
 					  and ${not #strings.isEmpty(band.bandAgeBeforoption)}
-					  and ${not #strings.isEmpty(band.bandAgeAfteroption)} 
+					  and ${not #strings.isEmpty(band.bandAgeafteroption)} 
 					  and ${band.bandAgeBeforoption.before(user.bandBirth)}
-					  and ${band.bandAgeAfteroption.after(user.bandBirth)})">
+					  and ${band.bandAgeafteroption.after(user.bandBirth)})">
 					  	<div th:if="${band.bandGenderOption=='BE02'} 
 					  	or (${band.bandGenderOption=='BE01'} 
 					  	and ${not #strings.isEmpty(band.bandGender)} 
@@ -188,22 +188,72 @@
 										<input style="display: none;" type="checkbox" id="bandMemberAgeOpenHi" name="bandMemberAgeOpen" value="BO02">
 										<input style="display: none;" type="checkbox" id="bandMemberBirthOpenHi" name="bandMemberBirthOpen" value="BN02">
 										<!--================hidden 체크박스 Area =================-->
-							            </form>
+							       </form>
 						<!--================폼 끝 Area =================--> 
-									</div>
+							</div>
 						</div>
-						<div th:if="${band.bandGenderOption=='BE01'} 
-						and ${not #strings.isEmpty(band.bandGender)} 
-						and ${band.bandGender!=user.bandGender}">
-							<h3>성별제한에 맞지 않습니다.</h3>
+						<div th:unless="${band.bandGenderOption=='BE02'} 
+					  	or (${band.bandGenderOption=='BE01'} 
+					  	and ${not #strings.isEmpty(band.bandGender)} 
+					  	and ${band.bandGender==user.bandGender})">
+					  	<div style="flex-grow:3; width: 740px; text-align: center;">
+	                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber" >
+	                    	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
+	                        <div id="mainTemplate">
+	                        	<div>
+		                            <div id="articleArea">
+		                            	<article style="border: 2px solid #9ab0cd;padding:130px; margin:-20px 10px; height: 470px; background-color: white;">
+							                    <div style="display: flex; flex-direction: column;">
+							                    <div>
+							                        <div style="display: inline-flex; justify-content: space-between;">
+							                            <img class="rounded-circle" src="/css/band/gachi/own.png" alt="" style="width: 100px; height: 100px; margin-bottom: 30px;">
+							                        </div>
+							                        <div>
+							                            <h3 style="color: #9ab0cd">성별제한에 맞지 않습니다.</h3></h3>
+							                        </div>
+							                    </div>
+							                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+							                        <div><span></span></div>
+							                    </div>
+							                </div>
+							            </article>
+					               </div>
+				               </div>
+	                        </div>
+	                    </div>
 						</div>
 					</div>
-					<div th:if="${band.bandAgeOption=='BD01'} and ${not #strings.isEmpty(band.bandAgeBeforoption)}
-					 and ${not #strings.isEmpty(band.bandAgeAfteroption)} and
-					 ${band.bandAgeBeforoption.after(user.bandBirth)} and
-					  ${band.bandAgeAfteroption.before(user.bandBirth)}">
-						<h3>연령제한에 맞지 않습니다.</h3>
-					</div>
+					<div th:unless="${band.bandAgeOption=='BD02'}
+					 or (${band.bandAgeOption=='BD01'}
+					  and ${not #strings.isEmpty(band.bandAgeBeforoption)}
+					  and ${not #strings.isEmpty(band.bandAgeafteroption)} 
+					  and ${band.bandAgeBeforoption.before(user.bandBirth)}
+					  and ${band.bandAgeafteroption.after(user.bandBirth)})">
+                    	<div style="flex-grow:3; width: 740px; text-align: center;">
+	                    	<input type="hidden" th:value="${band.bandNo}" id="bandNumber" >
+	                    	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
+	                        <div id="mainTemplate">
+	                        	<div>
+		                            <div id="articleArea">
+		                            	<article style="border: 2px solid #9ab0cd;padding:130px; margin:-20px 10px; height: 470px; background-color: white;">
+							                    <div style="display: flex; flex-direction: column;">
+							                    <div>
+							                        <div style="display: inline-flex; justify-content: space-between;">
+							                            <img class="rounded-circle" src="/css/band/gachi/own.png" alt="" style="width: 100px; height: 100px; margin-bottom: 30px;">
+							                        </div>
+							                        <div>
+							                            <h3 style="color: #9ab0cd">연령제한에 맞지 않습니다.</h3></h3>
+							                        </div>
+							                    </div>
+							                    <div class="" style="display: inline-flex; justify-content: space-between; padding-top: 20px;">
+							                        <div><span></span></div>
+							                    </div>
+							                </div>
+							            </article>
+					               </div>
+				               </div>
+	                        </div>
+	                    </div>
 					</div>
 				</article>
 			</div>
