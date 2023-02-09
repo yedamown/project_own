@@ -388,9 +388,9 @@
 		$(function () {
 			// 세션에 저장된 로그인 유저의 아이디
 			/*<![CDATA[*/
-			let loginUser = /*[[ ${session.loginUser} ]]*/;
-			let loginUserId = loginUser.userId
-			/*]]*/
+			let loginUser = [[ ${session.loginUser} ]];
+			let loginUserId = loginUser.userId;
+			/*]]>*/
 
 			// 밴드 번호
 			const link = window.location.href;

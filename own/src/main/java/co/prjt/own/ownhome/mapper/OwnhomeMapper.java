@@ -33,7 +33,7 @@ public interface OwnhomeMapper {
 		//내질문삭제
 		public int myquestDelete(String rno);
 		public int userPermUpdate(OwnUserVO vo);
-		public int ReportCountup(OwnUserVO vo);
+	public int ReportCountup(OwnUserVO vo);
 	public int adQuestionCount();
 	//아이디찾기
 	public String searchId(String email);

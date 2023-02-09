@@ -93,7 +93,7 @@
       <div class="modal-content">
         <span class="close">&times;</span>                         
         <p id="modaltext"></p>
-        <button type="button" id="bandPassModal" class="btn btn-outline-primary m-1">
+        <button type="button" id="bandPassModal" class="btn btn-outline-primary m-1" style="width:400px;">
   	밴드장 위임
 	</button>
       </div>
@@ -139,7 +139,7 @@ function Modal(num) {
         modals[num].style.display = "block";
         console.log(num);
 		let id = $('.current').text();
-		let tag = `<p>${id}님에게 밴드장을 위임하려고 합니다.<br> 위임 후 번복할수 없습니다</p>`;
+		let tag = `<p id="passid">${id}님에게 밴드장을 위임하려고 합니다.<br> 위임 후 번복할수 없습니다</p>`;
 		if(modals[0]){
 			$('#modaltext').append(tag)
 		}
@@ -173,9 +173,10 @@ window.onclick = function(event) {
  //모달끝
  
 $("#bandPassModal").on("click",function(){
-	let bandLeaderid = $("#passid").val();
+	let bandLeaderid = $('.current').text();
 	let bandNo = $("#bandNo").val();
 	console.log(bandNo);
+	console.log(bandLeaderid);
 	$.ajax({
 			  url : '/own/band/bandGroup/bandPass',
 					method : 'post',
