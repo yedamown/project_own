@@ -346,7 +346,7 @@
 					<div class="form-group mb-4">
 						<label for="dereporter">신고할 사람 *</label>
 						<input type="hidden" id="dereporter" name="dereporter" readonly />
-						<input type="hidden" id="reportUserId" name="reportUserId" readonly />
+						<input type="hidden" id="reporter" name="reporter" readonly />
 						<input type="text" class="form-control" id="reportUserNickname" readonly />
 					</div>
 					<div class="form-group mb-4">
@@ -617,7 +617,7 @@
 
 			//신고제출 버튼...
 			$('#btnreporting').on('click', function () {
-				data = {};
+				let formData = new FormData(document.frm);
 				$.ajax({
 					url: '/common/report',
 					method: 'post',
