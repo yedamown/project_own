@@ -61,5 +61,10 @@ public class CMemberListServiceImpl implements CMemberListService{
 		return memlist.getChallMemNum(challNo);
 	}
 
+	@Override
+	public int applyCheck(CMemberListVO vo) {
+		return memlist.applyCheck(vo);
+	}
+
 
 }

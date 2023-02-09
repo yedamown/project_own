@@ -25,7 +25,7 @@
 	<!-- google chart -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	<meta charset="utf-8">
-	<title>OWN _ 도전 _ 마이페이지</title>
+	<title>오늘의 운동 _ OWN 마이페이지</title>
 </head>
 
 <div layout:fragment="content">
@@ -121,7 +121,6 @@
 					<!-- 정보수정란 -->
 					<div class="row" style="display: flex; justify-content: center">
 						<div class="bg-light rounded">
-
 							<div class="contact-form p-5" style="width: 650px;">
 								<div id="success"></div>
 								<input id="userId" type="hidden" name="challLeader"
@@ -131,7 +130,7 @@
 									<p></p>
 								</div>
 								<div class="control-group">
-									계좌번호 * <input class="form-control" id="memACC" th:value="${memInfo.memAcc}">
+									계좌번호 * <input class="form-control" id="memAcc" th:value="${memInfo.memAcc}">
 									<p></p>
 								</div>
 								<div class="control-group">
@@ -146,8 +145,7 @@
 										<input type="hidden" th:value="${memInfo.memNo}" id="memNo" name="memNo">
 										<label for="inputFile">프로필 사진: <input type="file"
 												name="uploadfile"></input></label>
-										<button type="submit" class="btn btn-primary py-2 px-4"
-											id="updBtn">수정하기</button>
+										<button type="submit" class="btn btn-primary py-2 px-4" id="updBtn">수정하기</button>
 									</form>
 								</div>
 							</div>
@@ -158,20 +156,28 @@
 			</div>
 		</div>
 
-
-
-
 		<!-- Contact End -->
 
 		<!-- Back to Top -->
 		<a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 		<script>
+			//토큰있어야 post가능~!
+			/*<![CDATA[*/
+			var header = '[[${_csrf.headerName}]]';
+			var token = '[[${_csrf.token}]]';
+			console.log(header);
+			console.log(token);
+			/*]]>*/
+			//
+
 			//아작스로 데이터수정해서다시 화면에뿌려주깅
 			$('#updBtn').on("click", function () {
 				let nick = $("#memNick").val();
 				let intro = $("#memIntro").val();
-				let userId = $("#userId").val()
+				let userId = $("#userId").val();
+				let memAcc = $("#memAcc").val();
+				console.log($("form"));
 				console.log(nick, intro, userId);
 				$.ajax({
 					url: '/own/chall/myprofileUpdate',
@@ -179,13 +185,23 @@
 					data: JSON.stringify({
 						userId: userId,
 						memNickname: nick,
-						memIntro: intro
+						memIntro: intro,
+						memAcc: memAcc
 					}),
-					contentType: "application/json"
-				}).then(res => {
-					console.log(res)
+					contentType: "application/json",
+					beforeSend: function(xhr){
+					xhr.setRequestHeader(header,token);
+					},
+					success: function(res){
+						console.log(res);
+						$("form").submit();
+					},
+					error: function(err){
+						console.log(err);
+						alert("오류 발생. 다시 시도해주세요.");	
+					}
 				})
-			})
+			});
 		</script>
 	</body>
 </div>

@@ -31,7 +31,8 @@
 	<update id="updateCMem" parameterType="co.prjt.own.chall.service.CMemberVO">
 		UPDATE CHALL_MEMBER
 		SET MEM_NICKNAME =  #{memNickname},
-    		MEM_INTRO = #{memIntro}
+    		MEM_INTRO = #{memIntro},
+    		MEM_ACC = #{memAcc}
 		WHERE USER_ID = #{userId}
 	</update>
 	

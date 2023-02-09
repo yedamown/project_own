@@ -43,6 +43,13 @@
 		AND MEM_STATUS = #{memStatus}
 	</select>
 	
+	<select id="applyCheck" resultType="int">
+		SELECT count(*) 
+		FROM CHALL_MEM_LIST
+		WHERE CHALL_NO = #{challNo}
+		AND USER_ID = #{userId}
+	</select>
+	
 	<update id="updateMemList">
 		UPDATE CHALL_MEM_LIST
 		SET MEM_STATUS = #{memStatus}
