@@ -431,11 +431,11 @@
 			if(rfPrice < 1000){
 				alert("1000원 이상 출금 가능합니다.");
 			}
-			if(Number(myAmt) < rfPrice){
+			if(Number(myAmt) < Number(rfPrice)){
 				alert("보유 예치금을 초과하여 출금할 수 없습니다.")
 			}
 			//둘다 해당될 경우 아작스 - 출금아작스
-			if( rfPrice> 1000 && Number(myAmt) > rfPrice){
+			if( rfPrice> 1000 && Number(myAmt) > Number(rfPrice)){
 				console.log(userId);
 				console.log("출금가능");
 				if(!confirm("출금계좌를 다시한번 확인해주세요. 출금하시겠습니까?")){
