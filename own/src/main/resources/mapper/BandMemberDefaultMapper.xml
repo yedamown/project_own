@@ -26,7 +26,7 @@
 				BAND_BIRTH -->
 		 FROM BAND_MEMBER_DEFAULT A, MULTIMEDIA C
 		 WHERE USER_ID = #{userId}
-		 AND 'BandDef_'||A.USER_ID = C.IDENTIFY_ID
+		 AND C.IDENTIFY_ID = 'BandDef_'||#{userId}
 	</select> 
 	<!-- 가치 디폴트 업데이트 -->
 	<update id="updateMemberDf">
