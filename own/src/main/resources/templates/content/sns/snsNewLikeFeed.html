@@ -250,6 +250,15 @@ body {
             font-size: 25px;
             font-weight: 600;
         }
+        #schoolList{
+            z-index: 1;
+            position: absolute;
+            margin-left: 20px;
+            background-color: white;
+            width: 265px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
 
     </style>
 </head>
@@ -335,7 +344,7 @@ body {
         <div class="col-lg-10 col-md-9 col-12 body_block align-content-center" style="background-color: white; padding-top:150px;">
             <hr>
             <div class="topContentBox" style="position: relative; background-color: #f8f9fa;">
-                <span id="snsNewList">최신게시글 | </span><span id="snsLikeList">좋아요</span>
+                <span id="snsNewList">최신게시글 | </span><span id="snsLikeList" value="false">좋아요</span>
             </div>
             
            
@@ -434,9 +443,6 @@ body {
                                     galleryDiv = gallery.append(galleryItem)
                                             
                                 }
-
-
-
                             $('.ajaxNewList').append(galleryDiv);                  
                         },
                         error : function(err){
