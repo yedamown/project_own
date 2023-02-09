@@ -202,7 +202,7 @@ content="width=device-width, initial-scale=1, shrink-to-fit=no">
 					<!--================이미지 Area 끝 =================-->
 							<input type="file" id="attachFile" multiple="multiple"
 								name="attachFile" style="display: none" onchange="imgFnc()"
-								accept="image/gif, image/jpeg, image/png">
+								accept="image/jpeg, image/png">
 							<div style="margin: 70px 15px 0px 0px;">	
 								<button type="button" id="submitBtn" class="genric-btn primary circle arrow"
 									style="font-size: 20px; float: right;">수정</button>
@@ -283,7 +283,7 @@ content="width=device-width, initial-scale=1, shrink-to-fit=no">
 				//파일
 				let imgFile = $('#attachFile').val();
 				//확장자제한
-				let fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+				let fileForm = /(.*?)\.(jpg|jpeg|png|JPG|JPEG|PNG)$/;
 				//50mb로 제한
 				let maxSize = 100 * 1024 * 1024;
 				//특수문자 제한

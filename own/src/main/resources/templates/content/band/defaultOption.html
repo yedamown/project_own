@@ -173,7 +173,7 @@
 									<!--================ 셀렉트박스  =================-->
 										<div class="col-md-5" style="padding-right: 0px;">
 											<div class="">
-											<label for="exe" style="line-height: 48px;"> 운동 </label>
+											<label for="exe" style="line-height: 48px;float: left;"> 운동 </label>
 												<select class="exercise" id="exe" style="width: 155px; height: 50px;"
 													th:value="*{exercise}" name="bandInterest" slot="">
 													<option value="">전체</option>
@@ -184,7 +184,7 @@
 										</div>
 										<div class="col-md-5" style="padding-right: 0px;">
 											<div class="">
-											<label for="lo" style="line-height: 48px;"> 지역 </label>
+											<label for="lo" style="line-height: 48px;float: left;"> 지역 </label>
 												<select class="location" id="lo" style="width: 155px; height: 50px;"
 													th:value="*{location}" name="bandLocation">
 													<option value="">전체</option>
@@ -195,7 +195,7 @@
 										</div>
 									<!--================ 셀렉트박스  =================-->
 								</div>
-								<input type="file" id="deImg" multiple="multiple" name="deImg" style="display: none" onchange="imgFnc()" accept="image/gif, image/jpeg, image/png">
+								<input type="file" id="deImg" multiple="multiple" name="deImg" style="display: none" onchange="imgFnc()" accept="image/jpeg, image/png">
 								<button type="submit" id="submitBtn" class="genric-btn primary circle arrow"
 									style="font-size: 20px; margin-top: 80px; width: 500px; padding-left: 230px;">생성</button>
 							</form>	
@@ -265,7 +265,7 @@
             	//파일
             	let imgFile = $('#deImg').val();
             	//확장자제한
-            	let fileForm = /(.*?)\.(jpg|jpeg|png)$/;
+            	let fileForm = /(.*?)\.(jpg|jpeg|png|PNG|JPEG|JPG)$/;
             	//50mb로 제한
             	let maxSize = 100 * 1024 * 1024;
             	//특수문자 제한

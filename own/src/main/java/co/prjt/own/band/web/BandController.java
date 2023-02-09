@@ -231,13 +231,15 @@ public class BandController {
 		// 밴드키워드 자르기
 		ArrayList<String> keyword = new ArrayList<String>();
 		if (band.get("bandKeyword") != null) {
+			System.out.println(band.get("bandKeyword"));
 			StringTokenizer st = new StringTokenizer((String) band.get("bandKeyword"), "#");
 			// 처음은 공백이 나와서.. 하나 버리고 감
-			st.nextToken();
+			//st.nextToken();
 			while (st.hasMoreTokens()) {
 				keyword.add("#" + st.nextToken());
 			}
 			model.addAttribute("keyword", keyword);
+			System.out.println(keyword.toString());
 		} else {
 			band.put("bandKeyword", "");
 		}

@@ -188,8 +188,8 @@
 	                          </li>											
 						</ul>
 						<div style="display: flex; flex-direction: row; justify-content: flex-start;;">
-							<div style="text-align: center;"><button type="button" id="boardSaveBtn" class="button_hover2">순서 저장</button></div>
-							<div style="text-align: center;"><button type="button" id="boardSaveReset" class="button_hover2">순서 초기화</button></div>
+							<div style="text-align: center;"><button type="button" id="boardSaveBtn" class="button_hover2">게시판목록 저장</button></div>
+							<div style="text-align: center;"><button type="button" id="boardSaveReset" class="button_hover2">게시판순서 초기화</button></div>
 						</div>	
 					</div>
 				</div>
@@ -527,7 +527,10 @@ var token = /*[[${_csrf.token}]]*/
 					bandContentOption = null;
 				}
 				//개행치환
-				bandContentOption = bandContentOption.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+				console.log('??'+bandContentOption)
+				if(bandContentOption!=null){
+					bandContentOption = bandContentOption.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+				}
 				let bandBoardAuth   = $('#bandBoardAuth').val();
 					//aaa#bbb#ccc#이 형태로 저장해줘야하니...첫#자르고 마지막#붙이기..앞에 있다면 떼주기
 				let bandBoardRemarks  = $('#saveRemark').val();
@@ -568,6 +571,7 @@ var token = /*[[${_csrf.token}]]*/
 					tab = `<li class="boards ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><b class="clickBoard boardLine" name=${bandBoardOptionNo}  id=${bandBoardName}>${bandBoardName}</b></li>`
 				}
 				$('.clickBoard').parent().replaceWith(tab)
+				alert('수정되었습니다.')
 			})
 		})
 		
@@ -575,6 +579,16 @@ var token = /*[[${_csrf.token}]]*/
 		$('#minn').on('click', function(){
 			let bandBoardOptionNo = $('.clickBoard').attr('name');
 			let bandNo = $('#bandNo').val();
+			
+			//게시판이 1개면 삭제불가
+			if($(".boards").length==1){
+				alert('게시판과 라인의 총 합개가 1개면 삭제가 불가능합니다.');
+				return false;
+			}
+			//미클릭시
+			if($('.clickBoard').attr('id')==='undefined'){
+				return false;
+			}
 			if(confirm("<"+$('.clickBoard').attr('id')+">가 삭제됩니다. 게시판인 경우 글도 함께 삭제되며 복구하실 수 없습니다.")){
 				$.ajax({
 					url : "/own/band/bandGroup/bandOption9/"+bandBoardOptionNo+"/"+bandNo,
@@ -587,7 +601,7 @@ var token = /*[[${_csrf.token}]]*/
 					console.log(res);
 					//삭제성공
 					if(res!=null){
-						boardListSave = res;
+						res = boardListSave;
 						alert('삭제성공');
 						//삭제한거 빼기
 						console.log(boardListSave+"헌거");
@@ -612,6 +626,10 @@ var token = /*[[${_csrf.token}]]*/
 		//게시판 생성
 		$('#pluu').on('click', function(){
 			let bandNo = $('#bandNo').val();
+			if($(".boards").length==20){
+				alert('게시판과 라인의 총 합개가 20개까지만 생성이 가능합니다.');
+				return false;
+			}
 			$.ajax({
 				url : "/own/band/bandGroup/bandOption9/insert/"+bandNo,
 				method : "delete",
@@ -641,6 +659,10 @@ var token = /*[[${_csrf.token}]]*/
 		//구분선 생성
 		$('#linn').on('click', function(){
 			let bandNo = $('#bandNo').val();
+			if($(".boards").length==20){
+				alert('게시판과 라인의 총 합개가 20개까지만 생성이 가능합니다.');
+				return false;
+			}
 			$.ajax({
 				url : "/own/band/bandGroup/bandOption9/insertLine/"+bandNo,
 				method : "delete",

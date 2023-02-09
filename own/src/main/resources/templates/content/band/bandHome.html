@@ -729,6 +729,7 @@
 	        	                          if(data>0){
 	        	                        	  alert('탈퇴가 완료되었습니다.')
 	        	                        	  $(e.target).closest("tr").remove();
+	        	                        	  page1();
 	        	                          }
 	        	                        },
 	        	                        error : function(e) {
@@ -750,6 +751,7 @@
 		        	                          if(data>0){
 		        	                        	  alert('신청이 철회되었습니다.')
 		        	                        	  $(e.target).closest("tr").remove();
+		        	                        	  page3();
 		        	                          }
 		        	                        },
 		        	                        error : function(e) {

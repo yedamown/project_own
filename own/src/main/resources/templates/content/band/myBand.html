@@ -31,6 +31,7 @@
 			    height: 270px;
 			    object-fit: cover;
 			}
+			
 			/* 밴드프로필 */
         </style>
     </head>
@@ -81,7 +82,7 @@
 	                           <div class="accomodation_item text-center">
 	                               <div class="hotel_img"style="height: 230px;">
 	                               	<a th:href="|/own/band/bandGroup?bandNo=${band.bandNo}|" class="bandBoxImg">
-	                                   	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="" class="bandProfileImg">
+	                                   	<img th:src="|/imgView/${band.bandMainImg.mediaServerFile}|" alt="" class="bandProfile">
 	                                   </a>
 	                               </div>
 	                           </div>
