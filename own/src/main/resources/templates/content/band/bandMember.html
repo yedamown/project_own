@@ -453,8 +453,8 @@
 											</div>`;
 							}
 							// 밴드장 표시
-							if (result[i].userId == loginUserId) {
-								nicknameTag = `<td class="responsive-table__body__text" colspan="3">${result[i].bandNickname}<i class="fa fa-solid fa-crown" style="margin-right: 5px;" aria-hidden="true"></i></td>`;
+							if (result[i].bandLeaderId == loginUserId) {
+								nicknameTag = `<td class="responsive-table__body__text" colspan="3">${result[i].bandNickname}<i class="fa fa-solid fa-crown" style="margin-right: 5px; color: #f8b600;" aria-hidden="true" ></i></td>`;
 							} else {
 								nicknameTag = `<td class="responsive-table__body__text" colspan="3">${result[i].bandNickname}</td>`;
 							}
