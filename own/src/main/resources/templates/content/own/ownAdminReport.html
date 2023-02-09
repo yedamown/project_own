@@ -262,8 +262,8 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 
 	<script th:inline="javascript">
 		    /*<![CDATA[*/
-			var header = '[[${_csrf.headerName}]]';
-    		 var token = '[[${_csrf.token}]]';
+			var header = [[${_csrf.headerName}]];
+    		 var token = [[${_csrf.token}]];
     	   console.log(header);
     	   console.log(token);
     		/*]]>*/
@@ -289,7 +289,8 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 				xhr.setRequestHeader(header, token);
 				},		
 				}).then(res=>{			
-					console.log(res);
+					alert('처리 완료!');
+					location.href="/own/admin/userList";
 				})	
 		})
 

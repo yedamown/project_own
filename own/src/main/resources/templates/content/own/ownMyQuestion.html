@@ -286,8 +286,10 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 				xhr.setRequestHeader(header, token);
 				},		
 				}).then(res=>{			
-					console.log(res);
 					alert('질문삭제완료')
+					$('input[name="questNo"]').remove();
+	            	bg.remove();
+	            	modal.style.display = 'none'
 					location.replace('http://localhost/own/mypage');
 				})
 				}
@@ -363,7 +365,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
                 $('#modalcontent').html(res.content);	                
                 $('#modalanswer').html(res.answer);
                 console.log(res.status);
-                if(res.status=='미처리'){
+                if(res.status=='처리중'){
                 	let tag = `<button class="btn btn-outline-primary m-1 "type="button" id="qCancel">취소</button>`
                 $('#modalform').append(tag);
                 }

@@ -46,9 +46,11 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests
 //				.antMatchers("/","/own/home","/css/**","/login","/own/sendmail").permitAll() // 홈은 모든사람 접근가능
-//				.antMatchers("/admin").hasRole("ADMIN") // 특정권한만 가진사람만
+				.antMatchers("/","/own/login").permitAll() // 특정권한만 가진사람만
+				.antMatchers("/own/admin/**").hasRole("ADMIN") // 특정권한만 가진사람만
+				.antMatchers("/own/**").hasAnyRole("ADMIN","USER") // 특정권한만 가진사람만
 //				.anyRequest().authenticated() //이외에는 허가된사람만..
-				.anyRequest().permitAll()
+//				.anyRequest().permitAll()
 			);
 		
 		http.formLogin()

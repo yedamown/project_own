@@ -29,6 +29,7 @@ import co.prjt.own.exercise.mapper.ExerRecordMapper;
 import co.prjt.own.ownhome.service.OwnUserVO;
 import co.prjt.own.ownhome.service.OwnhomeService;
 import co.prjt.own.ownhome.service.QuestionVO;
+import co.prjt.own.security.ForbiddenException;
 import co.prjt.own.sns.service.SAccountService;
 import co.prjt.own.sns.service.SAccountVO;
 
@@ -284,9 +285,10 @@ public class OwnhomeController {
 		
 		//답변 업데이트
 		@PostMapping("/questionUpdate")
+		@ResponseBody
 		public String questionUpdate(QuestionVO vo) {
 			ownService.questionUpdate(vo);
-			return "redirect:/own/admin/question";
+			return "1";
 		}
 		
 		//답변 업데이트
@@ -418,5 +420,15 @@ public class OwnhomeController {
 			System.out.println("===========RNO========"+rno);
 			return ownService.selectReport(rno);
 		}
+		//에러관련
+		@GetMapping("/internalerror")
+	    public void internalerror() {
+	        throw new RuntimeException("500 Internal Error !!");
+	    }
+		
+		@GetMapping("/forbidden")
+	    public void forbidden() {
+	        throw new ForbiddenException("403 Forbidden !!");
+	    }
 	
 }
