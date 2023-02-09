@@ -60,7 +60,7 @@
   <div id="template" style="background-color: #eeeeee;">
 		<form class="wrap" id="frm" name="frm" style="padding: 10px; border: 2px solid white; background-color:#d3d3d3; height:480px;">
 			<input type="hidden" th:value="${bandCalendarNo}" id="${bandCalendarNo}" name="bandCalendarNo">
-			<input type="hidden" th:value="${bandNo}" id="${bandNo}">
+			<input type="hidden" th:value="${bandNo}" id="bandNo">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 			<div ></div>
 			<select class="nice-select" th:value="*{boardList}" id="bandBoardOptionNo" name="bandBoardOptionNo"  required>
@@ -159,6 +159,7 @@
 			if(res.bandBoardDetailNo!=null){//childBoardValue
 				alert('글쓰기 성공');
 				window.opener.document.getElementById( "childBoardValue" ).value = res.bandBoardDetailNo;
+				opener.parent.location='/own/band/redirection?bandBoardDetailNo='+res.bandBoardDetailNo+'&bandNo='+$('#bandNo').val(); 
 				//$("#childBoardValue", opener.document).val(res.bandBoardDetailNo);
 				window.close();
 			} else {
