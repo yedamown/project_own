@@ -7,6 +7,17 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta content="Free HTML Templates" name="keywords" />
+<!-- jquery datepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" 
+integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" 
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" 
+integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" 
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" 
+integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" 
+crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <!-- Favicon -->
 <link href="/css/chall/img/favicon.ico" rel="icon" />
 <!-- Google Web Fonts -->
@@ -123,8 +134,8 @@ $(function(){
                   <p class="help-block text-danger"></p>
                </div>
                <div class="form-group">
-                <label for="challStartdate">도전 시작일 *</label>
-                <input type="date" class="form-control col-lg-5" id="challStartdate" name="challStartdate" />
+                <label for="challStartdate">도전 시작일 *  <span><small>내일부터 시작가능</small></span></label>
+                <input class="form-control col-lg-5 datepicker" id="challStartdate" name="challStartdate" />
                   <p class="help-block text-danger"></p>
                </div>
                <div class="form-group">
@@ -184,6 +195,23 @@ $(function(){
     <!-- 입력폼 끝 -->
 		
 <script>
+        $.datepicker.setDefaults({
+          dateFormat: 'yy-mm-dd',
+          prevText: '이전 달',
+          nextText: '다음 달',
+          monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+          monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+          dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+          dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+          dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+          showMonthAfterYear: true,
+          yearSuffix: '년'
+        });
+
+      $(function(){
+        $('.datepicker').datepicker({ minDate: 1});
+      })
+
 		//첨부파일 이미지 
       	/* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
         imageView = function imageView(att_zone, btn){
@@ -196,10 +224,10 @@ $(function(){
             var div_style = 'display:inline-block;position:relative;'
                         + 'width:550px;height:auto;margin:5px;z-index:1';
             // 미리보기 이미지 속성
-            var img_style = 'width:100%;height:100%;z-index:none';
+            var img_style = 'width:550px;height:100%;z-index:none';
             // 이미지안에 표시되는 체크박스의 속성
-            var chk_style = 'width:30px;height:30px;position:absolute;font-size:24px;'
-                        + 'right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:#f00';
+            var chk_style = 'width: 30px;height: 30px;position: absolute;font-size: 18px;'
+                        + 'right: 0px;bottom: 0px;z-index: 999;background-color: lightgray;color: white;border: none;opacity: 0.9;cursor: pointer;';
         
             btnAtt.onchange = function(e){
             var files = e.target.files;

@@ -67,16 +67,16 @@
 						<!--대표사진 및 설명 + 신청 -->
 							<div style="width: 700px; display: flex; justify-content: center;">
 								<img th:src="|/imgView/${challImg[0].mediaServerFile}|" class="img-fluid rounded mb-4"
-								 style="width: 650px;object-fit: cover;" alt="대표사진" />
+								 style="width: 650px; height: 430px;object-fit: cover;" alt="대표사진" />
 							</div>
 							<div class="row pt-2 pb-4" style="justify-content: center;">
 								<div class="col-4 col-md-12" style="display: flex; justify-content: center;">
 									<div style="width: 400px;display: inline-block;">
 										<ul class="list-inline m-0">
 											<li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>
-												시작날짜: <span th:text="${detailChall.challStartdate}"></span></li>
+												시작날짜: <span th:text="${#dates.format(detailChall.challStartdate, 'M/d')}"></span>시작</li>
 											<li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>
-												시작날짜: <span th:text="${detailChall.challStartdate}"></span></li>
+												도전기간: <span th:text="${detailChall.challDuration}"></span>주 동안</li>
 											<li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>
 												도전빈도: 주 <span th:text="${detailChall.challDuration}"></span> 회</li>
 											<li class="py-2 "><i class="fa fa-check text-primary mr-3"></i>
@@ -297,7 +297,6 @@
 							<h4 class="mr-3" style="padding: 3px; float: right; " id="userRpt">
 								<!-- 세 번째 Modal을 여는 클래스 -->
 								<i class="modalBtn fas fa-bullhorn text-primary"></i>
-								<span>신고</span>
 							</h4>
 						</div>
 						<img src="" style="width:500px ;height: 400px; margin: auto; object-fit: cover"/>
@@ -569,8 +568,8 @@
 			xhr.setRequestHeader(header,token);
 			},
 			success:function(res){
-				console.log(res);
 				alert("신고 완료");
+				console.log(res);
 				let cutChallNo  = challNo.substr(4);
 				//신고완료 시 새로고침.
 				location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
@@ -637,9 +636,13 @@
 				success: function(res){
 					console.log(res);
 					if(res == 1){
-						alert("삭제완료. 도전 홈으로 이동합니다.");
+						if(!confirm("도전을 삭제하시겠습니까?")){
+							alert("도전삭제를 취소하였습니다.");
+					} else{
+						alert("도전 삭제. 도전 홈으로 이동합니다.");
 						location.href = '/own/chall/home';
 					}
+				}
 				},
 				error: function(err){
 					consol.log(err);
@@ -1043,10 +1046,10 @@
 					console.log(result);
 	              if(result > 0){
 	                console.log('신고 처리완.');
-	                alert('신고가 완료되었습니다.');
+	                alert("신고가 완료되었습니다.");
 	                location.href = '/own/chall/detailChall?challNo=' + cutChallNo
 	              } else {
-	                alert('오류가 발생하였습니다. 다시 시도해주세요.');
+	                alert("오류가 발생하였습니다. 다시 시도해주세요.");
 	              } 
 	            },
 	            error: function(err){
@@ -1366,11 +1369,12 @@
             var div_style = 'display:inline-block;position:relative;'
                         + 'width:500px;height:auto;margin:5px;z-index:1';
             // 미리보기 이미지 속성
-            var img_style = 'width:100%;height:100%;z-index:none';
+            var img_style = 'width:550px;height:100%;z-index:none';
             // 이미지안에 표시되는 체크박스의 속성
-            var chk_style = 'width:40px;height:40px;position:absolute;font-size:30px;'
-                        + 'right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:blue';
+            var chk_style = 'width: 30px;height: 30px;position: absolute;font-size: 18px;'
+                        + 'right: 0px;bottom: 0px;z-index: 999;background-color: lightgray;color: white;border: none;opacity: 0.9;cursor: pointer;';
         
+						
             btnAtt.onchange = function(e){
             var files = e.target.files;
             var fileArr = Array.prototype.slice.call(files)
