@@ -282,7 +282,7 @@ public class ChallController {
 		return "content/chall/detailChall";
 	}
 
-	// 도전 신청페이지로 이동
+	// 도전 신청페이지로 이동gkqslek
 	@GetMapping("/applyForm") // 등록 폼으로 이동
 	public String applyFormChall(CMemberVO mem, ChallengeVO vo, Model model) {
 		System.out.println("도전 정보 가져왔나요" + vo);
