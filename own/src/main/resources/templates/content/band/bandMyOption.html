@@ -6,10 +6,7 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-        <title>Royal Hotel</title>
         <!--어썸폰트 무료?-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
       <style>
       	.bor{
         	border: 1.5px solid #d3d3d3;;
@@ -17,23 +14,18 @@
       	.bandBox {
 		    width: 150px;
 		    height: 150px; 
-		    border-radius: 30%;
+		    border-radius: 10%;
 		    overflow: hidden;
 		    border: 3px solid white;
 		    text-align: center;
 		}
-		/* .bandBox > img {
-		  position: relative;
-		  left: 100%;
-		  margin-left: -200%;
-		} */
-		img {
+		.imgs {
 			border-radius: 10px;
 			margin: auto;
 			width: 100%;
 			height: 100%
 		}
-		img:hover{
+		.imgs:hover{
 			border:#BFBFBF 2px solid;
 			cursor:pointer;
 		}
@@ -82,7 +74,7 @@
 							            <div>
 							                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
 						                		<div style="flex-grow: 1; position: relative;"class="bandBox">
-						                			<img th:if="${member.detailImg}" th:src="|/imgView/${member.detailImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1;">
+						                			<img th:if="${member.detailImg}" th:src="|/imgView/${member.detailImg.mediaServerFile}|" id="inputImage" name="inputImage" class="imgs" alt="" style="flex-grow: 1;">
 						                			<p><i class="fa-regular fa-images fa-2x" style="border-radius:20px; position: absolute; bottom:10px; left: 100px;"></i></p>
 						                		</div>
 						                		<!--================ 이름 =================-->

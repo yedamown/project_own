@@ -24,6 +24,7 @@
 			            AND W.BAND_BOARD_DETAIL_NO = #{categoryNo}
 			        ) B
 			  WHERE CATEGORY_NO = #{categoryNo}
+			  AND A.USER_ID = B.USER_ID
 			  ORDER BY TO_NUMBER(SUBSTR(REPLY_NO, 7))
 	</select>
 	
@@ -48,6 +49,7 @@
             AND U.BAND_BOARD_OPTION_NO = W.BAND_BOARD_OPTION_NO
             AND U.BAND_NO = S.BAND_NO
             AND W.BAND_BOARD_DETAIL_NO = Z.CATEGORY_NO
+            AND Z.USER_ID = S.USER_ID
             AND Z.REPLY_NO = #{value}
         ) B
   WHERE A.REPLY_NO = #{value}

@@ -1,33 +1,24 @@
 <html xmlns:th="http://www.thymeleaf.org"lang="ko">
     <head>
-    	<!-- jquery -->
-    	<script type="text/javascript" src="/css/band/js/jquery-3.2.1.js"></script>
-        <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="/css/band/image/favicon.png" type="image/png">
-        <title>Royal Hotel</title>
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="/css/band/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/band/vendors/linericon/style.css">
-        <link rel="stylesheet" href="/css/band/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" href="/css/band/vendors/nice-select/css/nice-select.css">
-        <link rel="stylesheet" href="/css/band/vendors/owl-carousel/owl.carousel.min.css">
-        <!-- main css -->
-        <link rel="stylesheet" href="/css/band/css/style.css">
-        <link rel="stylesheet" href="/css/band/css/responsive.css">
-        <!--어썸폰트 무료?-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
       <style>
-      	
-		img {
-			border-radius: 10px;
+		.imgs {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
 		}
-		img:hover{
+		.bBox:hover{
 			border:#BFBFBF 2px solid;
 			cursor:pointer;
+		}
+		.bBox {
+			width: 150px;
+			height: 150px;
+			border-radius: 10%;
+			overflow: hidden;
 		}
 		.aaimg {
 			padding: 5px;
@@ -50,7 +41,7 @@
             transform: rotate(-1deg);
           }
         }
-        .malp {
+ /*        .malp {
           background: #f3f3f3;
           border: 1px solid #d8d8d8;
           text-align: center;
@@ -60,10 +51,10 @@
           padding: 2px 8px;
           cursor: pointer;
           margin-left: 10px;
-        }
+        } */
 
         /* 말풍선 적절한 top 과 margin-left 로 위치조정 */
-        .arrow_box {
+     /*    .arrow_box {
           display: none;
           position: absolute;
           width: 300px;
@@ -80,7 +71,7 @@
 
         .malp:hover + p.arrow_box {
           display: block;
-        }
+        } */
       </style>
     </head>
     <body>
@@ -108,8 +99,8 @@
 									</div>
 						            <div>
 						                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
-					                		<div style="flex-grow: 1; width: 150x; height: 150px;">
-					                			<img th:src="|/imgView/${member.detailImg.mediaServerFile}|" id="inputImage" alt="" style="flex-grow: 1; width: 150x; height: 150px;">
+					                		<div style="flex-grow: 1;" class="bBox">
+					                			<img th:src="|/imgView/${member.detailImg.mediaServerFile}|" id="inputImage" alt="" style="flex-grow: 1; border: none;">
 					                		</div>
 					                		<!--================ 이름 =================-->
 							                <div style="display: inline-block; width: 70%; padding:10px 0px 0px 50px;flex-grow: 3; display: flex; flex-direction: column;">

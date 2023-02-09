@@ -5,8 +5,9 @@
 
 <!-- 해당밴드 디테일 불러오기 -->
 <select id="bandManageHome" resultType="co.prjt.own.band.service.BandMemberDetailVO">
-select * from band_member_detail
-where band_no = #{bandNo}
+SELECT * FROM BAND_MEMBER_DETAIL
+WHERE BAND_NO = #{bandNo}
+AND BAND_MEMBER_STATUS='BA02'
 </select>
 
 <!-- 해당밴드 가입자수 불러오기 -->
@@ -168,7 +169,7 @@ UPDATE BAND SET BAND_NAME = #{bandName},
 			OR BAND_NICKNAME LIKE '%' || #{userId} || '%'
 		 </if>
 							AND BAND_NO = #{bandNo}
-							ORDER BY BAND_KICK_DATE 
+							ORDER BY BAND_KICK_DATE DESC
 	
 				) AN WHERE ROWNUM <![CDATA[ <= #{last}) 
 	WHERE RN>= #{first} ]]>

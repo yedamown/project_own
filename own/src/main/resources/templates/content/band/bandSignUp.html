@@ -10,7 +10,7 @@
       	.bandBox {
 		    width: 150px;
 		    height: 150px; 
-		    border-radius: 30%;
+		    border-radius: 10%;
 		    overflow: hidden;
 		    border: 3px solid white;
 		    text-align: center;
@@ -99,7 +99,6 @@
             </div>    
 			<div style="flex-grow:3; width: 740px">
 				<article style="border: 1px solid #eeeeee;padding:40px 0px 40px 0px; background-color: eeeeee;border: 1px solid eeeeee;">
-					<div th:if="${band.bandOpenOption=='BC02'} or ${band.bandOpenOption=='BC01'}">
 					<div th:if="${band.bandAgeOption=='BD02'}
 					 or (${band.bandAgeOption=='BD01'}
 					  and ${not #strings.isEmpty(band.bandAgeBeforoption)}
@@ -127,7 +126,7 @@
 								            <div>
 								                <div  style="flex-grow: 3; display: flex; justify-content:space-between; "class="imgss">
 							                		<div style="flex-grow: 1; position: relative;"class="bandBox">
-							                			<img th:if="${user.defaultImg}" th:src="|/imgView/${user.defaultImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1; width: 150x; height: 150px;">
+							                			<img th:if="${user.defaultImg}" th:src="|/imgView/${user.defaultImg.mediaServerFile}|" id="inputImage" name="inputImage" alt="" style="flex-grow: 1;">
 							                			<p><i class="fa-regular fa-images fa-2x" style="border-radius:20px; position: absolute; bottom:10px; left: 100px;"></i></p>
 							                		</div>
 							                		<!--================ 이름 =================-->
@@ -205,9 +204,6 @@
 					  ${band.bandAgeAfteroption.before(user.bandBirth)}">
 						<h3>연령제한에 맞지 않습니다.</h3>
 					</div>
-					</div>
-					<div class="container3"  th:if="${band.bandOpenOption=='BC02'}">
-						<h3>비공개 밴드입니다.</h3>
 					</div>
 				</article>
 			</div>

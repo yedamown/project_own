@@ -64,7 +64,7 @@
 	}
 
 	.item-row {
-		margin-bottom: 20px;
+		margin-bottom: 5px;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -109,19 +109,16 @@
 		width: 250px;
 	}
 
-	.selectDiv1 {
+	.selectDiv {
 		display: flex;
-		flex-direction: row;
-		margin-left:67px
+		align-items: center;
+		justify-content: flex-end;
+		margin-bottom: 5px;
 	}
-	.selectDiv2 {
-		display: flex;
-		flex-direction: row;
-		margin-left:168.5px
+
+	.nice-select {
+		width: 137px;
 	}
-	.nice-select{
-			width: 137px;
-		}
 
 
 	/* 버튼 */
@@ -318,16 +315,20 @@
 
 	<div id="aBandMemberList" style="display: block">
 		<div class="item-row optionDiv">
-			<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="aSearchVal"
-				name="aSearchVal">
-			<span class="input-group-btn">
-				<button class="btn btn-default searchBtn" type="button" id="aSearchBtn">
-					<i class="lnr lnr-magnifier"></i>
-				</button>
-				<span class="hoverCursor"> 전체 멤버 수 </span> <span id="aMemberCnt"></span>
-				<input type="hidden" name="aPageNum" value="1">
+			<div class="item-row">
+				<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="aSearchVal"
+					name="aSearchVal">
+				<span class="input-group-btn">
+					<button class="btn btn-default searchBtn" type="button" id="aSearchBtn">
+						<i class="lnr lnr-magnifier"></i>
+					</button>
+			</div>
+			<div class="item-row" style="width: 173px;">
+				<span class="hoverCursor" style="margin-right: 5px;"> 전체 멤버 수 </span><span id="aMemberCnt"></span>
+			</div>
+			<input type="hidden" name="aPageNum" value="1">
 			</span>
-			<div class="selectDiv1">
+			<div class="selectDiv">
 				<select id="aSelectOption" name="aSelectOption">
 					<option value="signupDate" selected="selected">가입일자 순</option>
 					<option value="name">별명 순</option>
@@ -346,9 +347,9 @@
 			<thead class="responsive-table__head">
 				<tr class="responsive-table__row">
 					<th class="responsive-table__head__title"></th>
-					<th style="width: 70px;" class="responsive-table__head__title">별명(아이디)</th>
+					<th style="width: 40px;" class="responsive-table__head__title">별명(아이디)</th>
 					<th style="width: 70px;" class="responsive-table__head__title">최종 접속일</th>
-					<th style="width: 70px;" class="responsive-table__head__title">게시글 수</th>
+					<th style="width: 60px;" class="responsive-table__head__title">게시글 수</th>
 					<th style="width: 30px;" class="responsive-table__head__title">댓글 수</th>
 					<th style="width: 20px;" class="responsive-table__head__title">성별</th>
 					<th style="width: 20px;" class="responsive-table__head__title">연령</th>
@@ -407,25 +408,26 @@
 				<label for="intro">소개말</label>
 				<input type="text" class="form-control" name="intro" id="modal_intro" readonly>
 			</div>
-			<div class="modal_btn">
-				<span><i class="fa fa-regular fa-message-dots">1:1 채팅</i></span>
-				<span><i class="fa fa-regular fa-file">작성글 보기</i></span>
-			</div>
 		</div>
 	</div>
 	<!-- 모달구간 끝 -->
 
 	<div id="wBandMemberList" style="display: none">
 		<div class="item-row optionDiv">
-			<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="wMemberSearch">
-			<span class="input-group-btn">
-				<button class="btn btn-default searchBtn" type="button" id="wSearchBtn">
-					<i class="lnr lnr-magnifier"></i>
-				</button>
-				<span class=""> 승인 대기 멤버 수 </span> <span id="wMemberCnt"></span>
-				<input type="hidden" name="wPageNum" value="1">
+			<div class="item-row">
+				<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="wMemberSearch">
+				<span class="input-group-btn">
+					<button class="btn btn-default searchBtn" type="button" id="wSearchBtn">
+						<i class="lnr lnr-magnifier"></i>
+					</button>
+			</div>
+			<div class="item-row" style="width: 173px;">
+				<span class="hoverCursor" style="margin-right: 5px;"> 승인 대기 멤버 수 </span> <span id="wMemberCnt"></span>
+			</div>
+			<input type="hidden" name="wPageNum" value="1">
 			</span>
-			<div class="selectDiv2">
+			<div class="selectDiv">
+				<div style="width: 137px;"></div>
 				<select id="wPagingOption" name="wPagingOption">
 					<option value="10">10개씩 보기</option>
 					<option value="20">20개씩 보기</option>
@@ -480,15 +482,20 @@
 
 	<div id="kBandMemberList" style="display: none">
 		<div class="item-row optionDiv">
-			<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="kMemberSearch">
-			<span class="input-group-btn">
-				<button class="btn btn-default searchBtn" type="button" id="kSearchBtn">
-					<i class="lnr lnr-magnifier"></i>
-				</button>
-				<span class=""> 강제 탈퇴 멤버 수 </span> <span id="kMemberCnt"></span>
-				<input type="hidden" name="kPageNum" value="1">
+			<div class="item-row">
+				<input type="text" class="form-control searchInput" placeholder="아이디 또는 별명 검색" id="kMemberSearch">
+				<span class="input-group-btn">
+					<button class="btn btn-default searchBtn" type="button" id="kSearchBtn">
+						<i class="lnr lnr-magnifier"></i>
+					</button>
+			</div>
+			<div class="item-row" style="width: 173px;">
+				<span class="hoverCursor" style="margin-right: 5px;"> 강제 탈퇴 멤버 수 </span> <span id="kMemberCnt"></span>
+			</div>
+			<input type="hidden" name="kPageNum" value="1">
 			</span>
-			<div class="selectDiv2">
+			<div class="selectDiv">
+				<div style="width: 137px;"></div>
 				<select id="kPagingOption" name="kPagingOption">
 					<option value="10">10개씩 보기</option>
 					<option value="20">20개씩 보기</option>
@@ -633,9 +640,9 @@
 						// 밴드장 td 
 						let nickNameTd = ''
 						if (e.userId == loginUserId) {
-							nickNameTd = `<td class="responsive-table__body__text" >${e.bandNickname}(${e.userId})<i class="fa fa-solid fa-crown"></i></td>`;
+							nickNameTd = `<td class="responsive-table__body__text" style="width: 140px;" >${e.bandNickname}(${e.userId})<i class="fa fa-solid fa-crown" style="color:#f8b600;"></i></td>`;
 						} else {
-							nickNameTd = `<td class="responsive-table__body__text" >${e.bandNickname}(${e.userId})</td>`;
+							nickNameTd = `<td class="responsive-table__body__text" style="width: 140px;">${e.bandNickname}(${e.userId})</td>`;
 						}
 						// 성별 td
 						let genderTd = ''
@@ -761,7 +768,7 @@
 		};
 
 		// 가입한 멤버 리스트 - 강퇴 버튼
-		$('#akickBtn').on('click', function () {
+		$(document).on('click', '#akickBtn', function () {
 			const idArr = [];
 			const reasonArr = [];
 			const resignArr = [];
@@ -771,10 +778,15 @@
 			// 버튼 개수만큼 반복
 			for (let i = 0; i < checked.length; i++) {
 				// 속성중에 체크 된 항목이 있을 경우
+				
 				if (checked[i].checked == true) {
+					console.log("checked["+i+"]===="+checked[i].value)
+					console.log("aResignCheck["+i+"]===="+aResignCheck[i].value)
+					console.log("bandMemberKickReason["+i+"]===="+bandMemberKickReason[i].value)
 					idArr.push(checked[i].value);
 					reasonArr.push(bandMemberKickReason[i].value);
 					if (aResignCheck[i].checked == true) {
+						
 						resignArr.push('BL01');
 					} else {
 						resignArr.push('BL02');
@@ -783,8 +795,10 @@
 			}
 			for (let i = 0; i < idArr.length; i++) {
 				let dataArr = { bandNo: bandNo[0], userId: idArr[i], bandMemberStatus: 'BA03', bandMemberKickReason: reasonArr[i], bandKickStatus: resignArr[i] };
+				console.log("reasonArr===="+reasonArr)
+				console.log("resignArr===="+resignArr)
 				// 업데이트 돌리기 돌리기
-				$.ajax({
+				/* $.ajax({
 					url: '/own/band/bandGroup/updateBandMemberStatus',
 					method: 'POST',
 					data: JSON.stringify(dataArr),
@@ -793,10 +807,9 @@
 						xhr.setRequestHeader(header, token);
 					},
 					success: function (result) {
-						alert('강퇴가 완료되었습니다.');
 						allBandMemberList();
 					}
-				})
+				}) */
 			}
 		}); // end of 강퇴
 
@@ -958,7 +971,6 @@
 						xhr.setRequestHeader(header, token);
 					},
 					success: function (result) {
-						alert('가입승인이 완료되었습니다.');
 						waitingBandMemberList();
 					}
 				})
@@ -1069,7 +1081,6 @@
 						xhr.setRequestHeader(header, token);
 					},
 					success: function (result) {
-						alert('재가입 여부가 변경되었습니다.');
 						kickedBandMemberList();
 					}
 				})
@@ -1129,6 +1140,11 @@
 			})
 		} // end of counting함수
 
+		// 상단 메뉴
+		$('#menu-filters li').click(function () {
+			$('#menu-filters li').removeClass('active');
+			$(this).addClass('active');
+		})
 
 	}) // end of function
 	$(document).ready(function () {

@@ -54,10 +54,15 @@
 <body>
 <div class="importBody">
 <div style="margin-bottom:20px;">
-	<h3>가치 위임</h3>
-	<p>아이디 해킹이나 가치 매매 등 비정상적, 불법으로 위임된 가치는 위임이 취소되거나, OWN활동에 제재를 받으실 수 있습니다.</p>
-	<input type="hidden" th:value="${memList[0].bandNo}" id="bandNo">
-	<div class="nice-select" tabindex="0">
+<div class="mb-5 mb-lg-0">
+            <p class="section-title pr-5">
+              <span class="pr-2">주요 기능</span>
+            </p>
+            <h1 class="mb-4">가치 위임</h1>
+            <p>
+              아이디 해킹이나 가치 매매 등 비정상적, 불법으로 위임된 가치는 위임이 취소되거나, OWN활동에 제재를 받으실 수 있습니다
+            </p>
+            <div class="nice-select" tabindex="0">
 	<span class="current">선택</span>
 	<ul class="list">
 	<li data-value="======" class="option disabled">======</li>
@@ -66,16 +71,17 @@
 	</th:block>	
 	</ul>
 	</div>
+            <a class="btn btn-primary py-2 px-4 modalBtn" style="cursor: pointer; margin-left:15px;">위임하기</a>
+          </div>
 	
-<a class="modalBtn" style="cursor: pointer;">위임하기</a>
 <hr>
 </div>
 <div>
-<h3>밴드 비활성화</h3>
+<h1 class="mb-4">밴드 비활성화</h1>
 <p>폐쇄신청 이후 절차 안내<br>
 멤버가 탈퇴 후 가치를 폐쇄하시면 30일간의 보류기간을 거치며, 그 이후에는 가치의 모든 정보가 삭제됩니다.
 보류 기간 중에는 가치 폐쇄를 취소하실 수 있습니다.</p>
-<a class="modalBtn" style="cursor: pointer;">밴드 비활성화하기</a>
+<a class="modalBtn btn btn-primary py-2 px-4" style="cursor: pointer;">밴드 비활성화하기</a>
 	
 </div>
 </div>

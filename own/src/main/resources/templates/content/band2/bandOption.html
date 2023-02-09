@@ -7,6 +7,12 @@
                 width: 700px;
                 margin: 0 auto;
             }
+            
+            .container25{
+                padding: 10px;
+                width: 700px;
+                margin: 0 auto;
+            }
             legend{
                 color: #6ab0cd;
                 font-size: 15px;
@@ -185,6 +191,51 @@ margin-bottom: 0;}
 
   <div id="manageTemplate">
   
+  <div class="container25">
+  <div class="col-lg-8 mb-5" style="margin:0 auto;">
+            <div class="card border-0 bg-light shadow-sm pb-2">
+              <img class="card-img-top mb-2" th:src="|/imgView/${bandInfo.bandImg.mediaServerFile}" alt="">
+              <div class="card-body text-center">
+                <h4 class="card-title" th:text="${bandInfo.bandName}"></h4>                
+              </div>
+              <div class="card-footer bg-transparentpx-5" style="background-color:none;">
+                <div class="row border-bottom">
+                  <div class="col-6 py-1 text-right border-right">
+                    <strong>밴드이름</strong>
+                  </div>
+                  <div class="col-6 py-1" th:text="${bandInfo.bandName}"></div>
+                </div>
+                <div class="row border-bottom">
+                  <div class="col-6 py-1 text-right border-right">
+                    <strong>활동지역</strong>
+                  </div>
+                  <div class="col-6 py-1" th:text="${bandInfo.bandLocation}"></div>
+                </div>                
+                <div class="row border-bottom">
+                  <div class="col-6 py-1 text-right border-right">
+                    <strong>카테고리</strong>
+                  </div>
+                  <div class="col-6 py-1"  th:text="${bandInfo.bandCategory}"></div>
+                </div>
+                <div class="row">
+                  <div class="col-6 py-1 text-right border-right">
+                    <strong>가입인원</strong>
+                  </div>
+                  <div class="col-6 py-1"  th:text="${bandInfo.bandName}"></div>
+                </div>
+              </div>
+              <div class="card-body text-center">
+                <p class="card-text">
+                    <strong>키워드</strong>
+                  <th:block th:if="${bandInfo.bandKeyword != null}">
+                  <div th:text="${bandInfo.bandKeyword}"></div>
+                   </th:block>
+                </p>
+              </div>
+              <a class="btn btn-primary px-4 mx-auto mb-4 bandmanage">수정하기</a>
+            </div>
+          </div>
+  </div>
   <div id="container23"> 
   <div class="bandoptiondiv" style="border:1px solid #ababab;">
        <legend>밴드상세정보

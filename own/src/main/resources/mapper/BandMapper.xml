@@ -273,7 +273,10 @@
         WHERE A.BAND_NO = B.BAND_NO
             AND B.USER_ID = #{userId}
             AND B.BAND_MEMBER_STATUS = 'BA02'
-            AND B.BAND_KICK_STATUS = 'BB01'
+            AND ( B.BAND_KICK_STATUS = 'BB01'
+            OR B.BAND_KICK_STATUS IS NULL
+            )
+            AND A.BAND_STATUS = 'BS_1'
             AND A.BAND_NO = C.BAND_NO(+)
             AND A.BAND_NO = D.BAND_NO(+)
             ORDER BY C.RECENTDAY DESC  NULLS LAST
