@@ -168,7 +168,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 #my_modal {
 	display: none;
 	width: 500px;
-	height: 400px;
+	height: 600px;
 	padding: 20px 60px;
 	background-color: #fefefe;
 	border: 1px solid #888;
@@ -351,7 +351,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 			}).then(res=>{
                 $('#modalform').append(`<input type="hidden" value="${res.reportNo}" name="questNo">`)
                 $('#modaltitle').html(res.reason);
-                $('#modalcontent').html(`<img src="/imgView/${res.content}" />`);
+                $('#modalcontent').html(`<img src="/imgView/${res.content}" style="width:300px;"/><br>`);
 				console.log(res);
 			})	
 		})
