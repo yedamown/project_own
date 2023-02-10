@@ -110,7 +110,7 @@
             left: 529px;
             width: 70px;
             height: 30px;
-            font-size: 13px;
+            font-size: 11px;
             background-color: skyblue;
             border-color: white;
             color: white;
@@ -449,7 +449,7 @@
         .insertBtn{
 	        width: 200px;
 		    height: 40px;
-		    margin-left: 60px;
+		    margin-left: 50px;
 		    margin-right: 10px;
 		    background-color: #6ab0cd;
 		    border: none;
@@ -1169,7 +1169,7 @@
                         xhr.setRequestHeader(header, token);
                     },
                         success : function(res){
-                            console.log("삭제완료")
+                        	alert("댓글이 삭제되었습니다.")
                         
                         if(res.reply.length != 0 ){
                           for(let i=0; i<res.reply.length; i++){
@@ -1216,7 +1216,7 @@
                             "display": "none"
                         });
                         location.href = "/own/snsFeed";
-                        alert("삭제 완료")
+                        alert("게시글이 삭제 되었습니다.")
 
                     },
                     error: function (err) {
@@ -1238,10 +1238,10 @@
     //게시글 상세보기 이미지 페이징
         $('.dots-parent').on("click", '.dot', function(e){
             let btnData = $(e.target).attr("data-item");
-            $(this).parent().children().removeClass("active");
+            $('.dot').not(this).removeClass("active");
             $(this).addClass("active");
-            $(this).parent().parent().parent().children('.feedImg').children().removeClass("active");
-            $(this).parent().parent().parent().find(`.blog_card_top[data-item=${btnData}]`).addClass("active");
+            $('.boardImg').not('[data-item="'+btnData+'"]').removeClass("active")
+            $('.boardImg[data-item="'+btnData+'"]').addClass("active")
         })
         //팔로우버튼
         $('.followBtn').on("click", function () {

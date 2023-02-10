@@ -8,7 +8,7 @@
 
 
 	.importBody{
-	padding:100px;
+	padding:0px 100px;
 	}
 
 			.importmodal {
@@ -55,12 +55,10 @@
 <div class="importBody">
 <div style="margin-bottom:20px;">
 <div class="mb-5 mb-lg-0">
-            <p class="section-title pr-5">
-              <span class="pr-2">주요 기능</span>
-            </p>
+           
             <h1 class="mb-4">가치 위임</h1>
             <p>
-              아이디 해킹이나 가치 매매 등 비정상적, 불법으로 위임된 가치는 위임이 취소되거나, OWN활동에 제재를 받으실 수 있습니다
+              ::아이디 해킹이나 가치 매매 등 비정상적, 불법으로 위임된 가치는 위임이 취소되거나, OWN활동에 제재를 받으실 수 있습니다
             </p>
             <div class="nice-select" tabindex="0">
 	<span class="current">선택</span>
@@ -77,11 +75,11 @@
 <hr>
 </div>
 <div>
-<h1 class="mb-4">밴드 비활성화</h1>
-<p>폐쇄신청 이후 절차 안내<br>
+<h1 class="mb-4">가치 비활성화</h1>
+<p>::폐쇄신청 이후 절차 안내<br>
 멤버가 탈퇴 후 가치를 폐쇄하시면 30일간의 보류기간을 거치며, 그 이후에는 가치의 모든 정보가 삭제됩니다.
 보류 기간 중에는 가치 폐쇄를 취소하실 수 있습니다.</p>
-<a class="modalBtn btn btn-primary py-2 px-4" style="cursor: pointer;">밴드 비활성화하기</a>
+<a class="modalBtn btn btn-primary py-2 px-4" style="cursor: pointer;">가치 비활성화하기</a>
 	
 </div>
 </div>
@@ -90,24 +88,27 @@
 <!-- 모달구간 -->
 	<div class="importmodal"> 
       <!-- 첫 번째 Modal의 내용 -->
-      <div class="modal-content">
-        <span class="close">&times;</span>                         
+      <div class="modal-content" style="padding:30px;">
+        <span class="close" style="text-align:right;">&times;</span>                         
+        <p style="font-size:20px; font-weight:800; border-bottom:1px solid lightgray; text-align:center; padding-bottom:20px;">위임하기</p>
+       
         <p id="modaltext"></p>
         <button type="button" id="bandPassModal" class="btn btn-outline-primary m-1" style="width:400px;">
-  	밴드장 위임
+  	가치장 위임
 	</button>
       </div>
     </div>
 
 <div class="importmodal"> 
       <!-- 첫 번째 Modal의 내용 -->
-      <div class="modal-content">
-        <span class="close">&times;</span>                         
-        <p id="modaltext">'밴드 삭제' 버튼 클릭 시 자동으로 비활성화되며 30일동안 유예기간이 주어집니다.</p>
+      <div class="modal-content" style="padding:30px;">
+        <span class="close" style="text-align:right;">&times;</span>                         
+      <p style="font-size:20px; font-weight:800; border-bottom:1px solid lightgray; text-align:center; padding-bottom:20px;">가치 비활성화</p>
+        <p id="modaltext" style="text-align:center;">'비활성화' 버튼 클릭 시 가치가 30일동안 비활성화 상태로 변경됩니다. 유예기간(30일)이후 가치는 자동으로 폐쇄됩니다.</p>
      
     
      <th:block th:if="${#strings.equals(bandInfo.bandStatus, 'BS_1')}">
-    <button type="button" id="bandDelModal" class="btn btn-outline-primary m-1" style="width:400px;">밴드 삭제</button>
+    <button type="button" id="bandDelModal" class="btn btn-outline-primary m-1" style="width:400px;">비활성화</button>
      </th:block>
     <th:block th:if="${#strings.equals(bandInfo.bandStatus, 'BS_2')}"> 
 	<button type="button" id="bandDisModal" class="btn btn-outline-primary m-1" style="width:400px;">휴면 해제</button>
@@ -139,7 +140,7 @@ function Modal(num) {
         modals[num].style.display = "block";
         console.log(num);
 		let id = $('.current').text();
-		let tag = `<p id="passid">${id}님에게 밴드장을 위임하려고 합니다.<br> 위임 후 번복할수 없습니다</p>`;
+		let tag = `<p id="passid" style="text-align:center;">${id}님에게 가치장을 위임하려고 합니다.<br> 위임 후 번복할수 없습니다</p>`;
 		if(modals[0]){
 			$('#modaltext').append(tag)
 		}
