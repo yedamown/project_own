@@ -206,7 +206,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 		</thead>
 		<tbody class="responsive-table__body" id="reportList">
 			<tr class="responsive-table__row titlemodal" th:each="report: ${RList}">
-				<td class="responsive-table__body__text" th:name="${report.reportNo}" th:text="${#strings.substring(report.reportNo,4)}"></td>
+				<td class="responsive-table__body__text" th:name="${report.reportNo}" th:text="${report.rn}"></td>
 				<td class="responsive-table__body__text" th:text="${report.reporter}" th:class="test2"></td>
 				<td class="responsive-table__body__text" th:text="${report.dereporter}"></td>				
 				<td class="responsive-table__body__text" th:text="${report.reason}"></td>
