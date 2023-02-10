@@ -464,7 +464,7 @@
 														<i class="fa fa-solid fa-ellipsis"></i>
 													</a>
 													<div class="dropdown-menu rounded-0 m-0">
-														<a class="newChatStart" value=${result[i].bandMemberNo}>채팅하기</a>
+														<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname}>채팅하기</a>
 														<br><a class="reportModalOpen" value=${result[i].userId} data-sub=${result[i].bandNickname}>신고하기</a>
 													</div>
 											</div>`;
@@ -475,7 +475,7 @@
 														<i class="fa fa-solid fa-ellipsis"></i>
 													</a>
 													<div class="dropdown-menu rounded-0 m-0">
-														<a class="oldChatStart" value=${result[i].bandMemberNo} ">채팅하기</a><br>
+														<a class="oldChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname}">채팅하기</a><br>
 														<a class="reportModalOpen" value=${result[i].userId} data-sub=${result[i].bandNickname}>신고하기</a>
 													</div>
 											</div>`;
@@ -583,7 +583,7 @@
 				let bMemNick2 = $(this).attr('data-sub');
 
 				// 배열에 추가
-				let rName = bMemNick1 + ", " + bMemNick2 + "의 채팅방";
+				let rName = bMemNick2 + "님과의 채팅방";
 				let chatroomDataList = new Array();
 				let chatroomData1 = {
 					chatroomName: rName,
@@ -595,12 +595,6 @@
 					bandMemberNo: bMemNo2
 				};
 				chatroomDataList.push(chatroomData2);
-				console.log("chatroomData1"
-					+ JSON.stringify(chatroomData1))
-				console.log("chatroomData2"
-					+ JSON.stringify(chatroomData2))
-				console.log("chatroomDataList"
-					+ JSON.stringify(chatroomDataList))
 				// 채팅방 새로 생성 후 결과값으로 방번호를 받아와 그 번호로 채팅방 페이지 보내기
 				$.ajax({
 					url: '/createChatroom',
