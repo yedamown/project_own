@@ -344,6 +344,7 @@ public class BandController {
 	@ResponseBody
 	@PostMapping("/bandGroup/bandMemberList")
 	public List<BandMemberDetailVO> bandMemberList(@RequestBody BandMemberDetailVO vo) {
+		System.out.println("컨트롤러테스트======="+vo);
 		return bandMemberDetailService.bandMemberList(vo);
 	}
 }
