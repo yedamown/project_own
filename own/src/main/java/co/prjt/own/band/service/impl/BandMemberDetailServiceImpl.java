@@ -30,7 +30,9 @@ public class BandMemberDetailServiceImpl implements BandMemberDetailService{
 		vo.setPaging(vo.getPaging());
 		
 		List<BandMemberDetailVO> list = bandMemberDetailMapper.bandMemberList(vo);
-		list.get(0).setPaging(vo.getPaging());
+		if(list!=null && list.size()>0) {
+			list.get(0).setPaging(vo.getPaging());
+		}
 		return list;
 	}
 

@@ -13,7 +13,7 @@ public interface CMemberListService {
 	CMemberListVO getMemCheck(CMemberListVO vo);
 		
 	//신청한적 있는지 검색
-	int applyCheck(CMemberListVO vo);
+	CMemberListVO applyCheck(CMemberListVO vo);
 	
 	//전체리스트
 	List<CMemberListVO> getMemListAll(CMemberListVO vo);

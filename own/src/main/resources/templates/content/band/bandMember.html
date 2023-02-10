@@ -94,16 +94,20 @@
 			align-items: center;
 		}
 
+		/* 옵션 */
 		.searchInput {
 			width: 250px;
 		}
 
 		.selectDiv {
-			margin-left: 230px;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			margin-bottom: 5px;
 		}
 
 		.nice-select {
-			width: 123px;
+			width: 137px;
 		}
 
 		/* 테이블 */
@@ -270,25 +274,29 @@
 			background-color: #138496;
 			border-color: #117a8b;
 		}
-		
-		#dropDownDiv{
-		z-index: 1000;
+
+		#dropDownDiv {
+			z-index: 1000;
 		}
 	</style>
 </head>
 <div id="template" style="flex-grow: 3; width: 740px">
 	<div id="bandMemberList">
 		<div class="item-row optionDiv">
-			<input type="text" class="form-control searchInput" placeholder="멤버 검색" id="searchVal" name="searchVal">
-			<span class="inputBtn input-group-btn">
-				<button class="btn btn-default searchBtn" type="button" id="searchBtn">
-					<i class="lnr lnr-magnifier"></i>
-				</button>
-				<span class=""> 전체 멤버 수 </span> <span id="memberCnt"></span>
+			<div class="item-row">
+				<input type="text" class="form-control searchInput" placeholder="멤버 검색" id="searchVal" name="searchVal">
+					<button class="btn btn-default searchBtn" type="button" id="searchBtn">
+						<i class="lnr lnr-magnifier"></i>
+					</button>
+			</div>
+			<div class="item-row" style="width: 173px;">
+				<span class="hoverCursor" style="margin-right: 5px;"> 전체 멤버 수 </span> <span class="hoverCursor" id="memberCnt"></span>
 				<input type="hidden" name="pageNum" value="1">
 				<input type="hidden" th:value="${myBandMemberNo}" name="myBandMemberNo">
-			</span>
+				<input type="hidden" name="bandLeaderId" value="">
+			</div>
 			<div class="selectDiv">
+				<div style="width: 137px;"></div>
 				<select id="selectOption" name="selectOption">
 					<option value="name" selected="selected">별명 순</option>
 					<option value="signupDate">가입일자 순</option>
@@ -344,13 +352,13 @@
 					name="frm" id="frm">
 					<!-- <div class="input-form col-md-12 mx-auto"> -->
 					<div class="form-group mb-4">
-						<label for="dereporter">신고할 사람 *</label>
-						<input type="hidden" id="dereporter" name="dereporter" readonly />
-						<input type="hidden" id="reporter" name="reporter" readonly />
+						<label for="dereporter">신고 대상 *</label>
+						<input type="hidden" id="dereporter" name="dereporter" readonly /> <!-- 신고당하는 사람 -->
+						<input type="hidden" id="reporter" name="reporter" readonly /> <!-- 신고하는 사람 -->
 						<input type="text" class="form-control" id="reportUserNickname" readonly />
 					</div>
 					<div class="form-group mb-4">
-						<label for="reason">신고사유 *</label>
+						<label for="reason">신고 사유 *</label>
 						<select class="form-control" id="reason" name="reason" style="height: 47px">
 							<option selected>:: 신고사유를 선택해주세요 ::</option>
 							<option value="욕설">욕설</option>
@@ -381,14 +389,14 @@
 	<script src="/webjars/stomp-websocket/stomp.min.js"></script>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
-		var header = /*[[${_csrf.headerName}]]*/'defalut';
-		var token = /*[[${_csrf.token}]]*/'defalut';
+		var header = [[${_csrf.headerName}]];
+		var token = [[${_csrf.token}]];
 		/*]]>*/
 
 		$(function () {
 			// 세션에 저장된 로그인 유저의 아이디
 			/*<![CDATA[*/
-			let loginUser = [[ ${session.loginUser} ]];
+			let loginUser = [[${ session.loginUser }]];
 			let loginUserId = loginUser.userId;
 			/*]]>*/
 
@@ -400,15 +408,35 @@
 			let myBandMemberNo = $("input[name=myBandMemberNo]").val();
 
 			// 페이징, 검색 관련 변수
-			let pageNum = $("input[name=pageNum]").val();
+			var pageNum = $("input[name=pageNum]").val();
 			var selectOption = $("select[name=selectOption]").val();
 			var searchVal = $("input[name=searchVal]").val();
 
 			// 함수 스타토 
+			getBandLeaderId();
 			allBandMemberList();
-
+			// 밴드장 가져오기
+			function getBandLeaderId (){
+				selectOption = $("select[name=selectOption]").val();
+				searchVal = $("input[name=searchVal]").val();
+				pageNum = $("input[name=pageNum]").val();
+				let listOption = { bandNo: bandNo[0], bandMemberNo: myBandMemberNo, selectOption: selectOption, paging: { page: pageNum }, bandNickname: searchVal };
+				$.ajax({
+					url: '/own/band/bandGroup/bandMemberList',
+					method: 'POST',
+					data: JSON.stringify(listOption),
+					contentType: "application/json",
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(header, token);
+					},
+					success: function (result) {
+						$("input[name=bandLeaderId]").val(result[0].bandLeaderid); 
+					}
+				});
+			}
 			// 맨 처음 띄울 멤버리스트
 			function allBandMemberList() {
+				bandLeaderId = $("input[name=bandLeaderId]").val();
 				selectOption = $("select[name=selectOption]").val();
 				searchVal = $("input[name=searchVal]").val();
 				pageNum = $("input[name=pageNum]").val();
@@ -436,8 +464,8 @@
 														<i class="fa fa-solid fa-ellipsis"></i>
 													</a>
 													<div class="dropdown-menu rounded-0 m-0">
-														<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname}>채팅하기</a>
-														<br><a class="reportModalOpen" value=${result[i].userId}>신고하기</a>
+														<a class="newChatStart" value=${result[i].bandMemberNo}>채팅하기</a>
+														<br><a class="reportModalOpen" value=${result[i].userId} data-sub=${result[i].bandNickname}>신고하기</a>
 													</div>
 											</div>`;
 							} else if (result[i].chatCheck == 1 && result[i].userId != loginUserId) {
@@ -453,7 +481,7 @@
 											</div>`;
 							}
 							// 밴드장 표시
-							if (result[i].bandLeaderId == loginUserId) {
+							if (result[i].userId == bandLeaderid) {
 								nicknameTag = `<td class="responsive-table__body__text" colspan="3">${result[i].bandNickname}<i class="fa fa-solid fa-crown" style="margin-right: 5px; color: #f8b600;" aria-hidden="true" ></i></td>`;
 							} else {
 								nicknameTag = `<td class="responsive-table__body__text" colspan="3">${result[i].bandNickname}</td>`;
@@ -511,14 +539,34 @@
 				})
 			}
 
+			counting();
+			function counting() {
+				$.ajax({
+					url: '/own/band/bandGroup/memberCount?bandNo=' + bandNo + '&bandMemberStatus=' + 'BA02',
+					method: 'get',
+					dataType: 'json',
+					contentType: "application/json"
+				}).then(list => {
+					$("#memberCnt").text(list);
+				})
+			} // end of counting함수
+
+			// 상단 메뉴
+			$('#menu-filters li').click(function () {
+				$('#menu-filters li').removeClass('active');
+				$(this).addClass('active');
+			})
+
 			// 첫 div 밴드 멤버 리스트 페이징 함수, 검색창, 셀렉트 박스
 			$('#paging #pagegation').on('click', '.pagePort', function () {
 				//페이지번호 + 밴드식별번호
 				pageNum = $(this).attr('value');
+				$("input[name=pageNum]").attr('value', pageNum)
 				allBandMemberList();
-			}) // end of aPaging
+			}) // end of paging
 
 			$('#searchBtn').on('click', function () {
+				console.log('검색클릭')
 				allBandMemberList();
 			}) // end of searchBtn
 
@@ -608,12 +656,12 @@
 			$(document).on("click", ".reportModalOpen", function () {
 				let reportUserNickname = $(this).attr('data-sub');
 				let reportUserId = $(this).attr('value');
-				$("#reportUserNickname").val(reportUserNickname); // 신고할 사람 닉네임 input값 넣기
-				$("#reportUserId").val(reportUserId); // 신고할 사람 아이디 input값 넣기
-				$("#dereporter").val(loginUserId); // 신고하는 사람 input값 넣기
+				$("#reportUserNickname").val(reportUserNickname); // 신고당한 사람 닉네임 input값 넣기
+				$("#reporter").val(loginUserId); // 신고하는 사람 아이디 input값 넣기
+				$("#dereporter").val(reportUserId); // 신고당한 사람 input값 넣기
 				$('.modal_bandMemberInfo').attr('style', 'display:block');
-				
-			});
+
+			}); loginUserId
 
 			//신고제출 버튼...
 			$('#btnreporting').on('click', function () {
@@ -629,11 +677,9 @@
 						xhr.setRequestHeader(header, token);
 					},
 					success: function (res) {
-						console.log(res);
-						alert("신고 완료");
-						let cutChallNo = challNo.substr(4);
-						//신고완료 시 새로고침.
-						location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
+						alert("유저 신고가 완료되었습니다");
+						//신고완료 시 신고모달 닫기
+						$(".modal_bandMemberInfo").css("display", "none");
 					},
 					error: function (err) {
 						console.log(err);
@@ -644,6 +690,10 @@
 
 			// <span> 태그(X 버튼)를 클릭하면 Modal을 닫기
 			$('.closeBtn').click(function () {
+				$(".modal_bandMemberInfo").css("display", "none");
+			});
+
+			$('#btnsignin').click(function () {
 				$(".modal_bandMemberInfo").css("display", "none");
 			});
 

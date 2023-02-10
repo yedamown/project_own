@@ -21,7 +21,7 @@ public class ReportVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	Date reportDate;
 	public String status;
-
+	int rn;
 	String mediaServerFile;
 	
 	public Paging paging;
