@@ -81,10 +81,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-  margin-top: 0;
-  margin-bottom: 1rem;
+  font-family: 'Cafe24Ohsquareair';
+  
+  font-weight: 700;
 }
-
+li {
+	font-family: 'Cafe24Ohsquareair';
+  	font-weight: 700;
+}
+button {
+	font-family: 'Cafe24Ohsquareair';
+}
+a {
+  	font-family: 'Cafe24Ohsquareair';
+  	font-weight: 900;
+}
+span {
+  	font-family: 'Cafe24Ohsquareair';
+  	font-weight: 700;
+}
 abbr[title],
 abbr[data-original-title] {
   text-decoration: underline;

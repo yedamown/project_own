@@ -191,6 +191,7 @@
    	<input type="hidden" th:value="${band.bandLeaderid}" id="bandLeaderid" >
    	<th:block th:if="${BandMemberDetail}">
    		<input type="hidden" th:value="${BandMemberDetail.bandNickname}" id="bandNickname" >
+   		<input type="hidden" th:value="${BandMemberDetail.bandMemberStatus}" id="bandMemberStatus">
 	</th:block>
     <input type="hidden" th:name="${_csrf.parameterName}"th:value="${_csrf.token}">
         <!--================Header Area =================-->
@@ -213,7 +214,7 @@
                         <div class="br"></div>
                     </aside>
                         <ul class="nav navbar-nav menu_nav ml-auto">
-                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">홈</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}" >홈</a></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandPhoto">앨범</a></div></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandCalendar">일정</a></div></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandMember">멤버</a></div></li>
@@ -498,7 +499,7 @@
 								                        	<span></span>${ele.reply}
 								                        </div>
 								                    </div>
-								                    <a href="#" class="view_btn button_hover2 boardDett" id="${ele.bandBoardDetailNo}" style="text-decoration: none; margin-top:10px; border:none; text-align:center;">View More</a>
+								                    <a href="#" class="view_btn button_hover2 boardDett" id="${ele.bandBoardDetailNo}" style="text-decoration: none; margin-top:10px; border:none; text-align:center;">자세히보기</a>
 								                </div>
 								            </article>`;
 			            
@@ -564,7 +565,7 @@
 			                if(result.length==5){
 				                //more 누르면 나오는 페이지
 				            	let btnTag = `<nav class="blog-pagination justify-content-center d-flex" id="multiId">
-							                <a class="view_btn button_hover2" id="nextBtn" style="width: 555px; text-decoration: none; text-align:center;">View More</a>
+							                <a class="view_btn button_hover2 hoverBtn" id="nextBtn" style="width: 555px; text-decoration: none; text-align:center;">글 불러오기</a>
 							                <input type="hidden" id="multivalue" value=${bandBoardDetailNo}>
 							                </nav>`
 							              
@@ -582,6 +583,10 @@
 	                
 			    //버튼누르면 more
 			    $('#articleArea').on('click', '#nextBtn', function(){
+			    	if($('#bandMemberStatus').val()==null||$('#bandMemberStatus').val()==='undefined'||$('#bandMemberStatus').val()===undefined){
+			    		alert('가치회원만 가능합니다.')
+			    		return false;
+			    	}
 			    	let mul = $('#multivalue').val();
 			    	$('#multiId').empty();
 			    	$('#multiId').remove();

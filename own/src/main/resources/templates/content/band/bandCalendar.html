@@ -356,7 +356,7 @@
 		</form>
 		<!-- 자식에게서 받아올 값..게시판이동 -->
 		<div id="newVal">
-			<input type="text" id="childBoardValue">
+			<input type="hidden" id="childBoardValue">
 		</div>	
 	<!-- =====캘린더 입력 모달 창 끝====== -->
 	
@@ -838,9 +838,9 @@
 				nameBk3 = 'BK03chk'
 			}
 			let liTag = `
-				<li class="lis"><span class="attch" name=${nameBk1}>${myBk1}</span>참석<b class="toSt">${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
-				<li class="lis"><span class="attch" name=${nameBk2}>${myBk2}</span>불참석<b class="toSt">${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
-				<li class="lis"><span class="attch" name=${nameBk3}>${myBk3}</span>미정<b class="toSt">${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
+				<li class="lis"><span class="attch" name=${nameBk1} style="cursor: pointer;">${myBk1}</span>참석<b class="toSt">${bk01Per.toString()}</b><span name="BK01" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
+				<li class="lis"><span class="attch" name=${nameBk2} style="cursor: pointer;">${myBk2}</span>불참석<b class="toSt">${bk02Per.toString()}</b><span name="BK02" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
+				<li class="lis"><span class="attch" name=${nameBk3} style="cursor: pointer;">${myBk3}</span>미정<b class="toSt">${bk03Per.toString()}</b><span name="BK03" class="attch2" style="float: right; padding-right:15px;  cursor: pointer;">🌕</span></li>
 			`;
 			attendChk.append(liTag);
 			
@@ -877,6 +877,11 @@
 	    }
 		//일정체크클릭모달
 		$('#attendChk').on('click', $('.attch'), function(e){
+			//투표가 눌린 게 아니면 리턴
+			if($(e.target).attr('class')!='attch'){
+				return false;
+			}
+			
 			let bandCalendarOptionDay = $('#savesavebandCalendarOptionDay').val();
 			console.log(bandCalendarOptionDay);
 			//마감일 지나서 투표

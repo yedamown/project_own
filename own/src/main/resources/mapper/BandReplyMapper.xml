@@ -24,7 +24,7 @@
 			            AND W.BAND_BOARD_DETAIL_NO = #{categoryNo}
 			        ) B
 			  WHERE CATEGORY_NO = #{categoryNo}
-			  AND A.USER_ID = B.USER_ID
+			  AND A.USER_ID = B.USER_ID(+)
 			  ORDER BY TO_NUMBER(SUBSTR(REPLY_NO, 7))
 	</select>
 	
