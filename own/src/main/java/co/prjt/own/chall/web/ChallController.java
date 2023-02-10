@@ -419,9 +419,9 @@ public class ChallController {
 	//신청했는지 체크
 	@GetMapping("/applyCheck")
 	@ResponseBody
-	public int applyCheck(CMemberListVO vo, CMemberListVO vo1) {
-		int rs = memberList.applyCheck(vo);
-		return rs;
+	public CMemberListVO applyCheck(CMemberListVO vo, CMemberListVO vo1) {
+		vo1 = memberList.applyCheck(vo);
+		return vo1;
 	}
 	// 멤버리스트 권한 변경 -> 승인/ 거절
 	@PostMapping("/challMemAuth")

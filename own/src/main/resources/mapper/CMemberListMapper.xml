@@ -43,8 +43,8 @@
 		AND MEM_STATUS = #{memStatus}
 	</select>
 	
-	<select id="applyCheck" resultType="int">
-		SELECT count(*) 
+	<select id="applyCheck" resultType="co.prjt.own.chall.service.CMemberListVO">
+		SELECT *
 		FROM CHALL_MEM_LIST
 		WHERE CHALL_NO = #{challNo}
 		AND USER_ID = #{userId}
