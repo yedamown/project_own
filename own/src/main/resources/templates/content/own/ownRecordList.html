@@ -368,6 +368,15 @@
 		.pngButton{
 			filter: opacity(0.5) drop-shadow(0 0 0 #6ab0cd);
 		}
+
+		/* 얇은 글씨 */
+		.count-text {
+			font-family: 'Cafe24Ohsquareair';
+			font-size: 15px;
+			font-weight: 700;
+			margin: 0 0 5px;
+			line-height: 2.1;
+		}
 	</style>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
@@ -517,7 +526,8 @@
 			}).then(res => {
 				var labelList = new Array();
 				var valueList = new Array();
-				var colorList = ['#eef6f9', '#f9eef1', '#f1f9ee', '#f9f6ee', '#f1eef9'];
+				var colorList = ['rgb(54, 162, 235)',
+								 '#fff454', '#36EB93', '#EB36A2', '#36B0A2'];
 
 
 				for (var i = 0; i < res.length; i++) {
