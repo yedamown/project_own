@@ -223,8 +223,8 @@ body {
             margin-top: 20px;
         }
         #snsLikeBtn{
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
         }
         /*검색 프로필*/
         .searchProfileImg{
@@ -259,7 +259,52 @@ body {
             opacity: 0.9;
             font-weight: 600;
         }
+        #snsReplyCount{
+            font-weight: 600;
+        }
+        #snsLikeCount{
+            font-weight: 600;
+        }
+        .insertBtn{
+	        width: 200px;
+		    height: 40px;
+		    margin-left: 60px;
+		    margin-right: 10px;
+		    background-color: #6ab0cd;
+		    border: none;
+		    color: white;
+		    font-size: 16px;
+		    border-radius: 25px;
+		    cursor:pointer;
+        }
+        
+        .delBtn{
+	        width: 200px;
+		    height: 40px;
+		    background-color: white;
+		    border: none;
+		    color: #6ab0cd;
+		    font-size: 16px;
+		    border-radius: 25px;
+		    border: 3px solid #6ab0cd;
+		    cursor:pointer;
+        }
 
+        textarea {
+            border:2px solid #aaa;
+            border-radius:4px;
+            margin: 8px 0;
+            outline: none;
+            padding:8px;
+            box-sizing: border-box;
+            transition:.3s;
+            padding:20px;
+        }
+
+        textarea:focus{
+            border-color:lightblue;
+            box-shadow:0 0 8px 0 lightblue;
+        }
     </style>
 </head>
 <body>
@@ -367,36 +412,35 @@ body {
             </div>
 
             <!-- 게시글 상세보기 Modal -->                  
-                <div class="Feedmodal">
-                    <div class="Feedmodal-content" style="width: 1100px; min-height: 700px; position: relative;">
-                        <span class="close"></span>
-                        <div class="boardContent" style="float: right; width: 500px; min-height:180px; border-bottom: 1px lightgray solid; padding-bottom: 35px;">
-                            
-                        </div>
-                        <div class="snsLikeBox" style="width:100px; display: inline-block; position: absolute; top:171px; right: 95px;">
-                        </div>
-                        <div class="snsReplyBox" style="width:100px; display: inline-block; position: absolute; top:173px; right: -7px;">
-                            <img id="snsReplyIcon" src="/css/sns/img/speechImg.png" style="width: 20px; height: 20px;" >
-                        </div>
-                        <div class="boardImgList" style="position:relative; width: 500px; height: 600px; float:left">
-                        </div>
-                        <div class="replyContent" style="width:500px; float: right; border-bottom: 1px lightgray solid; padding-top: 16px; padding-bottom: 16px; margin-bottom: 10px;">
-                        </div>   
-                        <div class="replyInsert" style="width:500px; height: 200px;float:right;">
-                            
-                            <div class="realReply"></div>
-                        </div>
-                        <div class="container-dots">
-                            <ul class="dots-parent" style="list-style: none; margin-left: 150px; width: 300px; height: 50px;">
-                                
-                            </ul>
-                        </div>
+            <div class="Feedmodal">
+                            <div class="Feedmodal-content" style="width: 1100px; min-height: 700px; position: relative;">
+                                <span class="close"></span>
+                                <div class="boardContent" style="float: right; width: 500px; min-height:180px; border-bottom: 1px lightgray solid; padding-bottom: 35px;">
+                                  
+                                </div>
+                                <div class="snsLikeBox" style="width:100px; display: inline-block; position: absolute; top:175px; right: 95px;">
+                                </div>
+                                <div class="snsReplyBox" style="width:100px; display: inline-block; position: absolute; top:177px; right: -7px;">
+                                    <img id="snsReplyIcon" src="/css/sns/img/speechImg.png" style="width: 20px; height: 20px;" >
+                                </div>
+                                <div class="boardImgList" style="position:relative; width: 500px; height: 600px; float:left">
+                                </div>
+                                <div class="replyContent" style="width:500px; float: right; border-bottom: 1px lightgray solid; padding-top: 16px; padding-bottom: 16px; margin-bottom: 10px;">
+                                </div>   
+                                <div class="replyInsert" style="width:500px; height: 200px;float:right;">
+                                    
+                                    <div class="realReply"></div>
+                                </div>
+                                <div class="container-dots">
+                                    <ul class="dots-parent" style="list-style: none; margin-left: 150px; width: 300px; height: 50px;">
+                                        
+                                    </ul>
+                                </div>
 
-                        <div class="btnIcon" th:if="${userId.snsNickname == snsInfo.snsNickname}">
-                            <img src="/css/sns/img/trash.png" id="trashBtn" style="width: 20px; height: 20px; cursor: pointer; position: absolute; top:17px; right:167px;" >
+                               
+                                
+                            </div>
                         </div>
-                 </div>
-             </div>
              
         <!--=================== content body end ====================-->
      </div>
@@ -493,7 +537,9 @@ body {
                                 let boardNo = $('<div>').attr({"value": res.svo.snsBoardNo,
                                                                "class" : "boardNo"});
                                 let boardDate = $('<div>').text(res.svo.snsBoardDate);
+                                    boardDate.css({"text-align": "right", "color":"darkgray", "padding-bottom":"20px"});
                                 let boardContent = $('<div>').text(res.svo.snsBoardContent);
+                                    boardContent.css({"border-top":"1px solid lightgray", "padding-top":"15px"})
                                      $('.boardContent').append(boardNo, boardDate, boardContent);
                                 
                                 for(let i=res.imgList.length-1; i>= 0; i--){
@@ -551,6 +597,7 @@ body {
                                     snsLikeCount.attr("id" , "snsLikeCount");
 
                                 let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
+                                    snsReplyCount.attr("id","snsReplyCount")
                                     $('.snsLikeBox').append(snsLikeCount);
                                     $('.snsReplyBox').append(snsReplyCount)
                                 
@@ -564,7 +611,7 @@ body {
         })
 
         function makeReply(reply){
-            let Tag = ` <div class="replyIdDate">${reply.snsNickname} |${reply.replyDate} 
+            let Tag = ` <div class="replyIdDate" style="padding-top:10px">${reply.snsNickname} |${reply.replyDate} 
                         <input class="snsReplyNo" type="hidden" value="${reply.replyNo}" /></div> 
                         <div style="padding-left:50px;">${reply.replyContent}</div>`
             console.log(reply.snsNickname)
@@ -572,7 +619,7 @@ body {
             
             if(reply.userId == loginUserId){
                 console.log("x태그 생성")
-                let xTag = `<span class="snsReplyDelBtn" style="font-size:20px; padding-left:10px; cursor:pointer; position:absolute;">&times;</span>`
+                let xTag = `<span class="snsReplyDelBtn" style="font-size:11px; padding-left:440px; cursor:pointer; color:blue;">댓글 삭제</span>`
                     Tag = Tag+xTag;
             }
                 return Tag;
