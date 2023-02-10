@@ -78,24 +78,24 @@
 											<li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>
 												도전기간: <span th:text="${detailChall.challDuration}"></span>주 동안</li>
 											<li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>
-												도전빈도: 주 <span th:text="${detailChall.challDuration}"></span> 회</li>
+												도전빈도: 주 <span th:text="${detailChall.challFreq}"></span> 회</li>
 											<li class="py-2 "><i class="fa fa-check text-primary mr-3"></i>
 												도전금액: <span th:text="${detailChall.challPrice}"></span> 원</li>
 										</ul>
 									</div>
 
-									<div style="width: 200px;">
-										<div>
-											<h5 class="mr-3" style="padding: 3px; float: right;">
+									<div style="width: 250px; text-align: center;" class="pl-3 pt-3">
+											<h5 style="padding: 3px; text-align: center; ">
 												<i class="fa fa-users text-primary"></i>
 												<span th:text="${detailChall.nowMem}"></span> / <span th:text="${detailChall.maxMem}"></span> 명 참여중
 											</h5>
-										</div>
-										<div style="display: block;">
-											<a th:if="${memcheck == null } and ${#strings.equals(detailChall.challStatus, '시작 전')}" class="btn btn-primary mt-2 py-2 px-4" id="applyBtn">도전 신청하기</a>
-											<a th:if="${memcheck !=null } and ${#strings.equals(detailChall.challStatus, '시작 전')}" class="btn btn-primary mt-2 py-2 px-4">참여중인 도전</a> 
-											<a th:if="${#strings.equals(detailChall.challStatus, '진행 중')}" class="btn btn-primary mt-2 py-2 px-4">진행 중인 도전</a>
-											<a th:if ="${#strings.equals(detailChall.challStatus, '종료')}" class="btn btn-primary mt-2 py-2 px-4" >종료된 도전</a>
+										
+										<div style="display: block; text-align: center;">
+											<a th:if="${memcheck == null } and ${#strings.equals(detailChall.challStatus, '시작 전')}" class="btn btn-primary mt-4 py-2 px-4"
+											 id="applyBtn" style="margin: auto;">도전 신청하기</a>
+											<a th:if="${memcheck !=null } and ${#strings.equals(detailChall.challStatus, '시작 전')}" class="btn btn-primary mt-4  py-2 px-4">참여중인 도전</a> 
+											<a th:if="${#strings.equals(detailChall.challStatus, '진행 중')}" class="btn btn-primary mt-4  py-2 px-4">진행 중인 도전</a>
+											<a th:if ="${#strings.equals(detailChall.challStatus, '종료')}" class="btn btn-primary mt-4 py-2 px-4" >종료된 도전</a>
 										</div>
 									</div>
 								</div>
@@ -393,7 +393,7 @@
 							<input type="hidden" th:value = "${nwch.challNo}" />
 							<div class="pl-3">
 								<h6 th:text="${nwch.challTitle}"></h6>
-								<div class="d-flex" style="float: right;">
+								<div class="d-flex">
 									<small class="mr-3"><i class="fa fa-user text-primary"></i> [[${nwch.nowMem}]]명 참여중</small> 
 									<small class="mr-3"><i class="fa fa-folder text-primary"></i> [[${nwch.challCategory}]]</small> 
 								</div>
@@ -598,10 +598,13 @@
 			data:{ userId: userId,
 				  challNo: challNo },
 			success: function(res){
-				console.log(res);
-				if(userId != null && res > 0) {
+				console.log(res.memStatus);
+				let memSt = res.memStatus
+				if(userId != null && memSt == "대기") {
 					alert('이미 도전신청 하였습니다. 승인을 기다려주세요.');
-				} else if(userId != null && res == 0){
+				} else if(userId != null && memSt == "거절"){
+					alert('참여 거절된 도전입니다.');
+				} else if(userId != null && memSt == null){
 					location.href = '/own/chall/applyForm?challNo=' + challNo + '&&userId=' + userId;
 				} else {
 					alert('오운 로그인 후 이용해주세요.');
@@ -1236,7 +1239,8 @@
 		  $.ajax({
 			  url: '/own/chall/challMemAuth',
 			  method: 'post',
-			  data: JSON.stringify({userId: memCutId,
+			  data: JSON.stringify({
+				userId: memCutId,
 				challNo: challNo,
 				memStatus: memStatus
 			}),

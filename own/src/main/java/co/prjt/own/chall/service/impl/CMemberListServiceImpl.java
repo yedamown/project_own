@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import co.prjt.own.chall.mapper.CAmountMapper;
 import co.prjt.own.chall.mapper.CMemberListMapper;
 import co.prjt.own.chall.mapper.ChallengeMapper;
+import co.prjt.own.chall.service.CAmountVO;
 import co.prjt.own.chall.service.CMemberListService;
 import co.prjt.own.chall.service.CMemberListVO;
 import co.prjt.own.chall.service.ChallengeVO;
@@ -16,6 +18,7 @@ public class CMemberListServiceImpl implements CMemberListService{
 
 	@Autowired CMemberListMapper memlist;
 	@Autowired ChallengeMapper chall;
+	@Autowired CAmountMapper amount;
 	
 	@Override
 	public int insertMemList(CMemberListVO vo) {
@@ -43,6 +46,19 @@ public class CMemberListServiceImpl implements CMemberListService{
 
 	@Override
 	public int updateMemList(CMemberListVO vo) {
+		if(vo.getMemStatus().equals("거절")) {
+			String challNo = vo.getChallNo();
+			String userId = vo.getUserId();
+			ChallengeVO cha = new ChallengeVO();
+			cha.setChallNo(challNo);
+			int challPrice = (chall.getChall(cha)).getChallPrice();
+			CAmountVO amt = new CAmountVO();
+			amt.setChallNo(challNo);
+			amt.setAmtType("도전거절");
+			amt.setUserId(userId);
+			amt.setPrice(challPrice);
+			amount.insertAmount(amt);
+		}
 		return memlist.updateMemList(vo);
 	}
 	
@@ -62,7 +78,7 @@ public class CMemberListServiceImpl implements CMemberListService{
 	}
 
 	@Override
-	public int applyCheck(CMemberListVO vo) {
+	public CMemberListVO applyCheck(CMemberListVO vo) {
 		return memlist.applyCheck(vo);
 	}
 
