@@ -342,48 +342,6 @@
 		</div>
 	</div>
 
-	<div class="modal_bandMemberInfo">
-		<!-- 신고 Modal -->
-		<div class="modal-content">
-			<span class="closeBtn">&times;</span>
-			<div id="container" style="padding-bottom: 20px;">
-				<h2 style="text-align: center; margin: 10px;margin-bottom: 30px;">신고하기</h2>
-				<form role="form" autocomplete="off" style="width: 80%; margin: auto;" enctype="multipart/form-data"
-					name="frm" id="frm">
-					<!-- <div class="input-form col-md-12 mx-auto"> -->
-					<div class="form-group mb-4">
-						<label for="dereporter">신고 대상 *</label>
-						<input type="hidden" id="dereporter" name="dereporter" readonly /> <!-- 신고당하는 사람 -->
-						<input type="hidden" id="reporter" name="reporter" readonly /> <!-- 신고하는 사람 -->
-						<input type="text" class="form-control" id="reportUserNickname" readonly />
-					</div>
-					<div class="form-group mb-4">
-						<label for="reason">신고 사유 *</label>
-						<select class="form-control" id="reason" name="reason" style="height: 47px">
-							<option selected>:: 신고사유를 선택해주세요 ::</option>
-							<option value="욕설">욕설</option>
-							<option value="광고">광고</option>
-							<option value="부적절한 아이디">부적절한 아이디</option>
-						</select>
-					</div>
-					<div class="form-group mb-4">
-						<label for="name">Date *</label> <input type="text" class="form-control" id="vldname"
-							th:value="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')}" readonly />
-					</div>
-					<div class="form-group mb-5">
-						<label for="code">신고 증거 사진첨부</label>
-						<input name="uploadfile" type="file" id="uploadfile" multiple="multiple">
-					</div>
-					<div style="text-align: center;">
-						<button type="button" class="btn btn-primary px-3" style="width: 150px;"
-							id="btnreporting">신고</button>
-						<button type="button" class="btn btn-primary px-3" style="width: 150px;"
-							id="btnsignin">취소</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
 
 	<script src="/webjars/sockjs-client/sockjs.min.js"></script>
 	<script src="/webjars/stomp-websocket/stomp.min.js"></script>
@@ -465,7 +423,7 @@
 													</a>
 													<div class="dropdown-menu rounded-0 m-0">
 														<a class="newChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname}>채팅하기</a>
-														<br><a class="reportModalOpen" value=${result[i].userId} data-sub=${result[i].bandNickname}>신고하기</a>
+														<br>
 													</div>
 											</div>`;
 							} else if (result[i].chatCheck == 1 && result[i].userId != loginUserId) {
@@ -476,7 +434,7 @@
 													</a>
 													<div class="dropdown-menu rounded-0 m-0">
 														<a class="oldChatStart" value=${result[i].bandMemberNo} data-sub=${result[i].bandNickname}">채팅하기</a><br>
-														<a class="reportModalOpen" value=${result[i].userId} data-sub=${result[i].bandNickname}>신고하기</a>
+										
 													</div>
 											</div>`;
 							}
@@ -645,58 +603,6 @@
 				});
 			});
 
-			// 신고 모달
-			//신고하기 누르면 신고폼 display block
-			$(document).on("click", ".reportModalOpen", function () {
-				let reportUserNickname = $(this).attr('data-sub');
-				let reportUserId = $(this).attr('value');
-				$("#reportUserNickname").val(reportUserNickname); // 신고당한 사람 닉네임 input값 넣기
-				$("#reporter").val(loginUserId); // 신고하는 사람 아이디 input값 넣기
-				$("#dereporter").val(reportUserId); // 신고당한 사람 input값 넣기
-				$('.modal_bandMemberInfo').attr('style', 'display:block');
-
-			}); loginUserId
-
-			//신고제출 버튼...
-			$('#btnreporting').on('click', function () {
-				let formData = new FormData(document.frm);
-				$.ajax({
-					url: '/common/report',
-					method: 'post',
-					data: formData,
-					cache: false,
-					contentType: false,
-					processData: false,
-					beforeSend: function (xhr) {
-						xhr.setRequestHeader(header, token);
-					},
-					success: function (res) {
-						alert("유저 신고가 완료되었습니다");
-						//신고완료 시 신고모달 닫기
-						$(".modal_bandMemberInfo").css("display", "none");
-					},
-					error: function (err) {
-						console.log(err);
-						alert("오류 발생. 다시 시도해주세요.")
-					}
-				});
-			});
-
-			// <span> 태그(X 버튼)를 클릭하면 Modal을 닫기
-			$('.closeBtn').click(function () {
-				$(".modal_bandMemberInfo").css("display", "none");
-			});
-
-			$('#btnsignin').click(function () {
-				$(".modal_bandMemberInfo").css("display", "none");
-			});
-
-			// Modal 영역 밖을 클릭하면 Modal을 닫기
-			window.onclick = function (event) {
-				if (event.target.className == "modal_bandMemberInfo") {
-					event.target.style.display = "none";
-				}
-			};
 
 		}); // end of function
 		$(document).ready(function () {
