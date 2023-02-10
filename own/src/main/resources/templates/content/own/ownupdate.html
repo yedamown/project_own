@@ -149,7 +149,7 @@
                   </div>
                 </div>
                 <hr class="mb-4">
-                <button type="button" id="btnupdate" class="btn btn-outline-primary m-1">수정 완료</button>              
+                <button type="button" id="btnupdate" class="btn btn-outline-primary m-1">수정 완료</button>          
             </div>
         </div>
         </div>
@@ -164,7 +164,7 @@
     console.log(token);
 
   /*]]>*/
-
+  
 		 $('#menu-filters li').click(function(){
 		    	$('#menu-filters li').removeClass('active');
 		    	$(this).addClass('active');
@@ -275,8 +275,8 @@
           console.log(newpw2);
           console.log(phone);
           console.log(hobby);
-
-          if(pwCheck()){
+          if(pw&&newpw&&newpw2&&phone){
+            if(pwCheck()){
             $.ajax({
     				url : '/own/pwcheck',
     				method : 'get',
@@ -294,23 +294,24 @@
     					xhr.setRequestHeader(header, token);
     				}
              	}).then(res2=>{
-             		alert('변경완료!!')
+                alert('변경완료');
+                location.href="/own/mypage";
              	})
-              
-              
-              }              
+            }              
               else{
-                console.log('변경할 비밀번호가 서로 맞지않습니다')
+                alert('변경할 비밀번호가 서로 맞지않습니다')
               }
             }
             else{
               alert('현재 비밀번호가 맞지않습니다')
-              console.log('현재비번 틀림')
             }
             
     			})}
           else{
             console.log('비밀번호 양식에 맞게 입력해주세요')
+          }
+          }else{
+            alert('모두 입력해주세요');
           }
     		})
         // JSON.stringify({userId:id,
@@ -336,7 +337,7 @@
 		})
 		
 		$('#navQuestionForm').on('click', function(){
-    		$("#subtemplate").load('/own/questform');
+    		$("#subtemplate").load('/own/mypage/questform');
 		})
         </script>
         </div>

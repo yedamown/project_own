@@ -360,6 +360,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 				method : 'get',
 				data : {qno}
 			}).then(res=>{
+				console.log(res);
                 $('#modalform').append(`<input type="hidden" value="${res.questNo}" name="questNo">`)
                 $('#modaltitle').html(res.title);
                 $('#modalcontent').html(res.content);	                
@@ -453,7 +454,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 		})
 		
 		function ownQuest(){
-			$('#subtemplate').load("/own/questform");		
+			$('#subtemplate').load("/own/mypage/questform");		
 		}
 		
 		

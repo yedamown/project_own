@@ -201,6 +201,12 @@
 <div layout:fragment="content">
 	<body>
 	<div id="subTemp">
+	<div class="text-center pb-2">
+          <p class="section-title px-5">
+            <span class="px-2">관리 페이지</span>
+          </p>
+          <h2 class="mb-4">질문 목록</h2>
+        </div>
         <div class="layout-978">
 		<div class="tblcontainer">
 		<table class="responsive-table" id="amtTable">
@@ -245,10 +251,10 @@
 	<!--================ 페이지 이동 1_2_3_4_5  =================-->
 		<th:block th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
 		<li class="page-item" th:if="${pag != paging.page}" >
-			<a class="page-link pagePort" th:value="${pag}" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+			<a class="page-link pagePort" th:value="${pag}" th:text ="${#numbers.formatInteger(pag,1)}"></a>
 		</li>
   		<li class="page-item active" th:if="${pag==paging.page}" >
-			<a class="page-link" th:text ="${#numbers.formatInteger(pag,2)}"></a>
+			<a class="page-link" th:text ="${#numbers.formatInteger(pag,1)}"></a>
 		</li>
        </th:block>
 	<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->

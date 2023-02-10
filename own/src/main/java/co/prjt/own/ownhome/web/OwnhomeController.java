@@ -71,7 +71,7 @@ public class OwnhomeController {
 			return "content/own/searchTest";
 		}
 		
-		@GetMapping("/own/questform")
+		@GetMapping("/own/mypage/questform")
 		public String questform() {
 			return "content/own/ownQuest";
 		}
@@ -204,7 +204,7 @@ public class OwnhomeController {
 			return "content/own/ownMyQuestion";
 		}
 		
-		@PostMapping("/own/QuestADD")
+		@PostMapping("/own/mypage/QuestADD")
 		@ResponseBody
 		public String questAdd(QuestionVO vo) {
 			System.out.println(vo);

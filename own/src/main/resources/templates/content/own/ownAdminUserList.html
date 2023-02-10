@@ -256,9 +256,9 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 					th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
 					<li class="page-item" th:if="${pag != paging.page}"><a
 						class="page-link pagePort" th:value="${pag}"
-						th:text="${#numbers.formatInteger(pag,2)}"></a></li>
+						th:text="${#numbers.formatInteger(pag,1)}"></a></li>
 					<li class="page-item active" th:if="${pag==paging.page}"><a
-						class="page-link" th:text="${#numbers.formatInteger(pag,2)}"></a>
+						class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
 					</li>
 				</th:block>
 				<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
