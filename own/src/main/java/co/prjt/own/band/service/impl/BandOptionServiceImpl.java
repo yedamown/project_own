@@ -73,7 +73,9 @@ public class BandOptionServiceImpl implements BandOptionService {
 		vo.setPaging(vo.getPaging());
 
 		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetAllMemberList(vo);
-		list.get(0).setPaging(vo.getPaging());
+		if(list!=null && list.size()>0) {
+			list.get(0).setPaging(vo.getPaging());
+		}
 		return list;
 	}
 
@@ -90,7 +92,9 @@ public class BandOptionServiceImpl implements BandOptionService {
 
 		// 가치 설정 - 멤버 관리 - 가입대기중 멤버 리스트
 		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetWaitingMemberList(vo);
-		list.get(0).setPaging(vo.getPaging());
+		if(list!=null && list.size()>0) {
+			list.get(0).setPaging(vo.getPaging());
+		}
 		return list;
 	}
 
@@ -106,7 +110,9 @@ public class BandOptionServiceImpl implements BandOptionService {
 		vo.setPaging(vo.getPaging());
 
 		List<BandMemberDetailVO> list = bandOptionMapper.bandOptionGetkickedMemberList(vo);
-		list.get(0).setPaging(vo.getPaging());
+		if(list!=null && list.size()>0) {
+			list.get(0).setPaging(vo.getPaging());
+		}
 		return list;
 	}
 
