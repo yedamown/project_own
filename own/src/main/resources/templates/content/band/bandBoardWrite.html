@@ -603,8 +603,9 @@ $("#bandCalendarMark").on('change', function(){
 		}).then( res =>{
 			console.log(res);
 			if(res.bandBoardDetailNo!=null){
-				$('#template').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+res.bandBoardDetailNo);
-			    window.open('','_self').close();
+				//$('#template').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+res.bandBoardDetailNo);
+			    //window.open('','_self').close();
+				window.location.replace('/own/band/redirection?bandBoardDetailNo='+res.bandBoardDetailNo+"&bandNo="+$('#bandNo').val());
 			} else {
 				alert('글쓰기 실패');
 			}
