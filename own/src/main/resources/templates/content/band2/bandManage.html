@@ -7,6 +7,11 @@
     	
       <style>
       	
+      	.list {
+    max-height: 200px;
+    overflow-y: scroll !important;
+    }
+    
 		img {
 			border-radius: 10px;
 		}
@@ -210,7 +215,7 @@
 										<div>
 											<h6 class="typo-list">가치 공개 유무</h6>										  
 											  <div class="d-flex justify-content-between">												
-												  <input type="radio" name="bandOpenOption" value="BE01" checked>공개 가치(상세히 공개)
+												  <input type="radio" name="bandOpenOption" value="BC01" checked>공개 가치(상세히 공개)
 												  <input type="radio" name="bandOpenOption" value="BC02" style="margin-left:6px;">비공개 가치&nbsp;(비공개함)
 												  <input type="radio" name="bandOpenOption" value="BC03" style="margin-left:6px;">밴드명 공개 가치&nbsp;(검색만 허용)
 											  </div>
@@ -221,9 +226,9 @@
 												 <div class="d-flex justify-content-between">
 					                        <p>모두</p>
 					                        <div class="primary-radio">
-					                          <input type="checkbox" id="positivity" name="bandGenderOption" value="BE01" checked>
+					                          <input type="checkbox" id="positivity" name="bandGenderOption" value="BE02" checked>
 					                          <label for="positivity" style="top: 0px"></label>
-					                           <input type="checkbox" id="positivityHidden" name="bandGenderOption" style="display: none" value="BE02">
+					                           <input type="checkbox" id="positivityHidden" name="bandGenderOption" style="display: none" value="BE01">
 					                        </div>
 					                      </div>
 					                      <div class="switch-wrap d-flex justify-content-between">
