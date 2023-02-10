@@ -494,14 +494,14 @@
 						                    <!-- 공개 -->
 						                    AND BAND_OPEN_OPTION IN ('BC01', 'BC03')
 						                    <!-- 성별 -->
-						                    AND BAND_GENDER_OPTION = 'BE02' 
-						                    OR (BAND_GENDER_OPTION = 'BE01' AND BAND_GENDER ='BE01')
-						                    AND (BAND_AGE_OPTION = 'BD02')
-						                    OR (BAND_AGE_OPTION = 'BD01'
-						                    <![CDATA[                                  
-						                    	AND TO_CHAR(BAND_AGE_BEFOROPTION, 'yyyy')<=TO_CHAR(#{bandAgeBeforoption}, 'yyyy') 
-						                    	AND TO_CHAR(BAND_AGE_AFTEROPTION, 'yyyy')>=TO_CHAR(#{bandAgeBeforoption}, 'yyyy'))) A,
-						                    ]]> 	
+						                    AND (BAND_GENDER_OPTION = 'BE02' 
+						                    	 	OR (BAND_GENDER_OPTION = 'BE01' AND BAND_GENDER = #{bandGender}))
+						                    AND ((BAND_AGE_OPTION = 'BD02')
+								                    OR (BAND_AGE_OPTION = 'BD01'
+								                    <![CDATA[                                  
+								                    	AND TO_CHAR(BAND_AGE_BEFOROPTION, 'yyyy')<=TO_CHAR(#{bandAgeBeforoption}, 'yyyy') 
+								                    	AND TO_CHAR(BAND_AGE_AFTEROPTION, 'yyyy')>=TO_CHAR(#{bandAgeBeforoption}, 'yyyy')))) A,
+								                    ]]> 	
 						                    EXER_SUB B,
 						                    OWN_LOCATION C
 									WHERE A.BAND_CATEGORY = B.EXERSUB_NO
