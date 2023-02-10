@@ -205,7 +205,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 		</tr>
 		</thead>
 		<tbody class="responsive-table__body" id="reportList">
-			<tr class="responsive-table__row titlemodal" th:each="report: ${RList}">
+			<tr class="responsive-table__row titlemodal" th:each="report: ${RList}" style="cursor: pointer;">
 				<td class="responsive-table__body__text" th:name="${report.reportNo}" th:text="${report.rn}"></td>
 				<td class="responsive-table__body__text" th:text="${report.reporter}" th:class="test2"></td>
 				<td class="responsive-table__body__text" th:text="${report.dereporter}"></td>				
@@ -245,7 +245,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 
 	
 		<!--모달창-->
-		<div id="my_modal">
+		<div id="my_modal" style="padding: 50px;">
 				<div class="form-group">
 					<label for="recipient-name" class="col-form-label">신고사유</label>
                     <span id="modaltitle"></span>
@@ -261,7 +261,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 					<option value="hold">보류</option>
 					</select>
 				</div>
-                <button type="button" id="modalBtn">처리</button>
+                
 			<a class="modal_close_btn">닫기</a>
 		</div>
 
@@ -273,7 +273,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
     	   console.log(header);
     	   console.log(token);
     		/*]]>*/
-		$('#modalBtn').on('click',function(){
+		$('#my_modal').on('click','#modalBtn',function(){
 			let value = $('#modalSelectBtn').val();
 			let val;
 			if(value=='hold'){
@@ -321,6 +321,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 
         // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
         modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+			$('#modalBtn').remove();
             bg.remove();
             modal.style.display = 'none';
         });
@@ -346,7 +347,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
          return this;
      };
 
-			$('#reportList').on('click','.titlemodal',function(){
+		$('#reportList').on('click','.titlemodal',function(){
 			modal('my_modal');
 			$('#my_modal').attr('value',$(this).children().eq(2).text())
 			$('#my_modal').attr('name',$(this).children().eq(0).attr("name"))
@@ -356,10 +357,17 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 				method : 'get',
 				data : {rno}
 			}).then(res=>{
-                $('#modalform').append(`<input type="hidden" value="${res.reportNo}" name="questNo">`)
-                $('#modaltitle').html(res.reason);
-                $('#modalcontent').html(`<img src="/imgView/${res.content}" style="width:300px;"/><br>`);
 				console.log(res);
+				if(res.status=='처리중'){
+					$('#modalform').append(`<input type="hidden" value="${res.reportNo}" name="questNo">`)
+					$('#modaltitle').html(res.reason);
+					$('#modalcontent').html(`<img src="/imgView/${res.content}" style="width:300px;"/><br>`);
+					$('#my_modal').append(`<button type="button" id="modalBtn" class="modalBtnclass" style="display:show;">처리</button>`);
+				}else{
+					$('#modalform').append(`<input type="hidden" value="${res.reportNo}" name="questNo">`)
+					$('#modaltitle').html(res.reason);
+					$('#modalcontent').html(`<img src="/imgView/${res.content}" style="width:300px;"/><br>`);					
+				}
 			})	
 		})
 
@@ -394,7 +402,7 @@ function toStringByFormatting(source, delimiter = '-') {
 					let newdate = toStringByFormatting(new Date(ele.reportDate));
 					let rno = ele.reportNo;
 					rno = rno.substr(4);					
-					let tag = `<tr class="responsive-table__row titlemodal">
+					let tag = `<tr class="responsive-table__row titlemodal" style="cursor: pointer;">
 					<td class="responsive-table__body__text" name="${ele.reportNo}">${rno}</td>
 					<td class="responsive-table__body__text">${ele.reporter}</td>
 					<td class="responsive-table__body__text">${ele.dereporter}</td>
