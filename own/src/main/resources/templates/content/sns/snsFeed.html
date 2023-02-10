@@ -1238,10 +1238,10 @@
     //게시글 상세보기 이미지 페이징
         $('.dots-parent').on("click", '.dot', function(e){
             let btnData = $(e.target).attr("data-item");
-            $('.dot').not(this).removeClass("active");
+            $(this).parent().children().removeClass("active");
             $(this).addClass("active");
-            $('.boardImg').not('[data-item="'+btnData+'"]').removeClass("active")
-            $('.boardImg[data-item="'+btnData+'"]').addClass("active")
+            $(this).parent().parent().parent().children('.feedImg').children().removeClass("active");
+            $(this).parent().parent().parent().find(`.blog_card_top[data-item=${btnData}]`).addClass("active");
         })
         //팔로우버튼
         $('.followBtn').on("click", function () {
