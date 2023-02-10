@@ -29,6 +29,9 @@ public interface ValidationMapper {
 	//각 도전별 총 인증횟수 카운트
 	int countVld(ValidationVO vo);
 	
+	//인증 삭제
+	int deleteVld(ValidationVO vo);
+	
 	//시작 날 포함 몇주째인지 계산.
 	int whatWeekToday(ValidationVO vo);
 	

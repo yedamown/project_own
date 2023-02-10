@@ -177,7 +177,7 @@
 							<div class="row portfolio-container modalBtn" id="vldImg"
 								style="width: 700px; height: fit-content; margin: 0; justify-content: center;">
 							</div>
-							<nav class="blog-pagination justify-content-center d-flex pageBtn" id="vldPaging">
+							<nav class="blog-pagination justify-content-center d-flex pageBtn" id="vldPaging" >
 							</nav>
 							<nav class="blog-pagination justify-content-center d-flex pageBtn" id="myVldPaging">
 							</nav>
@@ -288,7 +288,7 @@
 				<div class="modal">
 					<!-- 두 번째 Modal의 내용 -->
 					<div class="modal-content bg-light p-5" id="vldReport" style="padding:35px;width: 700px">
-						<span class="close">X</span>
+						<span class="close" style="text-align: right;">X</span>
 						<div class="row">
 							<input type="hidden" id="vldReportNo">
 							<input type="hidden" id="vldReportId">
@@ -298,6 +298,7 @@
 								<!-- 세 번째 Modal을 여는 클래스 -->
 								<i class="modalBtn fas fa-bullhorn text-primary"></i>
 							</h4>
+							<button class="btn btn-primary px-3" id="delVld" style="float: right;">도전삭제</button>
 						</div>
 						<img src="" style="width:500px ;height: 400px; margin: auto; object-fit: cover"/>
 						<h3></h3>
@@ -541,6 +542,27 @@
 		})
 	})
 
+	//인증삭제
+	$('#delVld').on('click', function(e){
+		console.log("인증삭제버튼");
+		console.log($(this).parent().children().eq(0).val());
+		let vldNum = $(this).parent().children().eq(0).val();
+		// $.ajax({
+		// 	url:'/own/vldDelete',
+		// 	method: 'post',
+		// 	data: { vldNo: vldNum },
+		// 	beforeSend : function(xhr){
+		// 				xhr.setRequestHeader(header, token);
+		// 	}, 
+		// 	contentType: "application/json",
+		// 	success:function(res){
+		// 		console.log(res);
+		// 	},
+		// 	error:function(err){
+		// 		console.log(err);
+		// 	}
+		// })
+	})
 	//회원신고 ----------------------------------------------------------------------------------
 	$('#userRpt').on("click", function(e){
 		console.log("회원신고");
@@ -884,7 +906,7 @@
 		    let pagingM = result[0].paging;
 		    //시작 버튼
 		    console.log(result[0]); //첫번째? 가져오기..?
-		    let startpageTag = $('<ul class="pagination" />');
+		    let startpageTag = $('<ul class="pagination"  style="z-index: none" />');
 		    $(`#${pagingName}`).append(startpageTag);
 		    //이전 버튼만들기
 		    if(pagingM.startPage>1){
@@ -988,8 +1010,10 @@
 		//내 인증이면 회원신고 버튼 안띄우기
 		if(userId == vldDtId){
 			$('#userRpt').attr('style', 'display:none');
+			$('#delVld').attr('style', 'display:block');
 		} else {
 			$('#userRpt').attr('style', 'display:block');
+			$('#delVld').attr('style', 'display:none');
 		}
 
 		//신고여부 확인.
@@ -1103,8 +1127,8 @@
 								  label: '나의 인증',
 								  data: [myVld, challVldCount - myVld],
 								  backgroundColor: [
-									  'rgb(54, 162, 235)',
-									  'rgb(255, 205, 86)'
+										'rgb(54, 162, 235)',
+									    'rgba(23, 162, 184, 0.2)'
 								  ],
 								  hoverOffset: 4
 							  }]
@@ -1121,8 +1145,8 @@
 								  label: '멤버 평균 인증',
 								  data: [memVldAvg, challVldCount - memVldAvg],
 								  backgroundColor: [
-									  'rgb(54, 162, 235)',
-									  'rgb(255, 205, 86)'
+										'rgb(54, 162, 235)',
+									    'rgba(23, 162, 184, 0.2)'
 								  ],
 								  hoverOffset: 4
 							  }]
@@ -1210,8 +1234,7 @@
 				let ul = $("<ul />")
 				result.forEach(mem => {
 				console.log(mem.userId, mem.memStatus)
-				ul.append($("<li />").text(mem.userId)
-				.append($("<button />").text('승인').attr('onclick', 'authChange(this)'), $("<button />").text('거절').attr('onclick', 'authChange(this)')));
+				ul.append($("<li />").text(mem.userId));
 				})
 				$("#nowMemList").append(ul);
 			},
@@ -1323,7 +1346,6 @@
 							</div>
 						</div>`		
 		$('#vldRptList').append(gridVld);				
-		/*   $('#vldImg').append(firstdiv.append(secondDiv.append(imgDiv, hTag))) */ 
 		}
 
 		function vldProcess(e){

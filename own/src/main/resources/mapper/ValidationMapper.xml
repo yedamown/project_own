@@ -24,6 +24,18 @@
 					AND vld_status = #{vldStatus}
 				</if>
 		</sql>
+		
+		<sql id="condition2">
+				<if test="userId !=null and userId !='' ">
+					AND user_id = #{userId}
+				</if>
+				<if test="challNo !=null and challNo !=''">
+					AND	CHALL_NO = #{challNo}
+				</if>
+				<if test="vldStatus !=null and vldStatus !='' ">
+					AND vld_status = #{vldStatus}
+				</if>
+		</sql>
 	
 	<!-- 페이징을 곁을인.. -->
 	<select id="getChallVld" resultType="co.prjt.own.chall.service.ValidationVO">
@@ -98,8 +110,8 @@
 	<select id="countVld" resultType="int">
 		SELECT COUNT(*)
 		FROM CHALL_VALIDATION
-		WHERE user_id = #{userId}
-		<include refid="condition"/>   
+		WHERE 1=1
+		<include refid="condition2"/>   
 	</select>
 	
 	<select id="memVldAvg" resultType="int">

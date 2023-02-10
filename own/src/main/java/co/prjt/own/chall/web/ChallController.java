@@ -362,6 +362,14 @@ public class ChallController {
 		return list;
 	}
 	
+	//인증삭제하기
+	@PostMapping("/vldDelete")
+	@ResponseBody
+	public int vldDelete(ValidationVO vo){
+		int rs = validation.deleteVld(vo);
+		return rs;
+	}
+	
 	//-----------------------  신 고 -------------------------------------
 	
 	// 인증 신고 등록 아작스

@@ -152,4 +152,10 @@ public class ValidationServiceImpl implements ValidationService {
 		return validation.getVldList(vo);
 	}
 
+	//인증삭제
+	@Override
+	public int deleteVld(ValidationVO vo) {
+		return validation.deleteVld(vo);
+	}
+
 }
