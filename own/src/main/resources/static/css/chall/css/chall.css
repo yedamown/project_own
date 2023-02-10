@@ -131,5 +131,27 @@
     outline: none;
   }
 
-  
+/*------------폰트적용---------------------------*/
+
+ ul li {
+ font-family: 'Cafe24Ohsquareair';
+         font-size: 15px;
+         font-weight: 700;
+         margin: 0 0 5px;
+         line-height: 2.1;
+ }
  
+  p {
+ font-family: 'Cafe24Ohsquareair';
+         font-size: 15px;
+         font-weight: 700;
+         margin: 0 0 5px;
+         line-height: 2.1;
+ }
+  h {
+ font-family: 'Cafe24Ohsquareair';
+         font-size: 15px;
+         font-weight: 700;
+         margin: 0 0 5px;
+         line-height: 2.1;
+ }

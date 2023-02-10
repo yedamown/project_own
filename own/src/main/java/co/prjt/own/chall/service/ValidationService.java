@@ -11,6 +11,9 @@ public interface ValidationService {
 	//인증상태변경
 	int updateVld(ValidationVO vo);
 	
+	//인증 삭제
+	int deleteVld(ValidationVO vo);
+	
 	//인증조회
 	ValidationVO getVld(ValidationVO vo);
 			

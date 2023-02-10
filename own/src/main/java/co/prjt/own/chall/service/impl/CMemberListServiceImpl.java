@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component;
 
 import co.prjt.own.chall.mapper.CAmountMapper;
 import co.prjt.own.chall.mapper.CMemberListMapper;
+import co.prjt.own.chall.mapper.CMemberMapper;
 import co.prjt.own.chall.mapper.ChallengeMapper;
 import co.prjt.own.chall.service.CAmountVO;
 import co.prjt.own.chall.service.CMemberListService;
 import co.prjt.own.chall.service.CMemberListVO;
+import co.prjt.own.chall.service.CMemberVO;
 import co.prjt.own.chall.service.ChallengeVO;
 
 @Component
@@ -19,6 +21,7 @@ public class CMemberListServiceImpl implements CMemberListService{
 	@Autowired CMemberListMapper memlist;
 	@Autowired ChallengeMapper chall;
 	@Autowired CAmountMapper amount;
+	@Autowired CMemberMapper  member;
 	
 	@Override
 	public int insertMemList(CMemberListVO vo) {
@@ -57,7 +60,12 @@ public class CMemberListServiceImpl implements CMemberListService{
 			amt.setAmtType("도전거절");
 			amt.setUserId(userId);
 			amt.setPrice(challPrice);
-			amount.insertAmount(amt);
+			int  rs = amount.insertAmount(amt);
+			if(rs > 0) {
+				CMemberVO mem = new CMemberVO();
+				mem.setUserId(userId);
+				mem.setPrice(challPrice);
+			}
 		}
 		return memlist.updateMemList(vo);
 	}
