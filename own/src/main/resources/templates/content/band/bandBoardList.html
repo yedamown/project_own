@@ -230,7 +230,11 @@ $(function(){
     	}
     	let userId = $('#userId').val();
 		//종합게시판이면...
-		if($('#bandBoardOptionNo').val()==null||$('#bandBoardOptionNo').val()==''){
+		console.log('???종합인디'+$('#bandBoardOptionNo').val())
+		if($('#bandBoardOptionNo').val()==='undefined'||$('#bandBoardOptionNo').val()===undefined
+				||$('#bandBoardOptionNo').val()===null
+				||$('#bandBoardOptionNo').val()==''){
+			console.log('???종합인디')
 			re = `[${ele.bandBoardNames}] `;
 			console.log('종합')
 		}
@@ -294,13 +298,15 @@ $(function(){
    	$('#tbodyBand').on('click', $('.detail'), function(e){
    		//보드번호
    		let boardNo = e.target.id;
-   		if(boardNo == null|| boardNo==''){
-   			return false;
+   		if(!(boardNo == null|| boardNo=='')){
+   			$('#subTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo);
    		}
-		$('#subTemplate').load("/own/band/bandGroup/bandBoardDetail?bandBoardDetailNo="+boardNo);
    	})
     //삭제deleteBtn""moveBtn"
     $('#deleteBtn').on('click', function(){ //페이지정보랑이것저것보내..페이지-1시킨 거 받기
+    	if(!confirm('삭제하시겠습니까?')){
+    		return false;
+    	}
     	//페이지
     	let page = $('#pagegation').find('.active').children(':eq(0)').text();
     	console.log(page);
@@ -309,7 +315,9 @@ $(function(){
     	console.log(bandNo)
     	let boardList = new Array();
     	$('tbody').find('.minChk').each(function(idx, ele){
-    		let id = $(ele).parentsUntil('tbody').children(':eq(2)').children(':eq(1)').attr('id');
+    		console.log(ele);
+    		let id = $(ele).parentsUntil('tbody').find('.detail').attr('id');
+    		
 			//console.log(id);
 			if($(ele).prop("checked")){
 				boardList.push(id);

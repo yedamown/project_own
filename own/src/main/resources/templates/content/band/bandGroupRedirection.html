@@ -215,7 +215,7 @@
                         <div class="br"></div>
                     </aside>
                         <ul class="nav navbar-nav menu_nav ml-auto">
-                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">가치 홈</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/own/band/bandGroup(bandNo=${band.bandNo})}">홈</a></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandPhoto">앨범</a></div></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandCalendar">일정</a></div></li>
                             <li class="nav-item"><div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}"><a class="nav-link" id="bandMember">멤버</a></div></li>
