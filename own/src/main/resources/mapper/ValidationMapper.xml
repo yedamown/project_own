@@ -134,4 +134,10 @@
 		 <include refid="condition"/>   
          ORDER BY V.VLD_DATE DESC
 	</select>
+
+	<delete id="deleteVld">
+		DELETE CHALL_VALIDATION
+		WHERE VLD_NO = #{vldNo}
+	</delete>
+
 </mapper>
