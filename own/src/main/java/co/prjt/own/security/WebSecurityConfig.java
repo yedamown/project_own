@@ -45,13 +45,10 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests
-//				.antMatchers("/","/own/home","/css/**","/login","/own/sendmail").permitAll() // 홈은 모든사람 접근가능
 				.antMatchers("/","/own/login","/own/SigninForm","/own/singin/**","/own/idcheck","/own/admin/selectquest"
-						,"/own/admin/test","/own/mypage/**","/own/admin/myquestDelete","/own/userInfo","/questionUpdate").permitAll() // 특정권한만 가진사람만
+						,"/own/admin/test","/own/mypage/**","/own/admin/myquestDelete","/own/userInfo","/questionUpdate","/own/admin/myBandPaging").permitAll() // 특정권한만 가진사람만
 				.antMatchers("/own/admin/**").hasRole("ADMIN") // 특정권한만 가진사람만
 				.antMatchers("/own/**").hasAnyRole("ADMIN","USER") // 특정권한만 가진사람만
-//				.anyRequest().authenticated() //이외에는 허가된사람만..
-//				.anyRequest().permitAll()
 			);
 		
 		http.formLogin()

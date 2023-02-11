@@ -89,13 +89,6 @@ public class OwnhomeController {
 		// 회원가입 폼으로 이동
 		@RequestMapping(value = "/own/SigninForm", method = RequestMethod.GET)
 		public String ownSignin(Model model) { // 오운로그인으로..
-			String id = passwordEncoder.encode("kyr");
-			System.out.println("김유리"+id);
-			id = passwordEncoder.encode("admin");
-			System.out.println("admin"+id);
-			id = passwordEncoder.encode("khj");
-			System.out.println("김현지"+id);
-			
 			return "content/own/ownsignin";
 		}
 		
@@ -103,7 +96,6 @@ public class OwnhomeController {
 		@PostMapping("/own/idcheck")
 		@ResponseBody
 		public int idcheck(String id) {
-			System.out.println("-===아이디입니다==="+id);
 			int r = ownService.idcheck(id);
 			return r;
 		}
@@ -113,15 +105,10 @@ public class OwnhomeController {
 		@ResponseBody
 		public int pwcheck(String id, String pw, String newpw) {
 			OwnUserVO vo = new OwnUserVO();
-			System.out.println("입력한 현재 비밀번호 비밀번호==========="+pw);
 			newpw = passwordEncoder.encode(newpw);
-			System.out.println(id);
 			vo = ownService.login(id);
-			System.out.println("vo값======"+vo);
-			System.out.println(newpw);
 			//암호화 된거를 비교하기 위해서 쓰는 match함수
 			if(passwordEncoder.matches(pw, vo.getUserPasswd())) {
-				
 				return 1;
 			}
 			else
@@ -139,7 +126,6 @@ public class OwnhomeController {
 		//아이디 찾기
 		@GetMapping("/searchId")
 		   public String searchId(String email) {
-		      System.out.println("넘어오나요 이메일"+email);
 		      ownService.sendMail("id",email);
 		      return "redirect:/";
 		}
@@ -154,12 +140,9 @@ public class OwnhomeController {
 		 @GetMapping("/searchPw")
 		 @ResponseBody
 		   public String searchPw(OwnUserVO vo , String id, String email) {
-		      System.out.println("넘어오나요 이메일"+email);
-		      System.out.println("넘어온 아이디"+id);
 		      vo = ownService.login(id);
 		      vo.setUserEmail(email);
 		      if(vo.getUserEmail().equals(email)) {
-		      System.out.println("아이디 같음");
 		      String appNo = ownService.sendMail("PassWord",email);
 		      vo.setUserPasswd(passwordEncoder.encode(appNo));
 		      ownService.searchPw(vo);
@@ -355,7 +338,6 @@ public class OwnhomeController {
 		@GetMapping("/own/admin/test")
 		public String test(HttpServletRequest request, Model model, @RequestParam String id,@ModelAttribute("paging1") Paging paging,
 			@ModelAttribute("paging2") Paging paging2) {
-			System.out.println("===아이디가넘어올까요="+id);
 			HttpSession session = request.getSession();
 			OwnUserVO ovo = (OwnUserVO) session.getAttribute("loginUser");
 			ChallengeVO vo2 = new ChallengeVO();

@@ -145,7 +145,7 @@ select count(*) from question
  
  <select id="reportList" resultType="co.prjt.own.common.service.ReportVO">
   SELECT * FROM ( SELECT ROWNUM RN, A.* FROM (
-	SELECT * FROM REPORT
+	SELECT * FROM REPORT ORDER BY REPORT_DATE DESC
 	<![CDATA[	
 ) A WHERE ROWNUM <= #{last} ) WHERE RN >= #{first}
 ]]>
