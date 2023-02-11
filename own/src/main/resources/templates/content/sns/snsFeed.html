@@ -1156,8 +1156,7 @@
                 let replyNo = $('.replyContent').children().children('.snsReplyNo').val();
                 console.log(replyNo)
                 if(window.confirm("정말 삭제하시겠습니까?")){
-                $('.replyContent').children().remove();
-                $('.snsReplyBox').children().eq(1).remove();
+                
                 $.ajax({
                     url : '/own/snsReplyDelete',
                     method : 'post',
@@ -1169,8 +1168,9 @@
                         xhr.setRequestHeader(header, token);
                     },
                         success : function(res){
-                        	alert("댓글이 삭제되었습니다.")
-                        
+                        alert("댓글이 삭제되었습니다.")
+                        	$('.replyContent').children().remove();
+                            $('.snsReplyBox').children().eq(1).remove();
                         if(res.reply.length != 0 ){
                           for(let i=0; i<res.reply.length; i++){
                                 $('.replyContent').append(makeReply(res.reply[i]));
@@ -1182,6 +1182,7 @@
                             }
                             let snsReplyCount = $('<span>').text("댓글 "+res.snsReplyCount +"개");
                             $('.snsReplyBox').append(snsReplyCount)
+
 
                     }, 
                         error : function(err){
