@@ -333,7 +333,7 @@
 					<option value="boradCnt">게시글 순</option>
 					<option value="replyCnt">댓글 순</option>
 				</select> <select id="aPagingOption" name="aPagingOption">
-					<option value="5" selected="selected">10개씩 보기</option>
+					<option value="10" selected="selected">10개씩 보기</option>
 					<option value="20">20개씩 보기</option>
 					<option value="50">50개씩 보기</option>
 				</select>
@@ -436,7 +436,7 @@
 			<div class="selectDiv">
 				<div style="width: 137px;"></div>
 				<select id="wPagingOption" name="wPagingOption">
-					<option value="5">10개씩 보기</option>
+					<option value="10">10개씩 보기</option>
 					<option value="20">20개씩 보기</option>
 					<option value="30">50개씩 보기</option>
 				</select>
@@ -510,7 +510,7 @@
 			<div class="selectDiv">
 				<div style="width: 137px;"></div>
 				<select id="kPagingOption" name="kPagingOption">
-					<option value="5">10개씩 보기</option>
+					<option value="10">10개씩 보기</option>
 					<option value="20">20개씩 보기</option>
 					<option value="30">50개씩 보기</option>
 				</select>
@@ -1010,9 +1010,9 @@
 						//재가입조건 td
 						let reJoinTd = ''
 						if (e.bandMemberRejoin == 'BL01') {
-							reJoinTd = `<td class="responsive-table__body__text">가입불가</td>`;
+							reJoinTd = `<td class="responsive-table__body__text" value=${e.bandMemberRejoin}>가입불가</td>`;
 						} else {
-							reJoinTd = `<td class="responsive-table__body__text">가입가능</td>`;
+							reJoinTd = `<td class="responsive-table__body__text" value=${e.bandMemberRejoin}>가입가능</td>`;
 						}
 						var td = `<tr class="responsive-table__row">
 									<td class="responsive-table__body__text"><img src="/imgView/${e.profileImg}" style="height: 50px; width: 50px; border-radius: 30%; object-fit: cover"/></td>
@@ -1020,7 +1020,7 @@
 									<td class="responsive-table__body__text">${e.bandMemberKickReason}</td>
 									<td class="responsive-table__body__text">${e.bandKickDate}</td>
 									${reJoinTd}
-									<td class="responsive-table__body__text"><input type="checkbox" class="kResignCheck" value=${e.userId}></td>
+									<td class="responsive-table__body__text"><input type="checkbox" class="kResignCheck" value=${e.userId} data-sub=${e.bandMemberRejoin}></td>
 								</tr>`;
 						$('#kBandMemberTable').append(td);
 					})
@@ -1075,13 +1075,14 @@
 				// 속성중에 체크 된 항목이 있을 경우
 				if (checked[i].checked == true) {
 					idArr.push(checked[i].value);
-					if (checked[i].parentElement.previousSibling.textContent == '가입불가') {
+					if (checked[i].getAttribute('data-sub') == 'BL01') {
 						rejoinStatusArr.push('BL02');
 					} else {
 						rejoinStatusArr.push('BL01');
 					}
 				}
 			}
+			console.log(rejoinStatusArr);
 			for (let i = 0; i < idArr.length; i++) {
 				let dataArr = { bandNo: bandNo[0], userId: idArr[i], bandMemberStatus: 'BA03', bandMemberRejoin: rejoinStatusArr[i] };
 				// 업데이트 돌리기 돌리기
