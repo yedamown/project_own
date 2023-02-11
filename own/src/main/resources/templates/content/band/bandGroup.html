@@ -547,9 +547,9 @@
 			                		let color = calendar.bandCalendarMark;
 			                	    let cal  = `<div style="width:630px; height:80px; cursor: pointer; border: 0.2rem solid ${color}; border-radius:20px; padding:0px 10px; margin:10px 0px;display:flex; justify-content:space-between" class="boardDett" id=${ele.bandBoardDetailNo}>`
 			                	    			cal += `<div style="padding:10px; pointer-events: none;"><h3 style="margin-bottom:0px; text-align:center;pointer-events: none;">${sDay}</h3>`
-			                					cal += `<p style="text-align:center;pointer-events: none;">${mon}</p></div>`
+			                					cal += `<p style="text-align:center;pointer-events: none;margin: 0px;">${mon}</p></div>`
 			                					cal += `<div style="padding:10px;pointer-events: none;"><h5 style="color:${color};"><span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span>${title}</h5>`
-			                					cal += `<p style="pointer-events: none;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
+			                					cal += `<p style="pointer-events: none;margin: 0px;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p></div>`
 			                				cal += `</div>`;
 			                		//요일뽑기
 			                		function getDayOfWeek(날짜문자열){ //ex) getDayOfWeek('2022-06-13')

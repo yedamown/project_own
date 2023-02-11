@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.prjt.own.band.mapper.BandBoardDetailMapper">
-	
+	<!-- 각 게시판에서 검색하는 검색어 -->
 	<sql id="condition">
 		<if test="bandBoardOptionNo != null and bandBoardOptionNo !='' and bandBoardOptionNo !='undefined'">
 			AND   A.BAND_BOARD_OPTION_NO = #{bandBoardOptionNo}
@@ -23,13 +23,13 @@
 		</if>
 		<!-- 글쓴이 -->
 		<if test="searchKeyword == 's4'">
-			AND	BAND_BOARD_WRITER LIKE '%${searchValue}%'
+			AND	BAND_NICKNAME LIKE '%${searchValue}%'
 		</if>
 	</sql>
 	<!-- 메인화면서에가는 검색어 -->
 	<sql id="searchCondition">
 		<if test="searchValue != null and searchValue !=''">
-			AND (BAND_BOARD_WRITER LIKE '%${searchValue}%'
+			AND (BAND_NICKNAME LIKE '%${searchValue}%'
 	        OR   BAND_BOARD_TITLE LIKE '%${searchValue}%'
 	        OR   BAND_BOARD_CONTENT LIKE '%${searchValue}%')
 		</if>
@@ -126,7 +126,8 @@
 			            BAND_BOARD_TAG 			"bandBoardTag",
 			            REPLY      				"reply",
 			            Band_Nickname			"BandNickname",
-                        band_board_name       "bandBoardNames"
+                        band_board_name       	"bandBoardNames",
+                        BAND_NICKNAME		  	"bandNickname"
 		 		FROM ( 
 		 				SELECT ROWNUM RN, A.*
 		 					FROM (
@@ -143,8 +144,9 @@
                                                         B.BAND_BOARD_TAG,
                                                         B.band_nickname,
                                                         B.REPLY,
-                                                        A.BAND_BOARD_NAME FROM
-													 (	SELECT * FROM  (SELECT 	A.BAND_BOARD_DETAIL_NO,
+                                                        A.BAND_BOARD_NAME
+                                                        
+													 FROM (	SELECT * FROM  (SELECT 	A.BAND_BOARD_DETAIL_NO,
 																	            A.BAND_BOARD_OPTION_NO,
 																	            A.BAND_BOARD_CONTENT,
 																	            A.BAND_BOARD_CNT,
@@ -203,10 +205,13 @@
 		SELECT  count(*)
         FROM BAND_BOARD_DETAIL A,
              BAND_BOARD_OPTION B,
-             BAND C
+             BAND C,
+             BAND_MEMBER_DETAIL D
         WHERE   A.BAND_BOARD_OPTION_NO = B.BAND_BOARD_OPTION_NO
         AND     B.BAND_NO = C.BAND_NO
         AND     C.BAND_NO = #{bandNo}
+        AND 	C.BAND_NO = D.BAND_NO
+        AND     D.USER_ID = A.BAND_BOARD_WRITER
 		<!-- 검색조건 -->
 	    <include refid="searchCondition" />
         <include refid="condition" />

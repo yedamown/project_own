@@ -676,11 +676,11 @@ $("#bandCalendarMark").on('change', function(){
 
 		} else if(bandLikeOption=='BH01'){
 			$('input[value=BH02]').attr('disabled', false);
-			$('input[value="BH01"]').attr('disabled', false);
+			$('input[value=BH01]').attr('disabled', false);
 			
 			$('#primary-switch').prop('disabled', false);
 			$('#primary-switch').prop('checked', true);
-			$('#primary-primary-switchHidden').prop('checked', false);
+			$('#primary-switchHidden').prop('checked', false);
 			console.log($('input[value=BH01]').is(':checked'));
 			console.log($('input[value=BH02]').is(':checked'));
 		}
