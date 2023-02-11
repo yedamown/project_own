@@ -188,13 +188,14 @@
 				inputText.value = "";
 			})
 			function sendMessage(){
-				stompClient.send("/publish/chat/room", {}, JSON.stringify({
-					chatroomNo : chatroomNo[0],
-					bandMemberNo: userNo[0],
-					messageContent: document.querySelector("#inputText").value
-				}));
-				
-				inputText.value = "";
+				if(event.keyCode == 13){
+					stompClient.send("/publish/chat/room", {}, JSON.stringify({
+						chatroomNo : chatroomNo[0],
+						bandMemberNo: userNo[0],
+						messageContent: document.querySelector("#inputText").value
+					}));
+					inputText.value = "";
+				}
 			}
 
 			// 채팅방의 기존 메세지 불러오기

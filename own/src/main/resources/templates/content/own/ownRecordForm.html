@@ -411,7 +411,6 @@
 			} else {
 				img.style.outline = '';
 			}
-
 		}
 
 		//운동 이름 가져오기
@@ -427,9 +426,7 @@
 		})
 
 		function makeTr(sub) {
-
 			let tr = `<tr><td data-sub="${sub.exersubNo}" onClick="showForm(this)" value="${sub.exersubName}">${sub.exersubName}</td></tr>`
-
 			return tr;
 		}
 
@@ -488,7 +485,7 @@
 					xhr.setRequestHeader(header, token);
 				},
 				success: function (result) {
-					console.log("result: " + result);
+					alert("운동 기록이 등록되었습니다.");
 					$('#exerciseRecordForm').submit();
 				},
 				error: function (error) {

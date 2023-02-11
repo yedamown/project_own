@@ -285,7 +285,7 @@
 		<div class="item-row optionDiv">
 			<div class="item-row">
 				<input type="text" class="form-control searchInput" placeholder="멤버 검색" id="searchVal" name="searchVal">
-					<button class="btn btn-default searchBtn" type="button" id="searchBtn">
+					<button class="btn btn-default searchBtn" type="button" id="aSearchBtn">
 						<i class="lnr lnr-magnifier"></i>
 					</button>
 			</div>
@@ -523,7 +523,7 @@
 				allBandMemberList();
 			}) // end of paging
 
-			$('#searchBtn').on('click', function () {
+			$('#aSearchBtn').on('click', function () {
 				console.log('검색클릭')
 				allBandMemberList();
 			}) // end of searchBtn
@@ -541,15 +541,16 @@
 				let bMemNick2 = $(this).attr('data-sub');
 
 				// 배열에 추가
-				let rName = bMemNick2 + "님과의 채팅방";
+				let rName1 = bMemNick2 + "님과의 채팅방";
+				let rName2 = bMemNick1 + "님과의 채팅방";
 				let chatroomDataList = new Array();
 				let chatroomData1 = {
-					chatroomName: rName,
+					chatroomName: rName1,
 					bandMemberNo: bMemNo1
 				};
 				chatroomDataList.push(chatroomData1);
 				let chatroomData2 = {
-					chatroomName: rName,
+					chatroomName: rName2,
 					bandMemberNo: bMemNo2
 				};
 				chatroomDataList.push(chatroomData2);
