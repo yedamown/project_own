@@ -366,6 +366,7 @@ public class ChallController {
 	@PostMapping("/vldDelete")
 	@ResponseBody
 	public int vldDelete(ValidationVO vo){
+		System.out.println("인증삭제정보===============" + vo);
 		int rs = validation.deleteVld(vo);
 		return rs;
 	}

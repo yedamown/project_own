@@ -545,24 +545,28 @@
 	//인증삭제
 	$('#delVld').on('click', function(e){
 		console.log("인증삭제버튼");
-		console.log($(this).parent().children().eq(0).val());
 		let vldNum = $(this).parent().children().eq(0).val();
-		// $.ajax({
-		// 	url:'/own/vldDelete',
-		// 	method: 'post',
-		// 	data: { vldNo: vldNum },
-		// 	beforeSend : function(xhr){
-		// 				xhr.setRequestHeader(header, token);
-		// 	}, 
-		// 	contentType: "application/json",
-		// 	success:function(res){
-		// 		console.log(res);
-		// 	},
-		// 	error:function(err){
-		// 		console.log(err);
-		// 	}
-		// })
-	})
+		console.log($(this).parent().parent());
+		console.log(vldNum)
+		$.ajax({
+			url:'/own/chall/vldDelete',
+			method: 'post',
+			data: { vldNo: vldNum },
+			beforeSend : function(xhr){
+						xhr.setRequestHeader(header, token);
+			}, 
+			success:function(res){
+				alert("인증 삭제 완료.")
+				let cutChallNo  = challNo.substr(4);
+				location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
+				console.log(res);
+			},
+			error:function(err){
+				console.log(err);
+			}
+		});
+	});
+
 	//회원신고 ----------------------------------------------------------------------------------
 	$('#userRpt').on("click", function(e){
 		console.log("회원신고");
@@ -592,8 +596,8 @@
 			success:function(res){
 				alert("신고 완료");
 				console.log(res);
-				let cutChallNo  = challNo.substr(4);
 				//신고완료 시 새로고침.
+				let cutChallNo  = challNo.substr(4);
 				location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
 			},
 			error:function(err){
@@ -672,7 +676,6 @@
 				error: function(err){
 					consol.log(err);
 				}
-
 			})
 		} else{
 			alert("참여하는 회원이 있어 삭제 불가능.");
@@ -1395,7 +1398,7 @@
             var div_style = 'display:inline-block;position:relative;'
                         + 'width:500px;height:auto;margin:5px;z-index:1';
             // 미리보기 이미지 속성
-            var img_style = 'width:550px;height:100%;z-index:none';
+            var img_style = 'width:500px;height:300px; object-fit: cover ; z-index:none';
             // 이미지안에 표시되는 체크박스의 속성
             var chk_style = 'width: 30px;height: 30px;position: absolute;font-size: 18px;'
                         + 'right: 0px;bottom: 0px;z-index: 999;background-color: lightgray;color: white;border: none;opacity: 0.9;cursor: pointer;';
