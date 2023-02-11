@@ -189,6 +189,22 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
     border-top: 1px solid #444444;
     border-collapse: collapse;
   }
+  
+.modaltext{
+font-family: "Cafe24Ohsquareair";
+font-size:20px;
+}
+.modalbgset
+		{
+            position: fixed;
+            z-index: 9999;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+}
 </style>
 <body>
 <div id="subtemplate">
@@ -287,10 +303,9 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 				},		
 				}).then(res=>{			
 					alert('질문삭제완료')
-					$('input[name="questNo"]').remove();
-	            	bg.remove();
-	            	modal.style.display = 'none'
-					location.replace('http://localhost/own/mypage');
+					document.querySelector('.modalbgset').classList.remove('modalbgset');
+					
+					$('#subtemplate').load('/own/mypage/question');
 				})
 				}
 				else{
@@ -306,17 +321,8 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 
 	        // 모달 div 뒤에 희끄무레한 레이어
 	        var bg = document.createElement('div');
-	        bg.setStyle({
-	            position: 'fixed',
-	            zIndex: zIndex,
-	            left: '0px',
-	            top: '0px',
-	            width: '100%',
-	            height: '100%',
-	            overflow: 'auto',
-	            // 레이어 색갈은 여기서 바꾸면 됨
-	            backgroundColor: 'rgba(0,0,0,0.4)'
-	        });
+	        bg.classList.add('modalbgset');
+	       
 	        document.body.append(bg);
 
 	        // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기

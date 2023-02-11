@@ -122,13 +122,11 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 	           //아이디 찾기
 	           if(info.equals("id"))
 	           {
-	           System.out.println("아이디찾기 들어옴");
 	           simpleMailMessage.setTo(receiveList);
 	           // 2. 메일 제목 설정
 	           simpleMailMessage.setSubject("아이디입니다");
 	           // 3. 메일 내용 설정
 	           String id = ownhomeMapper.searchId(email);
-	           System.out.println("아이디 입니다"+id);
 	           simpleMailMessage.setText(id);
 	           javaMailSender.send(simpleMailMessage);
 	           }

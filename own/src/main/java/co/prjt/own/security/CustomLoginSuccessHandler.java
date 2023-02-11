@@ -38,23 +38,17 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		auth.getAuthorities().forEach(authority ->{
 			roleNames.add(authority.getAuthority());
 		});
-		System.out.println("==ㅁㄴㅇㅁㄴㅇ="+ownService.login(auth.getName()));
 		if(roleNames.contains("ROLE_ADMIN")) {
-
-//			chk = ownService.login(id);
-//			session.setAttribute("loginUser", chk);
 			session.setAttribute("loginUser", ownService.login(auth.getName()));
 			response.sendRedirect("/");
 			return ;
 		}
 		else if(roleNames.contains("ROLE_USER")) {
-//			chk = ownService.login(id);
 			session.setAttribute("loginUser", ownService.login(auth.getName()));
 			response.sendRedirect("/");
 			return ;
 		}
 		else {
-//			chk = ownService.login(id);
 			session.setAttribute("loginUser", ownService.login(auth.getName()));
 			response.sendRedirect("/");
 			return ;
