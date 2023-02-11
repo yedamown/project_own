@@ -273,7 +273,9 @@
       	                },
       	              success : function(data) { //data는 url을 가져옴
       		            	  	if(data>0){
-      		            	  		alert('수정완료');
+      		            	  		alert('변경되었습니다.');
+	      		            	  	let bandNo = $('#bandNo').val();
+	      							location.replace("/own/band/bandGroup?bandNo="+bandNo);
       		            	  	} else {
       		            	  		alert('수정실패');
       		            	  	}

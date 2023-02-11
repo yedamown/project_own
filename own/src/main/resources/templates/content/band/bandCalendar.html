@@ -36,12 +36,13 @@
 			margin: 0 auto;
 			border: 2px solid #6ab0cd;
 			border: none;
+			border-radius: 30px;
 	       }
 		.button_hover2:hover {
+			background-color: #17a2b8;
 			color: white;
-			box-shadow: #6ab0cd 0 80px 0px 2px inset;
-			border-radius: 10px;
-			border: none;
+			border-radius: 30px;
+			box-shadow: #17a2b8 0 80px 0px 2px inset;
 		}
 		
 		.button_hover3 {
@@ -457,6 +458,8 @@
 	                           		   //상세보기 대비input hidden에 저장해놓기
 	                           		   //유사배열이라 그런지 히든에 안들어가니 가공해서..JSON.stringify???[obj][ojb]로 나옴..오 된다.
 	                           		   let saveArr = []
+	                           		   //보드지워주기...달바꿀 때 마다 초기화 됨
+	                           		   $('#articleArea').empty();
 	                                   $.each(result, function(index, element) {
 	                                	saveArr.push(JSON.stringify(element));
                                         events.push({
@@ -535,9 +538,9 @@
 		    			<div class='boardC' style= "width: 500x;padding:15px; height: 100px; display: flex; justify-content: space-between; border: 1px solid #eeeeee;" id="calendarModal2">`
 		    			cal += `<input type="hidden" value=${item.bandCalendarNo}>`
 		    			cal += `<div style="padding:10px;"><h3 id="jsDD" style="margin-bottom:0px; text-align:center;">${sDay}</h3>`
-						cal += `<p id="jsDay">${mon}</p></div>`
+						cal += `<p id="jsDay"style="margin: 0px;">${mon}</p></div>`
 						cal += `<div style="padding:10px; width:500px;"><h5 style="color:${color};"><span style="color:${color}; margin-right:10px;"><i class="fa-regular fa-calendar-check"></i></span>${title}</h5>`
-						cal += `<p id="jsDeDay" style="margin-bottom: 0px;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
+						cal += `<p id="jsDeDay" style="margin-bottom: 0px;margin: 0px;">${sYear}년 ${sMonth}월 ${sDay}일 ${sTime} ~ ${eYear}년 ${eMonth}월 ${eDay}일 ${eTime}</p>`
 						cal += `</div></div>`;
 					
 			//요일뽑기
