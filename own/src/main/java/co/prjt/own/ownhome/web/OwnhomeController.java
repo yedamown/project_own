@@ -124,10 +124,11 @@ public class OwnhomeController {
 		}
 			
 		//아이디 찾기
-		@GetMapping("/searchId")
+		@PostMapping("/searchId")
+		@ResponseBody
 		   public String searchId(String email) {
 		      ownService.sendMail("id",email);
-		      return "redirect:/";
+		      return "1";
 		}
 		
 		@GetMapping("/own/mypage")

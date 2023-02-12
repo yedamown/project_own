@@ -190,9 +190,9 @@ body {
   <div>
   <img
               class="img-fluid rounded mb-5 mb-lg-0"
-              src="/css/chall/img/about-1.jpg"
+              src="/img/로그인대문.jpg"
               alt=""
-              style="width:460px; height:540px"
+              style="width:460px; height:630px"
             />
   </div>
   <div class="form">
@@ -222,7 +222,7 @@ body {
 
 		<!-- 아이디찾기 모달창 -->
 		<div class="modal">
-			<form action="/searchId" method="get">
+			<form role="form" name="frm" id="frm">
 				<!-- 첫 번째 Modal의 내용 -->
 				<div class="modal-content">
 					<span class="close">X</span>
@@ -232,7 +232,7 @@ body {
 						<li><label>이메일 입력</label> <input id="email" name="email" type="text" placeholder="여백없이 입력"></li>
 					</ul>
 					<div class="find-btn">
-					<button type="submit">아이디찾기</button>
+					<button type="button" id="searchid">아이디찾기</button>
 					</div>
 					</div>
 				</div>
@@ -258,6 +258,10 @@ body {
 		</div>
 		<!-- 모달 스크립트 -->
 		<script>
+		/*<![CDATA[*/
+		var header = '[[${_csrf.headerName}]]';
+		  var token = '[[${_csrf.token}]]';
+		 /*]]>*/
 		const urlParams = new URL(location.href).searchParams;
         const error = urlParams.get('error');
         if(error){
@@ -305,6 +309,28 @@ body {
         }
         };
 
+        
+        $('#searchid').on('click',function(){
+        	
+        	let formData = new FormData(document.frm);
+
+        	$.ajax({
+                url: '/searchId',
+                method: 'post',
+                data : formData,
+                  cache: false,
+        	          contentType: false,
+        	          processData: false,
+                beforeSend: function(xhr){
+                  xhr.setRequestHeader(header,token);
+                }
+              }).then(res=>{
+                  alert('아이디 발송완료')
+                  location.href="/";
+              })	
+        })
+
+        
         
 		$('#searchpw').on('click',function(){
 			console.log('click')

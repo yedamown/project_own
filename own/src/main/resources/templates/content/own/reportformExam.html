@@ -65,7 +65,7 @@ button:hover {
                         <option value="부적절한 아이디">부적절한 아이디</option>
                     </select>
                   </div>
-                  <div class="col-md-7 mb-3">
+                   <div class="col-md-7 mb-3">
                     <label for="code">사유</label>
                     <input name="uploadfile" type="file" id="uploadfile" multiple="multiple">
                   </div>
@@ -79,17 +79,11 @@ button:hover {
 /*<![CDATA[*/
 var header = '[[${_csrf.headerName}]]';
   var token = '[[${_csrf.token}]]';
- console.log(header);
- console.log(token);
  /*]]>*/
  
- console.log('ㅇㅇ');
  $('#btnsignin').on('click',function(){
-	 console.log('취소');
  })
 $('#btnreporting').on('click',function(){
-	
-
 	
 	let formData = new FormData(document.frm);
 

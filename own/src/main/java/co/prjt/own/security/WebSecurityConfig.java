@@ -46,7 +46,8 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((requests) -> requests
 				.antMatchers("/","/own/login","/own/SigninForm","/own/singin/**","/own/idcheck","/own/admin/selectquest"
-						,"/own/admin/test","/own/mypage/**","/own/admin/myquestDelete","/own/userInfo","/questionUpdate","/own/admin/myBandPaging").permitAll() // 특정권한만 가진사람만
+						,"/own/admin/test","/own/mypage/**","/own/admin/myquestDelete","/own/userInfo","/questionUpdate","/own/admin/myBandPaging",
+						"/own/admin/myChallPaging").permitAll() // 특정권한만 가진사람만
 				.antMatchers("/own/admin/**").hasRole("ADMIN") // 특정권한만 가진사람만
 				.antMatchers("/own/**").hasAnyRole("ADMIN","USER") // 특정권한만 가진사람만
 			);
