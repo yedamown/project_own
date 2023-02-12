@@ -924,7 +924,6 @@
 
         //게시글 더보기
         $('.btn-more').on("click",function(){
-            console.log("더보기 버튼 클릭")
             if($('.feed-content').attr("value")=="summary"){
                 $('.feed-content').addClass("more");
                 $('.feed-content').attr("value", "more")
@@ -938,18 +937,14 @@
         })
 
         $('.followDelbtn').on("click", function(){
-            console.log("팔로우 삭제버튼 클릭");
-            console.log($(this).parent());
             $(this).parent().hide();
         })
         //신고
         $('#btnsignin').on('click',function(){
-                console.log('취소');
             })
 
         $('#btnreporting').on('click',function(){   
             let formData = new FormData(document.frm);
-            console.log("신고 클릭")
             $.ajax({
                 url: '/common/report',
                 method: 'post',
@@ -961,7 +956,6 @@
                 xhr.setRequestHeader(header,token);
                 }
             }).then(res=>{
-                console.log(res)          
             })	
         })
 
@@ -1028,11 +1022,8 @@
     
     //좋아요 ajax
         $('.snsLikeBox').on("click", '#snsLikeBtn', function(){
-            console.log("하트 클릭")
-            console.log($(this).attr("value"))
             $('.snsLikeBox').children('#snsLikeCount').remove();
                 if($(this).attr("value") == 'noLike'){
-                    console.log('빈하트 클릭')
                     $(this).attr("value", "Like");
                     $(this).attr({"src" : "/css/sns/img/fullHeart.png"});
                         $.ajax({
@@ -1046,17 +1037,14 @@
                                 xhr.setRequestHeader(header, token);
                             },
                             success : function(res){
-                                console.log('좋아요 성공~!')
                                 let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
                                     snsLikeCount.attr({"id" : "snsLikeCount"})
                                     $('.snsLikeBox').eq(0).append(snsLikeCount)
                             },
                             error : function(err){
-                                console.log(err)
                             }
                         })
                 }else{
-                    console.log("하트 클릭")
                     $(this).attr("value", "noLike");
                     $(this).attr({"src": "/css/sns/img/emptyHeart.png"});
                         $.ajax({
@@ -1070,14 +1058,12 @@
                                 xhr.setRequestHeader(header, token);
                             },
                             success : function(res){
-                                console.log('좋아요 취소~!')
                                 
                                 let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
                                     snsLikeCount.attr({"id" : "snsLikeCount"})
                                     $('.snsLikeBox').eq(0).append(snsLikeCount)
                             },
                             error : function(err){
-                                console.log(err)
                             }
 
                         })
@@ -1088,7 +1074,6 @@
 
     //댓글 입력 창 생성
     $('.replyInsert').on("click",'.replyInput', function(e){
-        console.log('댓글쓰기 버튼 클릭')
 
         $(e.target).remove();
             let replyArea = $('<textarea>').css({"width":"500px","height" : "100px", "padding":"15px"})
@@ -1118,7 +1103,6 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success: function(res){
-                        console.log(res)
 
                         for(let i=0; i<res.reply.length; i++){
                             $('.replyContent').append(makeReply(res.reply[i]));
@@ -1134,7 +1118,6 @@
 
                     },
                     error : function(err){
-                        console.log(err);
                     }
 
                 })
@@ -1142,7 +1125,6 @@
 
         //댓글취소
         $('.realReply').on("click", '.delBtn', function(){
-            console.log("취소버튼 클릭")
             $('.replyInsert').children('.realReply').children().remove();
             $('.replyInsert').children('.replyInput').remove();
             let replyInput = $('<div>').text('댓글쓰기');
@@ -1154,7 +1136,6 @@
         //댓글 삭제
         $('.replyContent').on("click", '.snsReplyDelBtn', function(e){
                 let replyNo = $('.replyContent').children().children('.snsReplyNo').val();
-                console.log(replyNo)
                 if(window.confirm("정말 삭제하시겠습니까?")){
                 
                 $.ajax({
@@ -1191,18 +1172,14 @@
 
                 })
             }else{
-                console.log("댓글 삭제 취소")
             }
         })
 
 
     //게시글 한건 삭제 
         $('#trashBtn').on("click", function () {
-            console.log('쓰레기통버튼 클릭')
             let bNo = $('.boardContent').children('.boardNo').attr("value");
-            console.log(bNo)
             if (window.confirm("정말 삭제하시겠습니까?")) {
-                console.log("네")
                 $.ajax({
                     url: '/own/boardDelete',
                     method: 'post',
@@ -1221,15 +1198,12 @@
 
                     },
                     error: function (err) {
-                        console.log(err)
                     }
                 })
             } else {
-                console.log("아니오")
             }
         })
         $('#updateBtn').on("click", function () {
-            console.log('업데이트버튼 클릭')
         })
 
         var followId = "[(${snsInfo.snsAccountNo})]"
@@ -1247,7 +1221,6 @@
         //팔로우버튼
         $('.followBtn').on("click", function () {
             if (this.value == '팔로우') {
-                console.log('팔로우버튼 클릭');
                 this.style.backgroundColor = "white";
                 this.style.color = "black";
                 this.value = '팔로잉';
@@ -1264,17 +1237,14 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success: function (res) {
-                        console.log(res)
                         $('#followerCnt').text(res);
                     },
                     error: function (err) {
-                        console.log(err);
                     }
 
                 })
 
             } else if (this.value == '팔로잉') {
-                console.log('팔로잉버튼 클릭')
                 this.style.backgroundColor = "skyblue";
                 this.style.color = "white";
                 this.value = "팔로우";
@@ -1291,11 +1261,9 @@
                         xhr.setRequestHeader(header, token);
                     },
                     success: function (res) {
-                        console.log("언팔완")
                         $('#followerCnt').text(res);
                     },
                     error: function (err) {
-                        console.log(err);
                     }
                 })
             }
@@ -1303,7 +1271,6 @@
 
         //스토리 상세보기 ajax
         $('.profileImg').on("click", function () {
-            console.log(followNickname); //위에 선언되어있는 피드 sns 닉네임
             $.ajax({
                 url: '/own/snsStoryList',
                 method: 'post',
@@ -1314,8 +1281,6 @@
                     xhr.setRequestHeader(header, token);
                 },
                 success: function (res) {
-                    console.log(res);
-                    console.log(res.storyInfo)
                     let storyProfileImg="";
                     
                     if(res.profileImg != null){
@@ -1338,7 +1303,6 @@
                                 "class": "storyImg",
                                 "page-name": i
                             })
-                            console.log("스토리번호"+ res.storyInfo[i].snsStoryNo)
                             let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i].snsStoryDate));
                                 storyProfileDate.attr({'class': "storyProfileDate",
                                                     "page-name": i});
@@ -1366,22 +1330,18 @@
                                                 "position": "absolute",
                                                 "left" : "79px"});
                                 $('.storyContent').append(defaultImg);
-                            console.log('등록된 스토리가 없습니다.');
 
                         }
 
                         },
                 error: function (err) {
-                    console.log(err)
                 }
             })
         })
     
         //스토리 삭제 후 조회 
         $('.storyDelBox').on("click", '.snsStoryDel', function(){
-                console.log("스토리 삭제입니다");
                 let snsStoryNo = $('.storyDelBox').children('.snsStoryDel.active').attr("value")
-                console.log(snsStoryNo);
             if(window.confirm("정말 삭제하시겠습니까?")){
                 $('.sotryDelBox').children().remove();
 
@@ -1401,8 +1361,6 @@
                     $('.storyProfile').children('.storyProfileImg').remove();
                     $('.storyProfile').children('.storyProfileName').remove();
                     $('.storyContent').children().remove();
-                    console.log(res);
-                    console.log(res.storyInfo)
                     let storyProfileImg="";
                     
                     if(res.profileImg != null){
@@ -1425,7 +1383,6 @@
                                 "class": "storyImg",
                                 "page-name": i
                             })
-                            console.log("스토리번호"+ res.storyInfo[i].snsStoryNo)
                             let storyProfileDate = $('<span>').text(elapsedText(res.storyInfo[i].snsStoryDate));
                                 storyProfileDate.attr({'class': "storyProfileDate",
                                                     "page-name": i});
@@ -1453,13 +1410,11 @@
                                                 "position": "absolute",
                                                 "left" : "79px"});
                                 $('.storyContent').append(defaultImg);
-                            console.log('등록된 스토리가 없습니다.');
 
                         }
 
                         },
                 error: function (err) {
-                    console.log(err)
                 }
              })
           }
@@ -1467,19 +1422,13 @@
         })
         //스토리 게시글 페이징
         $('.storyContent').on("click",function(){
-            console.log("스토리 화면 클릭")
             let i = 0;
-            //$('.storyContent').children().length 받아온 사진의 갯수 3개 0,1,2이기 때문에 작다고 비교
-            //$('.storyContent').children('.storyImg.active').attr("page-name") 현재 active상태인 이미지의 번호
             let allImgLength = $('.storyContent').children().length;
             let activeImgNum = $('.storyContent').children('.storyImg.active').attr("page-name");
             let activeImg = $('.storyContent').children('.storyImg.active');
             let activeDate =$('.storyProfile').children('.storyProfileDate.active');
             let activeDel = $('.storyDelBox').children('.snsStoryDel.active');
-            console.log(activeImg)
-            console.log(activeImgNum)
             if(activeImgNum < allImgLength - 1){
-                console.log("총 이미지 갯수보다 수가 적음")
                 activeImg.next().addClass("active");
                 activeDate.next().addClass("active");
                 activeDel.next().addClass("active");
@@ -1488,7 +1437,6 @@
                 activeDel.removeClass("active");
 
             }else{
-                console.log("첫번째 이미지 active 상태로 하기.")
                 $('.storyProfile').children(".storyProfileDate").last().removeClass("active")
                 $('.storyContent').children(".storyImg").last().removeClass("active")
                 $('.storyDelBox').children('.snsStoryDel').last().removeClass("active")
@@ -1504,13 +1452,9 @@
 
         //게시글 상세 보기 ajax
         $('.portfolio').on("click", '.grid-item', function(e){
-            console.log($(this));
-            console.log($(e.target).attr("value"));
             let boardNo = $(e.target).attr("value");
-            console.log('게시글 클릭입니다')
             if(boardNo != null){
                     $(".Feedmodal").show();
-                    console.log("모달 아작스 보냅니다");
                         $.ajax({
                             url : '/own/snsFeed',
                             method : 'post',
@@ -1522,7 +1466,6 @@
                                 xhr.setRequestHeader(header, token);
                             },
                             success: function (res){
-                                console.log(res);
                                 let boardNo = $('<div>').attr({"value": res.svo.snsBoardNo,
                                                                "class" : "boardNo"});
                                 let boardDate = $('<div>').text(res.svo.snsBoardDate);
@@ -1559,7 +1502,6 @@
                                     }
 
                                 }else{
-                                    console.log('여기까지오나요?')
                                     let emptyReply = $('<div>').text("등록된 댓글이 없습니다.")
                                         $('.replyContent').append(emptyReply);
                                 }
@@ -1591,11 +1533,9 @@
                                     $('.snsReplyBox').append(snsReplyCount)
                                 
                             },error: function (err){
-                                console.log(err)
                             }
                         })
                 }else{
-                    console.log("잘못클릭")
                 }
         })
         
@@ -1603,11 +1543,8 @@
             let Tag = ` <div class="replyIdDate" style="padding-top:10px" >${reply.snsNickname} |    ${reply.replyDate} 
                         <input class="snsReplyNo" type="hidden" value="${reply.replyNo}" /></div> 
                         <div style="padding-left:20px;">${reply.replyContent}</div>`
-            console.log(reply.snsNickname)
-            console.log(reply.userId)
 
             if(reply.userId == loginUserId){
-                console.log("x태그 생성")
                 let xTag = `<div class="snsReplyDelBtn" style="font-size:11px; padding-left:440px; cursor:pointer; color:blue;">댓글 삭제</div>`
                     Tag = Tag+xTag;
             }
@@ -1632,13 +1569,11 @@
                 btns[num].onclick = function () {
                     modals[num].style.display = "block";
                     event.stopPropagation();
-                    console.log(num);
 
                 };
 
                 // <span> 태그(X 버튼)를 클릭하면 Modal이 닫습니다.
                 spanes[num].onclick = function () {
-                    console.log('모달닫기버튼클릭')
                     modals[num].style.display = "none";
                     $('.storyContent').children('img').remove();
                     $('.storyProfile').children().not('.close').remove();
@@ -1783,7 +1718,6 @@
 
         //시간계산 함수
         function elapsedText(date) {
-            console.log(date);
             date = new Date(date);
             // 초 (밀리초)
             const seconds = 1;
@@ -1829,14 +1763,11 @@
                dataType: 'JSON',
                url: '/own/sns/ListSearch', 
                error: function(err){
-                   console.log(err);
                },
                success: function(data){
                   
-                    console.log(checkWord);
 
                     schoolList.empty();
-                    console.log(data);
                     data.forEach((school)=>{
                         if(school['snsNickname'].includes(checkWord)){
                             schoolList.append(`<img class="searchProfileImg" src="/imgView/${school['mediaServerFile']}" onerror='this.src="/css/sns/img/defaultUser.png"'>
