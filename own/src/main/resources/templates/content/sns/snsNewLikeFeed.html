@@ -458,7 +458,6 @@ body {
     //좋아요 리스트 불러오기
         $('#snsLikeList').on("click", function(){
             $('#modelBoardList').children().hide();
-            console.log($(this).attr("value"));
             
             if($(this).attr("value") =='false'){
                 $('#snsLikeList').attr("value", "true")
@@ -473,7 +472,6 @@ body {
                                 xhr.setRequestHeader(header, token);
                         },
                         success : function(res){
-                            console.log(res)
 
                             let gallery = $('<div>').attr("class", "gallery")
                             let galleryItem;
@@ -491,11 +489,9 @@ body {
                             $('.ajaxNewList').append(galleryDiv);                  
                         },
                         error : function(err){
-                            console.log(err)
                         }
                     })
                }else{
-                    console.log("좋아요 사진 안불러옴")
                }
            })
 
@@ -516,12 +512,9 @@ body {
         })
 
         $('.ajaxNewList').on("click", '.gallery-item', function(){
-            console.log("좋아요 게시물 클릭")
-            console.log($(this).children('.inputNo').val());
             let boardNo = $(this).children('.inputNo').val()
             if(boardNo != null){
                     $(".Feedmodal").show();
-                    console.log("모달 아작스 보냅니다");
                         $.ajax({
                             url : '/own/snsFeed',
                             method : 'post',
@@ -533,7 +526,6 @@ body {
                                 xhr.setRequestHeader(header, token);
                             },
                             success: function (res){
-                                console.log(res);
                                 let boardNo = $('<div>').attr({"value": res.svo.snsBoardNo,
                                                                "class" : "boardNo"});
                                 let boardDate = $('<div>').text(res.svo.snsBoardDate);
@@ -570,7 +562,6 @@ body {
                                     }
 
                                 }else{
-                                    console.log('여기까지오나요?')
                                     let emptyReply = $('<div>').text("등록된 댓글이 없습니다.")
                                         $('.replyContent').append(emptyReply);
                                 }
@@ -602,11 +593,9 @@ body {
                                     $('.snsReplyBox').append(snsReplyCount)
                                 
                             },error: function (err){
-                                console.log(err)
                             }
                         })
                 }else{
-                    console.log("잘못클릭")
                 }
         })
 
@@ -614,11 +603,8 @@ body {
             let Tag = ` <div class="replyIdDate" style="padding-top:10px">${reply.snsNickname} |${reply.replyDate} 
                         <input class="snsReplyNo" type="hidden" value="${reply.replyNo}" /></div> 
                         <div style="padding-left:50px;">${reply.replyContent}</div>`
-            console.log(reply.snsNickname)
-            console.log(reply.userId)
             
             if(reply.userId == loginUserId){
-                console.log("x태그 생성")
                 let xTag = `<span class="snsReplyDelBtn" style="font-size:11px; padding-left:440px; cursor:pointer; color:blue;">댓글 삭제</span>`
                     Tag = Tag+xTag;
             }
@@ -627,11 +613,8 @@ body {
 
          //좋아요 ajax
          $('.snsLikeBox').on("click", '#snsLikeBtn', function(){
-            console.log("하트 클릭")
-            console.log($(this).attr("value"))
             $('.snsLikeBox').children('#snsLikeCount').remove();
                 if($(this).attr("value") == 'noLike'){
-                    console.log('빈하트 클릭')
                     $(this).attr("value", "Like");
                     $(this).attr({"src" : "/css/sns/img/fullHeart.png"});
                         $.ajax({
@@ -645,17 +628,14 @@ body {
                                 xhr.setRequestHeader(header, token);
                             },
                             success : function(res){
-                                console.log('좋아요 성공~!')
                                 let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
                                     snsLikeCount.attr({"id" : "snsLikeCount"})
                                     $('.snsLikeBox').eq(0).append(snsLikeCount)
                             },
                             error : function(err){
-                                console.log(err)
                             }
                         })
                 }else{
-                    console.log("하트 클릭")
                     $(this).attr("value", "noLike");
                     $(this).attr({"src": "/css/sns/img/emptyHeart.png"});
                         $.ajax({
@@ -669,14 +649,12 @@ body {
                                 xhr.setRequestHeader(header, token);
                             },
                             success : function(res){
-                                console.log('좋아요 취소~!')
                                 
                                 let snsLikeCount = $('<span>').text("좋아요 "+res+"개");
                                     snsLikeCount.attr({"id" : "snsLikeCount"})
                                     $('.snsLikeBox').eq(0).append(snsLikeCount)
                             },
                             error : function(err){
-                                console.log(err)
                             }
 
                         })
@@ -687,7 +665,6 @@ body {
 
     //댓글 입력 창 생성
     $('.replyInsert').on("click",'.replyInput', function(e){
-        console.log('댓글쓰기 버튼 클릭')
 
         $(e.target).remove();
             let replyArea = $('<textarea>').css({"width":"500px","height" : "200px"})
@@ -717,7 +694,6 @@ body {
                         xhr.setRequestHeader(header, token);
                     },
                     success: function(res){
-                        console.log(res)
 
                           for(let i=0; i<res.reply.length; i++){
                                 $('.replyContent').append(makeReply(res.reply[i]));
@@ -727,7 +703,6 @@ body {
 
                     },
                     error : function(err){
-                        console.log(err);
                     }
 
                 })
@@ -735,7 +710,6 @@ body {
 
         //댓글취소
         $('.realReply').on("click", '.delBtn', function(){
-            console.log("취소버튼 클릭")
             $('.replyInsert').children('.realReply').children().remove();
             $('.replyInsert').children('.replyInput').remove();
             let replyInput = $('<div>').text('댓글쓰기');
@@ -748,9 +722,7 @@ body {
 
         //댓글 삭제
         $('.replyContent').on("click", '.snsReplyDelBtn', function(e){
-                console.log($(e.target).next().attr("value"));
                 let replyNo = $(e.target).next().attr("value");
-                console.log(replyNo)
                 $('.replyContent').children().remove();
                 $('.snsReplyBox').children().eq(1).remove();
                 $.ajax({
@@ -764,7 +736,6 @@ body {
                         xhr.setRequestHeader(header, token);
                     },
                         success : function(res){
-                            console.log("삭제완료")
 
                         if(res.reply.length != 0 ){
                           for(let i=0; i<res.reply.length; i++){
@@ -819,7 +790,6 @@ body {
                                 xhr.setRequestHeader(header, token);
                         },
                         success : function(res){
-                            console.log(res)
                             let gallery = $('<div>').attr("class", "gallery")
                             let galleryItem;
                             let galleryDiv;
@@ -836,11 +806,9 @@ body {
                             $('.snsLikeBox').children().remove();                  
                         },
                         error : function(err){
-                            console.log(err)
                         }
                     })
                 }else{
-                    console.log("아무변화없음");
                     $('.snsLikeBox').children().remove();
                 }
                 
@@ -849,7 +817,6 @@ body {
 
         //시간계산 함수
         function elapsedText(date) {
-            console.log(date);
             date = new Date(date);
             // 초 (밀리초)
             const seconds = 1;
@@ -895,14 +862,11 @@ body {
            dataType: 'JSON',
            url: '/own/sns/ListSearch', 
            error: function(err){
-               console.log(err);
            },
            success: function(data){
               
-                console.log(checkWord);
 
                 schoolList.empty();
-                console.log(data);
                 data.forEach((school)=>{
                     if(school['snsNickname'].includes(checkWord)){
                         schoolList.append(`<img class="searchProfileImg" src="/imgView/${school['mediaServerFile']}" onerror='this.src="/css/sns/img/defaultUser.png"'>

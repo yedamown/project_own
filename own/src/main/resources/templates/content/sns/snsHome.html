@@ -603,13 +603,11 @@
             //회원가입 중복체크
             function snscheck(){
             	let snsNickname = $('input[name="snsNickname"]').val();
-            	console.log(snsNickname)
             	$.ajax({
             		url: '/own/nicknameChk',
             		async: false,
             		data: {snsNickname}
             	}).then(res=>{
-            		console.log(res)
             		if(res==0){
             			snsForm.submit();            		
             		}else{
@@ -621,9 +619,7 @@
             
             //게시글 더보기
             $('.col-lg-8').on("click",'.btn-more',function(){
-            		console.log($(this).parent())
             		let more = $(this).siblings('.blog_card_bottom').children().siblings('.feed-content').attr("value")
-                    console.log("더보기 버튼 클릭")
                     
                     if(more=="summary"){
                     	$(this).siblings('.blog_card_bottom').children().siblings('.feed-content').addClass("more");
@@ -642,9 +638,6 @@
             $(this).on("click", function(e){
                 $(this).parent().children().removeClass("active");
                 $(this).addClass("active");
-                console.log(this);
-                console.log('단추클릭');
-                console.log($(this).attr("data-item"));
                 let btnData = $(this).attr("data-item");
                 $(this).parent().parent().parent().children('.feedImg').children().removeClass("active");
                 $(this).parent().parent().parent().find(`.blog_card_top[data-item=${btnData}]`).addClass("active");
@@ -654,7 +647,6 @@
 
         //스토리 상세보기 ajax
         $('.modalBtn').on("click",'.storyInfo', function (e) {      
-            // console.log($(this).text());
              var storyNickname = $(e.target).text()
              $(".modal").show();
 
@@ -668,17 +660,6 @@
                     xhr.setRequestHeader(header, token);
                 },
                 success: function (res) {
-                    console.log("1-----------------------")
-                    console.log(res)
-
-                    console.log("2-----------------------")
-                    console.log(res.storyImg)
-
-                    console.log("3-----------------------")
-                    console.log(res.profileImg)
-
-                    console.log("4-----------------------")
-                    console.log(res.storyInfo)
 
                    
                     let storyProfileImg = "";
@@ -698,7 +679,6 @@
                         let storyProfileName = $('<span>').text(res.storyInfo[0].snsNickname)
                         storyProfileName.attr('class', "storyProfileName")
                         let stroyProfileLink = $('<a>').attr("href","/own/snsFeed?snsNickname="+res.storyInfo[0].snsNickname+"")
-                            console.log(stroyProfileLink);
                             stroyProfileLink.css({"position":"absolute","width":"150px","height":"35px"});
                         $('.storyProfile').append(storyProfileImg, storyProfileName, stroyProfileLink);
                     //<a th:href="@{/own/snsFeed(snsNickname=${now.snsNickname})}">
@@ -721,32 +701,24 @@
 
                 },
                 error: function (err) {
-                    console.log(err)
                 }
             })
         })
 
         //스토리 게시글 페이징
         $('.storyContent').on("click",function(){
-            console.log("스토리 화면 클릭")
             let i = 0;
-            //$('.storyContent').children().length 받아온 사진의 갯수 3개 0,1,2이기 때문에 작다고 비교
-            //$('.storyContent').children('.storyImg.active').attr("page-name") 현재 active상태인 이미지의 번호
             let allImgLength = $('.storyContent').children().length;
             let activeImg = $('.storyContent').children('.storyImg.active');
             let activeImgNum = $('.storyContent').children('.storyImg.active').attr("page-name");
             let activeDate =$('.storyProfile').children('.storyProfileDate.active');
-            console.log(activeImg)
-            console.log(activeImgNum)
             if(activeImgNum < allImgLength - 1){
-                console.log("총 이미지 갯수보다 수가 적음")
                 activeImg.next().addClass("active");
                 activeDate.next().addClass("active");
                 activeDate.removeClass("active");
                 activeImg.removeClass("active");
 
             }else{
-                console.log("첫번째 이미지 active 상태로 하기.")
                 $('.storyProfile').children(".storyProfileDate").last().removeClass("active")
                 $('.storyContent').children(".storyImg").last().removeClass("active")
                 $('.storyProfile').children(".storyProfileDate").first().addClass("active")
@@ -756,16 +728,13 @@
         })
         
         window.onload = function(){
-            console.log($('#snsBoardDate').attr("value"))
             $('#snsBoardDate').attr("value")
            var snsBoardTest = elapsedText($('#snsBoardDate').attr("value"))
-           console.log(snsBoardTest)
            $('#snsBoardDate').innerHTML = snsBoardTest;
         }
 
             //시간계산 함수
             function elapsedText(date) {
-                console.log(date);
                 date = new Date(date);
                 // 초 (밀리초)
                 const seconds = 1;
@@ -808,7 +777,6 @@
         
     //검색
     function search(target){
-     // elementary, middle, high
        var checkWord = $("#schoolInput").val();
        var schoolList = $("#schoolList");
        if(checkWord==""){
@@ -820,14 +788,11 @@
            dataType: 'JSON',
            url: '/own/sns/ListSearch', 
            error: function(err){
-               console.log(err);
            },
            success: function(data){
               
-                console.log(checkWord);
 
                 schoolList.empty();
-                console.log(data);
                 data.forEach((school)=>{
                     if(school['snsNickname'].includes(checkWord)){
                         schoolList.append(`<img class="searchProfileImg" src="/imgView/${school['mediaServerFile']}" onerror='this.src="/css/sns/img/defaultUser.png"'>
