@@ -60,17 +60,13 @@ public class CommonController {
 	@PostMapping("/common/report")
 	@ResponseBody
 	public int Reporting(@RequestParam MultipartFile[] uploadfile, ReportVO vo,MultimediaVO mvo) {
-		System.out.println(vo);
 		mvo.setMediaRealFile(uploadfile[0].getOriginalFilename());
-		System.out.println(mvo.getMediaRealFile());
-		System.out.println(mvo.getMediaServerFile());
 		//reporter..
 		//dereporter
 		commonService.reportadd(vo);
 		int number = commonService.getreportSeq();
 		String to = Integer.toString(number);
 		mvo = commonService.reportupload(uploadfile, to, "RNO_", "REPORT");
-		System.out.println(mvo.getMediaServerFile()+"서버파일명");
 		//신고에 다시넣어주기
 		vo.setMediaServerFile(mvo.getMediaServerFile());
 		vo.setReportNo("RNO_"+to);
@@ -115,7 +111,6 @@ public class CommonController {
 	public String LikeAdd(@RequestBody OwnLikeVO vo) {
 		//아작스로 넘길때 category도 함께 넘기세용
 		//등록 시 add, 북마크 삭제시 del, 그 외의 경우 error 반환
-		System.out.println(vo);
 		String result = likeService.checkLike(vo);
 		return result;
 	}

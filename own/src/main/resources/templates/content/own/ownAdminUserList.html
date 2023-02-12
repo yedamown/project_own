@@ -288,13 +288,10 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 			//페이지번호 + 밴드식별번호
 			let page = $(this).attr('value');
 			let bandNo = $('#bandNo').val();
-			console.log($(this).attr('value'));
-			console.log(bandNo);
 			$.ajax({
 				url: '/own/userListAjax?page='+page,
 				method: 'get',
 			}).then(result => {
-				console.log(result);
 				let tbody = $('#userList');
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
@@ -321,7 +318,6 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 				$('#pagegation').empty();
 		         let pagingM = result[0].paging;
 		         //시작 버튼
-				 console.log(result[0]);
 		         let startpageTag = $('<ul class="pagination" />');
 		         $('#pagegation').append(startpageTag);
 		         //이전 버튼만들기
@@ -360,7 +356,6 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 		//페이지 이동
     	$('tbody').on('click', '.test2',function(e){
     		let id = $(this).text()
-    		console.log(id);
     		event.preventDefault()
     		$('#mainTemplate').empty();
     		$('#mainTemplate').load('/own/admin/test2?id='+id);

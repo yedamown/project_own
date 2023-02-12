@@ -265,23 +265,17 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 		    /*<![CDATA[*/
 			var header = [[${_csrf.headerName}]];
     		 var token = [[${_csrf.token}]];
-    	   console.log(header);
-    	   console.log(token);
     		/*]]>*/
 		$('#my_modal').on('click','#modalBtn',function(){
 			let value = $('#modalSelectBtn').val();
 			let val;
 			if(value=='hold'){
-			console.log('보류처리')
 			val = "0";
 			}else if(value=='reporting'){
-			console.log('신고처리')
 			val = "1";
 			}
 			let rno = $('#my_modal').attr('name');
 			let id = $('#my_modal').attr('value')
-			console.log(rno);
-			console.log(id);			
 			$.ajax({
 				url : '/own/admin/reportAccess',
 				method : 'post',
@@ -393,12 +387,10 @@ function toStringByFormatting(source, delimiter = '-') {
 		$('#pagegation').on('click', '.pagePort', function(){
 			//페이지번호 + 밴드식별번호
 			let page = $(this).attr('value');
-			console.log($(this).attr('value'));
 			$.ajax({
 				url: '/own/reportListAjax?page='+page,
 				method: 'get',
 			}).then(result => {
-				console.log(result);
 				let tbody = $('#reportList');
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
@@ -419,7 +411,6 @@ function toStringByFormatting(source, delimiter = '-') {
 				$('#pagegation').empty();
 		         let pagingM = result[0].paging;
 		         //시작 버튼
-				 console.log(result[0]);
 		         let startpageTag = $('<ul class="pagination" />');
 		         $('#pagegation').append(startpageTag);
 		         //이전 버튼만들기

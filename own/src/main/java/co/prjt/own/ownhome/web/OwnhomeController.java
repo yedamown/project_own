@@ -155,7 +155,6 @@ public class OwnhomeController {
 		 @PostMapping("/updatepw")
 		 @ResponseBody
 		   public String updatepw(String emailchk) {
-			 System.out.println(emailchk);
 		      return "1";
 		   }
 		 
@@ -163,7 +162,6 @@ public class OwnhomeController {
 		 @GetMapping("/own/singin/emailacc")
 		 @ResponseBody
 		 public String emailacc(@RequestParam String email) {
-			 System.out.println(email);
 			 return ownService.sendMail("emailAcc", email);			 
 		 }
 		
@@ -179,7 +177,6 @@ public class OwnhomeController {
 		//내질문 폼
 		@GetMapping("/own/mypage/question")
 		public String myquestionForm(HttpServletRequest request, Model model, Paging paging, QuestionVO vo) {
-			System.out.println("내질문 폼");
 			HttpSession session = request.getSession();
 			OwnUserVO ovo = (OwnUserVO) session.getAttribute("loginUser");		
 			vo.setUserId(ovo.getUserId());
@@ -190,7 +187,6 @@ public class OwnhomeController {
 		@PostMapping("/own/mypage/QuestADD")
 		@ResponseBody
 		public String questAdd(QuestionVO vo) {
-			System.out.println(vo);
 			ownService.questAdd(vo);
 			return "1";
 		}
@@ -208,7 +204,6 @@ public class OwnhomeController {
 		@PostMapping("/own/admin/myquestDelete")
 		@ResponseBody
 		public int myquestDelete(String rno) {
-			System.out.println(rno);
 			return ownService.myquestDelete(rno);
 		}
 		
@@ -218,9 +213,6 @@ public class OwnhomeController {
 		@ResponseBody		
 		@GetMapping("/own/admin/QuestionList")
 		public List<QuestionVO> ownQuestionListAjax(Model model, QuestionVO vo, Paging paging) {
-			System.out.println();
-			System.out.println(vo.toString());
-			System.out.println(paging.toString());
 			//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
 			return ownService.getPagingAdQuestlist(vo, paging);
 		}
@@ -228,7 +220,6 @@ public class OwnhomeController {
 		//질문목록 불러오기
 		@GetMapping("/own/admin/question")
 		public String questionList(Model model, Paging paging,QuestionVO vo) {
-			System.out.println("======넘기기전입니다======");
 			model.addAttribute("OList", ownService.getPagingAdQuestlist(vo, paging));
 			return "content/own/ownAdminQuestion";
 		}
@@ -307,9 +298,6 @@ public class OwnhomeController {
 		@PostMapping("/own/admin/reportAccess")
 		@ResponseBody
 		public int reportUpdate(String val, String rno, String id) {
-			System.out.println("value는 "+val);
-			System.out.println("rno는 "+rno);
-			System.out.println("id는 "+id);
 			ReportVO vo = new ReportVO();
 			vo.setReportNo(rno);
 			vo.setDereporter(id);
@@ -392,7 +380,6 @@ public class OwnhomeController {
 		@GetMapping("/own/admin/selectReport")
 		@ResponseBody
 		public ReportVO selectReport(@RequestParam String rno) {
-			System.out.println("===========RNO========"+rno);
 			return ownService.selectReport(rno);
 		}
 		//에러관련

@@ -123,9 +123,7 @@
 <script th:inline="javascript">
 /*<![CDATA[*/
  var header = [[${_csrf.headerName}]];
- console.log(header);
  var token = [[${_csrf.token}]];
- console.log(token);
  /*]]>*/
  //모달시작
  // Modal을 가져옵니다.
@@ -142,7 +140,6 @@ function Modal(num) {
     // 해당 클래스의 내용을 클릭하면 Modal을 띄웁니다.
     btns[num].onclick =  function() {
         modals[num].style.display = "block";
-        console.log(num);
 		let id = $('.current').text();
 		let tag = `<p id="passid" style="text-align:center;">${id}님에게 가치장을 위임하려고 합니다.<br> 위임 후 번복할수 없습니다</p>`;
 		if(modals[0]){
@@ -180,8 +177,6 @@ window.onclick = function(event) {
 $("#bandPassModal").on("click",function(){
 	let bandLeaderid = $('.current').text();
 	let bandNo = $("#bandNo").val();
-	console.log(bandNo);
-	console.log(bandLeaderid);
 	$.ajax({
 			  url : '/own/band/bandGroup/bandPass',
 					method : 'post',
@@ -199,7 +194,6 @@ $("#bandPassModal").on("click",function(){
 
 $("#bandDelModal").on('click',function(){
 	let bandNo = $("#bandNo").val()
-	console.log('ㅎㅇㅇ')
 	$.ajax({
 			  url : '/own/band/bandGroup/bandHuman',
 					method : 'post',
@@ -215,7 +209,6 @@ $("#bandDelModal").on('click',function(){
 
 $("#bandDisModal").on('click',function(){
 	let bandNo = $("#bandNo").val()
-	console.log('ㅎㅇㅇ')
 	$.ajax({
 			  url : '/own/band/bandGroup/bandDisHuman',
 					method : 'post',
@@ -233,23 +226,19 @@ $("#bandDisModal").on('click',function(){
 		$('#searchpw').on('click',function(){
 			let id = $('#p_id').val();
 			let email = $('#p_email').val();
-			console.log(id);
 			//아이디=이메일이 맞는지 먼저 체크
 			$.ajax({
 				url : '/searchPw',
 				post:'get',
 				data : {id:id,email:email}})
 			.then(res=>{
-				console.log(res)
 				if(res){
 					alert('인증번호를 보냈습니다 기다려주세요');
 					$('#passli').show();
 					$('#emailcheck').show();
-					console.log(res);
 
 					$('#emailcheck').on('click',function(){
 						let emailchk =  $('#chk_no').val();
-						console.log(emailchk);
 						if(res==emailchk){
 							alert('인증번호 맞음')
 						}
@@ -260,7 +249,7 @@ $("#bandDisModal").on('click',function(){
 					
 				}
 				else{
-					console.log("입력 정보가 일치하지 않습니다");
+					alert("입력 정보가 일치하지 않습니다");
 				}
 			})	
 			})

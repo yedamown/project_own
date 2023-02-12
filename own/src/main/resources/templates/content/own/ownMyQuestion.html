@@ -292,8 +292,6 @@ font-size:20px;
 		 /*<![CDATA[*/
 		var header = [[${_csrf.headerName}]];
 		 var token = [[${_csrf.token}]];
-	   console.log(header);
-	   console.log(token);
 		/*]]>*/
 			$('#my_modal').on('click','#qCancel',function(){
 				let rno = $('input[name="questNo"]').val();
@@ -361,8 +359,7 @@ font-size:20px;
 
 		$('#userList').on('click','.titlemodal',function(){
 			modal('my_modal');
-			let qno = $(this).attr('id')
-			console.log('id'+$(this).attr('id'));
+			let qno = $(this).attr('id'
 			
 			$('#qCancel').remove();
 			
@@ -396,13 +393,9 @@ font-size:20px;
 				url: '/own/mypage/myquestionAjax?page='+page,
 				method: 'get',
 			}).then(result => {
-				console.log(result);
 				let tbody = $('#userList');
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
-					console.log(idx);
-					console.log(ele.userId);
-					console.log(ele.answer);
 					//if 여기다가걸기
 					let answer = "";
 					let title = "";
@@ -429,7 +422,6 @@ font-size:20px;
 				$('#pagegation').empty();
 		         let pagingM = result[0].paging;
 		         //시작 버튼
-				 console.log(result[0]);
 		         let startpageTag = $('<ul class="pagination" />');
 		         $('#pagegation').append(startpageTag);
 		         //이전 버튼만들기

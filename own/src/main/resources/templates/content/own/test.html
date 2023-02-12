@@ -121,19 +121,16 @@
 			//페이지번호 + 밴드식별번호
 			let userId = $('#userIdchk').val();
 			let page = $(this).attr('value');
-			console.log($(this).attr('value'));
 			$.ajax({
 				url: '/own/admin/myChallPaging?page='+page+'&userId='+userId,
 				method: 'get'
 			}).then(result => {
 
 				$('#rowMyChall').empty();
-				console.log(result);
 				//페이지 버튼 만들기
 				
 
 				$(result).each(function(idx, my){
-					console.log(idx)
 
 					let tag = `
 					<div class="col-lg-4 mb-4">
@@ -160,7 +157,6 @@
 				$('#pageMyChall').empty();
 		         let pagingM = result[0].paging;
 		         //시작 버튼
-				 console.log(result[0]);
 		         let startpageTag = $('<ul class="pagination" />');
 				 $('#pageMyChall').append(startpageTag);
 		         //이전 버튼만들기
@@ -200,21 +196,16 @@
 		$('#pageMyBand').on('click', '.pagePort', function(){
 			//페이지번호 + 밴드식별번호
 			let userId = $('#userIdchk').val();
-			console.log(userId);
 			let page = $(this).attr('value');
-			console.log($(this).attr('value'));
 			$.ajax({
 				url: '/own/admin/myBandPaging?page='+page+'&userId='+userId,
 				method: 'get'
 			}).then(result => {
-				console.log(result);
 
 
 				$('#rowMyBand').empty();				
 				//이미지 만들기
 				$(result).each(function(idx, ele){
-					console.log(idx)
-					console.log(ele)
 
 					let tag = `
 					<div class="col-lg-4 mb-4">
@@ -239,7 +230,6 @@
 				$('#pageMyBand').empty()
 		         let pagingM = result[0].paging;
 		         //시작 버튼
-				 console.log(result[0]);
 		         let startpageTag = $('<ul class="pagination" />');
 		         $('#pageMyBand').append(startpageTag);
 		         //이전 버튼만들기

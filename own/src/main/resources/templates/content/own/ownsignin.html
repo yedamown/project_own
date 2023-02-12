@@ -146,8 +146,6 @@ button:hover {
   /*<![CDATA[*/
   var header = [[${_csrf.headerName}]];
   var token = [[${_csrf.token}]];
-    console.log(header);
-    console.log(token);
   /*]]>*/
 	 
 
@@ -182,7 +180,6 @@ button:hover {
     //아이디중복체크
         $('#idchk').on('click',function(){
         	let id = $('#u_id').val();  
-          console.log(id)
         	var specialRule = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
         	var korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         	var capital = /[A-Z]/;
@@ -256,7 +253,6 @@ button:hover {
     				method : 'get',
     				data : {email:email},
     			}).then(res=>{
-					console.log(res);
 					$('#emailacc').on('click', function(){
 						   if($('#u_emailchk').val()==res){
 							   $('#emailacc').attr('value', 1);
@@ -270,7 +266,6 @@ button:hover {
     		$('#btnsignin').on("click",function(){
               let idval = $('#idchk').attr('value')
               let emailacc = $('#emailacc').attr('value');
-              console.log(idval);
             if(idval==0){
               alert('중복체크를해주세요')
               return;
@@ -288,9 +283,9 @@ button:hover {
                 let birthday = $('#u_birth').val();
                 let gender = $('[name=u_gen]:checked').val();
                 let hobby = $('#exersub2').val();
-                console.log(gender);
+               
                 let a = pwCheck();
-                console.log(a);
+           
            
 
            if(a||pwMatchCheck()){

@@ -301,8 +301,6 @@ font-size:20px;
 	/*<![CDATA[*/
 	var header = [[${_csrf.headerName}]];
 	var token = [[${_csrf.token}]];
-	console.log(header);
-	console.log(token);
 	/*]]>*/
 	$('#modalsubmit').on('click',function(){
 		let formData = new FormData(document.modalform);
@@ -367,7 +365,6 @@ font-size:20px;
 			$('#userList').on('click','.titlemodal',function(){
 			modal('my_modal');
 			let qno = $(this).attr('id')
-			console.log('id'+$(this).attr('id'));
 			$.ajax({
 				url : '/own/admin/selectquest',
 				method : 'get',
@@ -402,12 +399,10 @@ function toStringByFormatting(source, delimiter = '-') {
 		$('#pagegation').on('click', '.pagePort', function(){
 			//페이지번호 + 밴드식별번호
 			let page = $(this).attr('value');
-			console.log($(this).attr('value'));
 			$.ajax({
 				url: '/own/admin/qustionAjax?page='+page,
 				method: 'get'
 			}).then(result => {
-				console.log(result);
 				let tbody = $('#userList');
 				$(tbody).empty();
 				$(result).each(function(idx, ele){
@@ -436,7 +431,6 @@ function toStringByFormatting(source, delimiter = '-') {
 				$('#pagegation').empty();
 		         let pagingM = result[0].paging;
 		         //시작 버튼
-				 console.log(result[0]);
 		         let startpageTag = $('<ul class="pagination" />');
 		         $('#pagegation').append(startpageTag);
 		         //이전 버튼만들기
