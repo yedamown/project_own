@@ -87,16 +87,15 @@
 
 				<!-- 예치금본문 -->
 				<div class="bg-light text-center p-5 mb-3 " style="width: 700px; border-radius: 15px; margin: auto;">
-					<h3>
+					<h3 class="mb-4">
 						내 현재 보유예치금 : <span th:text=${memInfo.memAmt} id="myNowAmt"></span>
 						<p class="btn btn-outline-primary m-1"><a href="/own/chall/payAmount">충전하러가기</a></p>
 					</h3>
-					<h3>
-						내 계좌정보:<span th:text=${memInfo.memAcc}></span> <span>[[${memInfo.memAccname}]]</span>
+					<h3 class="mb-4">
+						내 계좌정보 : <span th:text=${memInfo.memAcc}></span> <span>[[${memInfo.memAccname}]]</span>
 						<input type="hidden" id="myAcc" th:value=${memInfo.memAcc}>
 						<input type="hidden" id="myAccName" th:value=${memInfo.memAccname}>
 					</h3>
-					<p>1000원 이상 환급 가능합니다.</p>
 					<!-- 유저아이디 히든 -->
 					<form action="/own/chall/refundAmt" method="post" id="insertChall">
 						<input id="userId" name="userId" type="hidden" th:value="${session.loginUser.userId}">
@@ -104,8 +103,13 @@
 							th:value="${memInfo.memBank} + ${memInfo.memAccname}">
 						<!-- 환급금액:<input type="number" name="price" id="price" min="1000" max="300000"
 							required="required"> -->
-						<label>환급금액:<input class="form-control" type="number" min="1000" max="300000" required="required" id="refundPrice">
-						<p class="btn btn-outline-primary m-1" id="refundBtn">환급하기</p></label>
+							<div style="margin: auto;width:300px">
+						<div class="row" style="width: 500px">
+							<input class="form-control" type="number" style="width: 300px" min="1000" max="300000" required="required" id="refundPrice">
+							<p class="btn btn-outline-primary m-1" id="refundBtn">환급하기</p>
+							</div>
+						</div>
+						<p>1000원 이상 환급 가능합니다.</p>
 					</form>
 				</div>
 	

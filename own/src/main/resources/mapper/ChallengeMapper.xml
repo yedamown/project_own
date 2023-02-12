@@ -207,6 +207,14 @@
 		 <![CDATA[  
 			) A WHERE ROWNUM <= #{last} )  WHERE RN >= #{first}
 		 ]]>
+	</select>
 	
+	<select id="myEndChall" resultType="int">
+		SELECT COUNT(*) 
+		FROM CHALL_MEM_LIST M, CHALLENGES C
+		WHERE M.CHALL_NO = C.CHALL_NO
+		AND M.USER_ID = #{userId}
+		AND M.MEM_STATUS = '승인'
+		AND C.CHALL_STATUS = '종료'
 	</select>
 </mapper>

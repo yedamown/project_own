@@ -186,4 +186,10 @@ public class ChallengeServiceImpl implements ChallengeService {
 		return list;
 	}
 
+	@Override
+	public int myEndChall(ChallengeVO vo) {
+		System.out.println("===================종료된 "+vo);
+		return mapper.myEndChall(vo);
+	}
+
 }
