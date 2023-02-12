@@ -172,7 +172,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 #my_modal {
 	display: none;
 	width: 500px;
-	height: 400px;
+	min-height: 400px;
 	padding: 20px 60px;
 	background-color: #fefefe;
 	border: 1px solid #888;
@@ -270,10 +270,17 @@ font-size:20px;
 				<div class="form-group">
 					<label for="recipient-name" class="col-form-label">질문제목</label>
                     <span id="modaltitle"></span>
+                     <hr>
 				</div>
-				<div class="form-group" style="height:230px;">
+				<div class="form-group" style="min-height:100px;">
 					<label for="message-text" class="col-form-label">질문내용</label> <span
-						id="modalcontent">
+						id="modalcontent">				
+				</span>
+				</div>
+				 <hr>
+				<div class="form-group" style="min-height:100px;">
+					<label for="message-text" class="col-form-label">답변</label> <span
+						id="modalanswer">				
 				</span>
 				</div>
 			</form>
@@ -290,8 +297,6 @@ font-size:20px;
 		/*]]>*/
 			$('#my_modal').on('click','#qCancel',function(){
 				let rno = $('input[name="questNo"]').val();
-				console.log('취소함')
-				console.log(rno);			
 				if (window.confirm("질문을 삭제하시겠습니까?")) {
 					
 				$.ajax({
@@ -366,12 +371,16 @@ font-size:20px;
 				method : 'get',
 				data : {qno}
 			}).then(res=>{
-				console.log(res);
+				let title = res.title;
+				let content = res.content;
+				let answer = res.answer;
                 $('#modalform').append(`<input type="hidden" value="${res.questNo}" name="questNo">`)
-                $('#modaltitle').html(res.title);
-                $('#modalcontent').html(res.content);	                
-                $('#modalanswer').html(res.answer);
-                console.log(res.status);
+                $('#modaltitle').html(`<br><span class="modaltext">${title}</span>`);
+                $('#modalcontent').html(`<br><span class="modaltext">${content}</span>`);
+                if(answer!=null){
+                	
+                $('#modalanswer').html(`<br><span class="modaltext">${answer}</span>`);
+                }
                 if(res.status=='처리중'){
                 	let tag = `<button class="btn btn-outline-primary m-1 "type="button" id="qCancel">취소</button>`
                 $('#modalform').append(tag);
@@ -382,9 +391,7 @@ font-size:20px;
 		$('#pagegation').on('click', '.pagePort', function(){
 			//페이지번호 + 밴드식별번호
 			let page = $(this).attr('value');			
-			let bandNo = $('#bandNo').val();			
-			console.log($(this).attr('value'));			
-			console.log(bandNo);
+			let bandNo = $('#bandNo').val();		
 			$.ajax({
 				url: '/own/mypage/myquestionAjax?page='+page,
 				method: 'get',

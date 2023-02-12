@@ -60,7 +60,7 @@ public class CommonServiceImpl implements CommonService {
 											file.getContentType());
 				list.add(dto);
 				File newFileName = new File(dto.getUuid()+"_"+dto.getFileName());
-			//리얼이름 설정
+			//실제파일명 설정
 			vo.setMediaRealFile(dto.getFileName());	
 			//서버이름 설정
 			vo.setMediaServerFile(dto.getUuid()+"_"+dto.getFileName());

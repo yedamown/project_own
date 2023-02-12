@@ -290,7 +290,7 @@ font-size:20px;
 					<label for="message-text" class="col-form-label">답변</label>
 					<textarea class="form-control" id="message-text" name="answer"></textarea>
 				</div>
-                <button type="button" id="modalsubmit">전송</button>
+                <button type="button" id="modalsubmit" class="btn btn-outline-primary m-1">전송</button>
 			</form>
 			<a class="modal_close_btn">닫기</a>
 		</div>
@@ -318,7 +318,7 @@ font-size:20px;
 	          xhr.setRequestHeader(header,token);
 	        }
 	      }).then(res=>{
-	    	  alert('질문등록 완료!!')
+	    	  alert('질문답변 완료!!')
 			document.querySelector('.modalbgset').classList.remove('modalbgset');
 			$('#subTemp').load('/own/admin/question');
 	      })
@@ -378,7 +378,7 @@ font-size:20px;
                 $('#modalform').append(`<input type="hidden" value="${res.questNo}" name="questNo">`)
                 $('#modaltitle').html(`<br><span class="modaltext">${title}</span>`);
                 $('#modalcontent').html(`<br><span class="modaltext">${content}</span>`);
-				console.log(res);
+				
 			})		
 		})
 		
