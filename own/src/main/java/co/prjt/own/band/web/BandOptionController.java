@@ -154,8 +154,6 @@ public class BandOptionController {
 			String number = vo.getBandNo().substring(4);
 			common.upload(uploadfile, number, "BDU_", "BAND");
 		}
-		System.out.println("수정누름" + vo);
-		System.out.println(vo.getMediaServerFile());
 		int a = bandOptionService.bandUpdate(vo);
 		return "redirect:/own/band/bandGroup?bandNo=" + vo.getBandNo();
 
@@ -164,7 +162,6 @@ public class BandOptionController {
 	// 밴드위임페이지 이동
 	@GetMapping("/bandGroup/bandPass")
 	public String bandPass(Model model, BandMemberDetailVO dvo) {
-		System.out.println("밴드위임페이지이동"+dvo);
 		model.addAttribute("bandInfo", bandService.getBand(dvo.getBandNo()));
 		model.addAttribute("memList", bandOptionService.bandManageHome(dvo));
 		return "content/band2/bandImport";
@@ -174,7 +171,6 @@ public class BandOptionController {
 	@PostMapping("/bandGroup/bandPass")
 	@ResponseBody
 	public int bandPass(@RequestBody BandVO vo) {
-		System.out.println(vo + "========vo넘어오나요???????????????====");
 		bandOptionService.bandPass(vo);
 		return 0;
 	}
@@ -182,7 +178,6 @@ public class BandOptionController {
 	@PostMapping("/bandGroup/bandHuman")
 	@ResponseBody
 	public int bandHuman(String bandNo) {
-		System.out.println(bandNo + "넘어와라~~");
 		bandOptionService.bandHuman(bandNo);
 		return 0;
 	}

@@ -269,12 +269,6 @@
     		let newpw2 = $('#u_newpw2').val();
     		let phone = $('#u_tel').val();
     		let hobby = $('#exersub2').val();
-          console.log(id);
-          console.log(pw);
-          console.log(newpw);
-          console.log(newpw2);
-          console.log(phone);
-          console.log(hobby);
           if(pw&&newpw&&newpw2&&phone){
             if(pwCheck()){
             $.ajax({
@@ -308,7 +302,7 @@
             
     			})}
           else{
-            console.log('비밀번호 양식에 맞게 입력해주세요')
+            alert('비밀번호 양식에 맞게 입력해주세요')
           }
           }else{
             alert('모두 입력해주세요');

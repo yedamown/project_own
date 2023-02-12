@@ -171,7 +171,6 @@ public class OwnhomeController {
 		@ResponseBody // 데이터리턴할때 넣어줘야함. 리턴값을 json 변환
 		public OwnUserVO insert(@RequestBody OwnUserVO vo) {
 			vo.setUserPasswd(passwordEncoder.encode(vo.getUserPasswd()));
-			System.out.println("========================" + vo);
 			ownService.insertUser(vo);
 			return vo;
 		}
@@ -291,9 +290,6 @@ public class OwnhomeController {
 		@ResponseBody		
 		@GetMapping("/own/userListAjax")
 		public List<OwnUserVO> ownMemberListAjax(Model model, OwnUserVO vo, Paging paging) {
-			System.out.println();
-			System.out.println(vo.toString());
-			System.out.println(paging.toString());
 			//밴드번호를 가져오면 모든 글과...페이징처리해서보냄
 			return ownService.getPagingUserList(vo, paging);
 		}
@@ -321,12 +317,10 @@ public class OwnhomeController {
 			ovo.setUserId(id);
 			//보류상황
 			if(val.equals("0")) {
-				System.out.println("보류처리");
 				ownService.reportUpdate(vo);
 				return 0;
 			}
 			else{
-				System.out.println("신고처리");
 				ownService.reportUpdate(vo);
 				ownService.ReportCountup(ovo);
 				return 1;
@@ -364,7 +358,6 @@ public class OwnhomeController {
 		@GetMapping("/own/admin/test2")
 		public String test2(HttpServletRequest request, Model model, @RequestParam String id,@ModelAttribute("paging1") Paging paging,
 			@ModelAttribute("paging2") Paging paging2) {
-			System.out.println("===아이디가넘어올까요="+id);
 			ChallengeVO vo2 = new ChallengeVO();
 			vo2.setUserId(id);
 			// 6개로 페이징

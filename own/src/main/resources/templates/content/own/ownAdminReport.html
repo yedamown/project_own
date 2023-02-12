@@ -254,14 +254,9 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 					<label for="message-text" class="col-form-label">신고내용</label>
 					<span id="modalcontent"></span>
 				</div>
-				<div class="form-group">
-					<label for="message-text" class="col-form-label">처리</label>
-					<select id="modalSelectBtn">
-					<option value="reporting">신고처리</option>
-					<option value="hold">보류</option>
-					</select>
-				</div>
-                
+				<div id="reportselect">
+				
+				</div>                
 			<a class="modal_close_btn">닫기</a>
 		</div>
 
@@ -322,6 +317,7 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
         // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
         modal.querySelector('.modal_close_btn').addEventListener('click', function() {
 			$('#modalBtn').remove();
+			$('#reportselect').empty();
             bg.remove();
             modal.style.display = 'none';
         });
@@ -357,12 +353,19 @@ div.layout-978 { width: 1200px; margin: 0px auto; }
 				method : 'get',
 				data : {rno}
 			}).then(res=>{
-				console.log(res);
+			let selectbox= `<div class="form-group">
+			<label for="message-text" class="col-form-label">처리</label>
+			<select id="modalSelectBtn">
+			<option value="reporting">신고처리</option>
+			<option value="hold">보류</option>
+			</select>
+			</div>`
 				if(res.status=='처리중'){
 					$('#modalform').append(`<input type="hidden" value="${res.reportNo}" name="questNo">`)
 					$('#modaltitle').html(res.reason);
-					$('#modalcontent').html(`<img src="/imgView/${res.content}" style="width:300px;"/><br>`);
-					$('#my_modal').append(`<button type="button" id="modalBtn" class="modalBtnclass" style="display:show;">처리</button>`);
+					$('#modalcontent').html(`<br><img src="/imgView/${res.content}" style="width:300px;"/><br>`);
+					$('#reportselect').append(selectbox);
+					$('#my_modal').append(`<button type="button" id="modalBtn" class="modalBtnclass btn btn-outline-primary m-1" style="display:show;">처리</button>`);
 				}else{
 					$('#modalform').append(`<input type="hidden" value="${res.reportNo}" name="questNo">`)
 					$('#modaltitle').html(res.reason);
