@@ -25,7 +25,12 @@
 	<!-- google chart -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	<meta charset="utf-8">
-
+	<style>
+		ul {
+			list-style: none;
+			padding-left: 0px;
+		}
+	</style>
 	<title>OWN _ 도전 상세</title>
 </head>
 
@@ -33,10 +38,10 @@
 	<body>
  		<!-- Banner Start -->
 		 <div class="container-fluid bg-primary mb-3" style="padding: 0">
-			<div class="d-flex flex-column align-items-center justify-content-end" style="min-height: 300px; background-color: #6ab0cd">
-				<div class="justify-content-center" style="height: 150px; background-color: #6ab0cd">
+			<div class="d-flex flex-column align-items-center" style="min-height: 300px; justify-content: space-around; background-image:url(/img/chall/main/tennis.jpg)">
+				<div class="justify-content-center" style="height: 150px;">
 					<h4 class="text-center" style="color: white; margin-top: 30px;">오늘의 운동</h4>
-					<h2 class="text-center" style="color: white;">Challenges</h2>
+					<h2 class="text-center" style="color: white;">chall</h2>
 				</div>
 			</div>
 		</div>
@@ -87,7 +92,7 @@
 									<div style="width: 250px; text-align: center;" class="pl-3 pt-3">
 											<h5 style="padding: 3px; text-align: center; ">
 												<i class="fa fa-users text-primary"></i>
-												<span th:text="${detailChall.nowMem}"></span> / <span th:text="${detailChall.maxMem}"></span> 명 참여중
+												<span id="nowMemCnt" th:text="${detailChall.nowMem}"></span> / <span th:text="${detailChall.maxMem}"></span> 명 참여중
 											</h5>
 										
 										<div style="display: block; text-align: center;">
@@ -206,16 +211,14 @@
 
 
 					<!--멤버리스트 탭-->
-					<div style="display: none;" id="challMem">
+					<div style="display: none; width: 700px; text-align: center;" id="challMem" >
 						<input type="hidden" id="challMemCheck" value="false">
-						<div style="width: 700px;" id="waitMemList">
-							<h1>멤버 대기 리스트 탭</h1>
+						<div class="bg-light p-5 rounded mb-3" style="width: 500px; text-align: center; margin: auto;" id="waitMemList" 
+							th:if="${#strings.equals(detailChall.challStatus, '시작 전')}">
+							<h3 class="mb-3" style="text-align: center;">도전 대기 멤버 리스트</h3>
 						</div>
-						<div id="nowMemList">
-							<h3>참여 중인 멤버 리스트</h3>
-						</div>
-						<div>
-							<h3>인증신고내역</h3>
+						<div class="bg-light p-5 rounded mb-3" style="width: 500px; text-align: center; margin: auto;" id="nowMemList">
+							<h3 class="mb-3" style="text-align: center;">참여 중인 멤버 리스트</h3>
 						</div>
 					</div>
 					<!--멤버리스트 탭 끝-->
@@ -223,7 +226,6 @@
 					<!-- 인증신고 관리..리더만 -->
 					<div id="vldRpt">
 						<input type="hidden" id="reportCheck" value="false">
-						<h3>멤버 인증 신고 관리</h3>
 						<div class="row portfolio-container" id="vldRptList">
 						</div>
 					</div>
@@ -293,15 +295,15 @@
 							<input type="hidden" id="vldReportNo">
 							<input type="hidden" id="vldReportId">
 							<input type="hidden" id="vldNickName">
-							<h2></h2>
+							<h2 style="margin-right: 15px;"></h2>
 							<h4 class="mr-3" style="padding: 3px; float: right; " id="userRpt">
 								<!-- 세 번째 Modal을 여는 클래스 -->
 								<i class="modalBtn fas fa-bullhorn text-primary"></i>
 							</h4>
-							<button class="btn btn-primary px-3" id="delVld" style="float: right;">도전삭제</button>
+							<button class="btn btn-primary m-0" id="delVld" style="float: right; margin-left: 10px;">인증삭제</button>
 						</div>
 						<img src="" style="width:500px ;height: 400px; margin: auto; object-fit: cover"/>
-						<h3></h3>
+						<h3 style="text-align: right;"></h3>
 						<input type="hidden" />
 						<button class="btn btn-primary px-3" id="rptBtn">신고</button>
 							<div style="display: none" id="reportArea">
@@ -1213,15 +1215,18 @@
 		  let nowMem = "승인";
         $.ajax({
 			//대기인원 검색.
-          url: '/own/chall/challMemList?challNo=' + challNo + '&&memStatus=' + memWait,
-          method: 'get',
-          success: function (result) {
+			url: '/own/chall/challMemList?challNo=' + challNo + '&&memStatus=' + memWait,
+          	method: 'get',
+         	success: function (result) {
             console.log(result)
             let ul = $("<ul />")
             result.forEach(mem => {
-              console.log(mem.userId, mem.memStatus)
-              ul.append($("<li />").text(mem.userId)
-              .append($("<button />").text('승인').attr('onclick', 'authChange(this)'), $("<button />").text('거절').attr('onclick', 'authChange(this)')));
+              console.log("닉네임");
+			  console.log(mem.memNick);
+              ul.append($("<li />").text(mem.memNick)
+              .append(  $("<input  />").attr('type', 'hidden').val(mem.userId),
+						$("<button />").addClass('btn btn-primary').text('승인').attr('onclick', 'authChange(this)').attr('style', 'margin:10px'), 
+			            $("<button />").addClass('btn').text('거절').attr('onclick', 'authChange(this)').attr('style', 'color:#17a2b8; background-color:fff;margin:5px; border-color:#17a2b8')));
             })
             $("#waitMemList").append(ul);
           },
@@ -1229,6 +1234,7 @@
             console.log(err)
           }
         }),
+		//현재회원
 		$.ajax({
 			url: '/own/chall/challMemList?challNo=' + challNo + '&&memStatus=' + nowMem,
 			method: 'get',
@@ -1237,7 +1243,7 @@
 				let ul = $("<ul />")
 				result.forEach(mem => {
 				console.log(mem.userId, mem.memStatus)
-				ul.append($("<li />").text(mem.userId));
+				ul.append($("<li />").text(mem.memNick).attr('style', 'margin:20px'));
 				})
 				$("#nowMemList").append(ul);
 			},
@@ -1252,13 +1258,16 @@
      /* 멤버 승인, 거절 버튼 -> 권한변경*/
     function authChange(e){
       console.log("이벤트 텍스트 "+$(e).text());
-      let memId = $(e).parent().text();
+	  console.log("아이디 인풋");
+	  console.log( $(e).parent().children().eq(0).val());
+      let memNick = $(e).parent().text();
+	  let memId = $(e).parent().children().eq(0).val();
       let memStatus = $(e).text();
 	  let nowMem = $('#nowMem').val();
 	  let maxMem = $('#maxMem').val();
-	  console.log(memId);
-	  let memCutId = memId.slice(0, -4);
-	  console.log(memCutId);
+	  console.log(memNick);
+	  let memCutNick = memNick.slice(0, -4);
+	  console.log(memCutNick);
 	  if(nowMem >= maxMem){
 		alert('최대인원을 초과하여 도전승인을 할 수 없습니다.');
 	  } else{
@@ -1266,7 +1275,7 @@
 			  url: '/own/chall/challMemAuth',
 			  method: 'post',
 			  data: JSON.stringify({
-				userId: memCutId,
+				userId: memId,
 				challNo: challNo,
 				memStatus: memStatus
 			}),
@@ -1278,6 +1287,10 @@
 				console.log(result)
 				alert(result);
 				console.log($(e).parent().remove());
+				$("#nowMemList ul").append($("<li />").text(memCutNick).attr('style', 'margin:20px'));
+				let nowCnt = $('#nowMemCnt').text();
+				let realNowCnt = Number(nowCnt) + 1;
+				$('#nowMemCnt').text(realNowCnt);
 			},
 			error: function(err){
 				console.log(err)
@@ -1343,8 +1356,8 @@
 									<input type="hidden" value=${reporter}>
 									<p>${reportRs}</p>
 									<p>신고당한 사람: ${reported}</p>
-									<button onclick="vldProcess(this)">신고 승인</button>
-									<button onclick="vldProcess(this)">신고 반려</button>
+									<button class="btn btn-primary" onclick="vldProcess(this)">신고 승인</button>
+									<button class="btn btn-primary" onclick="vldProcess(this)">신고 반려</button>
 								</div>
 							</div>
 						</div>`		

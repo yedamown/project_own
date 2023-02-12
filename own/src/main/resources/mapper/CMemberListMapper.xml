@@ -28,9 +28,9 @@
 	</sql>
 	
 	<select id="getMemListAll" resultType="co.prjt.own.chall.service.CMemberListVO">
-		SELECT * 
-		FROM CHALL_MEM_LIST
-		WHERE 1=1
+		SELECT M.*, C.MEM_NICKNAME as memNick
+		FROM CHALL_MEM_LIST M, CHALL_MEMBER C
+		WHERE M.USER_ID = C.USER_ID
 		<include refid="condition" />
 	</select>
 	

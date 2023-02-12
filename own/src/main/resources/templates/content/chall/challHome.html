@@ -275,9 +275,11 @@
 				<input id="memAccname" type="hidden" name="memAccname" th:value="${session.loginUser.userName}">
 				<div class="form-group">
 					<label for="memNick">도전 닉네임 NickName *</label>
-					<input type="text" class="form-control" id="memNick" name="memNickname" required onchange="nickDouble()"
+					<div class="row">
+						<input type="text" style="width: 300px; margin-top: 10px;"  class="form-control" id="memNick" name="memNickname" required onchange="nickDouble()"
 						placeholder="1-8자의 한글, 영어만 이용가능합니다." />
-					<button type="button" id="idchk" style="WIDTH: 70pt; HEIGHT: 45px" value="0">중복체크</button>
+						<button type="button" class="btn btn-primary"  id="idchk" style="WIDTH: 70pt; margin: 7px;margin-top: 10px;" value="0">중복체크</button>
+					</div>
 					<p class="help-block text-danger"></p>
 				</div>
 				<div class="form-group">
@@ -303,8 +305,8 @@
 						id="memIntro" name="memIntro"></textarea>
 					<p class="help-block text-danger"></p>
 				</div>
-				<div>
-					<button class="btn btn-primary py-2 px-4" type="submit" id="addBtn"> 도전 등록하기 </button>
+				<div style="text-align: center;">
+					<button class="btn btn-primary py-2 px-4" type="submit" id="addBtn" style="margin-bottom: 0px;"> 도전 등록하기 </button>
 				</div>
 			</form>
 		</div>

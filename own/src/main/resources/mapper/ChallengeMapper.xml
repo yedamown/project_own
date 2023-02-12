@@ -12,6 +12,21 @@
 				<if test="challStatus !=null and challStatus !='' ">
 					AND CHALL_STATUS = #{challStatus}		
 				</if>
+				 <if test="challDuration == 0 ">
+					AND 1=1	
+				</if>
+				<if test="challDuration !=0 ">
+					AND CHALL_DURATION = #{challDuration}		
+				</if>
+				<if test="challFreq ==0 ">
+					AND 1=1	
+				</if>
+				<if test="challFreq !=0 ">
+					AND CHALL_FREQ = #{challFreq}		
+				</if>
+				<if test="challCategory !=null and challCategory !='' ">
+					AND CHALL_CATEGORY = #{challCategory}		
+				</if>
 				<if test="searchWord !=null and searchWord !='' ">
 					AND (CHALL_TITLE LIKE '%${searchWord}%' OR 
 					       CHALL_TAG LIKE '%${searchWord}%')
@@ -168,4 +183,30 @@
 		DELETE CHALLENGES
 		WHERE CHALL_NO =  #{challNo}
 	</delete>
+	
+	<select id="getPopChall" resultType="co.prjt.own.chall.service.ChallengeVO">
+	SELECT * FROM ( SELECT ROWNUM RN, A.*  FROM ( 
+	
+	SELECT * 
+	FROM ( SELECT C.* , (SELECT COUNT(*) 
+						   FROM OWN_LIKE 
+				  		  WHERE CATEGORY = 'Chall'
+						    AND C.CHALL_NO = CATEGORY_NO
+							GROUP BY C.CHALL_NO) LIKECOUNT 
+		  	 FROM (SELECT CH.*, M.MEDIA_SERVER_FILE AS FIRST_IMAGE 
+               	     FROM MULTIMEDIA M, CHALLENGES CH
+               	    WHERE M.IDENTIFY_ID = CH.CHALL_NO
+                      AND MEDIA_NO IN ( SELECT MIN (M.MEDIA_NO)
+                               		      FROM CHALLENGES S, MULTIMEDIA M
+                                   	     WHERE S.CHALL_NO=M.IDENTIFY_ID
+                                         GROUP BY S.CHALL_NO )
+                 ORDER BY TO_NUMBER(SUBSTR(CH.CHALL_NO,5)) DESC) C) 
+                 WHERE LIKECOUNT IS NOT NULL
+				 ORDER BY LIKECOUNT DESC
+				 
+		 <![CDATA[  
+			) A WHERE ROWNUM <= #{last} )  WHERE RN >= #{first}
+		 ]]>
+	
+	</select>
 </mapper>

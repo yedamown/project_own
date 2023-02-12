@@ -89,7 +89,7 @@ public class ChallController {
 		//보일갯수 설정하기
 		paging.setPageUnit(9);// 3개씩보기
 		paging.setPageSize(3); // 페이딩 동그라미 3개
-		List<ChallengeVO> cList = challenge.pageChallList(vo1, paging);
+		List<ChallengeVO> cList = challenge.popChallList(vo1, paging);
 		model.addAttribute("popChall", cList);
 		System.out.println("======popChall뉴리스트" + cList);
 		// 로그인 정보 있는 경우.
@@ -181,6 +181,16 @@ public class ChallController {
 		model.addAttribute("exersub", common.getListExersub());
 		model.addAttribute("list", cList);
 		return "content/chall/findChall";
+	}
+	
+	// 도전찾기 아작스
+	@GetMapping("/findChallAjax")
+	@ResponseBody
+	public List<ChallengeVO> findChallAjax(ChallengeVO vo, Paging paging) {
+		paging.setPageUnit(6);// 3개씩보기
+		paging.setPageSize(5); // 페이딩 동그라미 3개
+		List<ChallengeVO> list = challenge.pageChallList(vo, paging);
+		return list;
 	}
 	
 	// 검색 후 결과페이지로 이동
@@ -457,6 +467,7 @@ public class ChallController {
 	}
 
 	// 도전결과 정산처리
+	/*
 	@PostMapping("/challResult")
 	@ResponseBody
 	public String insertChallResult(@RequestBody CMemberListVO vo, CResultVO rs) {
@@ -474,7 +485,7 @@ public class ChallController {
 		}
 		String msg = rscount + "처리완료";
 		return msg;
-	}
+	} */
 
 	//
 	@GetMapping("/myAvgRs")
