@@ -156,6 +156,11 @@
 					                        </div>
 					                       </div>
 				                     </div>
+				                     <!--================hidden 체크박스 Area =================-->
+										<input style="display: none;" type="checkbox" id="bandMemberGenderOpenHi" name="bandMemberGenderOpen" value="BM02" th:checked="${member.bandMemberGenderOpen=='BM02'}">
+										<input style="display: none;" type="checkbox" id="bandMemberAgeOpenHi" name="bandMemberAgeOpen" value="BO02" th:checked="${member.bandMemberAgeOpen=='BO02'}">
+										<input style="display: none;" type="checkbox" id="bandMemberBirthOpenHi" name="bandMemberBirthOpen" value="BN02" th:checked="${member.bandMemberBirthOpen=='BN02'}">
+										<!--================hidden 체크박스 Area =================-->
 					<!--================작성 Area =================-->
 					<button type="submit" class="genric-btn primary circle arrow" style="font-size: 20px; margin: 0 auto; display: flex">내 가치 정보 수정</button>
 								</div>
@@ -170,6 +175,30 @@
         <!-- Optional JavaScript -->
         <script>
         $(function(){
+        	//연령 체크박스 유무에 따라 밸류값변하게+창생기게
+	        $('#bandMemberGenderOpen').on('click',function(){
+	        	if($('#bandMemberGenderOpen').prop('checked')){
+	            	$('#bandMemberGenderOpenHi').prop('checked',false);
+	            } else {
+	            	$('#bandMemberGenderOpenHi').prop('checked',true);
+	            }
+	        })
+        	//나이
+        	 $('#bandMemberAgeOpen').on('click',function(){
+	        	if($('#bandMemberAgeOpen').prop('checked')){
+	            	$('#bandMemberAgeOpenHi').prop('checked',false);
+	            } else {
+	            	$('#bandMemberAgeOpenHi').prop('checked',true);
+	            }
+	        })
+        	//생일
+        	 $('#bandMemberBirthOpen').on('click',function(){
+	        	if($('#bandMemberBirthOpen').prop('checked')){
+	            	$('#bandMemberBirthOpenHi').prop('checked',false);
+	            } else {
+	            	$('#bandMemberBirthOpenHi').prop('checked',true);
+	            }
+	        })
         	 //이미지삽임
             $('.imgss').on('click', '#inputImage', function(){
             	$('#defaultImg').click();

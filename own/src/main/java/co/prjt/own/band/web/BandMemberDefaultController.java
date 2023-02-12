@@ -46,7 +46,7 @@ public class BandMemberDefaultController {
 	//밴드멤버 디폴트등록
 	@PostMapping("/insertDefault")
 	public String insertDefault(@RequestParam MultipartFile deImg[], BandMemberDefaultVO vo, RedirectAttributes rttr, HttpServletRequest request) {
-		System.out.println(vo.toString());
+		//System.out.println(vo.toString());
 		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		String userId = user.getUserId();
@@ -55,7 +55,7 @@ public class BandMemberDefaultController {
 		//이미지등록
 		if(r>0 && deImg[0].getSize()>0) {
 			String res = common.upload(deImg, userId, "BandDef_", "Band");
-			System.out.println(res);
+		//	System.out.println(res);
 		} else { //기본이미지 등록
 			bandMemberDetailService.bandProfilImg("BandDef_"+userId);
 		}
