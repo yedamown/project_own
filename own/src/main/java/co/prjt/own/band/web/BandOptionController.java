@@ -131,7 +131,6 @@ public class BandOptionController {
 	// 밴드수정 홈페이지 띄우기
 	@GetMapping("/bandGroup/bandManage")
 	public String bandManagePage(Model model, BandVO vo) {
-		System.out.println("===밴드번호====" + vo);
 		model.addAttribute("bandInfo", bandOptionService.bandInfo(vo));
 		// 운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());
@@ -146,7 +145,6 @@ public class BandOptionController {
 	@PostMapping("/bandGroup/bandUpdate")
 	public String bandUpdate(@RequestParam MultipartFile[] uploadfile, BandVO vo) {
 		MultimediaVO mvo = new MultimediaVO();
-		System.out.println(uploadfile);
 		mvo = common.selectImg(vo.getBandNo());
 		if (mvo != null) {
 			common.update(uploadfile, mvo);

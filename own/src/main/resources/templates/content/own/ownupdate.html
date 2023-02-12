@@ -160,8 +160,6 @@
   /*<![CDATA[*/
   var header = [[${_csrf.headerName}]];
   var token = [[${_csrf.token}]];
-    console.log(header);
-    console.log(token);
 
   /*]]>*/
   
@@ -191,7 +189,6 @@
     //아이디중복체크
         $('#idchk').on('click',function(){
         	let id = $('#u_id').val();  
-          console.log(id)
         	var specialRule = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
         	var korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
         	var capital = /[A-Z]/;
@@ -230,7 +227,6 @@
               else{
 				  $("#idchk").attr('value',1)
             	  $("#u_id").attr('value',1)
-                console.log('가능한아이디')
               }
           })
         })
@@ -259,7 +255,6 @@
 
     $('#emailchk').on('click',function(){
      
-      console.log(pwCheck());
     })
         	
     	$('#btnupdate').on("click",function(){

@@ -54,9 +54,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		paging.setTotalRecord(ownhomeMapper.ownUsercount(vo)); // start end		
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
-		System.out.println(paging);
 		vo.setPaging(paging);
-		System.out.println("=====페이징하고싶어요======"+paging.toString());
 		List<OwnUserVO> list = ownhomeMapper.getUserList(vo);
 		if(list!=null && list.size()>0) {
 			list.get(0).setPaging(paging);
@@ -117,8 +115,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
        String appNo = sb.toString();
 	       try{
 	           // 1. 메일 수신자 설정
-	           String[] receiveList = {email};
-	           System.out.println(info);	           
+	           String[] receiveList = {email};  
 	           //아이디 찾기
 	           if(info.equals("id"))
 	           {
@@ -203,9 +200,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		paging.setPageSize(10);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
-		System.out.println(paging);
 		vo.setPaging(paging);
-		System.out.println("=====페이징하고싶어요======"+paging.toString());
 		List<QuestionVO> list = ownhomeMapper.myQuestion(vo);
 		if(list!=null && list.size()>0) {
 			list.get(0).setPaging(paging);
@@ -226,9 +221,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		paging.setPageSize(10);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
-		System.out.println(paging);
 		vo.setPaging(paging);
-		System.out.println("=====페이징하고싶어요======"+paging.toString());
 		List<QuestionVO> list = ownhomeMapper.questionList(paging);
 		list.get(0).setPaging(paging);
 		return list;
@@ -259,9 +252,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		paging.setPageSize(10);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
-		System.out.println(paging);
 		vo.setPaging(paging);
-		System.out.println("=====페이징하고싶어요======"+paging.toString());
 		List<ReportVO> list = ownhomeMapper.reportList(paging);
 		list.get(0).setPaging(paging);
 		return list;
@@ -338,9 +329,7 @@ public class OwnhomeServiceImpl implements OwnhomeService,UserDetailsService {
 		paging.setTotalRecord(ownhomeMapper.bandCounting(vo)); // start end
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
-		System.out.println(paging);
 		vo.setPaging(paging);
-		System.out.println("=====페이징하고싶어요======"+paging.toString());
 		List<BandVO> list = ownhomeMapper.adminBandCheck(vo);
 		if(list!=null && list.size()>0) {
 		list.get(0).setPaging(paging);

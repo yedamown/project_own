@@ -315,7 +315,6 @@
               allTag += $(ele).text();
             });
             $('input[name=bandKeyword]').val(allTag);
-            console.log('bandKeyword TEST'+$('input[name=bandKeyword]').val())
           })
           
           //진동효과
@@ -384,7 +383,6 @@
         //디폴트이미지 설정하기###
         $('.aaimg').on('click', function(){
         	$('#inputImage').attr('src',$(this).attr('src'));
-        	console.log($(this).attr('src').substr(9));
         	$('input[name=mediaServerFile]').val($(this).attr('src').substr(9))
         })
         //연령 체크박스 유무에 따라 밸류값변하게+창생기게
