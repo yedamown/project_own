@@ -51,4 +51,7 @@ public interface ChallengeService {
 	//------------------------좋아요 등 인기있는 도전 순위----------
 	List<ChallengeVO> popChallList(ChallengeVO vo ,Paging paging);
 	
+	//종료된 도전.. 참여한 도전 수 카운트
+	int myEndChall(ChallengeVO vo);
+	
 }

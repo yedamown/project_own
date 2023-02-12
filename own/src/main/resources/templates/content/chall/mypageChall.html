@@ -89,8 +89,10 @@
 								<canvas id="myChart" style="width: 300px; height: 300px; "></canvas>
 								<h3 class="m-3">성공률 [[${memResult.avgSR}]] % </h3>
 							</div>
-							<div style="text-align: center; width: 300px; height: 300px; vertical-align: middle;">
-								<h5>현재까지 총 상금:[[${memResult.sumRP}]]</h5>
+							<div style="display: block; text-align: center; width: 300px; height: 300px; 
+								padding-bottom: 30px;padding-top: 60px;">
+								<h3 class="mb-5">현재까지 획득 상금 <span><h1 class="mt-2" style="color:#6ab0cd"> [[${memResult.sumRP}]] 원</h1></span></h3>
+								<h3 class="m-3">완료한 도전 수 <span><h1 class="mt-2"style="color:#6ab0cd;">[[${myEndChall}]] 개</h1></span></h3>
 							</div>
 						</div>
 					</div>
@@ -111,7 +113,6 @@
 				let rest = 100 - avgSuccessRate;
 				//아작스로 데이터수정해서다시 화면에뿌려주깅
 				var context = document.getElementById('myChart').getContext('2d');
-
 				var myChart = new Chart(context, {
 					type: 'doughnut',
 					data: {

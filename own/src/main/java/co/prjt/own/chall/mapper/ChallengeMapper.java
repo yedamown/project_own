@@ -44,4 +44,7 @@ public interface ChallengeMapper {
 	//좋아요있는 도전들....뽑기
 	List<ChallengeVO> getPopChall(ChallengeVO vo);
 	
+	//종료된 도전.. 참여한 도전 수 카운트
+	int myEndChall(ChallengeVO vo);
+	
 }

@@ -405,14 +405,7 @@
 					</th:block>
 				</div>
 
-				<!-- Plain Text -->
-				<div >
-					<h2 class="mb-4"> 오늘의 운동 </h2>
-					Aliquyam sed lorem stet diam dolor sed ut sit. Ut sanctus erat ea
-					est aliquyam dolor et. Et no consetetur eos labore ea erat voluptua
-					et. Et aliquyam dolore sed erat. Magna sanctus sed eos tempor rebum
-					dolor, tempor takimata clita sit et elitr ut eirmod.
-				</div>
+
 			</div>
 		</div>
 	</div>
@@ -558,7 +551,7 @@
 						xhr.setRequestHeader(header, token);
 			}, 
 			success:function(res){
-				alert("인증 삭제 완료.")
+				alert("인증 삭제 .")
 				let cutChallNo  = challNo.substr(4);
 				location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
 				console.log(res);
@@ -596,9 +589,7 @@
 			xhr.setRequestHeader(header,token);
 			},
 			success:function(res){
-				alert("신고 완료");
-				console.log(res);
-				//신고완료 시 새로고침.
+				alert("회원 신고가 완료되었습니다.");
 				let cutChallNo  = challNo.substr(4);
 				location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
 			},
@@ -654,31 +645,32 @@
 	$('#delChall').click( function(){
 		console.log("삭제");
 		let nowChallMem = $('#nowMem').val();
-		console.log(nowChallMem);
 		if(nowChallMem == 0){
 			console.log("삭제가능")
-			$.ajax({
-				url:'/own/chall/delChall',
-				method:'post',
-				data: {challNo:challNo},
-				beforeSend : function(xhr){
-							xhr.setRequestHeader(header, token);
-				},
-				success: function(res){
-					console.log(res);
-					if(res == 1){
-						if(!confirm("도전을 삭제하시겠습니까?")){
-							alert("도전삭제를 취소하였습니다.");
-					} else{
-						alert("도전 삭제. 도전 홈으로 이동합니다.");
-						location.href = '/own/chall/home';
+			if(!confirm("도전을 삭제하시겠습니까?")){
+				alert("도전삭제를 취소하였습니다.");
+			} else {
+				$.ajax({
+					url:'/own/chall/delChall',
+					method:'post',
+					data: {challNo:challNo},
+					beforeSend : function(xhr){
+								xhr.setRequestHeader(header, token);
+					},
+					success: function(res){
+						console.log(res);
+						if(res == 1){
+							alert("도전 삭제가 완료되었습니다.")
+							location.href = '/own/chall/home';
+						} else{
+							alert("오류가 발생하였습니다.");
+						}
+					},
+					error: function(err){
+						consol.log(err);
 					}
-				}
-				},
-				error: function(err){
-					consol.log(err);
-				}
-			})
+				});
+			};
 		} else{
 			alert("참여하는 회원이 있어 삭제 불가능.");
 		}
@@ -706,7 +698,6 @@
 
       let vldButton = $('#vldFormSubmit');
       console.log(challNo, userId);
-      console.log($("#resultCheck").val());
 
 	  //처음보여주는 아작스페이징!
       if($("#vldCheck").val() == "false"){
@@ -720,7 +711,6 @@
 				 challNo: challNo,
 				 vldStatus: "승인"},
           success: function(result){
-            console.log(result);
             result.forEach( vld => {
               makeVldForm(vld)
             });
@@ -728,7 +718,6 @@
 			makePaging(result, pagingName);
           },
           error: function(err){
-            console.log(err);
           }
         });
         //인증횟수 확인하고 버튼 설정바꾸기
@@ -853,7 +842,8 @@
 						pageUnit:4,
 						pageSize:5,
 						challNo: challNo,
-						userId: myId},
+						userId: myId,
+						vldStatus:"승인" },
 				success: function(result){
 					console.log(result);
 					//처음불러온애들
@@ -887,7 +877,8 @@
 					   pageUnit:4,
 					   pageSize:5,
 					   challNo: challNo,
-					   userId: userId}
+					   userId: userId,
+					   vldStatus:"승인"}
 		    }).then(result => {
 		       console.log(result);
 				//형태만들기 이미있는애들 없애준다.. -> 도전폼
