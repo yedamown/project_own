@@ -35,8 +35,8 @@
 	<body>
  		<!-- Banner Start -->
 		 <div class="container-fluid bg-primary mb-3" style="padding: 0">
-			<div class="d-flex flex-column align-items-center justify-content-end" style="min-height: 300px; background-color: #6ab0cd">
-				<div class="justify-content-center" style="height: 150px; background-color: #6ab0cd">
+			<div class="d-flex flex-column align-items-center" style="min-height: 300px; justify-content: space-around; background-image:url(/img/chall/main/soccer.jpg)">
+				<div class="justify-content-center" style="height: 150px;">
 					<h4 class="text-center" style="color: white; margin-top: 30px;">오늘의 운동</h4>
 					<h2 class="text-center" style="color: white;">Challenges</h2>
 				</div>
@@ -100,7 +100,7 @@
 							<div class="m-3" style="width: 200px;">
 								<select class="form-control" id="cCategory" name="cCategory"
 									style="height: 47px">
-									<option selected>도전 카테고리</option>
+									<option selected value="0">도전 카테고리</option>
 									<th:block th:each="exer:${exersub}">
 										<option th:value="${exer.exersubName}" th:text=${exer.exersubName} />
 									</th:block>
@@ -109,28 +109,26 @@
 							<div class="m-3" style="width: 200px;">
 								<select class="form-control" id="cStatus" name="cStatus"
 									style="height: 47px">
-									<option selected>도전 상태</option>
-									<option value="충전">시작 전</option>
-									<option value="도전참가">진행 중</option>
-									<option value="도전환급">완료</option>
+									<option selected value="0">도전 상태</option>
+									<option value="시작 전">시작 전</option>
+									<option value="진행 중">진행 중</option>
+									<option value="종료">종료</option>
 								</select>
 							</div>
 
 							<div class="m-3" style="width: 200px;">
 								<select class="form-control" id="cDuration" name="cDuration"
 									style="height: 47px">
-									<option selected>도전 기간</option>
+									<option selected value="0">도전 기간</option>
 									<option th:each=" i: ${#numbers.sequence(1, 4)}" th:value="${i}" th:text="|${i}주 동안|" />
 								</select>
 							</div>
 							<div class="m-3" style="width: 200px;">
 								<select class="form-control" id="cFreq" name="cFreq"
 									style="height: 47px" >
-									<option selected>도전 횟수</option>
+									<option selected value="0">도전 횟수</option>
 									<th:block th:each=" i: ${#numbers.sequence(1, 7)}"><option th:value="${i}" th:text="|주 ${i}회|"></option>
 									</th:block>
-									<option value="충전">충전</option>
-									<option value="도전참가">도전참가</option>
 								</select>
 							</div>
 						</div>
@@ -164,42 +162,32 @@
 							</div>
 
 							<!-- 페이징버튼 넣기 -->
-							<div id="navPaging">
-								<nav class="blog-pagination justify-content-center d-flex"
-									id="nowChallPaging" th:if="${!#lists.isEmpty(myChall)}">
-									<!--================ 이전  =================-->
-									<ul class="pagination">
-										<li class="page-item" th:if="${paging.startPage > 1}"><a
-											class="page-link" aria-label="Previous"
-											th:value="${paging.startPage-1}"> <span
-												aria-hidden="true"><span
-													class="lnr lnr-chevron-left pagePort"></span></span></a></li>
-										<!--================ 페이지 이동 1_2_3_4_5  =================-->
-										<th:block
-											th:each="pag:${#numbers.sequence(paging.startPage,paging.endPage)}">
-											<li class="page-item" th:if="${pag != paging.page}"><a
-												class="page-link pagePort" th:value="${pag}"
-												th:text="${#numbers.formatInteger(pag,1)}"></a></li>
-											<li class="page-item active" th:if="${pag==paging.page}"><a
-												class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+								<nav class="blog-pagination justify-content-center d-flex" id="findChallPaging"  th:if="${!#lists.isEmpty(list)}">
+										<!--================ 이전  =================-->
+										<ul class="pagination">
+											<li class="page-item" th:if="${list[0].paging.startPage>1}"><a
+												class="page-link" aria-label="Previous"
+												th:value="${list[0].paging.startPage-1}"> <span aria-hidden="true"><span
+														class="lnr lnr-chevron-left pagePort"></span></span></a></li>
+											<!--================ 페이지 이동 1_2_3_4_5  =================-->
+											<th:block
+												th:each="pag:${#numbers.sequence(list[0].paging.startPage, list[0].paging.endPage)}">
+												<li class="page-item" th:if="${pag != list[0].paging.page}"><a
+													class="page-link pagePort" th:value="${pag}"
+													th:text="${#numbers.formatInteger(pag,1)}"></a></li>
+												<li class="page-item active" th:if="${pag==list[0].paging.page}"><a
+													class="page-link" th:text="${#numbers.formatInteger(pag,1)}"></a>
+												</li>
+											</th:block>
+											<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
+											<!--================ 이후  =================-->
+											<li class="page-item" th:if="${list[0].paging.endPage < list[0].paging.lastPage}">
+												<a class="page-link pagePort" aria-label="Next"
+												th:value="${list[0].paging.endPage+1}"> <span aria-hidden="true">
+												<span class="lnr lnr-chevron-right"></span></span></a>
 											</li>
-										</th:block>
-										<!--================ 페이지 이동 1_2_3_4_5 끝 =================-->
-										<!--================ 이후  =================-->
-										<li class="page-item"
-											th:if="${paging.endPage<paging.lastPage}"><a
-											class="page-link pagePort" aria-label="Next"
-											th:value="${paging.endPage+1}"> <span aria-hidden="true"><span
-													class="lnr lnr-chevron-right"></span></span></a></li>
-									</ul>
+										</ul>
 								</nav>
-								<nav class="blog-pagination justify-content-center d-flex"
-									id="likeChallPaging"></nav>
-								<nav class="blog-pagination justify-content-center d-flex"
-									id="leaderChallPaging"></nav>
-								<nav class="blog-pagination justify-content-center d-flex"
-									id="doneChallPaging"></nav>
-							</div>
 						</div>
 
 					</div>
@@ -211,31 +199,164 @@
 		<!-- Blog End -->
 		<script type="text/javascript">
 
+				//아작스로 불러온거 날짜변형하기
+		function leftPad(value) {
+				if (value >= 10) {
+					return value;
+				}
+				return `0${value}`;
+		}
+
+		function toStringByFormatting(source, delimiter = '/') {
+			const year = source.getFullYear();
+			const month = leftPad(source.getMonth() + 1);
+			const day = leftPad(source.getDate());
+			return [month, day].join(delimiter);
+		}
+
+
 	function findChall(){
 		console.log("변하나요? 계속?");
+		let cate = $("select[name=cCategory]").val();
+		let dur = $("select[name=cDuration]").val();
+		let freq = $("select[name=cFreq]").val();
+		let status = $("select[name=cStatus]").val();
+		console.log(cate, dur, freq, status);
+		$.ajax({
+			url:'/own/chall/findChallAjax',
+			method: 'get',
+			data: { page: 1,
+					   challCategory: cate,
+					   challDuration: dur,
+					   challFreq: freq,
+					   challStatus: status },
+			success: function(res){
+				console.log("결과");
+				console.log(res);
+				let Chall = $('#ChallRow')
+				$('#challRow').empty();	
+				res.forEach( cha => {
+	 				makeChallDiv(cha);
+				})
+				let pagingName = 'findChallPaging';
+				$('#findChallPaging').empty();
+				makePaging(res, pagingName);
+			},
+			error: function(err){
+				console.log("검색결과 실패")
+			}
+		})
 	}
 
+		//챌린지 폼 만들기
+		function makeChallDiv(cha){
+			console.log(cha.challLeader);
+			let cNo = cha.challNo.substr(4);
+			let firstImg = cha.firstImage;
+			console.log(cha.challStartdate);
+			console.log(cha.firstImage);
+			console.log(firstImg);
+			let startDate = toStringByFormatting(new Date(cha.challStartdate));
+			console.log(startDate);
+			let girdTag =  `<div class="grid m-3" style="padding: 3px; cursor:pointer" 
+							 onclick="location.href='detailChall?challNo=${cNo}'" >
+							    <div class="card card__one" style="width: 260px; height:350px">
+									<figure class="card__img">
+										<img src=/imgView/${firstImg} style="width: 260px; height:210px; object-fit: cover" />
+									</figure>
+								<div class="card__desc vldno" style="text-align: center;">
+									<h6 style="margin-top: 5px;" >${cha.challTitle}</h6>
+									<div class="row" style="justify-content: center;">
+										<p style="margin: 5px 10px;">${cha.challDuration}주 동안</p>
+										<p style="margin: 5px 10px;">주 ${cha.challFreq} 회</p>
+										<p style="margin: 5px 10px;"> ${startDate} 시작</p>
+									</div>
+								</div>
+								</div>
+							</div>`;
+			$('#challRow').append(girdTag);
+		}	
 
-	//챌린지 폼 만들기
-	function makeChallDiv(cha){
-		console.log(cha.challLeader);
-		let challNo = cha.challNo.substr(4);
-		console.log(challNo);
-		let div1 = $('<div />').addClass("col-lg-4 mb-4");
-		let div2 = $('<div />').addClass("card border-0 shadow-sm mb-2");
-		let hiddenInput = $('<input />').attr('type', 'hidden').val(cha.challNo);
-		let img2_1 = $('<img />').addClass("card-img-top mb-2").attr('src', '/imgView/'+ cha.firstImage).attr('style', 'height:230px; object-fit: cover')
-		let div2_2 = $('<div />').addClass("card-body bg-light text-center p-4")
-		let h4_3 = $('<h4 />').addClass("card-title"). text(cha.challTitle);
-		let div_3 = $('<div />').addClass("d-flex justify-content-center mb-3").append(($('<small />').addClass("mr-3").text(cha.challStartdate + '시작')),
-																					   ($('<small />').addClass("mr-3").text(cha.challDuration + '주 동안')),
-																					   ($('<small />').addClass("mr-3").text('주 '+cha.challFreq + '회'))
-																					  );
-		let a_3 = $('<a />').addClass("btn btn-primary px-4 mx-auto my-2").attr('href', 'detailChall?challNo=' + challNo); 
-		div1.append(div2.append(hiddenInput, img2_1, div2_2.append(h4_3, div_3, a_3)));
-		$('#challRow').append(div1);
-	}
-	
+	// 내 인증 페이징 버튼 아작스.
+	$('#findChallPaging').on('click', '.pagePort', function(){
+		    //페이지번호 + 밴드식별번호
+		    let page = $(this).attr('value');
+			console.log(page)
+		    console.log($(this).attr('value')); 
+			let cate = $("select[name=cCategory]").val();
+			let dur = $("select[name=cDuration]").val();
+			let freq = $("select[name=cFreq]").val();
+			let status = $("select[name=cStatus]").val();
+			$.ajax({
+			url:'/own/chall/findChallAjax',
+			method: 'get',
+			data: { page: page,
+					   challCategory: cate,
+					   challDuration: dur,
+					   challFreq: freq,
+					   challStatus: status },
+			success: function(res){
+				console.log("결과");
+				let Chall = $('#ChallRow');
+				$('#challRow').empty();	
+				res.forEach( cha => {
+	 				makeChallDiv(cha);
+				})
+				let pagingName = 'findChallPaging';
+				$('#findChallPaging').empty();
+				makePaging(res, pagingName);
+			},
+			error: function(err){
+				console.log("검색결과 실패")
+			}
+		})
+	});
+
+		/* 아작스 페이징 버튼 */
+		function makePaging(result, pagingName){
+				//버튼 다시초기화..비우기
+				$(`#${pagingName}`).empty();
+				let pagingM = result[0].paging;
+				//시작 버튼
+				console.log(result[0]); //첫번째? 가져오기..?
+				let startpageTag = $('<ul class="pagination" />');
+				$(`#${pagingName}`).append(startpageTag);
+				//이전 버튼만들기
+				if(pagingM.startPage>1){
+				let pageBeforTag = `<li class="page-item">
+									<a class="page-link pagePort" aria-label="Previous" value=${pagingM.startPage-1}>
+									<span aria-hidden="true"> <-
+									<span class="lnr lnr-chevron-left pagePort"></span></span></a>
+									</li>`
+				startpageTag.append(pageBeforTag); 
+				}               
+				//페이지목록..
+				for(let pg = pagingM.startPage; pg<=pagingM.endPage; pg++){
+						if(pg != pagingM.page){
+							let pageTag = `<li class="page-item">
+										<a class="page-link pagePort" value=${pg}>${pg}</a>
+										</li>`
+							startpageTag.append(pageTag);
+						} else if(pg == pagingM.page ){
+							let pageTag =  `<li class="page-item active">
+								<a class="page-link" >${pg}</a>
+								</li>`
+								startpageTag.append(pageTag);
+						}
+				}               
+				
+				//이후 버튼만들기
+				if(pagingM.endPage<pagingM.lastPage){
+							let pageAfterTag =`<li class="page-item">
+								<a class="page-link pagePort" aria-label="Next" value=${pagingM.endPage+1}>
+									<span aria-hidden="true"> ->
+									<span class="lnr lnr-chevron-right"></span></span></a>
+									</li>`
+									startpageTag.append(pageAfterTag);
+				}
+				$(`#${pagingName}`).append(startpageTag);
+		};
+
 </script>
 </div>
 </body>

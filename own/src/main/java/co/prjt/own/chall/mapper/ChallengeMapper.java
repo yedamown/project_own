@@ -41,5 +41,7 @@ public interface ChallengeMapper {
 	//내가 좋아요한 도전 정보들
 	List<ChallengeVO> getMyLike(ChallengeVO vo);
 	
+	//좋아요있는 도전들....뽑기
+	List<ChallengeVO> getPopChall(ChallengeVO vo);
 	
 }

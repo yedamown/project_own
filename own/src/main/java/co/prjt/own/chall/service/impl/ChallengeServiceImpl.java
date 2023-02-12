@@ -79,6 +79,14 @@ public class ChallengeServiceImpl implements ChallengeService {
 	@Override
 	// 페이징 3개씩..
 	public List<ChallengeVO> pageChallList(ChallengeVO vo, Paging paging) {
+		//카테고리검색
+		if(vo.getChallCategory() !=null && vo.getChallCategory().equals("0")) {
+			vo.setChallCategory(null);
+		} 
+		//상태검색
+		if(vo.getChallStatus() !=null && vo.getChallStatus().equals("0")) {
+			vo.setChallStatus(null);
+		}
 		// 밖에서 하고오면 보는갯수 줄어들지않을까?
 		paging.setTotalRecord(mapper.countChall(vo));
 		System.out.println(mapper.countChall(vo));
@@ -147,6 +155,27 @@ public class ChallengeServiceImpl implements ChallengeService {
 		vo.setPaging(paging);
 		System.out.println(vo);
 		List<ChallengeVO> list = mapper.getMyLike(vo);
+		for (ChallengeVO i : list) {
+			int r = memberListMapper.getChallMemNum(i.getChallNo());
+			i.setNowMem(r);
+		}
+	    if(list!=null && list.size()>0) {
+	    	list.get(0).setPaging(paging);
+	    }
+		return list;
+	}
+
+	@Override
+	public List<ChallengeVO> popChallList(ChallengeVO vo, Paging paging) {
+		// 밖에서 하고오면 보는갯수 줄어들지않을까?
+		paging.setTotalRecord(mapper.countChall(vo));
+		System.out.println(mapper.countChall(vo));
+		vo.setFirst(paging.getFirst());
+		vo.setLast(paging.getLast());
+		vo.setPaging(paging);
+		System.out.println(vo);
+		List<ChallengeVO> list = mapper.getPopChall(vo);
+		// 참여회원 수 넣기
 		for (ChallengeVO i : list) {
 			int r = memberListMapper.getChallMemNum(i.getChallNo());
 			i.setNowMem(r);

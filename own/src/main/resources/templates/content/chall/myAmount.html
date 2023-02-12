@@ -116,6 +116,7 @@
 									<option selected>전체보기</option>
 									<option value="충전">충전</option>
 									<option value="도전참가">도전참가</option>
+									<option value="도전거절">도전거절</option>
 									<option value="도전환급">도전환급</option>
 									<option value="도전보상">도전보상</option>
 									<option value="도전환급">도전환급</option>
@@ -147,7 +148,7 @@
 					</table>
 
 				<!-- 페이징버튼 넣기 -->
-				<nav class="blog-pagination justify-content-center d-flex pageBtn" id="pageMyAmount">
+				<nav class="blog-pagination justify-content-center d-flex pageBtn" id="pageMyAmount" th:if="${!#lists.isEmpty(memAmount)}">
 					<!--================ 이전  =================-->
 					<ul class="pagination">
 						<li class="page-item" th:if="${memAmount[0].paging.startPage>1}"><a

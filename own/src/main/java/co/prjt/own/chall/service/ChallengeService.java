@@ -48,4 +48,7 @@ public interface ChallengeService {
 	//내가 좋아요한 도전들 페이징
 	List<ChallengeVO> likeChallPage(ChallengeVO vo ,Paging paging);  
 	
+	//------------------------좋아요 등 인기있는 도전 순위----------
+	List<ChallengeVO> popChallList(ChallengeVO vo ,Paging paging);
+	
 }

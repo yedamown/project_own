@@ -75,9 +75,8 @@ public class CAmountServiceImpl implements CAmountService{
 		if(vo.getAmtType() !=null && vo.getAmtType().equals("전체보기")) {
 			vo.setAmtType(null);
 		} 
-		System.out.println("보보보"+ vo);
 		paging.setTotalRecord(mapper.countMyAMT(vo));
-		paging.setPageUnit(5); //내 도전이라 6개씩 보여줄 것
+		paging.setPageUnit(5); 
 		paging.setPageSize(10);
 		vo.setFirst(paging.getFirst());
 		vo.setLast(paging.getLast());
