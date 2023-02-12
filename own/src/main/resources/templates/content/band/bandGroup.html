@@ -301,11 +301,11 @@
 	                    	</div>        
                         </div>
                     </div>
-                    <div th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}or${band.bandOpenOption}=='BC01'">
-	                    <div style="flex-grow:3; width: 740px" th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}or${band.bandOpenOption}=='BC01'">
-		  <!-- ================== 여기붙음================== -->                    	
-	                        <div id="mainTemplate" th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}or${band.bandOpenOption}=='BC01'">
-	                            <article style="border: 1px solid #eeeeee;padding:30px; " th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}or${band.bandOpenOption}=='BC01'">
+                    <div th:if="(${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'})or(${band.bandOpenOption}=='BC01')">
+	                    <div style="flex-grow:3; width: 740px" th:if="(${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'})or(${band.bandOpenOption}=='BC01')">
+		  <!-- ================== 여기붙음================== -->
+	                        <div id="mainTemplate" th:if="(${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'})or(${band.bandOpenOption}=='BC01')">
+	                            <article style="border: 1px solid #eeeeee;padding:30px; " th:if="(${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'})or(${band.bandOpenOption}=='BC01')">
 	                            <!-- ================== 검색================== -->
 	                            	  
 	                                <div class="input-group">
@@ -316,7 +316,7 @@
 	                                </div>
                                  <!-- ================== 검색================== -->  
 	                            </article >
-	                            <div id="articleArea" class="arty" th:if="${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'}or${band.bandOpenOption}=='BC01'">
+	                            <div id="articleArea" class="arty" th:if="(${BandMemberDetail} and ${BandMemberDetail.bandMemberStatus=='BA02'})or(${band.bandOpenOption}=='BC01')">
 				               </div>
 	                        </div>
 	                        <!-- <iframe id="ifr" onload="iframeHeight()" frameborder="0" scrolling="no"></iframe> -->
@@ -329,7 +329,7 @@
 	                    	<input type="hidden" id="userId" th:value="${session.loginUser.userId}">
 	                        <div id="mainTemplate">
 	                        	<div>
-		                            <div id="articleArea">
+		                            <div id="articleArea3">
 		                            	<article style="border: 2px solid #9ab0cd;padding:130px; margin:15px; height: 470px; background-color: white;">
 							                    <div style="display: flex; flex-direction: column;">
 							                    <div>

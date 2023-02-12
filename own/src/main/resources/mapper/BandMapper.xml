@@ -448,8 +448,7 @@
 			EXERSUB_NAME "exersubName"
 		FROM EXER_SUB
 	</select>
-	<!-- 밴드 추천 용 1)가입되어있지않은 2)로케이션이 맞는 3)흥미가 맞는(널ㅇ) 4)성별제한이 있다면 성별 5)생일제한이 있다면 생일 6)공개로-->
-	
+	<!-- 밴드 추천 용 1)가입되어있지않은 2)지역이 맞는 3)관심운동이 맞는(널ㅇ) 4)성별제한이 있다면 성별 5)생일제한이 있다면 생일 6)공개로-->
 	<select id="recomBand" resultType="BandVO">
 		SELECT  BAND_NO,
 				BAND_LEADERID,

@@ -68,12 +68,6 @@ public class BandController {
 		HttpSession session = request.getSession();
 		//session.setAttribute("loginUser", ownService.login("hjj"));
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
-
-		System.out.println(user); // 세션널..임시
-		if (user == null) {
-			return "content/own/ownlogin";
-		}
-
 		// 유저디폴트정보 싣기 DT : BandMemberDefaultVO
 		// 만약 디폴트 설정이 없다면 밴드 프로필설정으로 보내겠음
 		BandMemberDefaultVO def = new BandMemberDefaultVO();
@@ -91,7 +85,6 @@ public class BandController {
 			model.addAttribute("location", bandService.allLocation());
 			model.addAttribute("exercise", bandService.allExcersie());
 			// 인기글 세개 싣기
-
 			// 밴드들 정보
 			// 내 디폴트정보
 			model.addAttribute("useries", bandMemberDefaultService.getBandMemberDefault(user.getUserId()));
@@ -144,9 +137,8 @@ public class BandController {
 
 	// 밴드추천보기..recomBand()와 매퍼를 같이 씀. 페이징용 밴드검색과 별개(옵션이 다름)
 	@RequestMapping("/bandRec")
-	public String bandRec(Model model, Paging paging, HttpServletRequest request, BandVO band) {
+	public String bandRec(Model model, Paging paging,  HttpSession session, BandVO band) {
 		// 유저아이디 가져오기
-		HttpSession session = request.getSession();
 		OwnUserVO user = (OwnUserVO) session.getAttribute("loginUser");
 		// 운동종류+관심지역 셀렉트박스
 		model.addAttribute("location", bandService.allLocation());

@@ -213,7 +213,6 @@
  		// 완성형 아닌 한글 정규식		
         var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
         $(function(){
-            //별명 중복체크...
             $('#bandNickname').on('change', function(){
             	let nickName = $('#bandNickname').val();
     			if(nickName == '') {
@@ -267,14 +266,14 @@
             	//확장자제한
             	let fileForm = /(.*?)\.(jpg|jpeg|png|PNG|JPEG|JPG)$/;
             	//50mb로 제한
-            	let maxSize = 100 * 1024 * 1024;
+            	let maxSize = 50 * 1024 * 1024;
             	//특수문자 제한
             	let pattern =  /[\{\}\/?,;:|*~`!^\+<>@\#$%&\\\=\'\"]/gi;
             	//파일크기제한
             	let fileSize;
     			
             	if($('#deImg').val() == "") {
-            		alert("첨부파일은 필수!");
+            		alert("첨부파일은 필수입니다.");
             	    return;
             	}
             	//파일명과 사이즈를 뽑기위한..제이쿼리를 모르겠음 이건
@@ -284,13 +283,13 @@
             		//input=file의 files 속성가져와서...
             		fileSize = fileName.size;
             	    if(!imgFile.match(fileForm)) {
-            	    	alert("이미지 파일만 업로드 가능");
+            	    	alert("이미지 파일만 업로드 가능합니다.");
             	        return;
             	    } else if(fileSize > maxSize) {
-            	    	alert("파일 사이즈는 100MB까지 가능");
+            	    	alert("파일 사이즈는 50MB까지 가능합니다.");
             	        return;
             	    } else if(pattern.test(fileName.name)){
-            	    	alert("파일 이름 특수문자 nono");
+            	    	alert("파일 이름에 특수문자는 불가능합니다.");
             	        return;
             	    }
             	}
