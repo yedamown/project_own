@@ -42,7 +42,7 @@
 	</select>
 	
 	<select id="successReward" resultType="co.prjt.own.chall.service.CResultVO">
-			SELECT AVG(SUCCESS_RATE) * 100 AS AVGSR ,  NVL( SUM(REWARD_PRICE) , 0) AS SUMRP
+			SELECT ROUND(AVG(SUCCESS_RATE),2) * 100 AS AVGSR ,  NVL( SUM(REWARD_PRICE) , 0) AS SUMRP
 			FROM CHALL_RESULT
 			WHERE USER_ID = #{userId}
 	</select>
