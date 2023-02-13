@@ -404,8 +404,6 @@
 						</div>
 					</th:block>
 				</div>
-
-
 			</div>
 		</div>
 	</div>
@@ -551,7 +549,7 @@
 						xhr.setRequestHeader(header, token);
 			}, 
 			success:function(res){
-				alert("인증 삭제 .")
+				alert("인증이 삭제되었습니다.")
 				let cutChallNo  = challNo.substr(4);
 				location.href = '/own/chall/detailChall?challNo=' + cutChallNo;
 				console.log(res);
@@ -1335,7 +1333,7 @@
 		console.log(mediaName);
 		console.log(reported);
 		let gridVld = `<div class="grid" style="padding: 10px" id=${vldNo}>
-							<div class="card card__one" style="width: 330px; height:350px;" >
+							<div class="card card__one" style="width: 330px; height:350px; object-fit:cover" >
 								<figure class="card__img">
 									<img src=/imgView/${mediaName} 
 									style="object-fit: cover"/>
@@ -1377,9 +1375,11 @@
 				}, 
 				contentType: "application/json",
 				success: function(result){
-					alert(result);
+					alert("인증신고가 승인되었습니다.");
 					console.log(result)
 					console.log($(e).parent().parent().parent().remove());
+					$('#vldImg').empty();
+					$("#vldCheck").val("false");
 				},
 				error: function(err){
 					console.log(err)
