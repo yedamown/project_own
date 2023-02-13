@@ -25,9 +25,7 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public String createChatroom(List<ChatroomVO> list) {
 		// 채팅방 개설
-		System.out.println("serviceImpl===========" + list);
-		String cNo = chatMapper.createChatroomNo(); // 가져온 시퀀스 번호
-		System.out.println("룸넘버===========" + cNo);
+		String cNo = chatMapper.createChatroomNo(); // 채팅방 시퀀스 번호
 		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setChatroomNo(cNo);
 			chatMapper.createChatroom(list.get(i));
