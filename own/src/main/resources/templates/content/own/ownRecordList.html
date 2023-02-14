@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>My Exercise Record List</title>
+	<title>나의 운동 분석</title>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<!-- 폰트어썸 cdn -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
@@ -570,7 +570,7 @@
 
 		// 화면 캡쳐
 		function captureImage() {
-			html2canvas(document.querySelector(".dayRecord")).then(canvas => {
+			html2canvas(document.querySelector(".dayRecordFile")).then(canvas => {
 				// 파일명을 위한 랜덤 문자열 생성
 				const generateRandomString = (num) => {
 					const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -850,7 +850,7 @@
 <div layout:fragment="content">
 
 	<body>
-		<div class="container py-5">
+		<div class="container py-5 dayRecordFile">
 			<input id="userId" type="hidden" th:value="${session.loginUser.userId}">
 			<div class="item-row userName">
 				<p>
